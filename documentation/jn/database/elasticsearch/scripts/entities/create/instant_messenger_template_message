@@ -1,0 +1,21 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"templateId": {
+				"type": "keyword"
+			},
+			"message": {
+				"type": "text"
+			},
+			"language": {
+				"type": "keyword"
+			},
+			
+			"subject": {
+				"type": "keyword"
+			}
+		
+		}
+	}
+}

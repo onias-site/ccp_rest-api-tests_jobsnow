@@ -1,0 +1,12 @@
+cron:
+  - description: "test dispatch vs target"
+    url: /tasks/hello_service2
+    schedule: every 1 mins
+    timezone: 
+    target: service1
+  - description: ""
+    url: 
+    schedule: 
+    timezone: 
+    target: 
+          

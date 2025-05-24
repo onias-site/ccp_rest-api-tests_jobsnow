@@ -1,0 +1,71 @@
+[D][4]Sou um sucesso? (recomendações)
+[G][2]Quem me viu?
+[G][3]Minhas vagas (comentários, recomendações)
+[G][1]$$ com seu CV [Meus Dados] (Exclusão, Inativação)
+===============================================P
+[G][2]Vagas que cadastrei (recomendações, quiz)
+[G][3]Meus Cvs(comentários, recomendações)
+[G][1]Buscar curriculos (Histórico)
+[D][4]Busca premium (Histórico)
+===============================================R
+[G][1]Indique currículos e ganhe $$
+[D][4]Já pensou você nosso sócio?
+[D][3]Faça propaganda conosco 
+[G][1]Um pouco sobre nós
+===============================================F
+[G][1]Quero receber currículos
+[G][1](*)E-mail
+[D][3](*)Saldo
+[G][2](*)Chamados
+[G][1](*)Trocar de senha
+[G][1](*)Sair(Histórico de Logins)
+[G][4]Alterar Idioma
+===============================================N
+[G][2]Nossas estatísticas 
+[D][3]Tarifas e Recompensas
+[G][2]Habilidades que mais pagam(Termos pesquisados, cursos)
+===============================================T
+1=N(DADOS DO USUÁRIO);P(CURRICULO);R(BUSCACV);I(FALE CONOSCO)
+2=F(LOTE DE CURRÍCULOS);N(CHAMADOS);P(VISUALIZAÇÕES)
+3=T(TERMOS PESQUISADOS);P(VAGAS);F(CONHEÇA-NOS);N(IDIOMA)
+===============================================
+4=N(SALDO);R(VAGAS);
+5=T(TARIFAS E RECOMPENSAS);R(MEUS CVS);I(QUIZ)
+6=R(BUSCA);P(REPUTAÇÃO)
+7=F(PROPAGANDA);F(SOCIEDADE)
+8=I(CURSOS);T(GRÁFICOS)
+===============================================
+
+#Tela de topo
+(A)onias85@gmail.com (713 Acessos (último em 22/06/2023 as 13:17:05), Trocar Senha, Sair do Sistema)
+(D)R$ 85.17 (234 Movimentações, Ver extrato)
+(B)27 chamados (13 Solucionados, 14 Em aberto)
+(C)Português do Brasil
+
+#Parte de cima
+Ganhe dinheiro conosco | Indique currículos e ganhe $$ | Habilidades que mais pagam(Termos pesquisados, cursos) | Cadastre seu negocio 
+
+
+
+#Menu Lateral
+Buscar Currículos
+Cadastrar Vagas
+Meus currículos
+Meu currículo
+
+#Rodapé
+Tarifas e Recompensas | Nossas estatísticas | Linkedin do Front end | Um pouco sobre nós
+
+Temas das entregas:
+A) Estrutura e prova de conceito
+B) Cobrar RHs por currículos aderentes às suas vagas
+C) Indicações de novos currículos para a plataforma  
+D) Cobrar Rhs e candidatos por comentários sobre candidatos
+E) Melhoria nos cadastros de vagas
+F) Testar candidatos para vagas
+G) Udemy descentralizada
+H) Cadastro de propagandas
+I) Uberização de front end
+
+J) Consultoria de ensino para recrutadores
+K) "GetNinjas" de profissionais dentro da plataforma

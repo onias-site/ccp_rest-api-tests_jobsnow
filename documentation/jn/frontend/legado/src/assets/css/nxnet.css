@@ -1,0 +1,437 @@
+/*
+ * It is advised not to edit the smartadmin_production.css
+ * as this will override any changes you make in the 
+ * later versions of this theme. 
+ * 
+ * We advise that you use use this CSS to override 
+ * SmartAdmin styles. 
+ * 
+ * Rename the stylesheet to whatever your liking so it will stay
+ * unique to you with each update of SmartAdmin.
+ */
+
+/*
+ * INDEX
+ * 
+ * - HTML
+ * - BODY
+ * - CUSTOM STYLES
+ */
+
+/*********************************/
+
+/* Ajustes nas cores do Template */
+
+/*********************************/
+
+#logo {
+   margin-top: 5px;
+}
+
+.login-info {
+   border-bottom: 0px solid #E2E2E2;
+}
+
+.login-info>span {
+   border-bottom: 1px solid #E2E2E2;
+}
+
+.minified #hide-menu {
+   display: initial;
+}
+
+aside {
+   /* background: linear-gradient(to right,#3a3f51 93%,#2a2725 100%); */
+   background: #f2f2f2;
+   border-right: 2px solid #ccc;
+}
+
+nav ul ul {
+   /*background: rgba(43, 50, 72, 0.6);*/
+   background: #f2f2f2;
+}
+
+nav ul li {
+   background-image: linear-gradient(to bottom, #f9f9f9, #f2f2f2);
+   border-bottom: 1px solid #DFDFDF;
+}
+
+nav ul li a:hover {
+   background: rgba(0, 0, 0, .05)!important;
+}
+
+nav ul li a, nav ul li.open>a, nav ul li.open>a b {
+   color: #444!important;
+}
+
+nav>ul>li>a>i {
+   color: #4D8BA5;
+   font-size: 20px;
+}
+
+nav ul li.active>a {
+   font-weight: 700;
+   color: #444!important;
+}
+
+.minified nav>ul>li {
+   border-bottom: 1px solid #DFDFDF;
+   border-top: 0px solid #DFDFDF;
+}
+
+.minified nav>ul>li>ul {
+   background: #f2f2f2;
+}
+
+.minified nav>ul>li>ul>li {
+   background: #f2f2f2;
+}
+
+#ribbon {
+   /* background: #3a3f51; */
+   background: #f2f2f2;
+   border-bottom: 1px solid #DFDFDF;
+}
+
+#ribbon .breadcrumb li {
+   color: #444!important;
+}
+
+.page-footer {
+   /* background: #3a3f51; */
+   background: #f2f2f2;
+   color: #444!important;
+}
+
+.minifyme {
+   /* background: #3a3f51; */
+   background: #f2f2f2;
+   border-bottom: 1px solid #DFDFDF;
+   color: #4D8BA5!important;
+   font-size: 20px;
+}
+
+.minifyme:hover {
+   /* background: #3a3f51; */
+   background: #f2f2f2;
+}
+
+.jarviswidget-color-blue>header {
+   border-color: #4d8ba5!important;
+   background: #4d8ba5;
+   color: #fff;
+}
+
+@media only screen and (max-width: 679px) and (min-width: 0) {
+   #header {
+      background: #f3f3f3;
+      background-image: linear-gradient(to bottom, #f3f3f3, #e2e2e2);
+   }
+   #ribbon .breadcrumb li:last-child, #ribbon .breadcrumb>.active {
+      /* color: #E4E4E4!important; */
+   }
+   #ribbon .breadcrumb, #ribbon .breadcrumb a {
+      /* color: #BBB!important; */
+   }
+}
+
+@media (max-width: 880px) and (min-width: 0px) {
+   #logo img {
+      width: 110px;
+   }
+}
+
+/*********************************/
+
+/*********************************/
+
+.titulo {
+   border: 1px solid #d9dfe2;
+   text-align: center;
+   margin-bottom: 0px;
+}
+
+.titulo h5 {
+   font-weight: bold;
+   letter-spacing: 1px;
+}
+
+.lista-itinerario {
+   border: 1px solid #d9dfe2;
+   height: 300px;
+   overflow-y: scroll;
+}
+
+.tabelaHoraria ul {
+   list-style: none;
+}
+
+.tabelaHoraria li {
+   border: solid 1px #d9dfe2;
+   display: inline-block;
+   padding: 10px;
+   margin-top: 10px;
+   background-color: white;
+}
+
+.tabelaHoraria li:hover {
+   font-weight: bold;
+   box-shadow: 0 6px 3px 0 #888888;
+   transition: all .3s;
+}
+
+.tabelaHoraria-div {
+   height: 300px;
+   overflow-y: scroll;
+   border: 1px solid #d9dfe2;
+   background-color: #FAFAFA;
+}
+
+.status-os p {
+   border: 1px solid #d9dfe2;
+   padding: 10px;
+   font-weight: bold;
+   letter-spacing: 1px;
+   text-shadow: 3px 3px 2px #d9dfe2;
+   background-color: rgba(105, 105, 105, 0);
+   display: inline-block;
+   text-transform: uppercase;
+   text-align: right;
+}
+
+.status-os p span {
+   color: red;
+}
+
+.table-viagem p {
+   margin-top: 10px;
+}
+
+.list-horas ul {
+   list-style: none;
+}
+
+.list-horas li {
+   display: inline-block;
+   border: #d9dfe2 1px solid;
+   padding: 8px;
+}
+
+h3 {
+   letter-spacing: 2px;
+}
+
+agm-map {
+   height: 300px;
+}
+
+table td[rowspan] {
+   writing-mode: tb-rl;
+   -webkit-transform: rotate(-90deg);
+   -moz-transform: rotate(-90deg);
+   -o-transform: rotate(-90deg);
+   -ms-transform: rotate(-90deg);
+   transform: rotate(-90deg);
+   white-space: nowrap;
+   height: 80px;
+   line-height: 80px;
+}
+
+/* spinner */
+
+.lds-ellipsis {
+   display: inline-block;
+   position: relative;
+   width: 64px;
+   height: 64px;
+}
+
+.lds-ellipsis div {
+   position: absolute;
+   top: 27px;
+   width: 11px;
+   height: 11px;
+   border-radius: 50%;
+   background: #444;
+   animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.lds-ellipsis div:nth-child(1) {
+   left: 6px;
+   animation: lds-ellipsis1 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(2) {
+   left: 6px;
+   animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(3) {
+   left: 26px;
+   animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(4) {
+   left: 45px;
+   animation: lds-ellipsis3 0.6s infinite;
+}
+
+@keyframes lds-ellipsis1 {
+   0% {
+      transform: scale(0);
+   }
+   100% {
+      transform: scale(1);
+   }
+}
+
+@keyframes lds-ellipsis3 {
+   0% {
+      transform: scale(1);
+   }
+   100% {
+      transform: scale(0);
+   }
+}
+
+@keyframes lds-ellipsis2 {
+   0% {
+      transform: translate(0, 0);
+   }
+   100% {
+      transform: translate(19px, 0);
+   }
+}
+
+.tableTelemetria .rt-thead.-filters {
+   display: none;
+}
+
+/* autosuggest */
+
+.react-autosuggest__container {
+   position: relative;
+}
+
+.react-autosuggest__input {
+   width: 240px;
+   height: 30px;
+   padding: 10px 20px;
+   font-family: Helvetica, sans-serif;
+   font-weight: 300;
+   font-size: 16px;
+   border: 1px solid #aaa;
+   border-radius: 4px;
+}
+
+.react-autosuggest__input--focused {
+   outline: none;
+}
+
+.react-autosuggest__input--open {
+   border-bottom-left-radius: 0;
+   border-bottom-right-radius: 0;
+}
+
+.react-autosuggest__suggestions-container {
+   display: none;
+}
+
+.react-autosuggest__suggestions-container--open {
+   display: block;
+   position: absolute;
+   top: 30px;
+   width: 280px;
+   max-height: 300px;
+   overflow-y: auto;
+   border: 1px solid #aaa;
+   background-color: #fff;
+   font-family: Helvetica, sans-serif;
+   font-weight: 300;
+   font-size: 14px;
+   border-bottom-left-radius: 4px;
+   border-bottom-right-radius: 4px;
+   z-index: 20;
+}
+
+.react-autosuggest__suggestions-list {
+   margin: 0;
+   padding: 0;
+   list-style-type: none;
+}
+
+.react-autosuggest__suggestion {
+   cursor: pointer;
+   padding: 5px 20px;
+}
+
+.react-autosuggest__suggestion--highlighted {
+   background-color: #ddd;
+}
+
+.react-autosuggest__suggestion-match {
+   color: red;
+   font-weight: bold;
+}
+
+.chart-loading {
+   display: block;
+   position: absolute;
+   left: 0;
+   right: 0;
+   top: 0;
+   bottom: 0;
+   background: rgba(255, 255, 255, 0.8);
+   transition: all .3s ease;
+   opacity: 1;
+   z-index: 20;
+   pointer-events: all;
+}
+
+.chart-loading-inner {
+   position: absolute;
+   display: block;
+   text-align: center;
+   width: 100%;
+   top: 50%;
+   left: 0;
+   font-size: 15px;
+   color: rgba(0, 0, 0, 0.6);
+   -webkit-transform: translateY(-52%);
+   transform: translateY(-52%);
+   transition: all .3s cubic-bezier(.25, .46, .45, .94);
+}
+
+.basic-multi-select {
+   z-index: 20;
+}
+
+/*********************************/
+
+/* Ajustando visual do React-Datepicker */
+
+/*********************************/
+
+.datepicker_modal {
+   z-index: 20!important;
+}
+
+.react-datepicker {
+   font-size: 1.3rem !important;
+}
+
+.react-datepicker__current-month {
+   font-size: 1.5rem !important;
+}
+
+.react-datepicker__header {
+   padding-top: 6px !important;
+}
+
+.react-datepicker__navigation {
+   top: 13px !important;
+}
+
+.react-datepicker__day-name, .react-datepicker__day {
+   margin: 0.5rem !important;
+}

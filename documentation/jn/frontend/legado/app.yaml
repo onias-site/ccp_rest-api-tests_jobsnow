@@ -1,0 +1,22 @@
+runtime: nodejs10
+service: default
+instance_class: F2
+automatic_scaling:
+  max_concurrent_requests: 20
+  target_cpu_utilization: 0.7
+  max_instances: 10
+
+handlers:
+#- url: /stylesheets
+#  static_dir: stylesheets
+
+- url: /.*
+  secure: always
+  redirect_http_response_code: 301
+  script: auto
+
+env_variables:
+  SQL_USER: nxnetapi
+  SQL_PASSWORD: noxxonsat123
+  SQL_DATABASE: nxnetapi
+  INSTANCE_CONNECTION_NAME: noxxonsat-nxnet-prod:southamerica-east1:nxnetapidb

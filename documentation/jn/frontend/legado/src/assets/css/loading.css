@@ -1,0 +1,8 @@
+#cover {
+    background: url("loading.gif") no-repeat scroll center center #FFF;
+    position: fixed;
+    z-index: 1;
+    opacity: 0.5;
+    height: 100%;
+    width: 100%;
+}

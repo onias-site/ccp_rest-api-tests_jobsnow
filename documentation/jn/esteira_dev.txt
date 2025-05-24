@@ -1,0 +1,77 @@
+A) levantamento do requisito (PO)
+B) análise técnica do que já existe (LE)
+C) priorização/Pontuação das tarefas (SM)
+D) prototipação da tela(UX)[Competição, Revisão]
+D) ajustes no banco de dados(BD)[Competição, Revisão]
+D) testes unitários(TE)[Competição, Revisão]
+E) criação do HTML estático (WD)[Competição, Automático]
+E) programação backend (BE)[Competição, Automático]
+F) testes performáticos(QA)[Competição, Revisão]
+F) testes automatizados (AU)[Competição, Revisão]
+F) programação frontend (FE)[Competição, Automático]
+F) revisão de segurança (QA)[Competição, Revisão]
+F) refatoração de backend (LTB)[Competição, Revisão]
+G) revisão de usabilidade (UX)[Competição, Revisão]
+G) refatoração de frontend (LTF)[Competição, Revisão]
+G) refatoração de frontend (LTF)[Competição, Revisão]
+
+EU=PO,LE,SM, LTF, LTB,(D[2], F[3], G[2])=10 + 8X [UX*, TE*, QA, AU*, QA, UX, FE*, BE*, QA]
+UX=(A[1],B[1],C[1],D[1],G[1])=05 + X
+BD=(A[1],B[1],C[1],D[1])=04
+TE=(A[1],B[1],C[1],D[1])=04
+BE=(A[1],B[1],C[1],E[1])=04
+QA=(A[1],B[1],C[1],F[1])=06 + X
+AU=(A[1],B[1],C[1],F[1])=04
+
+#Eliminações para backend
+Bugs
+Segurança
+Performance
+Clareza de codigo
+
+#Defeitos
+[QA]Segurança (13/91)
+[QA]Bug frontend(12/91) 
+[QA]Bug backend(11/91)
+[UX]Usabilidade(10/91)
+[QA]Performance backEnd(09/91)
+[QA]Performance frontend(08/91)
+[EU]Clareza frontend(07/91)
+[EU]Clareza backEnd(06/91)
+[EU]QA(05/91)
+[EU]UX(04/91)
+[EU]TE(03/91)
+[EU]FE(02/91)
+[EU]BE(01/91)
+
+#Eliminações para backend
+Bugs
+Usabilidade
+Performance
+Clareza de codigo
+
+
+
+#checklists
+ux
+parametros
+performance
+segurança
+banco de dados
+refatoração FE
+refatoração BE
+#Disputas
+BD vs TE
+BE vs TE
+BD vs PE
+BE vs PE
+BD vs LTB
+BE vs LTB
+WD vs UX
+FE vs UX
+FE vs LTF
+FE vs AU
+
+
+
+

@@ -1,0 +1,23 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"email":{
+				"type": "keyword"
+			},
+			"sender":{
+				"type": "keyword"
+			},
+			"subjectType":{
+				"type": "keyword"
+			},
+			"templateId":{
+				"type": "keyword"
+			},
+			"moreParameters": {
+				"dynamic": "true",
+					"properties": {}
+			}
+		}
+	}
+}

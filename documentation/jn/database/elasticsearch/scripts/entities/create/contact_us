@@ -1,0 +1,27 @@
+{
+    "mappings": {
+            "dynamic": "strict",
+			"properties": {
+                "subjectType": {
+                    "type": "keyword"
+                },
+                "email": {
+                    "type": "keyword"
+                },
+                "subject": {
+                    "type": "text"
+                },
+                
+                "message": {
+                    "type": "text"
+                },
+                 "sender": {
+                    "type": "keyword"
+                },
+                 "chatId": {
+                    "type": "long"
+                }
+                
+            }
+        }
+}

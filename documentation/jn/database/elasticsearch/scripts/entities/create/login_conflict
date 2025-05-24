@@ -1,0 +1,18 @@
+{
+    "mappings": {
+        "dynamic": "strict",
+        "properties": {
+			"email": {
+				"type": "keyword"
+			},
+            "newLogin": {
+				"dynamic": "true",
+                "properties": {}
+            },
+            "oldLogin": {
+				"dynamic": "true",
+                "properties": {}
+           }
+        }
+    }
+}

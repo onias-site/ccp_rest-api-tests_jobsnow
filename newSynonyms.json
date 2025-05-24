@@ -1,0 +1,1188 @@
+{
+  "AGIL": {
+    "newSynonyms": [
+      "AGILE DEVELOPMENT",
+      "AGILE METHODOLOGIES",
+      "AGILE SCRUM",
+      "AGILE METHODOLOGY",
+      "AGILE TESTING",
+      "AGILE DEVELOPMENT"
+    ],
+    "synonyms": [
+      "AGILE"
+    ]
+  },
+
+  "ANGULAR": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "ANGULARJS",
+      "ANGULAR JS",
+      "ANGULAR.JS",
+      "ANGULAR-JS"
+    ]
+  },
+  "ANSIBLE": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "RED HAT ANSIBLE",
+      "REDHAT ANSIBLE"
+    ]
+  },
+  "ANT": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "APACHE ANT",
+      "APACHEANT"
+    ]
+  },
+  "APEX": {
+    "newSynonyms": [
+      "APEX CLASSES"
+    ],
+    "synonyms": []
+  },
+  "APIS": {
+    "newSynonyms": [
+      "API DEVELOPMENT",
+      "API MANAGEMENT",
+      "API INTEGRATION",
+      "API DESIGN",
+      "API SECURITY",
+      "API TESTING",
+      "API DESIGN",
+      "API TESTING"
+    ],
+    "synonyms": [
+      "API"
+    ]
+  },
+  "ASP": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "ACTIVE SERVER PAGES"
+    ]
+  },
+  "ASP.NET": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "ASP NET",
+      "ASPNET",
+      "ASP-NET"
+    ]
+  },
+  "AUTOMACAO": {
+    "newSynonyms": [
+      "AUTOMATION ANYWHERE",
+      "AUTOMATION TOOLS"
+    ],
+    "synonyms": [
+      "AUTOMATIZADOS",
+      "AUTOMATIZACAO",
+      "AUTOMATION",
+      "AUTOMATIZADO"
+    ]
+  },
+  "AWS": {
+    "newSynonyms": [
+      "AWS CLOUD"
+    ],
+    "synonyms": [
+      "AMAZON WEB SERVICES"
+    ]
+  },
+  "AWS CLOUD FORMATION": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "AWS CLOUDFORMATION",
+      "AWSCLOUDFORMATION"
+    ]
+  },
+  "AZURE": {
+    "newSynonyms": [
+      "AZURE CLOUD"    
+      ],
+    "synonyms": [
+      "AZUERE"
+    ]
+  },
+  "BANCO DE DADOS": {
+    "newSynonyms": [
+      "DATABASE MANAGEMENT",
+      "DATABASE SYSTEMS",
+      "DATABASE MANAGEMENT SYSTEMS",
+      "DATABASE MANAGEMENT"
+    ],
+    "synonyms": [
+      "DATABASE",
+      "BASE DE DADOS",
+      "DATABASES",
+      "DATA BASE",
+      "DATA BASES"
+    ]
+  },
+  "BATCH": {
+    "newSynonyms": [
+      "BATCH SCRIPT"
+    ],
+    "synonyms": []
+  },
+  "BIG DATA": {
+    "newSynonyms": [
+      "BIG DATA TECHNOLOGIES"
+    ],
+    "synonyms": [
+      "BIGDATA",
+      "BIG-DATA"
+    ]
+  },
+  "BITBUCKET": {
+    "newSynonyms": [
+      "BITBUCKET PIPELINES"
+    ],
+    "synonyms": []
+  },
+  "BOOTSTRAP": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "BOOT STRAP"
+    ]
+  },
+  "BPM": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "BUSINESS PROCESS MANAGEMENT"
+    ]
+  },
+  "BUSINESS INTELLIGENCE": {
+    "newSynonyms": [
+      "BUSINESS INTELLIGENCE TOOLS"
+    ],
+    "synonyms": [
+      "B.I",
+      "BUSINESS INTELIGENCE",
+      "BUSINESSINTELIGENCE"
+    ]
+  },
+  "CAMEL": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "APACHE CAMEL"
+    ]
+  },
+  "CHECKMARX": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "CHECK MARX SAST",
+      "CHECKMARX SAST",
+      "CHECKMARXSAST"
+    ]
+  },
+  "CHECKPOINT": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "CHECK POINT",
+      "CHECKPOINTS",
+      "CHECK POINTS"
+    ]
+  },
+  "CITRIX": {
+    "newSynonyms": [
+      "CITRIX ADC",
+      "CITRIX NETSCALER"
+    ],
+    "synonyms": []
+  },
+  "CLOUD": {
+    "newSynonyms": [
+      "CLOUD COMPUTING",
+      "CLOUD ARCHITECTURE",
+      "CLOUD SERVICES",
+      "CLOUD COMPUTING PLATFORMS"
+    ],
+    "synonyms": [
+      "NUVEM",
+      "NUVENS",
+      "CLOUDS"
+    ]
+  },
+  "CLOUDERA": {
+    "newSynonyms": [
+      "CLOUDERA IMPALA"
+    ],
+    "synonyms": []
+  },
+  "CODE PIPELINE": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "CODEPIPELINE"
+    ]
+  },
+  "CODEBUILD": {
+    "newSynonyms": [
+      "CODE"
+    ],
+    "synonyms": [
+      "AWS CODE BUILD",
+      "AWS CODEBUILD",
+      "AWSCODEBUILD"
+    ]
+  },
+  "CODEIGNITER": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "CODE IGNITER"
+    ]
+  },
+  "CONTAINERS": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "CONTAINER"
+    ]
+  },
+  "CONTAS": {
+    "newSynonyms": [
+      "ACCOUNT MANAGEMENT"
+    ],
+    "synonyms": [
+      "CONTA",
+      "ACCOUNT",
+      "ACCOUNTS"
+    ]
+  },
+  "DATA CENTER": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "DATACENTER"
+    ]
+  },
+  "DATA HUB": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "DATAHUB"
+    ]
+  },
+  "DATA LAKE": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "DATALAKE"
+    ]
+  },
+  "DATA MART": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "DATAMART"
+    ]
+  },
+  "DATA MINING": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "DATAMINING"
+    ]
+  },
+  "DATA PROTECTION": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "DATAPROTECTION"
+    ]
+  },
+  "DATA SCIENCE": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "DATASCIENCE"
+    ]
+  },
+  "DATABRICKS": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "DATA BRICKS"
+    ]
+  },
+  "DATADOG": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "DATA DOG"
+    ]
+  },
+  "DATAOPS": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "DATA OPS"
+    ]
+  },
+  "DATAPOWER": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "DATA POWER"
+    ]
+  },
+  "DATARAPTORS": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "DATA RAPTORS"
+    ]
+  },
+  "DATASTAGE": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "DATA STAGE"
+    ]
+  },
+  "DATASTORE": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "DATA STORE"
+    ]
+  },
+  "DJANGO": {
+    "newSynonyms": [
+      "DJANGO FRAMEWORK"
+    ],
+    "synonyms": []
+  },
+  "DW": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "DATA WAREHOUSE",
+      "DATAWAREHOUSE"
+    ]
+  },
+  "ECLIPSE": {
+    "newSynonyms": [
+      "ECLIPSE IDE"
+    ],
+    "synonyms": []
+  },
+  "EJB": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "ENTERPRISE JAVA BEANS"
+    ]
+  },
+  "ENDPOINTS": {
+    "newSynonyms": [
+      "ENDPOINT MANAGEMENT",
+      "ENDPOINT SECURITY"
+    ],
+    "synonyms": [
+      "ENDPOINT"
+    ]
+  },
+  "ETL": {
+    "newSynonyms": [
+      "ETL DEVELOPMENT"
+    ],
+    "synonyms": [
+      "ETLS"
+    ]
+  },
+  "EVENT-DRIVEN": {
+    "newSynonyms": [
+      "EVENT-DRIVEN ARCHITECTURE"
+    ],
+    "synonyms": [
+      "EVENT DRIVEN",
+      "EVENTDRIVEN"
+    ]
+  },
+  "EXPRESS": {
+    "newSynonyms": [
+      "EXPRESS FRAMEWORK"
+    ],
+    "synonyms": [
+      "EXPRESS.JS",
+      "EXPRESSJS",
+      "EXPRESS JS",
+      "EXPRESS-JS"
+    ]
+  },
+  "FINANCEIRO": {
+    "newSynonyms": [
+      "FINANCIAL MANAGEMENT"
+    ],
+    "synonyms": [
+      "FINANCEIRA",
+      "FINANCEIROS",
+      "FINANCEIRAS",
+      "FINANCAS",
+      "FINANCIAL",
+      "FINANCE"
+    ]
+  },
+  "FIREWALL": {
+    "newSynonyms": [
+      "FIREWALL MANAGEMENT"
+    ],
+    "synonyms": [
+      "FIREWALLS",
+      "FIRE WALL",
+      "FIRE WALLS"
+    ]
+  },
+  "FRONTEND": {
+    "newSynonyms": [
+      "FRONT-END DEVELOPMENT",
+      "FRONT-END TECHNOLOGIES"
+    ],
+    "synonyms": [
+      "FRONT",
+      "FRONT-END",
+      "FRONT END",
+      "FRONT.END"
+    ]
+  },
+  "GENESYS": {
+    "newSynonyms": [
+      "GENESYS CLOUD"
+    ],
+    "synonyms": []
+  },
+  "GERENCIAMENTO": {
+    "newSynonyms": [
+      "GERENCIAMENTO DE VULNERABILIDADES"
+    ],
+    "synonyms": [
+      "MANAGEMENT",
+      "GERENCIA",
+      "GERENCIAIS"
+    ]
+  },
+  "GROWTH": {
+    "newSynonyms": [
+      "GROWTH MARKETING"
+    ],
+    "synonyms": []
+  },
+  "HIBERNATE": {
+    "newSynonyms": [
+      "HIBERNATE FRAMEWORK"
+    ],
+    "synonyms": []
+  },
+  "HTTP": {
+    "newSynonyms": [
+      "HTTP PROTOCOL"
+    ],
+    "synonyms": [
+      "HTTPS"
+    ]
+  },
+  "HYPERION": {
+    "newSynonyms": [
+      "HYPERION PLANNING",
+      "HYPERION FINANCIAL MANAGEMENT"
+    ],
+    "synonyms": []
+  },
+  "IIS": {
+    "newSynonyms": [
+      "IIS TROUBLESHOOTING"
+    ],
+    "synonyms": [
+      "INTERNET INFORMATION SERVICE",
+      "INTERNET INFORMATION SERVICES"
+    ]
+  },
+  "INTELLIJ": {
+    "newSynonyms": [
+      "INTELLIJ IDEA"
+    ],
+    "synonyms": [
+      "INTELIJ"
+    ]
+  },
+  "ISO": {
+    "newSynonyms": [
+      "ISO 27001"
+    ],
+    "synonyms": []
+  },
+  "ITIL": {
+    "newSynonyms": [
+      "ITIL KNOWLEDGE"
+    ],
+    "synonyms": []
+  },
+  "JAVA": {
+    "newSynonyms": [
+      "JAVA EE"
+    ],
+    "synonyms": []
+  },
+  "JAVASCRIPT": {
+    "newSynonyms": [
+      "JAVASCRIPT KNOWLEDGE"
+    ],
+    "synonyms": [
+      "JS",
+      "JAVA SCRIPT",
+      "JSCRIPT",
+      "JAVA-SCRIPT",
+      "JAVA.SCRIPT"
+    ]
+  },
+  "JBOSS": {
+    "newSynonyms": [
+      "JBOSS WILDFLY",
+      "JBOSS EAP",
+      "JBOSS SEAM"
+    ],
+    "synonyms": [
+      "WILDFLY"
+    ]
+  },
+  "JIRA": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "ATLASSIAN JIRA"
+    ]
+  },
+  "KAFKA": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "APACHE KAFKA"
+    ]
+  },
+  "KUBERNETES": {
+    "newSynonyms": [
+      "KUBERNETES KNOWLEDGE"
+    ],
+    "synonyms": [
+      "KUBERNETS",
+      "KUBERNETE",
+      "KUBERNET"
+    ]
+  },
+  "LEAN": {
+    "newSynonyms": [
+    ],
+    "synonyms": []
+  },
+  "MARKETING": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "MKT"
+    ]
+  },
+  "MAVEN": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "APACHE MAVEN",
+      "MVN"
+    ]
+  },
+  "MICROSERVICOS": {
+    "newSynonyms": [
+      "MICROSERVICES ARCHITECTURE"
+    ],
+    "synonyms": [
+      "MICROSSERVICOS",
+      "MICRO SERVICOS",
+      "MICROSERVICES",
+      "MICRO-SERVICOS",
+      "MICROSERVICE",
+      "MICROSERVICO",
+      "MICRO SERVICES",
+      "MICRO SERVICO",
+      "MICRO SERVICE"
+    ]
+  },
+  "MOBILE": {
+    "newSynonyms": [
+      "MOBILE DEVELOPMENT",
+      "MOBILE SECURITY",
+      "MOBILE APPLICATIONS",
+      "MOBILE APPLICATION DEVELOPMENT"
+    ],
+    "synonyms": []
+  },
+  "MULESOFT": {
+    "newSynonyms": [
+      "MULESOFT ANYPOINT PLATFORM"
+    ],
+    "synonyms": [
+      "MULE",
+      "MULE SOFT"
+    ]
+  },
+  "MVC": {
+    "newSynonyms": [
+      "MVC FRAMEWORK"
+    ],
+    "synonyms": [
+      "MODEL VIEW CONTROLLER"
+    ]
+  },
+  "NEGOCIOS": {
+    "newSynonyms": [
+      "BUSINESS ANALYSIS",
+      "BUSINESS CONTINUITY",
+      "BUSINESS PROCESS MODELING",
+      "BUSINESS INTELLIGENCE TOOLS",
+      "BUSINESS ANALYSIS"
+    ],
+    "synonyms": [
+      "NEGOCIO",
+      "BUSINESS"
+    ]
+  },
+  "NOSQL": {
+    "newSynonyms": [
+      "NOSQL DATABASES"
+    ],
+    "synonyms": [
+      "NO-SQL",
+      "NO SQL",
+      "NO.SQL"
+    ]
+  },
+  "OAUTH": {
+    "newSynonyms": [
+      "OAUTH 2.0"
+    ],
+    "synonyms": []
+  },
+  "OIC": {
+    "newSynonyms": [
+      "ORACLE INTEGRATION"
+    ],
+    "synonyms": [
+      "ORACLE INTEGRATION CLOUD"
+    ]
+  },
+  "ORACLE": {
+    "newSynonyms": [
+      "ORACLE REPORTS",
+      "ORACLE FORMS",
+      "ORACLE DATABASE",
+      "ORACLE SQL",
+      "ORACLE RDBMS",
+      "ORACLE SQL DEVELOPER",
+      "ORACLE DATABASE"
+    ],
+    "synonyms": []
+  },
+  "ORACLE CLOUD": {
+    "newSynonyms": [
+      "ORACLE CLOUD INFRASTRUCTURE"
+    ],
+    "synonyms": [
+      "ORACLECLOUD"
+    ]
+  },
+  "OWASP": {
+    "newSynonyms": [
+      "OWASP TOP 10"
+    ],
+    "synonyms": []
+  },
+  "PCI": {
+    "newSynonyms": [
+      "PCI DSS"
+    ],
+    "synonyms": []
+  },
+  "PEOPLESOFT": {
+    "newSynonyms": [
+      "PEOPLESOFT HCM"
+    ],
+    "synonyms": [
+      "PEOPLE SOFT"
+    ]
+  },
+  "POWER BI": {
+    "newSynonyms": [
+      "POWER BI DESKTOP"
+    ],
+    "synonyms": [
+      "POWERBI"
+    ]
+  },
+  "PROCESSOS": {
+    "newSynonyms": [
+      "PROCESS AUTOMATION",
+      "PROCESS IMPROVEMENT",
+      "PROCESS MODELING",
+      "PROCESS MANAGEMENT",
+      "PROCESS CONTROL"
+    ],
+    "synonyms": [
+      "PROCESSO",
+      "PROCESS"
+    ]
+  },
+  "PRODUTOS": {
+    "newSynonyms": [
+      "PRODUCT MANAGEMENT",
+      "PRODUCT DEVELOPMENT",
+      "PRODUCT DESIGN"
+    ],
+    "synonyms": [
+      "PRODUTO",
+      "PRODUCT",
+      "PRODUCTS"
+    ]
+  },
+  "PSPO": {
+    "newSynonyms": [
+      "PSPO I"
+    ],
+    "synonyms": []
+  },
+  "QA": {
+    "newSynonyms": [
+      "QA AUTOMATION"
+    ],
+    "synonyms": [
+      "QUALITY ASSURANCE"
+    ]
+  },
+  "QLIK": {
+    "newSynonyms": [
+      "QLIK NPRINTING",
+      "QLIK SENSE"
+    ],
+    "synonyms": [
+      "QLIKVIEW",
+      "QLIKSENSE",
+      "QLIK VIEW"
+    ]
+  },
+  "REACT NATIVE": {
+    "newSynonyms": [
+      "REACT"
+    ],
+    "synonyms": [
+      "REACTNATIVE",
+      "REACT-NATIVE",
+      "REACT NATIVO"
+    ]
+  },
+  "REDSHIFT": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "RED SHIFT"
+    ]
+  },
+  "REDUX": {
+    "newSynonyms": [
+      "REDUX SAGA"
+    ],
+    "synonyms": []
+  },
+  "REST": {
+    "newSynonyms": [
+      "RESTFUL APIS",
+      "RESTFUL API",
+      "REST APIS",
+      "REST API",
+      "RESTFUL WEB SERVICES",
+      "RESTFUL WEBSERVICES",
+      "REST APIS"
+    ],
+    "synonyms": [
+      "RESTFUL",
+      "RESTFULL",
+      "REST FULL"
+    ]
+  },
+  "RISCOS": {
+    "newSynonyms": [
+      "RISK MANAGEMENT"
+    ],
+    "synonyms": [
+      "RISCO",
+      "RISK",
+      "RISKS"
+    ]
+  },
+  "SAAS": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "SOFTWARE AS A SERVICE"
+    ]
+  },
+  "SALESFORCE": {
+    "newSynonyms": [
+      "SALESFORCE LIGHTNING",
+      "SALESFORCE PLATFORM",
+      "SALESFORCE SERVICE CLOUD",
+      "SALESFORCE MARKETING CLOUD",
+      "SALESFORCE DEVELOPMENT"
+    ],
+    "synonyms": [
+      "SALES FORCE"
+    ]
+  },
+  "SAP": {
+    "newSynonyms": [
+      "SAP ERP"
+    ],
+    "synonyms": []
+  },
+  "SAP FI-AA": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "FI-AA"
+    ]
+  },
+  "SAP FI-CA": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "FI CA"
+    ]
+  },
+  "SAP FI-CAX": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "FI CAX"
+    ]
+  },
+  "SAP FI-GL": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "FI-GL"
+    ]
+  },
+  "SAP HANA": {
+    "newSynonyms": [
+      "SAP HANA CLOUD"
+          
+          ],
+    "synonyms": [
+      "S4HANA",
+      "SAP BASIS HANA",
+      "HANNA"
+    ]
+  },
+  "SCRUM": {
+    "newSynonyms": [
+      "SCRUM FRAMEWORK"
+    ],
+    "synonyms": []
+  },
+  "SEGURANCA": {
+    "newSynonyms": [
+      "SECURITY MANAGEMENT",
+      "SECURITY TESTING",
+      "SECURITY OPERATIONS",
+      "SECURITY ANALYTICS",
+      "SECURITY INFORMATION",
+      "SECURITY BEST PRACTICES",
+      "SECURITY TESTING"
+    ],
+    "synonyms": [
+      "SECURITY"
+    ]
+  },
+  "SELENIUM": {
+    "newSynonyms": [
+      "SELENIUM WEBDRIVER"
+    ],
+    "synonyms": []
+  },
+  "SERVERLESS": {
+    "newSynonyms": [
+      "SERVERLESS FRAMEWORK",
+      "SERVERLESS COMPUTING"
+    ],
+    "synonyms": [
+      "SERVER LESSS"
+    ]
+  },
+  "SHAREPOINT": {
+    "newSynonyms": [
+      "SHAREPOINT ONLINE",
+      "SHAREPOINT SERVER",
+      "SHAREPOINT DESIGNER"
+    ],
+    "synonyms": [
+      "SHARE POINT",
+      "SHARE-POINT"
+    ]
+  },
+  "SHELL": {
+    "newSynonyms": [
+      "SHELL SCRIPTING"
+    ],
+    "synonyms": [
+      "SHELL SCRIPT",
+      "SHELLSCRIPT"
+    ]
+  },
+  "SOA": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "SERVICE ORIENTED ARCHITECTURE"
+    ]
+  },
+  "SPARK": {
+    "newSynonyms": [
+      "SPARK SQL",
+      "SPARK STREAMING"
+    ],
+    "synonyms": [
+      "APACHE SPARK"
+    ]
+  },
+  "SPRING": {
+    "newSynonyms": [
+      "SPRING FRAMEWORK"
+    ],
+    "synonyms": []
+  },
+  "SPRING DATA": {
+    "newSynonyms": [
+      "SPRING DATA JPA",
+      "SPRING DATA REST"
+    ],
+    "synonyms": [
+      "SPRINGDATA"
+    ]
+  },
+  "SPRINT": {
+    "newSynonyms": [
+      "SPRINT REVIEW",
+      "SPRINT PLANNING"
+    ],
+    "synonyms": []
+  },
+  "SQL": {
+    "newSynonyms": [
+
+    ],
+    "synonyms": [
+      "STRUTURED QUERY LANGUAGE"
+    ]
+  },
+  "SQL SERVER": {
+    "newSynonyms": [
+      "MS SQL SERVER"
+    ],
+    "synonyms": [
+      "MS SQL",
+      "SQLSERVER",
+      "MSSQL",
+      "MS-SQL",
+      "SQL-SERVER"
+    ]
+  },
+  "STORAGE": {
+    "newSynonyms": [
+      "STORAGE MANAGEMENT",
+      "STORAGE SERVICES"
+    ],
+    "synonyms": []
+  },
+  "SUPPLY": {
+    "newSynonyms": [
+      "SUPPLY CHAIN MANAGEMENT",
+      "SUPPLY PLANNING",
+      "SUPPLY CHAIN PLANNING"
+    ],
+    "synonyms": []
+  },
+  "TABLEAU": {
+    "newSynonyms": [
+      "TABLEAU DESKTOP"
+    ],
+    "synonyms": []
+  },
+  "TALEND": {
+    "newSynonyms": [
+      "TALEND DATA INTEGRATION"
+    ],
+    "synonyms": []
+  },
+  "TEST-DRIVEN": {
+    "newSynonyms": [
+      "TEST-DRIVEN DEVELOPMENT"
+    ],
+    "synonyms": []
+  },
+  "TESTES": {
+    "newSynonyms": [
+      "TEST-DRIVEN DEVELOPMENT",
+      "TEST AUTOMATION",
+      "TESTING TOOLS",
+      "TEST MANAGEMENT",
+      "TESTING AND QUALITY ASSURANCE",
+      "TESTING TOOLS",
+      "TESTING FRAMEWORKS"
+    ],
+    "synonyms": [
+      "TESTE",
+      "TEST",
+      "TESTING",
+      "TESTS"
+    ]
+  },
+  "TIBCO": {
+    "newSynonyms": [
+    ],
+    "synonyms": []
+  },
+  "TOMCAT": {
+    "newSynonyms": [
+      "TOMCAT 7",
+      "TOMCAT 6"
+    ],
+    "synonyms": [
+      "APACHE TOMCAT"
+    ]
+  },
+  "UI": {
+    "newSynonyms": [
+      "USER INTERFACE DESIGN",
+      "UI DESIGN"
+    ],
+    "synonyms": [
+      "USER INTERFACE"
+    ]
+  },
+  "UNIX": {
+    "newSynonyms": [
+    ],
+    "synonyms": []
+  },
+  "UX": {
+    "newSynonyms": [
+      "UX DESIGN",
+      "USER EXPERIENCE DESIGN"
+    ],
+    "synonyms": [
+      "USER EXPERIENCE"
+    ]
+  },
+  "VENDAS": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "VENDA",
+      "SALES",
+      "SALE"
+    ]
+  },
+  "VERSIONAMENTO": {
+    "newSynonyms": [
+      "VERSION CONTROL",
+      "VERSION CONTROL SYSTEMS",
+      "VERSION CONTROL"
+    ],
+    "synonyms": [
+      "VERSAO",
+      "VERSION",
+      "VERSIONING",
+      "VERSIONADOR"
+    ]
+  },
+  "VIZ": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "PLANVIEW",
+      "PLAN VIEW VIZ",
+      "PLANVIEW VIZ",
+      "PLANVIEWVIZ"
+    ]
+  },
+  "VMWARE": {
+    "newSynonyms": [
+      "VMWARE HORIZON",
+      "VMWARE NSX",
+      "VMWARE VSPHERE"
+    ],
+    "synonyms": [
+      "VM WARE"
+    ]
+  },
+  "VUE": {
+    "newSynonyms": [
+      "VUE ROUTER"
+    ],
+    "synonyms": [
+      "VUE.JS",
+      "VUEJS",
+      "VUE JS",
+      "VUEX"
+    ]
+  },
+  "WEBLOGIC": {
+    "newSynonyms": [
+      "WEBLOGIC SERVER"
+    ],
+    "synonyms": [
+      "WEB LOGIC"
+    ]
+  },
+  "WEBSPHERE": {
+    "newSynonyms": [
+      "WEBSPHERE APPLICATION SERVER"
+    ],
+    "synonyms": [
+      "WEB SPHERE"
+    ]
+  },
+  "WORDPRESS": {
+    "newSynonyms": [
+    ],
+    "synonyms": [
+      "WORD PRESS"
+    ]
+  },
+  "WORKFLOW": {
+    "newSynonyms": [
+      "WORKFLOW MANAGEMENT"
+    ],
+    "synonyms": [
+      "WORK FLOW"
+    ]
+  },
+  "ZEND": {
+    "newSynonyms": [
+      "ZEND FRAMEWORK"
+    ],
+    "synonyms": []
+  }
+}

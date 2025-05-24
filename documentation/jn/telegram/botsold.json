@@ -1,0 +1,54 @@
+{"took":0,"timed_out":false,"_shards":{"total":1,"successful":1,"skipped":0,"failed":0},"hits":{"total":{"value":1,"relation":"eq"},"max_score":1.0,"hits":[{"_index":"bots_old","_type":"_doc","_id":"single","_score":1.0,"_source":{
+   
+        "language": "portuguese",
+        "bots": [
+            {
+                "language": "portuguese",
+                "name": "OniasBot",
+                "commands": [
+                    "cadastrarVaga",
+                    "aprovarAnuncios",
+                    "responderFaleConosco",
+					"comofunciona",
+                    "rh"
+                ]
+            },
+            {
+                "language": "portuguese",
+                "name": "JobsNowBot",
+                "commands": [
+                    "receberCurriculos",
+                    "cadastrarMeusGruposDeVagas",
+                    "propaganda",
+                    "faleconosco",
+                    "trocarpalavraschaves",
+                    "statusdeusuario",
+                    "chatId",
+					"comofunciona",
+                    "enviarcurriculo"
+                ]
+            }
+        ],
+        "enviroments": {
+            "teste": {
+                "OniasBot": "1122898762:AAGE69KRQ0P0TBZNPXgAMDqNaJCd7jFP_G0",
+                "JobsNowBot": "1154866992:AAGvXIU01UXgpA1gFOBE4pJXjhicf7JnRd8"
+            },
+            "producao": {
+                "OniasBot": "1166436392:AAGjotff9E_ssnkPeUs97r9V5vAMKXpqQJ8",
+                "JobsNowBot": "1283984581:AAGpYRMcjssMKLrOmWIonM8Wi1ItmGh2eSw"
+            }
+        },
+        "constants": [
+            "pedidoParaDigitacaoDeComando",
+            "chamarNoPrivado",
+            "listagemDeComandosDisponiveis",
+            "comandoNaoPermitidoParaEsteTipoDeUsuario",
+            "valorInvalido",
+            "cancelarComando",
+            "comoFunciona",
+            "midiaInvalida"
+        ],
+        "id": "single"
+    }
+}]}}

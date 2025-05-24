@@ -1,0 +1,3 @@
+dispatch:
+    - url: '*/rest/transmissao/push'
+      service: nxnetapi-transmissao

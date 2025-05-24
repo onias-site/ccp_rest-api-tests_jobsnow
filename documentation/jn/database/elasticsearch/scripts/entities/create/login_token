@@ -1,0 +1,25 @@
+{
+    "mappings": {
+        "dynamic": "strict",
+        "properties": {
+            "email": {
+                "type": "keyword"
+            },
+            "token": {
+                "type": "text"
+            },
+            "coordinates": {
+                "type": "text"
+            },
+            "ip": {
+                "type": "text"
+            },
+            "macAddress": {
+                "type": "text"
+            },
+            "userAgent": {
+                "type": "keyword"
+            }
+        }
+    }
+}

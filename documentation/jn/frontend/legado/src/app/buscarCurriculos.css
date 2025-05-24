@@ -1,0 +1,93 @@
+.p-fieldset-legend{
+    font-size: 10px
+}
+.p-fieldset{
+    height: 100%;
+}
+p,h4{
+ font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+#customers {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  font-size: 10px;
+  width: 100%;
+  word-wrap: break-word;         /* All browsers since IE 5.5+ */
+    overflow-wrap: break-word
+}
+.jaVisualizado{
+    background-color: white;
+    color: black;
+}
+.naoVisualizado{
+    background-color: red;
+    color: white;
+
+}
+#customers td, #customers th {
+    border: 1px solid #ddd;
+    line-break: normal;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #7FBCEC;
+  color: white;
+  font-size: 10px;
+
+}
+
+.p-messages{
+	backgroundColor : #7FBCEC
+}
+.p-tooltip-text{
+    width: 450px;
+}
+.p-inputtext{
+    width: 100%;
+    font-size: 10px;
+}
+
+h3, h4{
+    font-size: 10px;
+    font-weight: bold;
+
+}
+ .fontePequena{
+    font-size: 10px;
+    font-weight: bold;
+}
+
+select{
+    font-size: 10px;
+
+}
+
+.explicacao{
+    font-size: 10px;
+    color: chocolate
+}
+
+.p-tooltip-text{
+    text-align: center;
+}
+
+.p-button{
+    width:150px;
+}
+#btnComoUsar{
+    color: blue;
+    font-size: 24px;
+}
+.p-dialog{
+    
+    top: 100px;
+    
+}

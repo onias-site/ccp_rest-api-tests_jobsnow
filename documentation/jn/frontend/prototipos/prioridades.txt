@@ -1,0 +1,7 @@
+C:\z\hierarquias\1-topo\0-label-Email\
+C:\z\hierarquias\1-topo\1-label-SaldoLN\
+C:\z\hierarquias\2-lateral\0-menu-MeuCurriculo\0-submenu-sobreMim\0-aba-meusDados
+C:\z\hierarquias\2-lateral\1-menu-Recrutamento\0-submenu-Vagas\0-aba-EmAberto
+C:\z\hierarquias\2-lateral\1-menu-Recrutamento\0-submenu-Vagas\1-aba-Encerradas
+C:\z\hierarquias\2-lateral\1-menu-Recrutamento\1-submenu-Visualizados\0-aba-ListaDeVisualizacoes
+C:\z\hierarquias\2-lateral\1-menu-Recrutamento\1-submenu-Visualizados\1-aba-CvsNegativados

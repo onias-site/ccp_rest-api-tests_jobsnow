@@ -1,0 +1,64 @@
+{
+    "mappings": {
+        "dynamic": "strict",
+        "properties": {
+            "title": {
+                "type": "text"
+            },
+            "timestamp": {
+                "type": "long"
+            },
+            "date": {
+                "type": "text"
+            },
+            "email": {
+                "type": "keyword"
+            },
+            "description": {
+                "type": "text"
+            },
+            "contactChannel": {
+                "type": "keyword"
+            },
+            "expireDate": {
+                "type": "long"
+            },
+            "requiredSkill": {
+                "type": "keyword"
+            },
+            "desiredSkill": {
+                "type": "keyword"
+            },
+            "ddd": {
+                "type": "integer"
+            },
+            "seniority": {
+                "type": "keyword"
+            },
+            "disponibility": {
+                "type": "integer"
+            },
+            "pcd": {
+                "type": "boolean"
+            },
+            "sortFields": {
+                "type": "keyword"
+            },
+            "frequency": {
+                "type": "keyword"
+            },
+            "channel": {
+                "type": "text"
+            },
+            "btc": {
+                "type": "double"
+            },
+            "clt": {
+                "type": "double"
+            },
+            "pj": {
+                "type": "double"
+            }
+        }
+    }
+}

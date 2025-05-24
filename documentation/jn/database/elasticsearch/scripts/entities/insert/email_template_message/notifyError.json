@@ -1,0 +1,6 @@
+{
+	"language": "portuguese",
+	"templateId": "notifyError",
+	"subject": "[ERROR] {type}",
+	"message": "{type}<br/><br/><br/>{msg}<br/><br/>{stackTrace}<br/><br/>Caused by:<br/>{cause}"
+}

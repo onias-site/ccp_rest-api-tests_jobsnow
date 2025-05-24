@@ -1,0 +1,13 @@
+#JN
+A) Histórico de Acessos
+B) Histórico de Chamados
+#VIS
+A) Pontos Fortes
+B) Pontos Fracos
+C) Estatisticas de visualização
+D) Eu Vs os Currículos TOPs
+E) Vagas para mim
+F) Sugerir novas skills
+G) Notificações ao recrutador
+H) Notificações ao candidato
+I) Bot respondedor de vaga

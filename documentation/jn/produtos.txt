@@ -1,0 +1,21 @@
+CCP => Framework de injeção de dependências,k APIs utilitárias (decorators) e lista de especificações de tecnologias (Interfaces Java)
+JN  => Implementação da infraestrutura central do JobsNow que é alicerce para a construção de todos os demais produtos
+
+VIS => Módulo de visualização, responsável por cobrar pessoas por visualizarem currículos
+REP => Módulo de reputação, módulo responsável por cobrar pessoas para verem comentários e avaliações uma sobre as outras
+IN  => Módulo de indicação, módulo responsável por remunerar pessoas por indicações de novos currículos na plataforma 
+TES => Módulo de provas, módulo responsável por execução de testes para processos seletivos
+ENT => Módulo de entrevistas, módulo responsável por agendamentos e manutenções de agendamentos de entrevistas
+RTA => Módulo de recrutador técnico assistente, módulo responsável por triar e agenciar candidatos para serem recrutadores técnicos assistentes nas entrevistas.
+UDE => Módulo de udemy descentralizada, módulo responsável por fazer com que os candidatos possam ser professores de skills
+NIN => Módulo de Ninjas, módulo responsável por triagem de recrutamento de alto valor financeiro para tarefas críticas e rápidas.
+MKT => Módulo de propagandas, módulo responsável por permitir às pessoas que cadastrem seus empreendimentos como propagandas nos rodapés das vagas que serão divulgadas
+JB  => Módulo de backoffice, módulo responsável pelos cadastros de dados estáticos do JobsNow.
+VID => Módulo de vídeos de entrevistas, módulo responsável pela gravação e autorização de gravação de entrevistas entre recrutadores e candidatos
+EMP => Módulo de empréstimos, módulo responsável pelos empréstimos de valores a pessoas sem saldo que desejam usar alguma funcionalidade do JobsNow que requeira saldo.
+CHN => Módulo de channel em lightning networ, módulo responsável por interligar comercios que usam LN cobrando taxas por isso.
+
+TE => Módulo de Telegram, telegram customizado para o JobsNow
+
+
+

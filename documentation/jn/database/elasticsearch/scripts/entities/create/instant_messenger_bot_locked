@@ -1,0 +1,19 @@
+{
+    "mappings": {
+            "dynamic": "strict",
+			"properties": {
+                "recipient": {
+                    "type": "long"
+                },
+                 "token": {
+                    "type": "keyword"
+                },
+                 "message": {
+                    "type": "text"
+                },
+                 "subjectType":{
+                	"type": "keyword"
+                }
+            }
+        }
+}

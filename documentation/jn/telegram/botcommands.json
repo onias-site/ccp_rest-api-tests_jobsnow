@@ -1,0 +1,257 @@
+{"took":1,"timed_out":false,"_shards":{"total":1,"successful":1,"skipped":0,"failed":0},"hits":{"total":{"value":14,"relation":"eq"},"max_score":1.0,"hits":[{"_index":"bot_comands","_type":"_doc","_id":"envioRh","_score":1.0,"_source":{
+	"name": "envioRh",
+	"permissions": [
+		"user"
+	],
+	"backEnd": {
+		"handler": "com.ccp.jn.bots.emails.EnvioRh",
+		"type": "Enum",
+		"responses": [{
+				"status": 200,
+				"step": "confirmarEnvio"
+			},
+			{
+				"status": 401,
+				"messages": [{
+					"language": "portuguese",
+					"message": "Você não tem permissão para executar este comando."
+				}]
+			}
+		],
+		"steps": [{
+			"step": "confirmarEnvio",
+			"messages": [{
+				"language": "portuguese",
+				"message": "Enviar para rhs?\nDigite um número para:\n1: Sim\n2: Não"
+			}],
+			"responses": [{
+					"status": 1,
+					"messages": [{
+						"language": "portuguese",
+						"message": "O processo acaba de ser iniciado, por favor, aguarde!!!"
+					}]
+				},
+				{
+					"status": 2,
+					"messages": [{
+						"language": "portuguese",
+						"message": "Você optou por cancelar o processo!!!"
+					}]
+				}
+			]
+		}]
+	}
+}},{"_index":"bot_comands","_type":"_doc","_id":"propaganda","_score":1.0,"_source":{"name":"propaganda","backEnd":{"handler":"com.ccp.jn.bots.CadastrarAnuncio","type":"Enum","responses":[{"status":403.0,"messages":[{"language":"portuguese","message":"Você nao tem permissão para criar anúncio, pois violou nossa política de anúncios"}]},{"status":200.0,"step":"choose"},{"status":201.0,"step":"status"}],"steps":[{"step":"status","messages":[{"language":"portuguese","message":"Por favor, escolha aqui o tipo da seu anúncio:{types}"}],"responses":[{"status":200.0,"step":"message"}]},{"step":"choose","messages":[{"language":"portuguese","message":"Você tem cadastrado conosco o seguinte anúncio {message} e ele é do tipo {type}, digite \n1) Para excluir esse anúncio \n2) Para editar este anúncio"}],"responses":[{"status":401.0,"step":"confirmExclusion","messages":[{"language":"portuguese","message":"Devido ao fato de nossa equipe ser de número reduzido, você só poderá editar esse anúncio, depois que ele for revisado por ela, sugerimos que você exclua o anúncio atual e cadastre um novo, será o mesmo efeito de simplesmente editar"}]},{"status":1.0,"step":"confirmExclusion"},{"status":2.0,"step":"status"}]},{"step":"confirmExclusion","messages":[{"language":"portuguese","message":"Deseja realmente excluir esse anúncio? Digite \n1) Sim\n2) Não"}],"responses":[{"status":1.0,"messages":[{"language":"portuguese","message":"Seu anúncio foi excluído com sucesso"}]}]},{"step":"message","messages":[{"language":"portuguese","message":"{asking}. O anúncio deve conter entre 10 a 1000 caractéres. Cabe ressaltar que as informações prestadas são de sua total e única responsabilidade e que qualquer ônus judicial será respondido por você e não pela equipe do nosso bot, havendo irregularidades também, bloquearemos o seu cadastro e você não mais poderá fazer anúncios conosco. Não se esqueça de deixar o seu contato (e-mail ou telefone ou whats ou sua tag do telegram ou rede social ou site) ao final da digitação do anúncio."}],"responses":[{"status":200.0,"step":"confirmSaving"}]},{"step":"confirmSaving","messages":[{"language":"portuguese","message":"Seu Anúncio:\n{message}\nDeseja realmente salvar esse anúncio?\nDigite \n1) Sim\n2) Não"}],"responses":[{"status":200.0,"messages":[{"language":"portuguese","message":"Seu anúncio foi gravado com sucesso, nesse momento, ele está sob avaliação de nossa equipe e em caso de aprovação aparecerá no rodapé de algumas das centenas ou milhares de vagas que publicamos diariamente. Em caso de reprovação, você será avisado via telegram do motivo da de nossa decisão, geralmente será apenas uma explicação e um pedido de modificação na mensagem. Em caso de constatação de abuso, você nem será avisado, será bloqueado e não mais poderá fazer anuncios aqui."}]}]}]},"id":"propaganda","permissions":["user"],"explicacao":{"pt":"Comando usado para o usuário poder cadastrar suas propagandas de seus comercios, serviços, canais de youtube, sites, empresas, etc."},"status":"1","dataDeAlteracaoFormatada":"09/04/2021 22:58:41","dataDeAlteracao":1618019921687}},{"_index":"bot_comands","_type":"_doc","_id":"receberCurriculos","_score":1.0,"_source":{"name":"receberCurriculos","backEnd":{"handler":"com.ccp.jn.bots.vagas.PublicarVaga","type":"Enum","responses":[{"status":401.0,"messages":[{"language":"portuguese","message":"Você não possui cadastro de recrutamento de currículos, por favor, solicite um, gratuitamente enviando e-mail para onias@ccpjobsnow.com a partir do seu e-mail {email} para onias@ccpjobsnow.com"}]},{"status":403.0,"messages":[{"language":"portuguese","message":"Por medida de segurança, seu token está bloqueado por excesso de tentativas, por favor, para efetuar o desbloqueio envie e-mail para onias@ccpjobsnow.com a partir do seu e-mail {email} para que possamos efetuar o desbloqueio"}]},{"status":404.0,"step":"email"},{"status":410.0,"messages":[{"language":"portuguese","message":"Seu usário encontra-se com status não ativo, por favor, para efetuar a reativação dele envie e-mail para onias@ccpjobsnow.com a partir do seu e-mail {email} para que possamos efetuar a reativação"}]},{"status":200.0,"step":"tipoVaga"}],"steps":[{"step":"tipoVaga","responses":[{"status":200.0,"step":"vaga"}],"messages":[{"language":"portuguese","message":"Qual o tipo da vaga que você está publicando? \nDigite:\n 1: T.I (Tecnologia em Informática)\n 2: RH, DP, R\u0026S e afins \n 3: Vagas que requerem ensino superior, curso técnico ou certificação \n 4: Vagas operacionais"}]},{"step":"vaga","messages":[{"language":"portuguese","message":"Informe a descrição da vaga ({textoDeAjuda} e terá de conter entre 20 a 2.000 caractéres) "}],"responses":[{"status":200.0,"step":"escolherContato"}]},{"step":"email","messages":[{"language":"portuguese","message":"Informe um endereço de e-mail por favor"}],"responses":[{"status":401.0,"messages":[{"language":"portuguese","message":"Você não possui cadastro de recrutamento de currículos, por favor, solicite um, gratuitamente enviando e-mail para onias@ccpjobsnow.com a partir do seu e-mail {email} para onias@ccpjobsnow.com"}]},{"status":403.0,"messages":[{"language":"portuguese","message":"Por medida de segurança, seu token está bloqueado por excesso de tentativas, por favor, para efetuar o desbloqueio envie e-mail para onias@ccpjobsnow.com a partir do seu e-mail {email} para que possamos efetuar o desbloqueio"}]},{"status":200.0,"step":"token"},{"status":410.0,"messages":[{"language":"portuguese","message":"Seu usário encontra-se com status não ativo, por favor, para efetuar a reativação dele envie e-mail para onias@ccpjobsnow.com a partir do seu e-mail {email} para que possamos efetuar a reativação"}]}]},{"step":"token","messages":[{"language":"portuguese","message":"Por favor, digite os 10 dígitos do seu token que te foi enviado ao e-mail {email}, caso não o tenha mais, use este mesmo endereço de e-mail ({email}, para quie possamos confirmar sua titularidade sobre esse e-mail) para onias@ccpjobsnow.com e assim podermos te enviar seu token (Para informar outro e-mail erre o token propositalmente)"}],"responses":[{"status":401.0,"step":"perguntarSobreEmail"},{"status":403.0,"messages":[{"language":"portuguese","message":"Por medida de segurança, seu token está bloqueado por excesso de tentativas, por favor, para efetuar o desbloqueio envie e-mail para onias@ccpjobsnow.com a partir do seu e-mail {email} para que possamos efetuar o desbloqueio"}]},{"status":200.0,"step":"tipoVaga"}]},{"step":"perguntarSobreEmail","messages":[{"language":"portuguese","message":"O e-mail {email} está correto? \nDigite:\n 1: para Sim\n 2: para Não\nCabe frisar que após 3 digitações incorretas dos 10 digitos de token, bloquearemos esse mesmo token. Número atual de tentativas: {tentativas}"}],"responses":[{"status":1.0,"step":"token"},{"status":2.0,"step":"email"}]},{"step":"escolherContato","messages":[{"language":"portuguese","message":"{opcoesDeContato}"}],"responses":[{"status":400.0,"step":"escolherContato","messages":[{"language":"portuguese","message":"Escolha uma das opções válidas"}]},{"status":404.0,"messages":[{"language":"portuguese","message":"Não podemos aceitar seu texto de vaga pois não conseguimos extrair palavras chaves dele condizentes com o tipo da vaga "}],"step":"tipoVaga"},{"status":409.0,"messages":[{"language":"portuguese","message":"Esta vaga foi cadastrada anteriormente"}],"step":"tipoVaga"},{"status":200.0,"messages":[{"language":"portuguese","message":"Sua vaga foi cadastrada e será publicada toda madrugada até o dia {dataDeExpiracao} nos seguintes grupos:\n\n {fraseMencionandoGruposDeVagas}\nCaso queira que ela pare de ser publicada nas madrugadas, \u003ca href\u003d\u0027{loginUrl}\u0027\u003eclique aqui\u003c/a\u003e. "}],"step":"vaga"},{"status":99.0,"step":"contato"}]},{"step":"contato","messages":[{"language":"portuguese","message":"Informe link de cadastro (cadastro de currículo ou de candidatura), whatsapp, endereço, outro e-mail ou qualquer forma para qual o candidato possa se comunicar com você"}],"responses":[{"status":200.0,"messages":[{"language":"portuguese","message":"Sua vaga foi cadastrada e será publicada toda madrugada até o dia {dataDeExpiracao} nos seguintes grupos:\n\n {fraseMencionandoGruposDeVagas}\nCaso queira que ela pare de ser publicada nas madrugadas, \u003ca href\u003d\u0027{loginUrl}\u0027\u003eclique aqui\u003c/a\u003e. "}],"step":"vaga"},{"status":409.0,"messages":[{"language":"portuguese","message":"Esta vaga foi cadastrada anteriormente"}],"step":"tipoVaga"},{"status":404.0,"messages":[{"language":"portuguese","message":"Não podemos aceitar seu texto de vaga pois não conseguimos extrair palavras chaves dele condizentes com o tipo da vaga "}],"step":"tipoVaga"}]}]},"id":"receberCurriculos","permissions":["user"],"explicacao":{"pt":"Comando usado para o recrutador cadastrar suas vagas e assim (futuramente (esta funcionalidade ainda está sendo construída)) receber currículos aderentes de cada vaga, além disso, o Bot publicará as vagas nos grupos de vaga do telegram que forem aderentes ao tipo das vagas, reprisará a publicação dessa mesma vaga nas madrugadas, além de enviar diretamente aos donos dos currículos que ele julgar estatisticamente aderentes a cada vaga, por fim, ele informa um link, pelo qual o recrutador poderá ver em tempo real os candidatos aderentes que já estão no banco de dados"},"status":"1","dataDeAlteracaoFormatada":"09/04/2021 22:58:42","dataDeAlteracao":1618019922328}},{"_index":"bot_comands","_type":"_doc","_id":"faleconosco","_score":1.0,"_source":{"name":"faleconosco","backEnd":{"handler":"com.ccp.jn.bots.vagas.FaleConosco","type":"Enum","responses":[{"status":200.0,"step":"tipo"}],"steps":[{"responses":[{"status":200.0,"step":"mensagem"}],"step":"tipo","messages":[{"language":"portuguese","message":"Digite um número para selecionar uma opção:\n1: Reportar Bug\n 2: Esclarecimento de dúvidas\n 3: Sugestão\n 4: Crítica construtiva\n 5: Elogio\n 6: Reclamação\n 7: Relatar lentidão"}]},{"responses":[{"status":200.0,"messages":[{"language":"portuguese","message":"Obrigado por sua mensagem, em breve lhe responderemos"}]}],"step":"mensagem","messages":[{"language":"portuguese","message":"Digite aqui sua mensagem"}]}]},"id":"faleconosco","permissions":["user"],"explicacao":{"pt":"Abre uma solicitação que é enviada imediatamente para a equipe JobsNow, que verificará e, na sequencia responderá o mais rápido possível"},"status":"1","dataDeAlteracaoFormatada":"09/04/2021 22:58:37","dataDeAlteracao":1618019919238}},{"_index":"bot_comands","_type":"_doc","_id":"statusdeusuario","_score":1.0,"_source":{"name":"statusdeusuario","backEnd":{"handler":"com.ccp.jn.bots.vagas.StatusDeUsuario","type":"Enum","responses":[{"status":404.0,"messages":[{"language":"portuguese","message":"Você ainda não vinculou sua conta do telegram conosco, para isso execute o comando /enviarcurriculo"}]},{"status":401.0,"step":"perguntarSobreDesbloqueioDeToken"},{"status":200.0,"messages":[{"language":"portuguese","message":"O usuário de associado ao e-mail {email} contem o token {token}"}]},{"status":202.0,"step":"email","messages":[{"language":"portuguese","message":"O usuário de associado ao e-mail {email} contem o token {token}"}]}],"steps":[{"step":"email","messages":[{"language":"portuguese","message":"Para qual e-mail você gostaria de ver o status do usuario?"}],"responses":[{"status":401.0,"step":"perguntarSobreDesbloqueioDeToken"},{"status":404.0,"messages":[{"language":"portuguese","message":"Usuário não encontrado!"}]},{"status":200.0,"messages":[{"language":"portuguese","message":"O usuário de associado ao e-mail {email} contem o token {token}"}]}]},{"step":"perguntarSobreDesbloqueioDeToken","messages":[{"language":"portuguese","message":"O usuário de associado ao e-mail {email} e que contem o token {token} se encontra bloqueado, deseja desbloquear? \nDigite:\n 1: para Sim\n 2: para Não"}],"responses":[{"status":200.0,"messages":[{"language":"portuguese","message":"Usuário desbloqueado com sucesso!"}]}]}]},"id":"statusdeusuario","permissions":["user"],"explicacao":{"pt":"Retorna o status do usuário, se bloqueado por excesso de tentativas incorretas de login no site do JobsNow, ele informa também e dá a opção para desbloqueio deste usuário. Ele também serve para informar o token de acesso ao site do usuário, para funcionar, em primeiro lugar, precisa-se cadastrar currículo por esse mesmo bot, para que ele possa fazer associação entre o token e a conta do telegram"},"status":"1","dataDeAlteracaoFormatada":"09/04/2021 22:58:40","dataDeAlteracao":1618019920373}},{"_index":"bot_comands","_type":"_doc","_id":"responderFaleConosco","_score":1.0,"_source":{"name":"responderFaleConosco","backEnd":{"handler":"com.ccp.jn.bots.vagas.ResponderFaleConosco","type":"Enum","responses":[{"status":401.0,"messages":[{"language":"portuguese","message":"Você nao tem permissao para executar este comando"}]},{"status":404.0,"messages":[{"language":"portuguese","message":"Você não tem mais mensagens para responder"}]},{"status":200.0,"step":"perguntarSobreTipoDeMensagens"}],"steps":[{"step":"perguntarSobreTipoDeMensagens","messages":[{"language":"portuguese","message":"Quais as mensagens que você quer responder? \nDigite um número para:\n1: Novas mensagens\n2: Mensagens Ignoradas\n3: Mensagens já respondidas\n4: Encerrar comando"}],"responses":[{"status":404.0,"step":"perguntarSobreTipoDeMensagens","messages":[{"language":"portuguese","message":"Você não tem mais mensagens para responder"}]},{"status":200.0,"step":"perguntarSobreMensagem"}]},{"step":"perguntarSobreMensagem","messages":[{"language":"portuguese","message":"Mensagem {indiceDeMensagem} de {qtdMensagens}\n {message} \nDigite um número para:\n1: Responder\n2: Ignorar\n3: Ir para a próxima \n4: Retornar ao menu anterior"}],"responses":[{"status":400.0,"step":"perguntarSobreTipoDeMensagens"},{"status":404.0,"step":"perguntarSobreTipoDeMensagens","messages":[{"language":"portuguese","message":"Você não tem mais mensagens para responder"}]},{"status":200.0,"step":"mensagem"},{"status":202.0,"step":"perguntarSobreMensagem"}]},{"step":"mensagem","messages":[{"language":"portuguese","message":"\nDigite sua resposta:"}],"responses":[{"status":404.0,"messages":[{"language":"portuguese","message":"Você não tem mais mensagens para responder"}]},{"status":201.0,"step":"perguntarSobreMensagem"}]}]},"id":"responderFaleConosco","permissions":["user"],"explicacao":{"pt":"Comando para a equipe JobsNow responder solicitações de \u0027fale conosco\u0027 enviadas pelos usuarios que usaram o comando \u0027/faleconosco\u0027 do bot de usuários comuns, ao responder a mensagem, a pessoa que abriu solicitação recebe a resposta que for digitada nesse comando, no exato momento"},"status":"1","dataDeAlteracaoFormatada":"09/04/2021 22:58:42","dataDeAlteracao":1618019922973}},{"_index":"bot_comands","_type":"_doc","_id":"chatId","_score":1.0,"_source":{"name":"chatId","backEnd":{"handler":"com.ccp.jn.bots.ChatId","type":"Enum","responses":[{"status":200.0,"messages":[{"language":"portuguese","message":"{chatId}"}]}],"steps":[]},"id":"chatId","permissions":["group","user","superGroup"],"explicacao":{"pt":"..."},"status":"1","dataDeAlteracaoFormatada":"09/04/2021 22:58:40","dataDeAlteracao":1618019920988}},{"_index":"bot_comands","_type":"_doc","_id":"enviarcurriculo","_score":1.0,"_source":{"name":"enviarcurriculo","backEnd":{"handler":"com.ccp.jn.bots.vagas.ReceberVagas","type":"Enum","responses":[{"status":200.0,"step":"usuario"},{"status":202.0,"step":"homeoffice"},{"status":403.0,"messages":[{"language":"portuguese","message":"Por medida de segurança, seu token está bloqueado por excesso de tentativas, por favor, para efetuar o desbloqueio envie e-mail a partir do endereço {usuario} para que possamos efetuar o desbloqueio"}]},{"status":409.0,"step":"perguntarSobreAlteracaoDeCadastro"},{"status":410.0,"step":"perguntarSobreTipoVaga"}],"steps":[{"step":"token","messages":[{"language":"portuguese","message":"Por favor, precisamos do token que te foi enviado ao usuario {usuario}, caso não o tenha mais, envie-nos e-mail usando o endereço {usuario} para onias@ccpjobsnow.com para que possamos lhe reenviar este token (Para poder trocar de e-mail erre o token propositalmente)"}],"responses":[{"status":202.0,"step":"homeoffice"},{"status":401.0,"step":"perguntarSobreUsuario","messages":[{"language":"portuguese","message":"O token que você informou não está correto, errando 3 vezes, seu token será bloqueado. Tentativas: {tentativas}"}]},{"status":403.0,"messages":[{"language":"portuguese","message":"Por medida de segurança, seu token foi bloqueado por excesso de tentativas, por favor, para efetuar o desbloqueio envie e-mail a partir do endereço {usuario} para que possamos efetuar o desbloqueio"}]},{"status":409.0,"step":"perguntarSobreAlteracaoDeCadastro"},{"status":410.0,"step":"perguntarSobreTipoVaga"}]},{"step":"perguntarSobreTipoVaga","messages":[{"language":"portuguese","message":"Qual o tipo da vaga que você está procurando para si? \nDigite:\n 1: T.I (Tecnologia em Informática)\n 2: RH, DP, R\u0026S e afins \n 3: Vagas que requerem ensino superior, curso técnico ou certificação \n 4: Vagas que não requerem comprovação de escolaridade ou qualquer escolaridade"}],"responses":[{"status":200.0,"step":"perguntarSobreAlteracaoDeCadastro"}]},{"step":"perguntarSobreAlteracaoDeCadastro","messages":[{"language":"portuguese","message":"O seu e-mail {usuario} já possui cadastro conosco com as palavras chaves {especialidades}. Deseja alterar os dados de cadastro? \nDigite:\n 1: para Sim\n 2: para Não"}],"responses":[{"status":1.0,"step":"homeoffice"},{"status":2.0,"messages":[{"language":"portuguese","message":"Para atualizar suas palavras chaves, por favor, utilize o comando /trocarpalavraschaves"}]}]},{"step":"usuario","messages":[{"language":"portuguese","message":"Por favor, informe-nos o e-mail que será o seu login de usuário no nosso site"}],"responses":[{"status":403.0,"messages":[{"language":"portuguese","message":"Por medida de segurança, seu token está bloqueado por excesso de tentativas, por favor, para efetuar o desbloqueio envie e-mail a partir do endereço {usuario} para que possamos efetuar o desbloqueio"}]},{"status":201.0,"step":"token"}]},{"step":"perguntarSobreUsuario","messages":[{"language":"portuguese","message":"O e-mail {usuario} está correto? (Para poder trocar de e-mail erre o token propositalmente) \nDigite:\n 1: para Sim\n 2: para Não"}],"responses":[{"status":1.0,"step":"token"},{"status":2.0,"step":"usuario"}]},{"step":"homeoffice","messages":[{"language":"portuguese","message":"Você avalia \u003cstrong\u003eAPENAS\u003c/strong\u003e oportunidades \u003cstrong\u003eTOTALMENTE\u003c/strong\u003e homeoffice? (Lembrando que essa escolha pode diminuir o alcance do seu currículo, portanto aconselhamos o uso dessa opção se você estiver trabalhando e portanto em posição confortável de poder escolher empregos) \nDigite:\n 1: para Sim\n 2: para Não"}],"responses":[{"status":1.0,"step":"tipoVaga"},{"status":2.0,"step":"ddd"}]},{"step":"tipoVaga","messages":[{"language":"portuguese","message":"Qual o tipo da vaga que você está procurando para si? \nDigite:\n 1: T.I (Tecnologia em Informática)\n 2: RH, DP, R\u0026S e afins \n 3: Vagas que requerem ensino superior, curso técnico ou certificação \n 4: Vagas que não requerem comprovação de escolaridade ou qualquer escolaridade"}],"responses":[{"status":200.0,"step":"profissaoDesejada"}]},{"step":"ddd","messages":[{"language":"portuguese","message":"Por favor, nos informe o DDD da cidade onde você reside atualmente"}],"responses":[{"status":200.0,"step":"mudanca","messages":[{"language":"portuguese","message":"Região metropolitana escolhida: {regiaoMetropolitana}"}]}]},{"step":"mudanca","messages":[{"language":"portuguese","message":"Avaliaria oportunidades em outras cidades ou estados? \nDigite:\n 1: para Sim\n 2: para Não"}],"responses":[{"status":200.0,"step":"tipoVaga"}]},{"step":"profissaoDesejada","messages":[{"language":"portuguese","message":"Por favor, digite a função que você tem por objetivo (Entre 5 a 30 letras). Ex: Programador de computadores; Analista de Marketing, etc"}],"responses":[{"status":200.0,"step":"perguntarSobreExperiencia"}]},{"step":"perguntarSobreExperiencia","messages":[{"language":"portuguese","message":"Você possui experiência prévia na função \u0027{profissaoDesejada}\u0027? \nDigite:\n 1: para Sim\n 2: para Não"}],"responses":[{"status":1.0,"step":"experiencia"},{"status":2.0,"step":"perguntarSobreUltimaFuncao"}]},{"step":"experiencia","messages":[{"language":"portuguese","message":"Quantos anos de experiência você possui na função \u0027{profissaoDesejada}\u0027?"}],"responses":[{"status":200.0,"step":"perguntarSobreUltimaFuncao"}]},{"step":"perguntarSobreUltimaFuncao","messages":[{"language":"portuguese","message":"Você já teve alguma experiência profissional anterior? \nDigite:\n 1: para Sim\n 2: para Não"}],"responses":[{"status":1.0,"step":"ultimaProfissao"},{"status":2.0,"step":"perguntarSobreBitcoin"}]},{"step":"ultimaProfissao","messages":[{"language":"portuguese","message":"Qual foi o emprego anterior que você teve?"}],"responses":[{"status":200.0,"step":"perguntarSobreBitcoin"}]},{"step":"perguntarSobreBitcoin","messages":[{"language":"portuguese","message":"Você aceitaria receber salário em bitcoin? (Pondere a opção, pois todas as moedas governamentais do mundo são fontes de empobrecimento, o bitcoin não é estatal, para tirar as dúvidas, comprar e vender, entre em nosso grupo https://t.me/joinchat/RNs2rUhZBpnc4sHG) \nDigite:\n 1: para Avaliar remuneração em bitcoin\n 2: para \u003cstrong\u003eNÃO\u003c/strong\u003e Avaliar remuneração em bitcoin"}],"responses":[{"status":1.0,"step":"bitcoin"},{"status":2.0,"step":"perguntarSobrePj"}]},{"step":"bitcoin","messages":[{"language":"portuguese","message":"Qual o valor da sua pretensão salarial em bitcoin? (Digite o valor em reais  (Apenas números, sem vírgula ou pontuação) para convertemos em bitcoin)"}],"responses":[{"status":200.0,"step":"perguntarSobrePj"}]},{"step":"perguntarSobrePj","messages":[{"language":"portuguese","message":"Você avalia propostas PJ(Pessoa Jurídica)? \nDigite:\n 1: para Sim\n 2: para Não"}],"responses":[{"status":1.0,"step":"pretensaoPj"},{"status":2.0,"step":"perguntarSobreClt"}]},{"step":"pretensaoPj","messages":[{"language":"portuguese","message":"Qual a sua pretensão salarial como PJ (Pessoa Jurídica, emissão de nota fiscal)? (Digite o valor em reais, Apenas números, sem qualquer pontuação)"}],"responses":[{"status":200.0,"step":"perguntarSobreClt"}]},{"step":"perguntarSobreClt","messages":[{"language":"portuguese","message":"Você avalia propostas Clt(Carteira assinada)? (Desvantagens: É graças à existência da CLT que o empregador pode contratar menos, por encarecer todo o processo, nos estados unidos e canadá esse modelo não existe, ele é típico de país de terceiro mundo) \nDigite:\n 1: para Sim\n 2: para Não"}],"responses":[{"status":1.0,"step":"pretensaoClt"},{"status":2.0,"step":"pretensaoNegociavel"},{"status":422.0,"step":"perguntarSobreBitcoin","messages":[{"language":"portuguese","message":"Você tem que preencher no mínimo uma das três pretensões salariais (Bitcoin ou PJ ou CLT)"}]}]},{"step":"pretensaoClt","messages":[{"language":"portuguese","message":"Qual a sua pretensão salarial como Clt (Carteira assinada)?  (Digite o valor em reais, Apenas números, sem qualquer pontuação)"}],"responses":[{"status":200.0,"step":"pretensaoNegociavel"}]},{"step":"pretensaoNegociavel","messages":[{"language":"portuguese","message":"Suas pretensões salariais são negociáveis? \nDigite:\n 1: para Sim\n 2: para Não"}],"responses":[{"status":200.0,"step":"perguntarSobreDisponibilidade"}]},{"step":"perguntarSobreDisponibilidade","messages":[{"language":"portuguese","message":"Sua disponibilidade para início é imediata? \nDigite:\n 1: para Sim\n 2: para Não"}],"responses":[{"status":1.0,"step":"pcd"},{"status":2.0,"step":"disponibilidade"}]},{"step":"disponibilidade","messages":[{"language":"portuguese","message":"De quantos dias você precisaria para fazer a transição para um novo emprego? (Apenas números)"}],"responses":[{"status":200.0,"step":"pcd"}]},{"step":"pcd","messages":[{"language":"portuguese","message":"Porta alguma necessidade especial (PCD)? \nDigite:\n 1: para Sim\n 2: para Não"}],"responses":[{"status":200.0,"step":"perguntarSobreConsultorias"}]},{"step":"perguntarSobreConsultorias","messages":[{"language":"portuguese","message":"Há alguma(s) consultoria(s) ou empresa(s) para a qual(is) você \u003cstrong\u003eNÃO\u003c/strong\u003e gostaria que o seu currículo fosse enviado? \nDigite:\n 1: para Sim\n 2: para NÃO"}],"responses":[{"status":1.0,"step":"emailParaExcessao"},{"status":2.0,"step":"curriculo"}]},{"step":"emailParaExcessao","messages":[{"language":"portuguese","message":"Quais as consultorias para as quais você gostaria que nao enviassemos seu currículo? digite-as separadadas por vírgula"}],"responses":[{"status":200.0,"step":"curriculo"}]},{"step":"curriculo","messages":[{"language":"portuguese","message":"Precisamos agora que me envie neste chat o arquivo do seu currículo para que possamos processar seus dados"}],"responses":[{"status":200.0,"step":"confirmarGravacaoDeCv"},{"status":406.0,"messages":[{"language":"portuguese","message":"Não conseguimos extrair o texto contido em seu currículo, provavelmente deva se tratar de uma imagem, ou pdf que contem somente imagem, por favor, envie outra versao dele."}],"step":"curriculo"},{"status":413.0,"messages":[{"language":"portuguese","message":"Seu currículo está maior que 2 megabytes, envie uma versão menor, por favor"}],"step":"curriculo"},{"status":422.0,"messages":[{"language":"portuguese","message":"Houve algum erro em processar seu currículo, provavelmente ele está corrompido"}],"step":"curriculo"}]},{"step":"confirmarGravacaoDeCv","messages":[{"language":"portuguese","message":"Por favor, ao enviar dados para qualquer site da internet (Esse aqui, por exemplo), certifique-se que NÃO enviou seu endereço residencial completo (No máximo o bairro e cidade já bastam para o recrutador!) e jamais forneça números de documentos pessoais como CPF, RG e outros. Seus dados (Assim como em qualquer plataforma da internet, Linkedin por exemplo) estarão visíveis a qualquer pessoa na internet e não nos responsabilizaremos por dados que VOCÊ fornece, portanto, pense a respeito e seja responsável! Veja um exemplo de golpe \u003ca href\u003d \u0027https://www.youtube.com/watch?time_continue\u003d1\u0026v\u003dSXJ8gpjoD8A\u0027\u003eneste vídeo\u003c/a\u003e  \n\nDigite:\n 1: para Confirmar gravação dos dados \n 2: para Revisar ou alterar Dados"}],"responses":[{"status":202.0,"messages":[{"language":"portuguese","message":"Seus dados foram gravados e você receberá resposta sobre o processamento em alguns instantes aqui mesmo neste chat e à medida que os recrutadores forem cadastrando vagas aderentes ao teu perfil, você as receberá por este chat. Na parte da  manhã do próximo dia útil, seu currículo será enviado aos mais de 4 mil e-mails de rh, caso queira alterar seus dados, ou que reenviemos novamente seu currículo ou não queira mais receber vagas (desativar seu cadastro), por favor, pedimos que \u003ca href\u003d \u0027https://ccpjobsnow.com/#/login?email\u003d{usuario}\u0027\u003eclique aqui\u003c/a\u003e. Esperamos que aprece a experiência em nossa plataforma. Obrigado! "}]},{"status":403.0,"messages":[{"language":"portuguese","message":"Por medida de segurança, seu token está bloqueado por excesso de tentativas, por favor, para efetuar o desbloqueio envie e-mail a partir do endereço {usuario} para que possamos efetuar o desbloqueio"}]},{"status":2.0,"step":"homeoffice"}]}]},"id":"enviarcurriculo","permissions":["user"],"explicacao":{"pt":"Ao executar este comando, o bot fará um questionário com algumas perguntas para preenchimento de formulário para cadastro de currículo, ao final do questionário será pedido currículo ao usuário, assim que o cadastro é feito, o bot passa a informar a este usuário quais empresas estão vendo seu currículo naquele exato momento, além disso, o bot passa a encaminhar vagas cujo as palavras chaves cruzarem com as palavras chaves encontradas no currículo, caso o usuário não concorde com a escolha de vagas do bot, o usuário deverá executar o comando /trocarpalavraschaves"},"status":"1","dataDeAlteracaoFormatada":"09/04/2021 22:58:46","dataDeAlteracao":1618019926783}},{"_index":"bot_comands","_type":"_doc","_id":"aprovarAnuncios","_score":1.0,"_source":{"name":"aprovarAnuncios","backEnd":{"handler":"com.ccp.jn.bots.AprovarAnuncios","type":"Enum","responses":[{"status":401.0,"messages":[{"language":"portuguese","message":"Você nao tem permissao para executar este comando"}]},{"status":404.0,"messages":[{"language":"portuguese","message":"Você não tem mais anuncios para aprovar"}]},{"status":200.0,"step":"mostrarAnuncio"}],"steps":[{"step":"mostrarAnuncio","messages":[{"language":"portuguese","message":"{indice}  de {total} de anúncios. \n{message} \nDigite um número para:\n1: Aprovar\n2: Reprovar\n3: Bloquear"}],"responses":[{"status":404.0,"messages":[{"language":"portuguese","message":"Você não tem mais mensagens para responder"}]},{"status":200.0,"step":"mostrarAnuncio"},{"status":2.0,"step":"mensagemDeReprovacao"}]},{"step":"mensagemDeReprovacao","messages":[{"language":"portuguese","message":"Digite aqui o porquê da sua reprovação deste anúncio"}],"responses":[{"status":404.0,"messages":[{"language":"portuguese","message":"Você não tem mais mensagens para responder"}]},{"status":200.0,"step":"mostrarAnuncio"}]}]},"id":"aprovarAnuncios","permissions":["user"],"explicacao":{"pt":"Comando para a equipe JobsNow aprovar, reprovar ou bloquear propagandas que os usuários cadastrem"},"status":"1","dataDeAlteracaoFormatada":"09/04/2021 22:58:44","dataDeAlteracao":1618019924837}},{"_index":"bot_comands","_type":"_doc","_id":"cadastrarMeusGruposDeVagas","_score":1.0,"_source":{"name":"cadastrarMeusGruposDeVagas","backEnd":{"handler":"com.ccp.jn.bots.CadastrarGrupoDeVagas","type":"Enum","responses":[{"status":200.0,"messages":[{"language":"portuguese","message":"Infelizmente esse procedimento não pode ser feito de forma automática devido as limitações do Telegram, terá de ser feito de forma manual pela nossa equipe, sendo assim peço para que você entre em contato com o Onias, seja aqui mesmo no telegram ( pelo nome de usuário @jnvagas); seja pelo whats app (011 966 058 642).]; seja pelo linkedin ( https://www.linkedin.com/in/onias85/) ou seja por e-mail ( onias@ccpjobsnow.com ) manifestando interesse em receber vagas gratuitamente em seus grupos de vagas. Obrigado e pedimos desculpa pelo inconveniente"}]}],"steps":[]},"id":"cadastrarMeusGruposDeVagas","permissions":["user"],"explicacao":{"pt":"Não é bem uma funcionalidade, serve como instrução de como o usuário deve proceder para cadastrar seus grupos de vagas para receberem gratuitamente as vagas que o bot do JobsNow envia nos grupos de vagas"},"status":"1","dataDeAlteracaoFormatada":"09/04/2021 22:58:45","dataDeAlteracao":1618019925515}},{"_index":"bot_comands","_type":"_doc","_id":"trocarpalavraschaves","_score":1.0,"_source":{"name":"trocarpalavraschaves","backEnd":{"handler":"com.ccp.jn.bots.vagas.AtualizarEspecialidades","type":"Enum","responses":[{"status":404.0,"messages":[{"language":"portuguese","message":"Você ainda não salvou currículo conosco, ou nao associou seu currículo à sua conta do telegram, para isso execute o comando /enviarcurriculo"}]},{"status":200.0,"step":"especialidades"}],"steps":[{"step":"especialidades","messages":[{"language":"portuguese","message":"As palavras chaves que encontramos no teu currículo e que te trarão vagas são: {especialidades}, se qualquer vaga tiver ao menos uma dessas palavras, essa vaga vai chegar a você, se quiser alterá-las, se quiser que as vagas encontrem você por outras palavras, responda esta mensagem com as novas palavras (ou conjunto de palavras) chaves separadas por virgula, cada palavra chave deve possuir duas letras ou mais. Obrigado"}],"responses":[{"status":200.0,"messages":[{"language":"portuguese","message":"Suas palavras chaves foram atualizadas com sucesso, caso queira editar novamente, basta repetir este comando. Obrigado"}]}]}]},"id":"trocarpalavraschaves","permissions":["user"],"explicacao":{"pt":"Depois que que se cadastra o currículo neste mesmo bot, o usuário passa a receber vagas de acordo com as palavras chaves que o sistema encontrar no currículo cadastro, no entanto, com esse comando, o usuário tem a opção de informar ao bot para quais \u0027palavras chaves\u0027 o bot deverá encontrar vagas e encaminhar a este usuário."},"status":"1","dataDeAlteracaoFormatada":"09/04/2021 22:58:45","dataDeAlteracao":1618019926155}},{"_index":"bot_comands","_type":"_doc","_id":"cadastrarVaga","_score":1.0,"_source":{"name":"cadastrarVaga","backEnd":{"handler":"com.ccp.jn.bots.vagas.CadastrarVaga","type":"Enum","responses":[{"status":401.0,"messages":[{"language":"portuguese","message":"Você nao tem permissao para executar este comando"}]},{"status":200.0,"messages":[{"language":"portuguese","message":"O seu total geral é {vagas} vagas publicadas."}],"step":"tipoVaga"}],"steps":[{"step":"tipoVaga","responses":[{"status":200.0,"step":"vaga"}],"messages":[{"language":"portuguese","message":"Qual o tipo da vaga que você está publicando? \nDigite:\n 1: T.I (Tecnologia em Informática)\n 2: RH, DP, R\u0026S e afins \n 3: Vagas que requerem ensino superior, curso técnico ou certificação \n 4: Vagas que não requerem comprovação de escolaridade ou qualquer escolaridade"}]},{"step":"email","messages":[{"language":"portuguese","message":"Informe um e-mail pois o informado nao é válido"}],"responses":[{"status":400.0,"step":"vaga","messages":[{"language":"portuguese","message":"A vaga está pequena demais para ser postada"}]},{"status":413.0,"step":"vaga","messages":[{"language":"portuguese","message":"A vaga está grande demais para ser postada"}]},{"status":412.0,"step":"tipoVaga","messages":[{"language":"portuguese","message":"Este tipo de vaga deve conter o link do linkedin"}]},{"status":401.0,"step":"tipoVaga","messages":[{"language":"portuguese","message":"O dono desta vaga não permite publicação de suas preciosas vagas"}]},{"status":404.0,"step":"tipoVaga","messages":[{"language":"portuguese","message":"Não temos como pesquisar por esta vaga"}]},{"status":409.0,"step":"tipoVaga","messages":[{"language":"portuguese","message":"Essa vaga foi cadastrada anteriormente"}]},{"status":422.0,"step":"email"},{"status":200.0,"step":"tipoVaga","messages":[{"language":"portuguese","message":"A vaga foi publicadada para {encontrados} candidatos. {totalDeVagas} vagas publicadas"}]}]},{"step":"vaga","messages":[{"language":"portuguese","message":"Informe a descrição da vaga..."}],"responses":[{"status":400.0,"step":"vaga","messages":[{"language":"portuguese","message":"A vaga está pequena demais para ser postada"}]},{"status":413.0,"step":"vaga","messages":[{"language":"portuguese","message":"A vaga está grande demais para ser postada"}]},{"status":412.0,"step":"tipoVaga","messages":[{"language":"portuguese","message":"Este tipo de vaga deve conter o link do linkedin"}]},{"status":401.0,"step":"tipoVaga","messages":[{"language":"portuguese","message":"O dono desta vaga não permite publicação de suas preciosas vagas"}]},{"status":404.0,"step":"tipoVaga","messages":[{"language":"portuguese","message":"Não temos como pesquisar por esta vaga"}]},{"status":405.0,"step":"tipoVaga","messages":[{"language":"portuguese","message":"Esse tipo de vaga requer que e-mail"}]},{"status":409.0,"step":"tipoVaga","messages":[{"language":"portuguese","message":"Essa vaga foi cadastrada anteriormente"}]},{"status":422.0,"step":"email"},{"status":200.0,"step":"tipoVaga","messages":[{"language":"portuguese","message":"A vaga foi publicadada para {encontrados} candidatos. Você tem agora {totalDeVagas} vagas publicadas"}]}]}]},"id":"cadastrarVaga","permissions":["user"],"explicacao":{"pt":"Comando para a equipe JobsNow cadastrar vagas, essas vagas deverão conter e-mail ou link do linkedin, deverão também conter palavras chaves condizentes com o seu tipo escolhido"},"status":"1","dataDeAlteracaoFormatada":"09/04/2021 22:58:43","dataDeAlteracao":1618019924218}},{"_index":"bot_comands","_type":"_doc","_id":"comofunciona","_score":1.0,"_source":{
+
+	"name": "comofunciona",
+	"backEnd": {
+		"handler": "com.ccp.jn.bots.ComoFunciona",
+		"type": "Enum",
+		"responses": [{
+			"status": 200,
+			"step": "choice"
+		}],
+		"steps": [{
+			"step": "choice",
+			"messages": [{
+				"language": "portuguese",
+				"message": "Por favor, clique num dos comandos abaixo para saber como cada um funciona:\n\n{comandos}"
+			}],
+			"responses": [{
+					"status": 404,
+					"messages": [{
+						"language": "portuguese",
+						"message": "Não encontramos o comando '{choice}' na nossa lista de comandos"
+					}]
+				},
+				{
+					"status": 422,
+					"messages": [{
+						"language": "portuguese",
+						"message": "Não encontramos explicação para o comando '{choice}' em idioma português"
+					}]
+				},
+				{
+					"status": 200.0,
+					"messages": [{
+						"language": "portuguese",
+						"message": "{explicacao}"
+					}]
+				}
+			]
+		}]
+	},
+	"id": "comofunciona",
+	"permissions": [
+		"user", "group", "superGroup"
+	],
+	"explicacao": {
+		"pt": "Comando executado para explicar os outros comandos do bot"
+	},
+	"status": "1",
+	"dataDeAlteracaoFormatada": "09/04/2021 22:58:43",
+	"dataDeAlteracao": 1618019923579
+
+}},{"_index":"bot_comands","_type":"_doc","_id":"rh","_score":1.0,"_source":{
+	"name": "rh",
+	"backEnd": {
+		"handler": "com.ccp.jn.bots.vagas.Rh",
+		"type": "Enum",
+		"responses": [{
+				"status": 401.0,
+				"messages": [{
+					"language": "portuguese",
+					"message": "Você nao tem permissao para executar este comando"
+				}]
+			},
+			{
+				"status": 200.0,
+				"step": "email"
+			}
+		],
+		"steps": [{
+				"step": "email",
+				"messages": [{
+					"language": "portuguese",
+					"message": "Favor fornecer o e-mail do rh a ser verificado"
+				}],
+				"responses": [{
+						"status": 404.0,
+						"step": "confirmarSalvamentoDeRh"
+					},
+					{
+						"status": 200.0,
+						"messages": [{
+							"language": "portuguese",
+							"message": "Status atual do RH: {status}. Este recrutador foi inserido na data {dataDeInclusaoFormatada}"
+						}],
+						"step": "mostrarOpcoes"
+					}
+				]
+			},
+			{
+				"step": "mostrarOpcoes",
+				"messages": [{
+					"language": "portuguese",
+					"message": "\nEscolha uma opção:\n1: Mudar Status do RH\n2: Reinserir RH\n3: Reportar como spam\n4: Url de vagas\n5: Sair"
+				}],
+				"responses": [{
+						"status": 1.0,
+						"step": "confirmarAlteracaoDeStatus"
+					},
+					{
+						"status": 2.0,
+						"step": "reinserirRH"
+					},
+					{
+						"status": 3.0,
+						"step": "rhSpam"
+					},
+					{
+						"status": 4.0,
+						"messages": [{
+							"language": "portuguese",
+							"message": "Url para cadastro de vagas: {urlVagas}"
+						}],
+						"step": "email"
+					},
+					{
+						"status": 5.0,
+						"step": "email"
+					}
+				]
+			},
+			{
+				"step": "reinserirRH",
+				"messages": [{
+					"language": "portuguese",
+					"message": "Confirmar reinserção / inserção do RH?\nDigite um número para:\n1: Sim\n2: Não"
+				}],
+				"responses": [{
+						"status": 200.0,
+						"step": "email"
+					},
+					{
+						"status": 201.0,
+						"step": "email",
+						"messages": [{
+							"language": "portuguese",
+							"message": "RH reinserido com sucesso"
+						}]
+					}
+				]
+			},
+			{
+				"step": "rhSpam",
+				"messages": [{
+					"language": "portuguese",
+					"message": "Esse RH nos reportou como spam? Se 'Sim' não será mais possível publicar vagas dele. \nDigite um número para:\n1: Sim\n2: Não"
+				}],
+				"responses": [{
+						"status": 201.0,
+						"step": "email",
+						"messages": [{
+							"language": "portuguese",
+							"message": "Esse RH não mais receberá currículos nossos e suas vagas não poderão mais ser compartilhadas pelos bots do JobsNow"
+						}]
+					},
+					{
+						"status": 200.0,
+						"step": "email"
+					}
+				]
+			},
+			{
+				"step": "confirmarAlteracaoDeStatus",
+				"messages": [{
+					"language": "portuguese",
+					"message": "O status atual deste RH é {status}. Alterar status?\nDigite um número para:\n1: Sim\n2: Não"
+				}],
+				"responses": [{
+						"status": 204.0,
+						"step": "email",
+						"messages": [{
+							"language": "portuguese",
+							"message": "Status alterado com sucesso!"
+						}]
+					},
+					{
+						"status": 200.0,
+						"step": "email"
+					}
+				]
+			},
+			{
+				"step": "confirmarSalvamentoDeRh",
+				"messages": [{
+					"language": "portuguese",
+					"message": "Confirma salvamento de RH?\nDigite um número para:\n1: Sim\n2: Não"
+				}],
+				"responses": [{
+						"status": 201.0,
+						"step": "email",
+						"messages": [{
+							"language": "portuguese",
+							"message": "Recrutador salvo com sucesso!"
+						}]
+					},
+					{
+						"status": 200.0,
+						"step": "email"
+					}
+				]
+			}
+		]
+	},
+	"id": "rh",
+	"permissions": [
+		"user"
+	],
+	"explicacao": {
+		"pt": "Comando para gerenciar cadastro de recrutadores no sistema JobsNow"
+	},
+	"status": "1",
+	"dataDeAlteracaoFormatada": "09/04/2021 22:58:43",
+	"dataDeAlteracao": 1618019923579
+
+}}]}}

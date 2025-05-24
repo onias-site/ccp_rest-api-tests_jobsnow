@@ -1,0 +1,22 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"domain": {
+				"type": "keyword"
+			},
+			"reasonType": {
+				"type": "keyword"
+			},
+			"reasonText": {
+				"type": "text"
+			},
+			"domain": {
+				"type": "keyword"
+			},
+			"email": {
+				"type": "keyword"
+			}
+		}
+	}
+}

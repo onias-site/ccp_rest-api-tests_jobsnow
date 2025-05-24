@@ -1,0 +1,77 @@
+{
+  "items": [
+    {
+      "title": "Login...",
+      "external": true,
+      "hidden": false,
+      "route": "/login",
+      "icon": "fa fa-lg fa-fw fa-user"
+    },
+    {
+      "title": "Meu currículo",
+      "icon": "fa fa-lg fa-fw fa-file",
+      "internal": true,
+      "route": "/candidato/cadastro"
+    },
+    {
+      "title": "Buscar currículos",
+      "hidden": false,
+      "route": "/recrutadores/buscaDeCandidatos",
+      "icon": "fa fa-lg fa-fw fa-google"
+    },  
+    {
+      "title": "Cadastrar Vagas",
+      "internal": true,
+      "route": "/recrutadores/vagas",
+      "icon": "fa fa-lg fa-fw fa-search"
+    },
+    {
+      "title": "Quem vê nossos CVs",
+      "icon": "fa fa-lg fa-fw fa-eye",
+      "route": "/recrutadores/consultorias"
+    },
+    {
+      "title": "Quem te viu este mês?",
+      "icon": "fa fa-lg fa-fw fa-binoculars",
+      "internal": true,
+      "route": "/candidato/visualizacoes"
+    },
+    {
+      "title": "Recrutadores",
+      "route": "/estatisticas/simples?tabela=recruiters&campo=status",
+      "icon": "fa fa-lg fa-fw fa-area-chart"
+    },
+    {
+      "title": "Profissionais",
+      "route": "/estatisticas/simples?tabela=profissionais2&campo=tipoVaga",
+      "icon": "fa fa-lg fa-fw fa-bar-chart"
+    },
+    {
+      "title": "Vagas",
+      "route": "/estatisticas/simples?tabela=vagas&campo=tipoVaga",
+      "icon": "fa fa-lg fa-fw fa-pie-chart"
+    },
+    {
+      "title": "Visualizações",
+      "route": "/estatisticas/simples?tabela=visualizacao_de_curriculo&campo=keywords",
+      "icon": "fa fa-lg fa-fw fa-camera"
+    },
+    {
+      "title": "Tipo de usuários",
+      "route": "/estatisticas/simples?tabela=preregistration&campo=userType",
+      "icon": "fa fa-lg fa-fw fa-line-chart"
+    },
+    {
+      "title": "Alterar senha",
+      "internal": true,
+      "icon": "fa fa-lg fa-fw fa-lock",
+      "event":"changePassword"
+    },
+    {
+      "title": "Encerrar sessão",
+      "internal": true,
+      "event": "logout",
+      "icon": "fa fa-lg fa-fw fa-history"
+    }
+  ]
+}

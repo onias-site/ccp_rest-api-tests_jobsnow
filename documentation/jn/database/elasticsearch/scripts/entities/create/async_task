@@ -1,0 +1,43 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"request": {
+					"dynamic": "true",
+					"properties": {}
+			},
+			"response": {
+					"dynamic": "true",
+					"properties": {}
+			},
+			"data": {
+				"type": "text"
+			},
+			"messageId": {
+				"type": "text"
+			},
+			"operation": {
+				"type": "keyword"
+			},
+			"operationType": {
+				"type": "keyword"
+			},
+			"success": {
+				"type": "boolean"
+			},
+			"topic": {
+				"type": "keyword"
+			},
+			"finished": {
+				"type": "long"
+			},
+			"started": {
+				"type": "long"
+			},
+			"enlapsedTime": {
+				"type": "long"
+			}
+
+		}
+	}
+}

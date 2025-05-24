@@ -1,0 +1,31 @@
+a) O usuário vai salvar um currículo
+01. [VisEntitySkill] Os skills serão extraídos e associados ao currículo que está chegando
+02. [VisEntityResume, VisEntityResume (mirror)] O currículo é salvo independentemente se ele está ativo ou inativo
+03. [VisEntityPosition] Serão buscadas todas as vagas que esperam receber currículos instantâneamente
+04. [VisEntityResume] Serão buscados os dados do currículo que está sendo tratado
+05. [VisEntityBalance] Será buscado o saldo do recrutador no JobsNow
+06. [VisEntityResumePerception] Serão buscados (se houver) dados da interação (do ponto de vista do recrutador) entre candidato e recrutador
+07. [VisEntityResumeLastView] Serão buscados dados que dirão se o recrutador ainda está no período de gratuitidade àquele currículo
+08. [VisEntityDeniedViewToCompany] Serão buscados todas as consultorias que foram negativadas para esse currículo
+09. [VisEntityScheduleSendingResumeFees] Serão buscados dados das tarifas do serviço que está sendo executado
+10. [VisEntityResume (mirror)] Os skills serão extraídos e associados ao currículo que está chegando, ainda que ele esteja inativo
+11. [VisEntityResumePerception (mirror)] Serão buscados (se houver) dados da interação negativa (do ponto de vista do recrutador) entre candidato e recrutador
+12. Cada vaga será avaliada em relação ao match com o currículo no que tange a ddds
+13. Cada vaga será avaliada em relação ao match com o currículo no que tange a skills
+14. Cada vaga será avaliada em relação ao match com o currículo no que tange a senioridade
+15. 
+
+
+Salvar curriculo e verificar se sinonimos e pre requisitos foram salvos tambem
+Alterar curriculo e verificar se skills, sinônimos, pre requisitos foram alterados tambem
+Alterar curriculo ativo verificando se toda a alteração foi salva na tabela de curriculos ativos
+Alterar curriculo inativo verificando se toda a alteração foi salva na tabela de curriculos inativos
+Alterar curriculo ativo verificando se o arquivo foi salvo no bucket do google ou no bucket local
+Alterar curriculo inativo verificando se o arquivo foi salvo no bucket do google ou no bucket local
+Salvar curriculo verificando se arquivos estão no bucket
+Salvar vaga e verificar se sinonimos e pre requisitos foram salvos tambem
+Alterar vaga e verificar se skills, sinônimos, pre requisitos foram alterados tambem
+Alterar vaga ativa verificando se toda a alteração foi salva na tabela de vagas ativas
+Alterar vaga inativa verificando se toda a alteração foi salva na tabela de vagas inativas
+
+

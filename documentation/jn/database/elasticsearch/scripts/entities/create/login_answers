@@ -1,0 +1,16 @@
+{
+    "mappings": {
+            "dynamic": "strict",
+			"properties": {
+                "email": {
+                    "type": "keyword"
+                },
+                "channel": {
+                    "type": "keyword"
+                },
+                "goal": {
+                    "type": "keyword"
+                }
+            }
+        }
+}

@@ -1,0 +1,7 @@
+#JN
+A) Infra estrutura
+B) Login
+C) Contact-us
+#VIS
+A) Cadastro de currículos
+B) Cadastro de vagas

@@ -1,0 +1,25 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"apiName": {
+				"type": "keyword"
+			},
+			"method": {
+				"type": "keyword"
+			},
+			"url": {
+				"type": "keyword"
+			},
+			"token": {
+				"type": "text"
+			},
+			"sleep": {
+				"type": "integer"
+			},
+			"maxTries": {
+				"type": "integer"
+			}
+		}
+	}
+}

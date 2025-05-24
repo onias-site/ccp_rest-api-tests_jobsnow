@@ -1,0 +1,20 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"cause": {
+				"type": "text"
+			},
+			"stackTrace": {
+				"type": "text"
+			},
+			"message": {
+				"type": "text"
+			},
+			"type": {
+				"type": "keyword"
+			}
+			
+		}
+	}
+}

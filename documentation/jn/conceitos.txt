@@ -1,0 +1,22 @@
+#Novos
+Dto Less
+Dto Less Validation (DLV)
+Automatic Entity Id (AEI)
+Complex Query Dsl (CQD)
+Disposable Entity
+Auditable Entity
+Mirror Entity
+Cache Entity
+Entity Validation
+Entity Transformation
+Flow Status Entity Dsl (FSED)
+Flow Batch Operation Entity (FBOE)
+Online Query Less (OQL)
+Multi Get Id (MGI)
+Mitigate If And Else Less (MIAL)
+Null less
+#Fortalecidos
+Decorator Everywhere
+Separated Business Type
+Abstraction Tecnology Provider
+Imutable Object

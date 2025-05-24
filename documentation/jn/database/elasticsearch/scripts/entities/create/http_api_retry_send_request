@@ -1,0 +1,39 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"apiName": {
+				"type": "keyword"
+			},
+			"method": {
+				"type": "keyword"
+			},
+			"url": {
+				"type": "keyword"
+			},
+			"tries":{
+				"type": "integer"
+			},
+			"response": {
+				"type": "text"
+			},
+			"status": {
+				"type": "integer"
+			},
+			"timestamp": {
+				"type": "long"
+			},
+			"request": {
+				"type": "text"
+			},
+			"details": {
+				"type": "keyword"
+			},
+			"headers": {
+				"dynamic": "true",
+				"properties": {}
+			}
+
+		}
+	}
+}

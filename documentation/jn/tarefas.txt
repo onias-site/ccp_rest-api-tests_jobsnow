@@ -1,0 +1,70 @@
+Passos para liberar endpoints de curriculos na nuvem
+A) Gravar todos os curriculos localmente
+B) Endpointizar a gravação de curriculos
+C) Criar configuração de app engine para JN
+D) Criar configuração de app engine para VIS
+E) Criar conta na GCP
+F) Criar VM elasticsearch
+G) Abrir firewall da vm do elasticsearch
+H) Instalar java e pm2 na vm
+I) Criar crontab na vm
+J) Criar configuração para deploy de jars dos crons e dos consumers
+K) Deployar jars dos crons e dos consumers
+L) Resolver envio para fila
+M) Resolver salvamento do bucket do GCP
+N) Deploy do appengine
+O) Importação dos curriculos por endpoint
+P) Colocar domínio
+
+Passos para liberar endpoints de vagas na nuvem
+A) Importação das antigas vagas localmente
+B) Testes das buscas de curriculos
+C) Testes das visualizações de curriculos
+B) Deploy para appengine
+
+Passos para entregar aplicação completa
+A) Teste de busca de curriculos ao cadastrar vagas
+B) Teste de busca de curriculos ao no modo "schedulle"
+C) Ligar front no back
+D) Automação selenium para curriculos
+E) Automação selenium para vagas
+F) Deploy de front + back
+G) Notificar donos dos currículos
+H) Notificar donos das vagas
+
+
+Tarefas paralelas (Enquanto a equipe estiver testando match vaga/curriculo)
+A) suporte (contact-us)
+B) suporte por telegram (responder contact-us)
+C) curriculo no telegram
+D) desbloqueio de token no telegram
+E) curriculos por e-mail
+
+
+Passos pra colocar o deploy sem LN:
+A) Terminar as funcionalidades menores do VIS;
+B) Levantar palavras chaves e sinônimos;
+C) Criar testes para o VIS;
+D) Levantar massa de Dados para o VIS;
+E) Executar testes do backend do VIS;
+F) Migrar dados antigos;
+G) Ligar front no backend;
+H) Testar frontend;
+I) Fazer deploy;
+J) Comunicar recrutadores e candidatos;
+
+Passos pra colocar o deploy com LN:
+A) Preparar infra estrutura de LN;
+B) Implementar funcionalidades de LN;
+C) Testar funcionalidades de LN;
+D) Preparar funcionalidade de "amostra gratis" para recrutadores;
+E) Testar  funcionalidade de "amostra gratis" para recrutadores;
+F) Contratar o advogado tributarista;
+G) Implementar conselhos do advogado tributarista;
+H) Avisar candidatos sobre a possibilidade de ganhar dinheiro;I) Notificações para recrutadores e candidatos
+
+Não está validando sessão
+Precisa terminar o fluxo do endpoint de salvamento de curriculos
+Precisa paralelizar as filas
+
+

@@ -1,0 +1,29 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"email": {
+				"type": "keyword"
+			},
+			"balance": {
+				"type": "double"
+			},
+			"lastAccess": {
+				"type": "long"
+			},
+			"countAccess": {
+				"type": "integer"
+			},
+			"openedTickets": {
+				"type": "integer"
+			},
+			"closedTickets": {
+				"type": "integer"
+			},
+			"balanceTransacionsCount": {
+				"type": "integer"
+			}
+
+		}
+	}
+}
