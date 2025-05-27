@@ -19,6 +19,7 @@ import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.implementations.text.extractor.apache.tika.CcpApacheTikaTextExtractor;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.ccp.rest.api.utils.CcpRestApiUtils;
 import com.ccp.validation.CcpJsonInvalid;
 import com.jn.entities.JnEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginSessionValidation;
@@ -34,7 +35,7 @@ public class BaseTest {
 	public final static CcpJsonRepresentation ANSWERS_JSON =  REQUEST_TO_LOGIN.put(JnEntityLoginAnswers.Fields.goal.name(), "jobs").put(JnEntityLoginAnswers.Fields.channel.name(), "linkedin");
 
 	static {
-		boolean localEnviroment = new CcpStringDecorator("c:\\rh").file().exists();
+		boolean localEnvironment = CcpRestApiUtils.isLocalEnvironment();	
 
 		
 		CcpDependencyInjection.loadAllDependencies(
@@ -44,10 +45,10 @@ public class BaseTest {
 				new CcpMindrotPasswordHandler(),
 				new CcpElasticSearchDbRequest(),
 				new CcpApacheTikaTextExtractor(),
-				localEnviroment ? CcpLocalInstances.bucket.getLocalImplementation() : new CcpGcpFileBucket(),
-			    localEnviroment ? CcpLocalCacheInstances.map.getLocalImplementation() : new CcpGcpMemCache(),
-	    		localEnviroment ? CcpLocalInstances.email.getLocalImplementation() : new CcpSendGridEmailSender(),
-				localEnviroment ? CcpLocalInstances.mensageriaSender.getLocalImplementation() : new CcpGcpPubSubMensageriaSender()
+				localEnvironment ? CcpLocalInstances.bucket.getLocalImplementation() : new CcpGcpFileBucket(),
+			    localEnvironment ? CcpLocalCacheInstances.map.getLocalImplementation() : new CcpGcpMemCache(),
+	    		localEnvironment ? CcpLocalInstances.email.getLocalImplementation() : new CcpSendGridEmailSender(),
+				localEnvironment ? CcpLocalInstances.mensageriaSender.getLocalImplementation() : new CcpGcpPubSubMensageriaSender()
 				);	
 		
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpElasticSearchCrud(),

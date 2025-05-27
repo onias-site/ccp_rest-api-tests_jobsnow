@@ -92,6 +92,13 @@
 			<version>0.0.1-SNAPSHOT</version>
 
 		</dependency>
+		<dependency>
+			<groupId>com.ccp</groupId>
+			<artifactId>ccp_rest-api-handler-exception_spring</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+
+		</dependency>
+
 	</dependencies>
 
 </project>
