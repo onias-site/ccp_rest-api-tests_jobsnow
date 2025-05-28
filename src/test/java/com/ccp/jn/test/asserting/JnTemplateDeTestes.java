@@ -37,8 +37,8 @@ public abstract class JnTemplateDeTestes {
 				
 				);
 		
-		String pathToCreateEntityScript = "documentation\\database\\elasticsearch\\scripts\\entities\\create";
-		String pathToJavaClasses = "..\\jn-business-commons\\src\\main\\java\\com\\jn\\commons\\entities";
+		String pathToCreateEntityScript = "documentation\\jn\\database\\elasticsearch\\scripts\\entities\\create";
+		String pathToJavaClasses = "..\\jn_business_jobsnow\\src\\main\\java\\com\\jn\\entities";
 		String mappingJnEntitiesErrors = "c:\\logs\\mappingJnEntitiesErrors.json";
 		String insertErrors = "c:\\logs\\insertErrors.json";
 		CcpDbRequester database = CcpDependencyInjection.getDependency(CcpDbRequester.class);
@@ -111,7 +111,7 @@ public abstract class JnTemplateDeTestes {
 		String asPrettyJson = put.asPrettyJson();
 
 		String testName = this.getClass().getSimpleName();
-		new CcpStringDecorator("c:\\rh\\jn\\logs\\").folder().createNewFolderIfNotExists(testName)
+		new CcpStringDecorator("c:\\logs\\jn\\").folder().createNewFolderIfNotExists(testName)
 				.writeInTheFile(status + ".json", asPrettyJson);
 	}
 	
