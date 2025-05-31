@@ -6,6 +6,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.utils.CcpDbRequester;
+import com.ccp.exceptions.json.fields.CcpErrorJsonFieldsInvalid;
 import com.ccp.implementations.cache.gcp.memcache.CcpGcpMemCache;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
@@ -20,7 +21,6 @@ import com.ccp.implementations.text.extractor.apache.tika.CcpApacheTikaTextExtra
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.rest.api.utils.CcpRestApiUtils;
-import com.ccp.validation.CcpErrorJsonInvalid;
 import com.jn.entities.JnEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
@@ -66,13 +66,13 @@ public class BaseTest {
 		database.createTables(pathToCreateEntityScript, pathToJavaClasses, mappingJnEntitiesErrors, insertErrors);
 	}
 	
-	protected void saveErrors(CcpFileDecorator file, CcpErrorJsonInvalid e) {
+	protected void saveErrors(CcpFileDecorator file, CcpErrorJsonFieldsInvalid e) {
 		String path = file.getPath();
 		this.saveErrors(path, e);
 		throw new RuntimeException(e);
 	}
 	
-	protected void saveErrors(String path, CcpErrorJsonInvalid e) {
+	protected void saveErrors(String path, CcpErrorJsonFieldsInvalid e) {
 		String replace = path.replace(".json", "_errors.json");
 		String message = e.getMessage();
 		CcpFileDecorator reset = new CcpStringDecorator(replace).file().reset();

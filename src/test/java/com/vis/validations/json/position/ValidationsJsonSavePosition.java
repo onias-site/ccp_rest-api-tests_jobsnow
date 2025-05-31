@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.CcpEntityCrudOperationType;
-import com.ccp.validation.CcpErrorJsonInvalid;
+import com.ccp.exceptions.json.fields.CcpErrorJsonFieldsInvalid;
 import com.jn.mensageria.JnFunctionMensageriaSender;
 import com.vis.commons.BaseTest;
 import com.vis.entities.VisEntityResume;
@@ -45,7 +45,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(missingFields);
@@ -83,7 +83,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(missingFields);
@@ -106,7 +106,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(missingFields);
@@ -130,7 +130,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(missingFields);
@@ -153,7 +153,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(missingFields);
@@ -176,7 +176,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(missingFields);
@@ -199,7 +199,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(missingFields);
@@ -222,7 +222,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(missingFields);
@@ -245,7 +245,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(missingFields);
@@ -268,7 +268,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(missingFields);
@@ -291,7 +291,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(missingFields);
@@ -314,7 +314,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(missingFields);
@@ -337,7 +337,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(missingFields);
@@ -360,7 +360,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(missingFields);
@@ -387,7 +387,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);			
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 	
 				List<String> missingFields = e.result.getValueFromPath(new ArrayList<String>(), "errors", "SimpleObject.requiredAtLeastOne", "wrongFields");
@@ -412,7 +412,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(removeField);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(missingFields);
@@ -443,7 +443,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(insertValue);
 				System.out.println(apply);
 				assertTrue(false);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> wrongFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(wrongFields);
@@ -467,7 +467,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println("resume.fieldSet: " + resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(insertValue);
 				System.out.println("appply: " + apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> wrongFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","AllowedValues.arrayWithAllowedNumbers","wrongFields");				
 				System.out.println(wrongFields);
@@ -495,7 +495,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(insertValue);
 				System.out.println("depois do apply");
 				System.out.println("error..." + apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				System.out.println("entrou no catch");
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> missingFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
@@ -520,7 +520,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(insertValue);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> wrongFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(wrongFields);
@@ -543,7 +543,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(insertValue);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> wrongFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(wrongFields);
@@ -566,7 +566,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(insertValue);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> wrongFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(wrongFields);
@@ -589,7 +589,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(insertValue);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> wrongFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(wrongFields);
@@ -612,7 +612,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(insertValue);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> wrongFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(wrongFields);
@@ -635,7 +635,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(insertValue);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> wrongFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(wrongFields);
@@ -658,7 +658,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(insertValue);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> wrongFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(wrongFields);
@@ -681,7 +681,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(insertValue);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> wrongFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(wrongFields);
@@ -704,7 +704,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(insertValue);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> wrongFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(wrongFields);
@@ -727,7 +727,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 				System.out.println(resume.fieldSet());
 			CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(insertValue);
 				System.out.println(apply);
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> wrongFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredFields","wrongFields");
 				System.out.println(wrongFields);
@@ -752,7 +752,7 @@ public class ValidationsJsonSavePosition extends BaseTest {
 			
 				CcpJsonRepresentation apply = new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(insertValue);
 				System.out.println(apply);			
-			} catch (CcpErrorJsonInvalid e) {
+			} catch (CcpErrorJsonFieldsInvalid e) {
 				super.saveErrors(filePath, e);
 				List<Map<String,Object>> wrongFields = e.result.getValueFromPath(new ArrayList<Map<String,Object>>(), "errors","SimpleObject.requiredAtLeastOne","wrongFields");
 					System.out.println(wrongFields);

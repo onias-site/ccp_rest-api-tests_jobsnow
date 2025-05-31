@@ -17,8 +17,8 @@ import com.ccp.especifications.db.query.CcpDbQueryOptions;
 import com.ccp.especifications.db.query.CcpQueryExecutor;
 import com.ccp.especifications.http.CcpHttpHandler;
 import com.ccp.especifications.http.CcpHttpResponse;
+import com.ccp.exceptions.json.fields.CcpErrorJsonFieldsInvalid;
 import com.ccp.http.CcpHttpMethods;
-import com.ccp.validation.CcpErrorJsonInvalid;
 import com.vis.commons.BaseTest;
 import com.vis.entities.VisEntityResume;
 import com.vis.resumes.ImportResumeFromOldJobsNow;
@@ -69,7 +69,7 @@ public class ValidationsJsonSaveResume extends BaseTest {
 	
 		try {
 //			SyncServiceVisResume.INSTANCE.save(resume);
-		} catch (CcpErrorJsonInvalid e) {
+		} catch (CcpErrorJsonFieldsInvalid e) {
 			super.saveErrors(file, e);
 		}
 	}
@@ -82,7 +82,7 @@ public class ValidationsJsonSaveResume extends BaseTest {
 		System.out.println(resume);
 		try {
 //			SyncServiceVisResume.INSTANCE.save(resume);
-		} catch (CcpErrorJsonInvalid e) {
+		} catch (CcpErrorJsonFieldsInvalid e) {
 			CcpJsonRepresentation errorAsJson = e.getErrorAsJson();
 			ArrayList<Map<String, Object>> valueFromPath = errorAsJson
 					.getValueFromPath(new ArrayList<>(), "errors", "SimpleObject.requiredFields", "wrongFields");
@@ -116,7 +116,7 @@ public class ValidationsJsonSaveResume extends BaseTest {
 		System.out.println(resume);
 		try {
 //			SyncServiceVisResume.INSTANCE.save(resume);
-		} catch (CcpErrorJsonInvalid e) {
+		} catch (CcpErrorJsonFieldsInvalid e) {
 			super.saveErrors(file, e);
 		}
 	}
@@ -130,7 +130,7 @@ public class ValidationsJsonSaveResume extends BaseTest {
 		System.out.println(resume);
 		try {
 //			SyncServiceVisResume.INSTANCE.save(resume);
-		} catch (CcpErrorJsonInvalid e) {
+		} catch (CcpErrorJsonFieldsInvalid e) {
 			CcpJsonRepresentation errorAsJson = e.getErrorAsJson();
 			ArrayList<Map<String, Object>> valueFromPath = errorAsJson
 					.getValueFromPath(new ArrayList<>(), "errors", "SimpleObject.requiredFields", "wrongFields");
@@ -150,7 +150,7 @@ public class ValidationsJsonSaveResume extends BaseTest {
 		System.out.println(resume);
 		try {
 //			SyncServiceVisResume.INSTANCE.save(resume);
-		} catch (CcpErrorJsonInvalid e) {
+		} catch (CcpErrorJsonFieldsInvalid e) {
 			CcpJsonRepresentation errorAsJson = e.getErrorAsJson();
 			ArrayList<Map<String, Object>> valueFromPath = errorAsJson
 					.getValueFromPath(new ArrayList<>(), "errors", "SimpleObject.requiredFields", "wrongFields");
@@ -170,7 +170,7 @@ public class ValidationsJsonSaveResume extends BaseTest {
 		System.out.println(resume);
 		try {
 //			SyncServiceVisResume.INSTANCE.save(resume);
-		} catch (CcpErrorJsonInvalid e) {
+		} catch (CcpErrorJsonFieldsInvalid e) {
 			CcpJsonRepresentation errorAsJson = e.getErrorAsJson();
 			ArrayList<Map<String, Object>> valueFromPath = errorAsJson
 					.getValueFromPath(new ArrayList<>(), "errors", "SimpleObject.requiredFields", "wrongFields");
@@ -190,7 +190,7 @@ public class ValidationsJsonSaveResume extends BaseTest {
 		System.out.println(resume);
 		try {
 //			SyncServiceVisResume.INSTANCE.save(resume);
-		} catch (CcpErrorJsonInvalid e) {
+		} catch (CcpErrorJsonFieldsInvalid e) {
 			CcpJsonRepresentation errorAsJson = e.getErrorAsJson();
 			ArrayList<Map<String, Object>> valueFromPath = errorAsJson
 					.getValueFromPath(new ArrayList<>(), "errors", "SimpleText.requiredFields", "wrongFields");
@@ -210,7 +210,7 @@ public class ValidationsJsonSaveResume extends BaseTest {
 		System.out.println(resume);
 		try {
 //			SyncServiceVisResume.INSTANCE.save(resume);
-		} catch (CcpErrorJsonInvalid e) {
+		} catch (CcpErrorJsonFieldsInvalid e) {
 			CcpJsonRepresentation erroAsJson = e.getErrorAsJson();
 			ArrayList<Map<String, Object>> valueFromPath = erroAsJson
 					.getValueFromPath(new ArrayList<>(), "errors", "SimpleText.requiredFields", "wrongFields");
@@ -230,7 +230,7 @@ public class ValidationsJsonSaveResume extends BaseTest {
 		System.out.println(resume);
 		try {
 //			SyncServiceVisResume.INSTANCE.save(resume);			
-		} catch (CcpErrorJsonInvalid e) {
+		} catch (CcpErrorJsonFieldsInvalid e) {
 			CcpJsonRepresentation erroAsJson = e.getErrorAsJson();
 			ArrayList<Map<String, Object>> valueFromPath = erroAsJson
 					.getValueFromPath(new ArrayList<>(), "errors", "SimpleText.requiredFields", "wrongFields");
@@ -250,7 +250,7 @@ public class ValidationsJsonSaveResume extends BaseTest {
 		System.out.println(resume);
 		try {
 //			SyncServiceVisResume.INSTANCE.save(resume);			
-		} catch (CcpErrorJsonInvalid e) {
+		} catch (CcpErrorJsonFieldsInvalid e) {
 			CcpJsonRepresentation erroAsJson = e.getErrorAsJson();
 			ArrayList<Map<String, Object>> valueFromPath = erroAsJson
 					.getValueFromPath(new ArrayList<>(), "errors", "SimpleText.requiredFields", "wrongFields");
@@ -270,7 +270,7 @@ public class ValidationsJsonSaveResume extends BaseTest {
 		System.out.println(resume);
 		try {
 //			SyncServiceVisResume.INSTANCE.save(resume);			
-		} catch (CcpErrorJsonInvalid e) {
+		} catch (CcpErrorJsonFieldsInvalid e) {
 			CcpJsonRepresentation erroAsJson = e.getErrorAsJson();
 			ArrayList<Map<String, Object>> valueFromPath = erroAsJson
 					.getValueFromPath(new ArrayList<>(), "errors", "SimpleText.requiredFields", "wrongFields");
