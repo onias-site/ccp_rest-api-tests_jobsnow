@@ -1,4 +1,4 @@
-package com.vis.rest.api.resume;
+package com.vis.rest.api.resume.validations;
 
 import org.junit.Test;
 
@@ -18,6 +18,7 @@ import com.jn.status.login.JnProcessStatusCreateLoginEmail;
 import com.jn.status.login.JnProcessStatusExecuteLogin;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.commons.VisTemplateDeTestes;
+import com.vis.rest.api.resume.status.SaveResumeStatus;
 
 public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 

@@ -1,4 +1,4 @@
-package com.vis.rest.api.resume;
+package com.vis.rest.api.resume.status;
 
 import com.ccp.process.CcpProcessStatus;
 

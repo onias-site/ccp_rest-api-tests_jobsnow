@@ -1,4 +1,4 @@
-package com.performance;
+package com.ccp.performance;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;

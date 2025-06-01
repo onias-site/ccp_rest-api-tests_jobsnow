@@ -1,4 +1,4 @@
-package com.vis.rest.api.resume;
+package com.vis.rest.api.resume.validations;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.random;
+package com.ccp.random;
 
 import java.util.ArrayList;
 import java.util.HashSet;
