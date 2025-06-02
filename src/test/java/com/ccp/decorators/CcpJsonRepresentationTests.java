@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -24,6 +25,7 @@ import com.ccp.exceptions.json.CCpErrorJsonFieldIsNotValidJsonList;
 import com.ccp.exceptions.json.CcpErrorJsonFieldNotFound;
 import com.ccp.exceptions.json.CcpErrorJsonPathIsMissing;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import com.jn.entities.JnEntityAsyncTask;
 
 public class CcpJsonRepresentationTests {
 	{
@@ -1089,4 +1091,29 @@ public class CcpJsonRepresentationTests {
 		assertFalse(json.isInnerJson("campo8"));
 		assertFalse(json.isInnerJson("campo9"));
 	}
+	
+	@Test
+	public void getExclusiveListTest() {
+		
+		CcpCollectionDecorator decorator = new CcpCollectionDecorator(new Object[] {"a", "b", "c", "d", "e", "f"});
+		
+		List<String> externalList = Arrays.asList("b", "c", "d");
+		{
+			List<String> exclusiveList = decorator.getExclusiveList(externalList);
+
+			boolean containsAll = exclusiveList.containsAll(Arrays.asList("a", "e", "f"));
+			
+			assertTrue(containsAll);
+			
+		}
+		{
+			List <String> intersectList = decorator.getIntersectList(externalList);
+			
+			boolean containsAll = intersectList.containsAll(Arrays.asList("b", "c", "d"));
+			
+			assertTrue(containsAll);
+		}		
+	
+	}
+	
 }
