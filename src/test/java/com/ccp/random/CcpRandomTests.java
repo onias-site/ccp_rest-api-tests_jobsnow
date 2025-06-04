@@ -44,7 +44,7 @@ import com.jn.mensageria.JnFunctionMensageriaSender;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
 
-public class JnRandomTests {
+public class CcpRandomTests {
 	static{ 
 		CcpDependencyInjection.loadAllDependencies(
 				new CcpElasticSearchQueryExecutor(),
@@ -59,6 +59,31 @@ public class JnRandomTests {
 	}
 	
 	public static void main(String[] args) throws Exception {
+		Pai x = new Pai() {
+			
+			@Override
+			void a() {
+				// TODO Auto-generated method stub
+				
+			}
+		};
+		
+		MinhaInterface mi = new MinhaInterface() {
+			
+			@Override
+			public String meuMetodo(String maria, String jose) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
+		
+		MinhaInterface mi2 = (p1, p2) -> p1 + "=" + p2;
+		System.out.println(mi2.getClass().getName());
+		Pessoa p1 = new Pessoa(40, "Onias");
+		System.out.println(p1);
+	}
+
+	static void mudarLocalDoArquivo() {
 		CcpFolderDecorator folder = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\github").folder();
 		
 		folder.readFiles(file -> {
@@ -438,4 +463,42 @@ public class JnRandomTests {
 //					CcpTimeDecorator.appendLog(counter);
 				}, "vaga");
 	}
+	
+	
 }
+
+abstract class Pai{
+	abstract void a();
+}
+
+class Filho1 extends Pai{
+	void a() {
+	
+	}
+}
+class Filho2 extends Pai{
+	void a() {
+	
+	}
+}
+ interface MinhaInterface {
+	 String meuMetodo(String p1, String p2);
+ }
+
+ 
+ class Pessoa{
+	 final int idade;
+	 final String nome;
+	public Pessoa(int idade, String nome) {
+		this.idade = idade;
+		this.nome = nome;
+	}
+	@Override
+	public String toString() {
+		return "Pessoa [idade=" + idade + ", nome=" + nome + "]";
+	}
+	 
+	 
+ }
+
+

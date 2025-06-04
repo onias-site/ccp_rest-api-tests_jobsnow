@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -25,7 +24,6 @@ import com.ccp.exceptions.json.CCpErrorJsonFieldIsNotValidJsonList;
 import com.ccp.exceptions.json.CcpErrorJsonFieldNotFound;
 import com.ccp.exceptions.json.CcpErrorJsonPathIsMissing;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jn.entities.JnEntityAsyncTask;
 
 public class CcpJsonRepresentationTests {
 	{
@@ -1117,3 +1115,4 @@ public class CcpJsonRepresentationTests {
 	}
 	
 }
+

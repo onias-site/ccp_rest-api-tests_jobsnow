@@ -70,7 +70,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 		
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
 		
-		CcpJsonRepresentation jsonDeRetornoDoTeste = this.getJsonResponseFromEndpoint(CcpProcessStatusDefault.SUCCESS, scenarioName, "documentation/tests/resume/curriculoComArquivoInvalido.json");
+		CcpJsonRepresentation jsonDeRetornoDoTeste = this.getJsonResponseFromEndpoint(CcpProcessStatusDefault.SUCCESS, scenarioName, "documentation/vis/tests/resume/curriculoComArquivoInvalido.json");
 		
 		 CcpJsonRepresentation result = new CcpGetEntityId(jsonDeRetornoDoTeste)
 			.toBeginProcedureAnd()

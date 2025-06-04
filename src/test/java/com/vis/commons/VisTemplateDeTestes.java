@@ -178,7 +178,6 @@ public abstract class VisTemplateDeTestes {
 				,CcpEntityBulkOperationType.delete 
 				,JnEntityEmailMessageSent.ENTITY
 				,JnEntityLoginPassword.ENTITY
-				//LATER salvar tipo de formato temporal escolhido como coluna na expurgable
 				,JnEntityLoginSessionConflict.ENTITY
 				,JnEntityLoginToken.ENTITY
 				,JnEntityLoginEmail.ENTITY

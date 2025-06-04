@@ -15,6 +15,9 @@
 			"entity": {
 				"type": "keyword"
 			},
+			"format": {
+				"type": "keyword"
+			},
 			"timestamp": {
 				"type": "long"
 			}

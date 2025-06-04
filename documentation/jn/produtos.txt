@@ -2,6 +2,7 @@ CCP => Framework de injeção de dependências,k APIs utilitárias (decorators) 
 JN  => Implementação da infraestrutura central do JobsNow que é alicerce para a construção de todos os demais produtos
 
 VIS => Módulo de visualização, responsável por cobrar pessoas por visualizarem currículos
+
 REP => Módulo de reputação, módulo responsável por cobrar pessoas para verem comentários e avaliações uma sobre as outras
 IN  => Módulo de indicação, módulo responsável por remunerar pessoas por indicações de novos currículos na plataforma 
 TES => Módulo de provas, módulo responsável por execução de testes para processos seletivos
