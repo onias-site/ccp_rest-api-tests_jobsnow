@@ -1,11 +1,12 @@
 package com.vis.commons;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.function.Function;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.decorators.CcpReflectionConstructorDecorator;
+import com.ccp.decorators.CcpReflectionMethodDecorator;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.especifications.db.utils.CcpEntity;
 import com.ccp.exceptions.db.utils.CcpErrorEntityPrimaryKeyIsMissing;
@@ -75,19 +76,32 @@ public enum LoginActions implements Function<CcpJsonRepresentation, CcpJsonRepre
 //				System.out.println();
 			}
 			Class<? extends JnServiceLogin> clazz = JnServiceLogin.INSTANCE.getClass();
-			Method declaredMethod = clazz.getDeclaredMethod(this.name(), CcpJsonRepresentation.class);
-//			System.out.println("tentando executar: " + this);
-			Object invoke = declaredMethod.invoke(JnServiceLogin.INSTANCE, json);
-			CcpJsonRepresentation jsn = (CcpJsonRepresentation)invoke;
-			return jsn;
-		}catch(InvocationTargetException e) {
-			if(e.getCause() instanceof CcpErrorFlowDisturb flowDisturb) {
-//				System.out.println("Desvio de fluxo: " + flowDisturb.status);
-				throw flowDisturb;
-			}
-			throw new RuntimeException(e);
+			
+			CcpReflectionMethodDecorator methodOperationSpecification = new CcpReflectionConstructorDecorator(clazz)
+					.fromInstance(JnServiceLogin.INSTANCE).fromDeclaredMethod(this.name(), CcpJsonRepresentation.class);
+			
+			CcpJsonRepresentation nextJson = methodOperationSpecification.invokeFromMethod(json);
+			
+			return nextJson;
 		}catch (Exception e) {
-			throw new RuntimeException(e);
+			
+			Throwable cause = e.getCause();
+			
+			boolean thisMethodDoesNotThrownAnException = cause instanceof InvocationTargetException == false;
+			
+			if(thisMethodDoesNotThrownAnException) {
+				throw new RuntimeException(e);
+			}
+			
+			Throwable subCause = cause.getCause();
+			
+			boolean theExceptionThrownByTheMethodIsNotFlowDeviation = subCause instanceof CcpErrorFlowDisturb == false;
+			
+			if(theExceptionThrownByTheMethodIsNotFlowDeviation) {
+				throw new RuntimeException(e);
+			}
+			
+			throw (CcpErrorFlowDisturb) subCause;
 		}
 	}
 	
