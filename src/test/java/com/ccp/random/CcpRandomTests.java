@@ -58,30 +58,6 @@ public class CcpRandomTests {
 				);
 	}
 	
-	public static void main(String[] args) throws Exception {
-		Pai x = new Pai() {
-			
-			@Override
-			void a() {
-				// TODO Auto-generated method stub
-				
-			}
-		};
-		
-		MinhaInterface mi = new MinhaInterface() {
-			
-			@Override
-			public String meuMetodo(String maria, String jose) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-		};
-		
-		MinhaInterface mi2 = (p1, p2) -> p1 + "=" + p2;
-		System.out.println(mi2.getClass().getName());
-		Pessoa p1 = new Pessoa(40, "Onias");
-		System.out.println(p1);
-	}
 
 	static void mudarLocalDoArquivo() {
 		CcpFolderDecorator folder = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\github").folder();
