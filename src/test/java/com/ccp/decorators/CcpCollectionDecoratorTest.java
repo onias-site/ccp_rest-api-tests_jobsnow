@@ -1,7 +1,8 @@
 package com.ccp.decorators;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -16,18 +17,15 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.ccp.constantes.CcpOtherConstants;
-import com.ccp.decorators.CcpCollectionDecorator;
-import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.decorators.CcpNumberDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.entities.JnEntityAsyncTask;
-
+ 
 public class CcpCollectionDecoratorTest {
 	{
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());	
 	}
-
+ 
 	@Test
 	public void isLongNumberListTest() {
 		List<Integer> asList             = Arrays.asList(1,2,3);
@@ -52,7 +50,7 @@ public class CcpCollectionDecoratorTest {
 		boolean validDoubleList = decorator.isDoubleNumberList(); 
 		assertTrue(validDoubleList);
 	}
-	
+	 
 	@Test
 	public void isNotDoubleNumberListTest() {
 		//Object[] asDoubleInt = new Object[]{String.class, "String", false, true, new Object() };
@@ -64,7 +62,8 @@ public class CcpCollectionDecoratorTest {
 	
 	@Test
 	public void isBooleanListTest() {
-		List<Boolean> asBooleanList      = Arrays.asList(true, false, 1==1, (true && false));
+		int variavel = 1;
+		List<Boolean> asBooleanList      = Arrays.asList(true, false, variavel==1, (true && false));
 		CcpCollectionDecorator decorator = new CcpCollectionDecorator(asBooleanList);
 		boolean validBooleanList         = decorator.isBooleanList();
 		assertTrue(validBooleanList);
@@ -215,28 +214,32 @@ public class CcpCollectionDecoratorTest {
         assertFalse(decorator3.content.size() != 3);	
 	}
 	
+//	@Test
+//	public void hasNonDuplicatedItemsTest2() {
+//		List<Object> items               = Arrays.asList(10,true,false);// 3 itens diferentes
+//		CcpCollectionDecorator decorator = new CcpCollectionDecorator(items);
+//		int s1 = decorator.content.size();
+//		HashSet<Object> hashSet = new HashSet<Object>(items); // resolve duplicatas (se houver)
+//		int s2 = hashSet.size();
+//		System.out.println("size1:"+ s1);
+//		System.out.println("size2:"+ s2);
+//        assertTrue(s1 == s2);	
+//	}
+	
 	@Test
 	public void hasNonDuplicatedItemsTest() {
 		List<Object> items               = Arrays.asList(10,true,false);// 3 itens diferentes
 		CcpCollectionDecorator decorator = new CcpCollectionDecorator(items);
-		int s1 = decorator.content.size();
-		HashSet<Object> hashSet = new HashSet<Object>(items); // resolve duplicatas (se houver)
-		int s2 = hashSet.size();
-		System.out.println("size1:"+ s1);
-		System.out.println("size2:"+ s2);
-        assertTrue(s1 == s2);	
+		boolean bool                     = decorator.hasNonDuplicatedItems();
+        assertTrue(bool); // deve retornar true
 	}
-	
+	  
 	@Test
 	public void hasDuplicatedItemsTest() {
 		List<Object> items               = Arrays.asList(3f,3f, "Hello", "Hello");// 4 itens (duplicatas)
 		CcpCollectionDecorator decorator = new CcpCollectionDecorator(items);
-		int s1 = decorator.content.size();
-		HashSet<Object> hashSet = new HashSet<Object>(items); // deve retornar 2 itens
-		int s2 = hashSet.size();
-		System.out.println("size1:"+ s1);
-		System.out.println("size2:"+ s2);
-        assertFalse(s1 == s2);	
+		boolean bool                     = decorator.hasNonDuplicatedItems();
+        assertFalse(bool); // deve retornar false
 	}
 	
 	@Test
@@ -272,10 +275,101 @@ public class CcpCollectionDecoratorTest {
 			boolean      containsAll   = intersectList.containsAll(Arrays.asList("b", "c", "d"));
 			assertTrue(containsAll);
 			
-		}
-		
+		}	
 	}
+	
+//	@Test
+//	public void iteratorTest() {
+//		CcpJsonRepresentation        json = CcpOtherConstants.EMPTY_JSON;
+//		CcpCollectionDecorator collection = new CcpCollectionDecorator(json,"campoQueNaoEstaPresenteNoJson");
+//		for (Object object : collection) {
+//			
+//		} 
+//		Iterator<Object> iterator = collection.iterator();
+//		while(iterator.hasNext()) {
+//			Object object = iterator.next();
+//		}		
+//	} 
+	
+	@Test
+	public void iteratorTest() {
+        List<Object>           items     = Arrays.asList("item1", "item2", "item3");
+        CcpCollectionDecorator decorator = new CcpCollectionDecorator(items);
+        Iterator<Object>       iterator  = decorator.iterator();
+          
+        assertNotNull(iterator); //, "O iterador não deve ser nulo");
+
+        assertTrue(iterator.hasNext());//, "O iterador deve ter elementos");
+        assertEquals("item1", iterator.next()); //, "O primeiro elemento deve ser 'item1'");
+        assertEquals("item2", iterator.next()); //, "O segundo elemento deve ser 'item2'");
+        assertEquals("item3", iterator.next()); //, "O terceiro elemento deve ser 'item3'");
+        assertFalse(iterator.hasNext()); //, "O iterador não deve ter mais elementos");
+    }
+	
+	@Test
+	public void hasIntersectTest() {
+		List<Object> list                = Arrays.asList(1,2,3,4,5);
+		Object[] array                   = new Integer[]{3,4};
+		CcpCollectionDecorator decorator = new CcpCollectionDecorator(array);
+		boolean bool                     = decorator.hasIntersect(list);
+		assertTrue(bool);	
+	}
+	
+	@Test 
+	public void hasNoIntersectTest() {
+		List<Object> list                = Arrays.asList(1,2,3,4,5);
+		Object[] array                   = new Integer[]{0,6,10};
+		CcpCollectionDecorator decorator = new CcpCollectionDecorator(array);
+		boolean bool                     = decorator.hasIntersect(list);
+		assertFalse(bool);	
+	}
+	
+    @Test
+    public void getSubCollectionTest() {
+        List<Object> content = Arrays.asList("A", "B", "C", "D", "E");
+        CcpCollectionDecorator decorator = new CcpCollectionDecorator(content);
+        CcpCollectionDecorator subCollection = decorator.getSubCollection(1, 3);
+        List<Object> expected = Arrays.asList("B", "C");
+		System.out.println("getContent:" + decorator.getContent());
+		System.out.println("subCollection:" + subCollection.getContent());
+		System.out.println("expected:" + expected);
+        assertTrue(expected.equals(subCollection.getContent()));
+        
+        //if(end > this.content.size()) {
+	 	//   end = this.content.size();
+        CcpCollectionDecorator subCollection2 = decorator.getSubCollection(1, 6);// índice fora do array
+        System.out.println("end:" + subCollection2.content.size());
+        assertTrue(subCollection2.content.size() == 4);
+  }
+     
+	
+	  @Test  
+	  public void constructorTest() { 
+		  CcpJsonRepresentation json0        = new CcpJsonRepresentation(); // json vazio {}// 
+		  Collection<Object>    jsonBodyList = Arrays.asList("Brazil", "Uruguai", "Chile");
+		  CcpJsonRepresentation json1        = CcpOtherConstants.EMPTY_JSON
+												.put("pais"  ,jsonBodyList)
+												.put("estado","Sao Paulo")
+												.put("cidade","Santos");
+		  System.out.println("jsonVazio:   " + json0); 
+		  System.out.println("jsonContent: " + json1); 
+		  CcpCollectionDecorator decorator0 = new CcpCollectionDecorator(json0, "falseKey"); //
+		  CcpCollectionDecorator decorator1 = new CcpCollectionDecorator(json1, "pais"); //
+		  CcpCollectionDecorator decorator2 = new CcpCollectionDecorator(json1, "estado"); //
+		  CcpCollectionDecorator decorator3 = new CcpCollectionDecorator(json1, "cidade"); //
+		  System.out.println("json0 content:" + decorator0.content); 
+		  System.out.println("json1 content:" + decorator1.content); 
+		  System.out.println("json1 content:" + decorator2.content); 
+		  System.out.println("json1 content:" + decorator3.content); 
+
+		  List<Object> vazio = new ArrayList<>();
+		  System.out.println("vazio " + vazio + " " + decorator0.getContent()); 
+		  assertEquals(vazio, decorator0.getContent()); // EMPTY_JSON
+		  assertEquals(decorator1.getContent(), jsonBodyList);// ("pais"  ,"Brazil", "Uruguai", "Chile")
+		  assertTrue(decorator2.getContent().contains(json1.get("estado"))); // ("estado","Sao Paulo")
+		  assertTrue(decorator3.getContent().contains(json1.get("cidade"))); // ("cidade","Santos")
+		  }
 		
 }
-
+ 
 

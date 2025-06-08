@@ -44,7 +44,7 @@ public abstract class VisTemplateDeTestes {
 
 	static {
 		CcpDependencyInjection.loadAllDependencies(
-				CcpLocalInstances.mensageriaSender.getLocalImplementation(),
+				CcpLocalInstances.mensageriaSender,
 				new CcpElasticSearchDbRequest(), 
 				new CcpMindrotPasswordHandler(),
 				CcpLocalCacheInstances.mock,
@@ -143,10 +143,6 @@ public abstract class VisTemplateDeTestes {
 		return json;
 
 	}
-	//tryToExecuteThisProcess
-	//usingThisFollowingJson
-	//butIfHappens
-	//
 	
 	public CcpJsonRepresentation executeThisFlow(
 			Function<CcpJsonRepresentation, CcpJsonRepresentation> first

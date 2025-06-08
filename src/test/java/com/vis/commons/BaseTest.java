@@ -45,10 +45,10 @@ public class BaseTest {
 				new CcpMindrotPasswordHandler(),
 				new CcpElasticSearchDbRequest(),
 				new CcpApacheTikaTextExtractor(),
-				localEnvironment ? CcpLocalInstances.bucket.getLocalImplementation() : new CcpGcpFileBucket(),
-			    localEnvironment ? CcpLocalCacheInstances.map.getLocalImplementation() : new CcpGcpMemCache(),
-	    		localEnvironment ? CcpLocalInstances.email.getLocalImplementation() : new CcpSendGridEmailSender(),
-				localEnvironment ? CcpLocalInstances.mensageriaSender.getLocalImplementation() : new CcpGcpPubSubMensageriaSender()
+				localEnvironment ? CcpLocalInstances.bucket : new CcpGcpFileBucket(),
+			    localEnvironment ? CcpLocalCacheInstances.map : new CcpGcpMemCache(),
+	    		localEnvironment ? CcpLocalInstances.email : new CcpSendGridEmailSender(),
+				localEnvironment ? CcpLocalInstances.mensageriaSender : new CcpGcpPubSubMensageriaSender()
 				);	
 		
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpElasticSearchCrud(),

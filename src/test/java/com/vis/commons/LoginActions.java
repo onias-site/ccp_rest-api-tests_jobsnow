@@ -7,6 +7,7 @@ import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpReflectionConstructorDecorator;
 import com.ccp.decorators.CcpReflectionMethodDecorator;
+import com.ccp.decorators.CcpReflectionOptionsDecorator;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.especifications.db.utils.CcpEntity;
 import com.ccp.exceptions.db.utils.CcpErrorEntityPrimaryKeyIsMissing;
@@ -49,19 +50,9 @@ public enum LoginActions implements Function<CcpJsonRepresentation, CcpJsonRepre
 		this.entities = entities;
 	}
 
-	/*
-	 * 
-		executeLogin
-		createLoginEmail
-		executeLogin
-		saveAnswers
-		createLoginToken
-		savePassword
-	 */
 	public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 		try {
 			LoginActions[] values = values();
-			System.out.println("Executando: " + this);
 			for (LoginActions loginActions : values) {
 				if(loginActions.entities.length == 0) {
 					continue;
@@ -69,16 +60,13 @@ public enum LoginActions implements Function<CcpJsonRepresentation, CcpJsonRepre
 				CcpJsonRepresentation jsonWithSubjectType = json.put(JnEntityEmailMessageSent.Fields.subjectType.name(), JnBusinessSendUserToken.class.getName());
 				loginActions.printAllStatus(jsonWithSubjectType);
 			}
-			System.out.println("-----------------------------------------");
 			
-			boolean equals = LoginActions.executeLogout.equals(this);
-			if(equals) {
-//				System.out.println();
-			}
 			Class<? extends JnServiceLogin> clazz = JnServiceLogin.INSTANCE.getClass();
 			
-			CcpReflectionMethodDecorator methodOperationSpecification = new CcpReflectionConstructorDecorator(clazz)
-					.fromInstance(JnServiceLogin.INSTANCE).fromDeclaredMethod(this.name(), CcpJsonRepresentation.class);
+			String name = this.name();
+			CcpReflectionConstructorDecorator reflectionConstructor = new CcpReflectionConstructorDecorator(clazz);
+			CcpReflectionOptionsDecorator fromNewInstance = reflectionConstructor.fromNewInstance();
+			CcpReflectionMethodDecorator methodOperationSpecification = fromNewInstance.fromDeclaredMethod(name, CcpJsonRepresentation.class);
 			
 			CcpJsonRepresentation nextJson = methodOperationSpecification.invokeFromMethod(json);
 			
@@ -100,7 +88,7 @@ public enum LoginActions implements Function<CcpJsonRepresentation, CcpJsonRepre
 			if(theExceptionThrownByTheMethodIsNotFlowDeviation) {
 				throw new RuntimeException(e);
 			}
-			
+			System.out.println(subCause.getMessage());
 			throw (CcpErrorFlowDisturb) subCause;
 		}
 	}
@@ -121,6 +109,5 @@ public enum LoginActions implements Function<CcpJsonRepresentation, CcpJsonRepre
 				allStatus = allStatus.put(entityName, false);
 			}
 		}
-		System.out.println(this + ": " + allStatus);
 	}
 }
