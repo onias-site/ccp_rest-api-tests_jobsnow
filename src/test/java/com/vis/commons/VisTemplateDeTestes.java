@@ -46,12 +46,12 @@ public abstract class VisTemplateDeTestes {
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.mensageriaSender,
 				new CcpElasticSearchDbRequest(), 
-				new CcpMindrotPasswordHandler(),
+				new CcpMindrotPasswordHandler(), 
 				CcpLocalCacheInstances.mock,
 				new CcpElasticSerchDbBulk(),
 				new CcpElasticSearchCrud(),
 				new CcpGsonJsonHandler(), 
-				new CcpApacheMimeHttp(), 
+				new CcpApacheMimeHttp(),  
 				CcpLocalInstances.email
 				);
 		
@@ -99,7 +99,7 @@ public abstract class VisTemplateDeTestes {
 		CcpHttpHandler http = new CcpHttpHandler(expectedStatus, CcpOtherConstants.DO_NOTHING);
 		String path = this.ENDPOINT_URL + uri;
 		String name = this.getClass().getName();
-		String asUgglyJson = body.asUgglyJson();
+		String asUgglyJson = body.asUgglyJson(); 
 
 		CcpHttpResponse response = http.ccpHttp.executeHttpRequest(path, method, headers, asUgglyJson);
 
@@ -197,7 +197,7 @@ public abstract class VisTemplateDeTestes {
 		.and()
 		.endThisStatement(whatToNext);
 		
-		return endThisStatement;
+		return endThisStatement; 
 	}
 	//LATER melhorar a intuitividade dos bounds no retorno do json
 

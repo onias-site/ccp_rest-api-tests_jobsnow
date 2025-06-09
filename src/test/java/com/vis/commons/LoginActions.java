@@ -32,7 +32,7 @@ public enum LoginActions implements Function<CcpJsonRepresentation, CcpJsonRepre
 	renameTokenField{
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			CcpJsonRepresentation renameField = json.renameField("sessionToken", "token");
-			return renameField;
+			return renameField; 
 		}
 	},
 	readTokenFromReceivedEmail{
