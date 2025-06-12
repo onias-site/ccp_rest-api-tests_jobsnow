@@ -8,6 +8,7 @@ import com.ccp.especifications.db.crud.CcpGetEntityId;
 import com.ccp.especifications.db.utils.CcpEntityCrudOperationType;
 import com.ccp.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatusDefault;
+import com.jn.business.login.JnBusinessSendUserToken;
 import com.jn.entities.JnEntityAsyncTask;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityLoginAnswers;
@@ -70,7 +71,10 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 		
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
 		
-		CcpJsonRepresentation jsonDeRetornoDoTeste = this.getJsonResponseFromEndpoint(CcpProcessStatusDefault.SUCCESS, scenarioName, "documentation/vis/tests/resume/curriculoComArquivoInvalido.json");
+		CcpJsonRepresentation jsonDeRetornoDoTeste = this
+				.getJsonResponseFromEndpoint(CcpProcessStatusDefault.SUCCESS, scenarioName, "documentation/vis/tests/resume/curriculoComArquivoInvalido.json")
+				.put(JnEntityEmailMessageSent.Fields.subjectType.name(), JnBusinessSendUserToken.class.getName())
+				;
 		
 		 CcpJsonRepresentation result = new CcpGetEntityId(jsonDeRetornoDoTeste)
 			.toBeginProcedureAnd()
