@@ -1,9 +1,0 @@
-A) Apresentação do Lucas
-B) Testes do Jasson
-C) Problema de desemprego
-D) Problema com sendgrid
-E) Novo domínio
-F) Impossibilidade de haver o Modulo de buscas
-G) Produto da hierarquização
-H) Importação das vagas
-I) Cruzamento vaga Vs curriculo
