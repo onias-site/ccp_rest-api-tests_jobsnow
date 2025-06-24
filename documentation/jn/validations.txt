@@ -1,27 +1,2 @@
--required(yes, no, atLeastOne)
+@CcpJsonFieldTimeType(minValue=-16, maxValue=223,type=CcpJsonFieldTimeOptions.DAY)
 
-#text:
--minLength: string
--maxLength: string
--allowedValues: []
--regex: string
-
-#integer:
--maxValue: string
--minValue: string
--allowedValues: []
-
-#time:
--type(day, year)
--maxValue: string
--minValue: string
-
-#object:
--type: (boolean, json, list, integer, text, time)
-
-#array:
--type: (boolean, json, list, integer, text, time)
--nonRepeatedItems: boolean
--allowEmpty: boolean
--minSize: string
--maxSize: string

@@ -1,5 +1,6 @@
 package com.ccp.random;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +38,6 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
-import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
@@ -53,23 +53,11 @@ public class CcpRandomTests {
 	}
 
 	public static void main(String[] args) {
-		CcpJsonRepresentation json = new CcpJsonRepresentation("{\r\n"
-				+ "  \"email\": \"onias85@gmail.com\",\r\n"
-				+ "  \"ip\": \"localhost\",\r\n"
-				+ "  \"language\": \"portuguese\",\r\n"
-				+ "  \"subjectType\": \"com.jn.business.login.JnBusinessSendUserToken\",\r\n"
-				+ "  \"userAgent\": \"Apache-HttpClient/4.5.4 (Java/17.0.9)\"\r\n"
-				+ "}");
-		
-		boolean exists = JnEntityEmailMessageSent.ENTITY.exists(json);
-		System.out.println(exists);
-		
-		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
-		CcpSelectUnionAll unionAll = crud.unionAll(json, JnDeleteKeysFromCache.INSTANCE, JnEntityEmailMessageSent.ENTITY);
-		boolean presentInThisUnionAll = JnEntityEmailMessageSent.ENTITY.isPresentInThisUnionAll(unionAll, json);
-		System.out.println(presentInThisUnionAll);
-		String calculateId = JnEntityEmailMessageSent.ENTITY.calculateId(json);
-		System.out.println(calculateId);
+		Field[] declaredFields = JnEntityJobsnowError.Fields.class.getDeclaredFields();
+		for (Field field : declaredFields) {
+			System.out.println(field.getName());
+		}
+
 	}
 
 	static void mudarLocalDoArquivo() {

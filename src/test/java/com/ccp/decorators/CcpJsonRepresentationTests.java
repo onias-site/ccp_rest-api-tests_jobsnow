@@ -1118,7 +1118,8 @@ public class CcpJsonRepresentationTests {
 	public void x() {
 		String email = "onias85@gmail.com@teste.com";
 		CcpEmailDecorator decorator = new CcpStringDecorator(email).email();
-		assertFalse(decorator.isValid());
+		boolean valid = decorator.isValid();
+		assertFalse(valid);
 	}
 	
 }
