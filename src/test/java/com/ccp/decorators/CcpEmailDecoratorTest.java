@@ -182,6 +182,9 @@ public class CcpEmailDecoratorTest {
 		assertFalse(valid);
     	boolean valid2 = new CcpStringDecorator("onias85@gmail.com.brx").email().isValid();
 		assertFalse(valid2);
+
+		boolean valid3 = new CcpStringDecorator("onias85@gmail.com.br").email().isValid();
+		assertTrue(valid3);
     	
     }
 
