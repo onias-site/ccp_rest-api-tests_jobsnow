@@ -20,7 +20,10 @@ import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 import com.vis.entities.VisEntityResume;
-
+enum ResumeTransformationsConstants{
+	mudanca, homeoffice, dataDeInclusao, id, originalEmail, email
+	
+}
 public enum ResumeTransformations implements CcpTransformers{
 	AddDddsInResume {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
@@ -31,49 +34,49 @@ public enum ResumeTransformations implements CcpTransformers{
 					"71", "73", "74", "75", "77", "79", "81", "82", "83", "84", "85", "86", "87", "88", "89", "91",
 					"92", "93", "94", "95", "96", "97", "98", "99");
 			
-			boolean mudanca = json.getAsBoolean("mudanca");
+			boolean mudanca = json.getAsBoolean(ResumeTransformationsConstants.mudanca);
 
 			if (mudanca) {
 
-				CcpJsonRepresentation put = json.put(VisEntityResume.Fields.ddd.name(), ddds);
+				CcpJsonRepresentation put = json.put(VisEntityResume.Fields.ddd, ddds);
 
 				return put;
 			}
 
-			boolean homeoffice = json.getAsBoolean("homeoffice");
+			boolean homeoffice = json.getAsBoolean(ResumeTransformationsConstants.homeoffice);
 
 			if (homeoffice) {
 				List<String> ddd10 = Arrays.asList("10");
-				CcpJsonRepresentation put = json.put(VisEntityResume.Fields.ddd.name(), ddd10);
+				CcpJsonRepresentation put = json.put(VisEntityResume.Fields.ddd, ddd10);
 				return put;
 			}
 
 			try {
-				Integer ddd = json.getAsIntegerNumber("ddd");
+				Integer ddd = json.getAsIntegerNumber(VisEntityResume.Fields.ddd);
 				boolean equals = Integer.valueOf(0).equals(ddd);
 				if(equals) {
-					CcpJsonRepresentation put = json.put(VisEntityResume.Fields.ddd.name(), ddds);
+					CcpJsonRepresentation put = json.put(VisEntityResume.Fields.ddd, ddds);
 					return put;
 				}
 			} catch (Exception e) {
 
 			}
 			
-			String ddd = json.getAsString(VisEntityResume.Fields.ddd.name());
+			String ddd = json.getAsString(VisEntityResume.Fields.ddd);
 			List<String> ddd10 = Arrays.asList(ddd).stream().filter(x -> new CcpStringDecorator(x).isLongNumber()).collect(Collectors.toList());
-			CcpJsonRepresentation put = json.put(VisEntityResume.Fields.ddd.name(), ddd10);
+			CcpJsonRepresentation put = json.put(VisEntityResume.Fields.ddd, ddd10);
 			return put;
 		}
 	},
 	AddExperience {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			
-			boolean containsAllFields = json.containsAllFields(VisEntityResume.Fields.experience.name());
+			boolean containsAllFields = json.containsAllFields(VisEntityResume.Fields.experience);
 			if(containsAllFields) {
 				return json;
 			}
 			
-			Long dataDeInclusao = json.getAsLongNumber("dataDeInclusao");
+			Long dataDeInclusao = json.getAsLongNumber(ResumeTransformationsConstants.dataDeInclusao);
 			
 			Calendar cal = Calendar.getInstance();
 			
@@ -81,7 +84,7 @@ public enum ResumeTransformations implements CcpTransformers{
 			
 			int year = cal.get(Calendar.YEAR);
 			
-			CcpJsonRepresentation put = json.put(VisEntityResume.Fields.experience.name(), year);
+			CcpJsonRepresentation put = json.put(VisEntityResume.Fields.experience, year);
 			
 			return put;
 		}
@@ -94,7 +97,7 @@ public enum ResumeTransformations implements CcpTransformers{
 	},
 	CreateLoginAndSession {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			String email = json.getAsString("id");
+			String email = json.getAsString(ResumeTransformationsConstants.id);
 			
 			CcpJsonRepresentation createLogin = this.createLogin(email);
 			try {
@@ -114,7 +117,7 @@ public enum ResumeTransformations implements CcpTransformers{
 			
 			String path = "http://localhost:8080/login/{email}".replace("{email}", email);
 			
-			String asUgglyJson = CcpOtherConstants.EMPTY_JSON.put(JnEntityLoginPassword.Fields.password.name(), "Jobsnow1!").asUgglyJson();
+			String asUgglyJson = CcpOtherConstants.EMPTY_JSON.put(JnEntityLoginPassword.Fields.password, "Jobsnow1!").asUgglyJson();
 
 			CcpHttpHandler http = new CcpHttpHandler(200, CcpOtherConstants.DO_NOTHING);
 			
@@ -126,12 +129,12 @@ public enum ResumeTransformations implements CcpTransformers{
 		
 		private CcpJsonRepresentation createLogin(String email) {
 			CcpJsonRepresentation transformed = CcpOtherConstants.EMPTY_JSON
-			.put(JnEntityLoginSessionValidation.Fields.userAgent.name(), "Apache-HttpClient/4.5.4 (Java/17.0.9)")
-			.put(JnEntityLoginPassword.Fields.password.name(), "Jobsnow1!")
-			.put(JnEntityLoginToken.Fields.ip.name(), "localhost:8080")
-			.put(JnEntityLoginAnswers.Fields.channel.name(), "linkedin")
-			.put(JnEntityLoginAnswers.Fields.goal.name(), "jobs")
-			.put(JnEntityLoginAnswers.Fields.email.name(), email)
+			.put(JnEntityLoginSessionValidation.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
+			.put(JnEntityLoginPassword.Fields.password, "Jobsnow1!")
+			.put(JnEntityLoginToken.Fields.ip, "localhost:8080")
+			.put(JnEntityLoginAnswers.Fields.channel, "linkedin")
+			.put(JnEntityLoginAnswers.Fields.goal, "jobs")
+			.put(JnEntityLoginAnswers.Fields.email, email)
 			;
 			
 			JnExecuteBulkOperation.INSTANCE.executeBulk(transformed, CcpEntityBulkOperationType.create, 
@@ -143,7 +146,7 @@ public enum ResumeTransformations implements CcpTransformers{
 			
 			JnEntityLoginSessionValidation.ENTITY.delete(transformed);
 			
-			CcpJsonRepresentation renameField = transformed.renameField("originalEmail", "email");
+			CcpJsonRepresentation renameField = transformed.renameField(ResumeTransformationsConstants.originalEmail, ResumeTransformationsConstants.email);
 			return renameField;
 		}
 

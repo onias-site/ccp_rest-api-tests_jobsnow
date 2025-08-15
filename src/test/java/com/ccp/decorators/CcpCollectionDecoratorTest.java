@@ -20,7 +20,8 @@ import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.entities.JnEntityAsyncTask;
- 
+import static com.ccp.decorators.DecoratorsConstants.*;
+
 public class CcpCollectionDecoratorTest {
 	{
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());	
@@ -97,13 +98,13 @@ public class CcpCollectionDecoratorTest {
 		                  + "'cidade':'santos'}";
 		
 		CcpJsonRepresentation registro3 = CcpOtherConstants.EMPTY_JSON
-				.put("nome", "Diego")
-				.put("cidade", "Santos")
-				.duplicateValueFromField("cidade", "ciudad", "city", "town")
-				.addToItem("gato", "nome", "nina")
-				.addToItem("gato", "idade", 21)
-				.addToItem("cão", "nome", "sheik")
-				.addToItem("cão", "idade", 10)
+				.put(nome, "Diego")
+				.put(cidade, "Santos")
+				.duplicateValueFromField(cidade, ciudad, city, town)
+				.addToItem(gato, nome, "nina")
+				.addToItem(gato, idade, 21)
+				.addToItem(cão, nome, "sheik")
+				.addToItem(cão, idade, 10)
 				;
 	    
 		Map<String, Object> registro4 = new HashMap<String, Object>();
@@ -348,9 +349,9 @@ public class CcpCollectionDecoratorTest {
 		  CcpJsonRepresentation json0        = new CcpJsonRepresentation(); // json vazio {}// 
 		  Collection<Object>    jsonBodyList = Arrays.asList("Brazil", "Uruguai", "Chile");
 		  CcpJsonRepresentation json1        = CcpOtherConstants.EMPTY_JSON
-												.put("pais"  ,jsonBodyList)
-												.put("estado","Sao Paulo")
-												.put("cidade","Santos");
+												.put(pais  ,jsonBodyList)
+												.put(estado,"Sao Paulo")
+												.put(cidade,"Santos");
 		  System.out.println("jsonVazio:   " + json0); 
 		  System.out.println("jsonContent: " + json1); 
 		  CcpCollectionDecorator decorator0 = new CcpCollectionDecorator(json0, "falseKey"); //
@@ -366,8 +367,8 @@ public class CcpCollectionDecoratorTest {
 		  System.out.println("vazio " + vazio + " " + decorator0.getContent()); 
 		  assertEquals(vazio, decorator0.getContent()); // EMPTY_JSON
 		  assertEquals(decorator1.getContent(), jsonBodyList);// ("pais"  ,"Brazil", "Uruguai", "Chile")
-		  assertTrue(decorator2.getContent().contains(json1.get("estado"))); // ("estado","Sao Paulo")
-		  assertTrue(decorator3.getContent().contains(json1.get("cidade"))); // ("cidade","Santos")
+		  assertTrue(decorator2.getContent().contains(json1.get(estado))); // ("estado","Sao Paulo")
+		  assertTrue(decorator3.getContent().contains(json1.get(cidade))); // ("cidade","Santos")
 		  }
 		
 }

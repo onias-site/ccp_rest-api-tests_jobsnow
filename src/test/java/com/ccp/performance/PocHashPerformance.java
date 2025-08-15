@@ -19,7 +19,7 @@ public class PocHashPerformance {
 				new CcpElasticSearchDbRequest(), new CcpApacheMimeHttp(), new CcpMindrotPasswordHandler(),
 				new CcpElasticSerchDbBulk());
 
-		Object exists = JnEntityJobsnowError.ENTITY.calculateId(CcpOtherConstants.EMPTY_JSON.put(JnEntityJobsnowError.Fields.type.name(), "org.springframework.web.HttpRequestMethodNotSupportedException"));
+		Object exists = JnEntityJobsnowError.ENTITY.calculateId(CcpOtherConstants.EMPTY_JSON.put(JnEntityJobsnowError.Fields.type, "org.springframework.web.HttpRequestMethodNotSupportedException"));
 		System.out.println("" + exists);
 		
 	}

@@ -37,12 +37,16 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.jn.business.commons.JnBusinessNotifyError;
 import com.jn.business.login.JnBusinessExecuteLogout;
+import com.jn.entities.JnEntityInstantMessengerParametersToSend;
+import com.jn.entities.JnEntityInstantMessengerTemplateMessage;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.mensageria.JnFunctionMensageriaSender;
 import com.jn.utils.JnDeleteKeysFromCache;
+import com.jn.utils.JnLanguage;
 import com.vis.entities.VisEntityResume;
 
 public class CcpRandomTests {
@@ -53,11 +57,24 @@ public class CcpRandomTests {
 	}
 
 	public static void main(String[] args) {
+		CcpJsonRepresentation json = new CcpJsonRepresentation("{"
+				+ "	\"language\": \""
+				+ JnLanguage.portuguese.name()
+				+ "\","
+				+ "	\"templateId\": \""
+				+ JnBusinessNotifyError.class.getName()
+				+ "\","
+				+ "	\"message\": \"{type}\\n\\nError Description:\n {msg}\\n\\n{stackTrace}\\n\\nCaused by:\\n{cause}\""
+				+ "}");
+			System.out.println(json);
+			System.out.println(JnEntityInstantMessengerTemplateMessage.ENTITY.getEntityName());
+	}
+
+	 static void qualquerCoisa() {
 		Field[] declaredFields = JnEntityJobsnowError.Fields.class.getDeclaredFields();
 		for (Field field : declaredFields) {
 			System.out.println(field.getName());
 		}
-
 	}
 
 	static void mudarLocalDoArquivo() {
