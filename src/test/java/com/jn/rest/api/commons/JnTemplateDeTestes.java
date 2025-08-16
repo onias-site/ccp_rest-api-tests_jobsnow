@@ -6,6 +6,7 @@ import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpTimeDecorator;
+import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.utils.CcpDbRequester;
 import com.ccp.especifications.http.CcpHttpHandler;
@@ -21,6 +22,11 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatus;
+
+enum JnTemplateDeTestesConstants  implements CcpJsonFieldName{
+	x, timestamp, response, request, headers, expectedStatus, actualStatus, method, url
+	
+}
 
 public abstract class JnTemplateDeTestes {
 	protected final String ENDPOINT_URL = "http://localhost:8080/";
@@ -90,7 +96,7 @@ public abstract class JnTemplateDeTestes {
 	private <V> void logRequestAndResponse(String url, CcpHttpMethods method, CcpProcessStatus status, int actualStatus,
 			CcpJsonRepresentation body, CcpJsonRepresentation headers, V executeHttpRequest) {
 
-		CcpJsonRepresentation md = CcpOtherConstants.EMPTY_JSON.put("x", executeHttpRequest);
+		CcpJsonRepresentation md = CcpOtherConstants.EMPTY_JSON.put(JnTemplateDeTestesConstants.x, executeHttpRequest);
 
 		if (executeHttpRequest instanceof CcpJsonRepresentation json) {
 			md = json;
@@ -100,14 +106,14 @@ public abstract class JnTemplateDeTestes {
 
 		int expectedStatus = status.asNumber();
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
-				.put("url", url)
-				.put("method", method)
-				.put("actualStatus", actualStatus)
-				.put("expectedStatus", expectedStatus)
-				.put("headers", headers)
-				.put("request", body)
-				.put("response", md)
-				.put("timestamp", date);
+				.put(JnTemplateDeTestesConstants.url, url)
+				.put(JnTemplateDeTestesConstants.method, method)
+				.put(JnTemplateDeTestesConstants.actualStatus, actualStatus)
+				.put(JnTemplateDeTestesConstants.expectedStatus, expectedStatus)
+				.put(JnTemplateDeTestesConstants.headers, headers)
+				.put(JnTemplateDeTestesConstants.request, body)
+				.put(JnTemplateDeTestesConstants.response, md)
+				.put(JnTemplateDeTestesConstants.timestamp, date);
 		String asPrettyJson = put.asPrettyJson();
 
 		String testName = this.getClass().getSimpleName();

@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatus;
 import com.jn.entities.JnEntityLoginEmail;
@@ -15,7 +16,10 @@ import com.jn.json.transformers.JnJsonTransformersDefaultEntityFields;
 import com.jn.rest.api.commons.JnTemplateDeTestes;
 import com.jn.rest.api.commons.VariaveisParaTeste;
 import com.jn.status.login.JnProcessStatusExecuteLogout;
-
+enum TelaDeLogoutConstants  implements CcpJsonFieldName{
+	originalToken
+	
+}
 public class TelaDeLogout extends JnTemplateDeTestes {
 
 	@Test
@@ -37,7 +41,7 @@ public class TelaDeLogout extends JnTemplateDeTestes {
 		JnEntityLoginSessionConflict.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
 		Function<VariaveisParaTeste, String> producer = variaveis -> JnEntityLoginSessionValidation.ENTITY
 				.createOrUpdate(variaveis.REQUEST_TO_LOGIN.getTransformedJson(JnJsonTransformersDefaultEntityFields.tokenHash))
-				.getAsString("originalToken");
+				.getAsString(TelaDeLogoutConstants.originalToken);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogout.expectedStatus, producer);
 	}
 	

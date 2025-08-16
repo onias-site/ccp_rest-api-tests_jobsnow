@@ -100,8 +100,7 @@ public class CcpJsonRepresentationTests {
 		//JSON INVÁLIDO
 		String x = "valorQueNaoEhDouble':9.30";
 		CcpJsonRepresentation json2 = new CcpJsonRepresentation(x);
-//		FIXME
-		//		assert(json2.getAsDoubleNumber(x) instanceof Double);
+		assert(json2.getDynamicVersion().getAsDoubleNumber(x) instanceof Double);
 	}
 
 	@Test
@@ -1012,15 +1011,6 @@ public class CcpJsonRepresentationTests {
 		List<CcpJsonRepresentation> list = json.getInnerJsonListFromPath(avo, pai, filho, netos, bisnetos);
 		
 		assertTrue(list.isEmpty());
-	}
-	
-	@Test
-	public void addJsonTransformerTest() {
-		Function<CcpJsonRepresentation, CcpJsonRepresentation> transform = CcpOtherConstants.RETURNS_EMPTY_JSON;
-		CcpJsonRepresentation addJsonTransformer = CcpOtherConstants.EMPTY_JSON.addJsonTransformer(transformer, transform);
-//		FIXME
-		//		Object object = addJsonTransformer.get(transform);
-//		assertEquals(transform, object);
 	}
 	
 	@Test

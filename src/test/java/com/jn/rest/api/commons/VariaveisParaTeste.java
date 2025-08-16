@@ -14,8 +14,8 @@ public class VariaveisParaTeste {
 
 	
 	public CcpJsonRepresentation REQUEST_TO_LOGIN = CcpOtherConstants.EMPTY_JSON
-			.put(JnEntityLoginToken.Fields.userAgent.name(), "Apache-HttpClient/4.5.4 (Java/17.0.9)")
-			.put(JnEntityLoginToken.Fields.ip.name(), "localhost")
+			.put(JnEntityLoginToken.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
+			.put(JnEntityLoginToken.Fields.ip, "localhost")
 			;
 			
 	public final String VALID_EMAIL;
@@ -29,8 +29,8 @@ public class VariaveisParaTeste {
 	}
 	public VariaveisParaTeste(String email) {
 	
-		this.REQUEST_TO_LOGIN = this.REQUEST_TO_LOGIN.put(JnEntityLoginAnswers.Fields.email.name(), email);
+		this.REQUEST_TO_LOGIN = this.REQUEST_TO_LOGIN.put(JnEntityLoginAnswers.Fields.email, email);
 		this.VALID_EMAIL = email;
-		this.ANSWERS_JSON = this.REQUEST_TO_LOGIN.put(JnEntityLoginAnswers.Fields.goal.name(), "jobs").put(JnEntityLoginAnswers.Fields.channel.name(), "linkedin");
+		this.ANSWERS_JSON = this.REQUEST_TO_LOGIN.put(JnEntityLoginAnswers.Fields.goal, "jobs").put(JnEntityLoginAnswers.Fields.channel, "linkedin");
 	}	
 }

@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.especifications.db.crud.CcpGetEntityId;
 import com.ccp.especifications.db.utils.CcpEntityCrudOperationType;
 import com.ccp.http.CcpHttpMethods;
@@ -20,7 +21,10 @@ import com.jn.status.login.JnProcessStatusExecuteLogin;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.commons.VisTemplateDeTestes;
 import com.vis.rest.api.resume.status.SaveResumeStatus;
-
+enum ValidationsEndpointsCreateResumeConstants  implements CcpJsonFieldName{
+	sessionToken
+	
+}
 public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 
 	private final String email = "onias85@gmail.com";
@@ -49,13 +53,13 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 	public void testarRequisicaoComTokenFalso() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
 		CcpJsonRepresentation body = super.getJsonFile("documentation/tests/resume/curriculoComArquivoInvalido.json");
-		CcpJsonRepresentation bodyWithFakeSessionToken = body.put("sessionToken", "tokenFalsoSafadoQualquer");
+		CcpJsonRepresentation bodyWithFakeSessionToken = body.put(ValidationsEndpointsCreateResumeConstants.sessionToken, "tokenFalsoSafadoQualquer");
 		super.getJsonResponseFromEndpoint(JnProcessStatusExecuteLogin.invalidSession, scenarioName, bodyWithFakeSessionToken, this.uri);
 
 	}
 
 	protected CcpJsonRepresentation getHeaders() {
-		return super.getHeaders().put("sessionToken", "NFDP8DV9987EVMBW1H3N56OEGYMFZB");
+		return super.getHeaders().put(ValidationsEndpointsCreateResumeConstants.sessionToken, "NFDP8DV9987EVMBW1H3N56OEGYMFZB");
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -73,7 +77,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 		
 		CcpJsonRepresentation jsonDeRetornoDoTeste = this
 				.getJsonResponseFromEndpoint(CcpProcessStatusDefault.SUCCESS, scenarioName, "documentation/vis/tests/resume/curriculoComArquivoInvalido.json")
-				.put(JnEntityEmailMessageSent.Fields.subjectType.name(), JnBusinessSendUserToken.class.getName())
+				.put(JnEntityEmailMessageSent.Fields.subjectType, JnBusinessSendUserToken.class.getName())
 				;
 		
 		 CcpJsonRepresentation result = new CcpGetEntityId(jsonDeRetornoDoTeste)

@@ -3,9 +3,9 @@ package com.vis.commons;
 import java.util.function.Function;
 
 import com.ccp.constantes.CcpOtherConstants;
-import com.ccp.constantes.CcpStringConstants;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
@@ -38,7 +38,10 @@ import com.jn.entities.JnEntityLoginToken;
 import com.jn.entities.JnEntityLoginTokenAttempts;
 import com.jn.status.login.JnProcessStatusCreateLoginEmail;
 import com.jn.status.login.JnProcessStatusExecuteLogin;
-
+enum VisTemplateDeTestesConstants  implements CcpJsonFieldName{
+	message, statusName, x, url, method, actualStatus, expectedStatus, request, headers, response, timestamp, language
+	
+}
 public abstract class VisTemplateDeTestes {
 	protected final String ENDPOINT_URL = "http://localhost:8081/";
 
@@ -108,7 +111,8 @@ public abstract class VisTemplateDeTestes {
 		int actualStatus = response.httpStatus;
 
 		this.logRequestAndResponse(path, method, status, scenarioName, actualStatus, body, headers, executeHttpRequest);
-		String message = executeHttpRequest.isInnerJson("message") == false ? executeHttpRequest.getAsString("message") : executeHttpRequest.getValueFromPath("", "message", "statusName");
+		String message = executeHttpRequest.isInnerJson(VisTemplateDeTestesConstants.message) == false ? executeHttpRequest.getAsString(VisTemplateDeTestesConstants.message) : 
+			executeHttpRequest.getValueFromPath("", VisTemplateDeTestesConstants.message, VisTemplateDeTestesConstants.statusName);
 		status.verifyStatus(actualStatus, message);
 		return executeHttpRequest;
 	}
@@ -116,7 +120,7 @@ public abstract class VisTemplateDeTestes {
 	private <V> void logRequestAndResponse(String url, CcpHttpMethods method, CcpProcessStatus status, String scenarioName, int actualStatus,
 			CcpJsonRepresentation body, CcpJsonRepresentation headers, V executeHttpRequest) {
 
-		CcpJsonRepresentation md = CcpOtherConstants.EMPTY_JSON.put("x", executeHttpRequest);
+		CcpJsonRepresentation md = CcpOtherConstants.EMPTY_JSON.put(VisTemplateDeTestesConstants.x, executeHttpRequest);
 
 		if (executeHttpRequest instanceof CcpJsonRepresentation json) {
 			md = json;
@@ -125,9 +129,9 @@ public abstract class VisTemplateDeTestes {
 		String date = new CcpTimeDecorator().getFormattedDateTime("dd/MM/yyyy HH:mm:ss");
 
 		int expectedStatus = status.asNumber();
-		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON.put("url", url).put("method", method).put("actualStatus", actualStatus)
-				.put("expectedStatus", expectedStatus).put("headers", headers).put("request", body).put("response", md)
-				.put("timestamp", date);
+		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON.put(VisTemplateDeTestesConstants.url, url).put(VisTemplateDeTestesConstants.method, method).put(VisTemplateDeTestesConstants.actualStatus, actualStatus)
+				.put(VisTemplateDeTestesConstants.expectedStatus, expectedStatus).put(VisTemplateDeTestesConstants.headers, headers).put(VisTemplateDeTestesConstants.request, body).put(VisTemplateDeTestesConstants.response, md)
+				.put(VisTemplateDeTestesConstants.timestamp, date);
 		String asPrettyJson = put.asPrettyJson();
 
 		String testName = this.getClass().getSimpleName();
@@ -155,7 +159,7 @@ public abstract class VisTemplateDeTestes {
 			CcpJsonRepresentation apply = first.apply(json);
 			return apply;
 		} catch (CcpErrorFlowDisturb e) {
-			Function<CcpJsonRepresentation, CcpJsonRepresentation> nextFlow = flow.getAsObject(e.status.name());
+			Function<CcpJsonRepresentation, CcpJsonRepresentation> nextFlow = flow.getAsObject(e.status);
 			nextFlow.apply(json);
 			CcpJsonRepresentation executeThisFlow = this.executeThisFlow(first, flow, json);
 			return executeThisFlow;
@@ -167,7 +171,7 @@ public abstract class VisTemplateDeTestes {
 		
 		CcpJsonRepresentation sessionValuesToTest = this.getSessionValuesToTest();
 		
-		CcpJsonRepresentation jsonWithSubjectType = sessionValuesToTest.put(JnEntityEmailMessageSent.Fields.subjectType.name(), JnBusinessSendUserToken.class.getName());
+		CcpJsonRepresentation jsonWithSubjectType = sessionValuesToTest.put(JnEntityEmailMessageSent.Fields.subjectType, JnBusinessSendUserToken.class.getName());
 		
 		JnExecuteBulkOperation.INSTANCE.executeBulk(
 				jsonWithSubjectType 
@@ -227,10 +231,10 @@ public abstract class VisTemplateDeTestes {
 
 	protected final CcpJsonRepresentation getSessionValuesToTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(JnEntityLoginToken.Fields.email.name(), "onias85@gmail.com")
-				.put(JnEntityLoginToken.Fields.userAgent.name(), "Apache-HttpClient/4.5.4 (Java/17.0.9)")
-				.put(CcpStringConstants.LANGUAGE.value, "portuguese")
-				.put(JnEntityLoginToken.Fields.ip.name(), "localhost")
+				.put(JnEntityLoginToken.Fields.email, "onias85@gmail.com")
+				.put(JnEntityLoginToken.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
+				.put(VisTemplateDeTestesConstants.language, "portuguese")
+				.put(JnEntityLoginToken.Fields.ip, "localhost")
 				;
 
 		return json;

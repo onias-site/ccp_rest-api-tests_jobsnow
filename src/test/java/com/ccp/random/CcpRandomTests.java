@@ -17,6 +17,7 @@ import com.ccp.decorators.CcpFolderDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpTimeDecorator;
+import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.crud.CcpCrud;
 import com.ccp.especifications.db.crud.CcpSelectUnionAll;
@@ -39,7 +40,6 @@ import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.commons.JnBusinessNotifyError;
 import com.jn.business.login.JnBusinessExecuteLogout;
-import com.jn.entities.JnEntityInstantMessengerParametersToSend;
 import com.jn.entities.JnEntityInstantMessengerTemplateMessage;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginPassword;
@@ -48,7 +48,10 @@ import com.jn.mensageria.JnFunctionMensageriaSender;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.jn.utils.JnLanguage;
 import com.vis.entities.VisEntityResume;
-
+enum CcpRandomTestsConstants  implements CcpJsonFieldName{
+	type, cause, stackTrace, email, mappings, properties, name, ddd, _id, docs, _source, id, mail, contato, vaga, channel, description, contactChannel, candidate, candidato
+	
+}
 public class CcpRandomTests {
 	static {
 		CcpDependencyInjection.loadAllDependencies(new CcpElasticSearchQueryExecutor(), new CcpElasticSearchDbRequest(),
@@ -97,8 +100,9 @@ public class CcpRandomTests {
 	}
 
 	static void testarExpurgable() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put("type", "teste").put("stackTrace", "teste")
-				.put("cause", "teste");
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(CcpRandomTestsConstants.type, "teste")
+				.put(CcpRandomTestsConstants.stackTrace, "teste")
+				.put(CcpRandomTestsConstants.cause, "teste");
 		CcpEntity entity = JnEntityJobsnowError.ENTITY;
 		testarExpurgable(json, entity);
 	}
@@ -121,7 +125,7 @@ public class CcpRandomTests {
 
 	static void testarSalvamentoDeSenha() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(JnEntityLoginPassword.Fields.password.name(), "123456").put("email", "onias85@gmail.com");
+				.put(JnEntityLoginPassword.Fields.password, "123456").put(CcpRandomTestsConstants.email, "onias85@gmail.com");
 		JnEntityLoginPassword.ENTITY.createOrUpdate(json);
 
 		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
@@ -144,7 +148,7 @@ public class CcpRandomTests {
 		folder.readFiles(file -> {
 			String fileName = file.getName();
 			String javaClassName = "JnEntity" + new CcpStringDecorator(fileName).text().toCamelCase().toString();
-			CcpJsonRepresentation json = file.asSingleJson().getInnerJsonFromPath("mappings", "properties");
+			CcpJsonRepresentation json = file.asSingleJson().getInnerJsonFromPath(CcpRandomTestsConstants.mappings, CcpRandomTestsConstants.properties);
 			Set<String> fields = json.fieldSet();
 			for (String field : fields) {
 				List<String> javaClassesName = map.getOrDefault(field, new ArrayList<>());
@@ -161,7 +165,8 @@ public class CcpRandomTests {
 	}
 
 	static void testarValidacoes() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put("name", "L").put("ddd", 20);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(CcpRandomTestsConstants.name, "L")
+				.put(CcpRandomTestsConstants.ddd, 20);
 		try {
 
 			new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(json);
@@ -171,7 +176,7 @@ public class CcpRandomTests {
 	}
 
 	static void metodoDoLucas() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put("email", "onias85@gmail.com")
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(CcpRandomTestsConstants.email, "onias85@gmail.com")
 
 		;
 		List<CcpJsonRepresentation> parametersToSearch = JnEntityLoginSessionValidation.ENTITY
@@ -185,8 +190,8 @@ public class CcpRandomTests {
 
 	static void testarExpurgableEntity() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put("cause", new CcpJsonRepresentation("{'nome':'onias'}")).put("stackTrace", "{'nome':'vieira'}")
-				.put("type", "any");
+				.put(CcpRandomTestsConstants.cause, new CcpJsonRepresentation("{'nome':'onias'}")).put(CcpRandomTestsConstants.stackTrace, "{'nome':'vieira'}")
+				.put(CcpRandomTestsConstants.type, "any");
 		CcpJsonRepresentation oneById = JnEntityJobsnowError.ENTITY.getOneById(json,
 				CcpOtherConstants.RETURNS_EMPTY_JSON);
 		System.out.println(oneById);
@@ -226,7 +231,7 @@ public class CcpRandomTests {
 				+ "            \"experiencia\",\r\n" + "            \"disponibilidade\",\r\n"
 				+ "            \"ddd\",\r\n" + "            \"bitcoin\"\r\n" + "        ]\r\n" + "    }\r\n" + "}");
 		for (Object candidato : candidatos) {
-			CcpJsonRepresentation doc = template.put("_id", candidato);
+			CcpJsonRepresentation doc = template.put(CcpRandomTestsConstants._id, candidato);
 			mgetJson = mgetJson.addToList("docs", doc);
 		}
 
@@ -235,18 +240,18 @@ public class CcpRandomTests {
 						mgetJson.asUgglyJson());
 		CcpJsonRepresentation asSingleJson = executeHttpRequest.asSingleJson();
 
-		List<CcpJsonRepresentation> collect = asSingleJson.getAsJsonList("docs").stream().map(json -> {
-			String id = json.getAsString("_id");
-			CcpJsonRepresentation source = json.getInnerJson("_source");
-			CcpJsonRepresentation put = source.put("id", id);
+		List<CcpJsonRepresentation> collect = asSingleJson.getAsJsonList(CcpRandomTestsConstants.docs).stream().map(json -> {
+			String id = json.getAsString(CcpRandomTestsConstants._id);
+			CcpJsonRepresentation source = json.getInnerJson(CcpRandomTestsConstants._source);
+			CcpJsonRepresentation put = source.put(CcpRandomTestsConstants.id, id);
 			return put;
 		}).collect(Collectors.toList());
 
 		CcpJsonRepresentation resumes = CcpOtherConstants.EMPTY_JSON;
 
 		for (CcpJsonRepresentation curriculo : collect) {
-			String id = curriculo.getAsString("id");
-			resumes = resumes.put(id, curriculo);
+			String id = curriculo.getAsString(CcpRandomTestsConstants.id);
+			resumes = resumes.getDynamicVersion().put(id, curriculo);
 		}
 
 		CcpJsonRepresentation candidatosAgrupadosPorRecrutadores = getCandidatosAgrupadosPorRecrutadores(queryMatchAll);
@@ -255,10 +260,10 @@ public class CcpRandomTests {
 		List<CcpJsonRepresentation> todasAsVagas = new ArrayList<>();
 		CcpJsonRepresentation res = new CcpJsonRepresentation(resumes.content);
 		for (String recrutador : recrutadores) {
-			List<CcpJsonRepresentation> curriculos = candidatosAgrupadosPorRecrutadores.getAsStringList(recrutador)
-					.stream().map(x -> res.getInnerJson(x)).collect(Collectors.toList());
+			List<CcpJsonRepresentation> curriculos = candidatosAgrupadosPorRecrutadores.getDynamicVersion().getAsStringList(recrutador)
+					.stream().map(x -> res.getDynamicVersion().getInnerJson(x)).collect(Collectors.toList());
 
-			List<CcpJsonRepresentation> vagas = vagasAgrupadosPorRecrutadores.getAsJsonList(recrutador);
+			List<CcpJsonRepresentation> vagas = vagasAgrupadosPorRecrutadores.getDynamicVersion().getAsJsonList(recrutador);
 
 			int k = 0;
 			for (CcpJsonRepresentation curriculo : curriculos) {
@@ -277,13 +282,13 @@ public class CcpRandomTests {
 
 		public void accept(CcpJsonRepresentation json) {
 
-			String recrutador = json.getAsObject("mail");
-			String contato = json.getAsString("contato");
-			String texto = json.getAsString("vaga");
+			String recrutador = json.getAsObject(CcpRandomTestsConstants.mail);
+			String contato = json.getAsString(CcpRandomTestsConstants.contato);
+			String texto = json.getAsString(CcpRandomTestsConstants.vaga);
 			String contactChannel = new CcpStringDecorator(contato.trim()).email().isValid() ? "email" : "link";
 
-			CcpJsonRepresentation vaga = CcpOtherConstants.EMPTY_JSON.put("channel", contato).put("email", recrutador)
-					.put("description", texto).put("contactChannel", contactChannel);
+			CcpJsonRepresentation vaga = CcpOtherConstants.EMPTY_JSON.put(CcpRandomTestsConstants.channel, contato).put(CcpRandomTestsConstants.email, recrutador)
+					.put(CcpRandomTestsConstants.description, texto).put(CcpRandomTestsConstants.contactChannel, contactChannel);
 
 			this.vagasAgrupadasPorRecrutadores = this.vagasAgrupadasPorRecrutadores.addToList(recrutador, vaga);
 
@@ -296,8 +301,8 @@ public class CcpRandomTests {
 		CcpJsonRepresentation candidatosAgrupadosPorRecrutadores = CcpOtherConstants.EMPTY_JSON;
 
 		public void accept(CcpJsonRepresentation json) {
-			String candidato = json.getAsObject("candidate", "candidato");
-			String recrutador = json.getAsString("email");
+			String candidato = json.getAsObject(CcpRandomTestsConstants.candidate, CcpRandomTestsConstants.candidato);
+			String recrutador = json.getAsString(CcpRandomTestsConstants.email);
 			this.candidatosAgrupadosPorRecrutadores = this.candidatosAgrupadosPorRecrutadores.addToList(recrutador,
 					candidato);
 
@@ -347,7 +352,7 @@ public class CcpRandomTests {
 		queryExecutor.consumeQueryResult(query, resourcesNames, "10s", 10000, json -> {
 			for (String field : fields) {
 
-				String value = json.getAsTextDecorator(field).content.trim().toLowerCase();
+				String value = json.getDynamicVersion().getAsTextDecorator(field).content.trim().toLowerCase();
 
 				if (value.isEmpty()) {
 					continue;
@@ -368,8 +373,9 @@ public class CcpRandomTests {
 
 	static void testarTempo() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put("cause", new CcpJsonRepresentation("{'nome':'onias'}")).put("stackTrace", "{'nome':'vieira'}")
-				.put("type", "any");
+				.put(CcpRandomTestsConstants.cause, new CcpJsonRepresentation("{'nome':'onias'}"))
+				.put(CcpRandomTestsConstants.stackTrace, "{'nome':'vieira'}")
+				.put(CcpRandomTestsConstants.type, "any");
 		JnEntityJobsnowError.ENTITY.delete(json);
 		JnEntityJobsnowError.ENTITY.createOrUpdate(json);
 		while (true) {
@@ -402,7 +408,7 @@ public class CcpRandomTests {
 		CcpFileDecorator file = new CcpStringDecorator("vagas.txt").file();
 		String[] resourcesNames = new String[] { "vagas" };
 		queryExecutor.consumeQueryResult(queryToSearchLastUpdatedResumes, resourcesNames, "10s", 10000, vaga -> {
-			String texto = vaga.getAsString("vaga").replace("\n", "").trim();
+			String texto = vaga.getAsString(CcpRandomTestsConstants.vaga).replace("\n", "").trim();
 			String completeLeft = new CcpStringDecorator("" + ++counter).text().completeLeft('0', 6).content;
 			file.append(completeLeft + ": " + texto);
 //					CcpTimeDecorator.appendLog(counter);

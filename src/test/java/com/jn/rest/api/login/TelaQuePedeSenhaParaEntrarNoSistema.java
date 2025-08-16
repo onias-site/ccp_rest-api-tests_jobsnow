@@ -128,7 +128,7 @@ public class TelaQuePedeSenhaParaEntrarNoSistema extends JnTemplateDeTestes{
 	}
 	
 	private void executarLogin(String email, String senha, CcpProcessStatus expectedStatus) {
-		CcpJsonRepresentation body = CcpOtherConstants.EMPTY_JSON.put(JnEntityLoginPassword.Fields.password.name(), senha);
+		CcpJsonRepresentation body = CcpOtherConstants.EMPTY_JSON.put(JnEntityLoginPassword.Fields.password, senha);
 		String uri = "login/"
 		+ email;
 		this.testarEndpoint(expectedStatus, body, uri, CcpHttpResponseType.singleRecord);
