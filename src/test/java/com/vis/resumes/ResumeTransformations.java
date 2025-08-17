@@ -11,8 +11,8 @@ import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.especifications.db.bulk.CcpEntityBulkOperationType;
 import com.ccp.especifications.http.CcpHttpHandler;
+import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponse;
-import com.ccp.http.CcpHttpMethods;
 import com.ccp.json.transformers.CcpTransformers;
 import com.jn.db.bulk.JnExecuteBulkOperation;
 import com.jn.entities.JnEntityLoginAnswers;
@@ -21,10 +21,6 @@ import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 import com.vis.entities.VisEntityResume;
-enum ResumeTransformationsConstants  implements CcpJsonFieldName{
-	mudanca, homeoffice, dataDeInclusao, id, originalEmail, email
-	
-}
 public enum ResumeTransformations implements CcpTransformers{
 	AddDddsInResume {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
@@ -35,7 +31,7 @@ public enum ResumeTransformations implements CcpTransformers{
 					"71", "73", "74", "75", "77", "79", "81", "82", "83", "84", "85", "86", "87", "88", "89", "91",
 					"92", "93", "94", "95", "96", "97", "98", "99");
 			
-			boolean mudanca = json.getAsBoolean(ResumeTransformationsConstants.mudanca);
+			boolean mudanca = json.getAsBoolean(JsonFieldNames.mudanca);
 
 			if (mudanca) {
 
@@ -44,7 +40,7 @@ public enum ResumeTransformations implements CcpTransformers{
 				return put;
 			}
 
-			boolean homeoffice = json.getAsBoolean(ResumeTransformationsConstants.homeoffice);
+			boolean homeoffice = json.getAsBoolean(JsonFieldNames.homeoffice);
 
 			if (homeoffice) {
 				List<String> ddd10 = Arrays.asList("10");
@@ -77,7 +73,7 @@ public enum ResumeTransformations implements CcpTransformers{
 				return json;
 			}
 			
-			Long dataDeInclusao = json.getAsLongNumber(ResumeTransformationsConstants.dataDeInclusao);
+			Long dataDeInclusao = json.getAsLongNumber(JsonFieldNames.dataDeInclusao);
 			
 			Calendar cal = Calendar.getInstance();
 			
@@ -98,7 +94,7 @@ public enum ResumeTransformations implements CcpTransformers{
 	},
 	CreateLoginAndSession {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			String email = json.getAsString(ResumeTransformationsConstants.id);
+			String email = json.getAsString(JsonFieldNames.id);
 			
 			CcpJsonRepresentation createLogin = this.createLogin(email);
 			try {
@@ -147,7 +143,7 @@ public enum ResumeTransformations implements CcpTransformers{
 			
 			JnEntityLoginSessionValidation.ENTITY.delete(transformed);
 			
-			CcpJsonRepresentation renameField = transformed.renameField(ResumeTransformationsConstants.originalEmail, ResumeTransformationsConstants.email);
+			CcpJsonRepresentation renameField = transformed.renameField(JsonFieldNames.originalEmail, JsonFieldNames.email);
 			return renameField;
 		}
 
@@ -199,5 +195,8 @@ public enum ResumeTransformations implements CcpTransformers{
 	},
 	;
 	abstract public CcpJsonRepresentation apply(CcpJsonRepresentation json);
+	enum JsonFieldNames implements CcpJsonFieldName{
+		mudanca, homeoffice, dataDeInclusao, id, originalEmail, email
+	}
 
 }

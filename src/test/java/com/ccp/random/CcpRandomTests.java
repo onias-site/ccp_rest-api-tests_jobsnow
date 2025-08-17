@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpCollectionDecorator;
+import com.ccp.decorators.CcpErrorJsonFieldsInvalid;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpFolderDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
@@ -26,10 +27,9 @@ import com.ccp.especifications.db.query.CcpQueryExecutor;
 import com.ccp.especifications.db.utils.CcpEntity;
 import com.ccp.especifications.db.utils.CcpEntityCrudOperationType;
 import com.ccp.especifications.db.utils.CcpEntityField;
+import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpRequester;
 import com.ccp.especifications.http.CcpHttpResponse;
-import com.ccp.exceptions.json.fields.CcpErrorJsonFieldsInvalid;
-import com.ccp.http.CcpHttpMethods;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.query.elasticsearch.CcpElasticSearchQueryExecutor;
@@ -48,11 +48,10 @@ import com.jn.mensageria.JnFunctionMensageriaSender;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.jn.utils.JnLanguage;
 import com.vis.entities.VisEntityResume;
-enum CcpRandomTestsConstants  implements CcpJsonFieldName{
-	type, cause, stackTrace, email, mappings, properties, name, ddd, _id, docs, _source, id, mail, contato, vaga, channel, description, contactChannel, candidate, candidato
-	
-}
 public class CcpRandomTests {
+	enum JsonFieldNames implements CcpJsonFieldName{
+		type, cause, stackTrace, email, mappings, properties, name, ddd, _id, docs, _source, id, mail, contato, vaga, channel, description, contactChannel, candidate, candidato
+	}
 	static {
 		CcpDependencyInjection.loadAllDependencies(new CcpElasticSearchQueryExecutor(), new CcpElasticSearchDbRequest(),
 				new CcpMindrotPasswordHandler(), new CcpElasticSerchDbBulk(), CcpLocalCacheInstances.map,
@@ -100,9 +99,9 @@ public class CcpRandomTests {
 	}
 
 	static void testarExpurgable() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(CcpRandomTestsConstants.type, "teste")
-				.put(CcpRandomTestsConstants.stackTrace, "teste")
-				.put(CcpRandomTestsConstants.cause, "teste");
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(JsonFieldNames.type, "teste")
+				.put(JsonFieldNames.stackTrace, "teste")
+				.put(JsonFieldNames.cause, "teste");
 		CcpEntity entity = JnEntityJobsnowError.ENTITY;
 		testarExpurgable(json, entity);
 	}
@@ -125,7 +124,7 @@ public class CcpRandomTests {
 
 	static void testarSalvamentoDeSenha() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(JnEntityLoginPassword.Fields.password, "123456").put(CcpRandomTestsConstants.email, "onias85@gmail.com");
+				.put(JnEntityLoginPassword.Fields.password, "123456").put(JsonFieldNames.email, "onias85@gmail.com");
 		JnEntityLoginPassword.ENTITY.createOrUpdate(json);
 
 		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
@@ -148,7 +147,7 @@ public class CcpRandomTests {
 		folder.readFiles(file -> {
 			String fileName = file.getName();
 			String javaClassName = "JnEntity" + new CcpStringDecorator(fileName).text().toCamelCase().toString();
-			CcpJsonRepresentation json = file.asSingleJson().getInnerJsonFromPath(CcpRandomTestsConstants.mappings, CcpRandomTestsConstants.properties);
+			CcpJsonRepresentation json = file.asSingleJson().getInnerJsonFromPath(JsonFieldNames.mappings, JsonFieldNames.properties);
 			Set<String> fields = json.fieldSet();
 			for (String field : fields) {
 				List<String> javaClassesName = map.getOrDefault(field, new ArrayList<>());
@@ -165,8 +164,8 @@ public class CcpRandomTests {
 	}
 
 	static void testarValidacoes() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(CcpRandomTestsConstants.name, "L")
-				.put(CcpRandomTestsConstants.ddd, 20);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(JsonFieldNames.name, "L")
+				.put(JsonFieldNames.ddd, 20);
 		try {
 
 			new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(json);
@@ -176,7 +175,7 @@ public class CcpRandomTests {
 	}
 
 	static void metodoDoLucas() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(CcpRandomTestsConstants.email, "onias85@gmail.com")
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(JsonFieldNames.email, "onias85@gmail.com")
 
 		;
 		List<CcpJsonRepresentation> parametersToSearch = JnEntityLoginSessionValidation.ENTITY
@@ -190,8 +189,8 @@ public class CcpRandomTests {
 
 	static void testarExpurgableEntity() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(CcpRandomTestsConstants.cause, new CcpJsonRepresentation("{'nome':'onias'}")).put(CcpRandomTestsConstants.stackTrace, "{'nome':'vieira'}")
-				.put(CcpRandomTestsConstants.type, "any");
+				.put(JsonFieldNames.cause, new CcpJsonRepresentation("{'nome':'onias'}")).put(JsonFieldNames.stackTrace, "{'nome':'vieira'}")
+				.put(JsonFieldNames.type, "any");
 		CcpJsonRepresentation oneById = JnEntityJobsnowError.ENTITY.getOneById(json,
 				CcpOtherConstants.RETURNS_EMPTY_JSON);
 		System.out.println(oneById);
@@ -231,7 +230,7 @@ public class CcpRandomTests {
 				+ "            \"experiencia\",\r\n" + "            \"disponibilidade\",\r\n"
 				+ "            \"ddd\",\r\n" + "            \"bitcoin\"\r\n" + "        ]\r\n" + "    }\r\n" + "}");
 		for (Object candidato : candidatos) {
-			CcpJsonRepresentation doc = template.put(CcpRandomTestsConstants._id, candidato);
+			CcpJsonRepresentation doc = template.put(JsonFieldNames._id, candidato);
 			mgetJson = mgetJson.addToList("docs", doc);
 		}
 
@@ -240,17 +239,17 @@ public class CcpRandomTests {
 						mgetJson.asUgglyJson());
 		CcpJsonRepresentation asSingleJson = executeHttpRequest.asSingleJson();
 
-		List<CcpJsonRepresentation> collect = asSingleJson.getAsJsonList(CcpRandomTestsConstants.docs).stream().map(json -> {
-			String id = json.getAsString(CcpRandomTestsConstants._id);
-			CcpJsonRepresentation source = json.getInnerJson(CcpRandomTestsConstants._source);
-			CcpJsonRepresentation put = source.put(CcpRandomTestsConstants.id, id);
+		List<CcpJsonRepresentation> collect = asSingleJson.getAsJsonList(JsonFieldNames.docs).stream().map(json -> {
+			String id = json.getAsString(JsonFieldNames._id);
+			CcpJsonRepresentation source = json.getInnerJson(JsonFieldNames._source);
+			CcpJsonRepresentation put = source.put(JsonFieldNames.id, id);
 			return put;
 		}).collect(Collectors.toList());
 
 		CcpJsonRepresentation resumes = CcpOtherConstants.EMPTY_JSON;
 
 		for (CcpJsonRepresentation curriculo : collect) {
-			String id = curriculo.getAsString(CcpRandomTestsConstants.id);
+			String id = curriculo.getAsString(JsonFieldNames.id);
 			resumes = resumes.getDynamicVersion().put(id, curriculo);
 		}
 
@@ -282,13 +281,13 @@ public class CcpRandomTests {
 
 		public void accept(CcpJsonRepresentation json) {
 
-			String recrutador = json.getAsObject(CcpRandomTestsConstants.mail);
-			String contato = json.getAsString(CcpRandomTestsConstants.contato);
-			String texto = json.getAsString(CcpRandomTestsConstants.vaga);
+			String recrutador = json.getAsObject(JsonFieldNames.mail);
+			String contato = json.getAsString(JsonFieldNames.contato);
+			String texto = json.getAsString(JsonFieldNames.vaga);
 			String contactChannel = new CcpStringDecorator(contato.trim()).email().isValid() ? "email" : "link";
 
-			CcpJsonRepresentation vaga = CcpOtherConstants.EMPTY_JSON.put(CcpRandomTestsConstants.channel, contato).put(CcpRandomTestsConstants.email, recrutador)
-					.put(CcpRandomTestsConstants.description, texto).put(CcpRandomTestsConstants.contactChannel, contactChannel);
+			CcpJsonRepresentation vaga = CcpOtherConstants.EMPTY_JSON.put(JsonFieldNames.channel, contato).put(JsonFieldNames.email, recrutador)
+					.put(JsonFieldNames.description, texto).put(JsonFieldNames.contactChannel, contactChannel);
 
 			this.vagasAgrupadasPorRecrutadores = this.vagasAgrupadasPorRecrutadores.addToList(recrutador, vaga);
 
@@ -301,8 +300,8 @@ public class CcpRandomTests {
 		CcpJsonRepresentation candidatosAgrupadosPorRecrutadores = CcpOtherConstants.EMPTY_JSON;
 
 		public void accept(CcpJsonRepresentation json) {
-			String candidato = json.getAsObject(CcpRandomTestsConstants.candidate, CcpRandomTestsConstants.candidato);
-			String recrutador = json.getAsString(CcpRandomTestsConstants.email);
+			String candidato = json.getAsObject(JsonFieldNames.candidate, JsonFieldNames.candidato);
+			String recrutador = json.getAsString(JsonFieldNames.email);
 			this.candidatosAgrupadosPorRecrutadores = this.candidatosAgrupadosPorRecrutadores.addToList(recrutador,
 					candidato);
 
@@ -373,9 +372,9 @@ public class CcpRandomTests {
 
 	static void testarTempo() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(CcpRandomTestsConstants.cause, new CcpJsonRepresentation("{'nome':'onias'}"))
-				.put(CcpRandomTestsConstants.stackTrace, "{'nome':'vieira'}")
-				.put(CcpRandomTestsConstants.type, "any");
+				.put(JsonFieldNames.cause, new CcpJsonRepresentation("{'nome':'onias'}"))
+				.put(JsonFieldNames.stackTrace, "{'nome':'vieira'}")
+				.put(JsonFieldNames.type, "any");
 		JnEntityJobsnowError.ENTITY.delete(json);
 		JnEntityJobsnowError.ENTITY.createOrUpdate(json);
 		while (true) {
@@ -408,7 +407,7 @@ public class CcpRandomTests {
 		CcpFileDecorator file = new CcpStringDecorator("vagas.txt").file();
 		String[] resourcesNames = new String[] { "vagas" };
 		queryExecutor.consumeQueryResult(queryToSearchLastUpdatedResumes, resourcesNames, "10s", 10000, vaga -> {
-			String texto = vaga.getAsString(CcpRandomTestsConstants.vaga).replace("\n", "").trim();
+			String texto = vaga.getAsString(JsonFieldNames.vaga).replace("\n", "").trim();
 			String completeLeft = new CcpStringDecorator("" + ++counter).text().completeLeft('0', 6).content;
 			file.append(completeLeft + ": " + texto);
 //					CcpTimeDecorator.appendLog(counter);

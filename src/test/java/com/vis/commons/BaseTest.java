@@ -1,12 +1,12 @@
 package com.vis.commons;
 
 import com.ccp.constantes.CcpOtherConstants;
+import com.ccp.decorators.CcpErrorJsonFieldsInvalid;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.utils.CcpDbRequester;
-import com.ccp.exceptions.json.fields.CcpErrorJsonFieldsInvalid;
 import com.ccp.implementations.cache.gcp.memcache.CcpGcpMemCache;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
@@ -26,13 +26,12 @@ import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 
 public class BaseTest {
-	//FIXME faltando validações do SimpleArray
 	public final static CcpJsonRepresentation REQUEST_TO_LOGIN = CcpOtherConstants.EMPTY_JSON
 			.put(JnEntityLoginSessionValidation.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
 			.put(JnEntityLoginToken.Fields.ip, "localhost:8080")
 			;
 
-	public final static CcpJsonRepresentation ANSWERS_JSON =  REQUEST_TO_LOGIN.put(JnEntityLoginAnswers.Fields.goal, "jobs").put(JnEntityLoginAnswers.Fields.channel, "linkedin");
+	public final static CcpJsonRepresentation ANSWERS_JSON = REQUEST_TO_LOGIN.put(JnEntityLoginAnswers.Fields.goal, "jobs").put(JnEntityLoginAnswers.Fields.channel, "linkedin");
 
 	static {
 		boolean localEnvironment = CcpRestApiUtils.isLocalEnvironment();	

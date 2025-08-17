@@ -12,11 +12,11 @@ import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.bulk.CcpEntityBulkOperationType;
 import com.ccp.especifications.db.utils.CcpDbRequester;
 import com.ccp.especifications.http.CcpHttpHandler;
+import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponse;
 import com.ccp.especifications.http.CcpHttpResponseType;
-import com.ccp.exceptions.process.CcpErrorFlowDisturb;
+import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.flow.CcpTreeFlow;
-import com.ccp.http.CcpHttpMethods;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
@@ -38,11 +38,10 @@ import com.jn.entities.JnEntityLoginToken;
 import com.jn.entities.JnEntityLoginTokenAttempts;
 import com.jn.status.login.JnProcessStatusCreateLoginEmail;
 import com.jn.status.login.JnProcessStatusExecuteLogin;
-enum VisTemplateDeTestesConstants  implements CcpJsonFieldName{
-	message, statusName, x, url, method, actualStatus, expectedStatus, request, headers, response, timestamp, language
-	
-}
 public abstract class VisTemplateDeTestes {
+	enum JsonFieldNames implements CcpJsonFieldName{
+		message, statusName, x, url, method, actualStatus, expectedStatus, request, headers, response, timestamp, language
+	}
 	protected final String ENDPOINT_URL = "http://localhost:8081/";
 
 	static {
@@ -111,8 +110,8 @@ public abstract class VisTemplateDeTestes {
 		int actualStatus = response.httpStatus;
 
 		this.logRequestAndResponse(path, method, status, scenarioName, actualStatus, body, headers, executeHttpRequest);
-		String message = executeHttpRequest.isInnerJson(VisTemplateDeTestesConstants.message) == false ? executeHttpRequest.getAsString(VisTemplateDeTestesConstants.message) : 
-			executeHttpRequest.getValueFromPath("", VisTemplateDeTestesConstants.message, VisTemplateDeTestesConstants.statusName);
+		String message = executeHttpRequest.isInnerJson(JsonFieldNames.message) == false ? executeHttpRequest.getAsString(JsonFieldNames.message) : 
+			executeHttpRequest.getValueFromPath("", JsonFieldNames.message, JsonFieldNames.statusName);
 		status.verifyStatus(actualStatus, message);
 		return executeHttpRequest;
 	}
@@ -120,7 +119,7 @@ public abstract class VisTemplateDeTestes {
 	private <V> void logRequestAndResponse(String url, CcpHttpMethods method, CcpProcessStatus status, String scenarioName, int actualStatus,
 			CcpJsonRepresentation body, CcpJsonRepresentation headers, V executeHttpRequest) {
 
-		CcpJsonRepresentation md = CcpOtherConstants.EMPTY_JSON.put(VisTemplateDeTestesConstants.x, executeHttpRequest);
+		CcpJsonRepresentation md = CcpOtherConstants.EMPTY_JSON.put(JsonFieldNames.x, executeHttpRequest);
 
 		if (executeHttpRequest instanceof CcpJsonRepresentation json) {
 			md = json;
@@ -129,9 +128,9 @@ public abstract class VisTemplateDeTestes {
 		String date = new CcpTimeDecorator().getFormattedDateTime("dd/MM/yyyy HH:mm:ss");
 
 		int expectedStatus = status.asNumber();
-		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON.put(VisTemplateDeTestesConstants.url, url).put(VisTemplateDeTestesConstants.method, method).put(VisTemplateDeTestesConstants.actualStatus, actualStatus)
-				.put(VisTemplateDeTestesConstants.expectedStatus, expectedStatus).put(VisTemplateDeTestesConstants.headers, headers).put(VisTemplateDeTestesConstants.request, body).put(VisTemplateDeTestesConstants.response, md)
-				.put(VisTemplateDeTestesConstants.timestamp, date);
+		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON.put(JsonFieldNames.url, url).put(JsonFieldNames.method, method).put(JsonFieldNames.actualStatus, actualStatus)
+				.put(JsonFieldNames.expectedStatus, expectedStatus).put(JsonFieldNames.headers, headers).put(JsonFieldNames.request, body).put(JsonFieldNames.response, md)
+				.put(JsonFieldNames.timestamp, date);
 		String asPrettyJson = put.asPrettyJson();
 
 		String testName = this.getClass().getSimpleName();
@@ -233,7 +232,7 @@ public abstract class VisTemplateDeTestes {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnEntityLoginToken.Fields.email, "onias85@gmail.com")
 				.put(JnEntityLoginToken.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
-				.put(VisTemplateDeTestesConstants.language, "portuguese")
+				.put(JsonFieldNames.language, "portuguese")
 				.put(JnEntityLoginToken.Fields.ip, "localhost")
 				;
 

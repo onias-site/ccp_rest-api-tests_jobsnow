@@ -7,7 +7,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.especifications.db.crud.CcpGetEntityId;
 import com.ccp.especifications.db.utils.CcpEntityCrudOperationType;
-import com.ccp.http.CcpHttpMethods;
+import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.business.login.JnBusinessSendUserToken;
 import com.jn.entities.JnEntityAsyncTask;
@@ -21,11 +21,10 @@ import com.jn.status.login.JnProcessStatusExecuteLogin;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.commons.VisTemplateDeTestes;
 import com.vis.rest.api.resume.status.SaveResumeStatus;
-enum ValidationsEndpointsCreateResumeConstants  implements CcpJsonFieldName{
-	sessionToken
-	
-}
 public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
+	enum JsonFieldNames implements CcpJsonFieldName{
+		sessionToken
+	}
 
 	private final String email = "onias85@gmail.com";
 	private final String uri = "resume/" + this.email + "/language/portuguese";
@@ -53,13 +52,13 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 	public void testarRequisicaoComTokenFalso() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
 		CcpJsonRepresentation body = super.getJsonFile("documentation/tests/resume/curriculoComArquivoInvalido.json");
-		CcpJsonRepresentation bodyWithFakeSessionToken = body.put(ValidationsEndpointsCreateResumeConstants.sessionToken, "tokenFalsoSafadoQualquer");
+		CcpJsonRepresentation bodyWithFakeSessionToken = body.put(JsonFieldNames.sessionToken, "tokenFalsoSafadoQualquer");
 		super.getJsonResponseFromEndpoint(JnProcessStatusExecuteLogin.invalidSession, scenarioName, bodyWithFakeSessionToken, this.uri);
 
 	}
 
 	protected CcpJsonRepresentation getHeaders() {
-		return super.getHeaders().put(ValidationsEndpointsCreateResumeConstants.sessionToken, "NFDP8DV9987EVMBW1H3N56OEGYMFZB");
+		return super.getHeaders().put(JsonFieldNames.sessionToken, "NFDP8DV9987EVMBW1H3N56OEGYMFZB");
 	}
 	
 	@SuppressWarnings("unchecked")

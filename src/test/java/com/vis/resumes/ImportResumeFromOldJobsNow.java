@@ -12,11 +12,11 @@ import com.ccp.especifications.db.query.CcpDbQueryOptions;
 import com.ccp.especifications.db.query.CcpQueryExecutor;
 import com.jn.business.login.JnBusinessSessionValidate;
 import com.vis.entities.VisEntityResume;
- enum ImportResumeFromOldJobsNowConstants  implements CcpJsonFieldName{
-	id, curriculo, conteudo, resumeBase64, arquivo, fileName, disponibilidade, profissaoDesejada, empresas, ultimaProfissao, experiencia, pretensaoClt, pretensaoPj, bitcoin, observacao, observations, name, originalEmail, status
-	 
- }
 public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentation>{
+	enum JsonFieldNames implements CcpJsonFieldName{
+		id, curriculo, conteudo, resumeBase64, arquivo, fileName, disponibilidade, profissaoDesejada, empresas, ultimaProfissao, experiencia, pretensaoClt, pretensaoPj, bitcoin, observacao, observations, name, originalEmail, status
+	}
+
 	public static final ImportResumeFromOldJobsNow INSTANCE = new ImportResumeFromOldJobsNow();
 	private Set<String> ids;			
 	int contador;
@@ -29,7 +29,7 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 					.maxResults()
 				;
 		String[] resourcesNames = VisEntityResume.ENTITY.getEntitiesToSelect();
-		this.ids = queryExecutor.getResultAsList(query, resourcesNames, "email").stream().map(x -> x.getAsString(ImportResumeFromOldJobsNowConstants.id)).collect(Collectors.toSet());
+		this.ids = queryExecutor.getResultAsList(query, resourcesNames, "email").stream().map(x -> x.getAsString(JsonFieldNames.id)).collect(Collectors.toSet());
 	}
 	
 	public void accept(CcpJsonRepresentation candidate) {
@@ -40,22 +40,22 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 //			return;
 		}
 		
-		CcpJsonRepresentation resumeFile = candidate.getInnerJson(ImportResumeFromOldJobsNowConstants.curriculo)
-				.renameField(ImportResumeFromOldJobsNowConstants.conteudo, ImportResumeFromOldJobsNowConstants.resumeBase64)
-				.renameField(ImportResumeFromOldJobsNowConstants.arquivo, ImportResumeFromOldJobsNowConstants.fileName)
-				.getJsonPiece(ImportResumeFromOldJobsNowConstants.resumeBase64, ImportResumeFromOldJobsNowConstants.fileName)
+		CcpJsonRepresentation resumeFile = candidate.getInnerJson(JsonFieldNames.curriculo)
+				.renameField(JsonFieldNames.conteudo, JsonFieldNames.resumeBase64)
+				.renameField(JsonFieldNames.arquivo, JsonFieldNames.fileName)
+				.getJsonPiece(JsonFieldNames.resumeBase64, JsonFieldNames.fileName)
 		;
 		CcpJsonRepresentation resume = candidate
-		.renameField(ImportResumeFromOldJobsNowConstants.disponibilidade, VisEntityResume.Fields.disponibility)
-		.renameField(ImportResumeFromOldJobsNowConstants.profissaoDesejada, VisEntityResume.Fields.desiredJob)
-		.renameField(ImportResumeFromOldJobsNowConstants.empresas,VisEntityResume.Fields.companiesNotAllowed)
-		.renameField(ImportResumeFromOldJobsNowConstants.ultimaProfissao, VisEntityResume.Fields.lastJob)
-		.renameField(ImportResumeFromOldJobsNowConstants.experiencia, VisEntityResume.Fields.experience)
-		.renameField(ImportResumeFromOldJobsNowConstants.pretensaoClt, VisEntityResume.Fields.clt)
-		.renameField(ImportResumeFromOldJobsNowConstants.pretensaoPj, VisEntityResume.Fields.pj)
-		.renameField(ImportResumeFromOldJobsNowConstants.bitcoin, VisEntityResume.Fields.btc)
-		.renameField(ImportResumeFromOldJobsNowConstants.observacao, ImportResumeFromOldJobsNowConstants.observations)
-		.put(ImportResumeFromOldJobsNowConstants.name, "NOME DO CANDIDATO")
+		.renameField(JsonFieldNames.disponibilidade, VisEntityResume.Fields.disponibility)
+		.renameField(JsonFieldNames.profissaoDesejada, VisEntityResume.Fields.desiredJob)
+		.renameField(JsonFieldNames.empresas,VisEntityResume.Fields.companiesNotAllowed)
+		.renameField(JsonFieldNames.ultimaProfissao, VisEntityResume.Fields.lastJob)
+		.renameField(JsonFieldNames.experiencia, VisEntityResume.Fields.experience)
+		.renameField(JsonFieldNames.pretensaoClt, VisEntityResume.Fields.clt)
+		.renameField(JsonFieldNames.pretensaoPj, VisEntityResume.Fields.pj)
+		.renameField(JsonFieldNames.bitcoin, VisEntityResume.Fields.btc)
+		.renameField(JsonFieldNames.observacao, JsonFieldNames.observations)
+		.put(JsonFieldNames.name, "NOME DO CANDIDATO")
 		.putAll(resumeFile)
 		.copyIfNotContains(VisEntityResume.Fields.lastJob, VisEntityResume.Fields.desiredJob)
 		.putIfNotContains(VisEntityResume.Fields.companiesNotAllowed, Arrays.asList())
@@ -63,7 +63,7 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 		.putIfNotContains(VisEntityResume.Fields.disponibility, 0)
 		.putIfNotContains(VisEntityResume.Fields.desiredJob, "-")
 		.putIfNotContains(VisEntityResume.Fields.lastJob, "-")
-		.putIfNotContains(ImportResumeFromOldJobsNowConstants.observations, "-")
+		.putIfNotContains(JsonFieldNames.observations, "-")
 		.getTransformedJson(
 				ResumeTransformations.AddBtcValue,
 				ResumeTransformations.AddCltValue,
@@ -90,18 +90,18 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 				,VisEntityResume.Fields.btc
 				,VisEntityResume.Fields.ddd
 				,VisEntityResume.Fields.pj
-				,ImportResumeFromOldJobsNowConstants.originalEmail
-				,ImportResumeFromOldJobsNowConstants.resumeBase64
-				,ImportResumeFromOldJobsNowConstants.observations
-				,ImportResumeFromOldJobsNowConstants.fileName
-				,ImportResumeFromOldJobsNowConstants.name
+				,JsonFieldNames.originalEmail
+				,JsonFieldNames.resumeBase64
+				,JsonFieldNames.observations
+				,JsonFieldNames.fileName
+				,JsonFieldNames.name
 				);
 	
 		System.out.println(resume);
 		
 //		SyncServiceVisResume.INSTANCE.save(resume);
 		
-		Integer status = candidate.getAsIntegerNumber(ImportResumeFromOldJobsNowConstants.status);
+		Integer status = candidate.getAsIntegerNumber(JsonFieldNames.status);
 		
 		boolean inactiveResume = Integer.valueOf(0).equals(status);
 		

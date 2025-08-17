@@ -11,8 +11,8 @@ import com.ccp.decorators.CcpReflectionOptionsDecorator;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.especifications.db.utils.CcpEntity;
-import com.ccp.exceptions.db.utils.CcpErrorEntityPrimaryKeyIsMissing;
-import com.ccp.exceptions.process.CcpErrorFlowDisturb;
+import com.ccp.especifications.db.utils.CcpErrorEntityPrimaryKeyIsMissing;
+import com.ccp.flow.CcpErrorFlowDisturb;
 import com.jn.business.login.JnBusinessSendUserToken;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityLoginAnswers;
@@ -23,10 +23,6 @@ import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.services.JnServiceLogin;
 
-enum LoginActionsConstants implements CcpJsonFieldName{
-	sessionToken, token, originalToken
-	
-}
 
 public enum LoginActions implements Function<CcpJsonRepresentation, CcpJsonRepresentation> {
 	saveAnswers(JnEntityLoginAnswers.ENTITY),
@@ -37,15 +33,15 @@ public enum LoginActions implements Function<CcpJsonRepresentation, CcpJsonRepre
 	createLoginEmail(JnEntityLoginEmail.ENTITY),
 	renameTokenField{
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			CcpJsonRepresentation renameField = json.renameField(LoginActionsConstants.sessionToken, LoginActionsConstants.token);
+			CcpJsonRepresentation renameField = json.renameField(JsonFieldNames.sessionToken, JsonFieldNames.token);
 			return renameField; 
 		}
 	},
 	readTokenFromReceivedEmail{
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			String originalToken = new CcpStringDecorator("c:\\logs\\email\\"+ JnBusinessSendUserToken.class.getName() + ".json")
-			.file().asSingleJson().getAsString(LoginActionsConstants.originalToken);
-			CcpJsonRepresentation put = json.put(LoginActionsConstants.token, originalToken);
+			.file().asSingleJson().getAsString(JsonFieldNames.originalToken);
+			CcpJsonRepresentation put = json.put(JsonFieldNames.token, originalToken);
 			return put;
 		}
 	},
@@ -115,5 +111,8 @@ public enum LoginActions implements Function<CcpJsonRepresentation, CcpJsonRepre
 				allStatus = allStatus.getDynamicVersion().put(entityName, false);
 			}
 		}
+	}
+	enum JsonFieldNames implements CcpJsonFieldName{
+		sessionToken, token, originalToken
 	}
 }

@@ -3,7 +3,7 @@ package com.vis.rest.api.resume.validations;
 import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.http.CcpHttpMethods;
+import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.vis.commons.VisTemplateDeTestes;
 
@@ -24,7 +24,7 @@ public class ValidationsEndpointsUpdateResume  extends VisTemplateDeTestes{
 	}
 
 	protected String getUri() {
-		// TODO Auto-generated method stub
+		// FIXME Auto-generated method stub
 		return null;
 	}
 	

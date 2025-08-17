@@ -20,7 +20,7 @@ import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.entities.JnEntityAsyncTask;
-import static com.ccp.decorators.DecoratorsConstants.*;
+import static com.ccp.decorators.JsonFieldNames.*;
 
 public class CcpCollectionDecoratorTest {
 	{

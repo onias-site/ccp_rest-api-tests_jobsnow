@@ -20,11 +20,8 @@ import org.junit.Test;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
-import com.ccp.exceptions.json.CCpErrorJsonFieldIsNotValidJsonList;
-import com.ccp.exceptions.json.CcpErrorJsonFieldNotFound;
-import com.ccp.exceptions.json.CcpErrorJsonPathIsMissing;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import static com.ccp.decorators.DecoratorsConstants.*;
+import static com.ccp.decorators.JsonFieldNames.*;
 
 public class CcpJsonRepresentationTests {
 	{
@@ -1019,7 +1016,7 @@ public class CcpJsonRepresentationTests {
 		CcpJsonRepresentation putSameValueInManyFields = CcpOtherConstants.EMPTY_JSON.putSameValueInManyFields(value, v1, v2, v3, v4);
 		Set<String> fieldSet = putSameValueInManyFields.fieldSet();
 		for (String field : fieldSet) {
-			DecoratorsConstants valueOf = DecoratorsConstants.valueOf(field);
+			JsonFieldNames valueOf = JsonFieldNames.valueOf(field);
 			Object object = putSameValueInManyFields.get(valueOf);
 			assertEquals(object, value);
 		}

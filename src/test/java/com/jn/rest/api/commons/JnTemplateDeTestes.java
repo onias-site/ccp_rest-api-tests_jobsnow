@@ -10,10 +10,10 @@ import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.utils.CcpDbRequester;
 import com.ccp.especifications.http.CcpHttpHandler;
+import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponse;
 import com.ccp.especifications.http.CcpHttpResponseTransform;
 import com.ccp.especifications.http.CcpHttpResponseType;
-import com.ccp.http.CcpHttpMethods;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
@@ -23,12 +23,11 @@ import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatus;
 
-enum JnTemplateDeTestesConstants  implements CcpJsonFieldName{
-	x, timestamp, response, request, headers, expectedStatus, actualStatus, method, url
-	
-}
 
 public abstract class JnTemplateDeTestes {
+	enum JsonFieldNames implements CcpJsonFieldName{
+		x, timestamp, response, request, headers, expectedStatus, actualStatus, method, url
+	}
 	protected final String ENDPOINT_URL = "http://localhost:8080/";
 
 	static {
@@ -96,7 +95,7 @@ public abstract class JnTemplateDeTestes {
 	private <V> void logRequestAndResponse(String url, CcpHttpMethods method, CcpProcessStatus status, int actualStatus,
 			CcpJsonRepresentation body, CcpJsonRepresentation headers, V executeHttpRequest) {
 
-		CcpJsonRepresentation md = CcpOtherConstants.EMPTY_JSON.put(JnTemplateDeTestesConstants.x, executeHttpRequest);
+		CcpJsonRepresentation md = CcpOtherConstants.EMPTY_JSON.put(JsonFieldNames.x, executeHttpRequest);
 
 		if (executeHttpRequest instanceof CcpJsonRepresentation json) {
 			md = json;
@@ -106,14 +105,14 @@ public abstract class JnTemplateDeTestes {
 
 		int expectedStatus = status.asNumber();
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
-				.put(JnTemplateDeTestesConstants.url, url)
-				.put(JnTemplateDeTestesConstants.method, method)
-				.put(JnTemplateDeTestesConstants.actualStatus, actualStatus)
-				.put(JnTemplateDeTestesConstants.expectedStatus, expectedStatus)
-				.put(JnTemplateDeTestesConstants.headers, headers)
-				.put(JnTemplateDeTestesConstants.request, body)
-				.put(JnTemplateDeTestesConstants.response, md)
-				.put(JnTemplateDeTestesConstants.timestamp, date);
+				.put(JsonFieldNames.url, url)
+				.put(JsonFieldNames.method, method)
+				.put(JsonFieldNames.actualStatus, actualStatus)
+				.put(JsonFieldNames.expectedStatus, expectedStatus)
+				.put(JsonFieldNames.headers, headers)
+				.put(JsonFieldNames.request, body)
+				.put(JsonFieldNames.response, md)
+				.put(JsonFieldNames.timestamp, date);
 		String asPrettyJson = put.asPrettyJson();
 
 		String testName = this.getClass().getSimpleName();
