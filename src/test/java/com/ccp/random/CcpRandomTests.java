@@ -3,6 +3,7 @@ package com.ccp.random;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,9 +17,9 @@ import com.ccp.decorators.CcpErrorJsonFieldsInvalid;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpFolderDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpTimeDecorator;
-import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.crud.CcpCrud;
 import com.ccp.especifications.db.crud.CcpSelectUnionAll;
@@ -38,15 +39,12 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.jn.business.commons.JnBusinessNotifyError;
 import com.jn.business.login.JnBusinessExecuteLogout;
-import com.jn.entities.JnEntityInstantMessengerTemplateMessage;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.mensageria.JnFunctionMensageriaSender;
 import com.jn.utils.JnDeleteKeysFromCache;
-import com.jn.utils.JnLanguage;
 import com.vis.entities.VisEntityResume;
 public class CcpRandomTests {
 	enum JsonFieldNames implements CcpJsonFieldName{
@@ -58,18 +56,29 @@ public class CcpRandomTests {
 				new CcpElasticSearchCrud(), new CcpGsonJsonHandler(), new CcpApacheMimeHttp());
 	}
 
+	static Map<String, Object> getJson(CcpFileDecorator arquivo){
+		boolean file = arquivo.isFile();
+		Map<String, Object> json = new LinkedHashMap<>();
+		
+		if(file) {
+			CcpJsonRepresentation asSingleJson = arquivo.asSingleJson();
+			return asSingleJson.content;
+		}
+		CcpFolderDecorator asFolder = arquivo.asFolder();
+		asFolder.readFiles(subFile -> {
+			Map<String, Object> subJson = getJson(subFile);
+			json.put(subFile.getName().replace(".json", ""), subJson);
+		});
+		return json;
+	}
+	
 	public static void main(String[] args) {
-		CcpJsonRepresentation json = new CcpJsonRepresentation("{"
-				+ "	\"language\": \""
-				+ JnLanguage.portuguese.name()
-				+ "\","
-				+ "	\"templateId\": \""
-				+ JnBusinessNotifyError.class.getName()
-				+ "\","
-				+ "	\"message\": \"{type}\\n\\nError Description:\n {msg}\\n\\n{stackTrace}\\n\\nCaused by:\\n{cause}\""
-				+ "}");
-			System.out.println(json);
-			System.out.println(JnEntityInstantMessengerTemplateMessage.ENTITY.getEntityName());
+		CcpJsonRepresentation json = CcpOtherConstants
+				.EMPTY_JSON
+				.getDynamicVersion()
+				
+				.addToItem("error", "objectNumberMaxValue", null)
+				;
 	}
 
 	 static void qualquerCoisa() {
