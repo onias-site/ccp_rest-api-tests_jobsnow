@@ -73,12 +73,6 @@ public class CcpRandomTests {
 	}
 	
 	public static void main(String[] args) {
-		CcpJsonRepresentation json = CcpOtherConstants
-				.EMPTY_JSON
-				.getDynamicVersion()
-				
-				.addToItem("error", "objectNumberMaxValue", null)
-				;
 	}
 
 	 static void qualquerCoisa() {
@@ -458,5 +452,11 @@ class Pessoa {
 	public String toString() {
 		return "Pessoa [idade=" + idade + ", nome=" + nome + "]";
 	}
+}
 
+class A {
+	Object a;
+}
+class B extends A{
+	static Object b;
 }
