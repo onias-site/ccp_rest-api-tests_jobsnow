@@ -3,12 +3,10 @@
 		"dynamic": "strict",
 		"properties": {
 			"request": {
-					"dynamic": "true",
-					"properties": {}
+				"type": "text"
 			},
 			"response": {
-					"dynamic": "true",
-					"properties": {}
+				"type": "text"
 			},
 			"data": {
 				"type": "text"

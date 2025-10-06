@@ -3,8 +3,7 @@
 		"dynamic": "strict",
 		"properties": {
 			"json": {
-				"dynamic": "true",
-				"properties": {}
+				"type": "text"
 			},
 			"id": {
 				"type": "keyword"

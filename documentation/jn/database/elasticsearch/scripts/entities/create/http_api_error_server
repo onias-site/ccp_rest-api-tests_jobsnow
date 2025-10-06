@@ -14,7 +14,10 @@
 			"response": {
 				"type": "text"
 			},
-			"status": {
+			"date": {
+				"type": "text"
+			},
+			"httpStatus": {
 				"type": "integer"
 			},
 			"timestamp": {

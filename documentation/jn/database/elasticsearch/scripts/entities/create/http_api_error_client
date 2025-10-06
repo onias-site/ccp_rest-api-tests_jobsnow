@@ -17,12 +17,16 @@
 			"response": {
 				"type": "text"
 			},
-			"status": {
+			"httpStatus": {
 				"type": "integer"
 			},
 			"timestamp": {
 				"type": "long"
 			},
+			"date": {
+				"type": "text"
+			},
+			
 			"request": {
 				"type": "text"
 			},

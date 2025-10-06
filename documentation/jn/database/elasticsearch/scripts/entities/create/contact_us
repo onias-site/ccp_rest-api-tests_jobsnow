@@ -12,9 +12,6 @@
                     "type": "text"
                 },
                 
-                "message": {
-                    "type": "text"
-                },
                  "sender": {
                     "type": "keyword"
                 },
