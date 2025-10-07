@@ -38,29 +38,22 @@ import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
-import com.ccp.json.validations.fields.annotations.CcpJsonFieldValidator;
-import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeArray;
-import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeNestedJson;
-import com.ccp.json.validations.fields.enums.CcpJsonFieldType;
-import com.ccp.json.validations.global.engine.CcpJsonValidationRulesEngine;
+import com.ccp.json.validations.fields.annotations.CcpJsonCommonsFields;
+import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.mensageria.JnFunctionMensageriaSender;
 import com.jn.utils.JnDeleteKeysFromCache;
-import com.vis.entities.VisEntityDeniedViewToCompany;
 import com.vis.entities.VisEntityResume;
 
-class X{
-	@CcpJsonFieldValidator(required = true, type = CcpJsonFieldType.NestedJson)
-	@CcpJsonFieldTypeNestedJson
-	@CcpJsonFieldTypeArray
-	Object desiredSkill;
-
+enum Fields implements CcpJsonFieldName{
+	@CcpJsonCommonsFields(JnJsonCommonsFields.class)
+	operation,
 }
-
 public class CcpRandomTests {
 	enum JsonFieldNames implements CcpJsonFieldName{
 		type, cause, stackTrace, email, mappings, properties, name, ddd, _id, docs, _source, id, mail, contato, vaga, channel, description, contactChannel, candidate, candidato
@@ -88,8 +81,8 @@ public class CcpRandomTests {
 	}
 	
 	public static void main(String[] args) {
-		CcpJsonRepresentation rulesExplanations = CcpJsonValidationRulesEngine.INSTANCE.getRulesExplanations(VisEntityDeniedViewToCompany.Fields.class);
-		System.out.println(rulesExplanations);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON;
+		CcpJsonValidatorEngine.INSTANCE.validateJson(Fields.class, json, "teste");
 	}
 
 	 static void qualquerCoisa() {

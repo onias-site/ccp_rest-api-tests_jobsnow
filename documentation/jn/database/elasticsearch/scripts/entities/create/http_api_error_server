@@ -11,6 +11,9 @@
 			"url": {
 				"type": "keyword"
 			},
+			"details": {
+				"type": "keyword"
+			},
 			"response": {
 				"type": "text"
 			},

@@ -39,7 +39,6 @@ public abstract class JnTemplateDeTestes {
 				new CcpGsonJsonHandler(), 
 				new CcpApacheMimeHttp(), 
 				new CcpElasticSerchDbBulk()
-				
 				);
 		
 		String pathToCreateEntityScript = "documentation\\jn\\database\\elasticsearch\\scripts\\entities\\create";
