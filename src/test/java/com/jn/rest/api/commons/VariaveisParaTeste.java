@@ -15,7 +15,7 @@ public class VariaveisParaTeste {
 	
 	public CcpJsonRepresentation REQUEST_TO_LOGIN = CcpOtherConstants.EMPTY_JSON
 			.put(JnEntityLoginToken.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
-			.put(JnEntityLoginToken.Fields.ip, "localhost")
+			.put(JnEntityLoginToken.Fields.ip, "127.0.0.1")
 			;
 			
 	public final String VALID_EMAIL;

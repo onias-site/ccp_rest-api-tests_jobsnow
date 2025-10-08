@@ -26,7 +26,7 @@ import com.ccp.process.CcpProcessStatus;
 
 public abstract class JnTemplateDeTestes {
 	enum JsonFieldNames implements CcpJsonFieldName{
-		x, timestamp, response, request, headers, expectedStatus, actualStatus, method, url
+		x, timestamp, response, request, headers, expectedStatus, actualStatus, method, url, message
 	}
 	protected final String ENDPOINT_URL = "http://localhost:8080/";
 
@@ -86,7 +86,8 @@ public abstract class JnTemplateDeTestes {
 
 		this.logRequestAndResponse(path, method, scenarioName, actualStatus, body, headers, responseFromEndpoint);
 
-		scenarioName.verifyStatus(actualStatus);
+		String message = response.asSingleJson().getAsString(JsonFieldNames.message);
+		scenarioName.verifyStatus(actualStatus, message);
 
 		return responseFromEndpoint;
 	}

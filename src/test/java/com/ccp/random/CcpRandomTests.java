@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpCollectionDecorator;
-import com.ccp.decorators.CcpErrorJsonFieldsInvalid;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpFolderDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
@@ -40,6 +39,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.json.validations.fields.annotations.CcpJsonFieldValidatorRequired;
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
+import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
@@ -186,8 +186,8 @@ public class CcpRandomTests {
 		try {
 
 			new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(json);
-		} catch (CcpErrorJsonFieldsInvalid e) {
-			new CcpStringDecorator("C:\\logs\\errosDeCurriculo.json").file().reset().append(e.result.asPrettyJson());
+		} catch (CcpJsonValidationError e) {
+			new CcpStringDecorator("C:\\logs\\errosDeCurriculo.json").file().reset().append(e.json.asPrettyJson());
 		}
 	}
 

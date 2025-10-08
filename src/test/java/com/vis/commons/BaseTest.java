@@ -1,7 +1,6 @@
 package com.vis.commons;
 
 import com.ccp.constantes.CcpOtherConstants;
-import com.ccp.decorators.CcpErrorJsonFieldsInvalid;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
@@ -18,6 +17,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.mensageria.sender.gcp.pubsub.CcpGcpPubSubMensageriaSender;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.implementations.text.extractor.apache.tika.CcpApacheTikaTextExtractor;
+import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.rest.api.utils.CcpRestApiUtils;
@@ -65,13 +65,13 @@ public class BaseTest {
 		database.createTables(pathToCreateEntityScript, pathToJavaClasses, mappingJnEntitiesErrors, insertErrors);
 	}
 	
-	protected void saveErrors(CcpFileDecorator file, CcpErrorJsonFieldsInvalid e) {
+	protected void saveErrors(CcpFileDecorator file, CcpJsonValidationError e) {
 		String path = file.getPath();
 		this.saveErrors(path, e);
 		throw new RuntimeException(e);
 	}
 	
-	protected void saveErrors(String path, CcpErrorJsonFieldsInvalid e) {
+	protected void saveErrors(String path, CcpJsonValidationError e) {
 		String replace = path.replace(".json", "_errors.json");
 		String message = e.getMessage();
 		CcpFileDecorator reset = new CcpStringDecorator(replace).file().reset();
