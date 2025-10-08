@@ -37,24 +37,37 @@ import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
+import com.ccp.json.validations.fields.annotations.CcpJsonCopyFieldValidationsFrom;
 import com.ccp.json.validations.fields.annotations.CcpJsonFieldValidatorRequired;
-import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
 import com.jn.entities.JnEntityJobsnowError;
+import com.jn.entities.JnEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.mensageria.JnFunctionMensageriaSender;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
 
 enum Fields implements CcpJsonFieldName{
-	@CcpJsonFieldTypeString
-	operation,
 	@CcpJsonFieldValidatorRequired
-	nothing
+	@CcpJsonCopyFieldValidationsFrom(JnEntityLoginAnswers.Fields.class)
+	channel,
+	@CcpJsonFieldValidatorRequired
+	@CcpJsonCopyFieldValidationsFrom(JnJsonCommonsFields.class)
+	userAgent,
+	@CcpJsonFieldValidatorRequired
+	@CcpJsonCopyFieldValidationsFrom(JnJsonCommonsFields.class)
+	ip,
+	@CcpJsonFieldValidatorRequired
+	@CcpJsonCopyFieldValidationsFrom(JnJsonCommonsFields.class)
+	email,
+	@CcpJsonFieldValidatorRequired
+	@CcpJsonCopyFieldValidationsFrom(JnEntityLoginAnswers.Fields.class)
+	goal;
 }
 public class CcpRandomTests {
 	enum JsonFieldNames implements CcpJsonFieldName{
@@ -83,9 +96,13 @@ public class CcpRandomTests {
 	}
 	
 	public static void main(String[] args) {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(Fields.operation, new ArrayList<>())
-				;
+		CcpJsonRepresentation json = new CcpJsonRepresentation("{\r\n"
+				+ "      \"goal\": \"jobs\",\r\n"
+				+ "      \"channel\": \"linkedin\",\r\n"
+				+ "      \"userAgent\": \"Apache-HttpClient/4.5.4 (Java/17.0.9)\",\r\n"
+				+ "      \"email\": \"6i0f5xb0@teste.com\",\r\n"
+				+ "      \"ip\": \"127.0.0.1\"\r\n"
+				+ "    }");
 		CcpJsonValidatorEngine.INSTANCE.validateJson(Fields.class, json, "teste");
 	}
 
@@ -108,7 +125,7 @@ public class CcpRandomTests {
 
 	static void testarExpurgable2() {
 		CcpJsonRepresentation json = new CcpJsonRepresentation("{\r\n" + "  \"email\": \"onias85@gmail.com\",\r\n"
-				+ "  \"ip\": \"localhost\",\r\n" + "  \"password\": \"Jobsnow1!\",\r\n"
+				+ "  \"ip\": \"127.0.0.1\",\r\n" + "  \"password\": \"Jobsnow1!\",\r\n"
 				+ "  \"token\": \"M6ZRDQ83\",\r\n" + "  \"originalToken\": \"M6ZRDQ83\",\r\n"
 				+ "  \"userAgent\": \"Apache-HttpClient/4.5.4 (Java/17.0.9)\"\r\n" + "}");
 		CcpEntity entity = JnEntityLoginSessionValidation.ENTITY;

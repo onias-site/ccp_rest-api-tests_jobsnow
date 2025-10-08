@@ -189,14 +189,14 @@ public abstract class VisTemplateDeTestes {
 		
 		CcpJsonRepresentation endThisStatement = CcpTreeFlow
 		.beginThisStatement()
-		.tryToExecuteTheGivenFinalTargetProcess(LoginActions.executeLogin).usingTheGivenJson(sessionValuesToTest)
-		.butIfThisExecutionReturns(JnProcessStatusExecuteLogin.missingSavingEmail).thenExecuteTheGivenProcesses(LoginActions.createLoginEmail)
+		.tryToExecuteTheGivenFinalTargetProcess(LoginActions.ExecuteLogin).usingTheGivenJson(sessionValuesToTest)
+		.butIfThisExecutionReturns(JnProcessStatusExecuteLogin.missingSavingEmail).thenExecuteTheGivenProcesses(LoginActions.CreateLoginEmail)
 		.and()
 		.ifThisExecutionReturns(JnProcessStatusCreateLoginEmail.missingSavePassword).thenExecuteTheGivenProcesses(
-				LoginActions.saveAnswers, LoginActions.createLoginToken, LoginActions.readTokenFromReceivedEmail, 
-				LoginActions.savePassword, LoginActions.renameTokenField, LoginActions.executeLogout)
+				LoginActions.SaveAnswers, LoginActions.CreateLoginToken, LoginActions.readTokenFromReceivedEmail, 
+				LoginActions.SavePassword, LoginActions.renameTokenField, LoginActions.ExecuteLogout)
 		.and()
-		.ifThisExecutionReturns(JnProcessStatusCreateLoginEmail.missingSaveAnswers).thenExecuteTheGivenProcesses(LoginActions.saveAnswers)
+		.ifThisExecutionReturns(JnProcessStatusCreateLoginEmail.missingSaveAnswers).thenExecuteTheGivenProcesses(LoginActions.SaveAnswers)
 		.and()
 		.endThisStatement(whatToNext);
 		
@@ -233,7 +233,7 @@ public abstract class VisTemplateDeTestes {
 				.put(JnEntityLoginToken.Fields.email, "onias85@gmail.com")
 				.put(JnEntityLoginToken.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
 				.put(JsonFieldNames.language, "portuguese")
-				.put(JnEntityLoginToken.Fields.ip, "localhost")
+				.put(JnEntityLoginToken.Fields.ip, "127.0.0.1")
 				;
 
 		return json;

@@ -76,7 +76,7 @@ public class TelaQuePedeSenhaParaEntrarNoSistema extends JnTemplateDeTestes{
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.expectedStatus, x -> VariaveisParaTeste.CORRECT_PASSWORD);
 	}
  
-	 
+	
 	@Test
 	public void bloquearSenha() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();

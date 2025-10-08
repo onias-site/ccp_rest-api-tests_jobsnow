@@ -1,15 +1,13 @@
 package com.vis.commons;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 import java.util.function.Function;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.decorators.CcpReflectionConstructorDecorator;
-import com.ccp.decorators.CcpReflectionMethodDecorator;
-import com.ccp.decorators.CcpReflectionOptionsDecorator;
-import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
+import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.especifications.db.utils.CcpEntity;
 import com.ccp.especifications.db.utils.CcpErrorEntityPrimaryKeyIsMissing;
 import com.ccp.flow.CcpErrorFlowDisturb;
@@ -25,12 +23,12 @@ import com.jn.services.JnServiceLogin;
 
 
 public enum LoginActions implements Function<CcpJsonRepresentation, CcpJsonRepresentation> {
-	saveAnswers(JnEntityLoginAnswers.ENTITY),
-	executeLogin(JnEntityLoginSessionConflict.ENTITY, JnEntityLoginSessionValidation.ENTITY),
-	savePassword(JnEntityLoginPassword.ENTITY),
-	executeLogout(JnEntityLoginSessionValidation.ENTITY.getTwinEntity()),
-	createLoginToken(JnEntityLoginToken.ENTITY, JnEntityEmailMessageSent.ENTITY),
-	createLoginEmail(JnEntityLoginEmail.ENTITY),
+	SaveAnswers(JnEntityLoginAnswers.ENTITY),
+	ExecuteLogin(JnEntityLoginSessionConflict.ENTITY, JnEntityLoginSessionValidation.ENTITY),
+	SavePassword(JnEntityLoginPassword.ENTITY),
+	ExecuteLogout(JnEntityLoginSessionValidation.ENTITY.getTwinEntity()),
+	CreateLoginToken(JnEntityLoginToken.ENTITY, JnEntityEmailMessageSent.ENTITY),
+	CreateLoginEmail(JnEntityLoginEmail.ENTITY),
 	renameTokenField{
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			CcpJsonRepresentation renameField = json.renameField(JsonFieldNames.sessionToken, JsonFieldNames.token);
@@ -62,17 +60,10 @@ public enum LoginActions implements Function<CcpJsonRepresentation, CcpJsonRepre
 				CcpJsonRepresentation jsonWithSubjectType = json.put(JnEntityEmailMessageSent.Fields.subjectType, JnBusinessSendUserToken.class.getName());
 				loginActions.printAllStatus(jsonWithSubjectType);
 			}
-			
-			Class<? extends JnServiceLogin> clazz = JnServiceLogin.INSTANCE.getClass();
-			
-			String name = this.name();
-			CcpReflectionConstructorDecorator reflectionConstructor = new CcpReflectionConstructorDecorator(clazz);
-			CcpReflectionOptionsDecorator fromNewInstance = reflectionConstructor.fromNewInstance();
-			CcpReflectionMethodDecorator methodOperationSpecification = fromNewInstance.fromDeclaredMethod(name, CcpJsonRepresentation.class);
-			
-			CcpJsonRepresentation nextJson = methodOperationSpecification.invokeFromMethod(json);
-			
-			return nextJson;
+			JnServiceLogin valueOf = JnServiceLogin.valueOf(this.name());
+			Map<String, Object> execute = valueOf.execute(json.content);
+			CcpJsonRepresentation result = new CcpJsonRepresentation(execute);
+			return result;
 		}catch (Exception e) {
 			
 			Throwable cause = e.getCause();

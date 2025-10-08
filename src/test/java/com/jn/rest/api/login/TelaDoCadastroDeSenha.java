@@ -56,7 +56,14 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		this.fluxoEsperado(variaveisParaTeste);
 	}
+	
+	@Test
+	public void jsonInvalido() {
+		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
+		this.execute(variaveisParaTeste,JnProcessStatusUpdatePassword.invalidJson, x -> "1234567");
 
+	}
+	
 	public void fluxoEsperado(VariaveisParaTeste variaveisParaTeste) {
 		String token = this.getToken(variaveisParaTeste);
 		this.execute(variaveisParaTeste,JnProcessStatusUpdatePassword.expectedStatus, x -> token);
@@ -120,7 +127,7 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 	private String getTokenToValidateLogin(VariaveisParaTeste variaveisParaTeste) {
 		JnEntityLoginEmail.ENTITY.createOrUpdate( variaveisParaTeste.REQUEST_TO_LOGIN);
 		JnEntityLoginAnswers.ENTITY.createOrUpdate( variaveisParaTeste.ANSWERS_JSON);
-		return "";
+		return "12345678";
 
 	}
 	
