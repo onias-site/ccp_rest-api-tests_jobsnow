@@ -2,6 +2,7 @@ package com.ccp.random;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -38,21 +39,25 @@ import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
-import com.ccp.json.validations.fields.annotations.CcpJsonCommonsFields;
+import com.ccp.json.validations.fields.annotations.CcpJsonFieldValidatorArray;
+import com.ccp.json.validations.fields.annotations.CcpJsonFieldValidatorRequired;
+import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeNumberNatural;
 import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
-import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.mensageria.JnFunctionMensageriaSender;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
 
 enum Fields implements CcpJsonFieldName{
-	@CcpJsonCommonsFields(JnJsonCommonsFields.class)
+	@CcpJsonFieldTypeNumberNatural(minValue = 3)
+	@CcpJsonFieldValidatorArray(minSize = 2)
 	operation,
+	@CcpJsonFieldValidatorRequired
+	nothing
 }
 public class CcpRandomTests {
 	enum JsonFieldNames implements CcpJsonFieldName{
@@ -81,7 +86,9 @@ public class CcpRandomTests {
 	}
 	
 	public static void main(String[] args) {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON;
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
+				.put(Fields.operation, Arrays.asList("2", 3))
+				;
 		CcpJsonValidatorEngine.INSTANCE.validateJson(Fields.class, json, "teste");
 	}
 
@@ -303,7 +310,6 @@ public class CcpRandomTests {
 					.put(JsonFieldNames.description, texto).put(JsonFieldNames.contactChannel, contactChannel);
 
 			this.vagasAgrupadasPorRecrutadores = this.vagasAgrupadasPorRecrutadores.addToList(recrutador, vaga);
-
 		}
 
 	}
@@ -317,9 +323,7 @@ public class CcpRandomTests {
 			String recrutador = json.getAsString(JsonFieldNames.email);
 			this.candidatosAgrupadosPorRecrutadores = this.candidatosAgrupadosPorRecrutadores.addToList(recrutador,
 					candidato);
-
 		}
-
 	}
 
 	static CcpJsonRepresentation getVagasAgrupadosPorRecrutadores(List<Object> intersectList) {
