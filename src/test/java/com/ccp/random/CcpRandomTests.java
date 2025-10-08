@@ -2,7 +2,6 @@ package com.ccp.random;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -39,9 +38,8 @@ import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
-import com.ccp.json.validations.fields.annotations.CcpJsonFieldValidatorArray;
 import com.ccp.json.validations.fields.annotations.CcpJsonFieldValidatorRequired;
-import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeNumberNatural;
+import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
@@ -53,8 +51,7 @@ import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
 
 enum Fields implements CcpJsonFieldName{
-	@CcpJsonFieldTypeNumberNatural(minValue = 3)
-	@CcpJsonFieldValidatorArray(minSize = 2)
+	@CcpJsonFieldTypeString
 	operation,
 	@CcpJsonFieldValidatorRequired
 	nothing
@@ -87,7 +84,7 @@ public class CcpRandomTests {
 	
 	public static void main(String[] args) {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(Fields.operation, Arrays.asList("2", 3))
+				.put(Fields.operation, new ArrayList<>())
 				;
 		CcpJsonValidatorEngine.INSTANCE.validateJson(Fields.class, json, "teste");
 	}
