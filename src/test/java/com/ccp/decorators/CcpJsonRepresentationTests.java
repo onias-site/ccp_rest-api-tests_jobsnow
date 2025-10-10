@@ -100,7 +100,7 @@ import org.junit.Test;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
-import com.ccp.especifications.mensageria.receiver.CcpTopic;
+import com.ccp.especifications.mensageria.receiver.CcpBusiness;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
 public class CcpJsonRepresentationTests {
@@ -255,7 +255,7 @@ public class CcpJsonRepresentationTests {
 			
 		}
 		
-		List<CcpTopic> jsonTransformers = new ArrayList<>();
+		List<CcpBusiness> jsonTransformers = new ArrayList<>();
 		jsonTransformers.add(j -> j.put(valor2, j.getAsIntegerNumber(valor) * 2));
 		jsonTransformers.add(j -> j.put(valor3, j.getAsIntegerNumber(valor) * 3));
 		
