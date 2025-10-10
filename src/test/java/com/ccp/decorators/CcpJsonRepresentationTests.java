@@ -1,5 +1,86 @@
 package com.ccp.decorators;
 
+import static com.ccp.decorators.JsonFieldNames.Umtextoqualquer;
+import static com.ccp.decorators.JsonFieldNames.abacaxi;
+import static com.ccp.decorators.JsonFieldNames.andré;
+import static com.ccp.decorators.JsonFieldNames.arrayJson;
+import static com.ccp.decorators.JsonFieldNames.avo;
+import static com.ccp.decorators.JsonFieldNames.bisnetos;
+import static com.ccp.decorators.JsonFieldNames.camila;
+import static com.ccp.decorators.JsonFieldNames.campo1;
+import static com.ccp.decorators.JsonFieldNames.campo2;
+import static com.ccp.decorators.JsonFieldNames.campo3;
+import static com.ccp.decorators.JsonFieldNames.campo4;
+import static com.ccp.decorators.JsonFieldNames.campo5;
+import static com.ccp.decorators.JsonFieldNames.campo6;
+import static com.ccp.decorators.JsonFieldNames.campo7;
+import static com.ccp.decorators.JsonFieldNames.campo8;
+import static com.ccp.decorators.JsonFieldNames.campo9;
+import static com.ccp.decorators.JsonFieldNames.campoDeTeste;
+import static com.ccp.decorators.JsonFieldNames.campoQueNaoExiste;
+import static com.ccp.decorators.JsonFieldNames.carro;
+import static com.ccp.decorators.JsonFieldNames.carro2;
+import static com.ccp.decorators.JsonFieldNames.cor;
+import static com.ccp.decorators.JsonFieldNames.cor2;
+import static com.ccp.decorators.JsonFieldNames.cpf;
+import static com.ccp.decorators.JsonFieldNames.endereco;
+import static com.ccp.decorators.JsonFieldNames.f1;
+import static com.ccp.decorators.JsonFieldNames.f2;
+import static com.ccp.decorators.JsonFieldNames.f3;
+import static com.ccp.decorators.JsonFieldNames.f4;
+import static com.ccp.decorators.JsonFieldNames.field;
+import static com.ccp.decorators.JsonFieldNames.filho;
+import static com.ccp.decorators.JsonFieldNames.frutas;
+import static com.ccp.decorators.JsonFieldNames.idade;
+import static com.ccp.decorators.JsonFieldNames.jsn;
+import static com.ccp.decorators.JsonFieldNames.json2;
+import static com.ccp.decorators.JsonFieldNames.json3;
+import static com.ccp.decorators.JsonFieldNames.json4;
+import static com.ccp.decorators.JsonFieldNames.json5;
+import static com.ccp.decorators.JsonFieldNames.juliana;
+import static com.ccp.decorators.JsonFieldNames.luciellen;
+import static com.ccp.decorators.JsonFieldNames.minhaPropriedadeJson;
+import static com.ccp.decorators.JsonFieldNames.nacionalidade;
+import static com.ccp.decorators.JsonFieldNames.netos;
+import static com.ccp.decorators.JsonFieldNames.nome;
+import static com.ccp.decorators.JsonFieldNames.nome2;
+import static com.ccp.decorators.JsonFieldNames.nomeCopiado;
+import static com.ccp.decorators.JsonFieldNames.nome_da_vó;
+import static com.ccp.decorators.JsonFieldNames.nomes;
+import static com.ccp.decorators.JsonFieldNames.nomes2;
+import static com.ccp.decorators.JsonFieldNames.nomes3;
+import static com.ccp.decorators.JsonFieldNames.nomes4;
+import static com.ccp.decorators.JsonFieldNames.nomes5;
+import static com.ccp.decorators.JsonFieldNames.nomes6;
+import static com.ccp.decorators.JsonFieldNames.onias;
+import static com.ccp.decorators.JsonFieldNames.pai;
+import static com.ccp.decorators.JsonFieldNames.paçoca;
+import static com.ccp.decorators.JsonFieldNames.peso;
+import static com.ccp.decorators.JsonFieldNames.peso2;
+import static com.ccp.decorators.JsonFieldNames.saudacoes;
+import static com.ccp.decorators.JsonFieldNames.saudacoesAtualizadas;
+import static com.ccp.decorators.JsonFieldNames.tipo_sanguineo;
+import static com.ccp.decorators.JsonFieldNames.v1;
+import static com.ccp.decorators.JsonFieldNames.v2;
+import static com.ccp.decorators.JsonFieldNames.v3;
+import static com.ccp.decorators.JsonFieldNames.v4;
+import static com.ccp.decorators.JsonFieldNames.valor;
+import static com.ccp.decorators.JsonFieldNames.valor2;
+import static com.ccp.decorators.JsonFieldNames.valor3;
+import static com.ccp.decorators.JsonFieldNames.valor4;
+import static com.ccp.decorators.JsonFieldNames.valorDouble;
+import static com.ccp.decorators.JsonFieldNames.valorQueNaoEhDouble;
+import static com.ccp.decorators.JsonFieldNames.veiculo;
+import static com.ccp.decorators.JsonFieldNames.veiculo2;
+import static com.ccp.decorators.JsonFieldNames.welton;
+import static com.ccp.decorators.JsonFieldNames.x;
+import static com.ccp.decorators.JsonFieldNames.x1;
+import static com.ccp.decorators.JsonFieldNames.x2;
+import static com.ccp.decorators.JsonFieldNames.x3;
+import static com.ccp.decorators.JsonFieldNames.x4;
+import static com.ccp.decorators.JsonFieldNames.x5;
+import static com.ccp.decorators.JsonFieldNames.x6;
+import static com.ccp.decorators.JsonFieldNames.x7;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -14,14 +95,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 
 import org.junit.Test;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
+import com.ccp.especifications.mensageria.receiver.CcpTopic;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import static com.ccp.decorators.JsonFieldNames.*;
 
 public class CcpJsonRepresentationTests {
 	{
@@ -175,7 +255,7 @@ public class CcpJsonRepresentationTests {
 			
 		}
 		
-		List<Function<CcpJsonRepresentation, CcpJsonRepresentation>> jsonTransformers = new ArrayList<Function<CcpJsonRepresentation,CcpJsonRepresentation>>();
+		List<CcpTopic> jsonTransformers = new ArrayList<>();
 		jsonTransformers.add(j -> j.put(valor2, j.getAsIntegerNumber(valor) * 2));
 		jsonTransformers.add(j -> j.put(valor3, j.getAsIntegerNumber(valor) * 3));
 		
