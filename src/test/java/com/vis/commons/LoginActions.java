@@ -2,7 +2,6 @@ package com.vis.commons;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-import java.util.function.Function;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
@@ -10,6 +9,7 @@ import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.especifications.db.utils.CcpEntity;
 import com.ccp.especifications.db.utils.CcpErrorEntityPrimaryKeyIsMissing;
+import com.ccp.especifications.mensageria.receiver.CcpBusiness;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.jn.business.login.JnBusinessSendUserToken;
 import com.jn.entities.JnEntityEmailMessageSent;
@@ -22,7 +22,7 @@ import com.jn.entities.JnEntityLoginToken;
 import com.jn.services.JnServiceLogin;
 
 
-public enum LoginActions implements Function<CcpJsonRepresentation, CcpJsonRepresentation> {
+public enum LoginActions implements CcpBusiness {
 	SaveAnswers(JnEntityLoginAnswers.ENTITY),
 	ExecuteLogin(JnEntityLoginSessionConflict.ENTITY, JnEntityLoginSessionValidation.ENTITY),
 	SavePassword(JnEntityLoginPassword.ENTITY),
