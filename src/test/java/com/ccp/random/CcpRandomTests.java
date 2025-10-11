@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.ccp.constantes.CcpOtherConstants;
@@ -240,19 +239,7 @@ public class CcpRandomTests {
 				.getIntersectList(emailsDasVagas);
 
 		CcpJsonRepresentation mgetJson = CcpOtherConstants.EMPTY_JSON;
-		CcpEntityField idField = new CcpEntityField() {
-			public String name() {
-				return "email";
-			}
-
-			public boolean isPrimaryKey() {
-				return false;
-			}
-
-			public Function<CcpJsonRepresentation, CcpJsonRepresentation> getTransformer() {
-				return CcpOtherConstants.DO_NOTHING;
-			}
-		};
+		CcpEntityField idField = new CcpEntityField("email", false, CcpOtherConstants.DO_NOTHING);
 
 		CcpDbQueryOptions queryToSearchViews = CcpDbQueryOptions.INSTANCE.startSimplifiedQuery()
 				.terms(idField, intersectList).endSimplifiedQueryAndBackToRequest();
@@ -341,19 +328,7 @@ public class CcpRandomTests {
 	}
 
 	static CcpJsonRepresentation getVagasAgrupadosPorRecrutadores(List<Object> intersectList) {
-		CcpEntityField idField = new CcpEntityField() {
-			public String name() {
-				return "mail";
-			}
-
-			public boolean isPrimaryKey() {
-				return false;
-			}
-
-			public Function<CcpJsonRepresentation, CcpJsonRepresentation> getTransformer() {
-				return CcpOtherConstants.DO_NOTHING;
-			}
-		};
+		CcpEntityField idField = new CcpEntityField("mail", false, CcpOtherConstants.DO_NOTHING);
 		CcpDbQueryOptions query = CcpDbQueryOptions.INSTANCE.startSimplifiedQuery().terms(idField, intersectList)
 				.endSimplifiedQueryAndBackToRequest();
 
