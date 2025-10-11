@@ -61,14 +61,12 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 		return super.getHeaders().put(JsonFieldNames.sessionToken, "NFDP8DV9987EVMBW1H3N56OEGYMFZB");
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void faltandoCadastrarSenha() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
 		this.getJsonResponseFromEndpoint(JnProcessStatusExecuteLogin.missingSavePassword, scenarioName, this.pathToJsonFile, JnEntityLoginPassword.ENTITY.getOperationCallback(CcpEntityCrudOperationType.delete));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void salvarCurriculoComArquivoInvalido() {
 		
@@ -92,7 +90,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 	
 	private String pathToJsonFile = "documentation/tests/resume/curriculoParaSalvar.json";
 	
-	@SuppressWarnings("unchecked")
+	
 	@Test
 	public void salvarCurriculoComArquivoValido() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
@@ -108,7 +106,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 	}
 	
 
-	@SuppressWarnings("unchecked")
+	
 	@Test
 	public void faltandoCadastrarPreRegistro() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
@@ -118,7 +116,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 		
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Test
 	public void senhaBloqueada() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
@@ -126,7 +124,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 		
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Test
 	public void tokenBloqueado() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
@@ -134,7 +132,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 		
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Test
 	public void faltandoCadastrarEmail() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();

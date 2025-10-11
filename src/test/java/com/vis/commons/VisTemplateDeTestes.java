@@ -1,7 +1,5 @@
 package com.vis.commons;
 
-import java.util.function.Function;
-
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
@@ -15,6 +13,7 @@ import com.ccp.especifications.http.CcpHttpHandler;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponse;
 import com.ccp.especifications.http.CcpHttpResponseType;
+import com.ccp.especifications.mensageria.receiver.CcpBusiness;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.flow.CcpTreeFlow;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
@@ -148,7 +147,7 @@ public abstract class VisTemplateDeTestes {
 	}
 	
 	public CcpJsonRepresentation executeThisFlow(
-			Function<CcpJsonRepresentation, CcpJsonRepresentation> first
+			CcpBusiness first
 			, CcpJsonRepresentation flow
 			, CcpJsonRepresentation json
 			) {
@@ -158,15 +157,14 @@ public abstract class VisTemplateDeTestes {
 			CcpJsonRepresentation apply = first.apply(json);
 			return apply;
 		} catch (CcpErrorFlowDisturb e) {
-			Function<CcpJsonRepresentation, CcpJsonRepresentation> nextFlow = flow.getAsObject(e.status);
+			CcpBusiness nextFlow = flow.getAsObject(e.status);
 			nextFlow.apply(json);
 			CcpJsonRepresentation executeThisFlow = this.executeThisFlow(first, flow, json);
 			return executeThisFlow;
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	protected final CcpJsonRepresentation createLogin(Function<CcpJsonRepresentation, CcpJsonRepresentation>... whatToNext) {
+	protected final CcpJsonRepresentation createLogin(CcpBusiness... whatToNext) {
 		
 		CcpJsonRepresentation sessionValuesToTest = this.getSessionValuesToTest();
 		
@@ -204,9 +202,8 @@ public abstract class VisTemplateDeTestes {
 	}
 	//LATER melhorar a intuitividade dos bounds no retorno do json
 
-	@SuppressWarnings("unchecked")
 	protected final CcpJsonRepresentation getJsonResponseFromEndpoint(CcpProcessStatus processStatus, String scenarioName,
-			String pathToJsonFile, Function<CcpJsonRepresentation, CcpJsonRepresentation>... whatToNext) {
+			String pathToJsonFile, CcpBusiness... whatToNext) {
 		CcpJsonRepresentation jsonFile = this.getJsonFile(pathToJsonFile);
 		CcpJsonRepresentation loginData = this.createLogin(whatToNext);
 		CcpJsonRepresentation body = loginData.putAll(jsonFile);

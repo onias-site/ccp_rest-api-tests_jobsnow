@@ -278,7 +278,6 @@ public class CcpJsonRepresentationTests {
 		assertTrue(resultado == numero * multiplicador);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void getTransformedJsonIfFoundTheFieldTest() {
 		String x = "{'valor' : '" + 1 + "'}";
