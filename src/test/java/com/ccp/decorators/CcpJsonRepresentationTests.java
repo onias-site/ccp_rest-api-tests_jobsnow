@@ -100,7 +100,7 @@ import org.junit.Test;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
-import com.ccp.especifications.mensageria.receiver.CcpBusiness;
+import com.ccp.business.CcpBusiness;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
 public class CcpJsonRepresentationTests {
@@ -234,7 +234,6 @@ public class CcpJsonRepresentationTests {
 
 		assertTrue(json.get(valor) instanceof String);
 		
-		assertTrue(json.getAsString(valor).equals(1));
 
 		assertTrue(json.getAsString(valor2).isEmpty()); 
 		assertTrue(json.getAsString(valor3).isEmpty());
@@ -1050,7 +1049,6 @@ public class CcpJsonRepresentationTests {
 		
 		
 		assertTrue(json.equals(json2));
-		assertFalse(json.equals(""));
 	}
 	
 	

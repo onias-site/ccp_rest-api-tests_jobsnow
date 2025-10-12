@@ -10,8 +10,8 @@ import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.query.CcpDbQueryOptions;
 import com.ccp.especifications.db.query.CcpQueryExecutor;
-import com.jn.business.login.JnBusinessSessionValidate;
 import com.vis.entities.VisEntityResume;
+import com.vis.services.VisServiceResume;
 public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentation>{
 	enum JsonFieldNames implements CcpJsonFieldName{
 		id, curriculo, conteudo, resumeBase64, arquivo, fileName, disponibilidade, profissaoDesejada, empresas, ultimaProfissao, experiencia, pretensaoClt, pretensaoPj, bitcoin, observacao, observations, name, originalEmail, status
@@ -74,9 +74,9 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 				ResumeTransformations.AddLastJob,
 				ResumeTransformations.AddMinCltValue,
 				ResumeTransformations.AddMinPjValue,
-				ResumeTransformations.AddObservations,
-				ResumeTransformations.CreateLoginAndSession,
-				JnBusinessSessionValidate.INSTANCE
+				ResumeTransformations.AddObservations
+//				,ResumeTransformations.CreateLoginAndSession,
+//				JnBusinessSessionValidate.INSTANCE
 				)
 		.getJsonPiece(
 				VisEntityResume.Fields.companiesNotAllowed
@@ -97,9 +97,11 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 				,JsonFieldNames.name
 				);
 	
-		System.out.println(resume);
-		
 //		SyncServiceVisResume.INSTANCE.save(resume);
+		
+		String email = candidate.getDynamicVersion().getAsString("id");
+		CcpJsonRepresentation put = resume.put(VisEntityResume.Fields.email, email);
+		VisServiceResume.Save.execute(put.content);
 		
 		Integer status = candidate.getAsIntegerNumber(JsonFieldNames.status);
 		

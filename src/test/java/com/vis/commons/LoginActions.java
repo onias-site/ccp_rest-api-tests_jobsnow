@@ -9,7 +9,7 @@ import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.especifications.db.utils.CcpEntity;
 import com.ccp.especifications.db.utils.CcpErrorEntityPrimaryKeyIsMissing;
-import com.ccp.especifications.mensageria.receiver.CcpBusiness;
+import com.ccp.business.CcpBusiness;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.jn.business.login.JnBusinessSendUserToken;
 import com.jn.entities.JnEntityEmailMessageSent;

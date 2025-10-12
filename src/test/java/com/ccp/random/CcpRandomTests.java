@@ -26,6 +26,8 @@ import com.ccp.especifications.db.query.CcpQueryExecutor;
 import com.ccp.especifications.db.utils.CcpEntity;
 import com.ccp.especifications.db.utils.CcpEntityCrudOperationType;
 import com.ccp.especifications.db.utils.CcpEntityField;
+import com.ccp.especifications.db.utils.decorators.annotations.CcpEntityFieldPrimaryKey;
+import com.ccp.especifications.http.CcpHttpHandler;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpRequester;
 import com.ccp.especifications.http.CcpHttpResponse;
@@ -37,43 +39,42 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.json.validations.fields.annotations.CcpJsonCopyFieldValidationsFrom;
-import com.ccp.json.validations.fields.annotations.CcpJsonFieldValidatorRequired;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
+import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
-import com.jn.business.login.JnBusinessUpdatePassword;
 import com.jn.entities.JnEntityJobsnowError;
-import com.jn.entities.JnEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.mensageria.JnFunctionMensageriaSender;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
+import com.vis.resumes.ImportResumeFromOldJobsNow;
 
-enum Fields implements CcpJsonFieldName{
-	@CcpJsonFieldValidatorRequired
-	@CcpJsonCopyFieldValidationsFrom(JnEntityLoginAnswers.Fields.class)
-	channel,
-	@CcpJsonFieldValidatorRequired
-	@CcpJsonCopyFieldValidationsFrom(JnJsonCommonsFields.class)
-	userAgent,
-	@CcpJsonFieldValidatorRequired
-	@CcpJsonCopyFieldValidationsFrom(JnJsonCommonsFields.class)
-	ip,
-	@CcpJsonFieldValidatorRequired
-	@CcpJsonCopyFieldValidationsFrom(JnJsonCommonsFields.class)
-	email,
-	@CcpJsonFieldValidatorRequired
-	@CcpJsonCopyFieldValidationsFrom(JnEntityLoginAnswers.Fields.class)
-	goal;
-}
 public class CcpRandomTests {
+
+	public static void main(String[] args) {
+		saveResume();
+	}
+
+	static void saveResume() {
+		CcpHttpHandler http = new CcpHttpHandler(200, CcpOtherConstants.DO_NOTHING);
+		String path = "http://localhost:9200/profissionais2/_doc/onias85@gmail.com/_source";
+		CcpHttpMethods method = CcpHttpMethods.GET;
+		CcpJsonRepresentation headers = CcpOtherConstants.EMPTY_JSON;
+		String asUgglyJson = "";
+		CcpHttpResponse response = http.ccpHttp.executeHttpRequest(path, method, headers, asUgglyJson);
+		CcpJsonRepresentation asSingleJson = response.asSingleJson();
+		ImportResumeFromOldJobsNow.INSTANCE.accept(asSingleJson);
+	}
+
 	enum JsonFieldNames implements CcpJsonFieldName{
 		type, cause, stackTrace, email, mappings, properties, name, ddd, _id, docs, _source, id, mail, contato, vaga, channel, description, contactChannel, candidate, candidato
 	}
 	static {
 		CcpDependencyInjection.loadAllDependencies(new CcpElasticSearchQueryExecutor(), new CcpElasticSearchDbRequest(),
+				CcpLocalInstances.mensageriaSender,
 				new CcpMindrotPasswordHandler(), new CcpElasticSerchDbBulk(), CcpLocalCacheInstances.map,
 				new CcpElasticSearchCrud(), new CcpGsonJsonHandler(), new CcpApacheMimeHttp());
 	}
@@ -94,13 +95,6 @@ public class CcpRandomTests {
 		return json;
 	}
 	
-	public static void main(String[] args) {
-		CcpJsonRepresentation json = new CcpJsonRepresentation(
-				"{\"email\":\"onias85@gmail.com\",\"password\": \"12345678\", \"token\": \"12345678\", \"ip\": \"127.0.0.1\", \"userAgent\": \"teste\"}");
-		
-		JnBusinessUpdatePassword.INSTANCE.apply(json);
-	}
-
 	 static void qualquerCoisa() {
 		Field[] declaredFields = JnEntityJobsnowError.Fields.class.getDeclaredFields();
 		for (Field field : declaredFields) {
@@ -459,3 +453,10 @@ class A {
 class B extends A{
 	static Object b;
 }
+enum Fields implements CcpJsonFieldName{
+	@CcpEntityFieldPrimaryKey
+	@CcpJsonCopyFieldValidationsFrom(JnJsonCommonsFields.class)
+	email, 
+	ddd,
+}
+

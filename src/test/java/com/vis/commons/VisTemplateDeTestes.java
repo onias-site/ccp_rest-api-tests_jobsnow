@@ -13,7 +13,7 @@ import com.ccp.especifications.http.CcpHttpHandler;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponse;
 import com.ccp.especifications.http.CcpHttpResponseType;
-import com.ccp.especifications.mensageria.receiver.CcpBusiness;
+import com.ccp.business.CcpBusiness;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.flow.CcpTreeFlow;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
