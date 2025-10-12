@@ -39,9 +39,9 @@ import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.json.validations.fields.annotations.CcpJsonCopyFieldValidationsFrom;
 import com.ccp.json.validations.fields.annotations.CcpJsonFieldValidatorRequired;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
-import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
+import com.jn.business.login.JnBusinessUpdatePassword;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginPassword;
@@ -95,14 +95,10 @@ public class CcpRandomTests {
 	}
 	
 	public static void main(String[] args) {
-		CcpJsonRepresentation json = new CcpJsonRepresentation("{\r\n"
-				+ "      \"goal\": \"jobs\",\r\n"
-				+ "      \"channel\": \"linkedin\",\r\n"
-				+ "      \"userAgent\": \"Apache-HttpClient/4.5.4 (Java/17.0.9)\",\r\n"
-				+ "      \"email\": \"6i0f5xb0@teste.com\",\r\n"
-				+ "      \"ip\": \"127.0.0.1\"\r\n"
-				+ "    }");
-		CcpJsonValidatorEngine.INSTANCE.validateJson(Fields.class, json, "teste");
+		CcpJsonRepresentation json = new CcpJsonRepresentation(
+				"{\"email\":\"onias85@gmail.com\",\"password\": \"12345678\", \"token\": \"12345678\", \"ip\": \"127.0.0.1\", \"userAgent\": \"teste\"}");
+		
+		JnBusinessUpdatePassword.INSTANCE.apply(json);
 	}
 
 	 static void qualquerCoisa() {
