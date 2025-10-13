@@ -60,7 +60,7 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 	@Test
 	public void jsonInvalido() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		this.execute(variaveisParaTeste,JnProcessStatusUpdatePassword.invalidJson, x -> "1234567");
+		this.execute(variaveisParaTeste,JnProcessStatusUpdatePassword.invalidJson, x -> null);
 
 	}
 	
@@ -106,7 +106,8 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 		+ variaveisParaTeste.VALID_EMAIL
 		+ "/password";
 		
-		CcpJsonRepresentation body =  variaveisParaTeste.REQUEST_TO_LOGIN.put(JnEntityLoginPassword.Fields.password, VariaveisParaTeste.CORRECT_PASSWORD)
+		CcpJsonRepresentation body =  variaveisParaTeste.REQUEST_TO_LOGIN
+				.put(JnEntityLoginPassword.Fields.password, VariaveisParaTeste.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, tokenToValidateLogin);
 		this.testarEndpoint(expectedStatus, body, uri,  CcpHttpResponseType.singleRecord);
 		String apply = producer.apply(variaveisParaTeste);

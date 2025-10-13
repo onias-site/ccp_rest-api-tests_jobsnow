@@ -31,6 +31,7 @@ import com.ccp.especifications.http.CcpHttpHandler;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpRequester;
 import com.ccp.especifications.http.CcpHttpResponse;
+import com.ccp.especifications.password.CcpPasswordHandler;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.query.elasticsearch.CcpElasticSearchQueryExecutor;
@@ -38,6 +39,7 @@ import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
+import com.ccp.implementations.text.extractor.apache.tika.CcpApacheTikaTextExtractor;
 import com.ccp.json.validations.fields.annotations.CcpJsonCopyFieldValidationsFrom;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
@@ -46,6 +48,7 @@ import com.jn.business.login.JnBusinessExecuteLogout;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
+import com.jn.entities.JnEntityLoginToken;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.mensageria.JnFunctionMensageriaSender;
 import com.jn.utils.JnDeleteKeysFromCache;
@@ -56,6 +59,21 @@ public class CcpRandomTests {
 
 	public static void main(String[] args) {
 		saveResume();
+	}
+
+	static void saveLoginToken() {
+		String value = "12345678";
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
+				.put(JnEntityLoginToken.Fields.email, "onias85@gmail.com")
+				.put(JnEntityLoginToken.Fields.token, value)
+				.put(JnEntityLoginToken.Fields.ip, "127.0.0.1")
+				.put(JnEntityLoginToken.Fields.userAgent, "teste");
+		JnEntityLoginToken.ENTITY.createOrUpdate(json);
+		CcpJsonRepresentation oneById = JnEntityLoginToken.ENTITY.getOneById(json);
+		String token = oneById.getAsString(JnEntityLoginToken.Fields.token);
+		 
+		CcpPasswordHandler dependency = CcpDependencyInjection.getDependency(CcpPasswordHandler.class);
+		System.out.println(dependency.matches(value, token));
 	}
 
 	static void saveResume() {
@@ -75,6 +93,8 @@ public class CcpRandomTests {
 	static {
 		CcpDependencyInjection.loadAllDependencies(new CcpElasticSearchQueryExecutor(), new CcpElasticSearchDbRequest(),
 				CcpLocalInstances.mensageriaSender,
+				CcpLocalInstances.bucket,
+				new CcpApacheTikaTextExtractor(),
 				new CcpMindrotPasswordHandler(), new CcpElasticSerchDbBulk(), CcpLocalCacheInstances.map,
 				new CcpElasticSearchCrud(), new CcpGsonJsonHandler(), new CcpApacheMimeHttp());
 	}
