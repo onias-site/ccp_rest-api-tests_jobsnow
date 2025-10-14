@@ -63,9 +63,8 @@ public class CcpRandomTests {
 				+ "    \"password\": \"Jobsnow1!\",\r\n"
 				+ "    \"token\": \"4ISALLOL\"\r\n"
 				+ "  }");
-		JnEntityLoginPassword.ENTITY.save(json);
-		JnEntityLoginPassword.ENTITY.transferToReverseEntity(json);
-		
+		JnEntityLoginToken.ENTITY.save(json);
+		JnEntityLoginToken.ENTITY.transferToReverseEntity(json);
 		//		saveResume();
 	}
 
