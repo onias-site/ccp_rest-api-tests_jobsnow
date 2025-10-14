@@ -26,7 +26,7 @@ public class AoEntrarNaTelaDoCadastroDeSenha extends JnTemplateDeTestes{
 	public void tokenBloqueado() { 
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		CcpEntity mirrorEntity = JnEntityLoginToken.ENTITY.getTwinEntity();
-		mirrorEntity.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
+		mirrorEntity.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusCreateLoginToken.statusLockedToken);
 	}
 	
@@ -39,15 +39,15 @@ public class AoEntrarNaTelaDoCadastroDeSenha extends JnTemplateDeTestes{
 	@Test
 	public void faltandoPreRegistro() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginEmail.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusCreateLoginToken.missingSaveAnswers);
 	}
 	
 	@Test
 	public void caminhoFeliz() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginEmail.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.createOrUpdate(variaveisParaTeste.ANSWERS_JSON);
+		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
 		this.execute(variaveisParaTeste, JnProcessStatusCreateLoginToken.expectedStatus);
 	}
 

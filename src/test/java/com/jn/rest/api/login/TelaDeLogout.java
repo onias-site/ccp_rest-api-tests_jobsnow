@@ -36,10 +36,10 @@ public class TelaDeLogout extends JnTemplateDeTestes {
 	@Test
 	public void caminhoFeliz() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginEmail.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginSessionConflict.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginSessionConflict.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		Function<VariaveisParaTeste, String> producer = variaveis -> JnEntityLoginSessionValidation.ENTITY
-				.createOrUpdate(variaveis.REQUEST_TO_LOGIN.getTransformedJson(JnJsonTransformersFieldsEntityDefault.tokenHash))
+				.save(variaveis.REQUEST_TO_LOGIN.getTransformedJson(JnJsonTransformersFieldsEntityDefault.tokenHash))
 				.getAsString(TelaDeLogoutConstants.originalToken);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogout.expectedStatus, producer);
 	}

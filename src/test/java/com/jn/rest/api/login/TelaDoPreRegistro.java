@@ -30,7 +30,7 @@ public class TelaDoPreRegistro  extends JnTemplateDeTestes{
 	public void tokenBloqueado() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		CcpEntity mirrorEntity = JnEntityLoginToken.ENTITY.getTwinEntity();
-		mirrorEntity.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
+		mirrorEntity.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusSaveAnswers.lockedToken);
 	}
 
@@ -43,33 +43,33 @@ public class TelaDoPreRegistro  extends JnTemplateDeTestes{
 	@Test
 	public void usuarioJaLogado() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginEmail.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginSessionConflict.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginSessionConflict.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusSaveAnswers.loginConflict);
 	}
 
 	@Test
 	public void faltandoCadastrarSenha() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginAnswers.ENTITY.createOrUpdate(variaveisParaTeste.ANSWERS_JSON);
-		JnEntityLoginEmail.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
+		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusSaveAnswers.missingPassword);
 	}
 
 	@Test
 	public void senhaBloqueada() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginEmail.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		CcpEntity mirrorEntity = JnEntityLoginPassword.ENTITY.getTwinEntity();
-		mirrorEntity.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
+		mirrorEntity.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusSaveAnswers.lockedPassword);
 	}
 	
 	@Test
 	public void caminhoFeliz() { 
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginEmail.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginPassword.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginPassword.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusSaveAnswers.expectedStatus); 
 	}
 	//

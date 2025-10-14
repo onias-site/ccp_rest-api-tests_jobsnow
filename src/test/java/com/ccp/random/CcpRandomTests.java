@@ -24,7 +24,6 @@ import com.ccp.especifications.db.crud.CcpSelectUnionAll;
 import com.ccp.especifications.db.query.CcpDbQueryOptions;
 import com.ccp.especifications.db.query.CcpQueryExecutor;
 import com.ccp.especifications.db.utils.CcpEntity;
-import com.ccp.especifications.db.utils.CcpEntityCrudOperationType;
 import com.ccp.especifications.db.utils.CcpEntityField;
 import com.ccp.especifications.db.utils.decorators.annotations.CcpEntityFieldPrimaryKey;
 import com.ccp.especifications.http.CcpHttpHandler;
@@ -50,7 +49,6 @@ import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
-import com.jn.mensageria.JnFunctionMensageriaSender;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
 import com.vis.resumes.ImportResumeFromOldJobsNow;
@@ -68,7 +66,7 @@ public class CcpRandomTests {
 				.put(JnEntityLoginToken.Fields.token, value)
 				.put(JnEntityLoginToken.Fields.ip, "127.0.0.1")
 				.put(JnEntityLoginToken.Fields.userAgent, "teste");
-		JnEntityLoginToken.ENTITY.createOrUpdate(json);
+		JnEntityLoginToken.ENTITY.save(json);
 		CcpJsonRepresentation oneById = JnEntityLoginToken.ENTITY.getOneById(json);
 		String token = oneById.getAsString(JnEntityLoginToken.Fields.token);
 		 
@@ -150,7 +148,7 @@ public class CcpRandomTests {
 	}
 
 	private static void testarExpurgable(CcpJsonRepresentation json, CcpEntity entity) {
-		entity.createOrUpdate(json);
+		entity.save(json);
 		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
 		for (int k = 0; k < 60; k++) {
 			CcpTimeDecorator ctd = new CcpTimeDecorator();
@@ -168,7 +166,7 @@ public class CcpRandomTests {
 	static void testarSalvamentoDeSenha() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnEntityLoginPassword.Fields.password, "123456").put(JsonFieldNames.email, "onias85@gmail.com");
-		JnEntityLoginPassword.ENTITY.createOrUpdate(json);
+		JnEntityLoginPassword.ENTITY.save(json);
 
 		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
 		CcpSelectUnionAll unionAll = crud.unionAll(new CcpJsonRepresentation[] { json }, JnDeleteKeysFromCache.INSTANCE,
@@ -210,8 +208,7 @@ public class CcpRandomTests {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(JsonFieldNames.name, "L")
 				.put(JsonFieldNames.ddd, 20);
 		try {
-
-			new JnFunctionMensageriaSender(VisEntityResume.ENTITY, CcpEntityCrudOperationType.save).apply(json);
+			VisEntityResume.ENTITY.save(json);
 		} catch (CcpJsonValidationError e) {
 			new CcpStringDecorator("C:\\logs\\errosDeCurriculo.json").file().reset().append(e.json.asPrettyJson());
 		}
@@ -226,7 +223,7 @@ public class CcpRandomTests {
 
 		System.out.println(parametersToSearch);
 
-		JnEntityLoginSessionValidation.ENTITY.getTwinEntity().createOrUpdate(json);
+		JnEntityLoginSessionValidation.ENTITY.getTwinEntity().save(json);
 		JnBusinessExecuteLogout.INSTANCE.apply(json);
 	}
 
@@ -392,11 +389,11 @@ public class CcpRandomTests {
 				.put(JsonFieldNames.stackTrace, "{'nome':'vieira'}")
 				.put(JsonFieldNames.type, "any");
 		JnEntityJobsnowError.ENTITY.delete(json);
-		JnEntityJobsnowError.ENTITY.createOrUpdate(json);
+		JnEntityJobsnowError.ENTITY.save(json);
 		while (true) {
 			boolean exists = JnEntityJobsnowError.ENTITY.exists(json);
-			if (exists == false) {
-				JnEntityJobsnowError.ENTITY.createOrUpdate(json);
+			if (false == exists) {
+				JnEntityJobsnowError.ENTITY.save(json);
 				System.out.println(new CcpTimeDecorator().getFormattedDateTime("dd/MM/yyyy HH:mm:ss.SSS"));
 			}
 			new CcpTimeDecorator().sleep(1000);

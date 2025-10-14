@@ -32,7 +32,7 @@ public class TelaQuePedeSenhaParaEntrarNoSistema extends JnTemplateDeTestes{
 	public void tokenBloqueado() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		CcpEntity mirrorEntity = JnEntityLoginToken.ENTITY.getTwinEntity();
-		mirrorEntity.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
+		mirrorEntity.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.lockedToken, x -> VariaveisParaTeste.CORRECT_PASSWORD);
 	}
 
@@ -45,25 +45,25 @@ public class TelaQuePedeSenhaParaEntrarNoSistema extends JnTemplateDeTestes{
 	@Test
 	public void faltandoCadastrarSenha() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginEmail.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.createOrUpdate(variaveisParaTeste.ANSWERS_JSON);
+		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.missingSavePassword, x-> VariaveisParaTeste.CORRECT_PASSWORD);
 	}
 
 	@Test
 	public void senhaBloqueada() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginEmail.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		CcpEntity mirrorEntity = JnEntityLoginPassword.ENTITY.getTwinEntity();
-		mirrorEntity.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
+		mirrorEntity.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.lockedPassword, x -> VariaveisParaTeste.CORRECT_PASSWORD);
 	}
 
 	@Test
 	public void usuarioJaLogado() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginEmail.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginSessionConflict.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginSessionConflict.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.loginConflict, x -> VariaveisParaTeste.CORRECT_PASSWORD);
 	}
 

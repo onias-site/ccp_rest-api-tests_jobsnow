@@ -68,7 +68,7 @@ public enum LoginActions implements CcpBusiness {
 			
 			Throwable cause = e.getCause();
 			
-			boolean thisMethodDoesNotThrownAnException = cause instanceof InvocationTargetException == false;
+			boolean thisMethodDoesNotThrownAnException = false == cause instanceof InvocationTargetException;
 			
 			if(thisMethodDoesNotThrownAnException) {
 				throw new RuntimeException(e);
@@ -76,7 +76,7 @@ public enum LoginActions implements CcpBusiness {
 			
 			Throwable subCause = cause.getCause();
 			
-			boolean theExceptionThrownByTheMethodIsNotFlowDeviation = subCause instanceof CcpErrorFlowDisturb == false;
+			boolean theExceptionThrownByTheMethodIsNotFlowDeviation = false == subCause instanceof CcpErrorFlowDisturb;
 			
 			if(theExceptionThrownByTheMethodIsNotFlowDeviation) {
 				throw new RuntimeException(e);

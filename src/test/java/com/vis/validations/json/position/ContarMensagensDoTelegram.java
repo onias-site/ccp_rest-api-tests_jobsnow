@@ -108,13 +108,13 @@ public class ContarMensagensDoTelegram {
 	private static boolean ehVagaDoJobsNow(String cleaned) {
 		String stripAccents = new CcpStringDecorator(cleaned).text().stripAccents().content;
 		
-		boolean naoTemPropaganda = stripAccents.toLowerCase().contains("propaganda numero") == false;
+		boolean naoTemPropaganda = false == stripAccents.toLowerCase().contains("propaganda numero");
 		
 		if(naoTemPropaganda) {
 			return false;
 		}
 		
-		boolean naoTemDataDeExpiracao = stripAccents.toLowerCase().contains("esta vaga expira em") == false;
+		boolean naoTemDataDeExpiracao = false == stripAccents.toLowerCase().contains("esta vaga expira em");
 		
 		if(naoTemDataDeExpiracao) {
 			return false;

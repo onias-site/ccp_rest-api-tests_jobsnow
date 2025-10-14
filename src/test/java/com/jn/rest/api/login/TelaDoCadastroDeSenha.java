@@ -29,7 +29,7 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 	public void tokenBloqueado() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		CcpEntity mirrorEntity = JnEntityLoginToken.ENTITY.getTwinEntity();
-		mirrorEntity.createOrUpdate( variaveisParaTeste.REQUEST_TO_LOGIN);
+		mirrorEntity.save( variaveisParaTeste.REQUEST_TO_LOGIN);
 		String token = this.getTokenToValidateLogin(variaveisParaTeste);
 		this.execute(variaveisParaTeste, JnProcessStatusUpdatePassword.lockedToken, x -> token);
 	}
@@ -46,8 +46,8 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 	public void efetuarDesbloqueios() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		CcpEntity mirrorEntity = JnEntityLoginPassword.ENTITY.getTwinEntity();
-		mirrorEntity.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginSessionConflict.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
+		mirrorEntity.save(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginSessionConflict.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.fluxoEsperado(variaveisParaTeste);
 	}
 
@@ -70,10 +70,10 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 	}
 
 	private String getToken(VariaveisParaTeste variaveisParaTeste) {
-		JnEntityLoginEmail.ENTITY.createOrUpdate(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 
 		CcpJsonRepresentation entityValue =  variaveisParaTeste.REQUEST_TO_LOGIN;
-		CcpJsonRepresentation createOrUpdate = JnEntityLoginToken.ENTITY.createOrUpdate(entityValue);
+		CcpJsonRepresentation createOrUpdate = JnEntityLoginToken.ENTITY.save(entityValue);
 		String token = createOrUpdate.getAsString(TelaDeLogoutConstants.originalToken);
 		return token;
 	}
@@ -126,8 +126,8 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 
 	
 	private String getTokenToValidateLogin(VariaveisParaTeste variaveisParaTeste) {
-		JnEntityLoginEmail.ENTITY.createOrUpdate( variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.createOrUpdate( variaveisParaTeste.ANSWERS_JSON);
+		JnEntityLoginEmail.ENTITY.save( variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginAnswers.ENTITY.save( variaveisParaTeste.ANSWERS_JSON);
 		return "12345678";
 
 	}

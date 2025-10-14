@@ -109,7 +109,7 @@ public abstract class VisTemplateDeTestes {
 		int actualStatus = response.httpStatus;
 
 		this.logRequestAndResponse(path, method, status, scenarioName, actualStatus, body, headers, executeHttpRequest);
-		String message = executeHttpRequest.isInnerJson(JsonFieldNames.message) == false ? executeHttpRequest.getAsString(JsonFieldNames.message) : 
+		String message = false == executeHttpRequest.isInnerJson(JsonFieldNames.message) ? executeHttpRequest.getAsString(JsonFieldNames.message) : 
 			executeHttpRequest.getValueFromPath("", JsonFieldNames.message, JsonFieldNames.statusName);
 		status.verifyStatusNames(actualStatus, message);
 		return executeHttpRequest;
