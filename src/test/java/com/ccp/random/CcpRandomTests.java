@@ -56,7 +56,17 @@ import com.vis.resumes.ImportResumeFromOldJobsNow;
 public class CcpRandomTests {
 
 	public static void main(String[] args) {
-		saveResume();
+		CcpJsonRepresentation json = new CcpJsonRepresentation("{\r\n"
+				+ "    \"userAgent\": \"Apache-HttpClient/4.5.4 (Java/17.0.9)\",\r\n"
+				+ "    \"ip\": \"127.0.0.1\",\r\n"
+				+ "    \"email\": \"exhhi8gp@teste.com\",\r\n"
+				+ "    \"password\": \"Jobsnow1!\",\r\n"
+				+ "    \"token\": \"4ISALLOL\"\r\n"
+				+ "  }");
+		JnEntityLoginPassword.ENTITY.save(json);
+		JnEntityLoginPassword.ENTITY.transferToReverseEntity(json);
+		
+		//		saveResume();
 	}
 
 	static void saveLoginToken() {

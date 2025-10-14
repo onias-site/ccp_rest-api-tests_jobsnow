@@ -20,6 +20,7 @@ import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
+import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatus;
 
@@ -32,13 +33,14 @@ public abstract class JnTemplateDeTestes {
 
 	static {
 		CcpDependencyInjection.loadAllDependencies(
+				CcpLocalInstances.mensageriaSender,
 				new CcpElasticSearchDbRequest(), 
 				new CcpMindrotPasswordHandler(),
 				CcpLocalCacheInstances.mock,
+				new CcpElasticSerchDbBulk(), 
 				new CcpElasticSearchCrud(),
 				new CcpGsonJsonHandler(), 
-				new CcpApacheMimeHttp(), 
-				new CcpElasticSerchDbBulk()
+				new CcpApacheMimeHttp() 
 				);
 		
 		String pathToCreateEntityScript = "documentation\\jn\\database\\elasticsearch\\scripts\\entities\\create";
