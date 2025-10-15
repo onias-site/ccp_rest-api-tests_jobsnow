@@ -4,7 +4,7 @@ import java.util.function.Function;
 
 import org.junit.Test;
 
-import com.ccp.especifications.db.utils.CcpEntity;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatus;
 import com.jn.entities.JnEntityLoginAnswers;

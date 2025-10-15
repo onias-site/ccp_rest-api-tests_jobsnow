@@ -9,7 +9,7 @@ import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
-import com.ccp.especifications.db.bulk.CcpEntityBulkOperationType;
+import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
 import com.ccp.especifications.http.CcpHttpHandler;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponse;
@@ -134,7 +134,7 @@ public enum ResumeTransformations implements CcpTransformers{
 			.put(JnEntityLoginAnswers.Fields.email, email)
 			;
 			
-			JnExecuteBulkOperation.INSTANCE.executeBulk(transformed, CcpEntityBulkOperationType.create, 
+			JnExecuteBulkOperation.INSTANCE.executeBulk(transformed, CcpBulkEntityOperationType.create, 
 					JnEntityLoginPassword.ENTITY,
 					JnEntityLoginAnswers.ENTITY,
 					JnEntityLoginToken.ENTITY,

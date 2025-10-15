@@ -21,11 +21,11 @@ import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.crud.CcpCrud;
 import com.ccp.especifications.db.crud.CcpSelectUnionAll;
-import com.ccp.especifications.db.query.CcpDbQueryOptions;
+import com.ccp.especifications.db.query.CcpQueryOptions;
 import com.ccp.especifications.db.query.CcpQueryExecutor;
-import com.ccp.especifications.db.utils.CcpEntity;
-import com.ccp.especifications.db.utils.CcpEntityField;
-import com.ccp.especifications.db.utils.decorators.annotations.CcpEntityFieldPrimaryKey;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.ccp.especifications.db.utils.entity.fields.CcpEntityField;
+import com.ccp.especifications.db.utils.entity.fields.annotations.CcpEntityFieldPrimaryKey;
 import com.ccp.especifications.http.CcpHttpHandler;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpRequester;
@@ -250,7 +250,7 @@ public class CcpRandomTests {
 	}
 
 	static void criarArquivoDeVagas() {
-		CcpDbQueryOptions queryMatchAll = CcpDbQueryOptions.INSTANCE.matchAll();
+		CcpQueryOptions queryMatchAll = CcpQueryOptions.INSTANCE.matchAll();
 		queryMatchAll.startAggregations().startBucket("x", null, 1).startAggregations().addAvgAggregation(null, null);
 		Set<Object> emailsDasVisualizacoes = getEmails(queryMatchAll, "visualizacao_de_curriculo", "email");
 		Set<Object> emailsDasVagas = getEmails(queryMatchAll, "vagas", "email", "mail");
@@ -261,7 +261,7 @@ public class CcpRandomTests {
 		CcpJsonRepresentation mgetJson = CcpOtherConstants.EMPTY_JSON;
 		CcpEntityField idField = new CcpEntityField("email", false, CcpOtherConstants.DO_NOTHING);
 
-		CcpDbQueryOptions queryToSearchViews = CcpDbQueryOptions.INSTANCE.startSimplifiedQuery()
+		CcpQueryOptions queryToSearchViews = CcpQueryOptions.INSTANCE.startSimplifiedQuery()
 				.terms(idField, intersectList).endSimplifiedQueryAndBackToRequest();
 		Set<Object> candidatos = getEmails(queryToSearchViews, "visualizacao_de_curriculo", "candidato", "candidate");
 		CcpJsonRepresentation template = new CcpJsonRepresentation("{\r\n" + "    \"_index\": \"profissionais2\",\r\n"
@@ -349,7 +349,7 @@ public class CcpRandomTests {
 
 	static CcpJsonRepresentation getVagasAgrupadosPorRecrutadores(List<Object> intersectList) {
 		CcpEntityField idField = new CcpEntityField("mail", false, CcpOtherConstants.DO_NOTHING);
-		CcpDbQueryOptions query = CcpDbQueryOptions.INSTANCE.startSimplifiedQuery().terms(idField, intersectList)
+		CcpQueryOptions query = CcpQueryOptions.INSTANCE.startSimplifiedQuery().terms(idField, intersectList)
 				.endSimplifiedQueryAndBackToRequest();
 
 		String[] resourcesNames = new String[] { "vagas" };
@@ -359,7 +359,7 @@ public class CcpRandomTests {
 		return consumer.vagasAgrupadasPorRecrutadores;
 	}
 
-	static CcpJsonRepresentation getCandidatosAgrupadosPorRecrutadores(CcpDbQueryOptions query) {
+	static CcpJsonRepresentation getCandidatosAgrupadosPorRecrutadores(CcpQueryOptions query) {
 
 		String[] resourcesNames = new String[] { "visualizacao_de_curriculo" };
 		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
@@ -370,7 +370,7 @@ public class CcpRandomTests {
 		return consumer.candidatosAgrupadosPorRecrutadores;
 	}
 
-	static Set<Object> getEmails(CcpDbQueryOptions query, String tabela, String... fields) {
+	static Set<Object> getEmails(CcpQueryOptions query, String tabela, String... fields) {
 		String[] resourcesNames = new String[] { tabela };
 		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
 		Set<Object> set = new HashSet<>();
@@ -429,7 +429,7 @@ public class CcpRandomTests {
 
 	static void salvarVagaDoJobsNowAntigo() {
 		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
-		CcpDbQueryOptions queryToSearchLastUpdatedResumes = CcpDbQueryOptions.INSTANCE.matchAll();
+		CcpQueryOptions queryToSearchLastUpdatedResumes = CcpQueryOptions.INSTANCE.matchAll();
 		CcpFileDecorator file = new CcpStringDecorator("vagas.txt").file();
 		String[] resourcesNames = new String[] { "vagas" };
 		queryExecutor.consumeQueryResult(queryToSearchLastUpdatedResumes, resourcesNames, "10s", 10000, vaga -> {

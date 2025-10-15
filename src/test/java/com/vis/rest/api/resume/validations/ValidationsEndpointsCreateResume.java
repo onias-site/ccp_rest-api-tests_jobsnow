@@ -6,7 +6,7 @@ import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.especifications.db.crud.CcpGetEntityId;
-import com.ccp.especifications.db.utils.CcpEntityOperationType;
+import com.ccp.especifications.db.utils.entity.CcpEntityOperationType;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.business.login.JnBusinessSendUserToken;

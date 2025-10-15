@@ -1,5 +1,6 @@
 package com.vis.commons;
 
+import com.ccp.business.CcpBusiness;
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
@@ -7,13 +8,12 @@ import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
-import com.ccp.especifications.db.bulk.CcpEntityBulkOperationType;
+import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
 import com.ccp.especifications.db.utils.CcpDbRequester;
 import com.ccp.especifications.http.CcpHttpHandler;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponse;
 import com.ccp.especifications.http.CcpHttpResponseType;
-import com.ccp.business.CcpBusiness;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.flow.CcpTreeFlow;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
@@ -172,7 +172,7 @@ public abstract class VisTemplateDeTestes {
 		
 		JnExecuteBulkOperation.INSTANCE.executeBulk(
 				jsonWithSubjectType 
-				,CcpEntityBulkOperationType.delete 
+				,CcpBulkEntityOperationType.delete 
 				,JnEntityEmailMessageSent.ENTITY
 				,JnEntityLoginPassword.ENTITY
 				,JnEntityLoginSessionConflict.ENTITY

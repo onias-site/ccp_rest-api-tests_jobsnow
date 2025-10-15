@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.dependency.injection.CcpDependencyInjection;
-import com.ccp.especifications.db.query.CcpDbQueryOptions;
+import com.ccp.especifications.db.query.CcpQueryOptions;
 import com.ccp.especifications.db.query.CcpQueryExecutor;
 import com.vis.entities.VisEntityResume;
 import com.vis.services.VisServiceResume;
@@ -23,8 +23,8 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 
 	private ImportResumeFromOldJobsNow() {
 		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
-		CcpDbQueryOptions query = 
-				CcpDbQueryOptions.INSTANCE
+		CcpQueryOptions query = 
+				CcpQueryOptions.INSTANCE
 					.matchAll()
 					.maxResults()
 				;
