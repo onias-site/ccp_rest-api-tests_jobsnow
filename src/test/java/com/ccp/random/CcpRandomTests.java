@@ -21,8 +21,8 @@ import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.crud.CcpCrud;
 import com.ccp.especifications.db.crud.CcpSelectUnionAll;
-import com.ccp.especifications.db.query.CcpQueryOptions;
 import com.ccp.especifications.db.query.CcpQueryExecutor;
+import com.ccp.especifications.db.query.CcpQueryOptions;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.fields.CcpEntityField;
 import com.ccp.especifications.db.utils.entity.fields.annotations.CcpEntityFieldPrimaryKey;
@@ -45,6 +45,7 @@ import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
 import com.jn.entities.JnEntityJobsnowError;
+import com.jn.entities.JnEntityJobsnowWarning;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
@@ -56,7 +57,18 @@ import com.vis.resumes.ImportResumeFromOldJobsNow;
 public class CcpRandomTests {
 
 	public static void main(String[] args) {
-		saveResume();
+		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
+		String[] resourcesNames = JnEntityJobsnowWarning.ENTITY.getEntitiesToSelect();
+		List<CcpJsonRepresentation> list = queryExecutor.getResultAsList(
+				CcpQueryOptions.INSTANCE, 
+				resourcesNames,  
+				JnEntityJobsnowWarning.Fields.message.name(), 
+				JnEntityJobsnowWarning.Fields.type.name() 
+				);
+		for (CcpJsonRepresentation item : list) {
+			System.out.println(item);
+		}
+		
 	}
 
 	static void transferToReverseEntity() {
