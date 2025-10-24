@@ -20,6 +20,7 @@ import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
+import com.jn.entities.fields.transformers.JnJsonTransformersFieldsEntityDefault;
 import com.vis.entities.VisEntityResume;
 public enum ResumeTransformations implements CcpTransformers{
 	AddDddsInResume {
@@ -125,16 +126,23 @@ public enum ResumeTransformations implements CcpTransformers{
 		}
 		
 		private CcpJsonRepresentation createLogin(String email) {
+			
+			String originalToken = JnJsonTransformersFieldsEntityDefault.getOriginalToken();
+			
 			CcpJsonRepresentation transformed = CcpOtherConstants.EMPTY_JSON
 			.put(JnEntityLoginSessionValidation.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
+			.put(JnJsonTransformersFieldsEntityDefault.JsonFieldNames.originalToken, originalToken)
+			.put(JnJsonTransformersFieldsEntityDefault.JsonFieldNames.token, originalToken)
 			.put(JnEntityLoginPassword.Fields.password, "Jobsnow1!")
-			.put(JnEntityLoginToken.Fields.ip, "localhost:8080")
+			.put(JnEntityLoginToken.Fields.ip, "127.0.0.1")
 			.put(JnEntityLoginAnswers.Fields.channel, "linkedin")
 			.put(JnEntityLoginAnswers.Fields.goal, "jobs")
 			.put(JnEntityLoginAnswers.Fields.email, email)
 			;
 			
-			JnExecuteBulkOperation.INSTANCE.executeBulk(transformed, CcpBulkEntityOperationType.create, 
+			JnExecuteBulkOperation.INSTANCE.executeBulk(
+					transformed, 
+					CcpBulkEntityOperationType.create, 
 					JnEntityLoginPassword.ENTITY,
 					JnEntityLoginAnswers.ENTITY,
 					JnEntityLoginToken.ENTITY,

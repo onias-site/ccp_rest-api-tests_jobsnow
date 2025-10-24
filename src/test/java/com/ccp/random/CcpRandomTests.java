@@ -45,7 +45,6 @@ import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
 import com.jn.entities.JnEntityJobsnowError;
-import com.jn.entities.JnEntityJobsnowWarning;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
@@ -57,18 +56,19 @@ import com.vis.resumes.ImportResumeFromOldJobsNow;
 public class CcpRandomTests {
 
 	public static void main(String[] args) {
-		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
-		String[] resourcesNames = JnEntityJobsnowWarning.ENTITY.getEntitiesToSelect();
-		List<CcpJsonRepresentation> list = queryExecutor.getResultAsList(
-				CcpQueryOptions.INSTANCE, 
-				resourcesNames,  
-				JnEntityJobsnowWarning.Fields.message.name(), 
-				JnEntityJobsnowWarning.Fields.type.name() 
-				);
-		for (CcpJsonRepresentation item : list) {
-			System.out.println(item);
-		}
-		
+		saveResume();
+	}
+	
+	static void saveResume() {
+		VisEntityResume.ENTITY.delete(CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, "onias85@gmail.com"));
+		CcpHttpHandler http = new CcpHttpHandler(200, CcpOtherConstants.DO_NOTHING);
+		String path = "http://localhost:9200/profissionais2/_doc/onias85@gmail.com/_source";
+		CcpHttpMethods method = CcpHttpMethods.GET;
+		CcpJsonRepresentation headers = CcpOtherConstants.EMPTY_JSON;
+		String asUgglyJson = "";
+		CcpHttpResponse response = http.ccpHttp.executeHttpRequest(path, method, headers, asUgglyJson);
+		CcpJsonRepresentation asSingleJson = response.asSingleJson();
+		ImportResumeFromOldJobsNow.INSTANCE.accept(asSingleJson);
 	}
 
 	static void transferToReverseEntity() {
@@ -96,18 +96,6 @@ public class CcpRandomTests {
 		 
 		CcpPasswordHandler dependency = CcpDependencyInjection.getDependency(CcpPasswordHandler.class);
 		System.out.println(dependency.matches(value, token));
-	}
-
-	static void saveResume() {
-		VisEntityResume.ENTITY.delete(CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, "onias85@gmail.com"));
-		CcpHttpHandler http = new CcpHttpHandler(200, CcpOtherConstants.DO_NOTHING);
-		String path = "http://localhost:9200/profissionais2/_doc/onias85@gmail.com/_source";
-		CcpHttpMethods method = CcpHttpMethods.GET;
-		CcpJsonRepresentation headers = CcpOtherConstants.EMPTY_JSON;
-		String asUgglyJson = "";
-		CcpHttpResponse response = http.ccpHttp.executeHttpRequest(path, method, headers, asUgglyJson);
-		CcpJsonRepresentation asSingleJson = response.asSingleJson();
-		ImportResumeFromOldJobsNow.INSTANCE.accept(asSingleJson);
 	}
 
 	enum JsonFieldNames implements CcpJsonFieldName{
