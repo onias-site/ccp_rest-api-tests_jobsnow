@@ -105,9 +105,15 @@ public class CcpRandomTests {
 		CcpDependencyInjection.loadAllDependencies(new CcpElasticSearchQueryExecutor(), new CcpElasticSearchDbRequest(),
 				CcpLocalInstances.mensageriaSender,
 				CcpLocalInstances.bucket,
+				CcpLocalInstances.email,
 				new CcpApacheTikaTextExtractor(),
-				new CcpMindrotPasswordHandler(), new CcpElasticSerchDbBulk(), CcpLocalCacheInstances.map,
-				new CcpElasticSearchCrud(), new CcpGsonJsonHandler(), new CcpApacheMimeHttp());
+				new CcpMindrotPasswordHandler(), 
+				new CcpElasticSerchDbBulk(), 
+				CcpLocalCacheInstances.map,
+				new CcpElasticSearchCrud(), 
+				new CcpGsonJsonHandler(), 
+				new CcpApacheMimeHttp()
+				);
 	}
 
 	static Map<String, Object> getJson(CcpFileDecorator arquivo){
@@ -272,7 +278,7 @@ public class CcpRandomTests {
 				+ "            \"ddd\",\r\n" + "            \"bitcoin\"\r\n" + "        ]\r\n" + "    }\r\n" + "}");
 		for (Object candidato : candidatos) {
 			CcpJsonRepresentation doc = template.put(JsonFieldNames._id, candidato);
-			mgetJson = mgetJson.addToList("docs", doc);
+			mgetJson = mgetJson.addToList(JsonFieldNames.docs, doc);
 		}
 
 		CcpHttpResponse executeHttpRequest = CcpDependencyInjection.getDependency(CcpHttpRequester.class)
@@ -330,7 +336,7 @@ public class CcpRandomTests {
 			CcpJsonRepresentation vaga = CcpOtherConstants.EMPTY_JSON.put(JsonFieldNames.channel, contato).put(JsonFieldNames.email, recrutador)
 					.put(JsonFieldNames.description, texto).put(JsonFieldNames.contactChannel, contactChannel);
 
-			this.vagasAgrupadasPorRecrutadores = this.vagasAgrupadasPorRecrutadores.addToList(recrutador, vaga);
+			this.vagasAgrupadasPorRecrutadores = this.vagasAgrupadasPorRecrutadores.getDynamicVersion().addToList(recrutador, vaga);
 		}
 
 	}
@@ -342,7 +348,7 @@ public class CcpRandomTests {
 		public void accept(CcpJsonRepresentation json) {
 			String candidato = json.getAsObject(JsonFieldNames.candidate, JsonFieldNames.candidato);
 			String recrutador = json.getAsString(JsonFieldNames.email);
-			this.candidatosAgrupadosPorRecrutadores = this.candidatosAgrupadosPorRecrutadores.addToList(recrutador,
+			this.candidatosAgrupadosPorRecrutadores = this.candidatosAgrupadosPorRecrutadores.getDynamicVersion().addToList(recrutador,
 					candidato);
 		}
 	}

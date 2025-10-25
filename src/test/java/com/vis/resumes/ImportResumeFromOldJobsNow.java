@@ -5,12 +5,18 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.query.CcpQueryExecutor;
 import com.ccp.especifications.db.query.CcpQueryOptions;
 import com.jn.business.login.JnBusinessSessionValidate;
+import com.jn.entities.JnEntityEmailParametersToSend;
+import com.jn.entities.JnEntityEmailTemplateMessage;
+import com.jn.utils.JnLanguage;
+import com.vis.business.resume.VisBusinessNotifyResumeOwnerAboutEmptyResumeText;
+import com.vis.business.resume.VisBusinessNotifyResumeOwnerAboutSuccessOnSavingHisResume;
 import com.vis.entities.VisEntityResume;
 import com.vis.services.VisServiceResume;
 public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentation>{
@@ -21,6 +27,34 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 	public static final ImportResumeFromOldJobsNow INSTANCE = new ImportResumeFromOldJobsNow();
 	private Set<String> ids;			
 	int contador;
+	static {
+		String templateId = VisBusinessNotifyResumeOwnerAboutSuccessOnSavingHisResume.class.getName();
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
+				.put(JnEntityEmailParametersToSend.Fields.email, "devs.jobsnow@gmail.com")
+				.put(JnEntityEmailParametersToSend.Fields.sender, "devs.jobsnow@gmail.com")
+				.put(JnEntityEmailParametersToSend.Fields.subjectType, templateId)
+				.put(JnEntityEmailParametersToSend.Fields.templateId, templateId)
+				.put(JnEntityEmailTemplateMessage.Fields.language, JnLanguage.portuguese.name())
+				.put(JnEntityEmailTemplateMessage.Fields.message, "pensar numa mensagem")//FIXME pensar numa mensagem
+				.put(JnEntityEmailTemplateMessage.Fields.subject, "Seu currículo foi salvo com sucesso em nossa plataforma")
+				;
+		JnEntityEmailParametersToSend.ENTITY.save(json);
+		JnEntityEmailTemplateMessage.ENTITY.save(json);
+	}
+	static {
+		String templateId = VisBusinessNotifyResumeOwnerAboutEmptyResumeText.class.getName();
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
+				.put(JnEntityEmailParametersToSend.Fields.email, "devs.jobsnow@gmail.com")
+				.put(JnEntityEmailParametersToSend.Fields.sender, "devs.jobsnow@gmail.com")
+				.put(JnEntityEmailParametersToSend.Fields.subjectType, templateId)
+				.put(JnEntityEmailParametersToSend.Fields.templateId, templateId)
+				.put(JnEntityEmailTemplateMessage.Fields.language, JnLanguage.portuguese.name())
+				.put(JnEntityEmailTemplateMessage.Fields.message, "pensar numa mensagem")//FIXME pensar numa mensagem
+				.put(JnEntityEmailTemplateMessage.Fields.subject, "Erro ao salvar curriculo")
+				;
+		JnEntityEmailParametersToSend.ENTITY.save(json);
+		JnEntityEmailTemplateMessage.ENTITY.save(json);
+	}
 
 	private ImportResumeFromOldJobsNow() {
 		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
