@@ -56,7 +56,7 @@ import com.vis.resumes.ImportResumeFromOldJobsNow;
 public class CcpRandomTests {
 
 	public static void main(String[] args) {
-		saveResume();
+		testarExpurgable2();
 	}
 	
 	static void saveResume() {
@@ -154,8 +154,7 @@ public class CcpRandomTests {
 				+ "  \"ip\": \"127.0.0.1\",\r\n" + "  \"password\": \"Jobsnow1!\",\r\n"
 				+ "  \"token\": \"M6ZRDQ83\",\r\n" + "  \"originalToken\": \"M6ZRDQ83\",\r\n"
 				+ "  \"userAgent\": \"Apache-HttpClient/4.5.4 (Java/17.0.9)\"\r\n" + "}");
-		CcpEntity entity = JnEntityLoginSessionValidation.ENTITY;
-		testarExpurgable(json, entity);
+		testarExpurgable(json, JnEntityLoginSessionValidation.ENTITY);
 	}
 
 	static void testarExpurgable() {
@@ -168,16 +167,17 @@ public class CcpRandomTests {
 
 	private static void testarExpurgable(CcpJsonRepresentation json, CcpEntity entity) {
 		entity.save(json);
+		CcpJsonRepresentation[] jsons = new CcpJsonRepresentation[] { json };
 		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
 		for (int k = 0; k < 60; k++) {
 			CcpTimeDecorator ctd = new CcpTimeDecorator();
-			System.out.println(
-					"Exists: " + ctd.getFormattedDateTime("dd/MM/yyyy HH:mm:ss.SSS") + " = " + entity.exists(json));
-			CcpSelectUnionAll unionAll = crud.unionAll(new CcpJsonRepresentation[] { json },
-					JnDeleteKeysFromCache.INSTANCE, entity);
-			System.out.println("unionAll1: " + ctd.getFormattedDateTime("dd/MM/yyyy HH:mm:ss.SSS") + " = "
-					+ entity.isPresentInThisUnionAll(unionAll, json));
-			ctd.sleep(60000);
+			String formattedDateTime = ctd.getFormattedDateTime("dd/MM/yyyy HH:mm:ss.SSS");
+			boolean exists = entity.exists(json);
+			System.out.println("Exists: " + formattedDateTime + " = " + exists);
+			CcpSelectUnionAll unionAll = crud.unionAll(jsons, JnDeleteKeysFromCache.INSTANCE, entity);
+			boolean presentInThisUnionAll = entity.isPresentInThisUnionAll(unionAll, json);
+			System.out.println("unionAll1: " + formattedDateTime + " = " + presentInThisUnionAll);
+			ctd.sleep(1000);
 		}
 
 	}

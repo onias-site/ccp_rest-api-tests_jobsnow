@@ -1,2 +1,0 @@
-@CcpJsonFieldTimeType(minValue=-16, maxValue=223,type=CcpJsonFieldTimeOptions.DAY)
-

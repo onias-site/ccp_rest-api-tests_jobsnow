@@ -767,6 +767,7 @@ public class CcpJsonRepresentationTests {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());	
 	}
 	
+	@SuppressWarnings("unlikely-arg-type")
 	@Test
 	public void equalsFalse() {
 		assertFalse(CcpOtherConstants.EMPTY_JSON.equals(x7)); 
