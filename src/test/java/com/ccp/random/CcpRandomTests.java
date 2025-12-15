@@ -250,7 +250,7 @@ public class CcpRandomTests {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JsonFieldNames.cause, new CcpJsonRepresentation("{'nome':'onias'}")).put(JsonFieldNames.stackTrace, "{'nome':'vieira'}")
 				.put(JsonFieldNames.type, "any");
-		CcpJsonRepresentation oneById = JnEntityJobsnowError.ENTITY.getOneById(json,
+		CcpJsonRepresentation oneById = JnEntityJobsnowError.ENTITY.getOneByIdOrHandleItIfThisIdWasNotFound(json,
 				CcpOtherConstants.RETURNS_EMPTY_JSON);
 		System.out.println(oneById);
 	}

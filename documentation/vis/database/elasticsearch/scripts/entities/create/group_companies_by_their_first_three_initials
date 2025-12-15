@@ -1,0 +1,14 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"companies": {
+				"type": "text"
+			},
+			"firstThreeInitials": {
+				"type": "keyword"
+			}
+
+		}
+	}
+}
