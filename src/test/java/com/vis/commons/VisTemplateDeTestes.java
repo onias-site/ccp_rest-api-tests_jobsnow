@@ -206,7 +206,7 @@ public abstract class VisTemplateDeTestes {
 			String pathToJsonFile, CcpBusiness... whatToNext) {
 		CcpJsonRepresentation jsonFile = this.getJsonFile(pathToJsonFile);
 		CcpJsonRepresentation loginData = this.createLogin(whatToNext);
-		CcpJsonRepresentation body = loginData.putAll(jsonFile);
+		CcpJsonRepresentation body = loginData.mergeWithAnotherJson(jsonFile);
 		CcpJsonRepresentation headers = loginData;
 		
 		String uri = this.getUri();

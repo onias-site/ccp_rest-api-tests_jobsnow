@@ -4,10 +4,12 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import com.ccp.constantes.CcpOtherConstants;
@@ -55,10 +57,61 @@ import com.vis.resumes.ImportResumeFromOldJobsNow;
 
 public class CcpRandomTests {
 
-	public static void main(String[] args) {
-		testarExpurgable2();
-	}
+	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
 	
+	public static void main(String[] args) {
+		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
+		CcpQueryOptions query = CcpQueryOptions.INSTANCE.matchAll();
+		
+		Consumer<CcpJsonRepresentation> consumer = json -> {
+			String x = json.getDynamicVersion().getAsString("id");
+				String[] split = x.split("@");
+				if(split.length != 2) {
+					return;
+				}
+				
+				
+			String domain = split[1];
+			
+			String[] split1 = domain.split("\\.");			
+
+			String companyName = split1[0].toUpperCase().trim();
+			
+			if(companyName.length() < 3) {
+				return;
+			}
+			
+			String capitalizedCompanyName = new CcpStringDecorator(companyName).text().capitalize().content;
+			
+			String initials = companyName.substring(0, 3);
+			
+			LinkedHashSet<String> orDefault = groupedCompanies.getDynamicVersion().getOrDefault(initials, new LinkedHashSet<>());
+			orDefault.add(capitalizedCompanyName);
+			groupedCompanies = groupedCompanies.getDynamicVersion().put(initials, orDefault);
+			
+		};
+		queryExecutor.consumeQueryResult(query, new String[] {"old_recruiters"}, "1s", 10000, consumer, "id");
+
+		ArrayList<String> arrayList = new ArrayList<> (groupedCompanies.fieldSet());
+		arrayList.sort((a, b) ->{
+			Set<String> set1 = groupedCompanies.getDynamicVersion().getAsObject(a);
+			Set<String> set2 = groupedCompanies.getDynamicVersion().getAsObject(b);
+			return set2.size() - set1.size();
+		});
+		
+		CcpJsonRepresentation result = CcpOtherConstants.EMPTY_JSON;
+		int total = 0;
+		for (String string : arrayList) {
+			Set<String> value = groupedCompanies.getDynamicVersion().getAsObject(string);
+			result = result.getDynamicVersion().put(string, value);
+			int size = value.size();
+			System.out.println(string +" = " +  size);
+			total += size;
+		}
+		System.out.println(total);
+		new CcpStringDecorator("c:\\logs\\teste.json").file().reset().append(result.asPrettyJson());
+	}
+
 	static void saveResume() {
 		VisEntityResume.ENTITY.delete(CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, "onias85@gmail.com"));
 		CcpHttpHandler http = new CcpHttpHandler(200, CcpOtherConstants.DO_NOTHING);
@@ -93,7 +146,6 @@ public class CcpRandomTests {
 		JnEntityLoginToken.ENTITY.save(json);
 		CcpJsonRepresentation oneById = JnEntityLoginToken.ENTITY.getOneById(json);
 		String token = oneById.getAsString(JnEntityLoginToken.Fields.token);
-		 
 		CcpPasswordHandler dependency = CcpDependencyInjection.getDependency(CcpPasswordHandler.class);
 		System.out.println(dependency.matches(value, token));
 	}
@@ -314,7 +366,7 @@ public class CcpRandomTests {
 			int k = 0;
 			for (CcpJsonRepresentation curriculo : curriculos) {
 				CcpJsonRepresentation vaga = vagas.get(k++ % vagas.size());
-				CcpJsonRepresentation putAll = vaga.putAll(curriculo);
+				CcpJsonRepresentation putAll = vaga.mergeWithAnotherJson(curriculo);
 				todasAsVagas.add(putAll);
 			}
 		}
@@ -359,8 +411,8 @@ public class CcpRandomTests {
 				.endSimplifiedQueryAndBackToRequest();
 
 		String[] resourcesNames = new String[] { "vagas" };
-		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
 		AgruparVagasPorRecrutadores consumer = new AgruparVagasPorRecrutadores();
+		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
 		queryExecutor.consumeQueryResult(query, resourcesNames, "10s", 10000, consumer, "contato", "vaga", "mail");
 		return consumer.vagasAgrupadasPorRecrutadores;
 	}

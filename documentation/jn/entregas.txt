@@ -1,0 +1,10 @@
+A) Cadastro de currículos com envio de curriculos a recrutadores
+B) Cadastro de vagas com envio de curriculos especificos para cada vaga e fale conosco (bug, melhoria, agradecimento)
+C) Comercio de reputação
+
+D) Modulo lighning network + recrutadores com amostra gratis
+E) Curriculo instantâneo por whats app, sms, telegram, e-mail
+F) Módulo de indicação
+G) Módulo de propagandas nos rodapés das mensagens
+H) Módulo de cursos 
+I) Módulo de backoffice

@@ -1,6 +1,12 @@
 {
 	"mappings": {
 		"dynamic": "strict",
+            "timestamp": {
+                "type": "long"
+            },
+            "date": {
+                "type": "text"
+            },
 		"properties": {
 			"companies": {
 				"type": "text"

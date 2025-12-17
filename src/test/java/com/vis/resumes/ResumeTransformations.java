@@ -101,12 +101,12 @@ public enum ResumeTransformations implements CcpTransformers{
 			try {
 				CcpJsonRepresentation jsonWithSessionToken = this.executeLogin(email);
 				
-				CcpJsonRepresentation putAll = json.putAll(jsonWithSessionToken).putAll(createLogin);
+				CcpJsonRepresentation putAll = json.mergeWithAnotherJson(jsonWithSessionToken).mergeWithAnotherJson(createLogin);
 				
 				return putAll;
 			} catch (Exception e) {
 				new CcpStringDecorator("c:\\logs\\resumes").folder().createNewFolderIfNotExists("wrongEmails").createNewFileIfNotExists(email);
-				CcpJsonRepresentation putAll = json.putAll(createLogin);
+				CcpJsonRepresentation putAll = json.mergeWithAnotherJson(createLogin);
 				return putAll;
 			}
 		}

@@ -893,7 +893,7 @@ public class CcpJsonRepresentationTests {
 					+ "'Estado':'SP'}";
 		
 		CcpJsonRepresentation json = new CcpJsonRepresentation(keys);
-		CcpJsonRepresentation putAll = json.putAll(json);
+		CcpJsonRepresentation putAll = json.mergeWithAnotherJson(json);
 		System.out.println("\nputAllTest() = "+ putAll);
 	}
 	

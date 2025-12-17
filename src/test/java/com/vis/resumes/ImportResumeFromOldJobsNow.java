@@ -91,7 +91,7 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 		.renameField(JsonFieldNames.bitcoin, VisEntityResume.Fields.btc)
 		.renameField(JsonFieldNames.observacao, JsonFieldNames.observations)
 		.put(JsonFieldNames.name, "NOME DO CANDIDATO")
-		.putAll(resumeFile)
+		.mergeWithAnotherJson(resumeFile)
 		.copyIfNotContains(VisEntityResume.Fields.lastJob, VisEntityResume.Fields.desiredJob)
 		.putIfNotContains(VisEntityResume.Fields.companiesNotAllowed, Arrays.asList())
 		.putIfNotContains(VisEntityResume.Fields.disabilities, Arrays.asList())
