@@ -7,4 +7,5 @@ E) Curriculo instantâneo por whats app, sms, telegram, e-mail
 F) Módulo de indicação
 G) Módulo de propagandas nos rodapés das mensagens
 H) Módulo de cursos 
-I) Módulo de backoffice
+I) Modulo de comprovação de conhecimentos
+J) Módulo de backoffice
