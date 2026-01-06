@@ -11,9 +11,7 @@
 			"reasonText": {
 				"type": "text"
 			},
-			"domain": {
-				"type": "keyword"
-			},
+			
 			"email": {
 				"type": "keyword"
 			}

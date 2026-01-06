@@ -59,84 +59,6 @@ public class CcpRandomTests {
 
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
 	
-	public static void main(String[] args) {
-		System.out.println(new CcpJsonRepresentation("{\r\n"
-				+ "            \"includedSkill\": {\r\n"
-				+ "                \"dynamic\": \"strict\",\r\n"
-				+ "                \"properties\": {\r\n"
-				+ "                    \"parent\": {\r\n"
-				+ "                        \"type\": \"keyword\"\r\n"
-				+ "                    },\r\n"
-				+ "                    \"synonym\": {\r\n"
-				+ "                        \"type\": \"keyword\"\r\n"
-				+ "                    },\r\n"
-				+ "                    \"skill\": {\r\n"
-				+ "                        \"type\": \"keyword\"\r\n"
-				+ "                    }\r\n"
-				+ "                }\r\n"
-				+ "            },\r\n"
-				+ "            \"excludedSkill\": {\r\n"
-				+ "                \"dynamic\": \"strict\",\r\n"
-				+ "                \"properties\": {\r\n"
-				+ "                    \"parent\": {\r\n"
-				+ "                        \"type\": \"keyword\"\r\n"
-				+ "                    },\r\n"
-				+ "                    \"synonym\": {\r\n"
-				+ "                        \"type\": \"keyword\"\r\n"
-				+ "                    },\r\n"
-				+ "                    \"skill\": {\r\n"
-				+ "                        \"type\": \"keyword\"\r\n"
-				+ "                    }\r\n"
-				+ "                }\r\n"
-				+ "            },\r\n"
-				+ "            \"timestamp\": {\r\n"
-				+ "                \"type\": \"long\"\r\n"
-				+ "            },\r\n"
-				+ "            \"date\": {\r\n"
-				+ "                \"type\": \"text\"\r\n"
-				+ "            },\r\n"
-				+ "            \"email\": {\r\n"
-				+ "                \"type\": \"keyword\"\r\n"
-				+ "            },\r\n"
-				+ "             \"pcd\": {\r\n"
-				+ "                \"type\": \"boolean\"\r\n"
-				+ "            },\r\n"
-				+ "             \"negotiableClaim\": {\r\n"
-				+ "                \"type\": \"boolean\"\r\n"
-				+ "            },\r\n"
-				+ "            \"ddd\": {\r\n"
-				+ "                \"type\": \"integer\"\r\n"
-				+ "            },\r\n"
-				+ "            \"notAllowedCompany\": {\r\n"
-				+ "                \"type\": \"keyword\"\r\n"
-				+ "            },\r\n"
-				+ "            \"disponibility\": {\r\n"
-				+ "                \"type\": \"integer\"\r\n"
-				+ "            },\r\n"
-				+ "            \"temporallyJobTime\": {\r\n"
-				+ "                \"type\": \"integer\"\r\n"
-				+ "            },\r\n"
-				+ "            \"desiredJob\": {\r\n"
-				+ "                \"type\": \"text\"\r\n"
-				+ "            },\r\n"
-				+ "            \"lastJob\": {\r\n"
-				+ "                \"type\": \"text\"\r\n"
-				+ "            },\r\n"
-				+ "            \"btc\": {\r\n"
-				+ "                \"type\": \"double\"\r\n"
-				+ "            },\r\n"
-				+ "            \"clt\": {\r\n"
-				+ "                \"type\": \"double\"\r\n"
-				+ "            },\r\n"
-				+ "            \"pj\": {\r\n"
-				+ "                \"type\": \"double\"\r\n"
-				+ "            },\r\n"
-				+ "            \"experience\": {\r\n"
-				+ "                \"type\": \"integer\"\r\n"
-				+ "            }\r\n"
-				+ "        }").fieldSet().size());
-	
-	}
 
 	static void saveGroupedCompanies() {
 		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
@@ -232,7 +154,9 @@ public class CcpRandomTests {
 		type, cause, stackTrace, email, mappings, properties, name, ddd, _id, docs, _source, id, mail, contato, vaga, channel, description, contactChannel, candidate, candidato
 	}
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpElasticSearchQueryExecutor(), new CcpElasticSearchDbRequest(),
+		CcpDependencyInjection.loadAllDependencies(
+				new CcpElasticSearchQueryExecutor(), 
+				new CcpElasticSearchDbRequest(),
 				CcpLocalInstances.mensageriaSender,
 				CcpLocalInstances.bucket,
 				CcpLocalInstances.email,

@@ -1,3 +1,28 @@
+A) Endpoint de autocomplete de empresas
+B) Endpoint de skills
+C) Endpoint de trazer dados do perfil
+D) Endpoint de salvamento de dados de perfil
+E) Envio de currículos para os recrutadores
+F) Visualização de perfil 
+
+G) Salvar ticket
+H) Listar ticket
+I) Responder ticket
+J) Resolver ticket
+K) Ignorar ticket
+L) Ignorar usuário
+M) Informar falta de skill
+N) Salvar filtro de perfis
+O) Listar filtro de perfis
+P) Listar perfis
+Q) Enviar perfil instantâneo
+R) Listar estatistica de perfil
+
+S) Listar estatistica de filtro 
+T) Listar publicação de vaga
+U) Enviar vagas a perfis
+
+
 A) Cadastro de currículos com envio de curriculos a recrutadores
 B) Reputação, Cadastro de vagas com envio de curriculos especificos para cada vaga e fale conosco (bug, melhoria, agradecimento)
 

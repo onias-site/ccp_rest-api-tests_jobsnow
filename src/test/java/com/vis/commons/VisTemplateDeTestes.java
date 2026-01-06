@@ -18,6 +18,7 @@ import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.flow.CcpTreeFlow;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
+import com.ccp.implementations.db.query.elasticsearch.CcpElasticSearchQueryExecutor;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
@@ -46,6 +47,7 @@ public abstract class VisTemplateDeTestes {
 	static {
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.mensageriaSender,
+				new CcpElasticSearchQueryExecutor(),
 				new CcpElasticSearchDbRequest(), 
 				new CcpMindrotPasswordHandler(), 
 				CcpLocalCacheInstances.mock,
@@ -56,8 +58,8 @@ public abstract class VisTemplateDeTestes {
 				CcpLocalInstances.email
 				);
 		
-		String pathToCreateEntityScript = "documentation\\database\\elasticsearch\\scripts\\entities\\create";
-		String pathToJavaClasses = "..\\vis-business-commons\\src\\main\\java\\com\\vis\\commons\\entities";
+		String pathToCreateEntityScript = "documentation\\vis\\database\\elasticsearch\\scripts\\entities\\create";
+		String pathToJavaClasses = "..\\vis_business_jobsnow\\src\\main\\java\\com\\vis\\entities";
 		String mappingJnEntitiesErrors = "c:\\logs\\mappingJnEntitiesErrors.json";
 		String insertErrors = "c:\\logs\\insertErrors.json";
 		CcpDbRequester database = CcpDependencyInjection.getDependency(CcpDbRequester.class);

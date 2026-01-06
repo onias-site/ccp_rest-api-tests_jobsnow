@@ -2,12 +2,18 @@
 	"mappings": {
 		"dynamic": "strict",
 		"properties": {
+            "date": {
+                "type": "text"
+            },
 			"companies": {
 				"type": "text"
 			},
 			"firstThreeInitials": {
 				"type": "keyword"
-			}
+			},
+			  "timestamp": {
+                "type": "long"
+            }
 
 		}
 	}
