@@ -2,6 +2,7 @@ package com.ccp.random;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -33,6 +34,7 @@ import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpRequester;
 import com.ccp.especifications.http.CcpHttpResponse;
 import com.ccp.especifications.password.CcpPasswordHandler;
+import com.ccp.especifications.text.extractor.CcpTextExtractor;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.query.elasticsearch.CcpElasticSearchQueryExecutor;
@@ -54,12 +56,162 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
 import com.vis.resumes.ImportResumeFromOldJobsNow;
+import com.vis.services.VisServiceSkills;
 
 public class CcpRandomTests {
 
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
-	
 
+	public static void main(String[] args) {
+		relatoriosDasSkillsNosCurriculos();
+	}
+
+	static void sanitizarArquivoDeSinonimos() {
+		List<String> removidas = new CcpStringDecorator("c:/logs/skills/removidas.txt").file().getLines().stream().map(x -> x.trim()).collect(Collectors.toList());
+		CcpFileDecorator synonymsFile = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\skills\\synonyms.json").file();
+		List<CcpJsonRepresentation> synonyms = synonymsFile.asJsonList();
+		List<CcpJsonRepresentation> newSynonyms = new ArrayList<>();
+		
+		for (CcpJsonRepresentation synonym : synonyms) {
+			
+				String skill = synonym.getDynamicVersion().getAsString("skill");
+				if(skill.trim().length() < 2) {
+					synonym = synonym.getDynamicVersion().removeField("skill");
+				}
+				if(skill.trim().length() > 35) {
+					synonym = synonym.getDynamicVersion().removeField("skill");
+				}
+				if(removidas.contains(skill)) {
+					synonym = synonym.getDynamicVersion().removeField("skill");
+				}
+				List<String> parent = synonym.getDynamicVersion().getAsStringList("parent").stream()
+						.filter(x -> x.length() > 2 && x.length() <= 35)
+						.filter(x -> false == removidas.contains(x))
+						.collect(Collectors.toList());
+				
+				
+				synonym = synonym.getDynamicVersion().put("parent", parent);
+				{
+					List<CcpJsonRepresentation> collect = synonym.getDynamicVersion().getAsJsonList("synonym").stream().filter(x -> {
+						String word = x.getDynamicVersion().getAsString("skill");
+						return word.length() > 2 && word.length() <= 35 && false == removidas.contains(word) && false == skill.equals(word);
+					}).collect(Collectors.toList());
+					
+					synonym = synonym.getDynamicVersion().put("synonym", collect);
+				}
+				{
+					List<CcpJsonRepresentation> collect = synonym.getDynamicVersion().getAsJsonList("preRequisite").stream().filter(x -> {
+						String word = x.getDynamicVersion().getAsString("word");
+						return word.length() > 2 && word.length() <= 35 && false == removidas.contains(word);
+					}).collect(Collectors.toList());
+					
+					synonym = synonym.getDynamicVersion().put("preRequisite", collect);
+				}
+				
+				newSynonyms.add(synonym);
+			}
+
+		List<CcpJsonRepresentation> collect = newSynonyms.stream()
+		.filter(x -> x.getDynamicVersion().containsAllFields("skill") || false == x.getDynamicVersion().getAsJsonList("synonym").isEmpty())
+		.map(x -> x.getDynamicVersion().containsAllFields("skill") ? x : transferSynonymToSkill(x))
+		.map(x -> false == x.getDynamicVersion().getAsObjectList("parent").isEmpty() ?  x :  x.getDynamicVersion().removeField("parent"))
+		.map(x -> false == x.getDynamicVersion().getAsObjectList("synonym").isEmpty() ?  x :  x.getDynamicVersion().removeField("synonym"))
+		.map(x -> false == x.getDynamicVersion().getAsObjectList("preRequisite").isEmpty() ?  x :  x.getDynamicVersion().removeField("preRequisite"))
+		.collect(Collectors.toList());
+		CcpFileDecorator newSynonymsFile = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\skills\\new_synonyms.json").file().reset();
+		newSynonymsFile.append(collect.toString());
+		System.out.println(collect.size());
+	}
+	
+	static CcpJsonRepresentation transferSynonymToSkill(CcpJsonRepresentation x) {
+		List<CcpJsonRepresentation> synonym = x.getDynamicVersion().getAsJsonList("synonym");
+		ArrayList<CcpJsonRepresentation> list = new ArrayList<>(synonym);
+		list.sort((a,b) ->  b.getDynamicVersion().getAsIntegerNumber("positionsCount") - a.getDynamicVersion().getAsIntegerNumber("positionsCount"));
+		String skill = list.remove(0).getDynamicVersion().getAsString("skill");
+		CcpJsonRepresentation put = x.getDynamicVersion().put("skill", skill).getDynamicVersion().put("synonym", list);
+		return put;
+	}
+	
+	static List<String> getAllWords() {
+		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
+		CcpQueryOptions query = CcpQueryOptions.INSTANCE.matchAll().setSize(10000);
+		List<CcpJsonRepresentation> resultAsList = queryExecutor.getResultAsList(query, new String[] {"group_positions_by_skills"}, "skill");
+		
+		Set<String> set = new HashSet<>();
+		for (CcpJsonRepresentation json : resultAsList) {
+			List<CcpJsonRepresentation> list = json.getDynamicVersion().getAsJsonList("skill");
+			List<String> collect = list.stream().map(x -> x.getDynamicVersion().getAsString("word")).collect(Collectors.toList());
+			set.addAll(collect);
+		}
+		ArrayList<String> list = new ArrayList<>(set);
+		list.sort((a,b) -> a.length() - b.length());
+		return list;
+	}
+
+	static void relatoriosDasSkillsNosCurriculos() {
+		CcpTextExtractor textExtractor = CcpDependencyInjection.getDependency(CcpTextExtractor.class);
+		
+		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
+		CcpQueryOptions query = CcpQueryOptions.INSTANCE.matchAll();
+		Map<String, Integer> map = new HashMap<>();
+		Consumer<CcpJsonRepresentation> consumer = json -> {
+			try {
+				String base64 = json.getDynamicVersion().getValueFromPath("", "curriculo", "conteudo");
+				
+				String resumeText = textExtractor.extractText(base64);
+				
+				String text = new CcpStringDecorator(resumeText).text().stripAccents().getContent();
+				Map<String, Object> sessionValues =  CcpOtherConstants.EMPTY_JSON
+						 .getDynamicVersion()
+						 .put("text", text)
+						 .content
+						 ;
+				 
+				Map<String, Object> execute = VisServiceSkills.GetSkillsFromText.execute(sessionValues);
+				 
+				String id = json.getDynamicVersion().getAsString("id");
+				
+				String fileName = id + ".json";
+				
+				CcpJsonRepresentation md = new CcpJsonRepresentation(execute);
+				
+
+				List<CcpJsonRepresentation> skills = md.getDynamicVersion().getAsJsonList("skill").stream()
+						.collect(Collectors.toList());
+				
+				for (CcpJsonRepresentation skill : skills) {
+					String word = skill.getDynamicVersion().getAsString("word");
+					Integer counter = map.getOrDefault(word, 0) + 1;
+					map.put(word, counter);
+				}
+				
+				new CcpStringDecorator("c:/logs/skills/" + fileName).file().reset().append(md.getDynamicVersion().put("skill", skills).asPrettyJson());
+				System.out.println(counter++ + " = " + fileName);
+				
+			} catch (Exception e) {
+				System.out.println(counter++);
+			}
+		
+		};
+		queryExecutor.consumeQueryResult(query, new String[] {"profissionais2"}, "1m", 10, consumer, "curriculo.conteudo", "id");
+		
+		ArrayList<String> list = new ArrayList<String>(map.keySet());
+		list.sort((a, b) -> map.get(b) - map.get(a));
+		CcpFileDecorator relatorio = new CcpStringDecorator("c:/logs/skills/relatorio.txt").file().reset();
+		List<String> allWords = getAllWords();
+		for (String word : list) {
+			Integer total = map.get(word);
+			relatorio.append(word + " = " + total);
+			allWords.remove(word);
+			
+		}
+		
+		CcpFileDecorator removidas = new CcpStringDecorator("c:/logs/skills/removidas.txt").file().reset();
+		for (String removedWord : allWords) {
+			removidas.append(removedWord);
+		}
+	}
+	
 	static void saveGroupedCompanies() {
 		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
 		CcpQueryOptions query = CcpQueryOptions.INSTANCE.matchAll();

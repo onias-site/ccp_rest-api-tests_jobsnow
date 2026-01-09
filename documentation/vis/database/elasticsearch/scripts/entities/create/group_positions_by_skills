@@ -1,0 +1,31 @@
+{
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "date": {
+        "type": "text"
+      },
+      "firstTwoInitials": {
+        "type": "keyword"
+      },
+      "skill": {
+        "dynamic": "strict",
+        "properties": {
+          "skill": {
+            "type": "keyword"
+          },
+          "positionStatis": {
+            "dynamic": "strict",
+            "properties": {}
+          },
+          "word": {
+            "type": "keyword"
+          }
+        }
+      },
+      "timestamp": {
+        "type": "long"
+      }
+    }
+  }
+}

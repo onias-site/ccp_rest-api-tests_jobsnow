@@ -1,75 +1,91 @@
 {
-    "mappings": {
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "btc": {
+        "type": "double"
+      },
+      "clt": {
+        "type": "double"
+      },
+      "date": {
+        "type": "text"
+      },
+      "ddd": {
+        "type": "integer"
+      },
+      "desiredJob": {
+        "type": "text"
+      },
+      "disponibility": {
+        "type": "integer"
+      },
+      "email": {
+        "type": "keyword"
+      },
+      "excludedSkill": {
         "dynamic": "strict",
         "properties": {
-            "btc": {
-                "type": "double"
-            },
-            "clt": {
-                "type": "double"
-            },
-            "date": {
-                "type": "text"
-            },
-            "ddd": {
-                "type": "integer"
-            },
-            "desiredJob": {
-                "type": "text"
-            },
-            "disponibility": {
-                "type": "integer"
-            },
-            "email": {
-                "type": "keyword"
-            },
-            "excludedSkill": {
-                "type": "keyword"
-            },
-            "experience": {
-                "type": "integer"
-            },
-            "includedSkill": {
-                "type": "keyword"
-            },
-            "language": {
-                "dynamic": "strict",
-                "properties": {
-                    "name": {
-                        "type": "keyword"
-                    },
-                    "level": {
-                        "type": "integer"
-                    }
-                }
-            },
-            "lastJob": {
-                "type": "text"
-            },
-            "linkedinAddress": {
-                "type": "text"
-            },
-            "negotiableClaim": {
-                "type": "boolean"
-            },
-            "notAllowedCompany": {
-                "type": "keyword"
-            },
-            "pcd": {
-                "type": "boolean"
-            },
-            "pj": {
-                "type": "double"
-            },
-            "temporallyJobTime": {
-                "type": "integer"
-            },
-            "travel": {
-                "type": "boolean"
-            },
-            "timestamp": {
-                "type": "long"
-            }
+          "skill": {
+            "type": "keyword"
+          },
+          "word": {
+            "type": "keyword"
+          }
         }
+      },
+      "experience": {
+        "type": "integer"
+      },
+      "includedSkill": {
+        "dynamic": "strict",
+        "properties": {
+          "skill": {
+            "type": "keyword"
+          },
+          "word": {
+            "type": "keyword"
+          }
+        }
+      },
+      "language": {
+        "dynamic": "strict",
+        "properties": {
+          "name": {
+            "type": "keyword"
+          },
+          "level": {
+            "type": "integer"
+          }
+        }
+      },
+      "lastJob": {
+        "type": "text"
+      },
+      "linkedinAddress": {
+        "type": "text"
+      },
+      "negotiableClaim": {
+        "type": "boolean"
+      },
+      "notAllowedCompany": {
+        "type": "keyword"
+      },
+      "pcd": {
+        "type": "boolean"
+      },
+      "pj": {
+        "type": "double"
+      },
+      "temporallyJobTime": {
+        "type": "integer"
+      },
+      "travel": {
+        "type": "boolean"
+      },
+      "timestamp": {
+        "type": "long"
+      }
     }
+  }
 }

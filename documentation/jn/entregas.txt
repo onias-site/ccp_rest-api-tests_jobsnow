@@ -1,7 +1,7 @@
 A) Endpoint de autocomplete de empresas
 B) Endpoint de skills
-C) Endpoint de trazer dados do perfil
-D) Endpoint de salvamento de dados de perfil
+C) Endpoint de salvamento de dados de perfil
+D) Endpoint de trazer dados do perfil
 E) Envio de currículos para os recrutadores
 F) Visualização de perfil 
 
