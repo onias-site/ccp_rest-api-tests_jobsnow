@@ -66,6 +66,47 @@ public class CcpRandomTests {
 		relatoriosDasSkillsNosCurriculos();
 	}
 
+	static void addNewWords() {
+		CcpFileDecorator synonymsFile = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\skills\\synonyms.json").file();
+		List<CcpJsonRepresentation> synonyms = synonymsFile.asJsonList();
+		Set<String> allSimilar = new HashSet<>();
+		for (CcpJsonRepresentation synonym : synonyms) {
+			var similar = synonym.getDynamicVersion().getAsJsonList("similar")
+					.stream()
+					.map(x -> x.getDynamicVersion().getAsString("word").replace("_", " "))
+					.collect(Collectors.toList())
+					;
+			allSimilar.addAll(similar);
+		}
+		System.out.println(allSimilar.size());
+		for (CcpJsonRepresentation synonym : synonyms) {
+			{
+				String skill = synonym.getDynamicVersion().getAsString("skill");
+				allSimilar.remove(skill);
+			}
+			List<String> parents = synonym.getDynamicVersion().getAsStringList("parent");
+			for (String parent : parents) {
+				allSimilar.remove(parent);
+			}
+			
+			List<CcpJsonRepresentation> asJsonList = synonym.getDynamicVersion().getAsJsonList("synonym");
+			for (var sym : asJsonList) {
+				String skill = sym.getDynamicVersion().getAsString("skill");
+				allSimilar.remove(skill);
+				
+			}
+		}
+		System.out.println(allSimilar.size());
+		var newWords = new CcpStringDecorator("c:/logs/skills/newWords.txt").file().reset();
+		var countByWords = new CcpStringDecorator("c:/logs/skills/countByWords.txt").file().getLines();
+		
+		for (String similar : allSimilar) {
+			String string = countByWords.stream().filter(x -> x.startsWith(similar)).findFirst().get();
+			newWords.append(string);
+		}
+	
+	}
+	
 	static void sanitizarArquivoDeSinonimos() {
 		List<String> removidas = new CcpStringDecorator("c:/logs/skills/removidas.txt").file().getLines().stream().map(x -> x.trim()).collect(Collectors.toList());
 		CcpFileDecorator synonymsFile = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\skills\\synonyms.json").file();
@@ -107,6 +148,14 @@ public class CcpRandomTests {
 					
 					synonym = synonym.getDynamicVersion().put("preRequisite", collect);
 				}
+				{
+					List<CcpJsonRepresentation> collect = synonym.getDynamicVersion().getAsJsonList("similar").stream().filter(x -> {
+						String word = x.getDynamicVersion().getAsString("word").replace("_", " ");
+						return word.length() > 2 && word.length() <= 35 && false == removidas.contains(word);
+					}).collect(Collectors.toList());
+					
+					synonym = synonym.getDynamicVersion().put("similar", collect);
+				}
 				
 				newSynonyms.add(synonym);
 			}
@@ -115,11 +164,15 @@ public class CcpRandomTests {
 		.filter(x -> x.getDynamicVersion().containsAllFields("skill") || false == x.getDynamicVersion().getAsJsonList("synonym").isEmpty())
 		.map(x -> x.getDynamicVersion().containsAllFields("skill") ? x : transferSynonymToSkill(x))
 		.map(x -> false == x.getDynamicVersion().getAsObjectList("parent").isEmpty() ?  x :  x.getDynamicVersion().removeField("parent"))
+		.map(x -> false == x.getDynamicVersion().getAsObjectList("similar").isEmpty() ?  x :  x.getDynamicVersion().removeField("similar"))
 		.map(x -> false == x.getDynamicVersion().getAsObjectList("synonym").isEmpty() ?  x :  x.getDynamicVersion().removeField("synonym"))
 		.map(x -> false == x.getDynamicVersion().getAsObjectList("preRequisite").isEmpty() ?  x :  x.getDynamicVersion().removeField("preRequisite"))
 		.collect(Collectors.toList());
 		CcpFileDecorator newSynonymsFile = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\skills\\new_synonyms.json").file().reset();
 		newSynonymsFile.append(collect.toString());
+		for (CcpJsonRepresentation json : collect) {
+			System.out.println(json.getDynamicVersion().getAsString("skill"));
+		}
 		System.out.println(collect.size());
 	}
 	
@@ -153,7 +206,10 @@ public class CcpRandomTests {
 		
 		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
 		CcpQueryOptions query = CcpQueryOptions.INSTANCE.matchAll();
-		Map<String, Integer> map = new HashMap<>();
+		Map<String, Integer> countByResume = new HashMap<>();
+		Map<String, Integer> countByWords = new HashMap<>();
+		
+		
 		Consumer<CcpJsonRepresentation> consumer = json -> {
 			try {
 				String base64 = json.getDynamicVersion().getValueFromPath("", "curriculo", "conteudo");
@@ -181,9 +237,11 @@ public class CcpRandomTests {
 				
 				for (CcpJsonRepresentation skill : skills) {
 					String word = skill.getDynamicVersion().getAsString("word");
-					Integer counter = map.getOrDefault(word, 0) + 1;
-					map.put(word, counter);
+					Integer counter = countByWords.getOrDefault(word, 0) + 1;
+					countByWords.put(word, counter);
 				}
+				
+				countByResume.put(id, skills.size());
 				
 				new CcpStringDecorator("c:/logs/skills/" + fileName).file().reset().append(md.getDynamicVersion().put("skill", skills).asPrettyJson());
 				System.out.println(counter++ + " = " + fileName);
@@ -194,23 +252,47 @@ public class CcpRandomTests {
 		
 		};
 		queryExecutor.consumeQueryResult(query, new String[] {"profissionais2"}, "1m", 10, consumer, "curriculo.conteudo", "id");
-		
-		ArrayList<String> list = new ArrayList<String>(map.keySet());
-		list.sort((a, b) -> map.get(b) - map.get(a));
-		CcpFileDecorator relatorio = new CcpStringDecorator("c:/logs/skills/relatorio.txt").file().reset();
 		List<String> allWords = getAllWords();
-		for (String word : list) {
-			Integer total = map.get(word);
-			relatorio.append(word + " = " + total);
+
+		createReport(countByWords, "c:/logs/skills/countByWords.txt",  word -> {
 			allWords.remove(word);
-			
-		}
+		});
+		
+		createReport(countByResume, "c:/logs/skills/countByResume.txt",  word -> {});
 		
 		CcpFileDecorator removidas = new CcpStringDecorator("c:/logs/skills/removidas.txt").file().reset();
 		for (String removedWord : allWords) {
 			removidas.append(removedWord);
 		}
 	}
+	
+	static void createReport(Map<String, Integer> reportSource, String reportFile, Consumer<String> consumer) {
+		
+		ArrayList<String> list = new ArrayList<String>(reportSource.keySet());
+		list.sort((a, b) -> reportSource.get(b) - reportSource.get(a));
+		CcpFileDecorator report = new CcpStringDecorator(reportFile).file().reset();
+		Integer total = 0;
+		Map<Integer, Integer> numbers = new TreeMap<>();
+		for (String word : list) {
+			Integer count = reportSource.get(word);
+			report.append(word + " = " + count);
+			consumer.accept(word);
+			total += count;
+			Integer orDefault = numbers.getOrDefault(count, 0) + 1;
+			numbers.put(count, orDefault);
+		}
+		Integer average = total / list.size();
+		
+		report.append("AVERAGE = " + average);
+		
+		Set<Integer> keySet = numbers.keySet();
+		for (Integer integer : keySet) {
+			Integer value = numbers.get(integer);
+			report.append(integer + " = " + value);
+		}
+		
+	}
+	
 	
 	static void saveGroupedCompanies() {
 		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
