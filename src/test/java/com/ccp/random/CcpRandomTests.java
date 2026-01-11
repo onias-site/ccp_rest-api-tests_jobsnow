@@ -66,6 +66,41 @@ public class CcpRandomTests {
 		relatoriosDasSkillsNosCurriculos();
 	}
 
+		static void aumentarArquivoDeSinonimos() {
+		CcpFileDecorator synonymsFile = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\skills\\synonyms.json").file();
+		CcpFileDecorator countByWords = new CcpStringDecorator("c:/logs/skills/countByWords.txt").file();
+		List<String> existingWords = countByWords.getLines().subList(0, 1408).stream().map(x -> x.split(" = ")[0]).collect(Collectors.toList());
+		List<CcpJsonRepresentation> synonyms = new ArrayList<CcpJsonRepresentation>(synonymsFile.asJsonList());
+		System.out.println(synonyms.size());
+
+		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
+		CcpQueryOptions query = CcpQueryOptions.INSTANCE.matchAll();
+		Set<String> words = new HashSet<>();
+		Consumer<CcpJsonRepresentation> consumer = json -> {
+			String[] fields = new String[] {"requisitosDesejaveis", "requisitosObrigatorios", "must", "should"};
+			for (String field : fields) {
+				List<String> list = json.getDynamicVersion().getAsStringList(field).stream()
+						.map(x -> new CcpStringDecorator(x).text().stripAccents().sanitize().getContent().toUpperCase().trim())
+						.filter(x -> x.length() > 2 && x.length() <= 35)
+						.filter(x -> false == existingWords.contains(x))
+						.collect(Collectors.toList());
+				
+				words.addAll(list);
+				
+			}
+			System.out.println(counter++ + " = " + words.size());
+		};
+		queryExecutor.consumeQueryResult(query, new String[] {"pesquisa_curriculos"}, "1m", 10_000, consumer, "requisitosDesejaveis", "requisitosObrigatorios", "must", "should");
+		
+
+		for (String word : words) {
+			CcpJsonRepresentation synonym = CcpOtherConstants.EMPTY_JSON.getDynamicVersion().put("skill", word);
+			synonyms.add(synonym);
+		}
+		System.out.println(synonyms.size());
+		synonymsFile.reset().append(synonyms.toString());
+	}
+
 	static void addNewWords() {
 		CcpFileDecorator synonymsFile = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\skills\\synonyms.json").file();
 		List<CcpJsonRepresentation> synonyms = synonymsFile.asJsonList();
@@ -215,18 +250,15 @@ public class CcpRandomTests {
 				String base64 = json.getDynamicVersion().getValueFromPath("", "curriculo", "conteudo");
 				
 				String resumeText = textExtractor.extractText(base64);
-				
 				String text = new CcpStringDecorator(resumeText).text().stripAccents().getContent();
 				Map<String, Object> sessionValues =  CcpOtherConstants.EMPTY_JSON
 						 .getDynamicVersion()
 						 .put("text", text)
 						 .content
 						 ;
-				 
 				Map<String, Object> execute = VisServiceSkills.GetSkillsFromText.execute(sessionValues);
-				 
 				String id = json.getDynamicVersion().getAsString("id");
-				
+
 				String fileName = id + ".json";
 				
 				CcpJsonRepresentation md = new CcpJsonRepresentation(execute);
@@ -246,7 +278,9 @@ public class CcpRandomTests {
 				new CcpStringDecorator("c:/logs/skills/" + fileName).file().reset().append(md.getDynamicVersion().put("skill", skills).asPrettyJson());
 				System.out.println(counter++ + " = " + fileName);
 				
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
+				e.printStackTrace();
 				System.out.println(counter++);
 			}
 		
