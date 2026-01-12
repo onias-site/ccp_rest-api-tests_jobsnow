@@ -1,0 +1,565 @@
+adicionarParent=SERVLET,JAVA SERVER
+adicionarParent=JAVA SERVER, JAVA, HTTP SERVER
+adicionarParent=HTTP SERVER, SERVER, HTTP
+adicionarParent=SERVER, HTTP
+adicionarParent=NGINX, HTTP SERVER
+adicionarParent=SQL, DATABASE
+removerSynonym=VB.NET,CSS3
+adicionarParent=JSP,HTML, SERVLET
+removerParent=JSON,FRONTEND
+adicionarSynonym=AGILE, AGIL, AGEIS, METODOLOGIA AGIL, METODOLOGIA AGEIS, AGILE METHODOLOGY
+adicionarSynonym=MAVEN, MVN
+adicionarParent=BARRAMENTO, INTEGRATION
+adicionarParent=JBOSS, JAVA SERVER
+adicionarParent=JETTY, JAVA SERVER
+removerSynonym=VIEWS,SYBASE
+adicionarParent=COBIT, AGIL
+adicionarParent=XPATH, XML
+adicionarParent=LOMBOK, JAVA
+adicionarParent=SQLITE, DATABASE, HTTP SERVER
+adicionarSynonym=HTTP SERVER,HTTPSERVER
+adicionarSynonym=JAVAEE,JAVA EE, JEE
+adicionarParent=JAVAEE, JAVA SERVER
+adicionarSynonym=JAVAFX,JAVA FX
+adicionarParent=JQUERY, FRONTEND, AJAX
+removerParent=JASPER, NOSQL
+adicionarParent=TOMCAT, JAVA SERVER
+adicionarParent=JAVAFX, JAVA
+adicionarParent=HUDSON, DEVOPS
+adicionarParent=GIT, VERSIONING
+adicionarParent=ACCESS, DATABASE
+adicionarParent=ELASTICSEARCH, LUCENE
+adicionarParent=MARIADB, SQL
+adicionarParent=LUCENE, NOSQL, FULLTEXT SEARCH
+adicionarParent=CICD, DEPLOY
+adicionarParent=VAGRANT, DEVOPS
+adicionarParent=SPA, FRONTEND, AJAX, MVC
+adicionarParent=VRAPTOR, MVC, JAVA
+adicionarParent=VELOCITY, MVC, JAVA
+adicionarParent=SPRINGMVC, MVC, SPRING
+adicionarParent=FIREBIRD, DB
+adicionarParent=ORM, SQL
+adicionarParent=JDBC, SQL, JAVA
+adicionarParent=GLASSFISH, JAVA SERVER
+adicionarParent=MERCURIAL, VERSIONING
+adicionarParent=VSS, VERSIONING
+adicionarParent=SVN, VERSIONING
+adicionarParent=CVS, VERSIONING
+adicionarParent=TFS, VERSIONING
+removerSynonym=GIT, CLEARCASE
+removerParent=JAVASCRIPT, FRONTEND
+removerSynonym=MOCKITO, REFLECTION
+removerSynonym=LUMEN, POSTGRESQL
+adicionarParent=REST, MICROSSERVICOS
+adicionarParent=MICROSSERVICOS, INTEGRATION
+removerParent=AJAX, INTEGRATION
+adicionarParent=AJAX, FRONTEND
+removerSynonym=ASANA, PLSQL
+adicionarParent=CACHE, DATABASE
+adicionarParent=KANBAM, JIRA
+adicionarParent=JIRA, AGIL
+removerSynonym=GRADLE, BUILD
+adicionarParent=GRADLE, DEPLOY
+adicionarParent=NOSQL, DATABASE
+adicionarParent=KOTLIN, JAVA, ANDROID
+adicionarParent=JAVA, JVM
+adicionarParent=SCALA, JVM
+adicionarParent=GROOVY, JVM
+removerSynonym=JBOSS, WILDFLY
+adicionarParent=WILDFLY, JBOSS
+removerParent=IREPORT, SQL, NOSQL
+adicionarParent=IREPORT, DATABASE
+adicionarSynonym=ELASTICSEARCH, ELASTIC
+adicionarParent=MOCKITO, JUNIT
+removerSynonym=LUMEN, MONGODB
+adicionarParent=WEBLOGIC, JAVA SERVER
+adicionarParent=WEBSPHERE, JAVA SERVER
+adicionarParent=DYNAMODB, NOSQL, AWS
+adicionarParent=BIGQUERY, SQL, GCP
+adicionarParent=COSMODB, NOSQL, AZURE
+adicionarParent=FIREBASE, NOSQL, SERVERLESS
+adicionarParent=DATABASE, BACKEND
+adicionarParent=CLOUD, BACKEND
+adicionarParent=JVM, BACKEND
+adicionarParent=DOTNET, BACKEND
+adicionarParent=CSHARP, DOTNET
+adicionarParent=PYTHON, BACKEND
+adicionarParent=JYTHON, JVM, PYTHON
+adicionarParent=HIBERNATE, JDBC, ORM
+adicionarParent=MYBATIS, JDBC, ORM
+adicionarParent=JPA, JDBC, ORM
+adicionarParent=NHIBERNATE, CSHARP, ORM
+adicionarParent=MENSAGERIA, INTEGRATION
+adicionarParent=RABBITMQ, JMS
+adicionarParent=PUBSUB, MENSAGERIA, GCP
+adicionarParent=GCP, CLOUD
+adicionarParent=DIGITAL OCEAN, CLOUD
+adicionarParent=ALIBABA, CLOUD
+adicionarParent=ORACLE CLOUD, CLOUD
+adicionarParent=IBM CLOUD, CLOUD
+adicionarParent=TENCENT, CLOUD
+adicionarParent=DATAFLEX, BACKEND
+adicionarParent=COCOAPODS, OBJECTIVEC, DEPENDENCY MANAGER 
+adicionarParent=OBJECTIVEC, IOS 
+adicionarParent=NPM, JAVASCRIPT, DEPENDENCY MANAGER 
+adicionarParent=YARN, JAVASCRIPT, DEPENDENCY MANAGER 
+adicionarParent=MVN, JAVA, DEPENDENCY MANAGER 
+adicionarParent=ANT, JAVA, DEPENDENCY MANAGER 
+adicionarParent=GRUNT, JAVASCRIPT, DEPENDENCY MANAGER 
+adicionarParent=GRADLE, JAVA, DEPENDENCY MANAGER 
+adicionarParent=SBT, JAVA, DEPENDENCY MANAGER 
+adicionarParent=MILL, JAVA, DEPENDENCY MANAGER 
+adicionarParent=IVY, JAVA, DEPENDENCY MANAGER 
+adicionarParent=GRAPE, JAVA, DEPENDENCY MANAGER 
+adicionarParent=LEININGEN, JAVA, DEPENDENCY MANAGER 
+adicionarParent=BUILDR, JAVA, DEPENDENCY MANAGER 
+adicionarParent=DEPENDENCY MANAGER, DEPLOY
+adicionarParent=GRAILS, GROOVY 
+adicionarParent=DEPLOY, BUILD 
+adicionarParent=BOWER, JAVASCRIPT, DEPENDENCY MANAGER 
+adicionarParent=PNPM, JAVASCRIPT, DEPENDENCY MANAGER 
+adicionarParent=GULP, JAVASCRIPT, DEPENDENCY MANAGER 
+adicionarParent=NUGET, DOTNET, DEPENDENCY MANAGER 
+adicionarParent=PIP, PYTHON, DEPENDENCY MANAGER 
+adicionarParent=PIPENV, PYTHON, DEPENDENCY MANAGER 
+adicionarParent=POETRY, PYTHON, DEPENDENCY MANAGER 
+adicionarParent=CONDA, PYTHON, DEPENDENCY MANAGER 
+adicionarParent=SETUPTOOLS, PYTHON, DEPENDENCY MANAGER 
+adicionarParent=VIRTUALENV, PYTHON, DEPENDENCY MANAGER 
+adicionarParent=PYENV, PYTHON, DEPENDENCY MANAGER 
+adicionarParent=BUNDLER, RUBY, DEPENDENCY MANAGER 
+adicionarParent=RUBYGEMS, RUBY, DEPENDENCY MANAGER 
+adicionarParent=RUBY, BACKEND 
+adicionarParent=JRUBY, RUBY, JVM 
+adicionarParent=PHP, HTTP SERVER
+adicionarParent=HTTP SERVER, BACKEND 
+adicionarParent=COMPOSER, PHP, DEPENDENCY MANAGER 
+adicionarParent=PEAR, PHP, DEPENDENCY MANAGER 
+adicionarParent=KUBERNETES, DOCKER 
+adicionarParent=DOCKER, DEVOPS 
+adicionarParent=DEVELOPMENT, DEPENDENCY MANAGER, IDE, JSON, XML, VERSIONING 
+adicionarParent=BACKEND, DEVELOPMENT
+adicionarParent=FRONTEND, DEVELOPMENT
+adicionarParent=MOBILE, DEVELOPMENT
+adicionarParent=JENKINS, DEVOPS 
+adicionarParent=B.I, SQL, NOSQL 
+adicionarParent=CMS, FRONTEND 
+adicionarParent=LIFERAY, CMS, JAVA 
+adicionarParent=VCM, CMS, JAVA 
+adicionarParent=FLUIG, CMS, JAVA 
+adicionarParent=AEM, CMS, JAVA 
+adicionarParent=MAGNOLIA, CMS, JAVA 
+adicionarParent=HIPPO, CMS, JAVA 
+adicionarParent=JAHIA, CMS, JAVA 
+adicionarParent=ALFRESCO, CMS, JAVA 
+adicionarSynonym=ALFRESCO, ECM
+adicionarSynonym=HIPPO, BLOOMREACH
+adicionarParent=DOTCMS, CMS, JAVA 
+adicionarSynonym=DOT CMS, DOTCMS
+adicionarParent=CRAFTER, CMS, JAVA 
+adicionarParent=JACKRABBIT, CMS, JAVA
+adicionarSynonym=JACKRABBIT, JACK RABBIT, JACKRABIT, JACK RABIT
+adicionarParent=WORDPRESS, CMS, PHP
+adicionarSynonym=WORDPRESS, WORD PRESS
+adicionarParent=DRUPAL, CMS, PHP
+adicionarParent=JOOMLA, CMS, PHP
+adicionarSynonym=JOOMLA, JOMLA
+adicionarParent=TYPO3, CMS, PHP
+adicionarParent=MAGENTO, CMS, PHP
+adicionarParent=MAGENTO, ECOMMERCE
+adicionarSynonym=ECOMMERCE, E-COMMERCE, E COMMERCE, ECOMERCE, E-COMERCE, E COMERCE
+adicionarParent=OCTOBERCMS, CMS, PHP
+adicionarSynonym=OCTOBERCMS, OCTOBER, OCTOBER CMS
+adicionarParent=CRAFT, CMS, PHP
+adicionarSynonym=CRAFT, CRAFTCMS, CRAFT CMS
+adicionarParent=SILVER STRIPER, CMS, PHP
+adicionarSynonym=SILVER STRIPER, SILVERSTRIPER, SILVER STRIPER CMS, SILVERSTRIPERCMS
+adicionarParent=CONCRETE, CMS, PHP
+adicionarSynonym=CONCRETE, CONCRETE CMS, CONCRETECMS
+adicionarParent=BOLT, CMS, PHP
+adicionarSynonym=BOLT, BOLT CMS, BOLTCMS
+adicionarParent=RADIANT, CMS, RUBY
+adicionarParent=REFINERY, CMS, RUBY
+adicionarParent=LOCOMOTIVE, CMS, RUBY
+adicionarParent=ALCHEMY, CMS, RUBY
+adicionarParent=COMFY, CMS, RUBY
+adicionarSynonym=RADIANT, RADIANTCMS, RADIANT CMS
+adicionarSynonym=REFINERY, REFINERYCMS, REFINERY CMS
+adicionarSynonym=LOCOMOTIVE, LOCOMOTIVECMS, LOCOMOTIVE CMS
+adicionarSynonym=ALCHEMY, ALCHEMYCMS, ALCHEMY CMS
+adicionarSynonym=COMFY, COMFYCMS, COMFY CMS
+adicionarParent=DJANGO, CMS, PYTHON
+adicionarParent=WAGTAIL, CMS, PYTHON
+adicionarParent=PLONE, CMS, PYTHON
+adicionarParent=MEZZANINE, CMS, PYTHON
+adicionarParent=FEIN, CMS, PYTHON
+adicionarParent=OPPS, CMS, PYTHON
+adicionarSynonym=DJANGO, DJANGOCMS, DJANGO CMS
+adicionarSynonym=WAGTAIL, WAGTAILCMS, WAG TAIL, WAG TAIL CMS, WAGTAIL CMS
+adicionarSynonym=PLONE, PLONECMS, PLONE CMS
+adicionarSynonym=MEZZANINE, MEZZANINECMS, MEZZANINE CMS, MEZANINE, MEZZNINECMS, MEZANINE CMS 
+adicionarSynonym=FEIN, FEIN CMS, FEINCMS
+adicionarSynonym=OPPS, OPPSCMS, OPPS CMS, OPSCMS, OPS CMS
+adicionarParent=KENTICO, CMS, CSHARP
+adicionarParent=SITECORE, CMS, CSHARP
+adicionarParent=ORCHARD, CMS, CSHARP
+adicionarParent=EPISERVER, CMS, CSHARP
+adicionarParent=DOTNETNUKE, CMS, CSHARP
+adicionarSynonym=KENTICO, KENTICOCMS, KENTICO CMS
+adicionarSynonym=SITECORE, SITECORECMS, SITECORE CMS, SITE CORE, SITE CORECMS, SITE CORE CMS
+adicionarSynonym=ORCHARD, ORCHARD CMS, ORCHARDCMS
+adicionarSynonym=EPISERVER, EPISERVERCMS, EPISERVER CMS, EPI SERVER, EPI SERVER CMS
+adicionarSynonym=DOTNETNUKE, DOTNETNUKECMS, DOTNETNUKE CMS, DOT NET NUKE, DOT NET NUKE CMS
+adicionarSynonym=EJB, ENTERPRISE JAVA BEANS
+adicionarSynonym=SASS, SCSS
+adicionarParent=EJB, JNDI
+adicionarParent=JNDI, RMI
+adicionarParent=RMI, INTEGRATION, JAVAEE
+adicionarParent=IOS, MOBILE
+adicionarParent=ANDROID, MOBILE
+adicionarParent=SWIFT, OBJECTIVEC
+adicionarParent=FEIGN, SPRING
+adicionarParent=SPRING, JAVA
+adicionarParent=XPATH, XML
+adicionarParent=XQUERY, XML
+adicionarParent=XSD, XML
+adicionarParent=HTML, XML
+adicionarParent=XHTML, HTML
+adicionarParent=DHTML, HTML, JAVASCRIPT
+adicionarParent=DOM, FRONTEND
+adicionarParent=ETL, B.I
+adicionarParent=JSTL, JSP
+adicionarParent=JSF, XHTML, MVC, JSTL
+adicionarParent=PRIMEFACES, JSF
+adicionarParent=RICHFACES, JSF
+adicionarParent=ICEFACES, JSF
+adicionarParent=KAFKA, MENSAGERIA
+adicionarParent=PLSQL, SQL
+removerParent=SOLID, FRONTEND
+adicionarParent=NEO4J, NOSQL
+adicionarParent=JUNIT, TDD, JAVA
+adicionarParent=ORACLE, SQL
+adicionarParent=SQLSERVER, SQL
+adicionarParent=PENTAHO, ETL
+adicionarParent=ECLIPSE, JAVA
+adicionarParent=NETBEANS, JAVA
+adicionarParent=INTELIJ, JAVA
+adicionarParent=VSCODE, IDE
+adicionarParent=VISUALSTUDIO, DOTNET
+adicionarParent=NOTEPAD++, IDE
+adicionarParent=CPP, BACKEND
+adicionarParent=RAD, IDE
+adicionarParent=DELPHI, PASCAL
+adicionarParent=PASCAL, BACKEND
+adicionarParent=REST, MICROSERVICO
+adicionarParent=SOAP, MICROSERVICO
+adicionarParent=WS, INTEGRATION
+adicionarParent=MICROSERVICO, WS
+adicionarParent=JAXRS, REST, JAVA
+adicionarParent=AXIS, JAXWS
+adicionarParent=JAXWS, SOAP, JAVA
+adicionarParent=ANGULAR, SPA
+adicionarParent=REACT, SPA, JSX, TSX
+adicionarParent=JSX, JAVASCRIPT, HTML
+adicionarParent=TSX, TYPESCRIPT, HTML
+adicionarParent=VUE, JS, SPA
+adicionarParent=KNOCKOUT, SPA
+adicionarParent=EMBER, SPA
+adicionarParent=EXTJS, SPA
+adicionarParent=CORDA, KOTLIN, BLOCKCHAIN
+adicionarParent=SUBSTRATE, RUST, BLOCKCHAIN
+adicionarParent=PATTERNS, POO
+adicionarParent=SOLID, POO
+adicionarParent=GOF, POO
+adicionarParent=VBSCRIPT, BACKEND
+adicionarParent=CASSANDRA, NOSQL
+adicionarParent=BOOTSTRAP, CSS
+adicionarParent=TAILWIND, CSS
+adicionarParent=MATERIALIZE, CSS
+adicionarParent=BULMA, CSS
+adicionarParent=FOUNDATION, CSS
+adicionarParent=MATERIAL UI, CSS
+adicionarParent=SEMANTIC UI, CSS
+adicionarParent=CHAKRA UI, CSS
+adicionarParent=SCSS, CSS
+adicionarParent=RESPONSIVITY, UX
+adicionarParent=LUMEN, PHP
+adicionarParent=JASPER, ITEXT
+adicionarParent=ITEXT, REPORT, JDBC
+adicionarParent=SQS, AWS, MENSAGERIA
+adicionarParent=MEMCACHE, CACHE, GCP
+adicionarParent=REDIS, CACHE
+adicionarParent=HADOOP, BIGDATA
+adicionarParent=BIGDATA, NOSQL, SQL
+adicionarParent=SPARK, BIGDATA
+adicionarParent=ECS, AWS
+adicionarParent=HIVE, HADOOP
+adicionarParent=HDFS, HADOOP
+adicionarParent=HBASE, HADOOP
+adicionarParent=SQOOP, HADOOP, SQL
+adicionarParent=DART, MOBILE, FRONTEND
+adicionarParent=KIBANA, ELASTICSEARCH
+adicionarParent=LOGSTASH, ELASTICSEARCH, MONITOR
+adicionarParent=SYBASE, SAP
+adicionarParent=ABAP, ERP, SAP
+adicionarParent=ERP, BACKEND
+adicionarParent=SAP, ERP
+adicionarParent=ADVPL, PROTHEUS
+adicionarParent=PROTHEUS, ERP
+adicionarParent=JDE, JAVA, ERP
+adicionarParent=TRELLO, JIRA
+adicionarParent=FLASK, PYTHON, MVC
+adicionarParent=BAMBOO, DEVOPS
+adicionarParent=RANCHER, KUBERNETES
+adicionarParent=APPENGINE, GCP
+adicionarParent=NODE, JAVASCRIPT
+adicionarParent=NESTJS, NODE, MVC
+adicionarParent=GITLAB, GIT 
+adicionarParent=GITHUB, GIT 
+adicionarParent=BITBUCKET, GIT
+adicionarParent=GITHUB ACTIONS, GITHUB, DEVOPS 
+adicionarParent=LAMBDA, CLOUD, SERVERLESS
+adicionarParent=LIQUIBASE, DEVOPS, DATABASE 
+adicionarParent=FLYWAY, DEVOPS, DATABASE 
+adicionarParent=OPENCV, MACHINELEARNING 
+adicionarParent=MACHINELEARNING, IA
+adicionarParent=IA, DATABASE
+adicionarParent=NEXTJS, JAVASCRIPT 
+adicionarParent=FLUTTER, DART 
+adicionarParent=DART, ANDROID
+adicionarParent=GRAFANA, MONITOR
+adicionarParent=NEWREALIC, MONITOR, JAVA
+adicionarParent=MONITOR, SRE
+adicionarParent=READMINE, MONITOR
+adicionarParent=QUARKUS, SERVLET
+adicionarParent=MICRONAUT, SERVLET
+adicionarParent=SPRINGBOOT, SERVLET, SPRING
+adicionarParent=OPENAPI, DOCUMENTATION
+adicionarParent=SWAGGER, OPENAPI
+adicionarParent=OPENAPI, REST, DOCUMENTATION
+adicionarParent=GRAPHQL, BACKEND, FRONTEND, DATABASE
+adicionarParent=COUCHDB, NOSQL
+adicionarParent=ACTIVEMQ, JMS
+adicionarParent=KEYCLOAK, IAM
+adicionarParent=SELENIUM, WEBDRIVER
+adicionarParent=WEBDRIVER, TDD, FRONTEND
+adicionarParent=OPENSHIFT, KUBERNETES
+adicionarParent=SONAR, DEVOPS
+adicionarParent=THYMELEAF, HTML, CSS, JAVASCRIPT
+adicionarParent=MAINFRAME, COBOL
+adicionarParent=CONFLUENCE, DOCUMENTATION
+adicionarParent=TENSORFLOW, NLP
+adicionarParent=NLP, MACHINELEARNING
+adicionarParent=TYPESCRIPT, JAVASCRIPT, POO
+adicionarParent=PROMETHEUS, MONITOR
+adicionarParent=DB2, SQL
+adicionarParent=CORDOVA, FRONTEND, MOBILE
+adicionarParent=PHONEGAP, FRONTEND, MOBILE
+adicionarParent=IONIC, CORDOVA
+adicionarParent=CAMEL, BARRAMENTO
+adicionarParent=MULE, BARRAMENTO
+adicionarParent=BARRAMENTO, SOA
+adicionarParent=SWING, JAVA
+adicionarParent=DEVOPS, CICD
+adicionarParent=STRUTS, SERVLET, MVC
+adicionarParent=IBATIS, ORM
+adicionarParent=IREPORT, JASPER
+adicionarParent=POSTGRESQL, SQL
+adicionarParent=BLOCKCHAIN, CRIPTOGRAFIA
+adicionarParent=VB.NET, DOTNET
+adicionarParent=SWARM, DOCKER 
+adicionarParent=ZABBIX, MONITOR
+adicionarParent=CLOJURE, LISP
+adicionarParent=LISP, BACKEND
+adicionarParent=SPLUNK, MONITOR
+adicionarParent=GRAYLOG, SIEM
+adicionarParent=SIEM, MONITOR
+adicionarParent=ANSIBLE, DEVOPS
+adicionarParent=SALESFORCE, CRM
+adicionarParent=CRM, BACKEND
+adicionarParent=XCODE, IOS
+adicionarParent=MYSQL, SQL
+adicionarParent=MONGODB, NOSQL
+adicionarParent=REACTNATIVE, REACT, OBILE
+adicionarParent=SIEBEL, CRM
+adicionarParent=LARAVEL, PHP, MVC
+adicionarParent=AKS, AZURE, KUBERNETES
+adicionarParent=EKS, AWS, KUBERNETES
+adicionarParent=GKE, GCP, KUBERNETES
+adicionarParent=AZURE, CLOUD
+adicionarParent=AWS, CLOUD
+adicionarParent=DATAFLOW, ETL, GCP
+adicionarParent=TERRAFORM, IAC, CLOUD, DEVOPS
+adicionarParent=DATASTORE, NOSQL, GCP
+adicionarParent=POSTMAN, WS, TDD
+adicionarParent=INSOMNIA, WS, TDD
+adicionarParent=SOAPUI, WS, TDD
+adicionarParent=JMETER, WS, TDD
+adicionarParent=EC2, AWS
+adicionarParent=PROTACTOR, TDD, ANGULAR, WEBDRIVER
+adicionarParent=JASMINE, TDD, JAVASCRIPT, WEBDRIVER
+adicionarParent=KARMA, TDD, JAVASCRIPT, WEBDRIVER
+adicionarParent=PLANILHA, EXCEL
+adicionarParent=DAGGER, KOTLIN
+adicionarParent=DYNAMODB, NOSQL, SERVERLESS
+adicionarParent=MEMCACHED, CACHE
+adicionarParent=GOLANG, BACKEND
+adicionarParent=KINESIS, AWS, MONITOR
+adicionarParent=CLOUDFRONT, AWS
+adicionarParent=CLOUDWATCH, AWS
+adicionarParent=CLOUDFORMATION, AWS
+adicionarParent=BPMN, SOA
+adicionarParent=BPM, SOA
+adicionarParent=BPEL, SOA
+adicionarParent=IBM BROKER, SOA
+adicionarParent=NUNIT, DOTNET, TDD
+adicionarParent=COBOL, BACKEND
+adicionarParent=SOLR, LUCENE
+adicionarParent=ODATA, REST
+adicionarParent=HYBRIS, SAP, ECOMERCE
+adicionarParent=UNITY3D, GAME
+adicionarParent=STARTEAM, VERSIONING
+adicionarParent=MQSERIES, MENSAGERIA
+adicionarParent=TESTLINK, TDDS
+adicionarParent=WSDL, SOAP
+adicionarParent=PMBOOK, PMI
+adicionarParent=TIBCO, ETL
+adicionarParent=SCIPY, PYTHON
+adicionarParent=PANDAS, PYTHON
+adicionarParent=FARGATE, AWS
+adicionarParent=DATADOG, MONITOR, CLOUD
+adicionarParent=POWERCENTER, ETL
+adicionarParent=CCNA, CISCO
+adicionarParent=NAGIOS, MONITOR
+adicionarParent=SENTRY, MONITOR
+adicionarParent=BIZAGI, BPM
+adicionarParent=PUPPET, DEVOPS
+adicionarParent=TRAVIS, DEVOPS
+adicionarParent=HAPROXY, LOADBALANCE
+adicionarParent=ARTIFACTORY, DEVOPS
+adicionarParent=OPENSTACK, CLOUD
+adicionarParent=JCL, COBOL
+adicionarParent=CICS, MAINFRAME
+adicionarParent=CAMUNDA, BPMN
+adicionarParent=RXJS, REACT
+adicionarParent=QLIKVIEW, B.I
+adicionarParent=CUCUMBER, GHERKIN
+adicionarParent=GHERKIN, TDD, BDD
+adicionarParent=REDUX, SPA
+adicionarParent=FORTIFY, SECURITY
+adicionarParent=TESTNG, JAVA, TDD
+adicionarParent=CLEARCASE, VERSIONING
+adicionarParent=CODECOMMIT, GIT, DEVOPS
+adicionarParent=SCA, SECURITY
+adicionarParent=EUREKA, SPRING
+adicionarParent=BUGZILLA, DOCUMENTATION, MONITOR
+adicionarParent=REMEDY, DOCUMENTATION
+adicionarParent=MANTIS, DOCUMENTATION
+adicionarParent=INTERBASE, SQL
+adicionarParent=JMS, JAVA, MENSAGERIA
+adicionarParent=DAX, B.I
+adicionarParent=ATLAS, MONGODB, CLOUD
+adicionarParent=ATHENA, SQL, S3
+adicionarParent=S3, AWS, BUCKET
+adicionarParent=EXPRESS, NODE
+adicionarParent=JTA, SQL, JAVA
+adicionarParent=APIGEE, REST
+adicionarParent=NIFI, DATABASE, BIGDATA, ETL
+adicionarParent=PFSENSE,SECURITY
+adicionarParent=ZOOKEEPER, MONITOR
+adicionarParent=INFORMIX, SQL, NOSQL
+adicionarParent=TOMAHAWK, MYFACES
+adicionarParent=MYFACES, JSF
+adicionarParent=OPENLDAP, LDAP
+adicionarParent=WEBSOCKET, JAVASCRIPT, FRONTEND, BACKEND
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

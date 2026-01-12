@@ -2,6 +2,7 @@ package com.ccp.random;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -18,6 +19,7 @@ import com.ccp.decorators.CcpCollectionDecorator;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpFolderDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.decorators.CcpJsonRepresentation.CcpDynamicJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpTimeDecorator;
@@ -63,7 +65,42 @@ public class CcpRandomTests {
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
 
 	public static void main(String[] args) {
-		relatoriosDasSkillsNosCurriculos();
+		HashSet<String> set = new HashSet<>();
+		List<List<String>> collect = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\ajustes_synonyms.txt").file().getLines()
+		.stream().filter(x -> x.startsWith("adicionarParent="))
+		.map(x -> x.trim().split("=")[1])
+		.map(x -> x.split(","))
+		.map(x -> Arrays.asList(x).stream().map(y -> y.trim()).collect(Collectors.toList()))
+		.collect(Collectors.toList());
+		
+		for (List<String> list : collect) {
+			set.addAll(list);
+		}
+		System.out.println(set.size());
+		CcpFileDecorator synonymsFile = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\skills\\synonyms.json").file();
+		List<CcpJsonRepresentation> synonyms = new ArrayList<CcpJsonRepresentation>(synonymsFile.asJsonList());
+		int counter = 0;
+		for (CcpJsonRepresentation json : synonyms) {
+			
+			CcpDynamicJsonRepresentation dynamicVersion = json.getDynamicVersion();
+			String skill = dynamicVersion.getAsString("skill");
+			if(set.contains(skill)) {
+				counter ++;
+				continue;
+			}
+			List<CcpJsonRepresentation> asJsonList = dynamicVersion.getAsJsonList("synonym");
+			boolean anyMatch = asJsonList.stream().map(x -> x.getDynamicVersion().getAsString("skill")).anyMatch(x -> set.contains(x));
+			
+			if(anyMatch) {
+				counter ++;
+				continue;
+			}
+			
+			
+		}
+		System.out.println(synonyms.size());
+		System.out.println(counter);
+		
 	}
 
 		static void aumentarArquivoDeSinonimos() {
@@ -143,7 +180,7 @@ public class CcpRandomTests {
 	}
 	
 	static void sanitizarArquivoDeSinonimos() {
-		List<String> removidas = new CcpStringDecorator("c:/logs/skills/removidas.txt").file().getLines().stream().map(x -> x.trim()).collect(Collectors.toList());
+		List<String> removidas = new CcpStringDecorator("c:/logs/skills/removidas.txt").file().getLines().stream().map(x -> x.trim().split(" = ")[0]).collect(Collectors.toList());
 		CcpFileDecorator synonymsFile = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\skills\\synonyms.json").file();
 		List<CcpJsonRepresentation> synonyms = synonymsFile.asJsonList();
 		List<CcpJsonRepresentation> newSynonyms = new ArrayList<>();

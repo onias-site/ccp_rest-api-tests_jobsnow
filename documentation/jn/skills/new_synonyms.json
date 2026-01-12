@@ -57,97 +57,8 @@
   "skill": "TDD",
   "synonym": [
     {
-      "skill": "TEST",
-      "positionsCount": 489.0
-    },
-    {
       "skill": "PENTEST",
       "positionsCount": 98.0
-    }
-  ]
-}, {
-  "positionsCount": 17082.0,
-  "ranking": 3.0,
-  "skill": "PROCESSOS",
-  "synonym": [
-    {
-      "skill": "PROCESSO",
-      "positionsCount": 6872.0
-    },
-    {
-      "skill": "PROCESS",
-      "positionsCount": 293.0
-    }
-  ]
-}, {
-  "parent": [
-    "PSICOLOGIA"
-  ],
-  "positionsCount": 16927.0,
-  "ranking": 4.0,
-  "skill": "RH",
-  "synonym": [
-    {
-      "skill": "RECRUTAMENTO",
-      "positionsCount": 3404.0
-    },
-    {
-      "skill": "SELECAO",
-      "positionsCount": 2310.0
-    },
-    {
-      "skill": "TRIAGEM",
-      "positionsCount": 517.0
-    },
-    {
-      "skill": "HUNTER",
-      "positionsCount": 251.0
-    },
-    {
-      "skill": "HUNTING",
-      "positionsCount": 183.0
-    },
-    {
-      "skill": "HEADHUNTER",
-      "positionsCount": 55.0
-    }
-  ]
-}, {
-  "positionsCount": 14737.0,
-  "ranking": 5.0,
-  "skill": "GERENTE",
-  "synonym": [
-    {
-      "skill": "GERENCIAMENTO",
-      "positionsCount": 3540.0
-    },
-    {
-      "skill": "MANAGEMENT",
-      "positionsCount": 1247.0
-    },
-    {
-      "skill": "MANAGER",
-      "positionsCount": 1185.0
-    },
-    {
-      "skill": "GESTOR",
-      "positionsCount": 835.0
-    },
-    {
-      "skill": "ADMINISTRADOR",
-      "positionsCount": 486.0
-    },
-    {
-      "skill": "GERENTES",
-      "positionsCount": 327.0
-    },
-    {
-      "skill": "GERENCIA",
-      "positionsCount": 122.0
-    },
-    {
-      "skill": "ADMINISTRADORA",
-      "positionsCount": 62.0
     }
   ]
 }, {
@@ -208,41 +119,9 @@
     }
   ]
 }, {
-  "positionsCount": 10817.0,
-  "ranking": 10.0,
-  "skill": "SUPORTE",
-  "synonym": [
-    {
-      "skill": "SUPPORT",
-      "positionsCount": 291.0
-    },
-    {
-      "skill": "HELPDESK",
-      "positionsCount": 48.0
-    },
-    {
-      "skill": "CALLCENTER",
-      "positionsCount": 16.0
-    }
-  ]
-}, {
   "positionsCount": 10347.0,
   "ranking": 11.0,
   "skill": "DOTNET"
-}, {
-  "positionsCount": 9772.0,
-  "ranking": 12.0,
-  "skill": "PRODUTO",
-  "synonym": [
-    {
-      "skill": "PRODUCT",
-      "positionsCount": 1568.0
-    },
-    {
-      "skill": "PRODUCTS",
-      "positionsCount": 74.0
-    }
-  ]
 }, {
   "positionsCount": 9625.0,
   "ranking": 13.0,
@@ -268,44 +147,6 @@
     }
   ]
 }, {
-  "parent": [
-    "NOSQL",
-    "SQL"
-  ],
-  "positionsCount": 9368.0,
-  "ranking": 15.0,
-  "skill": "RELATORIOS",
-  "synonym": [
-    {
-      "skill": "INDICADORES",
-      "positionsCount": 2823.0
-    },
-    {
-      "skill": "KPIS",
-      "positionsCount": 560.0
-    },
-    {
-      "skill": "RELATORIO",
-      "positionsCount": 479.0
-    },
-    {
-      "skill": "REPORT",
-      "positionsCount": 349.0
-    },
-    {
-      "skill": "DASHBOARD",
-      "positionsCount": 113.0
-    },
-    {
-      "skill": "KPI",
-      "positionsCount": 51.0
-    },
-    {
-      "skill": "INDICADOR",
-      "positionsCount": 20.0
-    }
-  ]
-}, {
   "positionsCount": 9245.0,
   "ranking": 16.0,
   "skill": "FRONTEND",
@@ -315,38 +156,6 @@
       "positionsCount": 2531.0
     }
   ]
-}, {
-  "positionsCount": 8679.0,
-  "ranking": 17.0,
-  "skill": "METODOLOGIAS",
-  "synonym": [
-    {
-      "skill": "METODOLOGIA",
-      "positionsCount": 3593.0
-    },
-    {
-      "skill": "METHODOLOGIES",
-      "positionsCount": 76.0
-    },
-    {
-      "skill": "METHODOLOGY",
-      "positionsCount": 41.0
-    }
-  ]
-}, {
-  "positionsCount": 8124.0,
-  "ranking": 18.0,
-  "skill": "NEGOCIO",
-  "synonym": [
-    {
-      "skill": "BUSINESS",
-      "positionsCount": 1703.0
-    }
-  ]
-}, {
-  "positionsCount": 8042.0,
-  "ranking": 19.0,
-  "skill": "INFORMATICA"
 }, {
   "parent": [
     "FRONTEND",
@@ -367,57 +176,16 @@
     }
   ]
 }, {
-  "parent": [
-    "METODOLOGIA"
-  ],
   "positionsCount": 6923.0,
   "ranking": 22.0,
   "skill": "AGIL"
-}, {
-  "positionsCount": 6900.0,
-  "ranking": 23.0,
-  "skill": "SEGURO",
-  "synonym": [
-    {
-      "skill": "SEGUROS",
-      "positionsCount": 377.0
-    }
-  ]
-}, {
-  "positionsCount": 6781.0,
-  "ranking": 24.0,
-  "skill": "ARQUITETURA",
-  "synonym": [
-    {
-      "skill": "ARQUITETURAS",
-      "positionsCount": 896.0
-    },
-    {
-      "skill": "ARCHITECTURE",
-      "positionsCount": 367.0
-    }
-  ]
-}, {
-  "parent": [
-    "CIENCIA",
-    "FISICA"
-  ],
-  "positionsCount": 6065.0,
-  "ranking": 25.0,
-  "skill": "ENGENHARIA"
 }, {
   "parent": [
     "FRONTEND"
   ],
   "positionsCount": 5848.0,
   "ranking": 26.0,
-  "skill": "USABILIDADE",
-  "synonym": [
-    {
-      "skill": "UXUI",
-      "positionsCount": 1.0
-    }
-  ]
+  "skill": "UXUI"
 }, {
   "parent": [
     "SQL"
@@ -456,11 +224,6 @@
       "gemini": true,
       "vagas": 827.0,
       "word": "ABAP"
-    },
-    {
-      "gemini": true,
-      "vagas": 156.0,
-      "word": "FICO"
     }
   ],
   "ranking": 29.0,
@@ -487,49 +250,6 @@
     }
   ],
   "skill": "SAP"
-}, {
-  "positionsCount": 5378.0,
-  "ranking": 30.0,
-  "skill": "SERVER"
-}, {
-  "positionsCount": 5302.0,
-  "ranking": 31.0,
-  "skill": "FINANCEIRO",
-  "synonym": [
-    {
-      "skill": "FINANCEIRA",
-      "positionsCount": 1036.0
-    },
-    {
-      "skill": "FINANCAS",
-      "positionsCount": 298.0
-    },
-    {
-      "skill": "FINANCIAL",
-      "positionsCount": 96.0
-    },
-    {
-      "skill": "FINANCE",
-      "positionsCount": 79.0
-    }
-  ]
-}, {
-  "parent": [
-    "IMPOSTOS"
-  ],
-  "positionsCount": 4771.0,
-  "ranking": 32.0,
-  "skill": "CONTABIL",
-  "synonym": [
-    {
-      "skill": "CONTABEIS",
-      "positionsCount": 1498.0
-    },
-    {
-      "skill": "CONTABILIDADE",
-      "positionsCount": 1220.0
-    }
-  ]
 }, {
   "parent": [
     "FRONTEND",
@@ -558,13 +278,6 @@
     "FRONTEND"
   ],
   "positionsCount": 4643.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 52.0,
-      "word": "MODULES"
-    }
-  ],
   "ranking": 34.0,
   "skill": "NODE",
   "synonym": [
@@ -626,19 +339,11 @@
     "CLOUD"
   ],
   "positionsCount": 3602.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 145.0,
-      "word": "NETWORKING"
-    }
-  ],
   "ranking": 39.0,
   "skill": "AZURE"
 }, {
   "parent": [
-    "AGIL",
-    "METODOLOGIA"
+    "AGIL"
   ],
   "positionsCount": 3512.0,
   "ranking": 40.0,
@@ -658,32 +363,6 @@
     }
   ]
 }, {
-  "positionsCount": 3371.0,
-  "ranking": 42.0,
-  "skill": "MARKETING"
-}, {
-  "positionsCount": 3299.0,
-  "ranking": 43.0,
-  "skill": "AUTOMATIZADOS",
-  "synonym": [
-    {
-      "skill": "AUTOMATION",
-      "positionsCount": 439.0
-    },
-    {
-      "skill": "AUTOMATIZADO",
-      "positionsCount": 175.0
-    },
-    {
-      "skill": "AUTOMACAO",
-      "positionsCount": 17.0
-    },
-    {
-      "skill": "AUTOMATIZACAO",
-      "positionsCount": 3.0
-    }
-  ]
-}, {
   "parent": [
     "FRONTEND"
   ],
@@ -694,10 +373,6 @@
   "positionsCount": 3045.0,
   "ranking": 45.0,
   "skill": "PYTHON"
-}, {
-  "positionsCount": 2998.0,
-  "ranking": 46.0,
-  "skill": "PERFORMANCE"
 }, {
   "parent": [
     "JAVA"
@@ -717,44 +392,6 @@
     }
   ],
   "skill": "SPRING"
-}, {
-  "positionsCount": 2928.0,
-  "ranking": 48.0,
-  "skill": "LOGISTICA",
-  "synonym": [
-    {
-      "skill": "LOGISTICO",
-      "positionsCount": 353.0
-    }
-  ]
-}, {
-  "positionsCount": 2906.0,
-  "ranking": 49.0,
-  "skill": "COMPRAS",
-  "synonym": [
-    {
-      "skill": "COMPRA",
-      "positionsCount": 1012.0
-    }
-  ]
-}, {
-  "positionsCount": 2886.0,
-  "ranking": 50.0,
-  "skill": "CERTIFICACAO",
-  "synonym": [
-    {
-      "skill": "CERTIFICACOES",
-      "positionsCount": 1216.0
-    },
-    {
-      "skill": "CERTIFICATION",
-      "positionsCount": 59.0
-    },
-    {
-      "skill": "CERTIFICATE",
-      "positionsCount": 6.0
-    }
-  ]
 }, {
   "parent": [
     "FRONTEND",
@@ -782,25 +419,9 @@
     }
   ]
 }, {
-  "positionsCount": 2546.0,
-  "ranking": 53.0,
-  "skill": "MODELAGEM",
-  "synonym": [
-    {
-      "skill": "MODELING",
-      "positionsCount": 96.0
-    }
-  ]
-}, {
   "positionsCount": 2526.0,
   "ranking": 54.0,
-  "skill": "MECANICA",
-  "synonym": [
-    {
-      "skill": "MECANICO",
-      "positionsCount": 1039.0
-    }
-  ]
+  "skill": "MECANICA"
 }, {
   "positionsCount": 2474.0,
   "ranking": 55.0,
@@ -810,30 +431,7 @@
   "ranking": 56.0,
   "skill": "PHP"
 }, {
-  "positionsCount": 2409.0,
-  "ranking": 57.0,
-  "skill": "MONITORAMENTO",
-  "synonym": [
-    {
-      "skill": "MONITORACAO",
-      "positionsCount": 390.0
-    },
-    {
-      "skill": "MONITORING",
-      "positionsCount": 108.0
-    },
-    {
-      "skill": "MONITORIA",
-      "positionsCount": 68.0
-    },
-    {
-      "skill": "WATCH",
-      "positionsCount": 26.0
-    }
-  ]
-}, {
   "parent": [
-    "RELATORIOS",
     "NOSQL",
     "SQL"
   ],
@@ -860,58 +458,6 @@
   "ranking": 61.0,
   "skill": "NOSQL"
 }, {
-  "positionsCount": 1646.0,
-  "ranking": 62.0,
-  "skill": "FARMACIA",
-  "synonym": [
-    {
-      "skill": "FARMACEUTICA",
-      "positionsCount": 118.0
-    },
-    {
-      "skill": "FARMACEUTICAS",
-      "positionsCount": 34.0
-    }
-  ]
-}, {
-  "positionsCount": 1586.0,
-  "ranking": 63.0,
-  "skill": "CIENCIA",
-  "synonym": [
-    {
-      "skill": "CIENTIFICA",
-      "positionsCount": 15.0
-    },
-    {
-      "skill": "CIENTIFICO",
-      "positionsCount": 8.0
-    }
-  ]
-}, {
-  "positionsCount": 1570.0,
-  "ranking": 64.0,
-  "skill": "IMPOSTOS",
-  "synonym": [
-    {
-      "skill": "IMPOSTO",
-      "positionsCount": 96.0
-    },
-    {
-      "skill": "TAX",
-      "positionsCount": 84.0
-    }
-  ]
-}, {
-  "positionsCount": 1456.0,
-  "ranking": 66.0,
-  "skill": "RISCO",
-  "synonym": [
-    {
-      "skill": "RISKS",
-      "positionsCount": 5.0
-    }
-  ]
-}, {
   "positionsCount": 1365.0,
   "ranking": 67.0,
   "skill": "ERP"
@@ -937,10 +483,6 @@
   "ranking": 69.0,
   "skill": "GCP"
 }, {
-  "positionsCount": 1297.0,
-  "ranking": 70.0,
-  "skill": "ESTOQUE"
-}, {
   "parent": [
     "JAVA",
     "APEX",
@@ -948,42 +490,13 @@
   ],
   "positionsCount": 1271.0,
   "ranking": 71.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 192.0,
-      "word": "REPORTING"
-    },
-    {
-      "gemini": true,
-      "vagas": 106.0,
-      "word": "LIGHTNING"
-    }
-  ],
   "skill": "SALESFORCE"
-}, {
-  "positionsCount": 1251.0,
-  "ranking": 72.0,
-  "skill": "AUDITORIA",
-  "synonym": [
-    {
-      "skill": "AUDIT",
-      "positionsCount": 9.0
-    }
-  ]
 }, {
   "positionsCount": 1198.0,
   "ranking": 73.0,
   "skill": "MVC"
 }, {
   "positionsCount": 1119.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 68.0,
-      "word": "DOCUMENTATION"
-    }
-  ],
   "ranking": 76.0,
   "similar": [
     {
@@ -993,37 +506,6 @@
     }
   ],
   "skill": "RUBY"
-}, {
-  "positionsCount": 1112.0,
-  "ranking": 77.0,
-  "skill": "SECURITY",
-  "synonym": [
-    {
-      "skill": "SEGURANCA",
-      "positionsCount": 17.0
-    }
-  ]
-}, {
-  "parent": [
-    "METODOLOGIA"
-  ],
-  "positionsCount": 1000.0,
-  "ranking": 78.0,
-  "skill": "SCRUMMASTER"
-}, {
-  "parent": [
-    "CIENCIA",
-    "FISICA"
-  ],
-  "positionsCount": 999.0,
-  "ranking": 79.0,
-  "skill": "ELETRICA",
-  "synonym": [
-    {
-      "skill": "ELETRICIDADE",
-      "positionsCount": 32.0
-    }
-  ]
 }, {
   "parent": [
     "INTEGRATION"
@@ -1040,13 +522,7 @@
 }, {
   "positionsCount": 988.0,
   "ranking": 81.0,
-  "skill": "INTEGRATION",
-  "synonym": [
-    {
-      "skill": "INTEGRACAO",
-      "positionsCount": 51.0
-    }
-  ]
+  "skill": "INTEGRATION"
 }, {
   "parent": [
     "BUILD"
@@ -1080,32 +556,14 @@
   ]
 }, {
   "parent": [
-    "RELATORIOS",
     "NOSQL",
     "SQL"
   ],
   "positionsCount": 858.0,
   "ranking": 84.0,
-  "skill": "ETL",
-  "synonym": [
-    {
-      "skill": "ELT",
-      "positionsCount": 26.0
-    }
-  ]
-}, {
-  "positionsCount": 797.0,
-  "ranking": 86.0,
-  "skill": "FATURAMENTO"
+  "skill": "ETL"
 }, {
   "positionsCount": 767.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 502.0,
-      "word": "COMMUNICATION"
-    }
-  ],
   "ranking": 87.0,
   "similar": [
     {
@@ -1116,10 +574,6 @@
   ],
   "skill": "CRM"
 }, {
-  "positionsCount": 717.0,
-  "ranking": 88.0,
-  "skill": "COORDENACAO"
-}, {
   "parent": [
     "NOSQL",
     "SQL"
@@ -1128,41 +582,13 @@
   "ranking": 89.0,
   "skill": "BIGDATA"
 }, {
-  "positionsCount": 686.0,
-  "ranking": 90.0,
-  "skill": "HOSPITAL",
-  "synonym": [
-    {
-      "skill": "HOSPITAIS",
-      "positionsCount": 56.0
-    }
-  ]
-}, {
-  "positionsCount": 682.0,
-  "ranking": 91.0,
-  "skill": "PSICOLOGIA"
-}, {
   "positionsCount": 670.0,
   "ranking": 92.0,
   "skill": "OOP"
 }, {
   "parent": [
-    "CIENCIA"
-  ],
-  "positionsCount": 665.0,
-  "ranking": 93.0,
-  "skill": "FISICA",
-  "synonym": [
-    {
-      "skill": "FISICO",
-      "positionsCount": 225.0
-    }
-  ]
-}, {
-  "parent": [
     "FRONTEND",
     "WEBDRIVER",
-    "AUTOMACAO",
     "TDD"
   ],
   "positionsCount": 637.0,
@@ -1191,70 +617,9 @@
   "ranking": 96.0,
   "skill": "HTTPS"
 }, {
-  "parent": [
-    "METODOLOGIA"
-  ],
   "positionsCount": 625.0,
   "ranking": 97.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 257.0,
-      "word": "PROGRAMMING"
-    }
-  ],
   "skill": "ITIL"
-}, {
-  "positionsCount": 614.0,
-  "ranking": 98.0,
-  "skill": "DIREITO",
-  "synonym": [
-    {
-      "skill": "ADVOCACIA",
-      "positionsCount": 143.0
-    }
-  ]
-}, {
-  "parent": [
-    "FRONTEND"
-  ],
-  "positionsCount": 612.0,
-  "ranking": 100.0,
-  "skill": "LOG"
-}, {
-  "parent": [
-    "SEGURANCA"
-  ],
-  "positionsCount": 607.0,
-  "ranking": 101.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 10.0,
-      "word": "ENCRYPTION"
-    }
-  ],
-  "skill": "FIREWALL",
-  "synonym": [
-    {
-      "skill": "FIREWALLS",
-      "positionsCount": 196.0
-    }
-  ]
-}, {
-  "positionsCount": 598.0,
-  "ranking": 102.0,
-  "skill": "PUBLICIDADE",
-  "synonym": [
-    {
-      "skill": "PUBLICITARIO",
-      "positionsCount": 19.0
-    },
-    {
-      "skill": "PUBLICITARIA",
-      "positionsCount": 6.0
-    }
-  ]
 }, {
   "parent": [
     "INTEGRATION"
@@ -1267,63 +632,16 @@
     "ERP"
   ],
   "positionsCount": 505.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 2053.0,
-      "word": "WINDOWS"
-    }
-  ],
   "ranking": 104.0,
   "skill": "PROTHEUS"
-}, {
-  "parent": [
-    "CIENCIA"
-  ],
-  "positionsCount": 502.0,
-  "ranking": 105.0,
-  "skill": "ECONOMIA"
 }, {
   "positionsCount": 485.0,
   "ranking": 106.0,
   "skill": "BDD"
 }, {
-  "positionsCount": 472.0,
-  "ranking": 107.0,
-  "skill": "ENFERMAGEM"
-}, {
-  "positionsCount": 436.0,
-  "ranking": 108.0,
-  "skill": "MEDICINA"
-}, {
-  "positionsCount": 426.0,
-  "ranking": 109.0,
-  "skill": "ALMOXARIFADO"
-}, {
-  "positionsCount": 412.0,
-  "ranking": 110.0,
-  "skill": "SOLDA"
-}, {
-  "parent": [
-    "INTEGRACAO"
-  ],
   "positionsCount": 410.0,
   "ranking": 111.0,
-  "skill": "MIDDLEWARE",
-  "synonym": [
-    {
-      "skill": "BARRAMENTO",
-      "positionsCount": 48.0
-    }
-  ]
-}, {
-  "parent": [
-    "CIENCIA",
-    "FISICA"
-  ],
-  "positionsCount": 381.0,
-  "ranking": 112.0,
-  "skill": "QUIMICA"
+  "skill": "BARRAMENTO"
 }, {
   "positionsCount": 373.0,
   "ranking": 113.0,
@@ -1349,18 +667,7 @@
   ],
   "skill": "HIBERNATE"
 }, {
-  "positionsCount": 369.0,
-  "ranking": 115.0,
-  "skill": "EMPILHADEIRA",
-  "synonym": [
-    {
-      "skill": "EMPILHADEIRAS",
-      "positionsCount": 42.0
-    }
-  ]
-}, {
   "parent": [
-    "RELATORIOS",
     "ETL",
     "NOSQL",
     "BIGDATA",
@@ -1370,55 +677,15 @@
   "ranking": 116.0,
   "skill": "SPARK"
 }, {
-  "parent": [
-    "SEGURANCA"
-  ],
   "positionsCount": 338.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 85.0,
-      "word": "WIRELESS"
-    }
-  ],
   "ranking": 117.0,
   "skill": "CISCO"
-}, {
-  "parent": [
-    "CIENCIA"
-  ],
-  "positionsCount": 333.0,
-  "ranking": 118.0,
-  "skill": "ESTATISTICA",
-  "synonym": [
-    {
-      "skill": "STATIC",
-      "positionsCount": 3.0
-    }
-  ]
-}, {
-  "positionsCount": 319.0,
-  "ranking": 119.0,
-  "skill": "TELECOMUNICACOES",
-  "synonym": [
-    {
-      "skill": "TELECOMUNICACAO",
-      "positionsCount": 31.0
-    }
-  ]
 }, {
   "parent": [
     "INTEGRATION"
   ],
   "positionsCount": 304.0,
   "ranking": 120.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 3.0,
-      "word": "RELAY"
-    }
-  ],
   "skill": "GRAPHQL"
 }, {
   "parent": [
@@ -1492,11 +759,6 @@
   "similar": [
     {
       "gemini": true,
-      "vagas": 38.0,
-      "word": "ATLAS"
-    },
-    {
-      "gemini": true,
       "vagas": 0.0,
       "word": "FALCON"
     }
@@ -1507,32 +769,9 @@
   "ranking": 130.0,
   "skill": "IAC"
 }, {
-  "parent": [
-    "SEGURANCA"
-  ],
   "positionsCount": 230.0,
   "ranking": 131.0,
-  "skill": "CRIPTOGRAFIA",
-  "synonym": [
-    {
-      "skill": "ENCRYPTION",
-      "positionsCount": 20.0
-    }
-  ]
-}, {
-  "positionsCount": 217.0,
-  "ranking": 132.0,
-  "skill": "AGRICULTURA",
-  "synonym": [
-    {
-      "skill": "AGRONOMIA",
-      "positionsCount": 23.0
-    }
-  ]
-}, {
-  "positionsCount": 215.0,
-  "ranking": 133.0,
-  "skill": "PINTURA"
+  "skill": "CRIPTOGRAFIA"
 }, {
   "positionsCount": 197.0,
   "ranking": 134.0,
@@ -1575,10 +814,6 @@
   "ranking": 139.0,
   "skill": "SERVERLESS"
 }, {
-  "positionsCount": 168.0,
-  "ranking": 140.0,
-  "skill": "FISIOTERAPIA"
-}, {
   "positionsCount": 166.0,
   "ranking": 141.0,
   "skill": "CACHE"
@@ -1586,10 +821,6 @@
   "positionsCount": 165.0,
   "ranking": 142.0,
   "skill": "IOT"
-}, {
-  "positionsCount": 153.0,
-  "ranking": 143.0,
-  "skill": "VIRTUALIZATION"
 }, {
   "parent": [
     "JAVA",
@@ -1606,14 +837,9 @@
   "ranking": 144.0,
   "skill": "JSP"
 }, {
-  "positionsCount": 147.0,
-  "ranking": 145.0,
-  "skill": "ESTETICA"
-}, {
   "parent": [
     "FRONTEND",
     "WEBDRIVER",
-    "AUTOMACAO",
     "TDD"
   ],
   "positionsCount": 135.0,
@@ -1630,7 +856,6 @@
 }, {
   "parent": [
     "FRONTEND",
-    "AUTOMACAO",
     "TDD"
   ],
   "positionsCount": 126.0,
@@ -1641,9 +866,6 @@
   "ranking": 150.0,
   "skill": "IDE"
 }, {
-  "parent": [
-    "PROCESS"
-  ],
   "positionsCount": 116.0,
   "ranking": 151.0,
   "similar": [
@@ -1655,40 +877,6 @@
   ],
   "skill": "BPM"
 }, {
-  "positionsCount": 116.0,
-  "ranking": 152.0,
-  "skill": "MARCENARIA"
-}, {
-  "parent": [
-    "CIENCIA",
-    "ESTATISTICA",
-    "NOSQL",
-    "SQL"
-  ],
-  "positionsCount": 114.0,
-  "ranking": 153.0,
-  "skill": "CHATBOT",
-  "synonym": [
-    {
-      "skill": "CHATBOTS",
-      "positionsCount": 37.0
-    }
-  ]
-}, {
-  "positionsCount": 112.0,
-  "ranking": 154.0,
-  "skill": "NUTRICAO"
-}, {
-  "positionsCount": 111.0,
-  "ranking": 155.0,
-  "skill": "PADARIA",
-  "synonym": [
-    {
-      "skill": "PANIFICACAO",
-      "positionsCount": 0.0
-    }
-  ]
-}, {
   "parent": [
     "FRONTEND"
   ],
@@ -1696,19 +884,11 @@
   "ranking": 156.0,
   "skill": "CMS"
 }, {
-  "parent": [
-    "METODOLOGIA"
-  ],
   "positionsCount": 106.0,
   "ranking": 157.0,
   "skill": "PMI"
 }, {
-  "positionsCount": 103.0,
-  "ranking": 158.0,
-  "skill": "SECRETARIADO"
-}, {
   "parent": [
-    "RELATORIOS",
     "CLOUD",
     "SPARK",
     "ETL",
@@ -1737,8 +917,7 @@
   "skill": "GHERKIN"
 }, {
   "parent": [
-    "PMI",
-    "METODOLOGIA"
+    "PMI"
   ],
   "positionsCount": 82.0,
   "ranking": 161.0,
@@ -1750,59 +929,13 @@
     }
   ]
 }, {
-  "positionsCount": 80.0,
-  "ranking": 163.0,
-  "skill": "JORNALISMO"
-}, {
-  "parent": [
-    "MEDICINA"
-  ],
-  "positionsCount": 79.0,
-  "ranking": 164.0,
-  "skill": "BIOMEDICINA"
-}, {
-  "positionsCount": 77.0,
-  "ranking": 165.0,
-  "skill": "PEDAGOGIA"
-}, {
-  "positionsCount": 76.0,
-  "ranking": 166.0,
-  "skill": "COSTURA"
-}, {
-  "positionsCount": 68.0,
-  "ranking": 167.0,
-  "skill": "CALDEIRARIA"
-}, {
   "positionsCount": 67.0,
   "ranking": 168.0,
   "skill": "GROOVY"
 }, {
   "positionsCount": 57.0,
   "ranking": 170.0,
-  "skill": "REDATOR",
-  "synonym": [
-    {
-      "skill": "REDACAO",
-      "positionsCount": 0.0
-    },
-    {
-      "skill": "REDACOES",
-      "positionsCount": 0.0
-    }
-  ]
-}, {
-  "parent": [
-    "GERENCIAMENTO"
-  ],
-  "positionsCount": 57.0,
-  "ranking": 171.0,
-  "skill": "GOVERNANCE",
-  "synonym": [
-    {
-      "skill": "GOVERNANCA",
-      "positionsCount": 4.0
-    }
-  ]
+  "skill": "REDACAO"
 }, {
   "parent": [
     "JAVA",
@@ -1819,14 +952,6 @@
     }
   ],
   "skill": "JMS"
-}, {
-  "positionsCount": 48.0,
-  "ranking": 175.0,
-  "skill": "JARDINAGEM"
-}, {
-  "positionsCount": 47.0,
-  "ranking": 178.0,
-  "skill": "VETERINARIA"
 }, {
   "parent": [
     "JAVA"
@@ -1852,47 +977,7 @@
   ],
   "skill": "ELIXIR"
 }, {
-  "positionsCount": 36.0,
-  "ranking": 181.0,
-  "skill": "TRADUTOR",
-  "synonym": [
-    {
-      "skill": "TRADUCAO",
-      "positionsCount": 0.0
-    }
-  ]
-}, {
-  "positionsCount": 34.0,
-  "ranking": 182.0,
-  "skill": "REVISOR",
-  "synonym": [
-    {
-      "skill": "REVISAO",
-      "positionsCount": 4.0
-    }
-  ]
-}, {
-  "positionsCount": 34.0,
-  "ranking": 183.0,
-  "skill": "VIGILANTE",
-  "synonym": [
-    {
-      "skill": "VIGILANCIA",
-      "positionsCount": 0.0
-    }
-  ]
-}, {
-  "positionsCount": 27.0,
-  "ranking": 186.0,
-  "skill": "GASTRONOMIA"
-}, {
-  "positionsCount": 25.0,
-  "ranking": 187.0,
-  "skill": "ODONTOLOGIA"
-}, {
   "parent": [
-    "CIENCIA",
-    "ESTATISTICA",
     "NOSQL",
     "SQL"
   ],
@@ -1920,208 +1005,14 @@
   "ranking": 193.0,
   "skill": "HDFS"
 }, {
-  "parent": [
-    "CIENCIA"
-  ],
-  "positionsCount": 9.0,
-  "ranking": 194.0,
-  "skill": "BIOQUIMICA"
-}, {
-  "parent": [
-    "CIENCIA"
-  ],
-  "positionsCount": 6.0,
-  "ranking": 196.0,
-  "skill": "MATEMATICA"
-}, {
-  "positionsCount": 1.0,
-  "ranking": 203.0,
-  "skill": "MEDIACAO"
-}, {
-  "positionsCount": 0.0,
-  "ranking": 207.0,
-  "skill": "INSPECAO"
-}, {
-  "positionsCount": 22018.0,
-  "ranking": 208.0,
-  "skill": "PROJETOS",
-  "synonym": [
-    {
-      "skill": "PROJETO",
-      "positionsCount": 7666.0
-    }
-  ]
-}, {
-  "positionsCount": 15563.0,
-  "ranking": 209.0,
-  "skill": "AUXILIAR",
-  "synonym": [
-    {
-      "skill": "ASSISTENTE",
-      "positionsCount": 6807.0
-    },
-    {
-      "skill": "AJUDANTE",
-      "positionsCount": 499.0
-    },
-    {
-      "skill": "ASSISTENTES",
-      "positionsCount": 72.0
-    }
-  ]
-}, {
-  "positionsCount": 10764.0,
-  "ranking": 210.0,
-  "skill": "VENDEDOR",
-  "synonym": [
-    {
-      "skill": "VENDA",
-      "positionsCount": 1342.0
-    },
-    {
-      "skill": "VENDEDORA",
-      "positionsCount": 353.0
-    },
-    {
-      "skill": "VENDEDORES",
-      "positionsCount": 187.0
-    }
-  ]
-}, {
   "positionsCount": 4793.0,
   "ranking": 212.0,
-  "skill": "EXCEL",
-  "synonym": [
-    {
-      "skill": "PLANILHAS",
-      "positionsCount": 1148.0
-    }
-  ]
-}, {
-  "positionsCount": 4683.0,
-  "ranking": 213.0,
-  "skill": "LIDERANCA",
-  "synonym": [
-    {
-      "skill": "LIDERES",
-      "positionsCount": 384.0
-    }
-  ]
-}, {
-  "positionsCount": 4569.0,
-  "ranking": 214.0,
-  "skill": "FISCAL",
-  "synonym": [
-    {
-      "skill": "FISCAIS",
-      "positionsCount": 1914.0
-    }
-  ]
-}, {
-  "parent": [
-    "MEDICINA"
-  ],
-  "positionsCount": 4562.0,
-  "ranking": 215.0,
-  "skill": "MEDICA",
-  "synonym": [
-    {
-      "skill": "MEDICO",
-      "positionsCount": 1657.0
-    }
-  ]
-}, {
-  "positionsCount": 4524.0,
-  "ranking": 216.0,
-  "skill": "INDUSTRIA"
-}, {
-  "parent": [
-    "CIENCIA",
-    "FISICA",
-    "ENGENHARIA"
-  ],
-  "positionsCount": 4492.0,
-  "ranking": 217.0,
-  "skill": "ENGENHEIRO",
-  "synonym": [
-    {
-      "skill": "ENGINEER",
-      "positionsCount": 1073.0
-    },
-    {
-      "skill": "ENGENHEIRA",
-      "positionsCount": 103.0
-    },
-    {
-      "skill": "ENGINEERS",
-      "positionsCount": 52.0
-    }
-  ]
-}, {
-  "positionsCount": 4471.0,
-  "ranking": 218.0,
-  "skill": "COMERCIAL"
-}, {
-  "parent": [
-    "COORDENACAO"
-  ],
-  "positionsCount": 3413.0,
-  "ranking": 220.0,
-  "skill": "COORDENADOR"
-}, {
-  "positionsCount": 3271.0,
-  "ranking": 221.0,
-  "skill": "CONTA",
-  "synonym": [
-    {
-      "skill": "ACCOUNT",
-      "positionsCount": 231.0
-    }
-  ]
-}, {
-  "parent": [
-    "ARQUITETURA"
-  ],
-  "positionsCount": 2716.0,
-  "ranking": 222.0,
-  "skill": "ARQUITETO",
-  "synonym": [
-    {
-      "skill": "ARCHITECT",
-      "positionsCount": 288.0
-    },
-    {
-      "skill": "ARQUITETA",
-      "positionsCount": 60.0
-    }
-  ]
-}, {
-  "positionsCount": 2452.0,
-  "ranking": 223.0,
-  "skill": "OPERADORA"
-}, {
-  "positionsCount": 2234.0,
-  "ranking": 224.0,
-  "skill": "SUPERVISOR",
-  "synonym": [
-    {
-      "skill": "SUPERVISORA",
-      "positionsCount": 53.0
-    },
-    {
-      "skill": "SUPERVISAO",
-      "positionsCount": 0.0
-    }
-  ]
+  "skill": "EXCEL"
 }, {
   "positionsCount": 1853.0,
   "ranking": 225.0,
-  "skill": "VULNERABILIDADE",
+  "skill": "CYBERSECURITY",
   "synonym": [
-    {
-      "skill": "CYBERSECURITY",
-      "positionsCount": 77.0
-    },
     {
       "skill": "CIBERSEGURANCA",
       "positionsCount": 46.0
@@ -2152,37 +1043,6 @@
   "synonym": [
     {
       "skill": "MSQL",
-      "positionsCount": 0.0
-    }
-  ]
-}, {
-  "parent": [
-    "FRONTEND"
-  ],
-  "positionsCount": 1545.0,
-  "ranking": 230.0,
-  "skill": "SCRIPT",
-  "synonym": [
-    {
-      "skill": "SCRIPTING",
-      "positionsCount": 209.0
-    }
-  ]
-}, {
-  "positionsCount": 1503.0,
-  "ranking": 231.0,
-  "skill": "RESTAURANTE",
-  "synonym": [
-    {
-      "skill": "RESTAURANTES",
-      "positionsCount": 396.0
-    },
-    {
-      "skill": "GARCOM",
-      "positionsCount": 0.0
-    },
-    {
-      "skill": "GARCONETE",
       "positionsCount": 0.0
     }
   ]
@@ -2239,89 +1099,10 @@
   ],
   "skill": "MONGO"
 }, {
-  "positionsCount": 1415.0,
-  "ranking": 234.0,
-  "skill": "DESIGNER",
-  "synonym": [
-    {
-      "skill": "DESIGNERS",
-      "positionsCount": 112.0
-    }
-  ]
-}, {
-  "positionsCount": 1365.0,
-  "ranking": 236.0,
-  "skill": "LIMPEZA"
-}, {
-  "parent": [
-    "DIREITO"
-  ],
-  "positionsCount": 1342.0,
-  "ranking": 237.0,
-  "skill": "LEGISLACAO",
-  "synonym": [
-    {
-      "skill": "LEGISLACOES",
-      "positionsCount": 141.0
-    }
-  ]
-}, {
-  "positionsCount": 1276.0,
-  "ranking": 238.0,
-  "skill": "ESTRATEGIA",
-  "synonym": [
-    {
-      "skill": "STRATEGIC",
-      "positionsCount": 66.0
-    },
-    {
-      "skill": "STRATEGY",
-      "positionsCount": 43.0
-    }
-  ]
-}, {
-  "positionsCount": 1221.0,
-  "ranking": 239.0,
-  "skill": "ATENDENTE",
-  "synonym": [
-    {
-      "skill": "RECEPCIONISTA",
-      "positionsCount": 537.0
-    },
-    {
-      "skill": "BALCONISTA",
-      "positionsCount": 77.0
-    },
-    {
-      "skill": "RECEPCIONISTAS",
-      "positionsCount": 24.0
-    },
-    {
-      "skill": "RECEPCAO",
-      "positionsCount": 7.0
-    },
-    {
-      "skill": "BALCAO",
-      "positionsCount": 0.0
-    }
-  ]
-}, {
   "parent": [
     "FRONTEND"
   ],
   "positionsCount": 1200.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 0.0,
-      "word": "GENERICS"
-    },
-    {
-      "gemini": true,
-      "vagas": 751.0,
-      "word": "INTERFACES"
-    }
-  ],
   "ranking": 240.0,
   "skill": "TYPESCRIPT"
 }, {
@@ -2347,31 +1128,7 @@
   ],
   "positionsCount": 1147.0,
   "ranking": 244.0,
-  "skill": "PIPELINES",
-  "synonym": [
-    {
-      "skill": "PIPELINE",
-      "positionsCount": 389.0
-    }
-  ]
-}, {
-  "positionsCount": 1137.0,
-  "ranking": 245.0,
-  "skill": "DIRETORIA",
-  "synonym": [
-    {
-      "skill": "DIRETOR",
-      "positionsCount": 315.0
-    },
-    {
-      "skill": "DIRETORES",
-      "positionsCount": 107.0
-    },
-    {
-      "skill": "DIRETORA",
-      "positionsCount": 20.0
-    }
-  ]
+  "skill": "PIPELINES"
 }, {
   "parent": [
     "MVC",
@@ -2382,7 +1139,6 @@
   "skill": "RAILS"
 }, {
   "parent": [
-    "RELATORIOS",
     "NOSQL",
     "SQL"
   ],
@@ -2404,9 +1160,6 @@
   ],
   "skill": "PLSQL"
 }, {
-  "parent": [
-    "SERVER"
-  ],
   "positionsCount": 1045.0,
   "ranking": 249.0,
   "skill": "JBOSS",
@@ -2417,65 +1170,17 @@
     }
   ]
 }, {
-  "parent": [
-    "METODOLOGIA"
-  ],
   "positionsCount": 1036.0,
   "ranking": 250.0,
   "skill": "KANBAN"
 }, {
-  "positionsCount": 1014.0,
-  "ranking": 251.0,
-  "skill": "CAMPANHA",
-  "synonym": [
-    {
-      "skill": "CAMPAIGN",
-      "positionsCount": 24.0
-    }
-  ]
-}, {
-  "positionsCount": 996.0,
-  "ranking": 253.0,
-  "skill": "SUSTENTACAO"
-}, {
   "positionsCount": 991.0,
   "ranking": 254.0,
-  "skill": "SHELL",
-  "synonym": [
-    {
-      "skill": "SHELLSCRIPT",
-      "positionsCount": 40.0
-    }
-  ]
+  "skill": "SHELLSCRIPT"
 }, {
   "positionsCount": 977.0,
   "ranking": 255.0,
-  "skill": "LUCRO",
-  "synonym": [
-    {
-      "skill": "PROFIT",
-      "positionsCount": 8.0
-    }
-  ]
-}, {
-  "positionsCount": 951.0,
-  "ranking": 257.0,
-  "skill": "EXECUTIVO",
-  "synonym": [
-    {
-      "skill": "EXECUTIVA",
-      "positionsCount": 142.0
-    }
-  ]
-}, {
-  "parent": [
-    "AGIL",
-    "SCRUM",
-    "METODOLOGIA"
-  ],
-  "positionsCount": 893.0,
-  "ranking": 260.0,
-  "skill": "SQUAD"
+  "skill": "PROFIT"
 }, {
   "parent": [
     "JAVA",
@@ -2485,20 +1190,6 @@
   "positionsCount": 853.0,
   "ranking": 262.0,
   "skill": "KOTLIN"
-}, {
-  "positionsCount": 837.0,
-  "ranking": 264.0,
-  "skill": "VAREJO"
-}, {
-  "positionsCount": 829.0,
-  "ranking": 265.0,
-  "skill": "CONTAINERS",
-  "synonym": [
-    {
-      "skill": "CONTAINER",
-      "positionsCount": 206.0
-    }
-  ]
 }, {
   "parent": [
     "FRONTEND",
@@ -2520,8 +1211,7 @@
 }, {
   "parent": [
     "AGIL",
-    "SCRUM",
-    "METODOLOGIA"
+    "SCRUM"
   ],
   "positionsCount": 797.0,
   "ranking": 268.0,
@@ -2534,10 +1224,6 @@
   ],
   "skill": "JIRA"
 }, {
-  "positionsCount": 786.0,
-  "ranking": 269.0,
-  "skill": "INCIDENTE"
-}, {
   "parent": [
     "BUILD",
     "CICD",
@@ -2546,10 +1232,6 @@
   "positionsCount": 781.0,
   "ranking": 270.0,
   "skill": "JENKINS"
-}, {
-  "positionsCount": 744.0,
-  "ranking": 271.0,
-  "skill": "MOTORISTA"
 }, {
   "parent": [
     "IDE"
@@ -2617,19 +1299,6 @@
   "ranking": 281.0,
   "skill": "KAFKA"
 }, {
-  "positionsCount": 585.0,
-  "ranking": 283.0,
-  "skill": "COBRANCA"
-}, {
-  "parent": [
-    "ELETRICIDADE",
-    "CIENCIA",
-    "FISICA"
-  ],
-  "positionsCount": 584.0,
-  "ranking": 284.0,
-  "skill": "ELETRICISTA"
-}, {
   "parent": [
     "FRONTEND",
     "IOS",
@@ -2638,26 +1307,6 @@
   "positionsCount": 538.0,
   "ranking": 285.0,
   "skill": "SWIFT"
-}, {
-  "parent": [
-    "METODOLOGIA"
-  ],
-  "positionsCount": 534.0,
-  "ranking": 286.0,
-  "skill": "LEAN"
-}, {
-  "parent": [
-    "COMPRA"
-  ],
-  "positionsCount": 526.0,
-  "ranking": 287.0,
-  "skill": "COMPRADOR",
-  "synonym": [
-    {
-      "skill": "COMPRADORES",
-      "positionsCount": 33.0
-    }
-  ]
 }, {
   "parent": [
     "INTEGRATION",
@@ -2678,47 +1327,12 @@
   "ranking": 289.0,
   "skill": "PHOTOSHOP"
 }, {
-  "positionsCount": 497.0,
-  "ranking": 291.0,
-  "skill": "ENCARREGADO",
-  "synonym": [
-    {
-      "skill": "ENCARREGADOS",
-      "positionsCount": 33.0
-    },
-    {
-      "skill": "ENCARREGADA",
-      "positionsCount": 5.0
-    }
-  ]
-}, {
   "parent": [
     "GIT"
   ],
   "positionsCount": 487.0,
   "ranking": 292.0,
   "skill": "GITHUB"
-}, {
-  "parent": [
-    "CIENCIA"
-  ],
-  "positionsCount": 484.0,
-  "ranking": 293.0,
-  "skill": "LABORATORIO",
-  "synonym": [
-    {
-      "skill": "LABORATORIOS",
-      "positionsCount": 87.0
-    }
-  ]
-}, {
-  "positionsCount": 480.0,
-  "ranking": 294.0,
-  "skill": "CONTROLADORIA"
-}, {
-  "positionsCount": 465.0,
-  "ranking": 295.0,
-  "skill": "ESOCIAL"
 }, {
   "positionsCount": 443.0,
   "ranking": 297.0,
@@ -2727,19 +1341,6 @@
     {
       "skill": "PASCAL",
       "positionsCount": 3.0
-    }
-  ]
-}, {
-  "parent": [
-    "CIENCIA"
-  ],
-  "positionsCount": 440.0,
-  "ranking": 299.0,
-  "skill": "CIENTISTA",
-  "synonym": [
-    {
-      "skill": "CIENTISTAS",
-      "positionsCount": 51.0
     }
   ]
 }, {
@@ -2758,10 +1359,6 @@
   "ranking": 301.0,
   "skill": "JSON"
 }, {
-  "positionsCount": 424.0,
-  "ranking": 302.0,
-  "skill": "ELETRONICA"
-}, {
   "parent": [
     "DEVOPS",
     "GIT",
@@ -2770,13 +1367,6 @@
   ],
   "positionsCount": 422.0,
   "ranking": 303.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 57.0,
-      "word": "COLLABORATION"
-    }
-  ],
   "skill": "GITLAB"
 }, {
   "parent": [
@@ -2785,16 +1375,6 @@
   "positionsCount": 413.0,
   "ranking": 304.0,
   "skill": "BITBUCKET"
-}, {
-  "positionsCount": 411.0,
-  "ranking": 305.0,
-  "skill": "CONFERENCIA",
-  "synonym": [
-    {
-      "skill": "CONFERENTE",
-      "positionsCount": 152.0
-    }
-  ]
 }, {
   "parent": [
     "JAVA",
@@ -2813,22 +1393,6 @@
   "skill": "MAVEN"
 }, {
   "parent": [
-    "AGIL",
-    "SCRUM",
-    "METODOLOGIA"
-  ],
-  "positionsCount": 410.0,
-  "ranking": 307.0,
-  "skill": "SPRINT"
-}, {
-  "parent": [
-    "DIREITO"
-  ],
-  "positionsCount": 407.0,
-  "ranking": 309.0,
-  "skill": "ADVOGADO"
-}, {
-  "parent": [
     "GIT"
   ],
   "positionsCount": 395.0,
@@ -2838,10 +1402,6 @@
   "positionsCount": 395.0,
   "ranking": 311.0,
   "skill": "POWERPOINT"
-}, {
-  "positionsCount": 379.0,
-  "ranking": 312.0,
-  "skill": "TESOURARIA"
 }, {
   "parent": [
     "ERP",
@@ -2867,16 +1427,11 @@
   "skill": "SASS"
 }, {
   "parent": [
-    "JAVA",
-    "SERVER"
+    "JAVA"
   ],
   "positionsCount": 355.0,
   "ranking": 315.0,
   "skill": "WEBLOGIC"
-}, {
-  "positionsCount": 354.0,
-  "ranking": 316.0,
-  "skill": "TELEFONIA"
 }, {
   "parent": [
     "CACHE"
@@ -2898,39 +1453,13 @@
   "skill": "REDIS"
 }, {
   "parent": [
-    "AGIL",
-    "METODOLOGIA"
-  ],
-  "positionsCount": 346.0,
-  "ranking": 318.0,
-  "skill": "AGILISTA"
-}, {
-  "positionsCount": 345.0,
-  "ranking": 319.0,
-  "skill": "INTEGRIDADE"
-}, {
-  "parent": [
     "FRONTEND",
     "CMS"
   ],
   "positionsCount": 334.0,
   "ranking": 321.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 0.0,
-      "word": "DROPBOX"
-    }
-  ],
   "skill": "SHAREPOINT"
 }, {
-  "positionsCount": 330.0,
-  "ranking": 322.0,
-  "skill": "SUPPLY"
-}, {
-  "parent": [
-    "SERVER"
-  ],
   "positionsCount": 329.0,
   "ranking": 323.0,
   "skill": "TOMCAT"
@@ -2967,22 +1496,6 @@
   "ranking": 330.0,
   "skill": "POSTMAN"
 }, {
-  "positionsCount": 313.0,
-  "ranking": 331.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 8.0,
-      "word": "VSPHERE"
-    },
-    {
-      "gemini": true,
-      "vagas": 48.0,
-      "word": "VIRTUALIZATION"
-    }
-  ],
-  "skill": "VMWARE"
-}, {
   "parent": [
     "FRONTEND",
     "MOBILE"
@@ -3012,10 +1525,6 @@
   "skill": "SWAGGER"
 }, {
   "positionsCount": 303.0,
-  "ranking": 335.0,
-  "skill": "CORRETOR"
-}, {
-  "positionsCount": 303.0,
   "ranking": 336.0,
   "skill": "DATAWAREHOUSE"
 }, {
@@ -3027,57 +1536,12 @@
   "skill": "LAMBDA"
 }, {
   "parent": [
-    "SECRETARIADO"
-  ],
-  "positionsCount": 298.0,
-  "ranking": 338.0,
-  "skill": "SECRETARIA",
-  "synonym": [
-    {
-      "skill": "SECRETARIO",
-      "positionsCount": 15.0
-    }
-  ]
-}, {
-  "parent": [
-    "TDD"
-  ],
-  "positionsCount": 294.0,
-  "ranking": 339.0,
-  "skill": "TESTER",
-  "synonym": [
-    {
-      "skill": "TESTADOR",
-      "positionsCount": 25.0
-    }
-  ]
-}, {
-  "parent": [
-    "MEDICINA"
-  ],
-  "positionsCount": 282.0,
-  "ranking": 342.0,
-  "skill": "DIAGNOSTICO"
-}, {
-  "positionsCount": 278.0,
-  "ranking": 345.0,
-  "skill": "HISTORIA"
-}, {
-  "parent": [
     "PMBOOK",
-    "PMI",
-    "METODOLOGIA"
+    "PMI"
   ],
   "positionsCount": 275.0,
   "ranking": 347.0,
   "skill": "PMO"
-}, {
-  "parent": [
-    "IMPOSTO"
-  ],
-  "positionsCount": 270.0,
-  "ranking": 348.0,
-  "skill": "ICMS"
 }, {
   "parent": [
     "BDD",
@@ -3090,20 +1554,12 @@
   "skill": "CUCUMBER"
 }, {
   "parent": [
-    "RELATORIOS",
     "ETL",
     "PYTHON",
     "NOSQL",
     "SQL"
   ],
   "positionsCount": 265.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 166.0,
-      "word": "SCRIPTING"
-    }
-  ],
   "ranking": 351.0,
   "skill": "QLIK"
 }, {
@@ -3124,18 +1580,9 @@
   "ranking": 355.0,
   "skill": "ANSIBLE"
 }, {
-  "parent": [
-    "FARMACIA"
-  ],
   "positionsCount": 250.0,
   "ranking": 357.0,
-  "skill": "FARMACEUTICO",
-  "synonym": [
-    {
-      "skill": "FARMACEUTICOS",
-      "positionsCount": 17.0
-    }
-  ]
+  "skill": "FARMACEUTICOS"
 }, {
   "positionsCount": 243.0,
   "ranking": 359.0,
@@ -3149,19 +1596,7 @@
   "skill": "TCPIP"
 }, {
   "parent": [
-    "ERP"
-  ],
-  "positionsCount": 240.0,
-  "ranking": 362.0,
-  "skill": "FICO"
-}, {
-  "positionsCount": 237.0,
-  "ranking": 363.0,
-  "skill": "MONTADOR"
-}, {
-  "parent": [
-    "JAVA",
-    "SERVER"
+    "JAVA"
   ],
   "positionsCount": 234.0,
   "ranking": 364.0,
@@ -3180,14 +1615,6 @@
   "skill": "HYBRIS"
 }, {
   "parent": [
-    "AUDITORIA"
-  ],
-  "positionsCount": 228.0,
-  "ranking": 368.0,
-  "skill": "AUDITOR"
-}, {
-  "parent": [
-    "RELATORIOS",
     "NOSQL",
     "SQL"
   ],
@@ -3201,24 +1628,6 @@
     }
   ],
   "skill": "TABLEAU"
-}, {
-  "parent": [
-    "SOLDA"
-  ],
-  "positionsCount": 225.0,
-  "ranking": 370.0,
-  "skill": "SOLDADOR"
-}, {
-  "positionsCount": 224.0,
-  "ranking": 372.0,
-  "skill": "PORTARIA"
-}, {
-  "parent": [
-    "FRONTEND"
-  ],
-  "positionsCount": 222.0,
-  "ranking": 373.0,
-  "skill": "LIB"
 }, {
   "positionsCount": 222.0,
   "ranking": 374.0,
@@ -3241,39 +1650,13 @@
   "ranking": 379.0,
   "skill": "EWM"
 }, {
-  "parent": [
-    "SEGURANCA"
-  ],
   "positionsCount": 215.0,
   "ranking": 380.0,
   "skill": "DEVSECOPS"
 }, {
-  "parent": [
-    "SUPPORT"
-  ],
   "positionsCount": 215.0,
   "ranking": 381.0,
   "skill": "SERVICENOW"
-}, {
-  "parent": [
-    "PROCESSO"
-  ],
-  "positionsCount": 214.0,
-  "ranking": 382.0,
-  "skill": "WORKFLOW"
-}, {
-  "parent": [
-    "ENFERMAGEM"
-  ],
-  "positionsCount": 212.0,
-  "ranking": 383.0,
-  "skill": "ENFERMEIRA",
-  "synonym": [
-    {
-      "skill": "ENFERMEIROS",
-      "positionsCount": 18.0
-    }
-  ]
 }, {
   "parent": [
     "JAVA"
@@ -3303,17 +1686,7 @@
   "skill": "S3"
 }, {
   "parent": [
-    "QUIMICA",
-    "CIENCIA",
-    "FISICA"
-  ],
-  "positionsCount": 198.0,
-  "ranking": 389.0,
-  "skill": "QUIMICO"
-}, {
-  "parent": [
-    "INTEGRATION",
-    "MONITORACAO"
+    "INTEGRATION"
   ],
   "positionsCount": 196.0,
   "ranking": 390.0,
@@ -3325,13 +1698,6 @@
   "positionsCount": 194.0,
   "ranking": 391.0,
   "skill": "DB2"
-}, {
-  "parent": [
-    "AUTOMACAO"
-  ],
-  "positionsCount": 191.0,
-  "ranking": 392.0,
-  "skill": "AUTOMATIZADOR"
 }, {
   "parent": [
     "JAVA",
@@ -3403,14 +1769,6 @@
   "skill": "OPENSHIFT"
 }, {
   "parent": [
-    "SEGURANCA"
-  ],
-  "positionsCount": 179.0,
-  "ranking": 401.0,
-  "skill": "IAM"
-}, {
-  "parent": [
-    "RELATORIOS",
     "ETL",
     "NOSQL",
     "SQL"
@@ -3419,23 +1777,6 @@
   "ranking": 402.0,
   "skill": "POWERCENTER"
 }, {
-  "positionsCount": 175.0,
-  "ranking": 403.0,
-  "skill": "HOTEL",
-  "synonym": [
-    {
-      "skill": "HOTEIS",
-      "positionsCount": 46.0
-    },
-    {
-      "skill": "HOTELEIRO",
-      "positionsCount": 15.0
-    }
-  ]
-}, {
-  "parent": [
-    "METODOLOGIA"
-  ],
   "positionsCount": 175.0,
   "ranking": 404.0,
   "similar": [
@@ -3446,13 +1787,6 @@
     }
   ],
   "skill": "CONFLUENCE"
-}, {
-  "parent": [
-    "PUBLICIDADE"
-  ],
-  "positionsCount": 175.0,
-  "ranking": 405.0,
-  "skill": "PROPAGANDA"
 }, {
   "parent": [
     "FRONTEND"
@@ -3479,15 +1813,7 @@
   "skill": "FIGMA"
 }, {
   "parent": [
-    "PEDAGOGIA"
-  ],
-  "positionsCount": 167.0,
-  "ranking": 409.0,
-  "skill": "PROFESSOR"
-}, {
-  "parent": [
-    "FRONTEND",
-    "MARKETING"
+    "FRONTEND"
   ],
   "positionsCount": 167.0,
   "ranking": 410.0,
@@ -3518,13 +1844,6 @@
   "skill": "SPRINGDATA"
 }, {
   "parent": [
-    "MARKETING"
-  ],
-  "positionsCount": 160.0,
-  "ranking": 418.0,
-  "skill": "TELEMARKETING"
-}, {
-  "parent": [
     "FRONTEND",
     "NODE"
   ],
@@ -3546,26 +1865,12 @@
   ]
 }, {
   "parent": [
-    "ALMOXARIFADO"
-  ],
-  "positionsCount": 157.0,
-  "ranking": 420.0,
-  "skill": "ALMOXARIFE"
-}, {
-  "parent": [
     "FRONTEND",
     "TDD"
   ],
   "positionsCount": 156.0,
   "ranking": 421.0,
   "skill": "JEST"
-}, {
-  "parent": [
-    "AUTOMACAO"
-  ],
-  "positionsCount": 154.0,
-  "ranking": 423.0,
-  "skill": "VBA"
 }, {
   "parent": [
     "FRONTEND",
@@ -3577,20 +1882,12 @@
   "ranking": 424.0,
   "skill": "XAMARIN"
 }, {
-  "positionsCount": 153.0,
-  "ranking": 425.0,
-  "skill": "FACILITIES"
-}, {
   "parent": [
     "INTEGRATION"
   ],
   "positionsCount": 152.0,
   "ranking": 426.0,
   "skill": "OAUTH"
-}, {
-  "positionsCount": 152.0,
-  "ranking": 427.0,
-  "skill": "MARKETPLACE"
 }, {
   "parent": [
     "INTEGRATION"
@@ -3608,21 +1905,10 @@
   "skill": "SOLMAN"
 }, {
   "positionsCount": 147.0,
-  "ranking": 431.0,
-  "skill": "FRAUDE",
-  "synonym": [
-    {
-      "skill": "FRAUDES",
-      "positionsCount": 54.0
-    }
-  ]
-}, {
-  "positionsCount": 147.0,
   "ranking": 432.0,
   "skill": "MSPROJECT"
 }, {
   "parent": [
-    "SEGURANCA",
     "INTEGRATION"
   ],
   "positionsCount": 143.0,
@@ -3636,54 +1922,7 @@
   ],
   "positionsCount": 143.0,
   "ranking": 435.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 710.0,
-      "word": "APACHE"
-    }
-  ],
   "skill": "DRUPAL"
-}, {
-  "positionsCount": 141.0,
-  "ranking": 436.0,
-  "skill": "REPOSITOR",
-  "synonym": [
-    {
-      "skill": "REPOSICAO",
-      "positionsCount": 0.0
-    }
-  ]
-}, {
-  "parent": [
-    "CIENCIA",
-    "ESTATISTICA"
-  ],
-  "positionsCount": 139.0,
-  "ranking": 438.0,
-  "skill": "ESTATISTICOS",
-  "synonym": [
-    {
-      "skill": "ESTATISTICO",
-      "positionsCount": 39.0
-    }
-  ]
-}, {
-  "parent": [
-    "GOVERNANCA",
-    "GERENCIAMENTO",
-    "METODOLOGIA"
-  ],
-  "positionsCount": 136.0,
-  "ranking": 440.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 45.0,
-      "word": "GOVERNANCE"
-    }
-  ],
-  "skill": "GRC"
 }, {
   "parent": [
     "JAVA",
@@ -3716,10 +1955,6 @@
   "ranking": 445.0,
   "skill": "OPENAPI"
 }, {
-  "positionsCount": 132.0,
-  "ranking": 446.0,
-  "skill": "ANTIVIRUS"
-}, {
   "parent": [
     "INTEGRATION",
     "TDD",
@@ -3729,10 +1964,6 @@
   "ranking": 447.0,
   "skill": "SOAPUI"
 }, {
-  "parent": [
-    "SEGURANCA",
-    "FIREWALL"
-  ],
   "positionsCount": 131.0,
   "ranking": 448.0,
   "skill": "FORTINET"
@@ -3744,9 +1975,6 @@
   "ranking": 449.0,
   "skill": "CASSANDRA"
 }, {
-  "parent": [
-    "MONITORIA"
-  ],
   "positionsCount": 128.0,
   "ranking": 450.0,
   "similar": [
@@ -3754,21 +1982,9 @@
       "gemini": true,
       "vagas": 35.0,
       "word": "NAGIOS"
-    },
-    {
-      "gemini": true,
-      "vagas": 7.0,
-      "word": "SENSU"
     }
   ],
   "skill": "ZABBIX"
-}, {
-  "parent": [
-    "IMPOSTO"
-  ],
-  "positionsCount": 127.0,
-  "ranking": 451.0,
-  "skill": "COFINS"
 }, {
   "parent": [
     "FRONTEND",
@@ -3819,35 +2035,6 @@
   "ranking": 454.0,
   "skill": "ARIBA"
 }, {
-  "parent": [
-    "SEGURANCA",
-    "MONITORAMENTO"
-  ],
-  "positionsCount": 121.0,
-  "ranking": 455.0,
-  "skill": "SOC"
-}, {
-  "parent": [
-    "SERVER",
-    "DOTNET"
-  ],
-  "positionsCount": 120.0,
-  "ranking": 456.0,
-  "skill": "IIS"
-}, {
-  "parent": [
-    "FRONTEND",
-    "CSS",
-    "XML",
-    "HTML"
-  ],
-  "positionsCount": 120.0,
-  "ranking": 457.0,
-  "skill": "WEBDESIGN"
-}, {
-  "parent": [
-    "SERVER"
-  ],
   "positionsCount": 120.0,
   "ranking": 458.0,
   "similar": [
@@ -3879,26 +2066,10 @@
   ]
 }, {
   "parent": [
-    "INTEGRACAO",
-    "BARRAMENTO"
-  ],
-  "positionsCount": 116.0,
-  "ranking": 461.0,
-  "skill": "MULE"
-}, {
-  "parent": [
-    "TDD",
-    "PERFORMANCE"
+    "TDD"
   ],
   "positionsCount": 116.0,
   "ranking": 462.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 2234.0,
-      "word": "PERFORMANCE"
-    }
-  ],
   "skill": "JMETER"
 }, {
   "parent": [
@@ -3909,35 +2080,10 @@
   "skill": "AIRFLOW"
 }, {
   "parent": [
-    "SEGURO"
-  ],
-  "positionsCount": 114.0,
-  "ranking": 464.0,
-  "skill": "SEGURADORA",
-  "synonym": [
-    {
-      "skill": "SEGURADORAS",
-      "positionsCount": 55.0
-    }
-  ]
-}, {
-  "parent": [
     "JAVA",
     "TDD"
   ],
   "positionsCount": 114.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 0.0,
-      "word": "REFLECTION"
-    },
-    {
-      "gemini": true,
-      "vagas": 1.0,
-      "word": "ANNOTATIONS"
-    }
-  ],
   "ranking": 465.0,
   "skill": "MOCKITO"
 }, {
@@ -3947,14 +2093,6 @@
   "positionsCount": 112.0,
   "ranking": 466.0,
   "skill": "WCF"
-}, {
-  "parent": [
-    "IMPOSTOS",
-    "CONTABILIDADE"
-  ],
-  "positionsCount": 110.0,
-  "ranking": 468.0,
-  "skill": "CONTADOR"
 }, {
   "parent": [
     "FRONTEND"
@@ -3974,13 +2112,6 @@
     }
   ],
   "skill": "WIREFRAME"
-}, {
-  "parent": [
-    "SUPPORT"
-  ],
-  "positionsCount": 108.0,
-  "ranking": 470.0,
-  "skill": "ITSM"
 }, {
   "parent": [
     "SQL"
@@ -4005,11 +2136,6 @@
   "preRequisite": [
     {
       "gemini": true,
-      "vagas": 129.0,
-      "word": "TERMINAL"
-    },
-    {
-      "gemini": true,
       "vagas": 53.0,
       "word": "XCODE"
     }
@@ -4017,9 +2143,6 @@
   "ranking": 473.0,
   "skill": "COCOAPODS"
 }, {
-  "parent": [
-    "SEGURANCA"
-  ],
   "positionsCount": 106.0,
   "ranking": 474.0,
   "similar": [
@@ -4038,13 +2161,6 @@
   ],
   "positionsCount": 105.0,
   "ranking": 475.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 32.0,
-      "word": "DELTA"
-    }
-  ],
   "skill": "DAPPER"
 }, {
   "parent": [
@@ -4063,13 +2179,6 @@
   "skill": "AJAX"
 }, {
   "parent": [
-    "PINTURA"
-  ],
-  "positionsCount": 99.0,
-  "ranking": 479.0,
-  "skill": "PINTOR"
-}, {
-  "parent": [
     "BUILD",
     "CICD",
     "DEPLOY"
@@ -4086,7 +2195,6 @@
   "skill": "PUPPET"
 }, {
   "parent": [
-    "PROCESS",
     "BPM"
   ],
   "positionsCount": 97.0,
@@ -4112,13 +2220,6 @@
   ],
   "positionsCount": 91.0,
   "ranking": 487.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 41.0,
-      "word": "MAINTENANCE"
-    }
-  ],
   "skill": "E2E"
 }, {
   "parent": [
@@ -4131,27 +2232,13 @@
   "ranking": 489.0,
   "skill": "HIVE"
 }, {
-  "parent": [
-    "METODOLOGIA"
-  ],
   "positionsCount": 88.0,
   "ranking": 491.0,
   "skill": "COBIT"
 }, {
-  "parent": [
-    "MARKETING"
-  ],
   "positionsCount": 86.0,
   "ranking": 493.0,
   "skill": "GROWTH"
-}, {
-  "parent": [
-    "FRONTEND",
-    "NODE"
-  ],
-  "positionsCount": 85.0,
-  "ranking": 494.0,
-  "skill": "WEBPACK"
 }, {
   "parent": [
     "DOCKER"
@@ -4201,11 +2288,6 @@
   "similar": [
     {
       "gemini": true,
-      "vagas": 1.0,
-      "word": "DRONE"
-    },
-    {
-      "gemini": true,
       "vagas": 24.0,
       "word": "NUMPY"
     },
@@ -4253,7 +2335,6 @@
   "skill": "JDBC"
 }, {
   "parent": [
-    "RELATORIOS",
     "ETL",
     "NOSQL",
     "SQL"
@@ -4271,37 +2352,15 @@
   "skill": "ZEND"
 }, {
   "parent": [
-    "PSICOLOGIA"
-  ],
-  "positionsCount": 79.0,
-  "ranking": 508.0,
-  "skill": "PSICOLOGO"
-}, {
-  "parent": [
     "XAML",
     "DOTNET"
   ],
   "positionsCount": 79.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 16.0,
-      "word": "EVENTS"
-    }
-  ],
   "ranking": 510.0,
   "skill": "WPF"
 }, {
   "parent": [
-    "ESTOQUE"
-  ],
-  "positionsCount": 78.0,
-  "ranking": 511.0,
-  "skill": "ESTOQUISTA"
-}, {
-  "parent": [
     "JAVA",
-    "RELATORIO",
     "NOSQL",
     "SQL"
   ],
@@ -4309,27 +2368,9 @@
   "ranking": 512.0,
   "skill": "JASPER"
 }, {
-  "parent": [
-    "MONITORAMENTO"
-  ],
   "positionsCount": 77.0,
   "ranking": 513.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 74.0,
-      "word": "APM"
-    }
-  ],
   "skill": "DYNATRACE"
-}, {
-  "parent": [
-    "SUPPORT",
-    "CERTIFICACAO"
-  ],
-  "positionsCount": 76.0,
-  "ranking": 516.0,
-  "skill": "MCSA"
 }, {
   "parent": [
     "ELASTICSEARCH",
@@ -4345,10 +2386,6 @@
     }
   ]
 }, {
-  "positionsCount": 75.0,
-  "ranking": 518.0,
-  "skill": "BOMBEIRO"
-}, {
   "parent": [
     "ERP",
     "SAP"
@@ -4358,27 +2395,11 @@
   "skill": "SUCCESSFACTORS"
 }, {
   "parent": [
-    "MONITORAMENTO"
-  ],
-  "positionsCount": 75.0,
-  "ranking": 522.0,
-  "skill": "NOC"
-}, {
-  "parent": [
-    "SEGURANCA",
-    "CISCO",
-    "CERTIFICACAO"
+    "CISCO"
   ],
   "positionsCount": 75.0,
   "ranking": 523.0,
   "skill": "CCNA"
-}, {
-  "parent": [
-    "MONITORAMENTO"
-  ],
-  "positionsCount": 74.0,
-  "ranking": 524.0,
-  "skill": "APM"
 }, {
   "parent": [
     "FRONTEND",
@@ -4389,7 +2410,6 @@
   "skill": "GULP"
 }, {
   "parent": [
-    "RELATORIOS",
     "ETL",
     "NOSQL",
     "SQL"
@@ -4399,15 +2419,7 @@
   "skill": "DAX"
 }, {
   "parent": [
-    "CIENCIA"
-  ],
-  "positionsCount": 73.0,
-  "ranking": 530.0,
-  "skill": "BIOLOGIA"
-}, {
-  "parent": [
     "JAVA",
-    "RELATORIO",
     "NOSQL",
     "SQL"
   ],
@@ -4417,30 +2429,14 @@
 }, {
   "positionsCount": 71.0,
   "ranking": 533.0,
-  "skill": "ORCHESTRATION",
-  "synonym": [
-    {
-      "skill": "ORCHESTRATOR",
-      "positionsCount": 15.0
-    }
-  ]
+  "skill": "ORCHESTRATOR"
 }, {
-  "parent": [
-    "SERVER"
-  ],
   "positionsCount": 71.0,
   "ranking": 534.0,
-  "skill": "HYPERV",
-  "synonym": [
-    {
-      "skill": "HYPER",
-      "positionsCount": 5.0
-    }
-  ]
+  "skill": "HYPERV"
 }, {
   "parent": [
-    "TDD",
-    "CERTIFICACAO"
+    "TDD"
   ],
   "positionsCount": 69.0,
   "ranking": 539.0,
@@ -4450,13 +2446,6 @@
     "PYTHON"
   ],
   "positionsCount": 69.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 18.0,
-      "word": "RESPONSE"
-    }
-  ],
   "ranking": 540.0,
   "skill": "FLASK"
 }, {
@@ -4465,7 +2454,6 @@
   "skill": "SKETCH"
 }, {
   "parent": [
-    "RELATORIOS",
     "NOSQL",
     "SQL"
   ],
@@ -4482,23 +2470,10 @@
   "skill": "ECS"
 }, {
   "parent": [
-    "INTEGRACAO",
     "BARRAMENTO"
   ],
   "positionsCount": 68.0,
   "ranking": 544.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 43.0,
-      "word": "CAPACITY"
-    },
-    {
-      "gemini": true,
-      "vagas": 47.0,
-      "word": "ASSET"
-    }
-  ],
   "skill": "CAMEL"
 }, {
   "parent": [
@@ -4520,39 +2495,18 @@
 }, {
   "parent": [
     "PMBOK",
-    "CERTIFICACAO",
-    "PMI",
-    "METODOLOGIA"
+    "PMI"
   ],
   "positionsCount": 67.0,
   "ranking": 546.0,
   "skill": "PMP"
 }, {
   "parent": [
-    "RELATORIOS",
-    "ETL",
-    "NOSQL",
-    "SQL"
-  ],
-  "positionsCount": 65.0,
-  "ranking": 548.0,
-  "skill": "TALEND"
-}, {
-  "parent": [
-    "SEGURANCA",
-    "CISCO",
-    "CERTIFICACAO"
+    "CISCO"
   ],
   "positionsCount": 65.0,
   "ranking": 549.0,
   "skill": "CCNP"
-}, {
-  "parent": [
-    "SEGURANCA"
-  ],
-  "positionsCount": 65.0,
-  "ranking": 550.0,
-  "skill": "SIEM"
 }, {
   "parent": [
     "INTEGRATION",
@@ -4564,9 +2518,6 @@
   "ranking": 553.0,
   "skill": "PUBSUB"
 }, {
-  "parent": [
-    "SEGURANCA"
-  ],
   "positionsCount": 63.0,
   "preRequisite": [
     {
@@ -4597,13 +2548,6 @@
     "MENSAGERIA"
   ],
   "positionsCount": 63.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 19.0,
-      "word": "BROKERS"
-    }
-  ],
   "ranking": 555.0,
   "similar": [
     {
@@ -4614,35 +2558,12 @@
   ],
   "skill": "ACTIVEMQ"
 }, {
-  "positionsCount": 62.0,
-  "ranking": 556.0,
-  "skill": "METALURGIA",
-  "synonym": [
-    {
-      "skill": "METALURGICA",
-      "positionsCount": 4.0
-    }
-  ]
-}, {
   "parent": [
     "JAVA",
-    "INTEGRACAO",
     "BARRAMENTO"
   ],
   "positionsCount": 61.0,
   "ranking": 559.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 194.0,
-      "word": "INFRASTRUCTURE"
-    },
-    {
-      "gemini": true,
-      "vagas": 5850.0,
-      "word": "SOFTWARE"
-    }
-  ],
   "skill": "FUSION"
 }, {
   "parent": [
@@ -4653,23 +2574,8 @@
   "ranking": 560.0,
   "skill": "PWA"
 }, {
-  "positionsCount": 60.0,
-  "ranking": 562.0,
-  "skill": "DESPACHO",
-  "synonym": [
-    {
-      "skill": "DESPACHOS",
-      "positionsCount": 3.0
-    }
-  ]
-}, {
-  "positionsCount": 58.0,
-  "ranking": 564.0,
-  "skill": "BOTANICO"
-}, {
   "parent": [
-    "INTEGRATION",
-    "MONITORAMENTO"
+    "INTEGRATION"
   ],
   "positionsCount": 58.0,
   "ranking": 566.0,
@@ -4685,8 +2591,7 @@
   "skill": "RANCHER"
 }, {
   "parent": [
-    "CLOUD",
-    "MONITORIA"
+    "CLOUD"
   ],
   "positionsCount": 57.0,
   "ranking": 568.0,
@@ -4694,8 +2599,6 @@
 }, {
   "parent": [
     "CLOUD",
-    "CIENCIA",
-    "ESTATISTICA",
     "NOSQL",
     "SQL"
   ],
@@ -4712,21 +2615,6 @@
   "skill": "NETWEAVER"
 }, {
   "parent": [
-    "INTEGRACAO",
-    "BARRAMENTO"
-  ],
-  "positionsCount": 55.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 1.0,
-      "word": "XQUERY"
-    }
-  ],
-  "ranking": 574.0,
-  "skill": "OSS"
-}, {
-  "parent": [
     "FRONTEND",
     "TDD",
     "NODE"
@@ -4735,18 +2623,8 @@
   "ranking": 575.0,
   "skill": "MOCHA"
 }, {
-  "parent": [
-    "METODOLOGIA"
-  ],
   "positionsCount": 55.0,
   "ranking": 576.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 9.0,
-      "word": "RUP"
-    }
-  ],
   "skill": "TOGAF"
 }, {
   "parent": [
@@ -4764,13 +2642,6 @@
     "SQL"
   ],
   "positionsCount": 54.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 68.0,
-      "word": "VISUALIZATION"
-    }
-  ],
   "ranking": 579.0,
   "similar": [
     {
@@ -4810,18 +2681,8 @@
   "ranking": 585.0,
   "skill": "XCODE"
 }, {
-  "positionsCount": 53.0,
-  "ranking": 587.0,
-  "skill": "LETRAS"
-}, {
-  "positionsCount": 53.0,
-  "ranking": 588.0,
-  "skill": "TURISMO"
-}, {
   "parent": [
-    "SEGURANCA",
-    "CLOUD",
-    "FIREWALL"
+    "CLOUD"
   ],
   "positionsCount": 52.0,
   "ranking": 591.0,
@@ -4836,52 +2697,9 @@
     }
   ],
   "ranking": 592.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 7.0,
-      "word": "ALPHA"
-    }
-  ],
   "skill": "OUTSYSTEMS"
 }, {
   "parent": [
-    "SEGURANCA",
-    "MONITORAMENTO",
-    "FIREWALL"
-  ],
-  "positionsCount": 52.0,
-  "ranking": 593.0,
-  "skill": "WAF"
-}, {
-  "parent": [
-    "HOSPITAL"
-  ],
-  "positionsCount": 52.0,
-  "ranking": 594.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 210.0,
-      "word": "INFORMATION"
-    },
-    {
-      "gemini": true,
-      "vagas": 4.0,
-      "word": "TELECOMMUNICATIONS"
-    }
-  ],
-  "skill": "TASY"
-}, {
-  "parent": [
-    "SEGURANCA"
-  ],
-  "positionsCount": 51.0,
-  "ranking": 596.0,
-  "skill": "SSO"
-}, {
-  "parent": [
-    "RELATORIOS",
     "ETL",
     "NOSQL",
     "SQL"
@@ -4908,10 +2726,6 @@
   "positionsCount": 49.0,
   "ranking": 603.0,
   "skill": "EKS"
-}, {
-  "positionsCount": 49.0,
-  "ranking": 604.0,
-  "skill": "FILOSOFIA"
 }, {
   "parent": [
     "FRONTEND",
@@ -4942,18 +2756,10 @@
 }, {
   "parent": [
     "AGIL",
-    "SCRUM",
-    "METODOLOGIA"
+    "SCRUM"
   ],
   "positionsCount": 47.0,
   "ranking": 612.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 1.0,
-      "word": "NOTION"
-    }
-  ],
   "skill": "TRELLO"
 }, {
   "parent": [
@@ -4971,26 +2777,6 @@
   "ranking": 615.0,
   "skill": "ESLINT"
 }, {
-  "parent": [
-    "CIENCIA",
-    "ESTATISTICA",
-    "NOSQL",
-    "SQL"
-  ],
-  "positionsCount": 46.0,
-  "ranking": 616.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 4.0,
-      "word": "FLEXIBILITY"
-    }
-  ],
-  "skill": "WATSON"
-}, {
-  "parent": [
-    "SUPPORT"
-  ],
   "positionsCount": 46.0,
   "ranking": 617.0,
   "skill": "ZENDESK"
@@ -5003,19 +2789,9 @@
   "ranking": 618.0,
   "skill": "EC2"
 }, {
-  "parent": [
-    "SUPPORT"
-  ],
   "positionsCount": 45.0,
   "ranking": 619.0,
   "skill": "GENESYS"
-}, {
-  "parent": [
-    "NUTRICAO"
-  ],
-  "positionsCount": 45.0,
-  "ranking": 620.0,
-  "skill": "NUTRICIONISTA"
 }, {
   "parent": [
     "FRONTEND"
@@ -5034,14 +2810,6 @@
   "positionsCount": 44.0,
   "ranking": 624.0,
   "skill": "EXADATA"
-}, {
-  "parent": [
-    "INTEGRACAO",
-    "BARRAMENTO"
-  ],
-  "positionsCount": 44.0,
-  "ranking": 625.0,
-  "skill": "OSB"
 }, {
   "positionsCount": 44.0,
   "ranking": 626.0,
@@ -5062,20 +2830,6 @@
   "positionsCount": 42.0,
   "ranking": 631.0,
   "skill": "NIFI"
-}, {
-  "parent": [
-    "DATABRICKS",
-    "RELATORIOS",
-    "CLOUD",
-    "SPARK",
-    "ETL",
-    "NOSQL",
-    "BIGDATA",
-    "SQL"
-  ],
-  "positionsCount": 41.0,
-  "ranking": 634.0,
-  "skill": "DELTA"
 }, {
   "positionsCount": 41.0,
   "ranking": 635.0,
@@ -5121,9 +2875,6 @@
   "ranking": 642.0,
   "skill": "TESTLINK"
 }, {
-  "parent": [
-    "MONITORAMENTO"
-  ],
   "positionsCount": 40.0,
   "ranking": 643.0,
   "skill": "NEWRELIC"
@@ -5135,13 +2886,6 @@
   "positionsCount": 40.0,
   "ranking": 644.0,
   "skill": "DART"
-}, {
-  "parent": [
-    "SEGURANCA"
-  ],
-  "positionsCount": 40.0,
-  "ranking": 645.0,
-  "skill": "NIST"
 }, {
   "parent": [
     "PYTHON"
@@ -5180,23 +2924,14 @@
 }, {
   "parent": [
     "BDD",
-    "AUTOMACAO",
     "TDD",
     "RUBY"
   ],
   "positionsCount": 39.0,
   "ranking": 651.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 31.0,
-      "word": "COMMUNICATIONS"
-    }
-  ],
   "skill": "CAPYBARA"
 }, {
   "parent": [
-    "SEGURANCA",
     "TDD"
   ],
   "positionsCount": 38.0,
@@ -5234,7 +2969,6 @@
   "skill": "JASMINE"
 }, {
   "parent": [
-    "RELATORIOS",
     "ETL",
     "NOSQL",
     "SQL"
@@ -5253,9 +2987,6 @@
   "ranking": 664.0,
   "skill": "TIBCO"
 }, {
-  "parent": [
-    "CERTIFICACAO"
-  ],
   "positionsCount": 36.0,
   "ranking": 665.0,
   "similar": [
@@ -5282,13 +3013,6 @@
   ]
 }, {
   "parent": [
-    "INTEGRACAO"
-  ],
-  "positionsCount": 35.0,
-  "ranking": 668.0,
-  "skill": "GRPC"
-}, {
-  "parent": [
     "SQL"
   ],
   "positionsCount": 35.0,
@@ -5310,9 +3034,6 @@
   ],
   "skill": "FLUIG"
 }, {
-  "parent": [
-    "MONITORAMENTO"
-  ],
   "positionsCount": 35.0,
   "ranking": 672.0,
   "skill": "NAGIOS"
@@ -5335,14 +3056,6 @@
   ],
   "skill": "LIQUIBASE"
 }, {
-  "positionsCount": 34.0,
-  "ranking": 675.0,
-  "skill": "FOTOGRAFIA"
-}, {
-  "positionsCount": 34.0,
-  "ranking": 676.0,
-  "skill": "PUBLICITARIO"
-}, {
   "parent": [
     "SQLSERVER",
     "SQL"
@@ -5350,13 +3063,6 @@
   "positionsCount": 34.0,
   "ranking": 677.0,
   "skill": "SSRS"
-}, {
-  "parent": [
-    "HCM"
-  ],
-  "positionsCount": 33.0,
-  "ranking": 683.0,
-  "skill": "PEOPLESOFT"
 }, {
   "parent": [
     "JAVA"
@@ -5405,18 +3111,7 @@
   ],
   "positionsCount": 31.0,
   "ranking": 692.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 71.0,
-      "word": "MONITOR"
-    }
-  ],
   "skill": "GRUNT"
-}, {
-  "positionsCount": 30.0,
-  "ranking": 693.0,
-  "skill": "MUSIC"
 }, {
   "parent": [
     "FRONTEND",
@@ -5441,15 +3136,6 @@
   "skill": "OCI"
 }, {
   "parent": [
-    "CERTIFICACAO",
-    "SQLSERVER",
-    "SQL"
-  ],
-  "positionsCount": 30.0,
-  "ranking": 697.0,
-  "skill": "MCSE"
-}, {
-  "parent": [
     "NOSQL",
     "BIGDATA",
     "SQL"
@@ -5459,8 +3145,6 @@
   "skill": "OLAP"
 }, {
   "parent": [
-    "RELATORIOS",
-    "MONITORAMENTO",
     "NOSQL",
     "SQL"
   ],
@@ -5475,12 +3159,7 @@
   "ranking": 702.0,
   "skill": "ECM"
 }, {
-  "positionsCount": 29.0,
-  "ranking": 703.0,
-  "skill": "BILINGUE"
-}, {
   "parent": [
-    "RELATORIOS",
     "NOSQL",
     "SQL"
   ],
@@ -5498,18 +3177,9 @@
   "ranking": 706.0,
   "skill": "SNOWFLAKE"
 }, {
-  "parent": [
-    "SUPPORT"
-  ],
   "positionsCount": 28.0,
   "ranking": 707.0,
-  "skill": "BMC",
-  "synonym": [
-    {
-      "skill": "REMEDY",
-      "positionsCount": 16.0
-    }
-  ]
+  "skill": "REMEDY"
 }, {
   "parent": [
     "INTEGRATION",
@@ -5520,33 +3190,11 @@
   "skill": "WIREMOCK"
 }, {
   "parent": [
-    "ODONTOLOGIA"
-  ],
-  "positionsCount": 28.0,
-  "ranking": 709.0,
-  "skill": "DENTISTAS"
-}, {
-  "parent": [
-    "FATURAMENTO"
-  ],
-  "positionsCount": 28.0,
-  "ranking": 710.0,
-  "skill": "FATURISTA"
-}, {
-  "parent": [
     "FRONTEND",
-    "AUTOMACAO",
     "TDD"
   ],
   "positionsCount": 28.0,
   "ranking": 712.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 28.0,
-      "word": "REFACTORING"
-    }
-  ],
   "skill": "KARMA"
 }, {
   "parent": [
@@ -5564,27 +3212,6 @@
     }
   ],
   "skill": "ARTIFACTORY"
-}, {
-  "parent": [
-    "INTEGRACAO",
-    "BARRAMENTO"
-  ],
-  "positionsCount": 27.0,
-  "ranking": 714.0,
-  "skill": "ESB"
-}, {
-  "parent": [
-    "VETERINARIA"
-  ],
-  "positionsCount": 27.0,
-  "ranking": 716.0,
-  "skill": "VETERINARIO",
-  "synonym": [
-    {
-      "skill": "VETERINARIOS",
-      "positionsCount": 13.0
-    }
-  ]
 }, {
   "parent": [
     "JAVA",
@@ -5650,9 +3277,6 @@
   "ranking": 730.0,
   "skill": "AKS"
 }, {
-  "parent": [
-    "SEGURANCA"
-  ],
   "positionsCount": 25.0,
   "ranking": 733.0,
   "skill": "SONICWALL"
@@ -5675,13 +3299,6 @@
   "skill": "MYBATIS"
 }, {
   "parent": [
-    "FRONTEND"
-  ],
-  "positionsCount": 24.0,
-  "ranking": 743.0,
-  "skill": "STORYBOOK"
-}, {
-  "parent": [
     "FRONTEND",
     "SPA",
     "MVC",
@@ -5700,8 +3317,6 @@
   "skill": "SSAS"
 }, {
   "parent": [
-    "CIENCIA",
-    "ESTATISTICA",
     "PYTHON",
     "NOSQL",
     "SQL"
@@ -5711,7 +3326,6 @@
   "skill": "NUMPY"
 }, {
   "parent": [
-    "SEGURANCA",
     "CRIPTOGRAFIA"
   ],
   "positionsCount": 23.0,
@@ -5730,21 +3344,7 @@
   "skill": "GENEXUS"
 }, {
   "parent": [
-    "JORNALISMO"
-  ],
-  "positionsCount": 22.0,
-  "ranking": 767.0,
-  "skill": "JORNALISTA",
-  "synonym": [
-    {
-      "skill": "JORNALISTAS",
-      "positionsCount": 6.0
-    }
-  ]
-}, {
-  "parent": [
-    "ITIL",
-    "METODOLOGIA"
+    "ITIL"
   ],
   "positionsCount": 22.0,
   "ranking": 769.0,
@@ -5761,7 +3361,6 @@
   "parent": [
     "FRONTEND",
     "WEBDRIVER",
-    "AUTOMACAO",
     "TDD",
     "APPIUM",
     "SELENIUM"
@@ -5771,17 +3370,9 @@
   "skill": "KATALON"
 }, {
   "parent": [
-    "CIENCIA"
-  ],
-  "positionsCount": 21.0,
-  "ranking": 773.0,
-  "skill": "MATEMATICO"
-}, {
-  "parent": [
     "DEVOPS",
     "CLOUD",
     "BUILD",
-    "CERTIFICACAO",
     "DEPLOY",
     "AWS"
   ],
@@ -5794,13 +3385,6 @@
   ],
   "positionsCount": 21.0,
   "ranking": 776.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 5.0,
-      "word": "NAVIGATION"
-    }
-  ],
   "skill": "HELM"
 }, {
   "parent": [
@@ -5835,9 +3419,6 @@
   "ranking": 786.0,
   "skill": "EUREKA"
 }, {
-  "parent": [
-    "SEGURANCA"
-  ],
   "positionsCount": 20.0,
   "ranking": 788.0,
   "skill": "SOPHOS"
@@ -5846,82 +3427,24 @@
     "SQL"
   ],
   "positionsCount": 20.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 155.0,
-      "word": "VIEWS"
-    },
-    {
-      "gemini": true,
-      "vagas": 163.0,
-      "word": "TRIGGERS"
-    }
-  ],
   "ranking": 789.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 0.0,
-      "word": "INGRES"
-    }
-  ],
   "skill": "SYBASE"
-}, {
-  "parent": [
-    "CERTIFICACAO"
-  ],
-  "positionsCount": 19.0,
-  "ranking": 793.0,
-  "skill": "PSPO"
 }, {
   "parent": [
     "JAVA"
   ],
   "positionsCount": 19.0,
-  "preRequisite": [
-    {
-      "gemini": true,
-      "vagas": 5.0,
-      "word": "ANIMATION"
-    },
-    {
-      "gemini": true,
-      "vagas": 9.0,
-      "word": "GRAPHICS"
-    }
-  ],
   "ranking": 794.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 1.0,
-      "word": "MULTIMEDIA"
-    }
-  ],
   "skill": "JAVAFX"
 }, {
   "parent": [
-    "JAVA",
-    "SERVER"
+    "JAVA"
   ],
   "positionsCount": 19.0,
   "ranking": 796.0,
   "skill": "GLASSFISH"
 }, {
   "parent": [
-    "CHATBOT",
-    "CIENCIA",
-    "ESTATISTICA",
-    "NOSQL",
-    "SQL"
-  ],
-  "positionsCount": 19.0,
-  "ranking": 797.0,
-  "skill": "CHAI"
-}, {
-  "parent": [
-    "SEGURANCA",
     "PROTOCOL"
   ],
   "positionsCount": 19.0,
@@ -5941,18 +3464,6 @@
   ],
   "positionsCount": 18.0,
   "ranking": 807.0,
-  "similar": [
-    {
-      "gemini": true,
-      "vagas": 83.0,
-      "word": "DELIVER"
-    },
-    {
-      "gemini": true,
-      "vagas": 162.0,
-      "word": "SEARCH"
-    }
-  ],
   "skill": "OPENTEXT"
 }, {
   "parent": [
@@ -5981,9 +3492,6 @@
   "ranking": 816.0,
   "skill": "TESTNG"
 }, {
-  "parent": [
-    "MONITORAMENTO"
-  ],
   "positionsCount": 17.0,
   "ranking": 817.0,
   "skill": "DATADOG"
@@ -6004,16 +3512,9 @@
   "ranking": 820.0,
   "skill": "SQLALCHEMY"
 }, {
-  "parent": [
-    "MONITORAMENTO"
-  ],
   "positionsCount": 17.0,
   "ranking": 821.0,
   "skill": "APPDYNAMICS"
-}, {
-  "positionsCount": 17.0,
-  "ranking": 822.0,
-  "skill": "AUDIOVISUAL"
 }, {
   "parent": [
     "PHP",
@@ -6038,10 +3539,6 @@
   "positionsCount": 17.0,
   "ranking": 826.0,
   "skill": "YARN"
-}, {
-  "positionsCount": 17.0,
-  "ranking": 827.0,
-  "skill": "CINEMA"
 }, {
   "parent": [
     "HADOOP",
@@ -6071,16 +3568,11 @@
   "skill": "NETSUITE"
 }, {
   "parent": [
-    "PROCESS",
     "BPM"
   ],
   "positionsCount": 16.0,
   "ranking": 837.0,
   "skill": "CAMUNDA"
-}, {
-  "positionsCount": 16.0,
-  "ranking": 838.0,
-  "skill": "URBANISMO"
 }, {
   "parent": [
     "FRONTEND"
@@ -6090,8 +3582,7 @@
   "skill": "EMBER"
 }, {
   "parent": [
-    "TDD",
-    "MONITORAMENTO"
+    "TDD"
   ],
   "positionsCount": 15.0,
   "ranking": 843.0,
@@ -6105,23 +3596,11 @@
   "ranking": 845.0,
   "skill": "TOAD"
 }, {
-  "parent": [
-    "SEGURANCA"
-  ],
-  "positionsCount": 15.0,
-  "ranking": 846.0,
-  "skill": "UTM"
-}, {
-  "parent": [
-    "MARKETING"
-  ],
   "positionsCount": 15.0,
   "ranking": 848.0,
   "skill": "ADWORDS"
 }, {
   "parent": [
-    "CIENCIA",
-    "ESTATISTICA",
     "NOSQL",
     "SQL"
   ],
@@ -6130,19 +3609,11 @@
   "skill": "TENSORFLOW"
 }, {
   "parent": [
-    "PROCESS",
     "BPM"
   ],
   "positionsCount": 14.0,
   "ranking": 852.0,
   "skill": "BPEL"
-}, {
-  "parent": [
-    "AGRONOMIA"
-  ],
-  "positionsCount": 14.0,
-  "ranking": 853.0,
-  "skill": "AGRONOMO"
 }, {
   "parent": [
     "FRONTEND",
@@ -6167,21 +3638,6 @@
       "gemini": true,
       "vagas": 44.0,
       "word": "BENCHMARKING"
-    },
-    {
-      "gemini": true,
-      "vagas": 16.0,
-      "word": "IMPROVEMENT"
-    },
-    {
-      "gemini": true,
-      "vagas": 184.0,
-      "word": "ANALYSIS"
-    },
-    {
-      "gemini": true,
-      "vagas": 34.0,
-      "word": "OPTIMIZATION"
     }
   ],
   "skill": "ENSEMBLE"
@@ -6209,13 +3665,6 @@
   "skill": "VBSCRIPT"
 }, {
   "parent": [
-    "MEDIACAO"
-  ],
-  "positionsCount": 13.0,
-  "ranking": 865.0,
-  "skill": "MEDIADOR"
-}, {
-  "parent": [
     "FRONTEND",
     "DOTNET"
   ],
@@ -6231,15 +3680,6 @@
   "positionsCount": 12.0,
   "ranking": 878.0,
   "skill": "DATAMART"
-}, {
-  "parent": [
-    "NOSQL",
-    "BIGDATA",
-    "SQL"
-  ],
-  "positionsCount": 12.0,
-  "ranking": 879.0,
-  "skill": "MAPREDUCE"
 }, {
   "parent": [
     "JAVA",
@@ -6294,9 +3734,6 @@
   "ranking": 886.0,
   "skill": "ENZYME"
 }, {
-  "parent": [
-    "CIENCIA"
-  ],
   "positionsCount": 12.0,
   "ranking": 888.0,
   "skill": "MATPLOTLIB"
@@ -6311,19 +3748,9 @@
   "ranking": 893.0,
   "skill": "SQOOP"
 }, {
-  "parent": [
-    "CIENCIA"
-  ],
   "positionsCount": 11.0,
   "ranking": 895.0,
   "skill": "MATLAB"
-}, {
-  "parent": [
-    "MEDICINA"
-  ],
-  "positionsCount": 11.0,
-  "ranking": 897.0,
-  "skill": "PATOLOGIA"
 }, {
   "parent": [
     "PROTOCOL"
@@ -6331,14 +3758,6 @@
   "positionsCount": 10.0,
   "ranking": 902.0,
   "skill": "OPENLDAP"
-}, {
-  "parent": [
-    "CERTIFICACAO",
-    "METODOLOGIA"
-  ],
-  "positionsCount": 10.0,
-  "ranking": 904.0,
-  "skill": "CSPO"
 }, {
   "parent": [
     "FRONTEND",
@@ -6349,8 +3768,7 @@
   "skill": "BABEL"
 }, {
   "parent": [
-    "JAVA",
-    "SERVER"
+    "JAVA"
   ],
   "positionsCount": 10.0,
   "ranking": 907.0,
@@ -6379,10 +3797,6 @@
   "ranking": 915.0,
   "skill": "PROTRACTOR"
 }, {
-  "positionsCount": 9.0,
-  "ranking": 917.0,
-  "skill": "PREVIDENCIA"
-}, {
   "parent": [
     "NOSQL"
   ],
@@ -6391,33 +3805,12 @@
   "skill": "COUCHDB"
 }, {
   "parent": [
-    "MONITORAMENTO"
-  ],
-  "positionsCount": 9.0,
-  "ranking": 922.0,
-  "skill": "IDS"
-}, {
-  "parent": [
     "FRONTEND",
     "XML"
   ],
   "positionsCount": 9.0,
   "ranking": 923.0,
   "skill": "JSX"
-}, {
-  "parent": [
-    "METODOLOGIA"
-  ],
-  "positionsCount": 9.0,
-  "ranking": 924.0,
-  "skill": "RUP"
-}, {
-  "parent": [
-    "CERTIFICACAO"
-  ],
-  "positionsCount": 9.0,
-  "ranking": 925.0,
-  "skill": "EXIN"
 }, {
   "parent": [
     "IDE"
@@ -6435,10 +3828,6 @@
       "positionsCount": 3.0
     }
   ]
-}, {
-  "positionsCount": 8.0,
-  "ranking": 939.0,
-  "skill": "BIOTECNOLOGIA"
 }, {
   "parent": [
     "FRONTEND",
@@ -6464,17 +3853,10 @@
   "ranking": 943.0,
   "skill": "PLOTLY"
 }, {
-  "parent": [
-    "INTEGRACAO",
-    "PERFORMANCE"
-  ],
   "positionsCount": 8.0,
   "ranking": 944.0,
   "skill": "HAPROXY"
 }, {
-  "parent": [
-    "AUTOMACAO"
-  ],
   "positionsCount": 8.0,
   "ranking": 946.0,
   "skill": "RUNDECK"
@@ -6489,17 +3871,6 @@
   "positionsCount": 8.0,
   "ranking": 948.0,
   "skill": "KERBEROS"
-}, {
-  "positionsCount": 8.0,
-  "ranking": 949.0,
-  "skill": "GEOGRAFIA"
-}, {
-  "parent": [
-    "MEDICINA"
-  ],
-  "positionsCount": 8.0,
-  "ranking": 950.0,
-  "skill": "PEDIATRIA"
 }, {
   "parent": [
     "JAVA"
@@ -6524,20 +3895,11 @@
   "ranking": 958.0,
   "skill": "IPTABLES"
 }, {
-  "parent": [
-    "ECONOMIA",
-    "CIENCIA"
-  ],
-  "positionsCount": 7.0,
-  "ranking": 961.0,
-  "skill": "ECONOMISTA"
-}, {
   "positionsCount": 7.0,
   "ranking": 963.0,
   "skill": "POWERBUILDER"
 }, {
   "parent": [
-    "SEGURANCA",
     "CISCO"
   ],
   "positionsCount": 7.0,
@@ -6563,16 +3925,7 @@
   "ranking": 972.0,
   "skill": "RADIOLOGIA"
 }, {
-  "positionsCount": 7.0,
-  "ranking": 974.0,
-  "skill": "BIBLIOTECONOMIA"
-}, {
-  "positionsCount": 6.0,
-  "ranking": 985.0,
-  "skill": "GEOLOCALIZACAO"
-}, {
   "parent": [
-    "PROCESS",
     "BPM"
   ],
   "positionsCount": 6.0,
@@ -6586,17 +3939,10 @@
   "ranking": 987.0,
   "skill": "BOWER"
 }, {
-  "parent": [
-    "SEGURANCA",
-    "CERTIFICACAO"
-  ],
   "positionsCount": 6.0,
   "ranking": 988.0,
   "skill": "CISSP"
 }, {
-  "parent": [
-    "MONITORACAO"
-  ],
   "positionsCount": 6.0,
   "ranking": 989.0,
   "skill": "SENTRY"
@@ -6642,9 +3988,6 @@
   "ranking": 1013.0,
   "skill": "EXPO"
 }, {
-  "parent": [
-    "MODELING"
-  ],
   "positionsCount": 5.0,
   "ranking": 1015.0,
   "skill": "ERWIN"
@@ -6676,13 +4019,6 @@
   "skill": "THYMELEAF"
 }, {
   "parent": [
-    "MEDICINA"
-  ],
-  "positionsCount": 5.0,
-  "ranking": 1025.0,
-  "skill": "OBSTETRICIA"
-}, {
-  "parent": [
     "CACHE"
   ],
   "positionsCount": 4.0,
@@ -6706,13 +4042,6 @@
   "skill": "ICEFACES"
 }, {
   "parent": [
-    "INTEGRACAO"
-  ],
-  "positionsCount": 4.0,
-  "ranking": 1038.0,
-  "skill": "RPC"
-}, {
-  "parent": [
     "ORM"
   ],
   "positionsCount": 4.0,
@@ -6733,83 +4062,15 @@
   "ranking": 1043.0,
   "skill": "INFORMIX"
 }, {
-  "skill": "CRUZES"
-}, {
-  "skill": "FRANCA"
-}, {
   "skill": "STRUTS2"
 }, {
-  "skill": "SELETIVO"
-}, {
-  "skill": "NEGOCIACOES"
-}, {
-  "skill": "IMPLANTACAO"
-}, {
-  "skill": "ARCOS"
-}, {
   "skill": "ICOMON"
-}, {
-  "skill": "LIDEREI"
-}, {
-  "skill": "CAMPINAS"
-}, {
-  "skill": "CANDIDATOS"
-}, {
-  "skill": "CODIGO"
-}, {
-  "skill": "ALTURA"
-}, {
-  "skill": "MANUAIS"
-}, {
-  "skill": "CONSULTANT"
-}, {
-  "skill": "SERVICES"
-}, {
-  "skill": "CIENCIAS"
-}, {
-  "skill": "EXTERIOR"
 }, {
   "skill": "POWERAPPS"
 }, {
   "skill": "ESP32"
 }, {
-  "skill": "STARTUPS"
-}, {
-  "skill": "RECRUTADORA"
-}, {
   "skill": "PROGRESS"
-}, {
-  "skill": "CRIACAO"
-}, {
-  "skill": "VAGAS"
-}, {
-  "skill": "FRANCES"
-}, {
-  "skill": "EMPREGO"
-}, {
-  "skill": "MATERIAIS"
-}, {
-  "skill": "VENDAS"
-}, {
-  "skill": "ATIVOS"
-}, {
-  "skill": "DEDICADA"
-}, {
-  "skill": "FLUXOGRAMA"
-}, {
-  "skill": "FORMULAS"
-}, {
-  "skill": "SERVICOS"
-}, {
-  "skill": "CEARA"
-}, {
-  "skill": "SOLUCAO"
-}, {
-  "skill": "WRITER"
-}, {
-  "skill": "DESING"
-}, {
-  "skill": "PIAUI"
 }, {
   "skill": "WINDCHILL"
 }, {
@@ -6819,41 +4080,13 @@
 }, {
   "skill": "PRIMAVERA"
 }, {
-  "skill": "ESTACIONAMENTO"
-}, {
-  "skill": "ACTIVE"
-}, {
-  "skill": "COMPROMETIMENTO"
-}, {
   "skill": "DELHI"
 }, {
-  "skill": "BACKLOGS"
-}, {
   "skill": "ADOBEXD"
-}, {
-  "skill": "FELIPE"
-}, {
-  "skill": "MONITORIZACAO"
 }, {
   "skill": "PLANILHA"
 }, {
   "skill": "OUTLOOK"
-}, {
-  "skill": "ENDERECO"
-}, {
-  "skill": "CONCREMAT"
-}, {
-  "skill": "CABREUVA"
-}, {
-  "skill": "DISTRIBUIDORA"
-}, {
-  "skill": "SPANISH"
-}, {
-  "skill": "DESIGN"
-}, {
-  "skill": "CONSULTOR"
-}, {
-  "skill": "INCIDENTES"
 }, {
   "skill": "AZZURE"
 }, {
@@ -6863,771 +4096,105 @@
 }, {
   "skill": "DATASUL"
 }, {
-  "skill": "SALVADOR"
-}, {
-  "skill": "TECNOLOGO"
-}, {
-  "skill": "INVESTIGACAO"
-}, {
-  "skill": "MOEDA"
-}, {
-  "skill": "VIDEOCONFERENCIAS"
-}, {
-  "skill": "TRAFEGO"
-}, {
-  "skill": "SESSOES"
-}, {
-  "skill": "ESTRUTURA"
-}, {
-  "skill": "LASER"
-}, {
-  "skill": "DIRECTORY"
-}, {
-  "skill": "MAQUINAS"
-}, {
-  "skill": "MICRO"
-}, {
-  "skill": "DATACENTER"
-}, {
-  "skill": "CARREIRA"
-}, {
   "skill": "ARCSERVE"
-}, {
-  "skill": "CUIDADOS"
-}, {
-  "skill": "CLUSTER"
-}, {
-  "skill": "INFRAESTUTURA"
-}, {
-  "skill": "GOIANIA"
 }, {
   "skill": "WEBREQUEST"
 }, {
-  "skill": "EMPRESTIMOS"
-}, {
   "skill": "SOLARWINDS"
-}, {
-  "skill": "ROBERTO"
-}, {
-  "skill": "SAFETY"
-}, {
-  "skill": "INDIRETOS"
-}, {
-  "skill": "PROJETISTA"
-}, {
-  "skill": "ACCOUNTING"
-}, {
-  "skill": "EDSON"
-}, {
-  "skill": "TRAINEE"
-}, {
-  "skill": "KERNEL"
 }, {
   "skill": "BUSSINESS"
 }, {
-  "skill": "BUILDER"
-}, {
-  "skill": "DEVELOPMENT"
-}, {
-  "skill": "PRATES"
-}, {
-  "skill": "BRADESCO"
-}, {
-  "skill": "JOVEM"
-}, {
-  "skill": "PORTUGAL"
-}, {
-  "skill": "REDATORA"
-}, {
-  "skill": "OBJECTIVE"
-}, {
-  "skill": "FREELANCE"
-}, {
-  "skill": "FINTECHS"
-}, {
-  "skill": "COLEGIAL"
-}, {
   "skill": "BACKEND"
-}, {
-  "skill": "ENVIAR"
-}, {
-  "skill": "IMAGENS"
-}, {
-  "skill": "COMECANDO"
-}, {
-  "skill": "TELEGRAM"
-}, {
-  "skill": "APOIO"
-}, {
-  "skill": "SOLDAGEM"
-}, {
-  "skill": "BROWSER"
-}, {
-  "skill": "SWITCHS"
-}, {
-  "skill": "COMUNICATIVO"
-}, {
-  "skill": "ESPECIALISTA"
-}, {
-  "skill": "STONE"
-}, {
-  "skill": "ENGINEERING"
-}, {
-  "skill": "ESTAGIOS"
-}, {
-  "skill": "HOMOLOGAR"
-}, {
-  "skill": "SETOR"
-}, {
-  "skill": "CORPORATIVA"
-}, {
-  "skill": "CORPORATIVO"
-}, {
-  "skill": "CARTAO"
-}, {
-  "skill": "ARGENTINA"
-}, {
-  "skill": "FERRAMENTAS"
-}, {
-  "skill": "AGENCIA"
 }, {
   "skill": "ACCURATE"
 }, {
-  "skill": "DYNAMIC"
-}, {
-  "skill": "HORAS"
-}, {
-  "skill": "SERVIDOR"
-}, {
-  "skill": "ROBOTICA"
-}, {
-  "skill": "APPLICATION"
-}, {
-  "skill": "TRABALHAR"
-}, {
-  "skill": "PROGRAMAS"
-}, {
-  "skill": "LIGHTROOM"
-}, {
-  "skill": "GLOBO"
-}, {
-  "skill": "CONTENDO"
-}, {
-  "skill": "PAYMENT"
-}, {
-  "skill": "INFORMACAO"
-}, {
-  "skill": "AMERICANA"
-}, {
   "skill": "SMARTY"
-}, {
-  "skill": "PROVIDER"
 }, {
   "skill": "ARUBA"
 }, {
-  "skill": "CARAPICUIBA"
-}, {
-  "skill": "EMPRESA"
-}, {
   "skill": "SYSOPS"
-}, {
-  "skill": "FIDELITY"
-}, {
-  "skill": "CATARINA"
 }, {
   "skill": "PROTOTIPAGEM"
 }, {
-  "skill": "CLEITON"
-}, {
-  "skill": "TATUAPE"
-}, {
-  "skill": "GUIDE"
-}, {
   "skill": "GCLOUD"
-}, {
-  "skill": "FRENTISTA"
-}, {
-  "skill": "HOMOLOGACAO"
-}, {
-  "skill": "RISCOS"
-}, {
-  "skill": "CAPITAL"
-}, {
-  "skill": "ARMANDO"
-}, {
-  "skill": "ECOMMERCE"
-}, {
-  "skill": "TABLE"
-}, {
-  "skill": "EMISSAO"
-}, {
-  "skill": "TREINAMENTO"
-}, {
-  "skill": "MODULOS"
-}, {
-  "skill": "IMPORTACAO"
-}, {
-  "skill": "MARCELO"
-}, {
-  "skill": "FRAMEWORK"
-}, {
-  "skill": "RECIFE"
-}, {
-  "skill": "PREFEITURA"
-}, {
-  "skill": "ARTUR"
-}, {
-  "skill": "SERASA"
-}, {
-  "skill": "ENCONTREI"
 }, {
   "skill": "BIZAGE"
 }, {
-  "skill": "BOTAFOGO"
-}, {
-  "skill": "OPERACAO"
-}, {
-  "skill": "ELETRICO"
-}, {
-  "skill": "ALIMENTOS"
-}, {
-  "skill": "KEVIN"
-}, {
-  "skill": "BASELINES"
-}, {
-  "skill": "RESIDENTE"
-}, {
-  "skill": "CADMUS"
-}, {
-  "skill": "CAJAMAR"
-}, {
-  "skill": "GOVERNACA"
-}, {
-  "skill": "COMMAND"
-}, {
-  "skill": "UBERLANDIA"
-}, {
-  "skill": "CUSTOS"
-}, {
-  "skill": "SOFTWARES"
-}, {
-  "skill": "ADMINISTRATOR"
-}, {
-  "skill": "APPLE"
-}, {
   "skill": "FOXPRO"
-}, {
-  "skill": "LENOVO"
-}, {
-  "skill": "INVASAO"
-}, {
-  "skill": "DEFESA"
-}, {
-  "skill": "MUDANCA"
-}, {
-  "skill": "START"
 }, {
   "skill": "RESPONSIVIDADE"
 }, {
-  "skill": "INFRAESTRUTURA"
-}, {
-  "skill": "PARAIBA"
-}, {
   "skill": "SANKHYA"
 }, {
-  "skill": "AUTONOMO"
-}, {
-  "skill": "INDICES"
-}, {
-  "skill": "COMERCIAIS"
-}, {
-  "skill": "RECEBER"
-}, {
-  "skill": "AUTONOMA"
-}, {
-  "skill": "BACKBONE"
-}, {
-  "skill": "AMAZON"
-}, {
   "skill": "VISUALSTUDIO"
-}, {
-  "skill": "PLANNING"
 }, {
   "skill": "MIKROTIK"
 }, {
   "skill": "JENKIS"
 }, {
-  "skill": "DESCRICAO"
-}, {
-  "skill": "OPERACOES"
-}, {
-  "skill": "SCRIPTS"
-}, {
   "skill": "RXJAVA"
-}, {
-  "skill": "ITALIANO"
 }, {
   "skill": "APPCC"
 }, {
-  "skill": "OTICAS"
-}, {
-  "skill": "ATACADO"
-}, {
   "skill": "CLIPPER"
-}, {
-  "skill": "OFICIAL"
-}, {
-  "skill": "TECHNOLOGY"
-}, {
-  "skill": "LUCROS"
 }, {
   "skill": "AGEIS"
 }, {
-  "skill": "BLUETOOTH"
-}, {
-  "skill": "TRIGGER"
-}, {
-  "skill": "ORIENTACAO"
-}, {
-  "skill": "FORTALEZA"
-}, {
-  "skill": "LAUDO"
-}, {
-  "skill": "CRISE"
-}, {
-  "skill": "BILLING"
-}, {
   "skill": "NETAPP"
-}, {
-  "skill": "ENTREGA"
 }, {
   "skill": "RESTASSURED"
 }, {
-  "skill": "CERIMONIAS"
-}, {
-  "skill": "INDEPENDENTE"
-}, {
-  "skill": "ACOMPANHAMENTO"
-}, {
-  "skill": "CENTRAIS"
-}, {
-  "skill": "EXPERIENCIA"
-}, {
-  "skill": "COZINHEIRO"
-}, {
-  "skill": "UNICAMP"
-}, {
   "skill": "SOFTWAY"
-}, {
-  "skill": "HOUSE"
-}, {
-  "skill": "WALLACE"
-}, {
-  "skill": "MALWARE"
-}, {
-  "skill": "COMUNICACAO"
-}, {
-  "skill": "SORRISO"
-}, {
-  "skill": "BANCO"
-}, {
-  "skill": "MOVEIS"
-}, {
-  "skill": "ESPECIFICACAO"
-}, {
-  "skill": "ONIAS"
-}, {
-  "skill": "HENRIQUE"
-}, {
-  "skill": "POLIMEROS"
-}, {
-  "skill": "DISCIPLINADO"
-}, {
-  "skill": "ROTEADOR"
-}, {
-  "skill": "MACHINE"
-}, {
-  "skill": "PIRACICABA"
-}, {
-  "skill": "ADMINISTRACAO"
-}, {
-  "skill": "OPERADORES"
-}, {
-  "skill": "BRASILEIRO"
-}, {
-  "skill": "BACKUPEXEC"
-}, {
-  "skill": "CAIXA"
-}, {
-  "skill": "CULTURA"
-}, {
-  "skill": "SEMENTES"
-}, {
-  "skill": "PELOTAS"
-}, {
-  "skill": "BITCOIN"
 }, {
   "skill": "PROSOFT"
 }, {
-  "skill": "OPERADOR"
-}, {
-  "skill": "TRABALHO"
-}, {
-  "skill": "GOIAS"
-}, {
   "skill": "WOOCOMMERCE"
-}, {
-  "skill": "TICKET"
-}, {
-  "skill": "MARANHAO"
-}, {
-  "skill": "LOCAWEB"
 }, {
   "skill": "SPEED"
 }, {
-  "skill": "SINQIA"
-}, {
-  "skill": "NATIVE"
-}, {
-  "skill": "INVESTIMENTO"
-}, {
-  "skill": "ALVES"
-}, {
-  "skill": "APPLICATIONS"
-}, {
-  "skill": "ADMISSAO"
-}, {
-  "skill": "NATIVO"
-}, {
-  "skill": "BRASILEIRA"
-}, {
   "skill": "AVAYA"
-}, {
-  "skill": "ESPECIALIZADO"
-}, {
-  "skill": "MIDIA"
-}, {
-  "skill": "LANGUAGE"
-}, {
-  "skill": "AGRICOLA"
-}, {
-  "skill": "JOGOS"
-}, {
-  "skill": "CHEFIA"
 }, {
   "skill": "DEBIAN"
 }, {
-  "skill": "CLIMA"
-}, {
-  "skill": "GRAFICO"
-}, {
-  "skill": "ALPHAVILLE"
-}, {
-  "skill": "DOUTORADO"
-}, {
-  "skill": "CLIENTES"
-}, {
-  "skill": "CONTROLLER"
-}, {
-  "skill": "MATHEUS"
-}, {
-  "skill": "RESPOSTA"
-}, {
-  "skill": "MERCADO"
-}, {
   "skill": "ATHENA"
-}, {
-  "skill": "GATEWAY"
-}, {
-  "skill": "LATAM"
 }, {
   "skill": "VALUATION"
 }, {
   "skill": "VIPER"
 }, {
-  "skill": "PRODUCAO"
-}, {
-  "skill": "PROFILE"
-}, {
-  "skill": "PLUGINS"
-}, {
-  "skill": "DOCUMENTACOES"
-}, {
-  "skill": "PROVIDERS"
-}, {
-  "skill": "DESENHO"
-}, {
-  "skill": "TECBAN"
-}, {
-  "skill": "CAETANO"
-}, {
   "skill": "PERDCOMP"
-}, {
-  "skill": "ESCALA"
-}, {
-  "skill": "PROJECT"
-}, {
-  "skill": "ESCREVENTE"
-}, {
-  "skill": "CLICK"
-}, {
-  "skill": "ETHICAL"
-}, {
-  "skill": "LONDRINA"
-}, {
-  "skill": "STACK"
-}, {
-  "skill": "INSTALACAO"
-}, {
-  "skill": "AMBIENTES"
-}, {
-  "skill": "POSSIVEIS"
-}, {
-  "skill": "CAIEIRAS"
-}, {
-  "skill": "EXPERIENCIAS"
-}, {
-  "skill": "APLICACOES"
-}, {
-  "skill": "SEGUNDA"
-}, {
-  "skill": "MEIOS"
-}, {
-  "skill": "SEGUINTES"
-}, {
-  "skill": "GSUITE"
-}, {
-  "skill": "VITORIA"
-}, {
-  "skill": "THIAGO"
 }, {
   "skill": "METASPLOIT"
 }, {
-  "skill": "SELECIONADORA"
-}, {
-  "skill": "TEMPLATES"
-}, {
-  "skill": "CURRICULO"
-}, {
-  "skill": "CAPGEMINI"
-}, {
   "skill": "COREL"
-}, {
-  "skill": "AMBIENTAL"
-}, {
-  "skill": "ONGOING"
-}, {
-  "skill": "USINAGEM"
-}, {
-  "skill": "COAXIAL"
-}, {
-  "skill": "OSASCO"
-}, {
-  "skill": "EMPREENDEDOR"
-}, {
-  "skill": "ARTIFICIAL"
-}, {
-  "skill": "ABASTECIMENTO"
 }, {
   "skill": "ENGEMAN"
 }, {
-  "skill": "TECNICOS"
-}, {
-  "skill": "COACH"
-}, {
-  "skill": "CLEARING"
-}, {
-  "skill": "CIBERNETICA"
-}, {
-  "skill": "PESQUISAS"
-}, {
-  "skill": "STUDIO"
-}, {
-  "skill": "SYSADMIN"
-}, {
-  "skill": "OLAVO"
-}, {
   "skill": "LANWAN"
-}, {
-  "skill": "CONTRATO"
-}, {
-  "skill": "RELIABILITY"
-}, {
-  "skill": "CLIENTE"
-}, {
-  "skill": "PESSOA"
-}, {
-  "skill": "MELHORIA"
-}, {
-  "skill": "EDUCACIONAL"
-}, {
-  "skill": "RODRIGO"
 }, {
   "skill": "VISUALAGE"
 }, {
-  "skill": "LOYALTY"
-}, {
-  "skill": "CONTROLES"
-}, {
-  "skill": "ALMEIDA"
-}, {
-  "skill": "LOCALIZACOES"
-}, {
-  "skill": "GRUPO"
-}, {
-  "skill": "FOUNDATION"
-}, {
-  "skill": "DADOS"
-}, {
-  "skill": "COMMERCE"
-}, {
-  "skill": "CONTINUO"
-}, {
-  "skill": "GERAIS"
-}, {
-  "skill": "GRADUACAO"
-}, {
-  "skill": "EMAIL"
-}, {
-  "skill": "VIDEOCONFERENCIA"
-}, {
-  "skill": "CONSTRUCAO"
-}, {
-  "skill": "ASSURANCE"
-}, {
   "skill": "SAPIENS"
-}, {
-  "skill": "CRITERIOSO"
-}, {
-  "skill": "ATLASSIAN"
-}, {
-  "skill": "ADMINISTRATIVOS"
-}, {
-  "skill": "OLIVEIRA"
-}, {
-  "skill": "COMPRADORA"
-}, {
-  "skill": "MULHER"
-}, {
-  "skill": "ADMINSTRACAO"
 }, {
   "skill": "PYHTON"
 }, {
-  "skill": "APURACAO"
-}, {
-  "skill": "BELEM"
-}, {
-  "skill": "METRICAS"
-}, {
-  "skill": "TESTE"
-}, {
-  "skill": "FORCE"
-}, {
   "skill": "RESTFUL"
-}, {
-  "skill": "PROGRAMADOR"
-}, {
-  "skill": "BRAGA"
-}, {
-  "skill": "CLIENT"
-}, {
-  "skill": "IMPLEMENTACAO"
-}, {
-  "skill": "JULIO"
-}, {
-  "skill": "RODOBENS"
-}, {
-  "skill": "CONTATO"
-}, {
-  "skill": "PROBLEMAS"
-}, {
-  "skill": "STATUS"
-}, {
-  "skill": "WATERFALL"
-}, {
-  "skill": "PERFIL"
 }, {
   "skill": "DYNAMO"
 }, {
-  "skill": "COSTA"
-}, {
-  "skill": "NIVEL1"
-}, {
   "skill": "VUEJS"
-}, {
-  "skill": "PROGRAMADORA"
-}, {
-  "skill": "AVIACAO"
 }, {
   "skill": "KUBERNETES"
 }, {
   "skill": "VISIO"
 }, {
-  "skill": "DESENVOLVER"
-}, {
-  "skill": "DEFICIENCIA"
-}, {
-  "skill": "AVICULTURA"
-}, {
-  "skill": "TECNOLOGIA"
-}, {
-  "skill": "RECEBIVEIS"
-}, {
-  "skill": "DESEJAVEL"
-}, {
-  "skill": "REQUISITO"
-}, {
-  "skill": "QUALQUER"
-}, {
-  "skill": "VOTORANTIM"
-}, {
-  "skill": "NOTAS"
-}, {
-  "skill": "REPRESENTANTE"
-}, {
-  "skill": "BASICO"
-}, {
-  "skill": "CLINICAS"
-}, {
-  "skill": "SALVADORBA"
-}, {
   "skill": "POSTGRESSQL"
-}, {
-  "skill": "ADOBE"
-}, {
-  "skill": "ADMINISTRATIVAS"
-}, {
-  "skill": "SUCESSO"
 }, {
   "skill": "REACTREDUX"
 }, {
-  "skill": "DESENVOLVEDORES"
-}, {
-  "skill": "EXPERIENCE"
-}, {
-  "skill": "CONTROL"
-}, {
-  "skill": "TESTS"
-}, {
-  "skill": "PROCUREMENT"
-}, {
-  "skill": "PAYROLL"
-}, {
   "skill": "HANNA"
 }, {
-  "skill": "LANCAMENTOS"
-}, {
-  "skill": "SHARE"
-}, {
-  "skill": "27001"
-}, {
-  "skill": "ORCAMENTO"
-}, {
-  "skill": "ESPANOL"
-}, {
   "skill": "REDMINE"
-}, {
-  "skill": "PARTNER"
 }, {
   "skill": "DIGITALOCEAN"
 }, {
@@ -7635,29 +4202,7 @@
 }, {
   "skill": "MINSAIT"
 }, {
-  "skill": "SOCIAIS"
-}, {
-  "skill": "LINHA"
-}, {
-  "skill": "CONTACT"
-}, {
-  "skill": "TERMINAIS"
-}, {
-  "skill": "ARQUIVOS"
-}, {
   "skill": "VCENTER"
-}, {
-  "skill": "REUNIOES"
-}, {
-  "skill": "LINKS"
-}, {
-  "skill": "ALELO"
-}, {
-  "skill": "ORGANIZACIONAL"
-}, {
-  "skill": "ENTRE"
-}, {
-  "skill": "RONALDO"
 }, {
   "skill": "OFFICESCAN"
 }, {
@@ -7665,383 +4210,69 @@
 }, {
   "skill": "BOOTSTRAP4"
 }, {
-  "skill": "CHAMADOS"
-}, {
-  "skill": "COSTUMER"
-}, {
   "skill": "SCOPUS"
-}, {
-  "skill": "INTELIGENCIA"
-}, {
-  "skill": "GUARULHOS"
-}, {
-  "skill": "POLITICA"
 }, {
   "skill": "LOMBOK"
 }, {
-  "skill": "BLACK"
-}, {
-  "skill": "MANAUS"
-}, {
-  "skill": "BLADE"
-}, {
   "skill": "DROOLS"
-}, {
-  "skill": "DELIVERY"
-}, {
-  "skill": "SALES"
-}, {
-  "skill": "POWER"
-}, {
-  "skill": "ANDRESSA"
 }, {
   "skill": "HITACHI"
 }, {
-  "skill": "NORTE"
-}, {
   "skill": "SCADA"
-}, {
-  "skill": "TRIBUTARIA"
-}, {
-  "skill": "PROGRAMACAO"
 }, {
   "skill": "RASPBERRY"
 }, {
-  "skill": "ALOCACAO"
-}, {
-  "skill": "GOLDEN"
-}, {
   "skill": "ENTITYFRAMEWORK"
-}, {
-  "skill": "FUNCIONAL"
-}, {
-  "skill": "MATTOS"
-}, {
-  "skill": "CENTURA"
-}, {
-  "skill": "COMPUTADOR"
-}, {
-  "skill": "INTEGRAL"
 }, {
   "skill": "KUBERNETS"
 }, {
-  "skill": "TERRA"
-}, {
-  "skill": "GESTAO"
-}, {
   "skill": "PANDA"
-}, {
-  "skill": "TEAMS"
-}, {
-  "skill": "SITES"
-}, {
-  "skill": "FACTORY"
-}, {
-  "skill": "MATERIAL"
-}, {
-  "skill": "GENERALISTA"
-}, {
-  "skill": "EVENTOS"
-}, {
-  "skill": "TRIBUTARIO"
-}, {
-  "skill": "TOOLS"
-}, {
-  "skill": "SEXTA"
-}, {
-  "skill": "CONSULTORA"
 }, {
   "skill": "PRESTO"
 }, {
-  "skill": "HUMANOS"
-}, {
-  "skill": "GENTE"
-}, {
-  "skill": "FACULDADE"
-}, {
   "skill": "OFFSHORE"
 }, {
-  "skill": "MAYARA"
-}, {
   "skill": "SIGNALR"
-}, {
-  "skill": "PAGSEGURO"
-}, {
-  "skill": "DESEMPENHO"
 }, {
   "skill": "PYTON"
 }, {
   "skill": "HTMLCSS"
 }, {
-  "skill": "JAGUARIUNA"
-}, {
-  "skill": "BUDGET"
-}, {
-  "skill": "CAMPOS"
-}, {
-  "skill": "PRETENSAO"
-}, {
-  "skill": "ESTOU"
-}, {
-  "skill": "FLUXOS"
-}, {
-  "skill": "PARECER"
-}, {
-  "skill": "FOCADA"
-}, {
-  "skill": "STREAMS"
-}, {
   "skill": "REDSHIFT"
-}, {
-  "skill": "HACKING"
-}, {
-  "skill": "JAVAKOTLIN"
-}, {
-  "skill": "ALTRAN"
-}, {
-  "skill": "REGIAO"
-}, {
-  "skill": "PRESALES"
-}, {
-  "skill": "PROXY"
-}, {
-  "skill": "DEVELOPER"
-}, {
-  "skill": "MANUTENCOES"
-}, {
-  "skill": "BARBOSA"
-}, {
-  "skill": "RELACIONAMENTO"
-}, {
-  "skill": "COTIA"
-}, {
-  "skill": "ESTES"
 }, {
   "skill": "VERSION"
 }, {
-  "skill": "COISAS"
-}, {
-  "skill": "STEFANINI"
-}, {
-  "skill": "PREDIAL"
-}, {
-  "skill": "INICIACAO"
-}, {
   "skill": "MSOFFICE"
-}, {
-  "skill": "SIDNEY"
-}, {
-  "skill": "NOTURNO"
-}, {
-  "skill": "FORMS"
-}, {
-  "skill": "AMERICAN"
-}, {
-  "skill": "AMERICAS"
-}, {
-  "skill": "OBJETOS"
-}, {
-  "skill": "AVALARA"
-}, {
-  "skill": "ROTEADORES"
-}, {
-  "skill": "HORIZONTE"
-}, {
-  "skill": "AUTORIZACAO"
-}, {
-  "skill": "INVENTARIO"
-}, {
-  "skill": "RELEASE"
-}, {
-  "skill": "AUDITORIAS"
-}, {
-  "skill": "REVISTA"
-}, {
-  "skill": "FARMER"
-}, {
-  "skill": "EVERIS"
-}, {
-  "skill": "APLICACAO"
-}, {
-  "skill": "BRASIL"
-}, {
-  "skill": "FORMACAO"
-}, {
-  "skill": "BLUEPRINTS"
-}, {
-  "skill": "VIDEO"
 }, {
   "skill": "NETBEANS"
 }, {
-  "skill": "CLUSTERIZACAO"
-}, {
-  "skill": "CAPTURA"
-}, {
   "skill": "POSTGREE"
-}, {
-  "skill": "FLEXIVEL"
-}, {
-  "skill": "TECHLEAD"
 }, {
   "skill": "POSTGRES"
 }, {
   "skill": "MANSERV"
 }, {
-  "skill": "DASHBOARDS"
-}, {
-  "skill": "BLUMENAUSC"
-}, {
-  "skill": "FEMININA"
-}, {
-  "skill": "JURIDICO"
-}, {
-  "skill": "CURITIBAPR"
-}, {
-  "skill": "ENSINO"
-}, {
-  "skill": "FEMININO"
-}, {
-  "skill": "ATENDIMENTO"
-}, {
-  "skill": "JURIDICA"
-}, {
-  "skill": "LECOM"
-}, {
-  "skill": "EDUCACAO"
-}, {
-  "skill": "SMART"
-}, {
-  "skill": "ESCRITORIO"
-}, {
-  "skill": "FINANCEIRAS"
-}, {
-  "skill": "MASTER"
-}, {
   "skill": "EMULADOR"
 }, {
   "skill": "KNOCKOUTJS"
 }, {
-  "skill": "MANUTENCAO"
-}, {
-  "skill": "COORDENADORA"
-}, {
   "skill": "UNIFY"
 }, {
-  "skill": "PROGRAMADO"
-}, {
-  "skill": "SOCIAL"
-}, {
-  "skill": "HARDWARES"
-}, {
-  "skill": "ESTUDANDO"
-}, {
-  "skill": "ESTREITO"
-}, {
-  "skill": "CLASSES"
-}, {
-  "skill": "JOINVILLE"
-}, {
-  "skill": "ASSOCIADO"
-}, {
   "skill": "MICROVIX"
-}, {
-  "skill": "PERSONA"
-}, {
-  "skill": "CLASSIC"
-}, {
-  "skill": "PRODUCTION"
-}, {
-  "skill": "DEFICIENTE"
-}, {
-  "skill": "MAPEAMENTO"
-}, {
-  "skill": "ADMINSITRACAO"
-}, {
-  "skill": "POINT"
-}, {
-  "skill": "INGLES"
-}, {
-  "skill": "SEGMENTO"
-}, {
-  "skill": "CADASTRO"
-}, {
-  "skill": "MULTIDIMENSIONAL"
-}, {
-  "skill": "EMPRESARIAL"
-}, {
-  "skill": "RONIE"
 }, {
   "skill": "AGILE"
 }, {
   "skill": "UBUNTU"
 }, {
-  "skill": "COMERCIO"
-}, {
-  "skill": "JURISPRUDENCIA"
-}, {
   "skill": "EIGRP"
-}, {
-  "skill": "JUNDIAI"
-}, {
-  "skill": "GERAL"
-}, {
-  "skill": "ODONTOLOGICA"
-}, {
-  "skill": "SUMARE"
-}, {
-  "skill": "SUITE"
-}, {
-  "skill": "PETROPOLIS"
 }, {
   "skill": "NUXTJS"
 }, {
-  "skill": "CLIMATIZACAO"
-}, {
   "skill": "HUDSON"
-}, {
-  "skill": "VINHEDO"
-}, {
-  "skill": "ODONTOLOGICO"
-}, {
-  "skill": "EXPLORE"
-}, {
-  "skill": "CAMPANHAS"
-}, {
-  "skill": "SANTANDER"
-}, {
-  "skill": "ROTINAS"
-}, {
-  "skill": "UBERABA"
-}, {
-  "skill": "ANALISE"
-}, {
-  "skill": "EXCHANGE"
-}, {
-  "skill": "SOLUTIONS"
-}, {
-  "skill": "OOTUCA"
-}, {
-  "skill": "ITUPEVA"
 }, {
   "skill": "MONDODB"
 }, {
-  "skill": "MANUEL"
-}, {
-  "skill": "CURITIBA"
-}, {
-  "skill": "FINANCEIROS"
-}, {
-  "skill": "ANTIFRAUDE"
-}, {
   "skill": "UNITY"
-}, {
-  "skill": "ESTUDANTE"
-}, {
-  "skill": "FORNECEDORES"
-}, {
-  "skill": "INCEPTION"
-}, {
-  "skill": "BUILDING"
 }, {
   "skill": "ACCESS"
 }, {
@@ -8049,351 +4280,61 @@
 }, {
   "skill": "SYSLOG"
 }, {
-  "skill": "ATUALMENTE"
-}, {
-  "skill": "PROXIMO"
-}, {
-  "skill": "AQUINO"
-}, {
-  "skill": "FLORIANOPOLIS"
-}, {
-  "skill": "BUTANTA"
-}, {
-  "skill": "CONTAS"
-}, {
-  "skill": "PEDIDOS"
-}, {
-  "skill": "FORTUNATO"
-}, {
-  "skill": "RONDONIA"
-}, {
-  "skill": "EXTERNO"
-}, {
   "skill": "FORTIFY"
-}, {
-  "skill": "HOMOLOGADOR"
 }, {
   "skill": "CODECOMMIT"
 }, {
-  "skill": "DESKTOP"
-}, {
   "skill": "KEYCLOAK"
 }, {
-  "skill": "DOCUMENTOS"
-}, {
   "skill": "LINUX"
-}, {
-  "skill": "ETICO"
 }, {
   "skill": "AZ104"
 }, {
   "skill": "MASTERSAF"
 }, {
-  "skill": "FREELANCER"
-}, {
-  "skill": "DYNAMICS"
-}, {
-  "skill": "CRASHLYTICS"
-}, {
-  "skill": "VIRTUALIZACAO"
-}, {
-  "skill": "EDUCADORA"
-}, {
-  "skill": "VIVENCIA"
-}, {
-  "skill": "CAMBIO"
-}, {
-  "skill": "BATCH"
-}, {
-  "skill": "MANUAL"
-}, {
-  "skill": "JASON"
-}, {
-  "skill": "RACKS"
-}, {
-  "skill": "INTEGRADOR"
-}, {
-  "skill": "LIMEIRA"
-}, {
-  "skill": "ACESSIBILIDADE"
-}, {
-  "skill": "NOTEBOOK"
-}, {
-  "skill": "QUALITY"
-}, {
-  "skill": "MULTINACIONAL"
-}, {
-  "skill": "BRUNO"
-}, {
-  "skill": "EXPEDICAO"
-}, {
-  "skill": "WELTON"
-}, {
   "skill": "MOODLE"
-}, {
-  "skill": "FOUNDATIONS"
-}, {
-  "skill": "ANYWHERE"
-}, {
-  "skill": "CHAIN"
-}, {
-  "skill": "RICARDO"
-}, {
-  "skill": "PACOTE"
-}, {
-  "skill": "DOMINIO"
-}, {
-  "skill": "GENERATOR"
 }, {
   "skill": "PHPUNIT"
 }, {
-  "skill": "LEANDRO"
-}, {
-  "skill": "BACKUP"
-}, {
   "skill": "CONTEINERES"
-}, {
-  "skill": "FIBRA"
-}, {
-  "skill": "FLUENT"
-}, {
-  "skill": "CUIABA"
-}, {
-  "skill": "DEBUG"
-}, {
-  "skill": "USUARIO"
-}, {
-  "skill": "PSICOLOGA"
-}, {
-  "skill": "CLASSICO"
-}, {
-  "skill": "MIGRACAO"
 }, {
   "skill": "COMPOSE"
 }, {
-  "skill": "DESTA"
-}, {
-  "skill": "CAMPO"
-}, {
-  "skill": "BONITA"
-}, {
-  "skill": "ENGAJAMENTO"
-}, {
-  "skill": "ALEGRE"
-}, {
-  "skill": "ESTAGIO"
-}, {
-  "skill": "AUTOMOBILISTICO"
-}, {
-  "skill": "ACOES"
-}, {
-  "skill": "COMPUTACAO"
-}, {
-  "skill": "EQUIPAMENTOS"
-}, {
-  "skill": "SALARIAL"
-}, {
-  "skill": "SANTO"
-}, {
-  "skill": "BROKER"
-}, {
-  "skill": "FILMES"
-}, {
-  "skill": "PAYPAL"
-}, {
-  "skill": "ALGORITIMOS"
-}, {
-  "skill": "ESTRUTURADO"
-}, {
-  "skill": "OPERATIONS"
-}, {
-  "skill": "MAQUINA"
-}, {
-  "skill": "ENDOMARKETING"
-}, {
-  "skill": "NODES"
-}, {
-  "skill": "FEDERAL"
-}, {
   "skill": "TRENDMICRO"
 }, {
-  "skill": "INTELLIGENCE"
-}, {
-  "skill": "ANALYST"
-}, {
-  "skill": "PROGRAMADORES"
-}, {
-  "skill": "UNIDADE"
-}, {
-  "skill": "DEMANDAS"
-}, {
-  "skill": "TECNICO"
-}, {
-  "skill": "TECNICA"
-}, {
   "skill": "TENABLE"
-}, {
-  "skill": "COZINHA"
-}, {
-  "skill": "SWITCHES"
-}, {
-  "skill": "RADIO"
 }, {
   "skill": "JAVAWEB"
 }, {
   "skill": "OBIEE"
 }, {
-  "skill": "LAVRAS"
-}, {
-  "skill": "INTELIGENCE"
-}, {
-  "skill": "ASSISTENCIA"
-}, {
-  "skill": "BASIC"
-}, {
-  "skill": "BUSSINES"
-}, {
   "skill": "SERPRO"
-}, {
-  "skill": "LUANA"
-}, {
-  "skill": "CYBER"
-}, {
-  "skill": "SOLUCOES"
-}, {
-  "skill": "INSTALACOES"
-}, {
-  "skill": "RECURSOS"
-}, {
-  "skill": "TERESOPOLIS"
-}, {
-  "skill": "BLUMENAU"
-}, {
-  "skill": "QUALICORP"
-}, {
-  "skill": "HTTPARTY"
-}, {
-  "skill": "PARCEIRO"
 }, {
   "skill": "PARADO"
 }, {
-  "skill": "HARDWARE"
-}, {
   "skill": "KANBAM"
 }, {
-  "skill": "ABRAAO"
-}, {
-  "skill": "PROSPECCAO"
-}, {
-  "skill": "RODRIGUES"
-}, {
-  "skill": "MUDANCAS"
-}, {
-  "skill": "FATURAS"
-}, {
-  "skill": "MICROSOFT"
-}, {
-  "skill": "BARROS"
-}, {
   "skill": "CHERWELL"
-}, {
-  "skill": "CUBATAO"
-}, {
-  "skill": "COMPLIANCE"
-}, {
-  "skill": "GUACU"
-}, {
-  "skill": "FLUENTE"
-}, {
-  "skill": "SANDRA"
-}, {
-  "skill": "CARLOS"
-}, {
-  "skill": "AGENTE"
-}, {
-  "skill": "SALARIOS"
-}, {
-  "skill": "CRESOL"
-}, {
-  "skill": "REPLICACAO"
 }, {
   "skill": "POWERDESIGNER"
 }, {
   "skill": "XUNIT"
 }, {
-  "skill": "AUTOMATE"
-}, {
   "skill": "FOURSYS"
-}, {
-  "skill": "TELEFONISTA"
 }, {
   "skill": "WEBFORMS"
 }, {
-  "skill": "TOTVS"
-}, {
-  "skill": "INTEGRACOES"
-}, {
   "skill": "CANVA"
-}, {
-  "skill": "PARANA"
-}, {
-  "skill": "CIELO"
-}, {
-  "skill": "CARTOES"
 }, {
   "skill": "VIGNETTE"
 }, {
-  "skill": "CIVIL"
-}, {
-  "skill": "VULNERABILIDADES"
-}, {
-  "skill": "INDAIATUBA"
-}, {
-  "skill": "PINHAIS"
-}, {
-  "skill": "QUALIDADE"
-}, {
-  "skill": "DESENVOVEDOR"
-}, {
-  "skill": "LEGADO"
-}, {
   "skill": "WINTHOR"
 }, {
-  "skill": "ATIVIDADES"
-}, {
-  "skill": "ROADMAP"
-}, {
-  "skill": "MEDICAMENTOS"
-}, {
   "skill": "ISO9001"
-}, {
-  "skill": "ASSINCRONA"
-}, {
-  "skill": "FORENSE"
 }, {
   "skill": "DATAFLOW"
 }, {
   "skill": "WMWARE"
-}, {
-  "skill": "CABEAMENTO"
-}, {
-  "skill": "MICROINFORMATICA"
-}, {
-  "skill": "INICIO"
-}, {
-  "skill": "DIRETOS"
-}, {
-  "skill": "CURADORIA"
-}, {
-  "skill": "COFRE"
-}, {
-  "skill": "BOITUVA"
-}, {
-  "skill": "HOSPITALAR"
-}, {
-  "skill": "GUARUJA"
-}, {
-  "skill": "SUZANO"
 }, {
   "skill": "ANGULAR2"
 }, {
@@ -8403,313 +4344,57 @@
 }, {
   "skill": "ISO27002"
 }, {
-  "skill": "LOCAL"
-}, {
-  "skill": "DOCUMENT"
-}, {
-  "skill": "SYSTEMS"
-}, {
   "skill": "SEQUELIZE"
-}, {
-  "skill": "ROUTERS"
 }, {
   "skill": "SOLARIS"
 }, {
-  "skill": "EDUCATION"
-}, {
-  "skill": "ATRIBUICOES"
-}, {
-  "skill": "MILHO"
-}, {
-  "skill": "TERCEIRIZACAO"
-}, {
-  "skill": "GUILHERME"
-}, {
   "skill": "GOLANG"
-}, {
-  "skill": "ESCOLARIDADE"
-}, {
-  "skill": "REMOTO"
 }, {
   "skill": "GATEWAYS"
 }, {
-  "skill": "SERGIPE"
-}, {
   "skill": "ARCGIS"
-}, {
-  "skill": "INICIANTE"
-}, {
-  "skill": "RENATA"
 }, {
   "skill": "CLOSER"
 }, {
-  "skill": "ENERGIA"
-}, {
-  "skill": "PESQUISA"
-}, {
-  "skill": "DEPURACAO"
-}, {
   "skill": "QLIKSENSE"
-}, {
-  "skill": "BOLSA"
-}, {
-  "skill": "FUNDICAO"
 }, {
   "skill": "DATAFLEX"
 }, {
-  "skill": "CROSS"
-}, {
-  "skill": "ATLETA"
-}, {
-  "skill": "RENATO"
-}, {
   "skill": "POWERSHELL"
-}, {
-  "skill": "BANNERS"
-}, {
-  "skill": "FINALISTA"
 }, {
   "skill": "CAPEX"
 }, {
-  "skill": "PRESENCIAL"
-}, {
-  "skill": "QUERY"
-}, {
   "skill": "FIRMWARE"
-}, {
-  "skill": "CONSULTORIA"
-}, {
-  "skill": "CONSUMO"
-}, {
-  "skill": "QUEUE"
-}, {
-  "skill": "PROFISSIONAL"
 }, {
   "skill": "VIRTUALBOX"
 }, {
-  "skill": "SERVERS"
-}, {
-  "skill": "THREADS"
-}, {
-  "skill": "SEATTLE"
-}, {
-  "skill": "TELECON"
-}, {
-  "skill": "ITAJAI"
-}, {
-  "skill": "TELECOM"
-}, {
-  "skill": "CONSOLIDATION"
-}, {
-  "skill": "BAUDUCCO"
-}, {
-  "skill": "CAIQUE"
-}, {
-  "skill": "DESENVOLVIMENTO"
-}, {
-  "skill": "INSTRUTOR"
-}, {
-  "skill": "APLICATIVOS"
-}, {
-  "skill": "ALGORITMOS"
-}, {
-  "skill": "VICENTE"
-}, {
   "skill": "HMTL5"
-}, {
-  "skill": "CORRETORA"
 }, {
   "skill": "BENNER"
 }, {
-  "skill": "LOURENCO"
-}, {
-  "skill": "WAREHOUSE"
-}, {
-  "skill": "SKILLS"
-}, {
-  "skill": "EQUIPES"
-}, {
-  "skill": "REGISTRO"
-}, {
-  "skill": "DANILO"
-}, {
-  "skill": "CURRICULOS"
-}, {
-  "skill": "MACAE"
-}, {
-  "skill": "MULHERES"
-}, {
-  "skill": "LUCAS"
-}, {
-  "skill": "ETHERNET"
-}, {
-  "skill": "TELEVENDAS"
-}, {
-  "skill": "VIEIRA"
-}, {
-  "skill": "MATCH"
-}, {
-  "skill": "ISRAEL"
-}, {
   "skill": "OCTANE"
 }, {
-  "skill": "EMBARCADO"
-}, {
-  "skill": "CRYSTAL"
-}, {
-  "skill": "ELABORACAO"
-}, {
-  "skill": "MEMBROS"
-}, {
-  "skill": "ARACAJU"
-}, {
-  "skill": "AUXILIO"
-}, {
   "skill": "JAVA8"
-}, {
-  "skill": "FORNECEDOR"
-}, {
-  "skill": "RADARES"
 }, {
   "skill": "RESPONSIVO"
 }, {
   "skill": "RESPONSIVE"
 }, {
-  "skill": "INVESTIMENTOS"
-}, {
-  "skill": "TUNING"
-}, {
-  "skill": "SIGMA"
-}, {
-  "skill": "PLANO"
-}, {
   "skill": "TESTCOMPLETE"
-}, {
-  "skill": "RAFAEL"
-}, {
-  "skill": "MINERACAO"
 }, {
   "skill": "JDEDWARDS"
 }, {
-  "skill": "MACOS"
-}, {
-  "skill": "FECHAMENTO"
-}, {
-  "skill": "CERTIFICADO"
-}, {
-  "skill": "CERTIFICADA"
-}, {
-  "skill": "PENHA"
-}, {
-  "skill": "TERESINA"
-}, {
-  "skill": "INFORME"
-}, {
   "skill": "SYMANTEC"
-}, {
-  "skill": "APRESENTACAO"
-}, {
-  "skill": "BAURU"
-}, {
-  "skill": "RAIMUNDO"
-}, {
-  "skill": "WORKSHOPS"
-}, {
-  "skill": "MACEIO"
-}, {
-  "skill": "NIVEL"
-}, {
-  "skill": "INTERESSADOS"
-}, {
-  "skill": "ALIMENTICIO"
-}, {
-  "skill": "DISPONIBILIDADE"
-}, {
-  "skill": "CLUSTERS"
-}, {
-  "skill": "PROATIVIDADE"
-}, {
-  "skill": "INTERNET"
-}, {
-  "skill": "ROUTE53"
-}, {
-  "skill": "LEVANTAMENTO"
 }, {
   "skill": "MULESOFT"
 }, {
-  "skill": "INOVACOES"
-}, {
-  "skill": "RESEARCH"
-}, {
-  "skill": "CRIPTOMOEDAS"
-}, {
   "skill": "JAVAEE"
-}, {
-  "skill": "BOOST"
-}, {
-  "skill": "ANALISTAS"
-}, {
-  "skill": "TRABALHANDO"
 }, {
   "skill": "BTRIEVE"
 }, {
-  "skill": "PREVENCAO"
-}, {
-  "skill": "SUPERIOR"
-}, {
   "skill": "SPECTRUM"
 }, {
-  "skill": "RUSSO"
-}, {
-  "skill": "MOOCA"
-}, {
-  "skill": "CREDITO"
-}, {
-  "skill": "EQUIPE"
-}, {
-  "skill": "MANUFATURA"
-}, {
-  "skill": "REDES"
-}, {
-  "skill": "INTEL"
-}, {
-  "skill": "APLICATIVO"
-}, {
-  "skill": "CONFIANTE"
-}, {
-  "skill": "PERNAMBUCO"
-}, {
-  "skill": "PRETO"
-}, {
-  "skill": "ORGANIZACAO"
-}, {
-  "skill": "MOVIMENTACAO"
-}, {
-  "skill": "CONCILIACAO"
-}, {
-  "skill": "INTERNOS"
-}, {
   "skill": "AUTBANK"
-}, {
-  "skill": "CHARGEBACK"
-}, {
-  "skill": "INTERNA"
-}, {
-  "skill": "DIANA"
-}, {
-  "skill": "APRENDIZ"
-}, {
-  "skill": "INTERNO"
-}, {
-  "skill": "OUTBOUND"
-}, {
-  "skill": "ACTIVITY"
-}, {
-  "skill": "PROFILES"
-}, {
-  "skill": "GRANDE"
-}, {
-  "skill": "GUSTAVO"
 }, {
   "skill": "CRAWLER"
 }, {
@@ -8717,723 +4402,109 @@
 }, {
   "skill": "MICROSERVICO"
 }, {
-  "skill": "ESTRELA"
-}, {
   "skill": "ZEPHYR"
-}, {
-  "skill": "AERONAUTICA"
-}, {
-  "skill": "DESENHOS"
-}, {
-  "skill": "QUICK"
-}, {
-  "skill": "DIGITADOR"
-}, {
-  "skill": "PAULO"
 }, {
   "skill": "INTERBASE"
 }, {
-  "skill": "DIFERENCIAL"
-}, {
   "skill": "UIPATH"
-}, {
-  "skill": "MONTADORA"
-}, {
-  "skill": "ORGANIZADA"
 }, {
   "skill": "SMARTFORMS"
 }, {
-  "skill": "ORGANIZADO"
-}, {
-  "skill": "MINAS"
-}, {
-  "skill": "ACESSAR"
-}, {
-  "skill": "MITIGACAO"
-}, {
-  "skill": "BARUERI"
-}, {
-  "skill": "COURIER"
-}, {
   "skill": "OFFICE365"
 }, {
-  "skill": "BUTANTAN"
-}, {
-  "skill": "ELETRONICO"
-}, {
-  "skill": "EMBARCADOS"
-}, {
-  "skill": "PEREIRA"
-}, {
-  "skill": "APRESENTACOES"
-}, {
-  "skill": "SOCKETS"
-}, {
-  "skill": "PROGRAMMER"
-}, {
-  "skill": "DEPARTAMENTO"
-}, {
-  "skill": "ENCAMINHAR"
-}, {
-  "skill": "PLANOS"
-}, {
   "skill": "HYBRID"
-}, {
-  "skill": "TALENTOS"
-}, {
-  "skill": "WEBAPP"
-}, {
-  "skill": "MARINGA"
-}, {
-  "skill": "INTERMEDIARIO"
-}, {
-  "skill": "LAYOUT"
-}, {
-  "skill": "ANALYTICS"
-}, {
-  "skill": "HUAWEI"
-}, {
-  "skill": "CAPTA"
-}, {
-  "skill": "VEICULOS"
-}, {
-  "skill": "SINISTRO"
-}, {
-  "skill": "PROMOTOR"
-}, {
-  "skill": "RECRUITER"
 }, {
   "skill": "RETAIL"
 }, {
   "skill": "KABAN"
 }, {
-  "skill": "BANDEIRA"
-}, {
-  "skill": "FINTECH"
-}, {
-  "skill": "PEOPLE"
-}, {
-  "skill": "ENERGISA"
-}, {
   "skill": "QUASAR"
 }, {
-  "skill": "MELHORIAS"
-}, {
-  "skill": "ANTUNES"
-}, {
-  "skill": "RECERTIFICACAO"
-}, {
-  "skill": "FIELD"
-}, {
-  "skill": "REDECARD"
-}, {
-  "skill": "TRANSPORTES"
-}, {
   "skill": "NODESJS"
-}, {
-  "skill": "TELEPROCESSAMENTO"
-}, {
-  "skill": "HOMEM"
-}, {
-  "skill": "CONHECIMENTOS"
 }, {
   "skill": "SIENGE"
 }, {
   "skill": "CORELDRAW"
 }, {
-  "skill": "CONSULTORAS"
-}, {
-  "skill": "WASHINGTON"
-}, {
   "skill": "RAZOR"
 }, {
   "skill": "VLANS"
 }, {
-  "skill": "TREINAMENTOS"
-}, {
-  "skill": "HIDRAULICA"
-}, {
-  "skill": "EXPLORATORIOS"
-}, {
-  "skill": "ELETROTECNICA"
-}, {
-  "skill": "CONSULTORES"
-}, {
-  "skill": "SUPRIMENTOS"
-}, {
-  "skill": "TESTING"
-}, {
-  "skill": "MESES"
-}, {
-  "skill": "ANDERSON"
-}, {
   "skill": "ODATA"
-}, {
-  "skill": "TEXTO"
-}, {
-  "skill": "OTAVIO"
-}, {
-  "skill": "ITAQUAQUECETUBA"
-}, {
-  "skill": "CASCAVEL"
 }, {
   "skill": "DAGGER"
 }, {
-  "skill": "CARGA"
-}, {
-  "skill": "AMAZONAS"
-}, {
-  "skill": "OPORTUNIDADE"
-}, {
-  "skill": "RESPONSAVEL"
-}, {
-  "skill": "VISUALIZACAO"
-}, {
-  "skill": "NAVARRO"
-}, {
-  "skill": "INTEGRADO"
-}, {
-  "skill": "NEGOCIOS"
-}, {
-  "skill": "BENEFICIOS"
-}, {
   "skill": "OWNERSHIP"
-}, {
-  "skill": "INVENTARIOS"
-}, {
-  "skill": "ADMINISTRATION"
-}, {
-  "skill": "TAKING"
-}, {
-  "skill": "HORTOLANDIA"
-}, {
-  "skill": "EVANDRO"
-}, {
-  "skill": "OBSERVABILIDADE"
-}, {
-  "skill": "ROBOTIC"
-}, {
-  "skill": "DIGITACAO"
-}, {
-  "skill": "TRANSPORTE"
-}, {
-  "skill": "BASILEIA"
-}, {
-  "skill": "NENHUM"
-}, {
-  "skill": "CORRENTE"
-}, {
-  "skill": "GEOMETRIA"
-}, {
-  "skill": "DISPONIVEL"
 }, {
   "skill": "WORKERS"
 }, {
-  "skill": "AMEACAS"
-}, {
-  "skill": "COLABORACAO"
-}, {
   "skill": "UNIXLINUX"
-}, {
-  "skill": "OUTRA"
-}, {
-  "skill": "ENGLISH"
 }, {
   "skill": "KAMBAN"
 }, {
-  "skill": "CANAIS"
-}, {
-  "skill": "GEOPROCESSAMENTO"
-}, {
-  "skill": "INCENDIO"
-}, {
-  "skill": "ATUAR"
-}, {
-  "skill": "BRASILIA"
-}, {
-  "skill": "VISUAL"
-}, {
-  "skill": "MARCIO"
-}, {
   "skill": "KASPERSKY"
-}, {
-  "skill": "MICROEMPREENDEDOR"
-}, {
-  "skill": "JACAREI"
-}, {
-  "skill": "IDENTIDADE"
-}, {
-  "skill": "ENTITY"
-}, {
-  "skill": "LOTUS"
-}, {
-  "skill": "COOKIES"
-}, {
-  "skill": "ADMINISTRATIVO"
-}, {
-  "skill": "CRECHE"
-}, {
-  "skill": "ADMINISTRATIVA"
-}, {
-  "skill": "PRAZOS"
-}, {
-  "skill": "ANALISES"
-}, {
-  "skill": "PERUIBE"
-}, {
-  "skill": "INDUSTRIAL"
-}, {
-  "skill": "RESPONSABILIDADES"
-}, {
-  "skill": "TABOAO"
-}, {
-  "skill": "PONTUAL"
-}, {
-  "skill": "FILIAL"
 }, {
   "skill": "TACACS"
 }, {
-  "skill": "CONTRATOS"
-}, {
-  "skill": "DIGITAIS"
-}, {
-  "skill": "ESCRITA"
-}, {
-  "skill": "CHARTS"
-}, {
-  "skill": "JAPONES"
-}, {
-  "skill": "RESOURCE"
-}, {
-  "skill": "CAPIVARI"
-}, {
-  "skill": "PLANEJAMENTO"
-}, {
-  "skill": "ADVOGADA"
-}, {
-  "skill": "DETERMINACAO"
-}, {
-  "skill": "INOVACAO"
-}, {
-  "skill": "SINERGIA"
-}, {
-  "skill": "MARCAL"
-}, {
-  "skill": "METAIS"
-}, {
-  "skill": "IMEDIATO"
-}, {
   "skill": "ISACA"
-}, {
-  "skill": "CHEFE"
-}, {
-  "skill": "MILITAR"
-}, {
-  "skill": "AMBIENTE"
-}, {
-  "skill": "PADRONIZACAO"
-}, {
-  "skill": "NEGOCIACAO"
-}, {
-  "skill": "JESUS"
-}, {
-  "skill": "SENSE"
 }, {
   "skill": "PFSENSE"
 }, {
-  "skill": "LEARNING"
-}, {
   "skill": "AZUREDEVOPS"
-}, {
-  "skill": "PAULINIA"
-}, {
-  "skill": "GOOGLE"
-}, {
-  "skill": "ANALISTA"
-}, {
-  "skill": "COISA"
-}, {
-  "skill": "SUPERMERCADO"
 }, {
   "skill": "RABBITMQ"
 }, {
-  "skill": "RESTSOAP"
-}, {
-  "skill": "IMOVEIS"
-}, {
-  "skill": "CONHECIMENTO"
-}, {
-  "skill": "PROATIVO"
-}, {
-  "skill": "PLUGIN"
-}, {
   "skill": "ATTPS"
-}, {
-  "skill": "PRIVACIDADE"
 }, {
   "skill": "REACTIVE"
 }, {
-  "skill": "ABERTURA"
-}, {
-  "skill": "KIMURA"
-}, {
-  "skill": "ASSESSOR"
-}, {
-  "skill": "MERCADORIAS"
-}, {
-  "skill": "RELACIONADAS"
-}, {
-  "skill": "RESTRUTURACAO"
-}, {
   "skill": "JOOMLA"
-}, {
-  "skill": "SUCCESS"
-}, {
-  "skill": "LICITACAO"
-}, {
-  "skill": "CURSOS"
-}, {
-  "skill": "CURSOR"
-}, {
-  "skill": "PITANGA"
-}, {
-  "skill": "NOXXONSAT"
 }, {
   "skill": "RETROFIT"
 }, {
-  "skill": "IMPRESSORA"
-}, {
-  "skill": "MIGRATION"
-}, {
-  "skill": "7COMM"
-}, {
-  "skill": "PROTOTIPACAO"
-}, {
-  "skill": "BAHIA"
-}, {
-  "skill": "PROCEDURES"
-}, {
-  "skill": "LINGUAGEM"
-}, {
-  "skill": "SILVA"
-}, {
-  "skill": "PORTAL"
-}, {
-  "skill": "ROLLOUT"
-}, {
-  "skill": "BUSCA"
-}, {
-  "skill": "RECEPCIONAR"
-}, {
   "skill": "VRAPTOR"
-}, {
-  "skill": "REPORTS"
-}, {
-  "skill": "REPORTE"
-}, {
-  "skill": "GERENCIAIS"
-}, {
-  "skill": "OPTICA"
-}, {
-  "skill": "PLATAFORMA"
-}, {
-  "skill": "FLEXIBILIDADE"
-}, {
-  "skill": "LEONARDO"
-}, {
-  "skill": "PRATICAS"
-}, {
-  "skill": "TECNICAS"
-}, {
-  "skill": "CHANGE"
-}, {
-  "skill": "REGRESSAO"
-}, {
-  "skill": "SISTEMA"
-}, {
-  "skill": "WILLIAM"
 }, {
   "skill": "FULLSTACK"
 }, {
-  "skill": "JANDIRA"
-}, {
-  "skill": "PROPOSTAS"
-}, {
-  "skill": "THINKING"
-}, {
-  "skill": "BANCARIO"
-}, {
-  "skill": "CARGOS"
-}, {
-  "skill": "PROGRAM"
-}, {
-  "skill": "PRODUTOS"
-}, {
-  "skill": "COMPUTADORES"
-}, {
-  "skill": "BANCARIA"
-}, {
-  "skill": "RESTORE"
-}, {
-  "skill": "SANCHES"
-}, {
-  "skill": "BANCARIOS"
-}, {
-  "skill": "ENTERPRISE"
-}, {
-  "skill": "CATEGORIA"
-}, {
   "skill": "MICROFOCUS"
-}, {
-  "skill": "ARARAQUARA"
-}, {
-  "skill": "QUERIES"
-}, {
-  "skill": "ANIMAL"
-}, {
-  "skill": "BANKING"
-}, {
-  "skill": "ALEMAO"
-}, {
-  "skill": "GEORGE"
-}, {
-  "skill": "BILHETAGEM"
-}, {
-  "skill": "UNREAL"
-}, {
-  "skill": "MACKENZIE"
-}, {
-  "skill": "ADQUIRENCIA"
-}, {
-  "skill": "CLARO"
 }, {
   "skill": "LOGIX"
 }, {
-  "skill": "CITIBANK"
-}, {
-  "skill": "ANALITICA"
-}, {
-  "skill": "PLATAFORM"
-}, {
-  "skill": "PROBLEMA"
-}, {
-  "skill": "ANALITICO"
-}, {
   "skill": "HANGFIRE"
-}, {
-  "skill": "INSTALAR"
-}, {
-  "skill": "OUTSOURCING"
-}, {
-  "skill": "MARILIA"
-}, {
-  "skill": "LOGIC"
-}, {
-  "skill": "LIBERTY"
 }, {
   "skill": "ACCES"
 }, {
   "skill": "SYNAPSE"
 }, {
-  "skill": "HOOKS"
-}, {
-  "skill": "FORECAST"
-}, {
-  "skill": "ROSCOE"
-}, {
-  "skill": "SERVICO"
-}, {
-  "skill": "MEDIA"
-}, {
-  "skill": "SERVICE"
-}, {
-  "skill": "REGIONAL"
-}, {
-  "skill": "PAGAR"
-}, {
-  "skill": "PRICING"
-}, {
-  "skill": "SENIOR"
-}, {
   "skill": "RSPEC"
-}, {
-  "skill": "CARTEIRA"
-}, {
-  "skill": "SIMONE"
-}, {
-  "skill": "PESSOAL"
-}, {
-  "skill": "ENSAIOS"
-}, {
-  "skill": "ACESSO"
 }, {
   "skill": "WEBVIEW"
 }, {
-  "skill": "STORAGE"
-}, {
-  "skill": "BANDEIRAS"
-}, {
-  "skill": "FRAMEWORKS"
-}, {
-  "skill": "DIGITAL"
-}, {
-  "skill": "KAIZEN"
-}, {
   "skill": "REVIT"
-}, {
-  "skill": "MOTION"
 }, {
   "skill": "FORCEPOINT"
 }, {
-  "skill": "ITAPEVA"
-}, {
-  "skill": "ITAPEVI"
-}, {
-  "skill": "MONGAGUA"
-}, {
-  "skill": "SYSTEM"
-}, {
-  "skill": "CATIA"
-}, {
-  "skill": "DRIVEN"
-}, {
-  "skill": "ATRACAO"
-}, {
-  "skill": "RESERVA"
-}, {
-  "skill": "IDENTIDADES"
-}, {
-  "skill": "GESTORA"
-}, {
-  "skill": "WEBDESIGNER"
-}, {
   "skill": "ITEXT"
-}, {
-  "skill": "EXPORTACAO"
-}, {
-  "skill": "LIDER"
 }, {
   "skill": "JAVASCRIPTS"
 }, {
-  "skill": "ESTAMOS"
-}, {
-  "skill": "LINKEDIN"
-}, {
-  "skill": "FARMA"
-}, {
-  "skill": "UNIVERSIDADE"
-}, {
-  "skill": "HARDENING"
-}, {
-  "skill": "CHAMADO"
-}, {
-  "skill": "CONDUCTOR"
-}, {
-  "skill": "ADQUIRENTE"
-}, {
-  "skill": "AUTOMATIZAR"
-}, {
-  "skill": "ANDRE"
-}, {
-  "skill": "RECEBIMENTO"
-}, {
-  "skill": "PROMOCIONAIS"
-}, {
-  "skill": "PRODUTORA"
-}, {
-  "skill": "TIVIT"
-}, {
   "skill": "ENDIAN"
-}, {
-  "skill": "RECRUTADOR"
-}, {
-  "skill": "PLENO"
-}, {
-  "skill": "NATURAL"
-}, {
-  "skill": "PROCEDIMENTOS"
-}, {
-  "skill": "DISTRIBUICAO"
-}, {
-  "skill": "REDIGIR"
-}, {
-  "skill": "AMAPA"
-}, {
-  "skill": "INDRA"
 }, {
   "skill": "LPIC1"
 }, {
   "skill": "SECONCI"
 }, {
-  "skill": "CENTER"
-}, {
   "skill": "POSTGRESS"
-}, {
-  "skill": "ESPANHOL"
-}, {
-  "skill": "SAUDE"
-}, {
-  "skill": "PARALELISMO"
-}, {
-  "skill": "TRILINGUE"
-}, {
-  "skill": "RUDGE"
-}, {
-  "skill": "COLAB"
-}, {
-  "skill": "PROCEDURE"
-}, {
-  "skill": "IMAGEM"
-}, {
-  "skill": "TRIBUTOS"
-}, {
-  "skill": "METAS"
-}, {
-  "skill": "METAL"
-}, {
-  "skill": "FUNCIONAIS"
-}, {
-  "skill": "CURSANDO"
 }, {
   "skill": "ROBOT"
 }, {
   "skill": "CLARION"
 }, {
-  "skill": "PROJETAR"
-}, {
-  "skill": "FCAMARA"
-}, {
-  "skill": "LOGICA"
-}, {
-  "skill": "ALARME"
-}, {
-  "skill": "PROFESSORA"
-}, {
-  "skill": "CAPITANI"
-}, {
-  "skill": "FEBRABAN"
-}, {
-  "skill": "CARBONO"
-}, {
-  "skill": "PRIVACY"
-}, {
-  "skill": "ALGORITMO"
-}, {
   "skill": "OPENCV"
-}, {
-  "skill": "VALINHOS"
-}, {
-  "skill": "SOFWARE"
 }, {
   "skill": "SCRAPING"
 }, {
   "skill": "FASTIFY"
-}, {
-  "skill": "LICITACOES"
-}, {
-  "skill": "YASMIN"
-}, {
-  "skill": "CENTRO"
 }, {
   "skill": "FACILITES"
 }, {
@@ -9443,237 +4514,47 @@
 }, {
   "skill": "REDHAT"
 }, {
-  "skill": "PAGAMENTO"
-}, {
-  "skill": "JARAGUA"
-}, {
-  "skill": "CENTOS"
-}, {
   "skill": "QLIKVIEW"
-}, {
-  "skill": "TALENT"
-}, {
-  "skill": "STARTUP"
-}, {
-  "skill": "VERSAO"
-}, {
-  "skill": "CONSORCIO"
 }, {
   "skill": "DMAIC"
 }, {
   "skill": "JASPERREPORT"
 }, {
-  "skill": "ADVOGADOS"
-}, {
   "skill": "WEBSENSE"
-}, {
-  "skill": "MOTOBOY"
 }, {
   "skill": "WATCHGUARD"
 }, {
-  "skill": "WHATSAPP"
-}, {
   "skill": "ADABAS"
-}, {
-  "skill": "OFFICE"
 }, {
   "skill": "AS400"
 }, {
-  "skill": "ANTISPAM"
-}, {
-  "skill": "TROUBLESHOOTING"
-}, {
-  "skill": "PRIMEIRO"
-}, {
-  "skill": "CONSTRUIR"
-}, {
-  "skill": "NACIONAL"
-}, {
-  "skill": "CORREIOS"
-}, {
-  "skill": "AUTOMOTIVA"
-}, {
-  "skill": "AUTOMOTIVE"
-}, {
-  "skill": "AUTOMOTIVO"
-}, {
-  "skill": "AMANDA"
-}, {
-  "skill": "NORMALIZACAO"
-}, {
-  "skill": "ONIBUS"
-}, {
-  "skill": "HONORIO"
-}, {
-  "skill": "INTERFACE"
-}, {
   "skill": "NETBACKUP"
-}, {
-  "skill": "OBRAS"
-}, {
-  "skill": "MERCHANDISING"
-}, {
-  "skill": "DOCUMENTACAO"
 }, {
   "skill": "PRIMEFACE"
 }, {
   "skill": "NOTEPAD++"
 }, {
-  "skill": "OPERACIONAIS"
-}, {
-  "skill": "VOTUPORANGA"
-}, {
-  "skill": "MANHATTAN"
-}, {
-  "skill": "NORMAS"
-}, {
   "skill": "ACESS"
 }, {
-  "skill": "SWITCH"
-}, {
-  "skill": "JANEIRO"
-}, {
-  "skill": "SUSTENTABILIDADE"
-}, {
-  "skill": "ENCARGOS"
-}, {
   "skill": "ELASTIC"
-}, {
-  "skill": "INBOUND"
-}, {
-  "skill": "WIREFRAMES"
-}, {
-  "skill": "MOBILIDADE"
-}, {
-  "skill": "HIGIENOPOLIS"
-}, {
-  "skill": "FREDERICO"
-}, {
-  "skill": "ESTORIAS"
 }, {
   "skill": "COMEX"
 }, {
   "skill": "ONESOURCE"
 }, {
-  "skill": "OPORTUNIDADES"
-}, {
-  "skill": "SHOPIFY"
-}, {
-  "skill": "LEGADOS"
-}, {
-  "skill": "TEMPO"
-}, {
-  "skill": "FRANQUIAS"
-}, {
-  "skill": "PUBLICA"
-}, {
-  "skill": "ALAGOAS"
-}, {
-  "skill": "CELULAR"
-}, {
   "skill": "CONTROLM"
 }, {
-  "skill": "CONTROLE"
-}, {
-  "skill": "DIARIAMENTE"
-}, {
-  "skill": "INDESIGN"
-}, {
-  "skill": "LISBOA"
-}, {
-  "skill": "PROTOTIPO"
-}, {
-  "skill": "TELEOPERADOR"
-}, {
-  "skill": "BACKLOG"
-}, {
-  "skill": "FERNANDO"
-}, {
-  "skill": "FERNANDA"
-}, {
-  "skill": "SOLUTION"
-}, {
-  "skill": "STREAMING"
-}, {
-  "skill": "FUNDOS"
-}, {
-  "skill": "CELULARES"
-}, {
-  "skill": "REQUISITOS"
-}, {
-  "skill": "SOROCABA"
-}, {
-  "skill": "SCIENCE"
-}, {
-  "skill": "TOCANTINS"
-}, {
-  "skill": "PORTO"
-}, {
-  "skill": "PROJECTS"
-}, {
-  "skill": "CONTADORES"
-}, {
-  "skill": "ENHANCEMENTS"
-}, {
-  "skill": "TESTES"
-}, {
-  "skill": "GETNET"
-}, {
-  "skill": "UNIMED"
-}, {
-  "skill": "LINGUAGENS"
-}, {
-  "skill": "NITEROI"
-}, {
-  "skill": "EBUSINESS"
-}, {
-  "skill": "PUBLICO"
-}, {
-  "skill": "SERVICEDESK"
-}, {
-  "skill": "ESTAGIARIO"
-}, {
-  "skill": "ESTAGIARIA"
-}, {
   "skill": "ISHIKAWA"
-}, {
-  "skill": "BACKOFFICE"
-}, {
-  "skill": "SANTOS"
 }, {
   "skill": "MOBILES"
 }, {
   "skill": "MQSERIES"
 }, {
-  "skill": "ONBOARDING"
-}, {
-  "skill": "SEPARACAO"
-}, {
-  "skill": "SPECIALIST"
-}, {
-  "skill": "ROMULO"
-}, {
-  "skill": "NATAL"
-}, {
-  "skill": "LEADER"
-}, {
   "skill": "TELERIK"
 }, {
   "skill": "POSTEGRESQL"
 }, {
-  "skill": "SISTEMAS"
-}, {
-  "skill": "TEXTOS"
-}, {
-  "skill": "DESENVOLVEDORA"
-}, {
   "skill": "ILLUSTRATOR"
-}, {
-  "skill": "HOMEOFFICE"
-}, {
-  "skill": "CUSTOMER"
-}, {
-  "skill": "PECAS"
 }, {
   "skill": "WEBSOCKETS"
 }, {
@@ -9681,131 +4562,27 @@
 }, {
   "skill": "FORTRAN"
 }, {
-  "skill": "ADMINISTRADO"
-}, {
-  "skill": "PATCHES"
-}, {
-  "skill": "DIADEMA"
-}, {
-  "skill": "CIDADE"
-}, {
-  "skill": "MICROCONTROLADORES"
-}, {
   "skill": "TELCO"
 }, {
   "skill": "ASTERISK"
 }, {
-  "skill": "PALESTRAS"
-}, {
-  "skill": "TRADE"
-}, {
-  "skill": "POSICAO"
-}, {
-  "skill": "VIAGENS"
-}, {
-  "skill": "INFRA"
-}, {
   "skill": "SQUID"
 }, {
-  "skill": "FUNCAO"
-}, {
-  "skill": "VIVIAN"
-}, {
   "skill": "BUGZILLA"
-}, {
-  "skill": "PRINT"
-}, {
-  "skill": "JUVENTUDE"
-}, {
-  "skill": "ACORDO"
-}, {
-  "skill": "OWNER"
-}, {
-  "skill": "PAYMENTS"
-}, {
-  "skill": "CODIGOS"
-}, {
-  "skill": "OPERACIONAL"
-}, {
-  "skill": "TELECOMMUNICATION"
-}, {
-  "skill": "TRANS"
-}, {
-  "skill": "GAZETA"
-}, {
-  "skill": "SERVE"
-}, {
-  "skill": "INTERLAGOS"
-}, {
-  "skill": "ROUTE"
 }, {
   "skill": "AZ900"
 }, {
   "skill": "NUNIT"
 }, {
-  "skill": "NETWORK"
-}, {
-  "skill": "GAMES"
-}, {
-  "skill": "BRASILIADF"
-}, {
-  "skill": "HABILITACAO"
-}, {
-  "skill": "ROTINA"
-}, {
-  "skill": "VAULT"
-}, {
-  "skill": "ORCAMENTOS"
-}, {
-  "skill": "UNIVERSITARIO"
-}, {
   "skill": "LOGMEIN"
-}, {
-  "skill": "ESTRATEGICO"
-}, {
-  "skill": "EXECUTIVE"
 }, {
   "skill": "SYNCHRO"
 }, {
-  "skill": "HIBRIDO"
-}, {
-  "skill": "ESTRATEGIAS"
-}, {
-  "skill": "FOLHA"
-}, {
-  "skill": "SERVIDORES"
-}, {
-  "skill": "BANCOS"
-}, {
-  "skill": "MESTRADO"
-}, {
-  "skill": "CONTRATACAO"
-}, {
   "skill": "JASPERREPORTS"
-}, {
-  "skill": "AVANCADO"
-}, {
-  "skill": "SAFRA"
-}, {
-  "skill": "TOLEDO"
 }, {
   "skill": "CHECKPOINT"
 }, {
-  "skill": "GARANTIAS"
-}, {
-  "skill": "PAGAMENTOS"
-}, {
-  "skill": "JUNIOR"
-}, {
-  "skill": "ATUACAO"
-}, {
-  "skill": "DESENVOLVEDOR"
-}, {
   "skill": "TELON"
-}, {
-  "skill": "AGRONEGOCIO"
-}, {
-  "skill": "HORARIO"
 }, {
   "skill": "DATAMARTS"
 }]
