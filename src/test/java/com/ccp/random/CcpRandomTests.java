@@ -79,11 +79,16 @@ public class CcpRandomTests {
 		System.out.println(set.size());
 		CcpFileDecorator synonymsFile = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\skills\\synonyms.json").file();
 		List<CcpJsonRepresentation> synonyms = new ArrayList<CcpJsonRepresentation>(synonymsFile.asJsonList());
+		
+		
 		int counter = 0;
+		List<CcpJsonRepresentation> missing = new ArrayList<>();
 		for (CcpJsonRepresentation json : synonyms) {
 			
 			CcpDynamicJsonRepresentation dynamicVersion = json.getDynamicVersion();
 			String skill = dynamicVersion.getAsString("skill");
+			
+			
 			if(set.contains(skill)) {
 				counter ++;
 				continue;
@@ -95,8 +100,16 @@ public class CcpRandomTests {
 				counter ++;
 				continue;
 			}
-			
-			
+			missing.add(json);
+		}
+		List<String> removidas = new CcpStringDecorator("c:/logs/skills/removidas.txt").file().getLines().stream().map(x -> x.trim().split(" = ")[0]).collect(Collectors.toList());
+		
+		for (var copy : missing) {
+			String skill = copy.getDynamicVersion().getAsString("skill");
+			if(removidas.contains(skill)) {
+				continue;
+			}
+			System.out.println(skill);
 		}
 		System.out.println(synonyms.size());
 		System.out.println(counter);
