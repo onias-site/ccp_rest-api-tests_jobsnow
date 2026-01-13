@@ -65,7 +65,7 @@ public class CcpRandomTests {
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
 
 	public static void main(String[] args) {
-		HashSet<String> set = new HashSet<>();
+		HashSet<String> todos = new HashSet<>();
 		List<List<String>> collect = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\ajustes_synonyms.txt").file().getLines()
 		.stream().filter(x -> x.startsWith("adicionarParent="))
 		.map(x -> x.trim().split("=")[1])
@@ -74,14 +74,13 @@ public class CcpRandomTests {
 		.collect(Collectors.toList());
 		
 		for (List<String> list : collect) {
-			set.addAll(list);
+			todos.addAll(list);
 		}
-		System.out.println(set.size());
 		CcpFileDecorator synonymsFile = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\skills\\synonyms.json").file();
 		List<CcpJsonRepresentation> synonyms = new ArrayList<CcpJsonRepresentation>(synonymsFile.asJsonList());
 		
 		
-		int counter = 0;
+		int ajustadas = 0;
 		List<CcpJsonRepresentation> missing = new ArrayList<>();
 		for (CcpJsonRepresentation json : synonyms) {
 			
@@ -89,30 +88,34 @@ public class CcpRandomTests {
 			String skill = dynamicVersion.getAsString("skill");
 			
 			
-			if(set.contains(skill)) {
-				counter ++;
+			if(todos.contains(skill)) {
+				ajustadas ++;
 				continue;
 			}
 			List<CcpJsonRepresentation> asJsonList = dynamicVersion.getAsJsonList("synonym");
-			boolean anyMatch = asJsonList.stream().map(x -> x.getDynamicVersion().getAsString("skill")).anyMatch(x -> set.contains(x));
+			boolean anyMatch = asJsonList.stream().map(x -> x.getDynamicVersion().getAsString("skill")).anyMatch(x -> todos.contains(x));
 			
 			if(anyMatch) {
-				counter ++;
+				ajustadas ++;
 				continue;
 			}
 			missing.add(json);
 		}
-		List<String> removidas = new CcpStringDecorator("c:/logs/skills/removidas.txt").file().getLines().stream().map(x -> x.trim().split(" = ")[0]).collect(Collectors.toList());
-		
+		List<String> removidas = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\removidas.txt").file().getLines().stream().map(x -> x.trim().split(" = ")[0]).collect(Collectors.toList());
+		int estudar = 0;
 		for (var copy : missing) {
 			String skill = copy.getDynamicVersion().getAsString("skill");
 			if(removidas.contains(skill)) {
 				continue;
 			}
 			System.out.println(skill);
+			estudar++;
 		}
-		System.out.println(synonyms.size());
-		System.out.println(counter);
+		System.out.println("INICIO: " + synonyms.size());
+		System.out.println("TODOS: " + todos.size());
+		System.out.println("REMOVIDAS: " + removidas.size());
+		System.out.println("AJUSTADAS: " + ajustadas);
+		System.out.println("ESTUDAR: " + estudar);
 		
 	}
 

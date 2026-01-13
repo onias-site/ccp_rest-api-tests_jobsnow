@@ -6,7 +6,6 @@ adicionarParent=NGINX, HTTP SERVER
 adicionarParent=SQL, DATABASE
 removerSynonym=VB.NET,CSS3
 adicionarParent=JSP,HTML, SERVLET
-removerParent=JSON,FRONTEND
 adicionarSynonym=AGILE, AGIL, AGEIS, METODOLOGIA AGIL, METODOLOGIA AGEIS, AGILE METHODOLOGY
 adicionarSynonym=MAVEN, MVN
 adicionarParent=BARRAMENTO, INTEGRATION
@@ -94,7 +93,7 @@ adicionarParent=PUBSUB, MENSAGERIA, GCP
 adicionarParent=GCP, CLOUD
 adicionarParent=DIGITALOCEAN, CLOUD
 adicionarParent=ALIBABA, CLOUD
-adicionarParent=ORACLE CLOUD, CLOUD
+adicionarParent=OCI, CLOUD
 adicionarParent=IBM CLOUD, CLOUD
 adicionarParent=TENCENT, CLOUD
 adicionarParent=DATAFLEX, BACKEND
@@ -136,10 +135,6 @@ adicionarParent=COMPOSER, PHP, DEPENDENCY MANAGER
 adicionarParent=PEAR, PHP, DEPENDENCY MANAGER 
 adicionarParent=KUBERNETES, DOCKER 
 adicionarParent=DOCKER, DEVOPS 
-adicionarParent=DEVELOPMENT, DEPENDENCY MANAGER, IDE, JSON, XML, VERSIONING 
-adicionarParent=BACKEND, DEVELOPMENT
-adicionarParent=FRONTEND, DEVELOPMENT
-adicionarParent=MOBILE, DEVELOPMENT
 adicionarParent=JENKINS, DEVOPS 
 adicionarParent=B.I, SQL, NOSQL 
 adicionarParent=CMS, FRONTEND 
@@ -363,7 +358,7 @@ adicionarParent=BARRAMENTO, SOA
 adicionarParent=SWING, JAVA
 adicionarParent=DEVOPS, CICD
 adicionarParent=STRUTS, SERVLET, MVC
-adicionarParent=IBATIS, ORM
+adicionarParent=IBATIS, ORM, JDBC
 adicionarParent=IREPORT, JASPER
 adicionarParent=POSTGRESQL, SQL
 adicionarParent=VB.NET, DOTNET
@@ -428,6 +423,7 @@ adicionarParent=FARGATE, AWS
 adicionarParent=DATADOG, MONITOR, CLOUD
 adicionarParent=POWERCENTER, ETL
 adicionarParent=CCNA, CISCO
+adicionarParent=CCNP, CISCO
 adicionarParent=NAGIOS, MONITOR
 adicionarParent=SENTRY, MONITOR
 adicionarParent=BIZAGI, BPM
@@ -507,12 +503,13 @@ adicionarParent=VSPHERE, VIRTUALIZATION
 adicionarParent=VIRTUALBOX, VIRTUALIZATION
 adicionarParent=FORTINET, SECURITY
 adicionarParent=SYMANTEC, SECURITY
-adicionarParent=XENSERVER, HTTPSERVER, VIRTUALIZATION
+adicionarParent=XENSERVER, XENAPP
+adicionarParent=XENAPP, CITRIX
 adicionarParent=POWERAPPS, FRONTEND
 adicionarParent=KASPERSKY, SECURITY
 adicionarParent=SONICWALL, SECURITY
 adicionarParent=RAILS, RUBY, MVC
-adicionarParent=CITRIX, VIRTUALIZATION, SECURITY
+adicionarParent=CITRIX, VIRTUALIZATION, SECURITY, HTPPSERVER
 adicionarParent=SILVERLIGHT, FRONTEND, DOTNET
 adicionarParent=H2, DATABASE, JAVA
 adicionarParent=RAZOR, CSHARP, FRONTEND
@@ -591,7 +588,7 @@ adicionarParent=TELON, COBOL
 adicionarParent=OUTSYSTEMS, LOWCODE
 adicionarParent=ALTERYX, LOWCODE
 adicionarParent=EXPO, REACTNATIVE
-adicionarParent=AXIOS, JAVASCRIPT, REST
+adicionarParent=AXIOS, AJAX
 adicionarParent=FIGMA, UX
 adicionarParent=GENEXUS, BACKEND
 adicionarParent=SPRINGDATA, SPRING, NOSQL, SQL
@@ -600,113 +597,72 @@ adicionarParent=HANGFIRE, DOTNET
 adicionarParent=CYPRESS, TDD, JAVASCRIPT
 adicionarParent=JAVA, MVC
 adicionarParent=CLOUDERA, CLOUD, SPARK, AIRFLOW
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
- 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+adicionarParent=AZUREDEVOPS, DEVOPS, AZURE
+adicionarSynonym=AZZURE, AZURE, AZUERE
+adicionarParent=FORTRAN, BACKEND
+adicionarParent=FETCH, AJAX
+adicionarParent=ERWIN, DATABASE
+adicionarParent=PRIMAVERA, SAP
+adicionarParent=ADF, MVC, JAVA
+adicionarParent=CONTEXTAPI, REACT
+adicionarParent=CAPYBARA, WEBDRIVER, TDD, BDD
+adicionarParent=LINQ, ORM, CSHARP
+adicionarParent=PMP, PMI
+adicionarParent=CTFL, TDD, BDD
+adicionarParent=PROFIT, SAP
+adicionarParent=POWERBI, B.I
+adicionarParent=WMWARE, VIRTUALIZATION
+adicionarParent=ERLANG, BACKEND
+adicionarParent=ELIXIR, ERLANG
+adicionarParent=PHOENIX, ELIXIR
+adicionarParent=RXJAVA, JAVA
+adicionarParent=HCM, SAP
+adicionarParent=EWM, SAP
+adicionarParent=SOLMAN, SAP
+adicionarParent=SASS, CSS
+adicionarParent=SERVICENOW, LOWCODE
+adicionarParent=NEXUS, JAVA
+adicionarParent=SCRUM, AGIL
+adicionarParent=SUCCESSFACTORS, SAP
+adicionarParent=NETWEAVER, SAP
+adicionarParent=ORCHESTRATOR, DEVOPS
+adicionarParent=SKETCH, UX
+adicionarParent=MOCHA, NODE, TDD
+adicionarParent=GENESYS, CLOUD
+adicionarParent=EXADATA, ORACLE
+adicionarParent=DATASTAGE, ETL
+adicionarParent=CMDB, SQL
+adicionarParent=HELM, KUBERNETES
+adicionarParent=NETSUITE, CLOUD, ERP
+adicionarParent=DATAMART, OLAP
+adicionarParent=ENZYME, TDD, REACT
+adicionarParent=MATLAB, BACKEND
+adicionarParent=SCRAPY, PYTHON
+adicionarParent=LPIC1, LINUX
+adicionarParent=WEBVIEW, FRONTEND
+adicionarParent=RSPEC, TDD, RUBY
+adicionarParent=SPECTRUM, AGIL
+adicionarParent=BTRIEVE, SQL
+adicionarParent=TESTCOMPLETE, TDD
+adicionarParent=OCTANE, DEVOPS
+adicionarParent=WINTHOR, ERP
+adicionarParent=CHERWELL, LOWCODE
+adicionarParent=NUXTJS, VUE
+adicionarParent=MICROVIX, ERP
+adicionarParent=REDSHIFT, B.I, AWS
+adicionarParent=PRESTO, SQL, NOSQL
+adicionarParent=SCADA, MONITOR
+adicionarParent=VCENTER, VMWARE,VSHERE
+adicionarParent=VMWARE,VIRTUALIZATION
+adicionarParent=REDMINE, DOCUMENTATION
+adicionarParent=VISUALAGE, IDE
+adicionarParent=METASPLOIT, TDD,SECURITY
+adicionarParent=APPCC, SAP
+adicionarParent=ADOBEXD, UX
+adicionarParent=CISSP, SECURITY
+adicionarParent=BPMS, SOA
+adicionarParent=MERAKI, CISCO, CLOUD
+adicionarParent=KERBEROS, SECURITY
 
 
 
