@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Consumer;
@@ -65,12 +66,90 @@ public class CcpRandomTests {
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
 
 	public static void main(String[] args) {
+		String folder = "C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\";
+		List<String> lines = new CcpStringDecorator(folder+ "ajustes_synonyms.txt").file().getLines();
+		List<List<String>> filtered = lines
+		.stream()
+		.filter(x -> x.startsWith("adicionarParent="))
+		.map(x-> x.split("=")[1])
+		.map(x -> x.split(","))
+		.map(x -> Arrays.asList(x).stream().map(y -> y.trim().toUpperCase()).collect(Collectors.toList()))
+		.collect(Collectors.toList())
+		;
+		
+		HashSet<String> skills = new HashSet<>();
+		
+		for (List<String> list : filtered) {
+			skills.addAll(list);
+		}
+		
+		List<CcpJsonRepresentation> report = skills
+		.stream()
+		.map(x -> CcpOtherConstants.EMPTY_JSON.getDynamicVersion().put("skill", x))
+		.map(x -> x.getDynamicVersion().put("childrenCount", new ArrayList<>( filtered).stream().filter(skillsNestaLinha -> skillsNestaLinha.indexOf(x.getDynamicVersion().getAsString("skill")) > 0).count()))
+		.map(x -> {
+			Optional<List<String>> findFirst = new ArrayList<>( filtered).stream().filter(skillsNestaLinha -> skillsNestaLinha.indexOf(x.getDynamicVersion().getAsString("skill")) == 0).findFirst();
+			boolean hasNoParent = false == findFirst.isPresent();
+			if(hasNoParent) {
+				return x;
+			}
+			List<String> list = findFirst.get();
+			List<String> parent = list.subList(1, list.size());
+			CcpJsonRepresentation put = x.getDynamicVersion().put("parent", parent);
+			return put;
+		})
+		.map(x -> x.getDynamicVersion().put("hasNoParent", new ArrayList<>( filtered).stream().allMatch(skillsNestaLinha -> skillsNestaLinha.indexOf(x.getDynamicVersion().getAsString("skill")) != 0)))
+		.collect(Collectors.toList());
+		
+		
+		report.sort((a, b) -> {
+			var dv1 = a.getDynamicVersion();
+			var dv2 = b.getDynamicVersion();
+			
+			var childrenCount1 = dv1.getAsIntegerNumber("childrenCount");
+			var childrenCount2 = dv2.getAsIntegerNumber("childrenCount");
+
+			if(childrenCount1 != childrenCount2) {
+				return childrenCount2 - childrenCount1;
+			}
+			
+			String skill1 = dv1.getAsString("skill");
+			String skill2 = dv2.getAsString("skill");
+			
+			
+			int compareTo = skill1.compareTo(skill2);
+			return compareTo;
+		});
+		CcpFileDecorator reportFile = new CcpStringDecorator(folder+ "report_skills.json").file().reset();
+		
+		reportFile.append(report.toString());
+	}
+
+	static String getSynonym(CcpJsonRepresentation json, List<CcpJsonRepresentation> report) {
+		List<String> parent = json.getDynamicVersion().getAsStringList("parent");
+		if(parent.size() != 1) {
+			return "";
+		}
+		String parentName = parent.get(0);
+		String orElseGet = new ArrayList<>(report)
+		.stream()
+		.map(x -> x.getDynamicVersion())
+		.filter(x -> x.getAsString("skill").equals(parentName))
+		.filter(x -> x.getAsIntegerNumber("childrenCount") == 1)
+		.map(x -> x.getAsString("skill"))
+		.findFirst()
+		.orElseGet(() -> "");
+		
+		return orElseGet;
+	}
+	
+	static void getMissingWords() {
 		HashSet<String> todos = new HashSet<>();
 		List<List<String>> collect = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\ajustes_synonyms.txt").file().getLines()
 		.stream().filter(x -> x.startsWith("adicionarParent="))
 		.map(x -> x.trim().split("=")[1])
 		.map(x -> x.split(","))
-		.map(x -> Arrays.asList(x).stream().map(y -> y.trim()).collect(Collectors.toList()))
+		.map(x -> Arrays.asList(x).stream().map(y -> y.trim().toUpperCase()).collect(Collectors.toList()))
 		.collect(Collectors.toList());
 		
 		for (List<String> list : collect) {
@@ -116,7 +195,6 @@ public class CcpRandomTests {
 		System.out.println("REMOVIDAS: " + removidas.size());
 		System.out.println("AJUSTADAS: " + ajustadas);
 		System.out.println("ESTUDAR: " + estudar);
-		
 	}
 
 		static void aumentarArquivoDeSinonimos() {

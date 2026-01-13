@@ -1,0 +1,6357 @@
+[{
+  "childrenCount": 94,
+  "hasNoParent": true,
+  "skill": "TDD"
+}, {
+  "childrenCount": 68,
+  "hasNoParent": false,
+  "parent": [
+    "ERP"
+  ],
+  "skill": "SAP"
+}, {
+  "childrenCount": 52,
+  "hasNoParent": false,
+  "parent": [
+    "JVM"
+  ],
+  "skill": "JAVA"
+}, {
+  "childrenCount": 49,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA"
+  ],
+  "skill": "SPRING"
+}, {
+  "childrenCount": 41,
+  "hasNoParent": true,
+  "skill": "BDD"
+}, {
+  "childrenCount": 38,
+  "hasNoParent": false,
+  "parent": [
+    "FRONTEND"
+  ],
+  "skill": "CMS"
+}, {
+  "childrenCount": 30,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "PYTHON"
+}, {
+  "childrenCount": 29,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "CLOUD"
+}, {
+  "childrenCount": 29,
+  "hasNoParent": false,
+  "parent": [
+    "DATABASE"
+  ],
+  "skill": "SQL"
+}, {
+  "childrenCount": 28,
+  "hasNoParent": false,
+  "parent": [
+    "DEPLOY"
+  ],
+  "skill": "DEPENDENCY MANAGER"
+}, {
+  "childrenCount": 28,
+  "hasNoParent": false,
+  "parent": [
+    "INTEGRATION",
+    "HTTP SERVER"
+  ],
+  "skill": "WS"
+}, {
+  "childrenCount": 25,
+  "hasNoParent": true,
+  "skill": "BACKEND"
+}, {
+  "childrenCount": 25,
+  "hasNoParent": false,
+  "parent": [
+    "HTTP SERVER"
+  ],
+  "skill": "PHP"
+}, {
+  "childrenCount": 22,
+  "hasNoParent": false,
+  "parent": [
+    "CRYPTOGRAPHY",
+    "DATABASE"
+  ],
+  "skill": "BLOCKCHAIN"
+}, {
+  "childrenCount": 22,
+  "hasNoParent": true,
+  "skill": "MONITOR"
+}, {
+  "childrenCount": 21,
+  "hasNoParent": true,
+  "skill": "JAVASCRIPT"
+}, {
+  "childrenCount": 20,
+  "hasNoParent": false,
+  "parent": [
+    "DEPLOY"
+  ],
+  "skill": "DEVOPS"
+}, {
+  "childrenCount": 20,
+  "hasNoParent": true,
+  "skill": "FRONTEND"
+}, {
+  "childrenCount": 20,
+  "hasNoParent": true,
+  "skill": "SECURITY"
+}, {
+  "childrenCount": 19,
+  "hasNoParent": true,
+  "skill": "MVC"
+}, {
+  "childrenCount": 15,
+  "hasNoParent": false,
+  "parent": [
+    "DATABASE"
+  ],
+  "skill": "NOSQL"
+}, {
+  "childrenCount": 14,
+  "hasNoParent": false,
+  "parent": [
+    "DOTNET"
+  ],
+  "skill": "CSHARP"
+}, {
+  "childrenCount": 13,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "DATABASE"
+}, {
+  "childrenCount": 13,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "DOTNET"
+}, {
+  "childrenCount": 13,
+  "hasNoParent": false,
+  "parent": [
+    "SQL"
+  ],
+  "skill": "ORM"
+}, {
+  "childrenCount": 13,
+  "hasNoParent": false,
+  "parent": [
+    "WS"
+  ],
+  "skill": "REST"
+}, {
+  "childrenCount": 13,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "CLOUD"
+  ],
+  "skill": "SPRING CLOUD"
+}, {
+  "childrenCount": 13,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "FRONTEND"
+  ],
+  "skill": "WEBDRIVER"
+}, {
+  "childrenCount": 12,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD"
+  ],
+  "skill": "AWS"
+}, {
+  "childrenCount": 12,
+  "hasNoParent": true,
+  "skill": "CSS"
+}, {
+  "childrenCount": 12,
+  "hasNoParent": false,
+  "parent": [
+    "B.I"
+  ],
+  "skill": "ETL"
+}, {
+  "childrenCount": 11,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "RUBY"
+}, {
+  "childrenCount": 11,
+  "hasNoParent": true,
+  "skill": "UX"
+}, {
+  "childrenCount": 10,
+  "hasNoParent": false,
+  "parent": [
+    "SQL",
+    "NOSQL"
+  ],
+  "skill": "B.I"
+}, {
+  "childrenCount": 9,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "ERP"
+}, {
+  "childrenCount": 9,
+  "hasNoParent": true,
+  "skill": "MOCK"
+}, {
+  "childrenCount": 9,
+  "hasNoParent": true,
+  "skill": "QA"
+}, {
+  "childrenCount": 9,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING"
+  ],
+  "skill": "SPRING DATA"
+}, {
+  "childrenCount": 8,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "HANNA"
+}, {
+  "childrenCount": 8,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "HTTP SERVER"
+  ],
+  "skill": "JAVA SERVER"
+}, {
+  "childrenCount": 8,
+  "hasNoParent": false,
+  "parent": [
+    "DOCKER"
+  ],
+  "skill": "KUBERNETES"
+}, {
+  "childrenCount": 8,
+  "hasNoParent": false,
+  "parent": [
+    "SERVLET",
+    "SPRING",
+    "REST"
+  ],
+  "skill": "SPRINGBOOT"
+}, {
+  "childrenCount": 8,
+  "hasNoParent": true,
+  "skill": "VERSIONING"
+}, {
+  "childrenCount": 8,
+  "hasNoParent": true,
+  "skill": "XML"
+}, {
+  "childrenCount": 7,
+  "hasNoParent": true,
+  "skill": "DOCUMENTATION"
+}, {
+  "childrenCount": 7,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD"
+  ],
+  "skill": "GCP"
+}, {
+  "childrenCount": 7,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "HTTP SERVER"
+}, {
+  "childrenCount": 7,
+  "hasNoParent": true,
+  "skill": "MOBILE"
+}, {
+  "childrenCount": 7,
+  "hasNoParent": true,
+  "skill": "PERFORMANCE"
+}, {
+  "childrenCount": 7,
+  "hasNoParent": false,
+  "parent": [
+    "AJAX",
+    "MVC"
+  ],
+  "skill": "SPA"
+}, {
+  "childrenCount": 6,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "AUTENTICATION"
+}, {
+  "childrenCount": 6,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD"
+  ],
+  "skill": "AZURE"
+}, {
+  "childrenCount": 6,
+  "hasNoParent": false,
+  "parent": [
+    "NOSQL",
+    "SQL"
+  ],
+  "skill": "BIGDATA"
+}, {
+  "childrenCount": 6,
+  "hasNoParent": false,
+  "parent": [
+    "XML"
+  ],
+  "skill": "HTML"
+}, {
+  "childrenCount": 6,
+  "hasNoParent": false,
+  "parent": [
+    "JAVASCRIPT",
+    "SERVER HTTP"
+  ],
+  "skill": "NODE"
+}, {
+  "childrenCount": 6,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA SERVER"
+  ],
+  "skill": "SERVLET"
+}, {
+  "childrenCount": 6,
+  "hasNoParent": false,
+  "parent": [
+    "WS"
+  ],
+  "skill": "SOA"
+}, {
+  "childrenCount": 6,
+  "hasNoParent": true,
+  "skill": "VIRTUALIZATION"
+}, {
+  "childrenCount": 5,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "DEVSECOPS"
+}, {
+  "childrenCount": 5,
+  "hasNoParent": false,
+  "parent": [
+    "VERSIONING"
+  ],
+  "skill": "GIT"
+}, {
+  "childrenCount": 5,
+  "hasNoParent": true,
+  "skill": "IDE"
+}, {
+  "childrenCount": 5,
+  "hasNoParent": false,
+  "parent": [
+    "SQL",
+    "JAVA"
+  ],
+  "skill": "JDBC"
+}, {
+  "childrenCount": 5,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "JVM"
+}, {
+  "childrenCount": 5,
+  "hasNoParent": false,
+  "parent": [
+    "INTEGRATION"
+  ],
+  "skill": "MENSAGERIA"
+}, {
+  "childrenCount": 5,
+  "hasNoParent": false,
+  "parent": [
+    "SPA",
+    "JSX",
+    "TSX"
+  ],
+  "skill": "REACT"
+}, {
+  "childrenCount": 5,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING"
+  ],
+  "skill": "SPRING SECURITY"
+}, {
+  "childrenCount": 4,
+  "hasNoParent": true,
+  "skill": "AGIL"
+}, {
+  "childrenCount": 4,
+  "hasNoParent": false,
+  "parent": [
+    "FRONTEND"
+  ],
+  "skill": "AJAX"
+}, {
+  "childrenCount": 4,
+  "hasNoParent": true,
+  "skill": "CISCO"
+}, {
+  "childrenCount": 4,
+  "hasNoParent": false,
+  "parent": [
+    "BIGDATA"
+  ],
+  "skill": "HADOOP"
+}, {
+  "childrenCount": 4,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "HYPERLEDGER"
+}, {
+  "childrenCount": 4,
+  "hasNoParent": false,
+  "parent": [
+    "XHTML",
+    "MVC",
+    "JSP"
+  ],
+  "skill": "JSF"
+}, {
+  "childrenCount": 4,
+  "hasNoParent": true,
+  "skill": "LOWCODE"
+}, {
+  "childrenCount": 4,
+  "hasNoParent": true,
+  "skill": "POO"
+}, {
+  "childrenCount": 4,
+  "hasNoParent": true,
+  "skill": "RX"
+}, {
+  "childrenCount": 4,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP FI"
+}, {
+  "childrenCount": 4,
+  "hasNoParent": false,
+  "parent": [
+    "WS"
+  ],
+  "skill": "SOAP"
+}, {
+  "childrenCount": 4,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD"
+  ],
+  "skill": "SPRING CLOUD NETFLIX"
+}, {
+  "childrenCount": 3,
+  "hasNoParent": false,
+  "parent": [
+    "MOBILE"
+  ],
+  "skill": "ANDROID"
+}, {
+  "childrenCount": 3,
+  "hasNoParent": false,
+  "parent": [
+    "DATABASE"
+  ],
+  "skill": "CACHE"
+}, {
+  "childrenCount": 3,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "CRM"
+}, {
+  "childrenCount": 3,
+  "hasNoParent": false,
+  "parent": [
+    "BUILD"
+  ],
+  "skill": "DEPLOY"
+}, {
+  "childrenCount": 3,
+  "hasNoParent": false,
+  "parent": [
+    "LUCENE"
+  ],
+  "skill": "ELASTICSEARCH"
+}, {
+  "childrenCount": 3,
+  "hasNoParent": false,
+  "parent": [
+    "JVM"
+  ],
+  "skill": "GROOVY"
+}, {
+  "childrenCount": 3,
+  "hasNoParent": true,
+  "skill": "INTEGRATION"
+}, {
+  "childrenCount": 3,
+  "hasNoParent": false,
+  "parent": [
+    "MOBILE"
+  ],
+  "skill": "IOS"
+}, {
+  "childrenCount": 3,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "MENSAGERIA"
+  ],
+  "skill": "JMS"
+}, {
+  "childrenCount": 3,
+  "hasNoParent": false,
+  "parent": [
+    "IA"
+  ],
+  "skill": "MACHINELEARNING"
+}, {
+  "childrenCount": 3,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "MAINFRAME"
+}, {
+  "childrenCount": 3,
+  "hasNoParent": true,
+  "skill": "PMI"
+}, {
+  "childrenCount": 3,
+  "hasNoParent": true,
+  "skill": "SCHEDULE"
+}, {
+  "childrenCount": 3,
+  "hasNoParent": true,
+  "skill": "SERVERLESS"
+}, {
+  "childrenCount": 3,
+  "hasNoParent": false,
+  "parent": [
+    "SPA"
+  ],
+  "skill": "VUE"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "ABAP"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "SPA"
+  ],
+  "skill": "ANGULAR"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": true,
+  "skill": "AOP"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "SOA"
+  ],
+  "skill": "BARRAMENTO"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": true,
+  "skill": "BUILD"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "MAINFRAME"
+  ],
+  "skill": "COBOL"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS"
+  ],
+  "skill": "DOCKER"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND",
+    "FRONTEND",
+    "DATABASE"
+  ],
+  "skill": "GRAPHQL"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "DATABASE"
+  ],
+  "skill": "IA"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "AGIL"
+  ],
+  "skill": "JIRA"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "JDBC",
+    "ORM"
+  ],
+  "skill": "JPA"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "SQL",
+    "JAVA"
+  ],
+  "skill": "JTA"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "LDAP"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": true,
+  "skill": "LOADBALANCE"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "NOSQL",
+    "FULLTEXT SEARCH"
+  ],
+  "skill": "LUCENE"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "NOSQL"
+  ],
+  "skill": "MONGODB"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "IOS"
+  ],
+  "skill": "OBJECTIVEC"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "REST",
+    "DOCUMENTATION"
+  ],
+  "skill": "OPENAPI"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "SQL"
+  ],
+  "skill": "ORACLE"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "IDE"
+  ],
+  "skill": "RAD"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "INTEGRATION",
+    "JAVAEE"
+  ],
+  "skill": "RMI"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "UX"
+  ],
+  "skill": "SAP FIORI"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "BIGDATA"
+  ],
+  "skill": "SPARK"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "SSO"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "JAVASCRIPT",
+    "POO"
+  ],
+  "skill": "TYPESCRIPT"
+}, {
+  "childrenCount": 2,
+  "hasNoParent": false,
+  "parent": [
+    "JAVASCRIPT",
+    "FRONTEND",
+    "BACKEND"
+  ],
+  "skill": "WEBSOCKET"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "MONITOR",
+    "DEVOPS"
+  ],
+  "skill": "AIRFLOW"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": true,
+  "skill": "AMPQ"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": true,
+  "skill": "AUTOMATION"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": true,
+  "skill": "BUCKET"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "NOSQL"
+  ],
+  "skill": "CASSANDRA"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR"
+  ],
+  "skill": "CONSUL"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "NOSQL"
+  ],
+  "skill": "COUCHDB"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": true,
+  "skill": "CRYPTOGRAPHY"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": true,
+  "skill": "ECOMERCE"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": true,
+  "skill": "ECOMMERCE"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING"
+  ],
+  "skill": "FEIGN"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": true,
+  "skill": "FULLTEXT SEARCH"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "GIT"
+  ],
+  "skill": "GITHUB"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "REST"
+  ],
+  "skill": "HATEOAS"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": true,
+  "skill": "IAC"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "ORM",
+    "JDBC"
+  ],
+  "skill": "IBATIS"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": true,
+  "skill": "IREPORT"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "REPORT",
+    "JDBC"
+  ],
+  "skill": "ITEXT"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA SERVER"
+  ],
+  "skill": "JAVAEE"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "HTML",
+    "SERVLET"
+  ],
+  "skill": "JSP"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "JAVASCRIPT",
+    "HTML"
+  ],
+  "skill": "JSX"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "JAVA"
+  ],
+  "skill": "JUNIT"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": true,
+  "skill": "KAFA"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR"
+  ],
+  "skill": "MICROMETER"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "JDBC",
+    "ORM"
+  ],
+  "skill": "MYBATIS"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "AUTENTICATION"
+  ],
+  "skill": "OAUTH"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": true,
+  "skill": "OBILE"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "REST"
+  ],
+  "skill": "ODATA"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY",
+    "WS"
+  ],
+  "skill": "OWASP"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "XML"
+  ],
+  "skill": "OXM"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "FRONTEND"
+  ],
+  "skill": "PWA"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "SQL",
+    "REST"
+  ],
+  "skill": "R2DBC"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "RX"
+  ],
+  "skill": "REACTOR"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "CACHE"
+  ],
+  "skill": "REDIS"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": true,
+  "skill": "REPORT"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "AWS",
+    "BUCKET"
+  ],
+  "skill": "S3"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "XML",
+    "SSO"
+  ],
+  "skill": "SAML"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": true,
+  "skill": "SERVER HTTP"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS"
+  ],
+  "skill": "SONAR"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD"
+  ],
+  "skill": "SPRING CLOUD CONTRACT"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "TDD"
+  ],
+  "skill": "SPRING TEST"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "SERVLET"
+  ],
+  "skill": "SPRING WEB"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": true,
+  "skill": "STOMP"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "TYPESCRIPT",
+    "HTML"
+  ],
+  "skill": "TSX"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "VIRTUALIZATION"
+  ],
+  "skill": "VMWARE"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": true,
+  "skill": "VSHERE"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "REST"
+  ],
+  "skill": "WEBCLIENT"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "HTML"
+  ],
+  "skill": "XHTML"
+}, {
+  "childrenCount": 1,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR"
+  ],
+  "skill": "ZIPKIN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JMS"
+  ],
+  "skill": "ACTIVEMQ"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL"
+  ],
+  "skill": "ADABAS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MVC",
+    "JAVA"
+  ],
+  "skill": "ADF"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOTNET",
+    "SQL"
+  ],
+  "skill": "ADO.NET"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "UX"
+  ],
+  "skill": "ADOBEXD"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "NODE",
+    "TYPESCRIPT",
+    "MVC"
+  ],
+  "skill": "ADONISJS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "JAVA"
+  ],
+  "skill": "AEM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AZURE",
+    "KUBERNETES"
+  ],
+  "skill": "AKS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "RUBY"
+  ],
+  "skill": "ALCHEMY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "JAVA"
+  ],
+  "skill": "ALFRESCO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "ALGORAND"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD"
+  ],
+  "skill": "ALIBABA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD",
+    "QA"
+  ],
+  "skill": "ALLURE REPORTS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "LOWCODE",
+    "ETL"
+  ],
+  "skill": "ALTERYX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HANNA",
+    "ORM"
+  ],
+  "skill": "AMDP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS"
+  ],
+  "skill": "ANSIBLE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "ANT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD",
+    "PERFORMANCE",
+    "QA"
+  ],
+  "skill": "APACHEAB"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "REST"
+  ],
+  "skill": "APIGEE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "GRAPHQL"
+  ],
+  "skill": "APOLLO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "APPCC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CISCO",
+    "MONITOR"
+  ],
+  "skill": "APPDYNAMICS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "GCP"
+  ],
+  "skill": "APPENGINE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "WEBDRIVER",
+    "MOBILE"
+  ],
+  "skill": "APPIUM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "ARIBA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS"
+  ],
+  "skill": "ARTIFACTORY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AOP"
+  ],
+  "skill": "ASPECTJ"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOTNET"
+  ],
+  "skill": "ASPNET"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "ASSEERTJ"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "ASSEMBLER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL",
+    "S3"
+  ],
+  "skill": "ATHENA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MONGODB",
+    "CLOUD"
+  ],
+  "skill": "ATLAS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "AURORA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVASCRIPT",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "AVA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "AVALANCHE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AJAX"
+  ],
+  "skill": "AXIOS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AZURE"
+  ],
+  "skill": "AZ104"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AZURE"
+  ],
+  "skill": "AZ900"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS",
+    "AZURE"
+  ],
+  "skill": "AZUREDEVOPS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "UX"
+  ],
+  "skill": "BALSAMIQ"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS"
+  ],
+  "skill": "BAMBOO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "BASIS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PHP",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "BEHAT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "BEHAVE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ERP"
+  ],
+  "skill": "BENNER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HYPERLEDGER"
+  ],
+  "skill": "BESU"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL",
+    "GCP"
+  ],
+  "skill": "BIGQUERY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "GIT"
+  ],
+  "skill": "BITBUCKET"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "BITCOIN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD",
+    "PERFORMANCE"
+  ],
+  "skill": "BLAZEMETER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PHP"
+  ],
+  "skill": "BOLT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSS"
+  ],
+  "skill": "BOOTSTRAP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVASCRIPT",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "BOWER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SOA"
+  ],
+  "skill": "BPEL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SOA"
+  ],
+  "skill": "BPM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SOA"
+  ],
+  "skill": "BPMS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "BSC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL"
+  ],
+  "skill": "BTRIEVE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOCUMENTATION",
+    "MONITOR"
+  ],
+  "skill": "BUGZILLA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "BUILDR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSS"
+  ],
+  "skill": "BULMA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "RUBY",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "BUNDLER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "DEVSECOPS"
+  ],
+  "skill": "BURP SUITE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MVC",
+    "PHP"
+  ],
+  "skill": "CAKE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BARRAMENTO"
+  ],
+  "skill": "CAMEL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "CAMUNDA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WEBDRIVER",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "CAPYBARA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "CARDANO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CISCO"
+  ],
+  "skill": "CCNA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CISCO"
+  ],
+  "skill": "CCNP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVASCRIPT",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "CHAI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSS"
+  ],
+  "skill": "CHAKRA UI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "DEVSECOPS"
+  ],
+  "skill": "CHECKMARX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "LOWCODE"
+  ],
+  "skill": "CHERWELL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MAINFRAME"
+  ],
+  "skill": "CICS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "CISSP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VIRTUALIZATION",
+    "SECURITY",
+    "HTTP SERVER"
+  ],
+  "skill": "CITRIX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL",
+    "RAD"
+  ],
+  "skill": "CLARION"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VERSIONING"
+  ],
+  "skill": "CLEARCASE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "CLIPPER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD",
+    "SPARK",
+    "AIRFLOW"
+  ],
+  "skill": "CLOUDERA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AWS"
+  ],
+  "skill": "CLOUDFORMATION"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AWS"
+  ],
+  "skill": "CLOUDFRONT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AWS"
+  ],
+  "skill": "CLOUDWATCH"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL"
+  ],
+  "skill": "CMDB"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AGIL"
+  ],
+  "skill": "COBIT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "OBJECTIVEC",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "COCOAPODS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PHP",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "CODECEPTION"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "GIT",
+    "DEVOPS"
+  ],
+  "skill": "CODECOMMIT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MVC",
+    "PHP"
+  ],
+  "skill": "CODEIGNITER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "B.I"
+  ],
+  "skill": "COGNOS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "RUBY"
+  ],
+  "skill": "COMFY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PHP",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "COMPOSER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PHP"
+  ],
+  "skill": "CONCRETE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "CONDA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOCUMENTATION"
+  ],
+  "skill": "CONFLUENCE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "REACT"
+  ],
+  "skill": "CONTEXTAPI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "CORDA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "NOSQL",
+    "AZURE"
+  ],
+  "skill": "COSMODB"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "COSMOS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "CPP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PHP"
+  ],
+  "skill": "CRAFT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "JAVA"
+  ],
+  "skill": "CRAFTER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD"
+  ],
+  "skill": "CTFL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD"
+  ],
+  "skill": "CUCUMBER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD",
+    "QA"
+  ],
+  "skill": "CUCUMBER REPORTS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VERSIONING"
+  ],
+  "skill": "CVS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "JAVASCRIPT",
+    "WEBDRIVER"
+  ],
+  "skill": "CYPRESS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSHARP",
+    "ORM"
+  ],
+  "skill": "DAPPER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD",
+    "BIGDATA"
+  ],
+  "skill": "DATABRICKS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR",
+    "CLOUD"
+  ],
+  "skill": "DATADOG"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "DATAFLEX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ETL",
+    "GCP"
+  ],
+  "skill": "DATAFLOW"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "B.I"
+  ],
+  "skill": "DATAMART"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ETL"
+  ],
+  "skill": "DATASTAGE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "NOSQL",
+    "GCP"
+  ],
+  "skill": "DATASTORE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ERP"
+  ],
+  "skill": "DATASUL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "B.I"
+  ],
+  "skill": "DAX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL"
+  ],
+  "skill": "DB2"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "DELPHI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HTML",
+    "JAVASCRIPT"
+  ],
+  "skill": "DHTML"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD"
+  ],
+  "skill": "DIGITALOCEAN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PYTHON"
+  ],
+  "skill": "DJANGO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ORM",
+    "PHP"
+  ],
+  "skill": "DOCTRINE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "FRONTEND"
+  ],
+  "skill": "DOM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "JAVA"
+  ],
+  "skill": "DOTCMS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "CSHARP"
+  ],
+  "skill": "DOTNETNUKE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PHP"
+  ],
+  "skill": "DRUPAL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "NOSQL",
+    "SERVERLESS",
+    "AWS"
+  ],
+  "skill": "DYNAMODB"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR",
+    "CLOUD"
+  ],
+  "skill": "DYNATRACE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "GROOVY",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "EASYB"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "EASYMOCK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MAINFRAME"
+  ],
+  "skill": "EASYTRIEVE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AWS"
+  ],
+  "skill": "EC2"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA"
+  ],
+  "skill": "ECLIPSE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AWS"
+  ],
+  "skill": "ECS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "RMI"
+  ],
+  "skill": "EJB"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AWS",
+    "KUBERNETES"
+  ],
+  "skill": "EKS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "ELIXIR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPA"
+  ],
+  "skill": "EMBER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSHARP",
+    "ORM"
+  ],
+  "skill": "ENTITY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "REACT"
+  ],
+  "skill": "ENZYME"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "EOS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "CSHARP"
+  ],
+  "skill": "EPISERVER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DATABASE"
+  ],
+  "skill": "ERWIN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "ANDROID"
+  ],
+  "skill": "ESPRESSO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "ETHEREUM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD NETFLIX"
+  ],
+  "skill": "EUREKA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "EWM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ORACLE"
+  ],
+  "skill": "EXADATA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "NODE"
+  ],
+  "skill": "EXPRESS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD",
+    "QA"
+  ],
+  "skill": "EXTENT REPORTS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPA"
+  ],
+  "skill": "EXTJS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HYPERLEDGER"
+  ],
+  "skill": "FABRIC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD"
+  ],
+  "skill": "FAKER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "MVC"
+  ],
+  "skill": "FALCON"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AWS"
+  ],
+  "skill": "FARGATE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "REST",
+    "NODE"
+  ],
+  "skill": "FASTIFY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PYTHON"
+  ],
+  "skill": "FEIN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AJAX"
+  ],
+  "skill": "FETCH"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "UX"
+  ],
+  "skill": "FIGMA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "FIORI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "NOSQL",
+    "SERVERLESS"
+  ],
+  "skill": "FIREBASE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DATABASE"
+  ],
+  "skill": "FIREBIRD"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "MVC"
+  ],
+  "skill": "FLASK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSS"
+  ],
+  "skill": "FLEXBOX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "JAVA"
+  ],
+  "skill": "FLUIG"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BIGDATA"
+  ],
+  "skill": "FLUME"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ANDROID",
+    "FRONTEND"
+  ],
+  "skill": "FLUTTER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS",
+    "DATABASE"
+  ],
+  "skill": "FLYWAY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "FORTIFY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "FORTINET"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "FORTRAN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSS"
+  ],
+  "skill": "FOUNDATION"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL"
+  ],
+  "skill": "FOXPRO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD",
+    "PERFORMANCE"
+  ],
+  "skill": "GATLING"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "NODE",
+    "REACT"
+  ],
+  "skill": "GATSBY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD"
+  ],
+  "skill": "GAUGE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD"
+  ],
+  "skill": "GENESYS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "GENEXUS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "GIT"
+  ],
+  "skill": "GITFLOW"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "GITHUB",
+    "DEVOPS"
+  ],
+  "skill": "GITHUB ACTIONS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "GIT"
+  ],
+  "skill": "GITLAB"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "GCP",
+    "KUBERNETES"
+  ],
+  "skill": "GKE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA SERVER"
+  ],
+  "skill": "GLASSFISH"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "POO"
+  ],
+  "skill": "GOF"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND",
+    "HTTP SERVER"
+  ],
+  "skill": "GOLANG"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "DEPENDENCY MANAGER",
+    "BUILD",
+    "DEPLOY"
+  ],
+  "skill": "GRADLE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR"
+  ],
+  "skill": "GRAFANA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "GROOVY"
+  ],
+  "skill": "GRAILS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "GRAPE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR"
+  ],
+  "skill": "GRAYLOG"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "GRC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS"
+  ],
+  "skill": "GRPC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVASCRIPT",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "GRUNT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVASCRIPT",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "GULP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DATABASE",
+    "JAVA"
+  ],
+  "skill": "H2"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "HAMCREST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOTNET"
+  ],
+  "skill": "HANGFIRE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HANNA",
+    "SQL"
+  ],
+  "skill": "HANNA SQL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "LOADBALANCE"
+  ],
+  "skill": "HAPROXY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HADOOP"
+  ],
+  "skill": "HBASE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "HCM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HADOOP"
+  ],
+  "skill": "HDFS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "HEDERA HASHGRAPH"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "KUBERNETES"
+  ],
+  "skill": "HELM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD"
+  ],
+  "skill": "HEROKU"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JDBC",
+    "ORM"
+  ],
+  "skill": "HIBERNATE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "JAVA"
+  ],
+  "skill": "HIPPO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HADOOP"
+  ],
+  "skill": "HIVE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD",
+    "MOCK"
+  ],
+  "skill": "HOVERFLY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD"
+  ],
+  "skill": "HTTPIE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS"
+  ],
+  "skill": "HUDSON"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "ECOMERCE"
+  ],
+  "skill": "HYBRIS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VIRTUALIZATION"
+  ],
+  "skill": "HYPERV"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "HYPOTHESIS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD NETFLIX"
+  ],
+  "skill": "HYSTRIX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SOA"
+  ],
+  "skill": "IBM BROKER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD"
+  ],
+  "skill": "IBM CLOUD"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JSF"
+  ],
+  "skill": "ICEFACES"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "FRONTEND"
+  ],
+  "skill": "ICOMON"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "NOSQL",
+    "SQL",
+    "ETL"
+  ],
+  "skill": "IMPALA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HYPERLEDGER"
+  ],
+  "skill": "INDY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL",
+    "NOSQL"
+  ],
+  "skill": "INFORMIX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD"
+  ],
+  "skill": "INSOMNIA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA"
+  ],
+  "skill": "INTELIJ"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL"
+  ],
+  "skill": "INTERBASE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "FRONTEND",
+    "MOBILE"
+  ],
+  "skill": "IONIC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "IOTA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "IVY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "JAVA"
+  ],
+  "skill": "JACKRABBIT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "JAVA"
+  ],
+  "skill": "JAHIA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "JAVASCRIPT",
+    "WEBDRIVER"
+  ],
+  "skill": "JASMINE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ITEXT",
+    "IREPORT"
+  ],
+  "skill": "JASPER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA"
+  ],
+  "skill": "JAVAFX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "REST",
+    "JAVA"
+  ],
+  "skill": "JAXRS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SOAP",
+    "JAVA"
+  ],
+  "skill": "JAXWS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "JBEHAVE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA SERVER"
+  ],
+  "skill": "JBOSS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "COBOL"
+  ],
+  "skill": "JCL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "ERP"
+  ],
+  "skill": "JDE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS"
+  ],
+  "skill": "JENKINS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "JAVASCRIPT"
+  ],
+  "skill": "JEST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA SERVER"
+  ],
+  "skill": "JETTY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD",
+    "PERFORMANCE",
+    "QA"
+  ],
+  "skill": "JMETER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PHP"
+  ],
+  "skill": "JOOMLA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JPA"
+  ],
+  "skill": "JPQL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "FRONTEND",
+    "AJAX"
+  ],
+  "skill": "JQUERY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "RUBY",
+    "JVM"
+  ],
+  "skill": "JRUBY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AUTENTICATION"
+  ],
+  "skill": "JWT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JVM",
+    "PYTHON"
+  ],
+  "skill": "JYTHON"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD",
+    "PERFORMANCE"
+  ],
+  "skill": "K6"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MENSAGERIA"
+  ],
+  "skill": "KAFKA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JIRA"
+  ],
+  "skill": "KANBAM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BDD",
+    "TDD",
+    "WS"
+  ],
+  "skill": "KARATE DSL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "JAVASCRIPT",
+    "WEBDRIVER"
+  ],
+  "skill": "KARMA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "KASPERSKY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "WEBDRIVER"
+  ],
+  "skill": "KATALON"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "CSHARP"
+  ],
+  "skill": "KENTICO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "KERBEROS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "KEYCLOAK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ELASTICSEARCH"
+  ],
+  "skill": "KIBANA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AWS",
+    "MONITOR"
+  ],
+  "skill": "KINESIS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPA"
+  ],
+  "skill": "KNOCKOUT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "ANDROID"
+  ],
+  "skill": "KOTLIN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD",
+    "SERVERLESS"
+  ],
+  "skill": "LAMBDA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PHP",
+    "MVC"
+  ],
+  "skill": "LARAVEL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "LEININGEN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "JAVA"
+  ],
+  "skill": "LIFERAY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ORM",
+    "CSHARP"
+  ],
+  "skill": "LINQ"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS",
+    "DATABASE"
+  ],
+  "skill": "LIQUIBASE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "LISP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD",
+    "PERFORMANCE"
+  ],
+  "skill": "LOADRUNNER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD"
+  ],
+  "skill": "LOCALSTACK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "RUBY"
+  ],
+  "skill": "LOCOMOTIVE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD",
+    "PERFORMANCE"
+  ],
+  "skill": "LOCUST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ELASTICSEARCH",
+    "MONITOR"
+  ],
+  "skill": "LOGSTASH"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA"
+  ],
+  "skill": "LOMBOK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PHP"
+  ],
+  "skill": "LUMEN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PHP",
+    "ECOMMERCE"
+  ],
+  "skill": "MAGENTO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "JAVA"
+  ],
+  "skill": "MAGNOLIA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOCUMENTATION"
+  ],
+  "skill": "MANTIS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL"
+  ],
+  "skill": "MARIADB"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSS"
+  ],
+  "skill": "MATERIAL UI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSS"
+  ],
+  "skill": "MATERIALIZE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "MATLAB"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON"
+  ],
+  "skill": "MATPLOTLIB"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CACHE",
+    "GCP"
+  ],
+  "skill": "MEMCACHE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CACHE"
+  ],
+  "skill": "MEMCACHED"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CISCO",
+    "CLOUD"
+  ],
+  "skill": "MERAKI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VERSIONING"
+  ],
+  "skill": "MERCURIAL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "SECURITY"
+  ],
+  "skill": "METASPLOIT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PYTHON"
+  ],
+  "skill": "MEZZANINE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SERVLET"
+  ],
+  "skill": "MICRONAUT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ERP"
+  ],
+  "skill": "MICROVIX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "MILL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "RUBY",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "MINITEST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "NODE",
+    "TDD"
+  ],
+  "skill": "MOCHA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JUNIT",
+    "MOCK"
+  ],
+  "skill": "MOCKITO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD",
+    "MOCK"
+  ],
+  "skill": "MOCKSERVER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "UX"
+  ],
+  "skill": "MOCKUPS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD",
+    "MOCK"
+  ],
+  "skill": "MOUNTEBANK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MENSAGERIA"
+  ],
+  "skill": "MQSERIES"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOTNET",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "MSTEST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BARRAMENTO"
+  ],
+  "skill": "MULE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "MVN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JSF"
+  ],
+  "skill": "MYFACES"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL"
+  ],
+  "skill": "MYSQL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR"
+  ],
+  "skill": "NAGIOS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "NEAR PROTOCOL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "NOSQL"
+  ],
+  "skill": "NEO4J"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "NODE",
+    "MVC"
+  ],
+  "skill": "NESTJS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA"
+  ],
+  "skill": "NETBEANS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD",
+    "ERP"
+  ],
+  "skill": "NETSUITE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "SOA"
+  ],
+  "skill": "NETWEAVER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD"
+  ],
+  "skill": "NEWMAN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR",
+    "JAVA"
+  ],
+  "skill": "NEWRELIC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVASCRIPT"
+  ],
+  "skill": "NEXTJS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA"
+  ],
+  "skill": "NEXUS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HTTP SERVER"
+  ],
+  "skill": "NGINX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSHARP",
+    "ORM"
+  ],
+  "skill": "NHIBERNATE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DATABASE",
+    "BIGDATA",
+    "ETL"
+  ],
+  "skill": "NIFI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD",
+    "WEBDRIVER"
+  ],
+  "skill": "NIGHTWATCHJS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "DEVSECOPS"
+  ],
+  "skill": "NIKTO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MACHINELEARNING"
+  ],
+  "skill": "NLP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "NOSE2"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "IDE"
+  ],
+  "skill": "NOTEPAD++"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVASCRIPT",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "NPM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOTNET",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "NUGET"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON"
+  ],
+  "skill": "NUMPY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOTNET",
+    "TDD"
+  ],
+  "skill": "NUNIT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VUE"
+  ],
+  "skill": "NUXTJS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ETL"
+  ],
+  "skill": "OBIEE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD"
+  ],
+  "skill": "OCI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS"
+  ],
+  "skill": "OCTANE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PHP"
+  ],
+  "skill": "OCTOBERCMS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ETL"
+  ],
+  "skill": "ODI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "OFFICESCAN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MACHINELEARNING"
+  ],
+  "skill": "OPENCV"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "LDAP"
+  ],
+  "skill": "OPENLDAP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "KUBERNETES"
+  ],
+  "skill": "OPENSHIFT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD"
+  ],
+  "skill": "OPENSTACK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PYTHON"
+  ],
+  "skill": "OPPS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "CSHARP"
+  ],
+  "skill": "ORCHARD"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS"
+  ],
+  "skill": "ORCHESTRATOR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "LOWCODE"
+  ],
+  "skill": "OUTSYSTEMS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "DEVSECOPS",
+    "OWASP"
+  ],
+  "skill": "OWASP ZAP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD",
+    "MOCK"
+  ],
+  "skill": "PACT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON"
+  ],
+  "skill": "PANDAS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "POO"
+  ],
+  "skill": "PATTERNS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PHP",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "PEAR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ETL"
+  ],
+  "skill": "PENTAHO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY",
+    "TDD"
+  ],
+  "skill": "PENTEST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "PFSENSE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "FRONTEND",
+    "MOBILE"
+  ],
+  "skill": "PHONEGAP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PHP",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "PHPSPEC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "PHP"
+  ],
+  "skill": "PHPUNIT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "PIP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "PIPENV"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD",
+    "WEBDRIVER"
+  ],
+  "skill": "PLAYWRIGHT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PYTHON"
+  ],
+  "skill": "PLONE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MACHINELEARNING"
+  ],
+  "skill": "PLOTLY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL"
+  ],
+  "skill": "PLSQL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PMI"
+  ],
+  "skill": "PMBOOK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PMI"
+  ],
+  "skill": "PMO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PMI"
+  ],
+  "skill": "PMP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVASCRIPT",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "PNPM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "POETRY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "POLIGON"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "POLKADOT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL"
+  ],
+  "skill": "POSTGRESQL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD"
+  ],
+  "skill": "POSTMAN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "FRONTEND"
+  ],
+  "skill": "POWERAPPS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "B.I"
+  ],
+  "skill": "POWERBI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "RAD"
+  ],
+  "skill": "POWERBUILDER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ETL"
+  ],
+  "skill": "POWERCENTER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "POWERDESIGNER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "TDD",
+    "BDD",
+    "MOCK"
+  ],
+  "skill": "POWERMOCK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL",
+    "NOSQL"
+  ],
+  "skill": "PRESTO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "PRIMAVERA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JSF"
+  ],
+  "skill": "PRIMEFACES"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "PROFIT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR"
+  ],
+  "skill": "PROMETHEUS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "ANGULAR",
+    "WEBDRIVER"
+  ],
+  "skill": "PROTACTOR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ERP"
+  ],
+  "skill": "PROTHEUS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "ANGULAR"
+  ],
+  "skill": "PROTRACTOR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MENSAGERIA",
+    "GCP"
+  ],
+  "skill": "PUBSUB"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS"
+  ],
+  "skill": "PUPPET"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD",
+    "WEBDRIVER"
+  ],
+  "skill": "PUPPETEER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "PYENV"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "SPARK"
+  ],
+  "skill": "PYSPARK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "PYTEST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "B.I"
+  ],
+  "skill": "QLIKVIEW"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD",
+    "QA"
+  ],
+  "skill": "QTEST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SERVLET"
+  ],
+  "skill": "QUARKUS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SCHEDULE",
+    "JAVA"
+  ],
+  "skill": "QUARTZ"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VUE",
+    "PWA"
+  ],
+  "skill": "QUASAR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "QUORUM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JMS"
+  ],
+  "skill": "RABBITMQ"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "RUBY"
+  ],
+  "skill": "RADIANT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "RUBY",
+    "MVC"
+  ],
+  "skill": "RAILS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "KUBERNETES"
+  ],
+  "skill": "RANCHER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ABAP",
+    "REST"
+  ],
+  "skill": "RAP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSHARP",
+    "FRONTEND"
+  ],
+  "skill": "RAZOR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "REACT",
+    "OBILE"
+  ],
+  "skill": "REACTNATIVE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR"
+  ],
+  "skill": "READMINE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD"
+  ],
+  "skill": "READYAPI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOCUMENTATION"
+  ],
+  "skill": "REDMINE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "B.I",
+    "AWS"
+  ],
+  "skill": "REDSHIFT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPA"
+  ],
+  "skill": "REDUX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "RUBY"
+  ],
+  "skill": "REFINERY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOCUMENTATION"
+  ],
+  "skill": "REMEDY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "UX"
+  ],
+  "skill": "RESPONSIVITY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD"
+  ],
+  "skill": "RESTASSURED"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "RETAIL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD NETFLIX"
+  ],
+  "skill": "RIBBON"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JSF"
+  ],
+  "skill": "RICHFACES"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "RIPPLE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ORACLE"
+  ],
+  "skill": "RMAN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BDD",
+    "TDD",
+    "MOBILE"
+  ],
+  "skill": "ROBOT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "RUBY"
+  ],
+  "skill": "RSPEC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "RUBY",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "RUBYGEMS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS"
+  ],
+  "skill": "RUNDECK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "RX"
+  ],
+  "skill": "RXJAVA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "REACT"
+  ],
+  "skill": "RXJS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CRM"
+  ],
+  "skill": "SALESFORCE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ERP"
+  ],
+  "skill": "SANKHYA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP FI"
+  ],
+  "skill": "SAP AA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP APO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "AUTENTICATION"
+  ],
+  "skill": "SAP AUTHORIZATION CONCEPTS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "ODATA"
+  ],
+  "skill": "SAP BAP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP BO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP BTP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HANNA"
+  ],
+  "skill": "SAP BW"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HANNA"
+  ],
+  "skill": "SAP BW/4HANNA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "CLOUD"
+  ],
+  "skill": "SAP CAP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP CENTRAL FINANCE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "CLOUD"
+  ],
+  "skill": "SAP CLOUD PLATFORM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP CO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "CLOUD"
+  ],
+  "skill": "SAP CPI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "CRM"
+  ],
+  "skill": "SAP CRM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "UX",
+    "MVC",
+    "JAVA",
+    "ABAP"
+  ],
+  "skill": "SAP DYNPRO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP ECC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP EXTENSION SUITE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP FI"
+  ],
+  "skill": "SAP FI-AP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP FI"
+  ],
+  "skill": "SAP FI-AR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP FI"
+  ],
+  "skill": "SAP FI-GL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP FIORI"
+  ],
+  "skill": "SAP FIORI ELEMENTS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP FIORI"
+  ],
+  "skill": "SAP FIORI FOR S/4HANNA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP HR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP IBP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP IDOC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "WS"
+  ],
+  "skill": "SAP INTEGRATION SUITE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP IS-BANKING"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP IS-HEALTH"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP IS-RETAIL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP IS-U"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "KUBERNETES"
+  ],
+  "skill": "SAP KYMA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP LUMIRA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP ME"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP MII"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP MM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP PAYROLL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP PI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP PM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP PO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP PP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP QM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP R/3"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP RFC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "AUTENTICATION"
+  ],
+  "skill": "SAP ROLES \u0026 PROFILES"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HANNA"
+  ],
+  "skill": "SAP S/4HANNA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HANNA"
+  ],
+  "skill": "SAP S/4HANNA EMBEDDED ANALYTICS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HANNA"
+  ],
+  "skill": "SAP S/4HANNA FINANCE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HANNA"
+  ],
+  "skill": "SAP S/4HANNA LOGISTICS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "CLOUD"
+  ],
+  "skill": "SAP SAC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP SAP IS-OIL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "UX"
+  ],
+  "skill": "SAP SCREEN PERSONAS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP SD"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP SRM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "SSO"
+  ],
+  "skill": "SAP SSO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP TM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "UX"
+  ],
+  "skill": "SAP UI5"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP",
+    "AUTENTICATION"
+  ],
+  "skill": "SAP USER MANAGEMENT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SAP WM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSS"
+  ],
+  "skill": "SASS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HYPERLEDGER"
+  ],
+  "skill": "SAWTOOTH"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "SBT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "SCA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR"
+  ],
+  "skill": "SCADA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JVM"
+  ],
+  "skill": "SCALA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON"
+  ],
+  "skill": "SCIPY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON"
+  ],
+  "skill": "SCRAPY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AGIL"
+  ],
+  "skill": "SCRUM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSS"
+  ],
+  "skill": "SCSS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON"
+  ],
+  "skill": "SEABORN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WEBDRIVER"
+  ],
+  "skill": "SELENIUM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSS"
+  ],
+  "skill": "SEMANTIC UI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR"
+  ],
+  "skill": "SENTRY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ORM",
+    "JAVASCRIPT"
+  ],
+  "skill": "SEQUELIZE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD"
+  ],
+  "skill": "SERENETY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "LOWCODE"
+  ],
+  "skill": "SERVICENOW"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "SETUPTOOLS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "CSHARP"
+  ],
+  "skill": "SHAREPOINT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CRM"
+  ],
+  "skill": "SIEBEL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSHARP",
+    "WEBSOCKET"
+  ],
+  "skill": "SIGNALR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PHP"
+  ],
+  "skill": "SILVER STRIPER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "FRONTEND",
+    "DOTNET"
+  ],
+  "skill": "SILVERLIGHT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "CSHARP"
+  ],
+  "skill": "SITECORE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "UX"
+  ],
+  "skill": "SKETCH"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "SMARTCONTRACT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "FRONTEND",
+    "PHP"
+  ],
+  "skill": "SMARTY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD",
+    "BIGDATA"
+  ],
+  "skill": "SNOWFLAKE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SOAP",
+    "TDD"
+  ],
+  "skill": "SOAPUI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "SOLANA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "POO"
+  ],
+  "skill": "SOLID"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SOLMAN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "LUCENE"
+  ],
+  "skill": "SOLR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "DEVSECOPS",
+    "SONAR"
+  ],
+  "skill": "SONARQUBE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "SONICWALL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSHARP",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "SPECFLOW"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AGIL"
+  ],
+  "skill": "SPECTRUM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR"
+  ],
+  "skill": "SPLUNK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "GROOVY",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "SPOCK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "AMPQ"
+  ],
+  "skill": "SPRING AMPQ"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "AOP"
+  ],
+  "skill": "SPRING AOP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING"
+  ],
+  "skill": "SPRING ASYNC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING SECURITY",
+    "AUTENTICATION"
+  ],
+  "skill": "SPRING AUTHORIZATION SERVER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "SCHEDULE"
+  ],
+  "skill": "SPRING BATCH"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING"
+  ],
+  "skill": "SPRING BEANS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRINGBOOT"
+  ],
+  "skill": "SPRING BOOT TEST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD"
+  ],
+  "skill": "SPRING CLOUD BUS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD"
+  ],
+  "skill": "SPRING CLOUD CIRCUIT BREAKER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD"
+  ],
+  "skill": "SPRING CLOUD CONFIG"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD",
+    "CONSUL"
+  ],
+  "skill": "SPRING CLOUD CONSUL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD CONTRACT",
+    "TDD",
+    "MOCK"
+  ],
+  "skill": "SPRING CLOUD CONTRACT TEST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD"
+  ],
+  "skill": "SPRING CLOUD GATEWAY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD",
+    "KUBERNETES"
+  ],
+  "skill": "SPRING CLOUD KUBERNETES"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD",
+    "LOADBALANCE"
+  ],
+  "skill": "SPRING CLOUD LOADBALANCER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD",
+    "FEIGN"
+  ],
+  "skill": "SPRING CLOUD OPENFEIGN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD",
+    "IA"
+  ],
+  "skill": "SPRING CLOUD SLEUTH"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD"
+  ],
+  "skill": "SPRING CLOUD STREAM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD",
+    "ZIPKIN"
+  ],
+  "skill": "SPRING CLOUD ZIPKIN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING"
+  ],
+  "skill": "SPRING CONFIGURATION PROPERTIES"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING"
+  ],
+  "skill": "SPRING CONTEXT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING DATA",
+    "CASSANDRA"
+  ],
+  "skill": "SPRING DATA CASSANDRA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING DATA",
+    "COUCHDB"
+  ],
+  "skill": "SPRING DATA COUCHDB"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING DATA",
+    "ELASTICSEARCH"
+  ],
+  "skill": "SPRING DATA ELASTICSEARCH"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING DATA"
+  ],
+  "skill": "SPRING DATA JDBC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING DATA",
+    "JPA"
+  ],
+  "skill": "SPRING DATA JPA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING DATA",
+    "MONGODB"
+  ],
+  "skill": "SPRING DATA MONGODB"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING DATA",
+    "R2DBC"
+  ],
+  "skill": "SPRING DATA R2DBC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING DATA",
+    "REDIS"
+  ],
+  "skill": "SPRING DATA REDIS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING DATA",
+    "REST"
+  ],
+  "skill": "SPRING DATA REST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING"
+  ],
+  "skill": "SPRING EXPRESSION LANGUAGE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "GRAPHQL"
+  ],
+  "skill": "SPRING GRAPHQL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "HATEOAS"
+  ],
+  "skill": "SPRING HATEOAS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "IBATIS"
+  ],
+  "skill": "SPRING IBATIS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING"
+  ],
+  "skill": "SPRING INITIALIZR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "WS"
+  ],
+  "skill": "SPRING INTEGRATION"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "JMS"
+  ],
+  "skill": "SPRING JMS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "JTA"
+  ],
+  "skill": "SPRING JTA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "KAFA"
+  ],
+  "skill": "SPRING KAFA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRINGBOOT",
+    "MICROMETER"
+  ],
+  "skill": "SPRING MICROMETER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING TEST",
+    "MOCK"
+  ],
+  "skill": "SPRING MOCKMVC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "MYBATIS"
+  ],
+  "skill": "SPRING MYBATIS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "OPENAPI"
+  ],
+  "skill": "SPRING OPENAPI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "ORM"
+  ],
+  "skill": "SPRING ORM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "OXM"
+  ],
+  "skill": "SPRING OXM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING"
+  ],
+  "skill": "SPRING PROFILES"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "RX"
+  ],
+  "skill": "SPRING REACTIVE DATA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "REACTOR"
+  ],
+  "skill": "SPRING REACTOR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING"
+  ],
+  "skill": "SPRING REMOTING"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "REST"
+  ],
+  "skill": "SPRING REST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "DOCUMENTATION",
+    "REST"
+  ],
+  "skill": "SPRING REST DOCS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING"
+  ],
+  "skill": "SPRING RETRY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "RMI"
+  ],
+  "skill": "SPRING RMI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING"
+  ],
+  "skill": "SPRING ROO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "SCHEDULE"
+  ],
+  "skill": "SPRING SCHEDULING"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING SECURITY",
+    "LDAP"
+  ],
+  "skill": "SPRING SECURITY LDAP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING SECURITY",
+    "OAUTH"
+  ],
+  "skill": "SPRING SECURITY OAUTH2"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING SECURITY",
+    "SAML"
+  ],
+  "skill": "SPRING SECURITY SAML"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING SECURITY"
+  ],
+  "skill": "SPRING SESSION"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "STOMP"
+  ],
+  "skill": "SPRING STOMP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING"
+  ],
+  "skill": "SPRING TESTCONTAINERS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "TDD"
+  ],
+  "skill": "SPRING TESTCONTEXT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "JTA"
+  ],
+  "skill": "SPRING TRANSACTION"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING WEB",
+    "MVC"
+  ],
+  "skill": "SPRING WEB MVC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "WEBCLIENT"
+  ],
+  "skill": "SPRING WEBCLIENT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "RX"
+  ],
+  "skill": "SPRING WEBFLUX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "SOAP"
+  ],
+  "skill": "SPRING WEBSERVICES"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "WEBSOCKET"
+  ],
+  "skill": "SPRING WEBSOCKET"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING"
+  ],
+  "skill": "SPRING XD"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "XML"
+  ],
+  "skill": "SPRING XML CONFIGURATION"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRINGBOOT"
+  ],
+  "skill": "SPRINGBOOT ACTUATOR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRINGBOOT"
+  ],
+  "skill": "SPRINGBOOT ADMIN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRINGBOOT"
+  ],
+  "skill": "SPRINGBOOT CLI"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRINGBOOT"
+  ],
+  "skill": "SPRINGBOOT DEVTOOLS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRINGBOOT",
+    "TDD"
+  ],
+  "skill": "SPRINGBOOT TEST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRINGBOOT"
+  ],
+  "skill": "SPRINGBOOTSTARTER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "NOSQL",
+    "SQL"
+  ],
+  "skill": "SPRINGDATA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING",
+    "SPRING"
+  ],
+  "skill": "SPRINGMVC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "ORM"
+  ],
+  "skill": "SQLALCHEMY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DATABASE",
+    "HTTP SERVER"
+  ],
+  "skill": "SQLITE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SQL"
+  ],
+  "skill": "SQLSERVER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HADOOP",
+    "SQL"
+  ],
+  "skill": "SQOOP"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AWS",
+    "MENSAGERIA"
+  ],
+  "skill": "SQS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "B.I"
+  ],
+  "skill": "SSAS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "B.I"
+  ],
+  "skill": "SSRS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VERSIONING"
+  ],
+  "skill": "STARTEAM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "STELLAR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "STMS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SERVLET",
+    "MVC"
+  ],
+  "skill": "STRUTS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SUCCESSFACTORS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VERSIONING"
+  ],
+  "skill": "SVN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "OPENAPI"
+  ],
+  "skill": "SWAGGER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOCKER"
+  ],
+  "skill": "SWARM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "OBJECTIVEC"
+  ],
+  "skill": "SWIFT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA"
+  ],
+  "skill": "SWING"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SAP"
+  ],
+  "skill": "SYBASE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "SYMANTEC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MVC",
+    "PHP"
+  ],
+  "skill": "SYMFONY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "AZURE",
+    "ETL"
+  ],
+  "skill": "SYNAPSE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR"
+  ],
+  "skill": "SYSLOG"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ETL"
+  ],
+  "skill": "TABLEAU"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SECURITY"
+  ],
+  "skill": "TACACS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CSS"
+  ],
+  "skill": "TAILWIND"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "FRONTEND"
+  ],
+  "skill": "TELERIK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "COBOL"
+  ],
+  "skill": "TELON"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD"
+  ],
+  "skill": "TENCENT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD",
+    "B.I"
+  ],
+  "skill": "TERADATA"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "IAC",
+    "CLOUD",
+    "DEVOPS"
+  ],
+  "skill": "TERRAFORM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD",
+    "WEBDRIVER"
+  ],
+  "skill": "TESTCAFE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD"
+  ],
+  "skill": "TESTCOMPLETE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD"
+  ],
+  "skill": "TESTCONTAINERS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD"
+  ],
+  "skill": "TESTLINK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA",
+    "TDD"
+  ],
+  "skill": "TESTNG"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD",
+    "QA"
+  ],
+  "skill": "TESTRAIL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "TEZOS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VERSIONING"
+  ],
+  "skill": "TFS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "HTML",
+    "CSS",
+    "JAVASCRIPT"
+  ],
+  "skill": "THYMELEAF"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ETL"
+  ],
+  "skill": "TIBCO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "IDE",
+    "SQL"
+  ],
+  "skill": "TOAD"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA SERVER"
+  ],
+  "skill": "TOMCAT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS"
+  ],
+  "skill": "TRAVIS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JIRA"
+  ],
+  "skill": "TRELLO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "TRON"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PHP"
+  ],
+  "skill": "TYPO3"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "FRONTEND",
+    "AUTOMATION",
+    "UX"
+  ],
+  "skill": "UIPATH"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "UNITTEST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DEVOPS"
+  ],
+  "skill": "VAGRANT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOTNET"
+  ],
+  "skill": "VB.NET"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "VBSCRIPT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VMWARE",
+    "VSHERE"
+  ],
+  "skill": "VCENTER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "JAVA"
+  ],
+  "skill": "VCM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD"
+  ],
+  "skill": "VEEAM"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MVC",
+    "JAVA"
+  ],
+  "skill": "VELOCITY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VIRTUALIZATION"
+  ],
+  "skill": "VIRTUALBOX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "PYTHON",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "VIRTUALENV"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "IDE"
+  ],
+  "skill": "VISUALAGE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOTNET"
+  ],
+  "skill": "VISUALSTUDIO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVASCRIPT",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "VITEST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MVC",
+    "JAVA"
+  ],
+  "skill": "VRAPTOR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "IDE"
+  ],
+  "skill": "VSCODE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VIRTUALIZATION"
+  ],
+  "skill": "VSPHERE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VERSIONING"
+  ],
+  "skill": "VSS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VUE"
+  ],
+  "skill": "VUEX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PYTHON"
+  ],
+  "skill": "WAGTAIL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOTNET",
+    "WS"
+  ],
+  "skill": "WCF"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD",
+    "WEBDRIVER"
+  ],
+  "skill": "WEBDRIVERIO"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA SERVER"
+  ],
+  "skill": "WEBLOGIC"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVA SERVER"
+  ],
+  "skill": "WEBSPHERE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "FRONTEND"
+  ],
+  "skill": "WEBVIEW"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "ERP"
+  ],
+  "skill": "WINTHOR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "WS",
+    "TDD",
+    "MOCK"
+  ],
+  "skill": "WIREMOCK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "VIRTUALIZATION"
+  ],
+  "skill": "WMWARE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CMS",
+    "PHP"
+  ],
+  "skill": "WORDPRESS"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOTNET",
+    "WS"
+  ],
+  "skill": "WPF"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SOAP"
+  ],
+  "skill": "WSDL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "FRONTEND",
+    "MOBILE",
+    "CSHARP"
+  ],
+  "skill": "XAMARIN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "XML"
+  ],
+  "skill": "XAML"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "IOS"
+  ],
+  "skill": "XCODE"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "IOS"
+  ],
+  "skill": "XCUITEST"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "XML"
+  ],
+  "skill": "XPATH"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "XML"
+  ],
+  "skill": "XQUERY"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD",
+    "QA"
+  ],
+  "skill": "XRAIL"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "XML"
+  ],
+  "skill": "XSD"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "DOTNET",
+    "TDD",
+    "BDD"
+  ],
+  "skill": "XUNIT"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "JAVASCRIPT",
+    "DEPENDENCY MANAGER"
+  ],
+  "skill": "YARN"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MVC",
+    "PHP"
+  ],
+  "skill": "YII"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR"
+  ],
+  "skill": "ZABBIX"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MVC",
+    "PHP"
+  ],
+  "skill": "ZEND"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "CLOUD"
+  ],
+  "skill": "ZENDESK"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "TDD",
+    "BDD",
+    "QA"
+  ],
+  "skill": "ZEPHYR"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "MONITOR"
+  ],
+  "skill": "ZOOKEEPER"
+}, {
+  "childrenCount": 0,
+  "hasNoParent": false,
+  "parent": [
+    "SPRING CLOUD NETFLIX"
+  ],
+  "skill": "ZUUL"
+}]
