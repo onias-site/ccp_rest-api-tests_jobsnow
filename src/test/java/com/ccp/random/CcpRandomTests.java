@@ -110,7 +110,7 @@ public class CcpRandomTests {
 			var childrenCount2 = dv2.getAsIntegerNumber("childrenCount");
 
 			if(childrenCount1 != childrenCount2) {
-				return childrenCount2 - childrenCount1;
+//				return childrenCount2 - childrenCount1;
 			}
 			
 			String skill1 = dv1.getAsString("skill");
@@ -123,6 +123,8 @@ public class CcpRandomTests {
 		CcpFileDecorator reportFile = new CcpStringDecorator(folder+ "report_skills.json").file().reset();
 		
 		reportFile.append(report.toString());
+		
+		
 	}
 
 	static String getSynonym(CcpJsonRepresentation json, List<CcpJsonRepresentation> report) {
