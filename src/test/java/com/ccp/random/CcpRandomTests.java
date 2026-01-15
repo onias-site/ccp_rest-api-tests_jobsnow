@@ -3,6 +3,7 @@ package com.ccp.random;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -102,15 +103,15 @@ public class CcpRandomTests {
 		.collect(Collectors.toList());
 		
 		
-		report.sort((a, b) -> {
+		Comparator<? super CcpJsonRepresentation> sorter = (a, b) -> {
 			var dv1 = a.getDynamicVersion();
 			var dv2 = b.getDynamicVersion();
 			
-			var childrenCount1 = dv1.getAsIntegerNumber("childrenCount");
-			var childrenCount2 = dv2.getAsIntegerNumber("childrenCount");
+			var x1 = dv1.getAsIntegerNumber("childrenCount");
+			var x2 = dv2.getAsIntegerNumber("childrenCount");
 
-			if(childrenCount1 != childrenCount2) {
-//				return childrenCount2 - childrenCount1;
+			if(x1 != x2) {
+				return x2 - x1;
 			}
 			
 			String skill1 = dv1.getAsString("skill");
@@ -119,18 +120,19 @@ public class CcpRandomTests {
 			
 			int compareTo = skill1.compareTo(skill2);
 			return compareTo;
-		});
+		};
 		
 		
 		List<CcpJsonRepresentation> collect = report
 		.stream()
 		.map(x -> x.getDynamicVersion().put("mirror", getSynonym(x, report)))
 		.map(x -> x.getDynamicVersion().put("hasMirror", false == x.getDynamicVersion().getAsString("mirror").isEmpty()))
+		.map(x -> getSkillsWithCommonParentsSize(x, report))
 		.collect(Collectors.toList());
 		
 		
 		CcpFileDecorator reportFile = new CcpStringDecorator(folder+ "report_skills.json").file().reset();
-		
+		collect.sort(sorter);
 		reportFile.append(collect.toString());
 		
 		
@@ -140,8 +142,29 @@ public class CcpRandomTests {
 		}
 		
 		System.out.println(allParents.size());
-		
 	}
+
+
+	
+	static CcpJsonRepresentation getSkillsWithCommonParentsSize(CcpJsonRepresentation json, List<CcpJsonRepresentation> report) {
+		List<String> collect = report.stream().map(x -> x.getDynamicVersion())
+		.filter(x -> false == x.getAsString("skill").equals(json.getDynamicVersion().getAsString("skill")))
+		.map(x -> x.put("commonParents", getCommonParents(x.json, json)).getDynamicVersion())
+		.filter(x -> x.getAsStringList("commonParents").size() > 1)
+		.map(x -> x.getAsString("skill"))
+		.collect(Collectors.toList());
+		CcpJsonRepresentation put = json.getDynamicVersion().put("hasSkillsWithCommonParentsSize", false == collect.isEmpty()).getDynamicVersion()
+				.put("skillsWithCommonParents", collect);
+		return put;
+	}
+	
+	static List<String> getCommonParents(CcpJsonRepresentation json1, CcpJsonRepresentation json2) {
+		List<String> parent1 = json1.getDynamicVersion().getAsStringList("parent");
+		List<String> parent2 = json2.getDynamicVersion().getAsStringList("parent");
+		List<String> intersectList = new CcpCollectionDecorator(parent1).getIntersectList(parent2);
+		return intersectList;
+	}
+	
 	
 	static Set<String> getParents(Set<String> allParents, List<CcpJsonRepresentation> report, CcpJsonRepresentation json){
 		
