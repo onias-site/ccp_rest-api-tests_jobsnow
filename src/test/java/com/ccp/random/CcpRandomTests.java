@@ -120,11 +120,57 @@ public class CcpRandomTests {
 			int compareTo = skill1.compareTo(skill2);
 			return compareTo;
 		});
+		
+		
+		List<CcpJsonRepresentation> collect = report
+		.stream()
+		.map(x -> x.getDynamicVersion().put("mirror", getSynonym(x, report)))
+		.map(x -> x.getDynamicVersion().put("hasMirror", false == x.getDynamicVersion().getAsString("mirror").isEmpty()))
+		.collect(Collectors.toList());
+		
+		
 		CcpFileDecorator reportFile = new CcpStringDecorator(folder+ "report_skills.json").file().reset();
 		
-		reportFile.append(report.toString());
+		reportFile.append(collect.toString());
 		
 		
+		Set<String> allParents = new HashSet<String>();
+		for (CcpJsonRepresentation json : collect) {
+			getParents(allParents, report, json);
+		}
+		
+		System.out.println(allParents.size());
+		
+	}
+	
+	static Set<String> getParents(Set<String> allParents, List<CcpJsonRepresentation> report, CcpJsonRepresentation json){
+		
+		List<String> parents = json.getDynamicVersion().getAsStringList("parent");
+		
+		String skill = json.getDynamicVersion().getAsString("skill");
+		System.out.print(skill + "->");
+		counter++;
+		for (String parent : parents) {
+			CcpJsonRepresentation parentJson = report.stream().map(x -> x.getDynamicVersion())
+			.filter(x -> parent.equals(x.getAsString("skill")))
+			.map(x -> x.json)
+			.findFirst()
+			.get();
+			boolean added = allParents.add(parent);
+			Set<String> gandParents = getParents(allParents, report, parentJson);
+			allParents.addAll(gandParents);
+			if(counter > 0 && added) {
+				System.out.println(counter);
+			}
+			counter = 0;
+		}
+		if(parents.isEmpty()) {
+			System.out.println(counter);
+			counter = 0;
+			return allParents;
+		}	
+		
+		return allParents;
 	}
 
 	static String getSynonym(CcpJsonRepresentation json, List<CcpJsonRepresentation> report) {

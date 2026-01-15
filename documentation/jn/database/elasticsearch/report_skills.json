@@ -1,27 +1,35 @@
 [{
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "ABAP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JMS"
   ],
   "skill": "ACTIVEMQ"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL"
   ],
   "skill": "ADABAS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MVC",
     "JAVA"
@@ -29,7 +37,9 @@
   "skill": "ADF"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOTNET",
     "SQL"
@@ -37,14 +47,18 @@
   "skill": "ADO.NET"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "UX"
   ],
   "skill": "ADOBEXD"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NODE",
     "TYPESCRIPT",
@@ -53,7 +67,9 @@
   "skill": "ADONISJS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "JAVA"
@@ -61,11 +77,15 @@
   "skill": "AEM"
 }, {
   "childrenCount": 4,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "AGIL"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "MONITOR",
@@ -74,14 +94,18 @@
   "skill": "AIRFLOW"
 }, {
   "childrenCount": 4,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "FRONTEND"
   ],
   "skill": "AJAX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AZURE",
     "KUBERNETES"
@@ -89,7 +113,9 @@
   "skill": "AKS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "RUBY"
@@ -97,7 +123,9 @@
   "skill": "ALCHEMY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "JAVA"
@@ -105,21 +133,27 @@
   "skill": "ALFRESCO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "ALGORAND"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD"
   ],
   "skill": "ALIBABA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "BDD",
@@ -128,7 +162,9 @@
   "skill": "ALLURE REPORTS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "LOWCODE",
     "ETL"
@@ -136,7 +172,9 @@
   "skill": "ALTERYX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HANNA",
     "ORM"
@@ -144,32 +182,42 @@
   "skill": "AMDP"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "AMPQ"
 }, {
   "childrenCount": 3,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MOBILE"
   ],
   "skill": "ANDROID"
 }, {
-  "childrenCount": 2,
+  "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPA"
   ],
   "skill": "ANGULAR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS"
   ],
   "skill": "ANSIBLE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "DEPENDENCY MANAGER"
@@ -177,11 +225,15 @@
   "skill": "ANT"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "AOP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD",
@@ -191,28 +243,37 @@
   "skill": "APACHEAB"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
-    "REST"
+    "REST",
+    "IAM"
   ],
   "skill": "APIGEE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "GRAPHQL"
   ],
   "skill": "APOLLO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "APPCC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CISCO",
     "MONITOR"
@@ -220,14 +281,18 @@
   "skill": "APPDYNAMICS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "GCP"
   ],
   "skill": "APPENGINE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "WEBDRIVER",
@@ -236,35 +301,54 @@
   "skill": "APPIUM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "ARIBA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS"
   ],
   "skill": "ARTIFACTORY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
+  "parent": [
+    "HTTP SERVER"
+  ],
+  "skill": "ASP"
+}, {
+  "childrenCount": 0,
+  "hasMirror": false,
+  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AOP"
   ],
   "skill": "ASPECTJ"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOTNET"
   ],
   "skill": "ASPNET"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "TDD",
@@ -273,14 +357,18 @@
   "skill": "ASSEERTJ"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "ASSEMBLER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL",
     "S3"
@@ -288,7 +376,9 @@
   "skill": "ATHENA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONGODB",
     "CLOUD"
@@ -296,25 +386,33 @@
   "skill": "ATLAS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "AURORA"
 }, {
-  "childrenCount": 6,
+  "childrenCount": 7,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "AUTENTICATION"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "AUTOMATION"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVASCRIPT",
     "TDD",
@@ -323,101 +421,131 @@
   "skill": "AVA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "AVALANCHE"
 }, {
   "childrenCount": 12,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD"
   ],
   "skill": "AWS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AJAX"
   ],
   "skill": "AXIOS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AZURE"
   ],
   "skill": "AZ104"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AZURE"
   ],
   "skill": "AZ900"
 }, {
   "childrenCount": 6,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD"
   ],
   "skill": "AZURE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS",
     "AZURE"
   ],
   "skill": "AZUREDEVOPS"
 }, {
-  "childrenCount": 10,
+  "childrenCount": 11,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL",
     "NOSQL"
   ],
   "skill": "B.I"
 }, {
-  "childrenCount": 25,
+  "childrenCount": 29,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "BACKEND"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "UX"
   ],
   "skill": "BALSAMIQ"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS"
   ],
   "skill": "BAMBOO"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SOA"
   ],
   "skill": "BARRAMENTO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "BASIS"
 }, {
   "childrenCount": 41,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "BDD"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PHP",
     "TDD",
@@ -426,7 +554,9 @@
   "skill": "BEHAT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "TDD",
@@ -435,21 +565,27 @@
   "skill": "BEHAVE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ERP"
   ],
   "skill": "BENNER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HYPERLEDGER"
   ],
   "skill": "BESU"
 }, {
-  "childrenCount": 6,
+  "childrenCount": 7,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NOSQL",
     "SQL"
@@ -457,7 +593,9 @@
   "skill": "BIGDATA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL",
     "GCP"
@@ -465,21 +603,27 @@
   "skill": "BIGQUERY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "GIT"
   ],
   "skill": "BITBUCKET"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "BITCOIN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD",
@@ -488,7 +632,9 @@
   "skill": "BLAZEMETER"
 }, {
   "childrenCount": 22,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CRYPTOGRAPHY",
     "DATABASE"
@@ -496,7 +642,9 @@
   "skill": "BLOCKCHAIN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PHP"
@@ -504,14 +652,18 @@
   "skill": "BOLT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSS"
   ],
   "skill": "BOOTSTRAP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVASCRIPT",
     "DEPENDENCY MANAGER"
@@ -519,46 +671,51 @@
   "skill": "BOWER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SOA"
   ],
   "skill": "BPEL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SOA"
   ],
   "skill": "BPM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
-  "parent": [
-    "SOA"
-  ],
-  "skill": "BPMS"
-}, {
-  "childrenCount": 0,
-  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "BSC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL"
   ],
   "skill": "BTRIEVE"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "BUCKET"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOCUMENTATION",
     "MONITOR"
@@ -566,11 +723,15 @@
   "skill": "BUGZILLA"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "BUILD"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "DEPENDENCY MANAGER"
@@ -578,14 +739,18 @@
   "skill": "BUILDR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSS"
   ],
   "skill": "BULMA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "RUBY",
     "DEPENDENCY MANAGER"
@@ -593,22 +758,37 @@
   "skill": "BUNDLER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "DEVSECOPS"
   ],
   "skill": "BURP SUITE"
 }, {
-  "childrenCount": 3,
+  "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "C ANSI"
+}, {
+  "childrenCount": 3,
+  "hasMirror": false,
+  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DATABASE"
   ],
   "skill": "CACHE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MVC",
     "PHP"
@@ -616,21 +796,27 @@
   "skill": "CAKE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BARRAMENTO"
   ],
   "skill": "CAMEL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "CAMUNDA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WEBDRIVER",
     "TDD",
@@ -639,35 +825,45 @@
   "skill": "CAPYBARA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "CARDANO"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NOSQL"
   ],
   "skill": "CASSANDRA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CISCO"
   ],
   "skill": "CCNA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CISCO"
   ],
   "skill": "CCNP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVASCRIPT",
     "TDD",
@@ -676,14 +872,18 @@
   "skill": "CHAI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSS"
   ],
   "skill": "CHAKRA UI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "DEVSECOPS"
@@ -691,32 +891,42 @@
   "skill": "CHECKMARX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "LOWCODE"
   ],
   "skill": "CHERWELL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MAINFRAME"
   ],
   "skill": "CICS"
 }, {
   "childrenCount": 4,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "CISCO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "CISSP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VIRTUALIZATION",
     "SECURITY",
@@ -725,7 +935,9 @@
   "skill": "CITRIX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL",
     "RAD"
@@ -733,28 +945,36 @@
   "skill": "CLARION"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VERSIONING"
   ],
   "skill": "CLEARCASE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "CLIPPER"
 }, {
   "childrenCount": 29,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "CLOUD"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD",
     "SPARK",
@@ -763,56 +983,72 @@
   "skill": "CLOUDERA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AWS"
   ],
   "skill": "CLOUDFORMATION"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AWS"
   ],
   "skill": "CLOUDFRONT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AWS"
   ],
   "skill": "CLOUDWATCH"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL"
   ],
   "skill": "CMDB"
 }, {
   "childrenCount": 38,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "FRONTEND"
   ],
   "skill": "CMS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AGIL"
   ],
   "skill": "COBIT"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MAINFRAME"
   ],
   "skill": "COBOL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "OBJECTIVEC",
     "DEPENDENCY MANAGER"
@@ -820,7 +1056,9 @@
   "skill": "COCOAPODS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PHP",
     "TDD",
@@ -829,7 +1067,9 @@
   "skill": "CODECEPTION"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "GIT",
     "DEVOPS"
@@ -837,7 +1077,9 @@
   "skill": "CODECOMMIT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MVC",
     "PHP"
@@ -845,14 +1087,18 @@
   "skill": "CODEIGNITER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "B.I"
   ],
   "skill": "COGNOS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "RUBY"
@@ -860,7 +1106,9 @@
   "skill": "COMFY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PHP",
     "DEPENDENCY MANAGER"
@@ -868,7 +1116,9 @@
   "skill": "COMPOSER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PHP"
@@ -876,7 +1126,9 @@
   "skill": "CONCRETE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "DEPENDENCY MANAGER"
@@ -884,35 +1136,45 @@
   "skill": "CONDA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOCUMENTATION"
   ],
   "skill": "CONFLUENCE"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR"
   ],
   "skill": "CONSUL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "REACT"
   ],
   "skill": "CONTEXTAPI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "CORDA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NOSQL",
     "AZURE"
@@ -920,28 +1182,36 @@
   "skill": "COSMODB"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "COSMOS"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NOSQL"
   ],
   "skill": "COUCHDB"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "CPP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PHP"
@@ -949,7 +1219,9 @@
   "skill": "CRAFT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "JAVA"
@@ -957,29 +1229,39 @@
   "skill": "CRAFTER"
 }, {
   "childrenCount": 3,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "CRM"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "CRYPTOGRAPHY"
 }, {
   "childrenCount": 14,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOTNET"
   ],
   "skill": "CSHARP"
 }, {
-  "childrenCount": 12,
+  "childrenCount": 13,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "CSS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "BDD"
@@ -987,7 +1269,9 @@
   "skill": "CTFL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "BDD"
@@ -995,23 +1279,18 @@
   "skill": "CUCUMBER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
-  "parent": [
-    "TDD",
-    "BDD",
-    "QA"
-  ],
-  "skill": "CUCUMBER REPORTS"
-}, {
-  "childrenCount": 0,
-  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VERSIONING"
   ],
   "skill": "CVS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "JAVASCRIPT",
@@ -1020,22 +1299,28 @@
   "skill": "CYPRESS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSHARP",
     "ORM"
   ],
   "skill": "DAPPER"
 }, {
-  "childrenCount": 13,
+  "childrenCount": 12,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "DATABASE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD",
     "BIGDATA"
@@ -1043,7 +1328,9 @@
   "skill": "DATABRICKS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR",
     "CLOUD"
@@ -1051,14 +1338,18 @@
   "skill": "DATADOG"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "DATAFLEX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ETL",
     "GCP"
@@ -1066,21 +1357,27 @@
   "skill": "DATAFLOW"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "B.I"
   ],
   "skill": "DATAMART"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ETL"
   ],
   "skill": "DATASTAGE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NOSQL",
     "GCP"
@@ -1088,63 +1385,81 @@
   "skill": "DATASTORE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ERP"
   ],
   "skill": "DATASUL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "B.I"
   ],
   "skill": "DAX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL"
   ],
   "skill": "DB2"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "DELPHI"
 }, {
   "childrenCount": 28,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEPLOY"
   ],
   "skill": "DEPENDENCY MANAGER"
 }, {
   "childrenCount": 3,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BUILD"
   ],
   "skill": "DEPLOY"
 }, {
   "childrenCount": 20,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEPLOY"
   ],
   "skill": "DEVOPS"
 }, {
   "childrenCount": 5,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "DEVSECOPS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HTML",
     "JAVASCRIPT"
@@ -1152,14 +1467,18 @@
   "skill": "DHTML"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD"
   ],
   "skill": "DIGITALOCEAN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PYTHON"
@@ -1167,14 +1486,18 @@
   "skill": "DJANGO"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS"
   ],
   "skill": "DOCKER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ORM",
     "PHP"
@@ -1182,33 +1505,43 @@
   "skill": "DOCTRINE"
 }, {
   "childrenCount": 7,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "DOCUMENTATION"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "FRONTEND"
   ],
   "skill": "DOM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "JAVA"
   ],
   "skill": "DOTCMS"
 }, {
-  "childrenCount": 13,
+  "childrenCount": 14,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "DOTNET"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "CSHARP"
@@ -1216,7 +1549,9 @@
   "skill": "DOTNETNUKE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PHP"
@@ -1224,7 +1559,9 @@
   "skill": "DRUPAL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NOSQL",
     "SERVERLESS",
@@ -1233,7 +1570,9 @@
   "skill": "DYNAMODB"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR",
     "CLOUD"
@@ -1241,7 +1580,9 @@
   "skill": "DYNATRACE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "GROOVY",
     "TDD",
@@ -1250,7 +1591,9 @@
   "skill": "EASYB"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "TDD",
@@ -1259,50 +1602,60 @@
   "skill": "EASYMOCK"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MAINFRAME"
   ],
   "skill": "EASYTRIEVE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AWS"
   ],
   "skill": "EC2"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA"
   ],
   "skill": "ECLIPSE"
 }, {
-  "childrenCount": 1,
+  "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "ECOMERCE"
 }, {
-  "childrenCount": 1,
-  "hasNoParent": true,
-  "skill": "ECOMMERCE"
-}, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AWS"
   ],
   "skill": "ECS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "RMI"
   ],
   "skill": "EJB"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AWS",
     "KUBERNETES"
@@ -1310,28 +1663,36 @@
   "skill": "EKS"
 }, {
   "childrenCount": 3,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "LUCENE"
   ],
   "skill": "ELASTICSEARCH"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "ELIXIR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPA"
   ],
   "skill": "EMBER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSHARP",
     "ORM"
@@ -1339,7 +1700,9 @@
   "skill": "ENTITY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "REACT"
@@ -1347,36 +1710,46 @@
   "skill": "ENZYME"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "EOS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "CSHARP"
   ],
   "skill": "EPISERVER"
 }, {
-  "childrenCount": 9,
+  "childrenCount": 10,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "ERP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DATABASE"
   ],
   "skill": "ERWIN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "ANDROID"
@@ -1384,49 +1757,63 @@
   "skill": "ESPRESSO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "ETHEREUM"
 }, {
   "childrenCount": 12,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "B.I"
   ],
   "skill": "ETL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD NETFLIX"
   ],
   "skill": "EUREKA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "EWM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ORACLE"
   ],
   "skill": "EXADATA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NODE"
   ],
   "skill": "EXPRESS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "BDD",
@@ -1435,28 +1822,36 @@
   "skill": "EXTENT REPORTS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPA"
   ],
   "skill": "EXTJS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HYPERLEDGER"
   ],
   "skill": "FABRIC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD"
   ],
   "skill": "FAKER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "MVC"
@@ -1464,14 +1859,18 @@
   "skill": "FALCON"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AWS"
   ],
   "skill": "FARGATE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "REST",
     "NODE"
@@ -1479,14 +1878,18 @@
   "skill": "FASTIFY"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING"
   ],
   "skill": "FEIGN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PYTHON"
@@ -1494,28 +1897,27 @@
   "skill": "FEIN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AJAX"
   ],
   "skill": "FETCH"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "UX"
   ],
   "skill": "FIGMA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
-  "parent": [
-    "SAP"
-  ],
-  "skill": "FIORI"
-}, {
-  "childrenCount": 0,
-  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NOSQL",
     "SERVERLESS"
@@ -1523,14 +1925,18 @@
   "skill": "FIREBASE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DATABASE"
   ],
   "skill": "FIREBIRD"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "MVC"
@@ -1538,14 +1944,18 @@
   "skill": "FLASK"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSS"
   ],
   "skill": "FLEXBOX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "JAVA"
@@ -1553,14 +1963,18 @@
   "skill": "FLUIG"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BIGDATA"
   ],
   "skill": "FLUME"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ANDROID",
     "FRONTEND"
@@ -1568,7 +1982,9 @@
   "skill": "FLUTTER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS",
     "DATABASE"
@@ -1576,50 +1992,71 @@
   "skill": "FLYWAY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "FORTIFY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "FORTINET"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "FORTRAN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSS"
   ],
   "skill": "FOUNDATION"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL"
   ],
   "skill": "FOXPRO"
 }, {
-  "childrenCount": 20,
-  "hasNoParent": true,
+  "childrenCount": 19,
+  "hasMirror": false,
+  "hasNoParent": false,
+  "mirror": "",
+  "parent": [
+    "CSS",
+    "HTML",
+    "JAVASCRIPT"
+  ],
   "skill": "FRONTEND"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": true,
-  "skill": "FULLTEXT SEARCH"
+  "mirror": "",
+  "skill": "FULLTEXT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD",
@@ -1628,7 +2065,9 @@
   "skill": "GATLING"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NODE",
     "REACT"
@@ -1636,7 +2075,9 @@
   "skill": "GATSBY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "BDD"
@@ -1644,49 +2085,73 @@
   "skill": "GAUGE"
 }, {
   "childrenCount": 7,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD"
   ],
   "skill": "GCP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD"
   ],
   "skill": "GENESYS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "GENEXUS"
 }, {
-  "childrenCount": 5,
+  "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
+  "parent": [
+    "TDD",
+    "BDD"
+  ],
+  "skill": "GHERKIN"
+}, {
+  "childrenCount": 5,
+  "hasMirror": false,
+  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VERSIONING"
   ],
   "skill": "GIT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "GIT"
   ],
   "skill": "GITFLOW"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "GIT"
   ],
   "skill": "GITHUB"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "GITHUB",
     "DEVOPS"
@@ -1694,14 +2159,18 @@
   "skill": "GITHUB ACTIONS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "GIT"
   ],
   "skill": "GITLAB"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "GCP",
     "KUBERNETES"
@@ -1709,21 +2178,27 @@
   "skill": "GKE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA SERVER"
   ],
   "skill": "GLASSFISH"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "POO"
   ],
   "skill": "GOF"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND",
     "HTTP SERVER"
@@ -1731,7 +2206,9 @@
   "skill": "GOLANG"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "DEPENDENCY MANAGER",
@@ -1741,21 +2218,27 @@
   "skill": "GRADLE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR"
   ],
   "skill": "GRAFANA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "GROOVY"
   ],
   "skill": "GRAILS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "DEPENDENCY MANAGER"
@@ -1763,7 +2246,9 @@
   "skill": "GRAPE"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND",
     "FRONTEND",
@@ -1772,35 +2257,45 @@
   "skill": "GRAPHQL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR"
   ],
   "skill": "GRAYLOG"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "GRC"
 }, {
   "childrenCount": 3,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JVM"
   ],
   "skill": "GROOVY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS"
   ],
   "skill": "GRPC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVASCRIPT",
     "DEPENDENCY MANAGER"
@@ -1808,7 +2303,9 @@
   "skill": "GRUNT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVASCRIPT",
     "DEPENDENCY MANAGER"
@@ -1816,7 +2313,9 @@
   "skill": "GULP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DATABASE",
     "JAVA"
@@ -1824,14 +2323,18 @@
   "skill": "H2"
 }, {
   "childrenCount": 4,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BIGDATA"
   ],
   "skill": "HADOOP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "TDD",
@@ -1840,21 +2343,27 @@
   "skill": "HAMCREST"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOTNET"
   ],
   "skill": "HANGFIRE"
 }, {
   "childrenCount": 8,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "HANNA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HANNA",
     "SQL"
@@ -1862,63 +2371,81 @@
   "skill": "HANNA SQL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "LOADBALANCE"
   ],
   "skill": "HAPROXY"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "REST"
   ],
   "skill": "HATEOAS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HADOOP"
   ],
   "skill": "HBASE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "HCM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HADOOP"
   ],
   "skill": "HDFS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "HEDERA HASHGRAPH"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "KUBERNETES"
   ],
   "skill": "HELM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD"
   ],
   "skill": "HEROKU"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JDBC",
     "ORM"
@@ -1926,7 +2453,9 @@
   "skill": "HIBERNATE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "JAVA"
@@ -1934,14 +2463,18 @@
   "skill": "HIPPO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HADOOP"
   ],
   "skill": "HIVE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD",
@@ -1949,22 +2482,28 @@
   ],
   "skill": "HOVERFLY"
 }, {
-  "childrenCount": 6,
+  "childrenCount": 7,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "XML"
   ],
   "skill": "HTML"
 }, {
-  "childrenCount": 7,
+  "childrenCount": 9,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "HTTP SERVER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD"
@@ -1972,14 +2511,18 @@
   "skill": "HTTPIE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS"
   ],
   "skill": "HUDSON"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "ECOMERCE"
@@ -1987,21 +2530,27 @@
   "skill": "HYBRIS"
 }, {
   "childrenCount": 4,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "HYPERLEDGER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VIRTUALIZATION"
   ],
   "skill": "HYPERV"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "TDD",
@@ -2010,25 +2559,36 @@
   "skill": "HYPOTHESIS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD NETFLIX"
   ],
   "skill": "HYSTRIX"
 }, {
-  "childrenCount": 2,
-  "hasNoParent": false,
-  "parent": [
-    "DATABASE"
-  ],
-  "skill": "IA"
-}, {
   "childrenCount": 1,
-  "hasNoParent": true,
+  "hasMirror": false,
+  "hasNoParent": false,
+  "mirror": "",
+  "parent": [
+    "CLOUD"
+  ],
   "skill": "IAC"
 }, {
-  "childrenCount": 1,
+  "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
+  "parent": [
+    "AUTENTICATION"
+  ],
+  "skill": "IAM"
+}, {
+  "childrenCount": 1,
+  "hasMirror": false,
+  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ORM",
     "JDBC"
@@ -2036,39 +2596,51 @@
   "skill": "IBATIS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SOA"
   ],
   "skill": "IBM BROKER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD"
   ],
   "skill": "IBM CLOUD"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JSF"
   ],
   "skill": "ICEFACES"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "FRONTEND"
   ],
   "skill": "ICOMON"
 }, {
   "childrenCount": 5,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "IDE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NOSQL",
     "SQL",
@@ -2077,14 +2649,18 @@
   "skill": "IMPALA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HYPERLEDGER"
   ],
   "skill": "INDY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL",
     "NOSQL"
@@ -2092,7 +2668,9 @@
   "skill": "INFORMIX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD"
@@ -2100,25 +2678,33 @@
   "skill": "INSOMNIA"
 }, {
   "childrenCount": 3,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "INTEGRATION"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA"
   ],
   "skill": "INTELIJ"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL"
   ],
   "skill": "INTERBASE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "FRONTEND",
     "MOBILE"
@@ -2126,25 +2712,33 @@
   "skill": "IONIC"
 }, {
   "childrenCount": 3,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MOBILE"
   ],
   "skill": "IOS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "IOTA"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "IREPORT"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "REPORT",
     "JDBC"
@@ -2152,7 +2746,9 @@
   "skill": "ITEXT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "DEPENDENCY MANAGER"
@@ -2160,7 +2756,18 @@
   "skill": "IVY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
+  "parent": [
+    "DOTNET"
+  ],
+  "skill": "J#"
+}, {
+  "childrenCount": 0,
+  "hasMirror": false,
+  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "JAVA"
@@ -2168,7 +2775,9 @@
   "skill": "JACKRABBIT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "JAVA"
@@ -2176,7 +2785,9 @@
   "skill": "JAHIA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "JAVASCRIPT",
@@ -2185,7 +2796,9 @@
   "skill": "JASMINE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ITEXT",
     "IREPORT"
@@ -2193,14 +2806,18 @@
   "skill": "JASPER"
 }, {
   "childrenCount": 52,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JVM"
   ],
   "skill": "JAVA"
 }, {
   "childrenCount": 8,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "HTTP SERVER"
@@ -2208,25 +2825,33 @@
   "skill": "JAVA SERVER"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA SERVER"
   ],
   "skill": "JAVAEE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA"
   ],
   "skill": "JAVAFX"
 }, {
-  "childrenCount": 21,
+  "childrenCount": 22,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "JAVASCRIPT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "REST",
     "JAVA"
@@ -2234,7 +2859,9 @@
   "skill": "JAXRS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SOAP",
     "JAVA"
@@ -2242,7 +2869,9 @@
   "skill": "JAXWS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "TDD",
@@ -2251,21 +2880,27 @@
   "skill": "JBEHAVE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA SERVER"
   ],
   "skill": "JBOSS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "COBOL"
   ],
   "skill": "JCL"
 }, {
   "childrenCount": 5,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL",
     "JAVA"
@@ -2273,7 +2908,9 @@
   "skill": "JDBC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "ERP"
@@ -2281,14 +2918,18 @@
   "skill": "JDE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS"
   ],
   "skill": "JENKINS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "JAVASCRIPT"
@@ -2296,21 +2937,27 @@
   "skill": "JEST"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA SERVER"
   ],
   "skill": "JETTY"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AGIL"
   ],
   "skill": "JIRA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD",
@@ -2320,7 +2967,9 @@
   "skill": "JMETER"
 }, {
   "childrenCount": 3,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "MENSAGERIA"
@@ -2328,15 +2977,19 @@
   "skill": "JMS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PHP"
   ],
   "skill": "JOOMLA"
 }, {
-  "childrenCount": 2,
+  "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JDBC",
     "ORM"
@@ -2344,22 +2997,18 @@
   "skill": "JPA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
-    "JPA"
-  ],
-  "skill": "JPQL"
-}, {
-  "childrenCount": 0,
-  "hasNoParent": false,
-  "parent": [
-    "FRONTEND",
     "AJAX"
   ],
   "skill": "JQUERY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "RUBY",
     "JVM"
@@ -2367,7 +3016,9 @@
   "skill": "JRUBY"
 }, {
   "childrenCount": 4,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "XHTML",
     "MVC",
@@ -2376,7 +3027,9 @@
   "skill": "JSF"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HTML",
     "SERVLET"
@@ -2384,7 +3037,9 @@
   "skill": "JSP"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVASCRIPT",
     "HTML"
@@ -2392,7 +3047,9 @@
   "skill": "JSX"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL",
     "JAVA"
@@ -2400,7 +3057,9 @@
   "skill": "JTA"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "JAVA"
@@ -2408,21 +3067,27 @@
   "skill": "JUNIT"
 }, {
   "childrenCount": 5,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "JVM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AUTENTICATION"
   ],
   "skill": "JWT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JVM",
     "PYTHON"
@@ -2430,7 +3095,9 @@
   "skill": "JYTHON"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD",
@@ -2439,25 +3106,27 @@
   "skill": "K6"
 }, {
   "childrenCount": 1,
-  "hasNoParent": true,
-  "skill": "KAFA"
-}, {
-  "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MENSAGERIA"
   ],
   "skill": "KAFKA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JIRA"
   ],
   "skill": "KANBAM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BDD",
     "TDD",
@@ -2466,7 +3135,9 @@
   "skill": "KARATE DSL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "JAVASCRIPT",
@@ -2475,14 +3146,18 @@
   "skill": "KARMA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "KASPERSKY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "WEBDRIVER"
@@ -2490,7 +3165,9 @@
   "skill": "KATALON"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "CSHARP"
@@ -2498,28 +3175,36 @@
   "skill": "KENTICO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "KERBEROS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "KEYCLOAK"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ELASTICSEARCH"
   ],
   "skill": "KIBANA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AWS",
     "MONITOR"
@@ -2527,14 +3212,18 @@
   "skill": "KINESIS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPA"
   ],
   "skill": "KNOCKOUT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "ANDROID"
@@ -2542,14 +3231,18 @@
   "skill": "KOTLIN"
 }, {
   "childrenCount": 8,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOCKER"
   ],
   "skill": "KUBERNETES"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD",
     "SERVERLESS"
@@ -2557,7 +3250,9 @@
   "skill": "LAMBDA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PHP",
     "MVC"
@@ -2565,14 +3260,18 @@
   "skill": "LARAVEL"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "LDAP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "DEPENDENCY MANAGER"
@@ -2580,7 +3279,9 @@
   "skill": "LEININGEN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "JAVA"
@@ -2588,7 +3289,9 @@
   "skill": "LIFERAY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ORM",
     "CSHARP"
@@ -2596,7 +3299,9 @@
   "skill": "LINQ"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS",
     "DATABASE"
@@ -2604,18 +3309,24 @@
   "skill": "LIQUIBASE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "LISP"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "LOADBALANCE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD",
@@ -2624,14 +3335,18 @@
   "skill": "LOADRUNNER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD"
   ],
   "skill": "LOCALSTACK"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "RUBY"
@@ -2639,7 +3354,9 @@
   "skill": "LOCOMOTIVE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD",
@@ -2648,7 +3365,9 @@
   "skill": "LOCUST"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ELASTICSEARCH",
     "MONITOR"
@@ -2656,49 +3375,64 @@
   "skill": "LOGSTASH"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA"
   ],
   "skill": "LOMBOK"
 }, {
   "childrenCount": 4,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "LOWCODE"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NOSQL",
-    "FULLTEXT SEARCH"
+    "FULLTEXT"
   ],
   "skill": "LUCENE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PHP"
   ],
   "skill": "LUMEN"
 }, {
-  "childrenCount": 3,
+  "childrenCount": 4,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
-    "IA"
+    "BIGDATA",
+    "B.I"
   ],
   "skill": "MACHINELEARNING"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PHP",
-    "ECOMMERCE"
+    "ECOMERCE"
   ],
   "skill": "MAGENTO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "JAVA"
@@ -2706,56 +3440,72 @@
   "skill": "MAGNOLIA"
 }, {
   "childrenCount": 3,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "MAINFRAME"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOCUMENTATION"
   ],
   "skill": "MANTIS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL"
   ],
   "skill": "MARIADB"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSS"
   ],
   "skill": "MATERIAL UI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSS"
   ],
   "skill": "MATERIALIZE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "MATLAB"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON"
   ],
   "skill": "MATPLOTLIB"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CACHE",
     "GCP"
@@ -2763,21 +3513,27 @@
   "skill": "MEMCACHE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CACHE"
   ],
   "skill": "MEMCACHED"
 }, {
   "childrenCount": 5,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "INTEGRATION"
   ],
   "skill": "MENSAGERIA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CISCO",
     "CLOUD"
@@ -2785,14 +3541,18 @@
   "skill": "MERAKI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VERSIONING"
   ],
   "skill": "MERCURIAL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "SECURITY"
@@ -2800,7 +3560,9 @@
   "skill": "METASPLOIT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PYTHON"
@@ -2808,28 +3570,36 @@
   "skill": "MEZZANINE"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR"
   ],
   "skill": "MICROMETER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SERVLET"
   ],
   "skill": "MICRONAUT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ERP"
   ],
   "skill": "MICROVIX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "DEPENDENCY MANAGER"
@@ -2837,7 +3607,9 @@
   "skill": "MILL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "RUBY",
     "TDD",
@@ -2846,11 +3618,15 @@
   "skill": "MINITEST"
 }, {
   "childrenCount": 7,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "MOBILE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NODE",
     "TDD"
@@ -2858,11 +3634,15 @@
   "skill": "MOCHA"
 }, {
   "childrenCount": 9,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "MOCK"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JUNIT",
     "MOCK"
@@ -2870,7 +3650,9 @@
   "skill": "MOCKITO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD",
@@ -2879,25 +3661,33 @@
   "skill": "MOCKSERVER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "UX"
   ],
   "skill": "MOCKUPS"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NOSQL"
   ],
   "skill": "MONGODB"
 }, {
   "childrenCount": 22,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "MONITOR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD",
@@ -2906,14 +3696,18 @@
   "skill": "MOUNTEBANK"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MENSAGERIA"
   ],
   "skill": "MQSERIES"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOTNET",
     "TDD",
@@ -2922,18 +3716,24 @@
   "skill": "MSTEST"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BARRAMENTO"
   ],
   "skill": "MULE"
 }, {
   "childrenCount": 19,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "MVC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "DEPENDENCY MANAGER"
@@ -2941,7 +3741,9 @@
   "skill": "MVN"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JDBC",
     "ORM"
@@ -2949,42 +3751,54 @@
   "skill": "MYBATIS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JSF"
   ],
   "skill": "MYFACES"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL"
   ],
   "skill": "MYSQL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR"
   ],
   "skill": "NAGIOS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "NEAR PROTOCOL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NOSQL"
   ],
   "skill": "NEO4J"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "NODE",
     "MVC"
@@ -2992,14 +3806,18 @@
   "skill": "NESTJS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA"
   ],
   "skill": "NETBEANS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD",
     "ERP"
@@ -3007,7 +3825,9 @@
   "skill": "NETSUITE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "SOA"
@@ -3015,7 +3835,9 @@
   "skill": "NETWEAVER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD"
@@ -3023,7 +3845,9 @@
   "skill": "NEWMAN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR",
     "JAVA"
@@ -3031,28 +3855,36 @@
   "skill": "NEWRELIC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVASCRIPT"
   ],
   "skill": "NEXTJS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA"
   ],
   "skill": "NEXUS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HTTP SERVER"
   ],
   "skill": "NGINX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSHARP",
     "ORM"
@@ -3060,7 +3892,9 @@
   "skill": "NHIBERNATE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DATABASE",
     "BIGDATA",
@@ -3069,7 +3903,9 @@
   "skill": "NIFI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "BDD",
@@ -3078,7 +3914,9 @@
   "skill": "NIGHTWATCHJS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "DEVSECOPS"
@@ -3086,22 +3924,28 @@
   "skill": "NIKTO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MACHINELEARNING"
   ],
   "skill": "NLP"
 }, {
   "childrenCount": 6,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVASCRIPT",
-    "SERVER HTTP"
+    "HTTP SERVER"
   ],
   "skill": "NODE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "TDD",
@@ -3110,21 +3954,27 @@
   "skill": "NOSE2"
 }, {
   "childrenCount": 15,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DATABASE"
   ],
   "skill": "NOSQL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "IDE"
   ],
   "skill": "NOTEPAD++"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVASCRIPT",
     "DEPENDENCY MANAGER"
@@ -3132,7 +3982,9 @@
   "skill": "NPM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOTNET",
     "DEPENDENCY MANAGER"
@@ -3140,14 +3992,18 @@
   "skill": "NUGET"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON"
   ],
   "skill": "NUMPY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOTNET",
     "TDD"
@@ -3155,53 +4011,69 @@
   "skill": "NUNIT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VUE"
   ],
   "skill": "NUXTJS"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AUTENTICATION"
   ],
   "skill": "OAUTH"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ETL"
   ],
   "skill": "OBIEE"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "OBILE"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "IOS"
   ],
   "skill": "OBJECTIVEC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD"
   ],
   "skill": "OCI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS"
   ],
   "skill": "OCTANE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PHP"
@@ -3209,28 +4081,46 @@
   "skill": "OCTOBERCMS"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "REST"
   ],
   "skill": "ODATA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
-    "ETL"
+    "ETL",
+    "ORACLE"
   ],
   "skill": "ODI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "OFFICESCAN"
 }, {
-  "childrenCount": 2,
+  "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
+  "parent": [
+    "B.I"
+  ],
+  "skill": "OLAP"
+}, {
+  "childrenCount": 1,
+  "hasMirror": false,
+  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "REST",
     "DOCUMENTATION"
@@ -3238,50 +4128,64 @@
   "skill": "OPENAPI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MACHINELEARNING"
   ],
   "skill": "OPENCV"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "LDAP"
   ],
   "skill": "OPENLDAP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "KUBERNETES"
   ],
   "skill": "OPENSHIFT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD"
   ],
   "skill": "OPENSTACK"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PYTHON"
   ],
   "skill": "OPPS"
 }, {
-  "childrenCount": 2,
+  "childrenCount": 3,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL"
   ],
   "skill": "ORACLE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "CSHARP"
@@ -3289,28 +4193,36 @@
   "skill": "ORCHARD"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS"
   ],
   "skill": "ORCHESTRATOR"
 }, {
   "childrenCount": 13,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL"
   ],
   "skill": "ORM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "LOWCODE"
   ],
   "skill": "OUTSYSTEMS"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY",
     "WS"
@@ -3318,7 +4230,9 @@
   "skill": "OWASP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "DEVSECOPS",
@@ -3327,14 +4241,18 @@
   "skill": "OWASP ZAP"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "XML"
   ],
   "skill": "OXM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD",
@@ -3343,21 +4261,27 @@
   "skill": "PACT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON"
   ],
   "skill": "PANDAS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "POO"
   ],
   "skill": "PATTERNS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PHP",
     "DEPENDENCY MANAGER"
@@ -3365,14 +4289,27 @@
   "skill": "PEAR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "PEARL"
+}, {
+  "childrenCount": 0,
+  "hasMirror": false,
+  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ETL"
   ],
   "skill": "PENTAHO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY",
     "TDD"
@@ -3380,18 +4317,24 @@
   "skill": "PENTEST"
 }, {
   "childrenCount": 7,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "PERFORMANCE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "PFSENSE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "FRONTEND",
     "MOBILE"
@@ -3399,14 +4342,18 @@
   "skill": "PHONEGAP"
 }, {
   "childrenCount": 25,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HTTP SERVER"
   ],
   "skill": "PHP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PHP",
     "TDD",
@@ -3415,7 +4362,9 @@
   "skill": "PHPSPEC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "PHP"
@@ -3423,7 +4372,9 @@
   "skill": "PHPUNIT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "DEPENDENCY MANAGER"
@@ -3431,7 +4382,9 @@
   "skill": "PIP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "DEPENDENCY MANAGER"
@@ -3439,7 +4392,9 @@
   "skill": "PIPENV"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "BDD",
@@ -3448,7 +4403,9 @@
   "skill": "PLAYWRIGHT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PYTHON"
@@ -3456,46 +4413,60 @@
   "skill": "PLONE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MACHINELEARNING"
   ],
   "skill": "PLOTLY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL"
   ],
   "skill": "PLSQL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PMI"
   ],
   "skill": "PMBOOK"
 }, {
   "childrenCount": 3,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "PMI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PMI"
   ],
   "skill": "PMO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PMI"
   ],
   "skill": "PMP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVASCRIPT",
     "DEPENDENCY MANAGER"
@@ -3503,7 +4474,9 @@
   "skill": "PNPM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "DEPENDENCY MANAGER"
@@ -3511,32 +4484,42 @@
   "skill": "POETRY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "POLIGON"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "POLKADOT"
 }, {
   "childrenCount": 4,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "POO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL"
   ],
   "skill": "POSTGRESQL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD"
@@ -3544,42 +4527,54 @@
   "skill": "POSTMAN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "FRONTEND"
   ],
   "skill": "POWERAPPS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "B.I"
   ],
   "skill": "POWERBI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "RAD"
   ],
   "skill": "POWERBUILDER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ETL"
   ],
   "skill": "POWERCENTER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "POWERDESIGNER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "TDD",
@@ -3589,7 +4584,9 @@
   "skill": "POWERMOCK"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL",
     "NOSQL"
@@ -3597,51 +4594,54 @@
   "skill": "PRESTO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
-    "SAP"
+    "ERP"
   ],
   "skill": "PRIMAVERA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JSF"
   ],
   "skill": "PRIMEFACES"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "PROFIT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR"
   ],
   "skill": "PROMETHEUS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
-  "parent": [
-    "TDD",
-    "ANGULAR",
-    "WEBDRIVER"
-  ],
-  "skill": "PROTACTOR"
-}, {
-  "childrenCount": 0,
-  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ERP"
   ],
   "skill": "PROTHEUS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "ANGULAR"
@@ -3649,7 +4649,9 @@
   "skill": "PROTRACTOR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MENSAGERIA",
     "GCP"
@@ -3657,14 +4659,18 @@
   "skill": "PUBSUB"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS"
   ],
   "skill": "PUPPET"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "BDD",
@@ -3673,14 +4679,18 @@
   "skill": "PUPPETEER"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "FRONTEND"
   ],
   "skill": "PWA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "DEPENDENCY MANAGER"
@@ -3688,7 +4698,9 @@
   "skill": "PYENV"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "SPARK"
@@ -3696,7 +4708,9 @@
   "skill": "PYSPARK"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "TDD",
@@ -3705,25 +4719,33 @@
   "skill": "PYTEST"
 }, {
   "childrenCount": 30,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "PYTHON"
 }, {
-  "childrenCount": 9,
+  "childrenCount": 8,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "QA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "B.I"
   ],
   "skill": "QLIKVIEW"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "BDD",
@@ -3732,14 +4754,18 @@
   "skill": "QTEST"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SERVLET"
   ],
   "skill": "QUARKUS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SCHEDULE",
     "JAVA"
@@ -3747,7 +4773,9 @@
   "skill": "QUARTZ"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VUE",
     "PWA"
@@ -3755,14 +4783,18 @@
   "skill": "QUASAR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "QUORUM"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL",
     "REST"
@@ -3770,21 +4802,27 @@
   "skill": "R2DBC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JMS"
   ],
   "skill": "RABBITMQ"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "IDE"
   ],
   "skill": "RAD"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "RUBY"
@@ -3792,7 +4830,9 @@
   "skill": "RADIANT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "RUBY",
     "MVC"
@@ -3800,14 +4840,18 @@
   "skill": "RAILS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "KUBERNETES"
   ],
   "skill": "RANCHER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ABAP",
     "REST"
@@ -3815,7 +4859,9 @@
   "skill": "RAP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSHARP",
     "FRONTEND"
@@ -3823,7 +4869,9 @@
   "skill": "RAZOR"
 }, {
   "childrenCount": 5,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPA",
     "JSX",
@@ -3832,7 +4880,9 @@
   "skill": "REACT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "REACT",
     "OBILE"
@@ -3840,7 +4890,9 @@
   "skill": "REACTNATIVE"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "RX"
@@ -3848,14 +4900,18 @@
   "skill": "REACTOR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR"
   ],
   "skill": "READMINE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD"
@@ -3863,21 +4919,27 @@
   "skill": "READYAPI"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CACHE"
   ],
   "skill": "REDIS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOCUMENTATION"
   ],
   "skill": "REDMINE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "B.I",
     "AWS"
@@ -3885,14 +4947,18 @@
   "skill": "REDSHIFT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPA"
   ],
   "skill": "REDUX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "RUBY"
@@ -3900,32 +4966,33 @@
   "skill": "REFINERY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOCUMENTATION"
   ],
   "skill": "REMEDY"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "REPORT"
 }, {
-  "childrenCount": 0,
+  "childrenCount": 14,
+  "hasMirror": false,
   "hasNoParent": false,
-  "parent": [
-    "UX"
-  ],
-  "skill": "RESPONSIVITY"
-}, {
-  "childrenCount": 13,
-  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS"
   ],
   "skill": "REST"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD"
@@ -3933,42 +5000,54 @@
   "skill": "RESTASSURED"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "RETAIL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD NETFLIX"
   ],
   "skill": "RIBBON"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JSF"
   ],
   "skill": "RICHFACES"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "RIPPLE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ORACLE"
   ],
   "skill": "RMAN"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "INTEGRATION",
     "JAVAEE"
@@ -3976,7 +5055,9 @@
   "skill": "RMI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BDD",
     "TDD",
@@ -3985,7 +5066,9 @@
   "skill": "ROBOT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "RUBY"
@@ -3993,14 +5076,18 @@
   "skill": "RSPEC"
 }, {
   "childrenCount": 11,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "RUBY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "RUBY",
     "DEPENDENCY MANAGER"
@@ -4008,18 +5095,24 @@
   "skill": "RUBYGEMS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS"
   ],
   "skill": "RUNDECK"
 }, {
   "childrenCount": 4,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "RX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "RX"
@@ -4027,14 +5120,18 @@
   "skill": "RXJAVA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "REACT"
   ],
   "skill": "RXJS"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AWS",
     "BUCKET"
@@ -4042,14 +5139,18 @@
   "skill": "S3"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CRM"
   ],
   "skill": "SALESFORCE"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "XML",
     "SSO"
@@ -4057,35 +5158,45 @@
   "skill": "SAML"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ERP"
   ],
   "skill": "SANKHYA"
 }, {
-  "childrenCount": 68,
+  "childrenCount": 66,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ERP"
   ],
   "skill": "SAP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP FI"
   ],
   "skill": "SAP AA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP APO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "AUTENTICATION"
@@ -4093,7 +5204,9 @@
   "skill": "SAP AUTHORIZATION CONCEPTS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "ODATA"
@@ -4101,35 +5214,45 @@
   "skill": "SAP BAP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP BO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP BTP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HANNA"
   ],
   "skill": "SAP BW"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HANNA"
   ],
   "skill": "SAP BW/4HANNA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "CLOUD"
@@ -4137,14 +5260,18 @@
   "skill": "SAP CAP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP CENTRAL FINANCE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "CLOUD"
@@ -4152,14 +5279,18 @@
   "skill": "SAP CLOUD PLATFORM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP CO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "CLOUD"
@@ -4167,7 +5298,9 @@
   "skill": "SAP CPI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "CRM"
@@ -4175,7 +5308,9 @@
   "skill": "SAP CRM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "UX",
@@ -4186,49 +5321,63 @@
   "skill": "SAP DYNPRO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP ECC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP EXTENSION SUITE"
 }, {
   "childrenCount": 4,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP FI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP FI"
   ],
   "skill": "SAP FI-AP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP FI"
   ],
   "skill": "SAP FI-AR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP FI"
   ],
   "skill": "SAP FI-GL"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "UX"
@@ -4236,42 +5385,54 @@
   "skill": "SAP FIORI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP FIORI"
   ],
   "skill": "SAP FIORI ELEMENTS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP FIORI"
   ],
   "skill": "SAP FIORI FOR S/4HANNA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP HR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP IBP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP IDOC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "WS"
@@ -4279,35 +5440,45 @@
   "skill": "SAP INTEGRATION SUITE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP IS-BANKING"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP IS-HEALTH"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP IS-RETAIL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP IS-U"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "KUBERNETES"
@@ -4315,91 +5486,117 @@
   "skill": "SAP KYMA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP LUMIRA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP ME"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP MII"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP MM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP PAYROLL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP PI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP PM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP PO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP PP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP QM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP R/3"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP RFC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "AUTENTICATION"
@@ -4407,35 +5604,45 @@
   "skill": "SAP ROLES \u0026 PROFILES"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HANNA"
   ],
   "skill": "SAP S/4HANNA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HANNA"
   ],
   "skill": "SAP S/4HANNA EMBEDDED ANALYTICS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HANNA"
   ],
   "skill": "SAP S/4HANNA FINANCE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HANNA"
   ],
   "skill": "SAP S/4HANNA LOGISTICS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "CLOUD"
@@ -4443,14 +5650,18 @@
   "skill": "SAP SAC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP SAP IS-OIL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "UX"
@@ -4458,21 +5669,27 @@
   "skill": "SAP SCREEN PERSONAS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP SD"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP SRM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "SSO"
@@ -4480,14 +5697,18 @@
   "skill": "SAP SSO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP TM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "UX"
@@ -4495,7 +5716,9 @@
   "skill": "SAP UI5"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP",
     "AUTENTICATION"
@@ -4503,28 +5726,36 @@
   "skill": "SAP USER MANAGEMENT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SAP WM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSS"
   ],
   "skill": "SASS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HYPERLEDGER"
   ],
   "skill": "SAWTOOTH"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "DEPENDENCY MANAGER"
@@ -4532,92 +5763,120 @@
   "skill": "SBT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "SCA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR"
   ],
   "skill": "SCADA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JVM"
   ],
   "skill": "SCALA"
 }, {
   "childrenCount": 3,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "SCHEDULE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON"
   ],
   "skill": "SCIPY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON"
   ],
   "skill": "SCRAPY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AGIL"
   ],
   "skill": "SCRUM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSS"
   ],
   "skill": "SCSS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON"
   ],
   "skill": "SEABORN"
 }, {
   "childrenCount": 20,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "SECURITY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WEBDRIVER"
   ],
   "skill": "SELENIUM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSS"
   ],
   "skill": "SEMANTIC UI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR"
   ],
   "skill": "SENTRY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ORM",
     "JAVASCRIPT"
@@ -4625,37 +5884,43 @@
   "skill": "SEQUELIZE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "BDD"
   ],
   "skill": "SERENETY"
 }, {
-  "childrenCount": 1,
-  "hasNoParent": true,
-  "skill": "SERVER HTTP"
-}, {
   "childrenCount": 3,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "SERVERLESS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "LOWCODE"
   ],
   "skill": "SERVICENOW"
 }, {
   "childrenCount": 6,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA SERVER"
   ],
   "skill": "SERVLET"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "DEPENDENCY MANAGER"
@@ -4663,7 +5928,9 @@
   "skill": "SETUPTOOLS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "CSHARP"
@@ -4671,14 +5938,18 @@
   "skill": "SHAREPOINT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CRM"
   ],
   "skill": "SIEBEL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSHARP",
     "WEBSOCKET"
@@ -4686,7 +5957,9 @@
   "skill": "SIGNALR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PHP"
@@ -4694,7 +5967,9 @@
   "skill": "SILVER STRIPER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "FRONTEND",
     "DOTNET"
@@ -4702,7 +5977,9 @@
   "skill": "SILVERLIGHT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "CSHARP"
@@ -4710,21 +5987,27 @@
   "skill": "SITECORE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "UX"
   ],
   "skill": "SKETCH"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "SMARTCONTRACT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "FRONTEND",
     "PHP"
@@ -4732,29 +6015,37 @@
   "skill": "SMARTY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD",
     "BIGDATA"
   ],
   "skill": "SNOWFLAKE"
 }, {
-  "childrenCount": 6,
+  "childrenCount": 5,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS"
   ],
   "skill": "SOA"
 }, {
   "childrenCount": 4,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS"
   ],
   "skill": "SOAP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SOAP",
     "TDD"
@@ -4762,42 +6053,54 @@
   "skill": "SOAPUI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "SOLANA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "POO"
   ],
   "skill": "SOLID"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SOLMAN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "LUCENE"
   ],
   "skill": "SOLR"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS"
   ],
   "skill": "SONAR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "DEVSECOPS",
@@ -4806,14 +6109,18 @@
   "skill": "SONARQUBE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "SONICWALL"
 }, {
   "childrenCount": 7,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AJAX",
     "MVC"
@@ -4821,14 +6128,18 @@
   "skill": "SPA"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BIGDATA"
   ],
   "skill": "SPARK"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSHARP",
     "TDD",
@@ -4837,21 +6148,27 @@
   "skill": "SPECFLOW"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AGIL"
   ],
   "skill": "SPECTRUM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR"
   ],
   "skill": "SPLUNK"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "GROOVY",
     "TDD",
@@ -4860,14 +6177,18 @@
   "skill": "SPOCK"
 }, {
   "childrenCount": 49,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA"
   ],
   "skill": "SPRING"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "AMPQ"
@@ -4875,7 +6196,9 @@
   "skill": "SPRING AMPQ"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "AOP"
@@ -4883,14 +6206,18 @@
   "skill": "SPRING AOP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING"
   ],
   "skill": "SPRING ASYNC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING SECURITY",
     "AUTENTICATION"
@@ -4898,7 +6225,9 @@
   "skill": "SPRING AUTHORIZATION SERVER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "SCHEDULE"
@@ -4906,21 +6235,27 @@
   "skill": "SPRING BATCH"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING"
   ],
   "skill": "SPRING BEANS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRINGBOOT"
   ],
   "skill": "SPRING BOOT TEST"
 }, {
   "childrenCount": 13,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "CLOUD"
@@ -4928,28 +6263,36 @@
   "skill": "SPRING CLOUD"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD"
   ],
   "skill": "SPRING CLOUD BUS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD"
   ],
   "skill": "SPRING CLOUD CIRCUIT BREAKER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD"
   ],
   "skill": "SPRING CLOUD CONFIG"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD",
     "CONSUL"
@@ -4957,14 +6300,18 @@
   "skill": "SPRING CLOUD CONSUL"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD"
   ],
   "skill": "SPRING CLOUD CONTRACT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD CONTRACT",
     "TDD",
@@ -4973,14 +6320,18 @@
   "skill": "SPRING CLOUD CONTRACT TEST"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD"
   ],
   "skill": "SPRING CLOUD GATEWAY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD",
     "KUBERNETES"
@@ -4988,7 +6339,9 @@
   "skill": "SPRING CLOUD KUBERNETES"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD",
     "LOADBALANCE"
@@ -4996,14 +6349,18 @@
   "skill": "SPRING CLOUD LOADBALANCER"
 }, {
   "childrenCount": 4,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD"
   ],
   "skill": "SPRING CLOUD NETFLIX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD",
     "FEIGN"
@@ -5011,22 +6368,28 @@
   "skill": "SPRING CLOUD OPENFEIGN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD",
-    "IA"
+    "MACHINELEARNING"
   ],
   "skill": "SPRING CLOUD SLEUTH"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD"
   ],
   "skill": "SPRING CLOUD STREAM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD",
     "ZIPKIN"
@@ -5034,28 +6397,36 @@
   "skill": "SPRING CLOUD ZIPKIN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING"
   ],
   "skill": "SPRING CONFIGURATION PROPERTIES"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING"
   ],
   "skill": "SPRING CONTEXT"
 }, {
   "childrenCount": 9,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING"
   ],
   "skill": "SPRING DATA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING DATA",
     "CASSANDRA"
@@ -5063,7 +6434,9 @@
   "skill": "SPRING DATA CASSANDRA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING DATA",
     "COUCHDB"
@@ -5071,7 +6444,9 @@
   "skill": "SPRING DATA COUCHDB"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING DATA",
     "ELASTICSEARCH"
@@ -5079,14 +6454,18 @@
   "skill": "SPRING DATA ELASTICSEARCH"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING DATA"
   ],
   "skill": "SPRING DATA JDBC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING DATA",
     "JPA"
@@ -5094,7 +6473,9 @@
   "skill": "SPRING DATA JPA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING DATA",
     "MONGODB"
@@ -5102,7 +6483,9 @@
   "skill": "SPRING DATA MONGODB"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING DATA",
     "R2DBC"
@@ -5110,7 +6493,9 @@
   "skill": "SPRING DATA R2DBC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING DATA",
     "REDIS"
@@ -5118,7 +6503,9 @@
   "skill": "SPRING DATA REDIS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING DATA",
     "REST"
@@ -5126,14 +6513,18 @@
   "skill": "SPRING DATA REST"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING"
   ],
   "skill": "SPRING EXPRESSION LANGUAGE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "GRAPHQL"
@@ -5141,7 +6532,9 @@
   "skill": "SPRING GRAPHQL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "HATEOAS"
@@ -5149,7 +6542,9 @@
   "skill": "SPRING HATEOAS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "IBATIS"
@@ -5157,14 +6552,18 @@
   "skill": "SPRING IBATIS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING"
   ],
   "skill": "SPRING INITIALIZR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "WS"
@@ -5172,7 +6571,9 @@
   "skill": "SPRING INTEGRATION"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "JMS"
@@ -5180,7 +6581,9 @@
   "skill": "SPRING JMS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "JTA"
@@ -5188,15 +6591,19 @@
   "skill": "SPRING JTA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
-    "KAFA"
+    "KAFKA"
   ],
-  "skill": "SPRING KAFA"
+  "skill": "SPRING KAFKA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRINGBOOT",
     "MICROMETER"
@@ -5204,7 +6611,9 @@
   "skill": "SPRING MICROMETER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING TEST",
     "MOCK"
@@ -5212,7 +6621,9 @@
   "skill": "SPRING MOCKMVC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "MYBATIS"
@@ -5220,7 +6631,9 @@
   "skill": "SPRING MYBATIS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "OPENAPI"
@@ -5228,7 +6641,9 @@
   "skill": "SPRING OPENAPI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "ORM"
@@ -5236,7 +6651,9 @@
   "skill": "SPRING ORM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "OXM"
@@ -5244,14 +6661,18 @@
   "skill": "SPRING OXM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING"
   ],
   "skill": "SPRING PROFILES"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "RX"
@@ -5259,7 +6680,9 @@
   "skill": "SPRING REACTIVE DATA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "REACTOR"
@@ -5267,14 +6690,18 @@
   "skill": "SPRING REACTOR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING"
   ],
   "skill": "SPRING REMOTING"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "REST"
@@ -5282,7 +6709,9 @@
   "skill": "SPRING REST"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "DOCUMENTATION",
@@ -5291,14 +6720,18 @@
   "skill": "SPRING REST DOCS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING"
   ],
   "skill": "SPRING RETRY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "RMI"
@@ -5306,14 +6739,18 @@
   "skill": "SPRING RMI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING"
   ],
   "skill": "SPRING ROO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "SCHEDULE"
@@ -5321,14 +6758,18 @@
   "skill": "SPRING SCHEDULING"
 }, {
   "childrenCount": 5,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING"
   ],
   "skill": "SPRING SECURITY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING SECURITY",
     "LDAP"
@@ -5336,7 +6777,9 @@
   "skill": "SPRING SECURITY LDAP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING SECURITY",
     "OAUTH"
@@ -5344,7 +6787,9 @@
   "skill": "SPRING SECURITY OAUTH2"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING SECURITY",
     "SAML"
@@ -5352,14 +6797,18 @@
   "skill": "SPRING SECURITY SAML"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING SECURITY"
   ],
   "skill": "SPRING SESSION"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "STOMP"
@@ -5367,7 +6816,9 @@
   "skill": "SPRING STOMP"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "TDD"
@@ -5375,14 +6826,18 @@
   "skill": "SPRING TEST"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING"
   ],
   "skill": "SPRING TESTCONTAINERS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "TDD"
@@ -5390,7 +6845,9 @@
   "skill": "SPRING TESTCONTEXT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "JTA"
@@ -5398,7 +6855,9 @@
   "skill": "SPRING TRANSACTION"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "SERVLET"
@@ -5406,7 +6865,9 @@
   "skill": "SPRING WEB"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING WEB",
     "MVC"
@@ -5414,7 +6875,9 @@
   "skill": "SPRING WEB MVC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "WEBCLIENT"
@@ -5422,7 +6885,9 @@
   "skill": "SPRING WEBCLIENT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "RX"
@@ -5430,7 +6895,9 @@
   "skill": "SPRING WEBFLUX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "SOAP"
@@ -5438,7 +6905,9 @@
   "skill": "SPRING WEBSERVICES"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "WEBSOCKET"
@@ -5446,14 +6915,18 @@
   "skill": "SPRING WEBSOCKET"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING"
   ],
   "skill": "SPRING XD"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "XML"
@@ -5461,7 +6934,9 @@
   "skill": "SPRING XML CONFIGURATION"
 }, {
   "childrenCount": 8,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SERVLET",
     "SPRING",
@@ -5470,35 +6945,45 @@
   "skill": "SPRINGBOOT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRINGBOOT"
   ],
   "skill": "SPRINGBOOT ACTUATOR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRINGBOOT"
   ],
   "skill": "SPRINGBOOT ADMIN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRINGBOOT"
   ],
   "skill": "SPRINGBOOT CLI"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRINGBOOT"
   ],
   "skill": "SPRINGBOOT DEVTOOLS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRINGBOOT",
     "TDD"
@@ -5506,14 +6991,18 @@
   "skill": "SPRINGBOOT TEST"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRINGBOOT"
   ],
   "skill": "SPRINGBOOTSTARTER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "NOSQL",
@@ -5522,7 +7011,9 @@
   "skill": "SPRINGDATA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING",
     "SPRING"
@@ -5530,14 +7021,18 @@
   "skill": "SPRINGMVC"
 }, {
   "childrenCount": 29,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DATABASE"
   ],
   "skill": "SQL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "ORM"
@@ -5545,7 +7040,9 @@
   "skill": "SQLALCHEMY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DATABASE",
     "HTTP SERVER"
@@ -5553,14 +7050,18 @@
   "skill": "SQLITE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SQL"
   ],
   "skill": "SQLSERVER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HADOOP",
     "SQL"
@@ -5568,7 +7069,9 @@
   "skill": "SQOOP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AWS",
     "MENSAGERIA"
@@ -5576,53 +7079,60 @@
   "skill": "SQS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "B.I"
   ],
   "skill": "SSAS"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "SSO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
-  "parent": [
-    "B.I"
-  ],
-  "skill": "SSRS"
-}, {
-  "childrenCount": 0,
-  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VERSIONING"
   ],
   "skill": "STARTEAM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "STELLAR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "STMS"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "STOMP"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SERVLET",
     "MVC"
@@ -5630,63 +7140,72 @@
   "skill": "STRUTS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SUCCESSFACTORS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VERSIONING"
   ],
   "skill": "SVN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
-  "parent": [
-    "OPENAPI"
-  ],
-  "skill": "SWAGGER"
-}, {
-  "childrenCount": 0,
-  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOCKER"
   ],
   "skill": "SWARM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "OBJECTIVEC"
   ],
   "skill": "SWIFT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA"
   ],
   "skill": "SWING"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SAP"
   ],
   "skill": "SYBASE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "SYMANTEC"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MVC",
     "PHP"
@@ -5694,7 +7213,9 @@
   "skill": "SYMFONY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "AZURE",
     "ETL"
@@ -5702,60 +7223,78 @@
   "skill": "SYNAPSE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR"
   ],
   "skill": "SYSLOG"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ETL"
   ],
   "skill": "TABLEAU"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SECURITY"
   ],
   "skill": "TACACS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CSS"
   ],
   "skill": "TAILWIND"
 }, {
-  "childrenCount": 94,
+  "childrenCount": 93,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "TDD"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "FRONTEND"
   ],
   "skill": "TELERIK"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "COBOL"
   ],
   "skill": "TELON"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD"
   ],
   "skill": "TENCENT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD",
     "B.I"
@@ -5763,16 +7302,19 @@
   "skill": "TERADATA"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "IAC",
-    "CLOUD",
     "DEVOPS"
   ],
   "skill": "TERRAFORM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "BDD",
@@ -5781,28 +7323,36 @@
   "skill": "TESTCAFE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD"
   ],
   "skill": "TESTCOMPLETE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD"
   ],
   "skill": "TESTCONTAINERS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD"
   ],
   "skill": "TESTLINK"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA",
     "TDD"
@@ -5810,7 +7360,9 @@
   "skill": "TESTNG"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "BDD",
@@ -5819,21 +7371,27 @@
   "skill": "TESTRAIL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "TEZOS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VERSIONING"
   ],
   "skill": "TFS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HTML",
     "CSS",
@@ -5842,14 +7400,18 @@
   "skill": "THYMELEAF"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ETL"
   ],
   "skill": "TIBCO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "IDE",
     "SQL"
@@ -5857,35 +7419,45 @@
   "skill": "TOAD"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA SERVER"
   ],
   "skill": "TOMCAT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS"
   ],
   "skill": "TRAVIS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JIRA"
   ],
   "skill": "TRELLO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BLOCKCHAIN"
   ],
   "skill": "TRON"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TYPESCRIPT",
     "HTML"
@@ -5893,7 +7465,9 @@
   "skill": "TSX"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVASCRIPT",
     "POO"
@@ -5901,7 +7475,9 @@
   "skill": "TYPESCRIPT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PHP"
@@ -5909,7 +7485,9 @@
   "skill": "TYPO3"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "FRONTEND",
     "AUTOMATION",
@@ -5918,7 +7496,9 @@
   "skill": "UIPATH"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "TDD",
@@ -5926,33 +7506,61 @@
   ],
   "skill": "UNITTEST"
 }, {
-  "childrenCount": 11,
+  "childrenCount": 10,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "UX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DEVOPS"
   ],
   "skill": "VAGRANT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "VB"
+}, {
+  "childrenCount": 0,
+  "hasMirror": false,
+  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOTNET"
   ],
   "skill": "VB.NET"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
+  "parent": [
+    "BACKEND"
+  ],
+  "skill": "VBA"
+}, {
+  "childrenCount": 0,
+  "hasMirror": false,
+  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "BACKEND"
   ],
   "skill": "VBSCRIPT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VMWARE",
     "VSHERE"
@@ -5960,7 +7568,9 @@
   "skill": "VCENTER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "JAVA"
@@ -5968,14 +7578,18 @@
   "skill": "VCM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD"
   ],
   "skill": "VEEAM"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MVC",
     "JAVA"
@@ -5983,18 +7597,24 @@
   "skill": "VELOCITY"
 }, {
   "childrenCount": 8,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "VERSIONING"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VIRTUALIZATION"
   ],
   "skill": "VIRTUALBOX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "PYTHON",
     "DEPENDENCY MANAGER"
@@ -6002,25 +7622,33 @@
   "skill": "VIRTUALENV"
 }, {
   "childrenCount": 6,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "VIRTUALIZATION"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "IDE"
   ],
   "skill": "VISUALAGE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOTNET"
   ],
   "skill": "VISUALSTUDIO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVASCRIPT",
     "TDD",
@@ -6029,14 +7657,18 @@
   "skill": "VITEST"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VIRTUALIZATION"
   ],
   "skill": "VMWARE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MVC",
     "JAVA"
@@ -6044,46 +7676,51 @@
   "skill": "VRAPTOR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "IDE"
   ],
   "skill": "VSCODE"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "VSHERE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VIRTUALIZATION"
   ],
   "skill": "VSPHERE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VERSIONING"
   ],
   "skill": "VSS"
 }, {
-  "childrenCount": 3,
+  "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPA"
   ],
   "skill": "VUE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
-  "parent": [
-    "VUE"
-  ],
-  "skill": "VUEX"
-}, {
-  "childrenCount": 0,
-  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PYTHON"
@@ -6091,7 +7728,9 @@
   "skill": "WAGTAIL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOTNET",
     "WS"
@@ -6099,14 +7738,18 @@
   "skill": "WCF"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "REST"
   ],
   "skill": "WEBCLIENT"
 }, {
-  "childrenCount": 13,
+  "childrenCount": 12,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "FRONTEND"
@@ -6114,7 +7757,9 @@
   "skill": "WEBDRIVER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "BDD",
@@ -6123,14 +7768,18 @@
   "skill": "WEBDRIVERIO"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA SERVER"
   ],
   "skill": "WEBLOGIC"
 }, {
   "childrenCount": 2,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVASCRIPT",
     "FRONTEND",
@@ -6139,28 +7788,36 @@
   "skill": "WEBSOCKET"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVA SERVER"
   ],
   "skill": "WEBSPHERE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "FRONTEND"
   ],
   "skill": "WEBVIEW"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "ERP"
   ],
   "skill": "WINTHOR"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "WS",
     "TDD",
@@ -6169,14 +7826,18 @@
   "skill": "WIREMOCK"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "VIRTUALIZATION"
   ],
   "skill": "WMWARE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CMS",
     "PHP"
@@ -6184,7 +7845,9 @@
   "skill": "WORDPRESS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOTNET",
     "WS"
@@ -6192,7 +7855,9 @@
   "skill": "WPF"
 }, {
   "childrenCount": 28,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "INTEGRATION",
     "HTTP SERVER"
@@ -6200,14 +7865,29 @@
   "skill": "WS"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
-    "SOAP"
+    "SOAP",
+    "XML"
   ],
   "skill": "WSDL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
+  "parent": [
+    "REST",
+    "IAM"
+  ],
+  "skill": "WSO2"
+}, {
+  "childrenCount": 0,
+  "hasMirror": false,
+  "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "FRONTEND",
     "MOBILE",
@@ -6216,21 +7896,27 @@
   "skill": "XAMARIN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "XML"
   ],
   "skill": "XAML"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "IOS"
   ],
   "skill": "XCODE"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "IOS"
@@ -6238,32 +7924,42 @@
   "skill": "XCUITEST"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "HTML"
   ],
   "skill": "XHTML"
 }, {
-  "childrenCount": 8,
+  "childrenCount": 9,
+  "hasMirror": false,
   "hasNoParent": true,
+  "mirror": "",
   "skill": "XML"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "XML"
   ],
   "skill": "XPATH"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "XML"
   ],
   "skill": "XQUERY"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "BDD",
@@ -6272,14 +7968,18 @@
   "skill": "XRAIL"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "XML"
   ],
   "skill": "XSD"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "DOTNET",
     "TDD",
@@ -6288,7 +7988,9 @@
   "skill": "XUNIT"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "JAVASCRIPT",
     "DEPENDENCY MANAGER"
@@ -6296,7 +7998,9 @@
   "skill": "YARN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MVC",
     "PHP"
@@ -6304,14 +8008,18 @@
   "skill": "YII"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR"
   ],
   "skill": "ZABBIX"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MVC",
     "PHP"
@@ -6319,14 +8027,18 @@
   "skill": "ZEND"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "CLOUD"
   ],
   "skill": "ZENDESK"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "TDD",
     "BDD",
@@ -6335,21 +8047,27 @@
   "skill": "ZEPHYR"
 }, {
   "childrenCount": 1,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR"
   ],
   "skill": "ZIPKIN"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "MONITOR"
   ],
   "skill": "ZOOKEEPER"
 }, {
   "childrenCount": 0,
+  "hasMirror": false,
   "hasNoParent": false,
+  "mirror": "",
   "parent": [
     "SPRING CLOUD NETFLIX"
   ],
