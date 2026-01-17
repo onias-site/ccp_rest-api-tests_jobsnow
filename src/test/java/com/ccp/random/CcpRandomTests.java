@@ -68,13 +68,120 @@ public class CcpRandomTests {
 
 	public static void main(String[] args) {
 		String folder = "C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\";
+		List<String> synonyms = new CcpStringDecorator(folder+ "synonyms2.txt").file().getLines();
+		int zz = 0;
+		for (String line : synonyms) {
+			String[] split = line.split(",");
+			List<String> collect = Arrays.asList(split).stream().map(x -> x.trim().toUpperCase())
+			.filter(x -> x.length() > 1).collect(Collectors.toList());
+			zz += collect.size(); 
+		}
+		System.out.println(zz);
+	}
+
+	static void incrementSynonyms() {
+		String folder = "C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\";
+		List<String> synonyms = new CcpStringDecorator(folder+ "synonyms2.txt").file().getLines();
+		List<Set<String>> list = new ArrayList<>();
+		for (String line : synonyms) {
+			String[] split = line.split(",");
+			List<String> collect = Arrays.asList(split).stream().map(x -> x.trim().toUpperCase())
+			.filter(x -> x.length() > 1).collect(Collectors.toList());
+			
+			LinkedHashSet<String> collectCopy = new LinkedHashSet<>(collect);
+			
+			for (String string : collect) {
+				String[] split2 = string.split(" ");
+				if(split2.length != 2) {
+					continue;
+				}
+				{
+					List<String> otherWords = getOtherWords(string);
+					collectCopy.addAll(otherWords);
+				}
+				String secondPiece = split2[1];
+				boolean longNumber = new CcpStringDecorator(secondPiece).isLongNumber();
+				if(longNumber) {
+					continue;
+				}
+				String firstPiece = split2[0];
+				String reverse = secondPiece + " " + firstPiece;
+				collectCopy.add(reverse);
+				List<String> otherWords = getOtherWords(reverse);
+				collectCopy.addAll(otherWords);
+			}
+			
+			list.add(collectCopy);
+		}
+		 CcpFileDecorator synonyms3 = new CcpStringDecorator(folder+ "synonyms3.txt").file().reset();
+		 int x = 0;
+		 for (Set<String> set : list) {
+			synonyms3.append(set.toString().replace("[", "").replace("]", ""));
+			x += set.size();
+		 }
+		 System.out.println(x);
+
+	}
+
+	static List<String> getOtherWords(String word){
+		String r1 = word.replace(" ", "");
+		String r2 = word.replace(" ", "-");
+		String r3 = word.replace(" ", ".");
+		List<String> asList = Arrays.asList(r1, r2, r3);
+		return asList;
+	}	
+	
+	static Set<String> getAllWords(List<String> lines){
+		List<Set<String>> collect = lines.stream().map(x -> Arrays.asList(x.split(",")).stream().map(y -> y.trim().toUpperCase()).filter(y -> y.length() > 1).collect(Collectors.toSet())).collect(Collectors.toList());
+		Set<String> allWords = new HashSet<>();
+		for (Set<String> set : collect) {
+			allWords.addAll(set);
+		}
+		return allWords;
+	}
+	
+	static void saveSynonyms() {
+		String folder = "C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\";
+		List<CcpJsonRepresentation> asJsonList = new CcpStringDecorator(folder+ "report_skills.json").file().asJsonList();
+		List<String> lines = new CcpStringDecorator(folder+ "synonyms.txt").file().getLines();
+		CcpFileDecorator synonyms2 = new CcpStringDecorator(folder+ "synonyms2.txt").file().reset();
+		List<Set<String>> collect = lines.stream().map(x -> Arrays.asList(x.split(",")).stream().map(y -> y.trim().toUpperCase()).filter(y -> y.length() > 1).collect(Collectors.toSet())).collect(Collectors.toList());
+		List<String> allSynonyms = new ArrayList<>(lines);
+		for (CcpJsonRepresentation json : asJsonList) {
+			CcpDynamicJsonRepresentation dv = json.getDynamicVersion();
+			String skill = dv.getAsString("skill");
+			boolean skillFound = false;
+			for (Set<String> set : collect) {
+				skillFound = set.contains(skill);
+				if(skillFound) {
+					break;
+				}
+			}
+			if(false == skillFound) {
+				allSynonyms.add(skill);
+			}
+		}
+		
+		allSynonyms.sort((a, b) -> a.compareTo(b));
+		
+		for (String string : allSynonyms) {
+			String trim = string.toUpperCase().trim();
+			if(trim.length() < 2) {
+				continue;
+			}
+			synonyms2.append(trim);
+		}
+	}
+	
+	static void saveSkills() {
+		String folder = "C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\";
 		List<String> lines = new CcpStringDecorator(folder+ "ajustes_synonyms.txt").file().getLines();
 		List<List<String>> filtered = lines
 		.stream()
 		.filter(x -> x.startsWith("adicionarParent="))
 		.map(x-> x.split("=")[1])
 		.map(x -> x.split(","))
-		.map(x -> Arrays.asList(x).stream().map(y -> y.trim().toUpperCase()).collect(Collectors.toList()))
+		.map(x -> Arrays.asList(x).stream().map(y -> y.trim().toUpperCase()).filter(y -> false == y.isEmpty()).collect(Collectors.toList()))
 		.collect(Collectors.toList())
 		;
 		
@@ -103,25 +210,7 @@ public class CcpRandomTests {
 		.collect(Collectors.toList());
 		
 		
-		Comparator<? super CcpJsonRepresentation> sorter = (a, b) -> {
-			var dv1 = a.getDynamicVersion();
-			var dv2 = b.getDynamicVersion();
-			
-			var x1 = dv1.getAsIntegerNumber("childrenCount");
-			var x2 = dv2.getAsIntegerNumber("childrenCount");
-
-			if(x1 != x2) {
-				return x2 - x1;
-			}
-			
-			String skill1 = dv1.getAsString("skill");
-			String skill2 = dv2.getAsString("skill");
-			
-			
-			int compareTo = skill1.compareTo(skill2);
-			return compareTo;
-		};
-		
+		Comparator<? super CcpJsonRepresentation> sorter = getSorter("hasRepeatedParent", "hasSkillsWithCommonParentsSize", "hasMirror", "childrenCount", "skill");
 		
 		List<CcpJsonRepresentation> collect = report
 		.stream()
@@ -132,18 +221,72 @@ public class CcpRandomTests {
 		
 		
 		CcpFileDecorator reportFile = new CcpStringDecorator(folder+ "report_skills.json").file().reset();
-		collect.sort(sorter);
-		reportFile.append(collect.toString());
 		
+		List<CcpJsonRepresentation> newList = new ArrayList<>();
 		
-		Set<String> allParents = new HashSet<String>();
 		for (CcpJsonRepresentation json : collect) {
-			getParents(allParents, report, json);
+			List<String> allParents = new ArrayList<>();
+			getAllParents(allParents, report, json);
+			
+			HashSet<String> set = new HashSet<String>(allParents);
+			boolean hasRepeatedParent = set.size() != allParents.size();
+			CcpJsonRepresentation put = json.getDynamicVersion()
+//					.put("allParents", allParents.stream()
+//					.map(skill -> CcpOtherConstants.EMPTY_JSON.getDynamicVersion().put("skill",skill).getDynamicVersion().put("parent", getParent(skill, report)))
+//					.collect(Collectors.toList())
+//					).getDynamicVersion()
+					.put("hasRepeatedParent", hasRepeatedParent);
+			newList.add(put
+					.getDynamicVersion().getJsonPiece("skill", "childrenCount")
+					);	
 		}
 		
-		System.out.println(allParents.size());
+		newList.sort(sorter);
+		reportFile.append(newList.toString());
 	}
+	
+	static List<String> getParent(String skill, List<CcpJsonRepresentation> report){
+		return report.stream().map(x -> x.getDynamicVersion()).filter(x -> skill.equals(x.getAsString("skill"))).findFirst().get().getAsStringList("parent");
+	}
+	static Comparator<? super CcpJsonRepresentation> getSorter(String... fields){
+		Comparator<? super CcpJsonRepresentation> sorter = (a, b) -> {
+			
+			for (String field : fields) {
+				CcpDynamicJsonRepresentation dv1 = a.getDynamicVersion();
+				CcpDynamicJsonRepresentation dv2 = b.getDynamicVersion();
+				CcpStringDecorator sd1 = dv1.getAsStringDecorator(field);
+			
+				if(sd1.isLongNumber()) {
+					Integer int2 = dv2.getAsIntegerNumber(field);
+					Integer int1 = dv1.getAsIntegerNumber(field);
+					int subtration = int2 - int1;
+					if(subtration == 0) {
+						continue;
+					}
+					return subtration;
+				}
+				
+				var b1 = dv1.getAsString(field);
+				var b2 = dv2.getAsString(field);
 
+				if(sd1.isBoolean()) {
+					int compareTo = b2.compareTo(b1);
+					if(compareTo == 0) {
+						continue;
+					}
+					return compareTo;
+				}
+				int compareTo = b1.compareTo(b2);
+				if(compareTo == 0) {
+					continue;
+				}
+				return compareTo;
+			}
+			
+			return 0;
+		};
+		return sorter;
+	}
 
 	
 	static CcpJsonRepresentation getSkillsWithCommonParentsSize(CcpJsonRepresentation json, List<CcpJsonRepresentation> report) {
@@ -166,33 +309,21 @@ public class CcpRandomTests {
 	}
 	
 	
-	static Set<String> getParents(Set<String> allParents, List<CcpJsonRepresentation> report, CcpJsonRepresentation json){
+	static List<String> getAllParents(List<String> allParents, List<CcpJsonRepresentation> report, CcpJsonRepresentation json){
 		
 		List<String> parents = json.getDynamicVersion().getAsStringList("parent");
 		
 		String skill = json.getDynamicVersion().getAsString("skill");
-		System.out.print(skill + "->");
-		counter++;
+		System.out.println(skill + ": " + parents);
+		allParents.addAll(parents);
 		for (String parent : parents) {
 			CcpJsonRepresentation parentJson = report.stream().map(x -> x.getDynamicVersion())
 			.filter(x -> parent.equals(x.getAsString("skill")))
 			.map(x -> x.json)
 			.findFirst()
 			.get();
-			boolean added = allParents.add(parent);
-			Set<String> gandParents = getParents(allParents, report, parentJson);
-			allParents.addAll(gandParents);
-			if(counter > 0 && added) {
-				System.out.println(counter);
-			}
-			counter = 0;
+			getAllParents(allParents, report, parentJson);
 		}
-		if(parents.isEmpty()) {
-			System.out.println(counter);
-			counter = 0;
-			return allParents;
-		}	
-		
 		return allParents;
 	}
 
