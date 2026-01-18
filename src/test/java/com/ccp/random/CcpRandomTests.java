@@ -67,16 +67,26 @@ public class CcpRandomTests {
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
 
 	public static void main(String[] args) {
-		String folder = "C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\";
-		List<String> synonyms = new CcpStringDecorator(folder+ "synonyms2.txt").file().getLines();
-		int zz = 0;
-		for (String line : synonyms) {
-			String[] split = line.split(",");
-			List<String> collect = Arrays.asList(split).stream().map(x -> x.trim().toUpperCase())
-			.filter(x -> x.length() > 1).collect(Collectors.toList());
-			zz += collect.size(); 
-		}
-		System.out.println(zz);
+		countWords();
+
+		
+//		saveSkills();
+		//		relatoriosDasSkillsNosCurriculos();
+	}
+
+	static void countWords() {
+		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
+		CcpQueryOptions query = CcpQueryOptions.INSTANCE.matchAll();
+		Set<String> words = new HashSet<>();
+		Consumer<CcpJsonRepresentation> consumer = json -> {
+			List<CcpJsonRepresentation> skills = json.getDynamicVersion().getAsJsonList("skill");
+			for (CcpJsonRepresentation skill : skills) {
+				String word = skill.getDynamicVersion().getAsString("word");
+				words.add(word);
+			}
+		};
+		queryExecutor.consumeQueryResult(query, new String[] {"group_positions_by_skills"}, "1m", 10_000, consumer, "skill");
+		System.out.println(words.size());
 	}
 
 	static void incrementSynonyms() {
@@ -107,8 +117,6 @@ public class CcpRandomTests {
 				String firstPiece = split2[0];
 				String reverse = secondPiece + " " + firstPiece;
 				collectCopy.add(reverse);
-				List<String> otherWords = getOtherWords(reverse);
-				collectCopy.addAll(otherWords);
 			}
 			
 			list.add(collectCopy);
@@ -224,6 +232,11 @@ public class CcpRandomTests {
 		
 		List<CcpJsonRepresentation> newList = new ArrayList<>();
 		
+		List<String> synonyms3 = new CcpStringDecorator(folder+ "synonyms3.txt").file().getLines();
+
+		List<Set<String>> synonyms = synonyms3.stream().map(x -> Arrays.asList(x.split(",")).stream().map(y -> y.trim().toUpperCase()).filter(y -> y.length() > 1).collect(Collectors.toSet()))
+		.collect(Collectors.toList());
+		
 		for (CcpJsonRepresentation json : collect) {
 			List<String> allParents = new ArrayList<>();
 			getAllParents(allParents, report, json);
@@ -236,9 +249,33 @@ public class CcpRandomTests {
 //					.collect(Collectors.toList())
 //					).getDynamicVersion()
 					.put("hasRepeatedParent", hasRepeatedParent);
-			newList.add(put
-					.getDynamicVersion().getJsonPiece("skill", "childrenCount")
-					);	
+			CcpJsonRepresentation jsonPiece = put
+					.getDynamicVersion().getJsonPiece(
+							"skill", "childrenCount"
+							, "parent"
+							)
+					
+					;
+			
+			String skill = jsonPiece.getDynamicVersion().getAsString("skill");
+			
+			List<Set<String>> foundSynonyms = synonyms.stream().filter(x -> x.stream().anyMatch(y -> y.trim().equals(skill))).collect(Collectors.toList());
+			
+			if(foundSynonyms.isEmpty()) {
+				throw new RuntimeException(skill + " has no synonyms");
+			}
+			
+			if(foundSynonyms.size() > 1) {
+				throw new RuntimeException(skill + " has more than one synonym: " + foundSynonyms);
+			}
+
+			List<CcpJsonRepresentation> foundSynonym = foundSynonyms.get(0).stream()
+					.filter(x -> false == x.equals(skill))
+					.map(x -> CcpOtherConstants.EMPTY_JSON.getDynamicVersion().put("skill", x)).collect(Collectors.toList());
+			
+			CcpJsonRepresentation withSynonym = jsonPiece.getDynamicVersion().put("synonym", foundSynonym);
+			
+			newList.add(withSynonym);	
 		}
 		
 		newList.sort(sorter);
