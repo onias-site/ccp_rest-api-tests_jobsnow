@@ -71,6 +71,14 @@
   "synonym": []
 }, {
   "childrenCount": 22,
+  "skill": "TDD",
+  "synonym": [
+    {
+      "skill": "TEST DRIVEN DEVELOPMENT"
+    }
+  ]
+}, {
+  "childrenCount": 21,
   "parent": [
     "CRYPTOGRAPHY",
     "DATABASE"
@@ -88,14 +96,6 @@
     },
     {
       "skill": "BLOCK-CHAIN"
-    }
-  ]
-}, {
-  "childrenCount": 22,
-  "skill": "TDD",
-  "synonym": [
-    {
-      "skill": "TEST DRIVEN DEVELOPMENT"
     }
   ]
 }, {
@@ -3790,6 +3790,38 @@
   ]
 }, {
   "childrenCount": 2,
+  "skill": "SMARTCONTRACT",
+  "synonym": [
+    {
+      "skill": "SMART-CONTRACTS"
+    },
+    {
+      "skill": "SMARTCONTRACTS"
+    },
+    {
+      "skill": "SMART CONTRACT"
+    },
+    {
+      "skill": "CONTRACTS SMART"
+    },
+    {
+      "skill": "SMART CONTRACTS"
+    },
+    {
+      "skill": "SMART.CONTRACT"
+    },
+    {
+      "skill": "SMART.CONTRACTS"
+    },
+    {
+      "skill": "CONTRACT SMART"
+    },
+    {
+      "skill": "SMART-CONTRACT"
+    }
+  ]
+}, {
+  "childrenCount": 2,
   "parent": [
     "BIGDATA"
   ],
@@ -4352,6 +4384,13 @@
 }, {
   "childrenCount": 1,
   "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "ETHEREUM",
+  "synonym": []
+}, {
+  "childrenCount": 1,
+  "parent": [
     "NODE"
   ],
   "skill": "EXPRESS",
@@ -4894,6 +4933,13 @@
       "skill": "OBJECT-XML.MAPPING"
     }
   ]
+}, {
+  "childrenCount": 1,
+  "parent": [
+    "BLOCKCHAIN"
+  ],
+  "skill": "POLKADOT",
+  "synonym": []
 }, {
   "childrenCount": 1,
   "parent": [
@@ -7789,13 +7835,6 @@
     "ANDROID"
   ],
   "skill": "ESPRESSO",
-  "synonym": []
-}, {
-  "childrenCount": 0,
-  "parent": [
-    "BLOCKCHAIN"
-  ],
-  "skill": "ETHEREUM",
   "synonym": []
 }, {
   "childrenCount": 0,
@@ -11783,13 +11822,6 @@
 }, {
   "childrenCount": 0,
   "parent": [
-    "BLOCKCHAIN"
-  ],
-  "skill": "POLKADOT",
-  "synonym": []
-}, {
-  "childrenCount": 0,
-  "parent": [
     "POSTGRESQL",
     "GRAPHQL"
   ],
@@ -14137,41 +14169,6 @@
 }, {
   "childrenCount": 0,
   "parent": [
-    "BLOCKCHAIN"
-  ],
-  "skill": "SMARTCONTRACT",
-  "synonym": [
-    {
-      "skill": "SMART-CONTRACTS"
-    },
-    {
-      "skill": "SMARTCONTRACTS"
-    },
-    {
-      "skill": "SMART CONTRACT"
-    },
-    {
-      "skill": "CONTRACTS SMART"
-    },
-    {
-      "skill": "SMART CONTRACTS"
-    },
-    {
-      "skill": "SMART.CONTRACT"
-    },
-    {
-      "skill": "SMART.CONTRACTS"
-    },
-    {
-      "skill": "CONTRACT SMART"
-    },
-    {
-      "skill": "SMART-CONTRACT"
-    }
-  ]
-}, {
-  "childrenCount": 0,
-  "parent": [
     "FRONTEND",
     "PHP"
   ],
@@ -14231,6 +14228,14 @@
     "POO"
   ],
   "skill": "SOLID",
+  "synonym": []
+}, {
+  "childrenCount": 0,
+  "parent": [
+    "ETHEREUM",
+    "SMARTCONTRACT"
+  ],
+  "skill": "SOLIDITY",
   "synonym": []
 }, {
   "childrenCount": 0,
@@ -15852,6 +15857,14 @@
       "skill": "STRUTS 1"
     }
   ]
+}, {
+  "childrenCount": 0,
+  "parent": [
+    "POLKADOT",
+    "SMARTCONTRACT"
+  ],
+  "skill": "SUBSTRATE",
+  "synonym": []
 }, {
   "childrenCount": 0,
   "parent": [

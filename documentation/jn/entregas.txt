@@ -1,3 +1,24 @@
+Nossas entregas:
+30/01 
+login 
+salvamento de curriculos
+envio de todos os curriculos para todos os recrutadores
+visualização de curriculos
+
+27/02
+Cadastro de vagas
+arvore de curriculos
+envio intantaneo de curriculos pertinentes a determinada vaga
+feedback a respeito do curriculo
+
+27/03
+arvore de vagas
+gestao de tickets
+tickets no telegram
+
+
+
+
 A) Endpoint de autocomplete de empresas
 B) Endpoint de skills
 C) Endpoint de salvamento de dados de perfil

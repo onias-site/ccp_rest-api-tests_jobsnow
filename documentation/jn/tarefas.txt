@@ -1,3 +1,8 @@
+A) Olhar 200 curriculos
+B) Investigar sinonimos repetidos
+C) Add skills implicitas nos curriculos
+D) Investigar C#
+
 Passos para liberar endpoints de curriculos na nuvem
 A) Gravar todos os curriculos localmente
 B) Endpointizar a gravação de curriculos

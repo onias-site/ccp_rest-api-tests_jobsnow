@@ -24,6 +24,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpDynamicJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.decorators.CcpStringDecorator;
+import com.ccp.decorators.CcpTextDecorator;
 import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.crud.CcpCrud;
@@ -67,11 +68,9 @@ public class CcpRandomTests {
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
 
 	public static void main(String[] args) {
-		countWords();
-
-		
+//		countWords();
 //		saveSkills();
-		//		relatoriosDasSkillsNosCurriculos();
+				relatoriosDasSkillsNosCurriculos();
 	}
 
 	static void countWords() {
@@ -613,7 +612,7 @@ public class CcpRandomTests {
 		CcpQueryOptions query = CcpQueryOptions.INSTANCE.matchAll();
 		Map<String, Integer> countByResume = new HashMap<>();
 		Map<String, Integer> countByWords = new HashMap<>();
-		
+		Map<String, Set<String>> groupedResumes = new HashMap<>();
 		
 		Consumer<CcpJsonRepresentation> consumer = json -> {
 			try {
@@ -629,7 +628,6 @@ public class CcpRandomTests {
 				Map<String, Object> execute = VisServiceSkills.GetSkillsFromText.execute(sessionValues);
 				String id = json.getDynamicVersion().getAsString("id");
 
-				String fileName = id + ".json";
 				
 				CcpJsonRepresentation md = new CcpJsonRepresentation(execute);
 				
@@ -637,10 +635,17 @@ public class CcpRandomTests {
 				List<CcpJsonRepresentation> skills = md.getDynamicVersion().getAsJsonList("skill").stream()
 						.collect(Collectors.toList());
 				
+				CcpTextDecorator completeLeft = new CcpStringDecorator(""+ skills.size()).text().completeLeft('0', 3);
+				
+				String fileName = completeLeft +"_" + id + ".json";
+				
 				for (CcpJsonRepresentation skill : skills) {
-					String word = skill.getDynamicVersion().getAsString("word");
+					String word = skill.getDynamicVersion().getAsString("word"); 
 					Integer counter = countByWords.getOrDefault(word, 0) + 1;
 					countByWords.put(word, counter);
+					Set<String> orDefault = groupedResumes.getOrDefault(word, new HashSet<>());
+					orDefault.add(id);
+					groupedResumes.put(word, orDefault);
 				}
 				
 				countByResume.put(id, skills.size());
@@ -667,6 +672,11 @@ public class CcpRandomTests {
 		CcpFileDecorator removidas = new CcpStringDecorator("c:/logs/skills/removidas.txt").file().reset();
 		for (String removedWord : allWords) {
 			removidas.append(removedWord);
+		}
+		CcpFileDecorator groupedResumesFile = new CcpStringDecorator("c:/logs/skills/groupedResumes.txt").file().reset();
+		Set<String> skills = groupedResumes.keySet();
+		for (String skill : skills) {
+			groupedResumesFile.append(skill + "=" + groupedResumes.get(skill));
 		}
 	}
 	
