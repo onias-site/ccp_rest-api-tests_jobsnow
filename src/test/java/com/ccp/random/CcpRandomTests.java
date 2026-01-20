@@ -68,9 +68,147 @@ public class CcpRandomTests {
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
 
 	public static void main(String[] args) {
-//		countWords();
+
+//		countWords(); 
 //		saveSkills();
-				relatoriosDasSkillsNosCurriculos();
+//		relatoriosDasSkillsNosCurriculos();
+//		getSkillsFromText();
+	} 
+
+	static void getSkillsFromText() {
+		CcpJsonRepresentation skillsFromText = getSkillsFromText("ONIAS VIEIRA JUNIOR\r\n"
+				+ "EMAIL: onias85@gmail.com NASCIDO EM: 22/06/1985. CONTACTO: (11) 966-058-642.\r\n"
+				+ "LOCALIZAÇÃO: Jabaquara  – SÃO PAULO.\r\n"
+				+ "\r\n"
+				+ "FORMAÇÃO ACADÊMICA / ESCOLARIDADE:\r\n"
+				+ "GRADUADO EM TECNOLOGIA DA INFORMAÇÃO PELO CENTRO UNIVERSITÁRIO LUSÍADA, SANTOS – SP em 2007.\r\n"
+				+ "MBA EM JAVA COM SOA PELA FIAP, SÃO PAULO – SP em 2014.\r\n"
+				+ "\r\n"
+				+ "RESUMO DO CURRÍCULO:\r\n"
+				+ "Programador Java desde junho de 2010.\r\n"
+				+ "Programador desde abril de 2009.\r\n"
+				+ "Certificação de Programador Java sun scjp 6 (em 2010).\r\n"
+				+ "Certificação de Programador Java oracle ocjp 7 (em 2015).\r\n"
+				+ "Certificação Associate Java oracle ocjp 5 e 6 (em 2015).\r\n"
+				+ "Inglês intermediário (conversação), avançado (leitura).\r\n"
+				+ "Espanhol avançado (conversação), avançado (leitura).\r\n"
+				+ "\r\n"
+				+ "RESUMO DAS FERRAMENTAS JÁ TRABALHADAS:\r\n"
+				+ "CLOUD: Google Cloud (BigQuery, DataStore, App Engine(SAAS), Compute Engine(PAAS), Cloud Sql, Pub/Sub, Cloud Sql, MemCache).\r\n"
+				+ "DATABASES: Oracle, Sql Server, MySql, elasticsearch.\r\n"
+				+ "METODOLOGIA: Scrum, TDD, DDD.\r\n"
+				+ "ARQUITETURA: EJB 2 e 3, Spring 3 e 4, Design Patterns, Reflection, UML, JAB.\r\n"
+				+ "WS: AXIS, Restlet, Jersey,  JMS, JSON, XML, XSD, Xpath.\r\n"
+				+ "LINGUAGENS: Delphi, C#, Java, Javascript.\r\n"
+				+ "IDE: Eclipse, Visual Studio, RTC.\r\n"
+				+ "SERVIDORES: Tomcat, Jboss, Weblogic E Websphere.\r\n"
+				+ "WEB: Html 5, CSS 3, Bootstrap, primeng.\r\n"
+				+ "MOBILE: CORDOVA, IONIC 2.\r\n"
+				+ "JS: Jquery, Jquery Ui, Ext JS, AngularJs(1,2 e 5), TypeScript, reactjs.\r\n"
+				+ "MVC: JSF 1 e 2, Primefaces 3, JSP, Vraptor 4, Spring MVC, Servlets, Struts 1 e 2, NestJs.\r\n"
+				+ "ORM: Hibernate, JPA, JDBC.\r\n"
+				+ "TESTES: Junit, Jmeter, Soap UI, Teste NG, Mockito.\r\n"
+				+ "S.O: Windows, Linux.\r\n"
+				+ "DEPLOY: Ant, Maven, Jenkins.\r\n"
+				+ "VERSIONADOR: TFS, GIT, SVN, CVS, VSS. \r\n"
+				+ "AOP: ASPECTJ.\r\n"
+				+ "PORTLETS: Wem(VCM), Liferay, Fluig (Totvs).\r\n"
+				+ "OUTROS: Applet, Swing, IBM Maximo, Java FX.\r\n"
+				+ "\r\n"
+				+ "\r\n"
+				+ "EXPERIENCIA PROFISSIONAL:\r\n"
+				+ "CLIENTE: JobsNow.\r\n"
+				+ "CONSULTORIA ALOCADORA:  Negócio próprio.\r\n"
+				+ "PERÍODO:  10/2018 ao momento atual.\r\n"
+				+ "FERRAMENTAS:  Google Cloud (MemCache, PUB/SUB, App engine(SAAS), Compute Engine (PAAS)), react Js, eclipse, java 8, springboot, elasticsearch (construi API  Java para ele), maven, git, css, html, javascript, visual studio code, APIs javascript.\r\n"
+				+ "CARGO: Consultor de Tecnologia.\r\n"
+				+ "ATIVIDADES:  Cadastro, estatísticas e buscas  (no estilo google) inteligentes de currículo.\r\n"
+				+ "\r\n"
+				+ "CLIENTE: NoxxonSatt.\r\n"
+				+ "PERÍODO:  01/2018 a 12/2023.\r\n"
+				+ "FERRAMENTAS:  Google Cloud (BigQuery, DataStore, MemCache, PUB/SUB, CloudSql, App engine(SAAS), Compute Engine (PAAS)), react Js, angular 8, angular Js, eclipse, java 8, springboot, JPA, maven, git, css, html, javascript, visual , NestJs, NodeJs, studio code, APIs javascript e java para georeferencia / geolocalização.\r\n"
+				+ "CARGO: Consultor de Tecnologia.\r\n"
+				+ "ATIVIDADES:  Monitoramento e geolocalização de 6 mil ônibus intermunicipais geridos pela EMTU, manutenção desse sistema em ambiente de nuvem (Google).\r\n"
+				+ "\r\n"
+				+ "CLIENTE: Santander.\r\n"
+				+ "CONSULTORIA ALOCADORA:  Itera Consultoria.\r\n"
+				+ "PERÍODO: 03/2017 a 01/2018\r\n"
+				+ "FERRAMENTAS:  Java, Jab(Java Arquitetura Brasil), SQL, Springboot, Eclipse, Jenkins, RTC, IBM Broker\r\n"
+				+ "CARGO: Consultor de Tecnologia.\r\n"
+				+ "ATIVIDADES:  Exposição de dados de PL/SQL em rest (projeto KiPrev), guarda dos dados de arquivos sequenciais em banco de dados(Projeto Reinf).\r\n"
+				+ "\r\n"
+				+ "CLIENTE: CERTISIGN, NETSHOES, SEFAZ, TOTVS\r\n"
+				+ "CONSULTORIA ALOCADORA: TOTVS SERRA DO MAR.\r\n"
+				+ "PERÍODO: 09/2013 até 07/2016\r\n"
+				+ "FERRAMENTAS:  Javascript, html, css, spring, oracle, hibernate, jboss, tomcat, eclipse, Visual Studio, Java 4, 6 e 7,  C#, jenkins, ANT deploy, Maven, JMeeter,  Velocity, TFS, SVN, Junit, JMS, SOAP, JSF, Primefaces, SVN, Linux, JSON, JQUERY, JQUERY UI, Fluig\r\n"
+				+ "CARGO: Consultor de Tecnologia Java\r\n"
+				+ "ATIVIDADES:  Front end Jquery para sistema Fluig (TOTVS), substituição de scriptlet [java com html] em JSPs por SPA em jquery e criação de framework próprio para trabalhar json(SEFAZ). Criação do portal do fornecedor em jsf/primefaces e sua especificação de webservice e seu framework de comunicação SOAP com SAP, criação de comunicação com JMS (Netshoes). Sustentação de sistemas web para gerenciamento de certificado digital, sustentação de framework de assinador digital (Certisign)\r\n"
+				+ "\r\n"
+				+ "\r\n"
+				+ "CLIENTE: BRADESCO\r\n"
+				+ "CONSULTORIA ALOCADORA: IFACTORY SOLUTIONS.\r\n"
+				+ "PERÍODO: 04/2013 a 09/2013\r\n"
+				+ "PROJETO: NPORTALBRA\r\n"
+				+ "REGRA DE NEGÓCIO: Site de conteúdo / Portal.\r\n"
+				+ "OBJETIVO: Mover todo o conteúdo do portal em html estático para o gestor de conteúdo WEM (VCM).\r\n"
+				+ "FERRAMENTAS: JSP, WEM (VCM), SCRUM, SVN, HTML, JAVASCRIPT, CSS, HTML.\r\n"
+				+ "CARGO: Analista / programador Pleno\r\n"
+				+ "ATIVIDADES:  Criação de componentes em JSP para portar conteúdo estático em templates do WEM [Web Experience Management] (Bradesco)\r\n"
+				+ "CLIENTE: CCR/ODDEBRECHT\r\n"
+				+ "CONSULTORIA ALOCADORA: CAPITAL AMBIENTAL.\r\n"
+				+ "PERÍODO: 09/2012 a 04/2013\r\n"
+				+ "PROJETO: CERENSA\r\n"
+				+ "REGRA DE NEGÓCIO: Gestão ambiental.\r\n"
+				+ "OBJETIVO: Prover software com interface web para inventariado de impactos ambientais.\r\n"
+				+ "FERRAMENTAS:  JAVA 6, Vraptor, ExtJS, Spring, Hibernate, My sql, Tomcat, GIT, CSS, HTML.\r\n"
+				+ "CARGO: Analista / programador Pleno\r\n"
+				+ "ATIVIDADES:  Construção de front end em ExtJs e back end em java com spring\r\n"
+				+ "\r\n"
+				+ "CLIENTE: VOLKSWAGEN\r\n"
+				+ "CONSULTORIA ALOCADORA: CSI SISTEMAS E ENGENHARIA.\r\n"
+				+ "PERÍODO: 02/2012 a 09/2012\r\n"
+				+ "PROJETO: PICK BY LIGHT\r\n"
+				+ "REGRA DE NEGÓCIO: Automação Industrial.\r\n"
+				+ "OBJETIVO: Prover software de automação com biometria de impressão digital que informe as etiquetas que devem ser colocadas no carro que está sendo montado e avisar caso seja usada a etiqueta errada.\r\n"
+				+ "FERRAMENTAS:  JAVA, 6, Swing, reflection, SVN, Design Pattern State machine, AMGSTROM (LINUX EMBARCADO).\r\n"
+				+ "CARGO: Analista / programador Junior\r\n"
+				+ "ATIVIDADES:  Criaçaõ de sistema de automação na linha da Volkswagen que permitia ao operador saber quais etquetas colar em um carro.\r\n"
+				+ "\r\n"
+				+ "CLIENTE: PMSBC (PREFEITURA MUNICIPAL DE SÃO BERNARDO DO CAMPO)\r\n"
+				+ "CONSULTORIA ALOCADORA: G & P SISTEMAS.\r\n"
+				+ "PERÍODO: 01/2011 a 01/2012\r\n"
+				+ "PROJETO: SIGOM (SISTEMA DE GESTÃO ORÇAMENTÁRIA MUNICIPAL)\r\n"
+				+ "REGRA DE NEGÓCIO: Gestão Orçamentária Municipal.\r\n"
+				+ "OBJETIVO: Manutenção em software que tem por função automatizar a gestão orçamentária municipal.\r\n"
+				+ "FERRAMENTAS:  JAVA 6, EJB2, Struts 1, Oracle, JBOSS, SVN, HTML, CSS, JAVASCRIPT, DDD.\r\n"
+				+ "CARGO: Analista / programador Junior\r\n"
+				+ "ATIVIDADES:  Sustentação de sistema de orçamento municipal em seu back end e front end.\r\n"
+				+ "\r\n"
+				+ "CLIENTE: SHOPPING RECIFE E AVON.\r\n"
+				+ "CONSULTORIA ALOCADORA: NRB SOLUTIONS.\r\n"
+				+ "PERÍODO: 06/2010 a 01/2011\r\n"
+				+ "PROJETO: CUSTOMIZAÇÃO DO IBM MAXIMO.\r\n"
+				+ "REGRA DE NEGÓCIO: EAM (Enterprise Asset Management).\r\n"
+				+ "OBJETIVO: Prover customização de classes Java do software IBM MAXIMO.\r\n"
+				+ "FERRAMENTAS:  Java 6, Struts 2, Javascript, html, css, oracle, IBM MAXIMO.\r\n"
+				+ "CARGO: Analista / programador Junior\r\n"
+				+ "ATIVIDADES:  Customização em java de ferramenta da IBM para clientes.\r\n"
+				+ "\r\n"
+				+ "CLIENTE: EXPORTADORA AGRÍCOLA CARCON, PLANIM LOGÍSTICA.\r\n"
+				+ "CONSULTORIA ALOCADORA: MBM SYSTEMS.\r\n"
+				+ "PERÍODO: 04/2009 a 06/2010\r\n"
+				+ "PROJETO: CARCON.\r\n"
+				+ "REGRA DE NEGÓCIO: Exportação agrícola.\r\n"
+				+ "OBJETIVO: Prover software web com a finalidade de gerir todo ciclo da cadeia de exportação de algodão.\r\n"
+				+ "FERRAMENTAS:  C sharp,Visual Studio, Linq, Visual source Safe, SQL Server, Delphi 2009.\r\n"
+				+ "CARGO: Analista / programador Junior\r\n"
+				+ "ATIVIDADES:  Construção de front e back end para módulos do sistema de exportação agrícola da Carcon\r\n"
+				+ "\r\n"
+				+ "\r\n"
+				+ "\r\n"
+				+ "\r\n"
+				+ "");
+		System.out.println(skillsFromText);
 	}
 
 	static void countWords() {
@@ -88,54 +226,34 @@ public class CcpRandomTests {
 		System.out.println(words.size());
 	}
 
-	static void incrementSynonyms() {
-		String folder = "C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\";
-		List<String> synonyms = new CcpStringDecorator(folder+ "synonyms2.txt").file().getLines();
-		List<Set<String>> list = new ArrayList<>();
-		for (String line : synonyms) {
-			String[] split = line.split(",");
-			List<String> collect = Arrays.asList(split).stream().map(x -> x.trim().toUpperCase())
-			.filter(x -> x.length() > 1).collect(Collectors.toList());
-			
-			LinkedHashSet<String> collectCopy = new LinkedHashSet<>(collect);
-			
-			for (String string : collect) {
-				String[] split2 = string.split(" ");
-				if(split2.length != 2) {
-					continue;
-				}
-				{
-					List<String> otherWords = getOtherWords(string);
-					collectCopy.addAll(otherWords);
-				}
-				String secondPiece = split2[1];
-				boolean longNumber = new CcpStringDecorator(secondPiece).isLongNumber();
-				if(longNumber) {
-					continue;
-				}
-				String firstPiece = split2[0];
-				String reverse = secondPiece + " " + firstPiece;
-				collectCopy.add(reverse);
-			}
-			
-			list.add(collectCopy);
+
+	static Set<String> getOtherWords(String word){
+		String[] split = word.split(" ");
+		if(split.length != 2) {
+			List<String> asList = Arrays.asList(word);
+			HashSet<String> hashSet = new HashSet<>(asList);
+			return hashSet;
 		}
-		 CcpFileDecorator synonyms3 = new CcpStringDecorator(folder+ "synonyms3.txt").file().reset();
-		 int x = 0;
-		 for (Set<String> set : list) {
-			synonyms3.append(set.toString().replace("[", "").replace("]", ""));
-			x += set.size();
-		 }
-		 System.out.println(x);
-
-	}
-
-	static List<String> getOtherWords(String word){
+		
 		String r1 = word.replace(" ", "");
 		String r2 = word.replace(" ", "-");
 		String r3 = word.replace(" ", ".");
-		List<String> asList = Arrays.asList(r1, r2, r3);
-		return asList;
+		
+		Set<String> response = new HashSet<>( Arrays.asList(r1, r2, r3));
+		String secondPiece = split[1];
+		
+		boolean longNumber = new CcpStringDecorator(secondPiece).isLongNumber();
+		
+		if(longNumber) {
+			return response;
+		}
+		String firstPiece = split[0];
+		
+		String reverse = secondPiece + " " + firstPiece;
+		
+		response.add(reverse);
+		
+		return response;
 	}	
 	
 	static Set<String> getAllWords(List<String> lines){
@@ -178,6 +296,19 @@ public class CcpRandomTests {
 			}
 			synonyms2.append(trim);
 		}
+	}
+	
+	static Set<String> getOtherWords(Set<String> otherWords){
+		Set<String> response = new HashSet<>();
+		for (String word : otherWords) {
+			if("JAVAGRAPHQL".equals(word)) {
+				System.out.println();
+			}
+			Set<String> otherWords2 = getOtherWords(word);
+			response.addAll(otherWords2);
+		}
+		
+		return response;
 	}
 	
 	static void saveSkills() {
@@ -233,8 +364,17 @@ public class CcpRandomTests {
 		
 		List<String> synonyms3 = new CcpStringDecorator(folder+ "synonyms3.txt").file().getLines();
 
-		List<Set<String>> synonyms = synonyms3.stream().map(x -> Arrays.asList(x.split(",")).stream().map(y -> y.trim().toUpperCase()).filter(y -> y.length() > 1).collect(Collectors.toSet()))
-		.collect(Collectors.toList());
+		List<Set<String>> synonyms = synonyms3.stream()
+				.map(x -> Arrays.asList(x.split(",")).stream()
+						.map(y -> y.trim().toUpperCase())
+						.filter(y -> y.length() > 1)
+						.filter(y -> y.length() < 35)
+						.collect(Collectors.toSet()))
+//				.map(x -> getOtherWords(x))
+				.collect(Collectors.toList());
+		
+		
+		
 		
 		for (CcpJsonRepresentation json : collect) {
 			List<String> allParents = new ArrayList<>();
@@ -243,22 +383,22 @@ public class CcpRandomTests {
 			HashSet<String> set = new HashSet<String>(allParents);
 			boolean hasRepeatedParent = set.size() != allParents.size();
 			CcpJsonRepresentation put = json.getDynamicVersion()
-//					.put("allParents", allParents.stream()
-//					.map(skill -> CcpOtherConstants.EMPTY_JSON.getDynamicVersion().put("skill",skill).getDynamicVersion().put("parent", getParent(skill, report)))
-//					.collect(Collectors.toList())
-//					).getDynamicVersion()
+					.put("allParents", allParents.stream()
+//					.map(skill -> CcpOtherConstants.EMPTY_JSON.getDynamicVersion().put("skill",skill)
+//							.getDynamicVersion()
+//							.put("parent", getParent(skill, report))
+//							)
+					.collect(Collectors.toList())
+					).getDynamicVersion()
 					.put("hasRepeatedParent", hasRepeatedParent);
-			CcpJsonRepresentation jsonPiece = put
-					.getDynamicVersion().getJsonPiece(
-							"skill", "childrenCount"
-							, "parent"
-							)
 					
 					;
 			
-			String skill = jsonPiece.getDynamicVersion().getAsString("skill");
+			String skill = put.getDynamicVersion().getAsString("skill");
 			
-			List<Set<String>> foundSynonyms = synonyms.stream().filter(x -> x.stream().anyMatch(y -> y.trim().equals(skill))).collect(Collectors.toList());
+			List<Set<String>> foundSynonyms = synonyms.stream()
+					.filter(x -> x.stream().anyMatch(y -> y.trim().equals(skill)))
+					.collect(Collectors.toList());
 			
 			if(foundSynonyms.isEmpty()) {
 				throw new RuntimeException(skill + " has no synonyms");
@@ -272,7 +412,16 @@ public class CcpRandomTests {
 					.filter(x -> false == x.equals(skill))
 					.map(x -> CcpOtherConstants.EMPTY_JSON.getDynamicVersion().put("skill", x)).collect(Collectors.toList());
 			
-			CcpJsonRepresentation withSynonym = jsonPiece.getDynamicVersion().put("synonym", foundSynonym);
+			CcpJsonRepresentation withSynonym = put
+					.getDynamicVersion().put("synonym", foundSynonym)
+//					.getDynamicVersion().getJsonPiece(
+//					"skill", "childrenCount"
+//					, "parent"
+//					)
+					.getDynamicVersion().renameField("parent", "directParent")
+					.getDynamicVersion().renameField("allParents", "parent")
+					.getDynamicVersion().getJsonPiece("parent", "skill", "directParent", "childrenCount", "synonym", "hasNoParent")
+					;
 			
 			newList.add(withSynonym);	
 		}
@@ -282,7 +431,8 @@ public class CcpRandomTests {
 	}
 	
 	static List<String> getParent(String skill, List<CcpJsonRepresentation> report){
-		return report.stream().map(x -> x.getDynamicVersion()).filter(x -> skill.equals(x.getAsString("skill"))).findFirst().get().getAsStringList("parent");
+		return report.stream().map(x -> x.getDynamicVersion()).filter(x -> skill.equals(x.getAsString("skill"))).findFirst().get()
+				.getAsStringList("parent");
 	}
 	static Comparator<? super CcpJsonRepresentation> getSorter(String... fields){
 		Comparator<? super CcpJsonRepresentation> sorter = (a, b) -> {
@@ -619,18 +769,9 @@ public class CcpRandomTests {
 				String base64 = json.getDynamicVersion().getValueFromPath("", "curriculo", "conteudo");
 				
 				String resumeText = textExtractor.extractText(base64);
-				String text = new CcpStringDecorator(resumeText).text().stripAccents().getContent();
-				Map<String, Object> sessionValues =  CcpOtherConstants.EMPTY_JSON
-						 .getDynamicVersion()
-						 .put("text", text)
-						 .content
-						 ;
-				Map<String, Object> execute = VisServiceSkills.GetSkillsFromText.execute(sessionValues);
+				CcpJsonRepresentation md = getSkillsFromText(resumeText);
+				
 				String id = json.getDynamicVersion().getAsString("id");
-
-				
-				CcpJsonRepresentation md = new CcpJsonRepresentation(execute);
-				
 
 				List<CcpJsonRepresentation> skills = md.getDynamicVersion().getAsJsonList("skill").stream()
 						.collect(Collectors.toList());
@@ -678,6 +819,20 @@ public class CcpRandomTests {
 		for (String skill : skills) {
 			groupedResumesFile.append(skill + "=" + groupedResumes.get(skill));
 		}
+	}
+
+	static CcpJsonRepresentation getSkillsFromText(String resumeText) {
+		String text = new CcpStringDecorator(resumeText).text().stripAccents().getContent();
+		Map<String, Object> sessionValues =  CcpOtherConstants.EMPTY_JSON
+				 .getDynamicVersion()
+				 .put("text", text)
+				 .content
+				 ;
+		Map<String, Object> execute = VisServiceSkills.GetSkillsFromText.execute(sessionValues);
+
+		
+		CcpJsonRepresentation md = new CcpJsonRepresentation(execute);
+		return md;
 	}
 	
 	static void createReport(Map<String, Integer> reportSource, String reportFile, Consumer<String> consumer) {
