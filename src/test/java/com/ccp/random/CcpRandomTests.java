@@ -59,6 +59,7 @@ import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnDeleteKeysFromCache;
+import com.vis.entities.VisEntityGroupPositionsBySkills;
 import com.vis.entities.VisEntityResume;
 import com.vis.resumes.ImportResumeFromOldJobsNow;
 import com.vis.services.VisServiceSkills;
@@ -68,13 +69,21 @@ public class CcpRandomTests {
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
 
 	public static void main(String[] args) {
-
+		relatorioDeSkillsPesquisadas("Pub/Sub", "Scrum", "DDD", "UML", "Xpath", "Teste NG", "TesteNG");
 //		countWords(); 
 //		saveSkills();
 //		relatoriosDasSkillsNosCurriculos();
-		getSkillsFromText();
+//		getSkillsFromText();
 	} 
 
+	static void relatorioDeSkillsPesquisadas(String...skils) {
+		for (String skill : skils) {
+			int wordStatus = VisEntityGroupPositionsBySkills.getWordStatus(skill);
+			System.out.println(skill + " = " + wordStatus);
+		}
+	}
+	
+	
 	static void getSkillsFromText() {
 		CcpJsonRepresentation skillsFromText = getSkillsFromText("Thiago dos Santos Gomes\r\n"
 				+ "Rua: Bernardo Guimarães, N° 123 apartamento 37 D Bairro: Vila Guarará \r\n"
@@ -378,7 +387,8 @@ public class CcpRandomTests {
 //					)
 					.getDynamicVersion().renameField("parent", "directParent")
 					.getDynamicVersion().renameField("allParents", "parent")
-					.getDynamicVersion().getJsonPiece("parent", "skill", "directParent", "childrenCount", "synonym", "hasNoParent")
+//					.getDynamicVersion().getJsonPiece("parent", "skill", "directParent", "childrenCount", "synonym", "hasNoParent")
+//					.getDynamicVersion().removeFields("synonym")
 					;
 			
 			newList.add(withSynonym);	
@@ -759,7 +769,7 @@ public class CcpRandomTests {
 			}
 		
 		};
-		queryExecutor.consumeQueryResult(query, new String[] {"profissionais2"}, "1m", 10, consumer, "curriculo.conteudo", "id");
+		queryExecutor.consumeQueryResult(query, new String[] {"profissionais2"}, "100m", 10, consumer, "curriculo.conteudo", "id");
 		List<String> allWords = getAllWords();
 
 		createReport(countByWords, "c:/logs/skills/countByWords.txt",  word -> {
