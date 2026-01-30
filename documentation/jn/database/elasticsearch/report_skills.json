@@ -100,24 +100,6 @@
 }, {
   "childrenCount": 24,
   "directParent": [
-    "SQL",
-    "DATABASE"
-  ],
-  "hasMirror": false,
-  "hasNoParent": false,
-  "hasRepeatedParent": false,
-  "hasSkillsWithCommonParentsSize": false,
-  "mirror": "",
-  "parent": [
-    "SQL",
-    "DATABASE"
-  ],
-  "skill": "SQLDATABASE",
-  "skillsWithCommonParents": [],
-  "synonym": []
-}, {
-  "childrenCount": 22,
-  "directParent": [
     "JVM"
   ],
   "hasMirror": false,
@@ -481,6 +463,24 @@
     }
   ]
 }, {
+  "childrenCount": 24,
+  "directParent": [
+    "SQL",
+    "DATABASE"
+  ],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": [
+    "SQL",
+    "DATABASE"
+  ],
+  "skill": "SQLDATABASE",
+  "skillsWithCommonParents": [],
+  "synonym": []
+}, {
   "childrenCount": 22,
   "hasMirror": false,
   "hasNoParent": true,
@@ -534,19 +534,9 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [],
-  "skill": "MONITOR",
+  "skill": "MONITOR123",
   "skillsWithCommonParents": [],
-  "synonym": [
-    {
-      "skill": "MONITORARACAO"
-    },
-    {
-      "skill": "MONITORAR"
-    },
-    {
-      "skill": "MONITORING"
-    }
-  ]
+  "synonym": []
 }, {
   "childrenCount": 20,
   "hasMirror": false,
@@ -555,7 +545,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [],
-  "skill": "SECURITY",
+  "skill": "SECURITY123",
   "skillsWithCommonParents": [],
   "synonym": [
     {
@@ -598,9 +588,6 @@
       "skill": "INFORMATION SECURITY"
     },
     {
-      "skill": "SEGURANCA"
-    },
-    {
       "skill": "SECURITY INFORMATION"
     },
     {
@@ -608,43 +595,6 @@
     },
     {
       "skill": "CIBERSEGURANCA"
-    }
-  ]
-}, {
-  "childrenCount": 19,
-  "directParent": [
-    "CSS",
-    "HTML",
-    "JAVASCRIPT"
-  ],
-  "hasMirror": false,
-  "hasNoParent": false,
-  "hasRepeatedParent": false,
-  "hasSkillsWithCommonParentsSize": false,
-  "mirror": "",
-  "parent": [
-    "CSS",
-    "HTML",
-    "JAVASCRIPT",
-    "XML"
-  ],
-  "skill": "FRONTEND",
-  "skillsWithCommonParents": [],
-  "synonym": [
-    {
-      "skill": "FRONT.END"
-    },
-    {
-      "skill": "FRONT-END"
-    },
-    {
-      "skill": "END FRONT"
-    },
-    {
-      "skill": "FRONT END"
-    },
-    {
-      "skill": "FRONT"
     }
   ]
 }, {
@@ -722,6 +672,40 @@
     },
     {
       "skill": "CONTINUOUS DELIVERY"
+    }
+  ]
+}, {
+  "childrenCount": 18,
+  "directParent": [
+    "CSS",
+    "HTML",
+    "JAVASCRIPT"
+  ],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": [
+    "CSS",
+    "HTML",
+    "JAVASCRIPT",
+    "XML"
+  ],
+  "skill": "FRONTEND",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {
+      "skill": "FRONT.END"
+    },
+    {
+      "skill": "FRONT-END"
+    },
+    {
+      "skill": "END FRONT"
+    },
+    {
+      "skill": "FRONT END"
     }
   ]
 }, {
@@ -878,7 +862,7 @@
 }, {
   "childrenCount": 13,
   "directParent": [
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA"
   ],
   "hasMirror": false,
@@ -887,11 +871,11 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "PERFORMANCEQA",
   "skillsWithCommonParents": [],
@@ -1130,7 +1114,7 @@
   "mirror": "",
   "parent": [
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "REST",
   "skillsWithCommonParents": [],
@@ -1194,9 +1178,6 @@
     },
     {
       "skill": "INTELIGENCIA DE NEGOCIOS"
-    },
-    {
-      "skill": "BI"
     },
     {
       "skill": "BUSINESS INTELIGENCE"
@@ -1290,7 +1271,7 @@
 }, {
   "childrenCount": 10,
   "directParent": [
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -1298,7 +1279,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "WS",
   "skillsWithCommonParents": [],
@@ -1706,7 +1687,7 @@
     "HTTP SERVER",
     "JVM",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRINGBOOT",
   "skillsWithCommonParents": [],
@@ -1821,19 +1802,9 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [],
-  "skill": "DOCUMENTATION",
+  "skill": "DOCUMENTATION123",
   "skillsWithCommonParents": [],
-  "synonym": [
-    {
-      "skill": "DOCUMENTACOES"
-    },
-    {
-      "skill": "DOCUMENTATIONS"
-    },
-    {
-      "skill": "DOCUMENTACAO"
-    }
-  ]
+  "synonym": []
 }, {
   "childrenCount": 8,
   "directParent": [
@@ -2168,7 +2139,7 @@
     "REST",
     "JAVA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "JAXRS",
@@ -2257,7 +2228,7 @@
 }, {
   "childrenCount": 6,
   "directParent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -2265,7 +2236,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "AUTENTICATION",
   "skillsWithCommonParents": [],
@@ -2484,7 +2455,7 @@
     "REST",
     "HTTP SERVER",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "NODE",
   "skillsWithCommonParents": [],
@@ -2608,7 +2579,7 @@
   "childrenCount": 5,
   "directParent": [
     "DATABASE",
-    "PERFORMANCE"
+    "PERFORMANCE123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -2617,10 +2588,10 @@
   "mirror": "",
   "parent": [
     "DATABASE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "CACHE",
   "skillsWithCommonParents": [],
@@ -2808,7 +2779,7 @@
     "REST",
     "HTTP SERVER",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "GRAPHQLNODE",
   "skillsWithCommonParents": [],
@@ -2879,7 +2850,7 @@
 }, {
   "childrenCount": 5,
   "directParent": [
-    "INTEGRATION"
+    "BIGDATA"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -2887,7 +2858,106 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "INTEGRATION"
+    "BIGDATA",
+    "NOSQL",
+    "SQLDATABASE",
+    "SQL",
+    "DATABASE"
+  ],
+  "skill": "MACHINELEARNING",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {
+      "skill": "ARTIFICIAL INTELIGENCIA"
+    },
+    {
+      "skill": "MACHINE LEARNING"
+    },
+    {
+      "skill": "DEEP-LEARNING"
+    },
+    {
+      "skill": "IA"
+    },
+    {
+      "skill": "ARTIFICIAL-INTELIGENCE"
+    },
+    {
+      "skill": "MACHINE-LEARNING"
+    },
+    {
+      "skill": "A.I"
+    },
+    {
+      "skill": "DEEP LEARNING"
+    },
+    {
+      "skill": "INTELIGENCIAARTIFICIAL"
+    },
+    {
+      "skill": "INTELIGENCIA.ARTIFICIAL"
+    },
+    {
+      "skill": "I.A"
+    },
+    {
+      "skill": "ARTIFICIAL.INTELIGENCE"
+    },
+    {
+      "skill": "MACHINE.LEARNING"
+    },
+    {
+      "skill": "ARTIFICIAL INTELIGENCE"
+    },
+    {
+      "skill": "INTELIGENCIA ARTIFICIAL"
+    },
+    {
+      "skill": "A I"
+    },
+    {
+      "skill": "I A"
+    },
+    {
+      "skill": "LEARNING MACHINE"
+    },
+    {
+      "skill": "DEEP.LEARNING"
+    },
+    {
+      "skill": "LEARNING DEEP"
+    },
+    {
+      "skill": "ARTIFICIALINTELIGENCE"
+    },
+    {
+      "skill": "DEEPLEARNING"
+    },
+    {
+      "skill": "INTELIGENCE ARTIFICIAL"
+    },
+    {
+      "skill": "INTELIGENCIA-ARTIFICIAL"
+    },
+    {
+      "skill": "I-A"
+    },
+    {
+      "skill": "A-I"
+    }
+  ]
+}, {
+  "childrenCount": 5,
+  "directParent": [
+    "INTEGRATION123"
+  ],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": [
+    "INTEGRATION123"
   ],
   "skill": "MENSAGERIA",
   "skillsWithCommonParents": [],
@@ -2941,11 +3011,11 @@
   "parent": [
     "PERFORMANCEQA",
     "MOCK",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "PERFORMANCEMOCK",
   "skillsWithCommonParents": [],
@@ -3016,7 +3086,7 @@
     "JAVASCRIPT",
     "XML"
   ],
-  "skill": "REACT",
+  "skill": "REACTJS",
   "skillsWithCommonParents": [],
   "synonym": [
     {
@@ -3033,9 +3103,6 @@
     },
     {
       "skill": "REACT.JS"
-    },
-    {
-      "skill": "REACTJS"
     },
     {
       "skill": "REACT JS"
@@ -3082,7 +3149,7 @@
   "mirror": "",
   "parent": [
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SOA",
   "skillsWithCommonParents": [],
@@ -3221,7 +3288,7 @@
   "mirror": "",
   "parent": [
     "SECURITYTDD",
-    "SECURITY",
+    "SECURITY123",
     "TDD"
   ],
   "skill": "DEVSECOPS",
@@ -3420,19 +3487,9 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [],
-  "skill": "INTEGRATION",
+  "skill": "INTEGRATION123",
   "skillsWithCommonParents": [],
-  "synonym": [
-    {
-      "skill": "INTEGRACOES"
-    },
-    {
-      "skill": "INTEGRACAO"
-    },
-    {
-      "skill": "INTEGRATIONS"
-    }
-  ]
+  "synonym": []
 }, {
   "childrenCount": 4,
   "directParent": [
@@ -3464,7 +3521,7 @@
     "SOAP",
     "JAVA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "JAXWS",
@@ -3543,108 +3600,6 @@
     },
     {
       "skill": "LOW.CODE"
-    }
-  ]
-}, {
-  "childrenCount": 4,
-  "directParent": [
-    "BIGDATA"
-  ],
-  "hasMirror": false,
-  "hasNoParent": false,
-  "hasRepeatedParent": false,
-  "hasSkillsWithCommonParentsSize": false,
-  "mirror": "",
-  "parent": [
-    "BIGDATA",
-    "NOSQL",
-    "SQLDATABASE",
-    "SQL",
-    "DATABASE"
-  ],
-  "skill": "MACHINELEARNING",
-  "skillsWithCommonParents": [],
-  "synonym": [
-    {
-      "skill": "ARTIFICIAL INTELIGENCIA"
-    },
-    {
-      "skill": "MACHINE LEARNING"
-    },
-    {
-      "skill": "DEEP-LEARNING"
-    },
-    {
-      "skill": "IA"
-    },
-    {
-      "skill": "ARTIFICIAL-INTELIGENCE"
-    },
-    {
-      "skill": "MACHINE-LEARNING"
-    },
-    {
-      "skill": "A.I"
-    },
-    {
-      "skill": "DEEP LEARNING"
-    },
-    {
-      "skill": "INTELIGENCIAARTIFICIAL"
-    },
-    {
-      "skill": "INTELIGENCIA.ARTIFICIAL"
-    },
-    {
-      "skill": "I.A"
-    },
-    {
-      "skill": "ARTIFICIAL.INTELIGENCE"
-    },
-    {
-      "skill": "MACHINE.LEARNING"
-    },
-    {
-      "skill": "ARTIFICIAL INTELIGENCE"
-    },
-    {
-      "skill": "AI"
-    },
-    {
-      "skill": "INTELIGENCIA ARTIFICIAL"
-    },
-    {
-      "skill": "A I"
-    },
-    {
-      "skill": "I A"
-    },
-    {
-      "skill": "LEARNING MACHINE"
-    },
-    {
-      "skill": "DEEP.LEARNING"
-    },
-    {
-      "skill": "LEARNING DEEP"
-    },
-    {
-      "skill": "ARTIFICIALINTELIGENCE"
-    },
-    {
-      "skill": "DEEPLEARNING"
-    },
-    {
-      "skill": "INTELIGENCE ARTIFICIAL"
-    },
-    {
-      "skill": "INTELIGENCIA-ARTIFICIAL"
-    },
-    {
-      "skill": "I-A"
-    },
-    {
-      "skill": "A-I"
     }
   ]
 }, {
@@ -3732,11 +3687,11 @@
   "parent": [
     "PERFORMANCEQA",
     "IDE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "PERFORMANCEIDE",
   "skillsWithCommonParents": [],
@@ -4055,7 +4010,7 @@
     "JAVA",
     "MENSAGERIA",
     "JVM",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "JMS",
   "skillsWithCommonParents": [],
@@ -4168,11 +4123,11 @@
     "GRAPHQL",
     "PERFORMANCEQA",
     "IDE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "PERFORMANCEIDEGRAPHQL",
   "skillsWithCommonParents": [],
@@ -4244,7 +4199,7 @@
     "SAP",
     "AUTENTICATION",
     "ERP",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "SAPAUTENTICATION",
   "skillsWithCommonParents": [],
@@ -4297,7 +4252,7 @@
 }, {
   "childrenCount": 3,
   "directParent": [
-    "SECURITY",
+    "SECURITY123",
     "TDD"
   ],
   "hasMirror": false,
@@ -4306,7 +4261,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY",
+    "SECURITY123",
     "TDD"
   ],
   "skill": "SECURITYTDD",
@@ -4337,7 +4292,7 @@
   "mirror": "",
   "parent": [
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SOAP",
   "skillsWithCommonParents": [],
@@ -4752,9 +4707,9 @@
     "REST",
     "IAM",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "AUTENTICATION",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "AUTHENTICATEDREST",
   "skillsWithCommonParents": [],
@@ -4806,7 +4761,7 @@
     "JAVA",
     "SOA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "BARRAMENTOJAVA",
@@ -4863,7 +4818,7 @@
 }, {
   "childrenCount": 2,
   "directParent": [
-    "MONITOR",
+    "MONITOR123",
     "CLOUD"
   ],
   "hasMirror": false,
@@ -4872,7 +4827,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR",
+    "MONITOR123",
     "CLOUD"
   ],
   "skill": "CLOUDMONITOR",
@@ -5170,7 +5125,7 @@
   "childrenCount": 2,
   "directParent": [
     "GRAPHQL",
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -5179,7 +5134,7 @@
   "mirror": "",
   "parent": [
     "GRAPHQL",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "GRAPHQLSECURITY",
   "skillsWithCommonParents": [],
@@ -5390,7 +5345,7 @@
 }, {
   "childrenCount": 2,
   "directParent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -5398,7 +5353,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "LDAP",
   "skillsWithCommonParents": [],
@@ -5530,7 +5485,7 @@
     "REST",
     "HTTP SERVER",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "NODEMVC",
   "skillsWithCommonParents": [],
@@ -5582,7 +5537,7 @@
   "childrenCount": 2,
   "directParent": [
     "REST",
-    "DOCUMENTATION"
+    "DOCUMENTATION123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -5591,9 +5546,9 @@
   "mirror": "",
   "parent": [
     "REST",
-    "DOCUMENTATION",
+    "DOCUMENTATION123",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "OPENAPI",
   "skillsWithCommonParents": [],
@@ -5665,21 +5620,11 @@
   "parent": [
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
-  "skill": "PERFORMANCE",
+  "skill": "PERFORMANCE123",
   "skillsWithCommonParents": [],
-  "synonym": [
-    {
-      "skill": "DESEMPENHO"
-    },
-    {
-      "skill": "DESEMPENHOS"
-    },
-    {
-      "skill": "PERFORMANCES"
-    }
-  ]
+  "synonym": []
 }, {
   "childrenCount": 2,
   "directParent": [
@@ -5786,7 +5731,7 @@
 }, {
   "childrenCount": 2,
   "directParent": [
-    "INTEGRATION",
+    "INTEGRATION123",
     "JAVAEE"
   ],
   "hasMirror": false,
@@ -5795,7 +5740,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "INTEGRATION",
+    "INTEGRATION123",
     "JAVAEE",
     "JAVA SERVER",
     "JAVA",
@@ -6055,7 +6000,7 @@
 }, {
   "childrenCount": 2,
   "directParent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -6063,7 +6008,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "SSO",
   "skillsWithCommonParents": [],
@@ -6107,7 +6052,7 @@
 }, {
   "childrenCount": 2,
   "directParent": [
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -6115,7 +6060,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "WEBSOCKET",
   "skillsWithCommonParents": [],
@@ -6152,7 +6097,7 @@
   "childrenCount": 1,
   "directParent": [
     "PYTHON",
-    "MONITOR",
+    "MONITOR123",
     "DEVOPS"
   ],
   "hasMirror": false,
@@ -6162,7 +6107,7 @@
   "mirror": "",
   "parent": [
     "PYTHON",
-    "MONITOR",
+    "MONITOR123",
     "DEVOPS",
     "BACKEND",
     "DEPLOY"
@@ -6240,7 +6185,7 @@
   "parent": [
     "SOA",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "BARRAMENTO",
   "skillsWithCommonParents": [],
@@ -6295,7 +6240,7 @@
 }, {
   "childrenCount": 1,
   "directParent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -6303,7 +6248,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "CONSUL",
   "skillsWithCommonParents": [],
@@ -6450,9 +6395,9 @@
     "REST",
     "HTTP SERVER",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
-  "skill": "EXPRESS",
+  "skill": "EXPRESSJS",
   "skillsWithCommonParents": [],
   "synonym": [
     {
@@ -6460,9 +6405,6 @@
     },
     {
       "skill": "EXPRESS-JS"
-    },
-    {
-      "skill": "EXPRESSJS"
     },
     {
       "skill": "EXPRESS JS"
@@ -6666,7 +6608,7 @@
   "parent": [
     "REST",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "HATEOAS",
   "skillsWithCommonParents": [],
@@ -6760,7 +6702,7 @@
   "mirror": "",
   "parent": [
     "AUTENTICATION",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "IAM",
   "skillsWithCommonParents": [],
@@ -6779,11 +6721,11 @@
     "PERFORMANCEIDE",
     "PERFORMANCEQA",
     "IDE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "INSOMNIA",
   "skillsWithCommonParents": [],
@@ -7035,7 +6977,7 @@
   "mirror": "",
   "parent": [
     "MENSAGERIA",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "KAFKA",
   "skillsWithCommonParents": [],
@@ -7089,7 +7031,7 @@
 }, {
   "childrenCount": 1,
   "directParent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -7097,7 +7039,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "MICROMETER",
   "skillsWithCommonParents": [],
@@ -7155,7 +7097,7 @@
     "HTTP SERVER",
     "JVM",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "NETFLIX DGS",
   "skillsWithCommonParents": [],
@@ -7185,7 +7127,7 @@
   "mirror": "",
   "parent": [
     "AUTENTICATION",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "OAUTH",
   "skillsWithCommonParents": [],
@@ -7216,7 +7158,7 @@
   "parent": [
     "REST",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "ODATA",
   "skillsWithCommonParents": [],
@@ -7365,11 +7307,11 @@
     "PERFORMANCEIDE",
     "PERFORMANCEQA",
     "IDE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "POSTMAN",
   "skillsWithCommonParents": [],
@@ -7424,7 +7366,7 @@
     "SQL",
     "DATABASE",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "R2DBC",
   "skillsWithCommonParents": [],
@@ -7465,10 +7407,10 @@
   "parent": [
     "CACHE",
     "DATABASE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "REDIS",
   "skillsWithCommonParents": [],
@@ -7558,7 +7500,7 @@
   "parent": [
     "XML",
     "SSO",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "SAML",
   "skillsWithCommonParents": [],
@@ -7761,7 +7703,7 @@
   "parent": [
     "REST",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "WEBCLIENT",
   "skillsWithCommonParents": [],
@@ -7782,7 +7724,7 @@
 }, {
   "childrenCount": 1,
   "directParent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -7790,7 +7732,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "ZIPKIN",
   "skillsWithCommonParents": [],
@@ -7810,16 +7752,13 @@
     "JAVA",
     "MENSAGERIA",
     "JVM",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "ACTIVEMQ",
   "skillsWithCommonParents": [],
   "synonym": [
     {
       "skill": "ACTIVE-MQ"
-    },
-    {
-      "skill": "ACTIVE"
     },
     {
       "skill": "ACTIVE.MQ"
@@ -7956,7 +7895,7 @@
     "REST",
     "HTTP SERVER",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "ADONISJS",
   "skillsWithCommonParents": [],
@@ -8167,7 +8106,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "DOCUMENTATION"
+    "DOCUMENTATION123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -8175,7 +8114,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "DOCUMENTATION"
+    "DOCUMENTATION123"
   ],
   "skill": "ALM",
   "skillsWithCommonParents": [],
@@ -8287,11 +8226,11 @@
   "mirror": "",
   "parent": [
     "PERFORMANCEQA",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "APACHEAB",
   "skillsWithCommonParents": [],
@@ -8345,9 +8284,9 @@
     "REST",
     "IAM",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "AUTENTICATION",
-    "SECURITY",
+    "SECURITY123",
     "GATEWAY",
     "CLOUD"
   ],
@@ -8382,10 +8321,10 @@
     "APOLLO",
     "CACHE",
     "DATABASE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "APOLLO CACHE CONTROL",
   "skillsWithCommonParents": [],
@@ -8559,7 +8498,7 @@
     "REST",
     "HTTP SERVER",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "APOLLO SERVER",
   "skillsWithCommonParents": [],
@@ -8593,11 +8532,11 @@
     "PERFORMANCEIDE",
     "PERFORMANCEQA",
     "IDE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "APOLLO STUDIO",
   "skillsWithCommonParents": [],
@@ -8649,7 +8588,7 @@
   "childrenCount": 0,
   "directParent": [
     "CISCO",
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -8658,7 +8597,7 @@
   "mirror": "",
   "parent": [
     "CISCO",
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "APPDYNAMICS",
   "skillsWithCommonParents": [],
@@ -8818,7 +8757,8 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "AOP"
+    "AOP",
+    "JAVA"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -8826,7 +8766,9 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "AOP"
+    "AOP",
+    "JAVA",
+    "JVM"
   ],
   "skill": "ASPECTJ",
   "skillsWithCommonParents": [],
@@ -9167,7 +9109,7 @@
     "SOAP",
     "JAVA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "AXIS",
@@ -9581,11 +9523,11 @@
   "mirror": "",
   "parent": [
     "PERFORMANCEQA",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "BLAZEMETER",
   "skillsWithCommonParents": [],
@@ -9737,7 +9679,7 @@
   "parent": [
     "SOA",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "BPEL",
   "skillsWithCommonParents": [],
@@ -9755,7 +9697,7 @@
   "parent": [
     "SOA",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "BPM",
   "skillsWithCommonParents": [],
@@ -9844,8 +9786,8 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "DOCUMENTATION",
-    "MONITOR"
+    "DOCUMENTATION123",
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -9853,8 +9795,8 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "DOCUMENTATION",
-    "MONITOR"
+    "DOCUMENTATION123",
+    "MONITOR123"
   ],
   "skill": "BUGZILLA",
   "skillsWithCommonParents": [],
@@ -9969,7 +9911,7 @@
   "parent": [
     "DEVSECOPS",
     "SECURITYTDD",
-    "SECURITY",
+    "SECURITY123",
     "TDD"
   ],
   "skill": "BURP SUITE",
@@ -10080,7 +10022,7 @@
     "JAVA",
     "SOA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "CAMEL",
@@ -10263,7 +10205,7 @@
   "parent": [
     "DEVSECOPS",
     "SECURITYTDD",
-    "SECURITY",
+    "SECURITY123",
     "TDD"
   ],
   "skill": "CHECKMARX",
@@ -10331,7 +10273,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -10339,7 +10281,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "CISSP",
   "skillsWithCommonParents": [],
@@ -10348,7 +10290,7 @@
   "childrenCount": 0,
   "directParent": [
     "VIRTUALIZATION",
-    "SECURITY",
+    "SECURITY123",
     "HTTP SERVER"
   ],
   "hasMirror": false,
@@ -10358,7 +10300,7 @@
   "mirror": "",
   "parent": [
     "VIRTUALIZATION",
-    "SECURITY",
+    "SECURITY123",
     "HTTP SERVER"
   ],
   "skill": "CITRIX",
@@ -10486,7 +10428,7 @@
     "SQL",
     "DATABASE",
     "PYTHON",
-    "MONITOR",
+    "MONITOR123",
     "DEVOPS",
     "BACKEND",
     "DEPLOY"
@@ -10893,7 +10835,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "DOCUMENTATION"
+    "DOCUMENTATION123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -10901,7 +10843,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "DOCUMENTATION"
+    "DOCUMENTATION123"
   ],
   "skill": "CONFLUENCE",
   "skillsWithCommonParents": [],
@@ -10909,7 +10851,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "REACT"
+    "REACTJS"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -10917,7 +10859,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "REACT",
+    "REACTJS",
     "SPA",
     "AJAX",
     "MVC",
@@ -11214,7 +11156,7 @@
     "REST",
     "JAVA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "CXF",
@@ -11340,7 +11282,7 @@
   "mirror": "",
   "parent": [
     "CLOUDMONITOR",
-    "MONITOR",
+    "MONITOR123",
     "CLOUD"
   ],
   "skill": "DATADOG",
@@ -11686,7 +11628,7 @@
   "parent": [
     "GRAPHQLSECURITY",
     "GRAPHQL",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "DEPH LIMIT",
   "skillsWithCommonParents": [],
@@ -11872,30 +11814,6 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "FRONTEND"
-  ],
-  "hasMirror": false,
-  "hasNoParent": false,
-  "hasRepeatedParent": false,
-  "hasSkillsWithCommonParentsSize": false,
-  "mirror": "",
-  "parent": [
-    "FRONTEND",
-    "CSS",
-    "HTML",
-    "JAVASCRIPT",
-    "XML"
-  ],
-  "skill": "DOM",
-  "skillsWithCommonParents": [],
-  "synonym": [
-    {
-      "skill": "DOCUMENT OBJECT MODEL"
-    }
-  ]
-}, {
-  "childrenCount": 0,
-  "directParent": [
     "CMSJAVA"
   ],
   "hasMirror": false,
@@ -11986,7 +11904,7 @@
     "REST",
     "JAVA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "DROPWIZARD",
@@ -12071,7 +11989,7 @@
   "mirror": "",
   "parent": [
     "CLOUDMONITOR",
-    "MONITOR",
+    "MONITOR123",
     "CLOUD"
   ],
   "skill": "DYNATRACE",
@@ -12262,7 +12180,7 @@
   "mirror": "",
   "parent": [
     "RMI",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JAVAEE",
     "JAVA SERVER",
     "JAVA",
@@ -12476,7 +12394,7 @@
   "childrenCount": 0,
   "directParent": [
     "TDD",
-    "REACT"
+    "REACTJS"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -12485,7 +12403,7 @@
   "mirror": "",
   "parent": [
     "TDD",
-    "REACT",
+    "REACTJS",
     "SPA",
     "AJAX",
     "MVC",
@@ -12687,7 +12605,7 @@
   "childrenCount": 0,
   "directParent": [
     "GRAPHQL",
-    "EXPRESS"
+    "EXPRESSJS"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -12696,13 +12614,13 @@
   "mirror": "",
   "parent": [
     "GRAPHQL",
-    "EXPRESS",
+    "EXPRESSJS",
     "NODE",
     "JAVASCRIPT",
     "REST",
     "HTTP SERVER",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "EXPRESS GRAPHQL",
   "skillsWithCommonParents": [],
@@ -12883,7 +12801,7 @@
     "REST",
     "HTTP SERVER",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "FASTIFY",
   "skillsWithCommonParents": [],
@@ -13221,7 +13139,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -13229,7 +13147,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "FORTIFY",
   "skillsWithCommonParents": [],
@@ -13237,7 +13155,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -13245,7 +13163,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "FORTINET",
   "skillsWithCommonParents": [],
@@ -13325,11 +13243,11 @@
   "mirror": "",
   "parent": [
     "PERFORMANCEQA",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "GATLING",
   "skillsWithCommonParents": [],
@@ -13350,7 +13268,7 @@
     "REST",
     "HTTP SERVER",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "GATSBY",
   "skillsWithCommonParents": [],
@@ -13683,7 +13601,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -13691,7 +13609,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "GRAFANA",
   "skillsWithCommonParents": [],
@@ -13753,11 +13671,11 @@
     "GRAPHQL",
     "PERFORMANCEQA",
     "IDE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "GRAPHIQL",
   "skillsWithCommonParents": [],
@@ -13907,11 +13825,11 @@
     "GRAPHQL",
     "PERFORMANCEQA",
     "IDE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "GRAPHQL INSPECTOR",
   "skillsWithCommonParents": [],
@@ -13976,11 +13894,11 @@
     "GRAPHQL",
     "PERFORMANCEQA",
     "IDE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "GRAPHQL PLAYGROUND",
   "skillsWithCommonParents": [],
@@ -14044,14 +13962,14 @@
   "parent": [
     "AUTENTICATION",
     "GRAPHQLNODE",
-    "SECURITY",
+    "SECURITY123",
     "GRAPHQL",
     "NODE",
     "JAVASCRIPT",
     "REST",
     "HTTP SERVER",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "GRAPHQL SHIELD",
   "skillsWithCommonParents": [],
@@ -14087,7 +14005,7 @@
     "REST",
     "HTTP SERVER",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "GRAPHQL YOGA",
   "skillsWithCommonParents": [],
@@ -14197,7 +14115,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -14205,7 +14123,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "GRAYLOG",
   "skillsWithCommonParents": [],
@@ -14274,7 +14192,7 @@
     "REST",
     "JAVA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "GRIZZLY",
@@ -14302,7 +14220,7 @@
   "mirror": "",
   "parent": [
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "GRPC",
   "skillsWithCommonParents": [],
@@ -14960,11 +14878,11 @@
     "PERFORMANCEMOCK",
     "PERFORMANCEQA",
     "MOCK",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "HOVERFLY",
   "skillsWithCommonParents": [],
@@ -14994,11 +14912,11 @@
   "mirror": "",
   "parent": [
     "PERFORMANCEQA",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "HTTPIE",
   "skillsWithCommonParents": [],
@@ -15202,7 +15120,7 @@
   "parent": [
     "SOA",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "IBM BROKER",
   "skillsWithCommonParents": [],
@@ -15461,11 +15379,11 @@
     "PERFORMANCEIDE",
     "PERFORMANCEQA",
     "IDE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "INSOMNIA GRAPHQL",
   "skillsWithCommonParents": [],
@@ -15899,7 +15817,7 @@
     "SOAP",
     "JAVA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "JAXB",
@@ -16079,7 +15997,7 @@
     "REST",
     "JAVA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "JERSEY",
@@ -16154,11 +16072,11 @@
   "mirror": "",
   "parent": [
     "PERFORMANCEQA",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "JMETER",
   "skillsWithCommonParents": [],
@@ -16346,7 +16264,7 @@
   "mirror": "",
   "parent": [
     "AUTENTICATION",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "JWT",
   "skillsWithCommonParents": [],
@@ -16386,11 +16304,11 @@
   "mirror": "",
   "parent": [
     "PERFORMANCEQA",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "K6",
   "skillsWithCommonParents": [],
@@ -16431,7 +16349,7 @@
     "BDD",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "KARATE DSL",
   "skillsWithCommonParents": [],
@@ -16494,7 +16412,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -16502,7 +16420,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "KASPERSKY",
   "skillsWithCommonParents": [],
@@ -16558,7 +16476,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -16566,7 +16484,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "KERBEROS",
   "skillsWithCommonParents": [],
@@ -16574,7 +16492,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -16582,7 +16500,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "KEYCLOAK",
   "skillsWithCommonParents": [],
@@ -16901,6 +16819,31 @@
 }, {
   "childrenCount": 0,
   "directParent": [
+    "MACHINELEARNING"
+  ],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": [
+    "MACHINELEARNING",
+    "BIGDATA",
+    "NOSQL",
+    "SQLDATABASE",
+    "SQL",
+    "DATABASE"
+  ],
+  "skill": "LLM",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {
+      "skill": "LARGE LANGUAGE MODEL"
+    }
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": [
     "PERFORMANCEQA"
   ],
   "hasMirror": false,
@@ -16910,11 +16853,11 @@
   "mirror": "",
   "parent": [
     "PERFORMANCEQA",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "LOADRUNNER",
   "skillsWithCommonParents": [],
@@ -16997,11 +16940,11 @@
   "mirror": "",
   "parent": [
     "PERFORMANCEQA",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "LOCUST",
   "skillsWithCommonParents": [],
@@ -17010,7 +16953,7 @@
   "childrenCount": 0,
   "directParent": [
     "ELASTICSEARCH",
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -17019,7 +16962,7 @@
   "mirror": "",
   "parent": [
     "ELASTICSEARCH",
-    "MONITOR",
+    "MONITOR123",
     "LUCENE",
     "NOSQLDATABASE",
     "FULLTEXT",
@@ -17129,7 +17072,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "DOCUMENTATION"
+    "DOCUMENTATION123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -17137,7 +17080,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "DOCUMENTATION"
+    "DOCUMENTATION123"
   ],
   "skill": "MANTIS",
   "skillsWithCommonParents": [],
@@ -17298,10 +17241,10 @@
     "CACHE",
     "GCP",
     "DATABASE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "WS",
     "TDD",
-    "INTEGRATION",
+    "INTEGRATION123",
     "CLOUD"
   ],
   "skill": "MEMCACHE",
@@ -17333,10 +17276,10 @@
   "parent": [
     "CACHE",
     "DATABASE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "MEMCACHED",
   "skillsWithCommonParents": [],
@@ -17400,7 +17343,7 @@
   "mirror": "",
   "parent": [
     "SECURITYTDD",
-    "SECURITY",
+    "SECURITY123",
     "TDD"
   ],
   "skill": "METASPLOIT",
@@ -17612,7 +17555,7 @@
     "REST",
     "HTTP SERVER",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "MOCHA",
   "skillsWithCommonParents": [],
@@ -17653,7 +17596,7 @@
     "REST",
     "HTTP SERVER",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "MOCK SERVICE WORKER",
   "skillsWithCommonParents": [],
@@ -17694,11 +17637,11 @@
     "PERFORMANCEMOCK",
     "PERFORMANCEQA",
     "MOCK",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "MOCKSERVER",
   "skillsWithCommonParents": [],
@@ -17750,11 +17693,11 @@
     "PERFORMANCEMOCK",
     "PERFORMANCEQA",
     "MOCK",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "MOUNTEBANK",
   "skillsWithCommonParents": [],
@@ -17784,7 +17727,7 @@
   "mirror": "",
   "parent": [
     "MENSAGERIA",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "MQSERIES",
   "skillsWithCommonParents": [],
@@ -17851,7 +17794,7 @@
     "JAVA",
     "SOA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "MULE",
@@ -18089,7 +18032,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -18097,7 +18040,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "NAGIOS",
   "skillsWithCommonParents": [],
@@ -18188,7 +18131,7 @@
     "REST",
     "HTTP SERVER",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "NESTJS",
   "skillsWithCommonParents": [],
@@ -18262,7 +18205,7 @@
     "HTTP SERVER",
     "JVM",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "NETFLIX DGS FEDERATION",
   "skillsWithCommonParents": [],
@@ -18314,7 +18257,7 @@
     "SOA",
     "ERP",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "NETWEAVER",
   "skillsWithCommonParents": [],
@@ -18344,11 +18287,11 @@
   "mirror": "",
   "parent": [
     "PERFORMANCEQA",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "NEWMAN",
   "skillsWithCommonParents": [],
@@ -18356,7 +18299,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "MONITOR",
+    "MONITOR123",
     "JAVA"
   ],
   "hasMirror": false,
@@ -18365,7 +18308,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR",
+    "MONITOR123",
     "JAVA",
     "JVM"
   ],
@@ -18548,7 +18491,7 @@
   "parent": [
     "DEVSECOPS",
     "SECURITYTDD",
-    "SECURITY",
+    "SECURITY123",
     "TDD"
   ],
   "skill": "NIKTO",
@@ -18812,7 +18755,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -18820,7 +18763,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "OFFICESCAN",
   "skillsWithCommonParents": [],
@@ -18892,7 +18835,7 @@
   "mirror": "",
   "parent": [
     "LDAP",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "OPENLDAP",
   "skillsWithCommonParents": [],
@@ -18925,7 +18868,7 @@
     "REST",
     "JAVA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "OPENLIBERTY",
@@ -19112,7 +19055,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "SECURITY",
+    "SECURITY123",
     "WS"
   ],
   "hasMirror": false,
@@ -19121,9 +19064,9 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY",
+    "SECURITY123",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "OWASP",
   "skillsWithCommonParents": [],
@@ -19158,11 +19101,11 @@
     "PERFORMANCEMOCK",
     "PERFORMANCEQA",
     "MOCK",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "PACT",
   "skillsWithCommonParents": [],
@@ -19293,7 +19236,7 @@
   "mirror": "",
   "parent": [
     "SECURITYTDD",
-    "SECURITY",
+    "SECURITY123",
     "TDD"
   ],
   "skill": "PENTEST",
@@ -19327,12 +19270,12 @@
     "CACHE",
     "GRAPHQLSECURITY",
     "DATABASE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "WS",
     "TDD",
-    "INTEGRATION",
+    "INTEGRATION123",
     "GRAPHQL",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "PERSISTED QUERIES",
   "skillsWithCommonParents": [],
@@ -19353,7 +19296,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -19361,7 +19304,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "PFSENSE",
   "skillsWithCommonParents": [],
@@ -19842,11 +19785,11 @@
     "PERFORMANCEIDE",
     "PERFORMANCEQA",
     "IDE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "POSTMAN GRAPHQL",
   "skillsWithCommonParents": [],
@@ -20147,9 +20090,6 @@
       "skill": "PRIMEFACE"
     },
     {
-      "skill": "PRIME"
-    },
-    {
       "skill": "FACES PRIME"
     },
     {
@@ -20205,7 +20145,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "REACT"
+    "REACTJS"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -20213,7 +20153,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "REACT",
+    "REACTJS",
     "SPA",
     "AJAX",
     "MVC",
@@ -20248,7 +20188,7 @@
     "SQL",
     "DATABASE"
   ],
-  "skill": "PRISMA",
+  "skill": "PRISMAJS",
   "skillsWithCommonParents": [],
   "synonym": [
     {
@@ -20256,9 +20196,6 @@
     },
     {
       "skill": "PRISMA-JS"
-    },
-    {
-      "skill": "PRISMAJS"
     },
     {
       "skill": "JS PRISMA"
@@ -20303,7 +20240,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -20311,7 +20248,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "PROMETHEUS",
   "skillsWithCommonParents": [],
@@ -20410,7 +20347,7 @@
   "parent": [
     "MENSAGERIA",
     "GCP",
-    "INTEGRATION",
+    "INTEGRATION123",
     "CLOUD"
   ],
   "skill": "PUBSUB",
@@ -20421,6 +20358,9 @@
     },
     {
       "skill": "PUB.SUB"
+    },
+    {
+      "skill": "PUB/SUB"
     },
     {
       "skill": "PUB SUB"
@@ -20769,7 +20709,7 @@
     "JAVA",
     "MENSAGERIA",
     "JVM",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "RABBITMQ",
   "skillsWithCommonParents": [],
@@ -20884,7 +20824,7 @@
     "SAP",
     "ERP",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "RAP",
   "skillsWithCommonParents": [],
@@ -20924,7 +20864,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "REACT",
+    "REACTJS",
     "MOBILE"
   ],
   "hasMirror": false,
@@ -20933,7 +20873,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "REACT",
+    "REACTJS",
     "MOBILE",
     "SPA",
     "AJAX",
@@ -20951,9 +20891,6 @@
       "skill": "REACT NATIVE"
     },
     {
-      "skill": "EXPO"
-    },
-    {
       "skill": "REACT.NATIVE"
     },
     {
@@ -20966,7 +20903,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -20974,7 +20911,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "READMINE",
   "skillsWithCommonParents": [],
@@ -21004,11 +20941,11 @@
   "mirror": "",
   "parent": [
     "PERFORMANCEQA",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "READYAPI",
   "skillsWithCommonParents": [],
@@ -21051,7 +20988,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "DOCUMENTATION"
+    "DOCUMENTATION123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -21059,7 +20996,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "DOCUMENTATION"
+    "DOCUMENTATION123"
   ],
   "skill": "REDMINE",
   "skillsWithCommonParents": [],
@@ -21179,8 +21116,25 @@
 }, {
   "childrenCount": 0,
   "directParent": [
+    "JAVA"
+  ],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": [
+    "JAVA",
+    "JVM"
+  ],
+  "skill": "REFLECTION",
+  "skillsWithCommonParents": [],
+  "synonym": []
+}, {
+  "childrenCount": 0,
+  "directParent": [
     "GRAPHQL",
-    "REACT"
+    "REACTJS"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -21189,7 +21143,7 @@
   "mirror": "",
   "parent": [
     "GRAPHQL",
-    "REACT",
+    "REACTJS",
     "SPA",
     "AJAX",
     "MVC",
@@ -21205,7 +21159,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "DOCUMENTATION"
+    "DOCUMENTATION123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -21213,7 +21167,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "DOCUMENTATION"
+    "DOCUMENTATION123"
   ],
   "skill": "REMEDY",
   "skillsWithCommonParents": [],
@@ -21230,11 +21184,11 @@
   "mirror": "",
   "parent": [
     "PERFORMANCEQA",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "RESTASSURED",
   "skillsWithCommonParents": [],
@@ -21267,7 +21221,7 @@
     "REST",
     "JAVA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "RESTEASY",
@@ -21292,7 +21246,7 @@
     "REST",
     "JAVA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "RESTLET",
@@ -21729,7 +21683,7 @@
     "SAP",
     "AUTENTICATION",
     "ERP",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "SAP AUTHORIZATION CONCEPTS",
   "skillsWithCommonParents": [],
@@ -21751,7 +21705,7 @@
     "ERP",
     "REST",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SAP BAP",
   "skillsWithCommonParents": [],
@@ -22431,7 +22385,7 @@
     "SAP",
     "WS",
     "ERP",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SAP INTEGRATION SUITE",
   "skillsWithCommonParents": [],
@@ -22993,7 +22947,7 @@
     "SAP",
     "AUTENTICATION",
     "ERP",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "SAP ROLES \u0026 PROFILES",
   "skillsWithCommonParents": [],
@@ -23232,7 +23186,7 @@
     "SAP",
     "SSO",
     "ERP",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "SAP SSO",
   "skillsWithCommonParents": [],
@@ -23330,7 +23284,7 @@
     "SAP",
     "AUTENTICATION",
     "ERP",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "SAP USER MANAGEMENT",
   "skillsWithCommonParents": [],
@@ -23426,7 +23380,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -23434,7 +23388,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "SCA",
   "skillsWithCommonParents": [],
@@ -23446,7 +23400,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -23454,7 +23408,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "SCADA",
   "skillsWithCommonParents": [],
@@ -23648,7 +23602,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -23656,7 +23610,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "SENTRY",
   "skillsWithCommonParents": [],
@@ -23832,7 +23786,7 @@
     "WEBSOCKET",
     "DOTNET",
     "BACKEND",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SIGNALR",
   "skillsWithCommonParents": [],
@@ -24037,7 +23991,7 @@
     "SOAP",
     "TDD",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SOAPUI",
   "skillsWithCommonParents": [],
@@ -24194,7 +24148,7 @@
     "DEVSECOPS",
     "SONAR",
     "SECURITYTDD",
-    "SECURITY",
+    "SECURITY123",
     "TDD",
     "DEVOPS",
     "DEPLOY"
@@ -24233,7 +24187,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -24241,7 +24195,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "SONICWALL",
   "skillsWithCommonParents": [],
@@ -24312,7 +24266,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -24320,7 +24274,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "SPLUNK",
   "skillsWithCommonParents": [],
@@ -24467,7 +24421,7 @@
     "SPRING SECURITY",
     "AUTENTICATION",
     "SPRING",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "SPRING AUTHORIZATION SERVER",
   "skillsWithCommonParents": [],
@@ -24567,7 +24521,7 @@
     "HTTP SERVER",
     "JVM",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRING BOOT TEST",
   "skillsWithCommonParents": [],
@@ -24642,7 +24596,7 @@
     "CONSUL",
     "SPRING",
     "CLOUD",
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "SPRING CLOUD CONSUL",
   "skillsWithCommonParents": [],
@@ -24814,7 +24768,7 @@
     "ZIPKIN",
     "SPRING",
     "CLOUD",
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "SPRING CLOUD ZIPKIN",
   "skillsWithCommonParents": [],
@@ -25013,7 +24967,7 @@
     "SQL",
     "DATABASE",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRING DATA R2DBC",
   "skillsWithCommonParents": [],
@@ -25035,10 +24989,10 @@
     "SPRING",
     "CACHE",
     "DATABASE",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRING DATA REDIS",
   "skillsWithCommonParents": [],
@@ -25059,7 +25013,7 @@
     "REST",
     "SPRING",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRING DATA REST",
   "skillsWithCommonParents": [],
@@ -25130,7 +25084,7 @@
     "HATEOAS",
     "REST",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRING HATEOAS",
   "skillsWithCommonParents": [],
@@ -25191,7 +25145,7 @@
   "parent": [
     "SPRING",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRING INTEGRATION",
   "skillsWithCommonParents": [],
@@ -25226,7 +25180,7 @@
     "JAVA",
     "MENSAGERIA",
     "JVM",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRING JMS",
   "skillsWithCommonParents": [],
@@ -25310,7 +25264,7 @@
     "SPRING",
     "KAFKA",
     "MENSAGERIA",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRING KAFKA",
   "skillsWithCommonParents": [],
@@ -25350,8 +25304,8 @@
     "HTTP SERVER",
     "JVM",
     "WS",
-    "INTEGRATION",
-    "MONITOR"
+    "INTEGRATION123",
+    "MONITOR123"
   ],
   "skill": "SPRING MICROMETER",
   "skillsWithCommonParents": [],
@@ -25420,9 +25374,9 @@
     "SPRING",
     "OPENAPI",
     "REST",
-    "DOCUMENTATION",
+    "DOCUMENTATION123",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRING OPENAPI",
   "skillsWithCommonParents": [],
@@ -25625,7 +25579,7 @@
   "parent": [
     "SPRING",
     "RMI",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JAVAEE",
     "JAVA SERVER",
     "JAVA",
@@ -25692,7 +25646,7 @@
     "SPRING SECURITY",
     "LDAP",
     "SPRING",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "SPRING SECURITY LDAP",
   "skillsWithCommonParents": [],
@@ -25713,7 +25667,7 @@
     "OAUTH",
     "SPRING",
     "AUTENTICATION",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "SPRING SECURITY OAUTH2",
   "skillsWithCommonParents": [],
@@ -25735,7 +25689,7 @@
     "SPRING",
     "XML",
     "SSO",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "SPRING SECURITY SAML",
   "skillsWithCommonParents": [],
@@ -25885,7 +25839,7 @@
     "WEBCLIENT",
     "REST",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRING WEBCLIENT",
   "skillsWithCommonParents": [],
@@ -25970,7 +25924,7 @@
     "SPRING",
     "SOAP",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRING WEBSERVICES",
   "skillsWithCommonParents": [],
@@ -26023,7 +25977,7 @@
   "parent": [
     "SPRING",
     "WEBSOCKET",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRING WEBSOCKET",
   "skillsWithCommonParents": [],
@@ -26111,7 +26065,7 @@
     "HTTP SERVER",
     "JVM",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRINGBOOT ACTUATOR",
   "skillsWithCommonParents": [],
@@ -26149,7 +26103,7 @@
     "HTTP SERVER",
     "JVM",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRINGBOOT ADMIN",
   "skillsWithCommonParents": [],
@@ -26187,7 +26141,7 @@
     "HTTP SERVER",
     "JVM",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRINGBOOT CLI",
   "skillsWithCommonParents": [],
@@ -26225,7 +26179,7 @@
     "HTTP SERVER",
     "JVM",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRINGBOOT DEVTOOLS",
   "skillsWithCommonParents": [],
@@ -26298,7 +26252,7 @@
     "HTTP SERVER",
     "JVM",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRINGBOOT TEST",
   "skillsWithCommonParents": [],
@@ -26336,7 +26290,7 @@
     "HTTP SERVER",
     "JVM",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRINGBOOTSTARTER",
   "skillsWithCommonParents": [],
@@ -26457,9 +26411,9 @@
   "parent": [
     "OPENAPI",
     "REST",
-    "DOCUMENTATION",
+    "DOCUMENTATION123",
     "WS",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SPRINGREST",
   "skillsWithCommonParents": [],
@@ -26635,7 +26589,7 @@
     "AWS",
     "MENSAGERIA",
     "CLOUD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "SQS",
   "skillsWithCommonParents": [],
@@ -27115,7 +27069,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -27123,7 +27077,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "SYMANTEC",
   "skillsWithCommonParents": [],
@@ -27175,7 +27129,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -27183,7 +27137,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "SYSLOG",
   "skillsWithCommonParents": [],
@@ -27226,7 +27180,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -27234,7 +27188,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "TACACS",
   "skillsWithCommonParents": [],
@@ -27603,6 +27557,9 @@
       "skill": "NG TEST"
     },
     {
+      "skill": "TESTE NG"
+    },
+    {
       "skill": "TEST NG"
     },
     {
@@ -27610,6 +27567,9 @@
     },
     {
       "skill": "TEST.NG"
+    },
+    {
+      "skill": "TESTENG"
     }
   ]
 }, {
@@ -28018,7 +27978,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "DOCUMENTATION",
+    "DOCUMENTATION123",
     "POO"
   ],
   "hasMirror": false,
@@ -28027,7 +27987,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "DOCUMENTATION",
+    "DOCUMENTATION123",
     "POO"
   ],
   "skill": "UML",
@@ -28786,6 +28746,9 @@
       "skill": "PHERE WEBS"
     },
     {
+      "skill": "WEB SPHERE"
+    },
+    {
       "skill": "WEBS-PHERE"
     }
   ]
@@ -28819,11 +28782,11 @@
     "PERFORMANCEMOCK",
     "PERFORMANCEQA",
     "MOCK",
-    "PERFORMANCE",
+    "PERFORMANCE123",
     "QA",
     "WS",
     "TDD",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "WIREMOCK",
   "skillsWithCommonParents": [],
@@ -28937,7 +28900,7 @@
     "DOTNET",
     "WS",
     "BACKEND",
-    "INTEGRATION"
+    "INTEGRATION123"
   ],
   "skill": "WPF",
   "skillsWithCommonParents": [],
@@ -28963,7 +28926,7 @@
     "SOAP",
     "JAVA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "WSDL",
@@ -28977,7 +28940,7 @@
   "childrenCount": 0,
   "directParent": [
     "JAXWS",
-    "SECURITY"
+    "SECURITY123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -28986,11 +28949,11 @@
   "mirror": "",
   "parent": [
     "JAXWS",
-    "SECURITY",
+    "SECURITY123",
     "SOAP",
     "JAVA",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "JVM"
   ],
   "skill": "WSIT",
@@ -29017,9 +28980,9 @@
     "REST",
     "IAM",
     "WS",
-    "INTEGRATION",
+    "INTEGRATION123",
     "AUTENTICATION",
-    "SECURITY"
+    "SECURITY123"
   ],
   "skill": "WSO2",
   "skillsWithCommonParents": [],
@@ -29284,7 +29247,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -29292,7 +29255,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "ZABBIX",
   "skillsWithCommonParents": [],
@@ -29371,7 +29334,7 @@
 }, {
   "childrenCount": 0,
   "directParent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "hasMirror": false,
   "hasNoParent": false,
@@ -29379,7 +29342,7 @@
   "hasSkillsWithCommonParentsSize": false,
   "mirror": "",
   "parent": [
-    "MONITOR"
+    "MONITOR123"
   ],
   "skill": "ZOOKEEPER",
   "skillsWithCommonParents": [],
