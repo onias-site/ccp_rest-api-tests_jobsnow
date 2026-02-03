@@ -74,8 +74,8 @@ public class CcpRandomTests {
 //		relatorioDeSkillsPesquisadas("Pub/Sub", "Scrum", "DDD", "UML", "Xpath", "Teste NG", "TesteNG");
 //		countWords(); 
 //		saveSkills();
-		relatoriosDasSkillsNosCurriculos();
-//		getSkillsFromText();
+//		relatoriosDasSkillsNosCurriculos();
+		getSkillsFromText();
 	}
 
 	static void apagarTodosOsAgrupamentosDeSkills() {
