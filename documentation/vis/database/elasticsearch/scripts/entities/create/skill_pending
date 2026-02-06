@@ -1,19 +1,28 @@
 {
-	"mappings": {
-		"dynamic": "strict",
-		"properties": {
-			"skill": {
-				"type": "keyword"
-			},
-			"synonym": {
-				"type": "keyword"
-			},
-			"prerequisite": {
-				"type": "keyword"
-			},
-			"ranking": {
-				"type": "integer"
-			}
-		}
-	}
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "date": {
+        "type": "text"
+      },
+      "email": {
+        "type": "keyword"
+      },
+      "parent": {
+        "type": "keyword"
+      },
+      "ranking": {
+        "type": "integer"
+      },
+      "skill": {
+        "type": "keyword"
+      },
+      "synonym": {
+        "type": "keyword"
+      },
+      "timestamp": {
+        "type": "long"
+      }
+    }
+  }
 }
