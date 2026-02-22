@@ -274,7 +274,7 @@ public class CcpRandomTests {
 				.map(x -> Arrays.asList(x.split(",")).stream()
 						.map(y -> y.trim().toUpperCase())
 						.filter(y -> y.length() > 1)
-						.filter(y -> y.length() < 35)
+						.filter(y -> y.length() < 50)
 						.collect(Collectors.toSet()))
 //				.map(x -> getOtherWords(x))
 				.collect(Collectors.toList());
@@ -507,7 +507,7 @@ public class CcpRandomTests {
 			for (String field : fields) {
 				List<String> list = json.getDynamicVersion().getAsStringList(field).stream()
 						.map(x -> new CcpStringDecorator(x).text().stripAccents().sanitize().getContent().toUpperCase().trim())
-						.filter(x -> x.length() > 2 && x.length() <= 35)
+						.filter(x -> x.length() > 2 && x.length() <= 50)
 						.filter(x -> false == existingWords.contains(x))
 						.collect(Collectors.toList());
 				
@@ -580,14 +580,14 @@ public class CcpRandomTests {
 				if(skill.trim().length() < 2) {
 					synonym = synonym.getDynamicVersion().removeField("skill");
 				}
-				if(skill.trim().length() > 35) {
+				if(skill.trim().length() > 50) {
 					synonym = synonym.getDynamicVersion().removeField("skill");
 				}
 				if(removidas.contains(skill)) {
 					synonym = synonym.getDynamicVersion().removeField("skill");
 				}
 				List<String> parent = synonym.getDynamicVersion().getAsStringList("parent").stream()
-						.filter(x -> x.length() > 2 && x.length() <= 35)
+						.filter(x -> x.length() > 2 && x.length() <= 50)
 						.filter(x -> false == removidas.contains(x))
 						.collect(Collectors.toList());
 				
@@ -596,7 +596,7 @@ public class CcpRandomTests {
 				{
 					List<CcpJsonRepresentation> collect = synonym.getDynamicVersion().getAsJsonList("synonym").stream().filter(x -> {
 						String word = x.getDynamicVersion().getAsString("skill");
-						return word.length() > 2 && word.length() <= 35 && false == removidas.contains(word) && false == skill.equals(word);
+						return word.length() > 2 && word.length() <= 50 && false == removidas.contains(word) && false == skill.equals(word);
 					}).collect(Collectors.toList());
 					
 					synonym = synonym.getDynamicVersion().put("synonym", collect);
@@ -604,7 +604,7 @@ public class CcpRandomTests {
 				{
 					List<CcpJsonRepresentation> collect = synonym.getDynamicVersion().getAsJsonList("preRequisite").stream().filter(x -> {
 						String word = x.getDynamicVersion().getAsString("word");
-						return word.length() > 2 && word.length() <= 35 && false == removidas.contains(word);
+						return word.length() > 2 && word.length() <= 50 && false == removidas.contains(word);
 					}).collect(Collectors.toList());
 					
 					synonym = synonym.getDynamicVersion().put("preRequisite", collect);
@@ -612,7 +612,7 @@ public class CcpRandomTests {
 				{
 					List<CcpJsonRepresentation> collect = synonym.getDynamicVersion().getAsJsonList("similar").stream().filter(x -> {
 						String word = x.getDynamicVersion().getAsString("word").replace("_", " ");
-						return word.length() > 2 && word.length() <= 35 && false == removidas.contains(word);
+						return word.length() > 2 && word.length() <= 50 && false == removidas.contains(word);
 					}).collect(Collectors.toList());
 					
 					synonym = synonym.getDynamicVersion().put("similar", collect);

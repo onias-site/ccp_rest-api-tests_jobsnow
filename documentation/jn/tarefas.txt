@@ -1,5 +1,15 @@
-A) Olhar 200 curriculos
-B) Investigar sinonimos repetidos
+A) Ligar endpoint das skills
+B) Ligar endpoint da hierarquia
+C) Template de e-mail da hierarquia pendente
+D) Template de e-mail da hierarquia rejeitada
+E) Template de e-mail da hierarquia aprovada 
+F) Template de e-mail da skill pendente
+G) Template de e-mail da skill rejeitada
+H) Template de e-mail da skill aprovada 
+I) Notificação para suporte de hierarquia pendente
+J) Notificação para suporte de skill pendente
+
+
 
 Passos para liberar endpoints de curriculos na nuvem
 A) Gravar todos os curriculos localmente

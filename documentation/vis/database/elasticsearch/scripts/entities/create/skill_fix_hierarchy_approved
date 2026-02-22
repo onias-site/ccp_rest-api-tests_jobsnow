@@ -5,24 +5,16 @@
       "date": {
         "type": "text"
       },
+      "description": {
+        "type": "text"
+      },
       "email": {
         "type": "keyword"
       },
       "explanation": {
         "type": "text"
       },
-      "parent": {
-        "type": "keyword"
-      },
-      "ranking": {
-        "type": "integer"
-      },
-      "skill": {
-        "type": "keyword"
-      },
-      "synonym": {
-        "type": "keyword"
-      },
+      
       "timestamp": {
         "type": "long"
       }
