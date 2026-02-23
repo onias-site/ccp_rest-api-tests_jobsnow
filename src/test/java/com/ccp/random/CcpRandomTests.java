@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.ccp.constantes.CcpOtherConstants;
@@ -67,15 +68,21 @@ import com.vis.services.VisServiceSkills;
 public class CcpRandomTests {
 
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
+	private static final String LINKEDIN_REGEX = "^https://(www\\.)?linkedin\\.com/in/[a-zA-Z0-9-_%]+/?$";
+
+	public static boolean isValidLinkedInUrl(String url) {
+		return Pattern.matches(LINKEDIN_REGEX, url);
+	}
 
 	public static void main(String[] args) {
-		
+		boolean validLinkedInUrl = isValidLinkedInUrl("https://www.linkedin.com/in/elvinratzat/");
+		System.out.println(validLinkedInUrl );
 //		relatorioDeSkillsPesquisadas("DOCUMENTACOES", "DOCUMENTATIONS", "DOCUMENTACAO", "DOCUMENTATION");
 //		relatorioDeSkillsPesquisadas("Pub/Sub", "Scrum", "DDD", "UML", "Xpath", "Teste NG", "TesteNG");
 //		countWords(); 
 //		saveSkills();
 //		relatoriosDasSkillsNosCurriculos();
-		getSkillsFromText();
+//		getSkillsFromText();
 	}
 
 	static void apagarTodosOsAgrupamentosDeSkills() {
