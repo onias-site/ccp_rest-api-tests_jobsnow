@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpCollectionDecorator;
+import com.ccp.decorators.CcpEmailDecorator;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpFolderDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
@@ -75,8 +76,8 @@ public class CcpRandomTests {
 	}
 
 	public static void main(String[] args) {
-		boolean validLinkedInUrl = isValidLinkedInUrl("https://www.linkedin.com/in/elvinratzat/");
-		System.out.println(validLinkedInUrl );
+
+		System.out.println("devs.jobsnow@gmail.com".matches(CcpEmailDecorator.EMAIL_REGEX));
 //		relatorioDeSkillsPesquisadas("DOCUMENTACOES", "DOCUMENTATIONS", "DOCUMENTACAO", "DOCUMENTATION");
 //		relatorioDeSkillsPesquisadas("Pub/Sub", "Scrum", "DDD", "UML", "Xpath", "Teste NG", "TesteNG");
 //		countWords(); 
