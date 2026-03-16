@@ -8,8 +8,17 @@ G) Template de e-mail da skill rejeitada
 H) Template de e-mail da skill aprovada 
 I) Notificação para suporte de hierarquia pendente
 J) Notificação para suporte de skill pendente
-
-
+--K) Salvar token no navegador
+--L) Pegar token no navegador
+M) Template de reenvio de token
+N) Template de desbloqueio de token
+O) Endpoint de reenvio de token
+P) Endpoint de desbloqueio de token
+--Q) Tela da senha
+R) Implementação de JWT
+S) Implementação do logout
+T) Implementação da troca de senha
+U) Implementação do desbloqueio de token
 
 Passos para liberar endpoints de curriculos na nuvem
 A) Gravar todos os curriculos localmente
