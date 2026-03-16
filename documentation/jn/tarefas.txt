@@ -16,9 +16,11 @@ O) Endpoint de reenvio de token
 P) Endpoint de desbloqueio de token
 --Q) Tela da senha
 R) Implementação de JWT
-S) Implementação do logout
-T) Implementação da troca de senha
+--S) Implementação do logout
+--T) Implementação da troca de senha
 U) Implementação do desbloqueio de token
+V) Tratamento da senha bloqueada
+W) Consertar autenticação
 
 Passos para liberar endpoints de curriculos na nuvem
 A) Gravar todos os curriculos localmente
