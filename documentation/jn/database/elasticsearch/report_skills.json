@@ -2877,9 +2877,6 @@
       "skill": "DEEP-LEARNING"
     },
     {
-      "skill": "IA"
-    },
-    {
       "skill": "ARTIFICIAL-INTELIGENCE"
     },
     {
@@ -4352,7 +4349,11 @@
   ],
   "skill": "ABAP",
   "skillsWithCommonParents": [],
-  "synonym": []
+  "synonym": [
+    {
+      "skill": "ADVANCED BUSINESS APPLICATION PROGRAMMING"
+    }
+  ]
 }, {
   "childrenCount": 2,
   "directParent": [
@@ -7631,7 +7632,11 @@
   "parent": [],
   "skill": "STOMP",
   "skillsWithCommonParents": [],
-  "synonym": []
+  "synonym": [
+    {
+      "skill": "SIMPLE TEXT ORIENTED MESSAGING PROTOCOL"
+    }
+  ]
 }, {
   "childrenCount": 1,
   "directParent": [
@@ -7812,6 +7817,9 @@
   "synonym": [
     {
       "skill": "APPLICATION DEVELOPMENT FRAMEWORK"
+    },
+    {
+      "skill": "ORACLE APPLICATION DEVELOPMENT FRAMEWORK"
     }
   ]
 }, {
@@ -8172,6 +8180,9 @@
   "synonym": [
     {
       "skill": "ABAP MANAGEMENT DATABASE PROCEDURE"
+    },
+    {
+      "skill": "ABAP MANAGEMENT DATABASE PROCEDURES"
     }
   ]
 }, {
@@ -9683,7 +9694,11 @@
   ],
   "skill": "BPEL",
   "skillsWithCommonParents": [],
-  "synonym": []
+  "synonym": [
+    {
+      "skill": "BUSINESS PROCESS EXECUTION LANGUAGE"
+    }
+  ]
 }, {
   "childrenCount": 0,
   "directParent": [
@@ -9706,6 +9721,9 @@
       "skill": "BPMN"
     },
     {
+      "skill": "BUSINESS PROCESS MODEL AND NOTATION"
+    },
+    {
       "skill": "BIZAGE"
     },
     {
@@ -9719,6 +9737,9 @@
     },
     {
       "skill": "BPMS"
+    },
+    {
+      "skill": "BUSINESS PROCESS MANAGEMENT SOFTWARE"
     },
     {
       "skill": "BIZAGI"
@@ -10124,7 +10145,11 @@
   ],
   "skill": "CCNP",
   "skillsWithCommonParents": [],
-  "synonym": []
+  "synonym": [
+    {
+      "skill": "CISCCO CERTIFIED NETWORK PROFESSIONAL"
+    }
+  ]
 }, {
   "childrenCount": 0,
   "directParent": [
@@ -10269,7 +10294,11 @@
   ],
   "skill": "CICS",
   "skillsWithCommonParents": [],
-  "synonym": []
+  "synonym": [
+    {
+      "skill": "CUSTOMER INFORMATION CONTROL SYSTEM"
+    }
+  ]
 }, {
   "childrenCount": 0,
   "directParent": [
@@ -21892,6 +21921,9 @@
       "skill": "SAP-CAP"
     },
     {
+      "skill": "SAP CLOUD APPLICATION PROGRAMMING MODEL"
+    },
+    {
       "skill": "SAPCAP"
     },
     {
@@ -22625,6 +22657,9 @@
   "skill": "SAP MII",
   "skillsWithCommonParents": [],
   "synonym": [
+    {
+      "skill": "SAP MANUFACTURING INTEGRATION \u0026 INTELLIGENCE"
+    },
     {
       "skill": "SAPMII"
     },

@@ -86,7 +86,6 @@ public class TelaQuePedeSenhaParaEntrarNoSistema extends JnTemplateDeTestes{
 		JnEntityLoginSessionConflict.ENTITY.delete(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.wrongPassword, x -> VariaveisParaTeste.WRONG_PASSWORD);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.wrongPassword, x -> VariaveisParaTeste.WRONG_PASSWORD);
-		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.wrongPassword, x -> VariaveisParaTeste.WRONG_PASSWORD);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.passwordLockedRecently, x -> VariaveisParaTeste.WRONG_PASSWORD);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.lockedPassword, x -> VariaveisParaTeste.WRONG_PASSWORD);
 		new CcpTimeDecorator().sleep(10_000);
@@ -113,7 +112,7 @@ public class TelaQuePedeSenhaParaEntrarNoSistema extends JnTemplateDeTestes{
 		new CcpTimeDecorator().sleep(10000);
 		JnEntityLoginSessionConflict.ENTITY.delete(variaveisParaTeste.REQUEST_TO_LOGIN);
 		
-		for(int k = 1; k <= 3; k++) {
+		for(int k = 1; k <= 2; k++) {
 			this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.wrongPassword, x -> VariaveisParaTeste.WRONG_PASSWORD);
 		}
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.passwordLockedRecently, x -> VariaveisParaTeste.WRONG_PASSWORD);

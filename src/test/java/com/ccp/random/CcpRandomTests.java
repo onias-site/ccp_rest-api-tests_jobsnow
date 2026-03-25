@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpCollectionDecorator;
-import com.ccp.decorators.CcpEmailDecorator;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpFolderDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
@@ -77,10 +76,24 @@ public class CcpRandomTests {
 
 	public static void main(String[] args) {
 
-		System.out.println("devs.jobsnow@gmail.com".matches(CcpEmailDecorator.EMAIL_REGEX));
-//		relatorioDeSkillsPesquisadas("DOCUMENTACOES", "DOCUMENTATIONS", "DOCUMENTACAO", "DOCUMENTATION");
-//		relatorioDeSkillsPesquisadas("Pub/Sub", "Scrum", "DDD", "UML", "Xpath", "Teste NG", "TesteNG");
-//		countWords(); 
+		CcpJsonRepresentation json = new CcpJsonRepresentation("{\r\n"
+				+ "  \"email\": \"onias85@gmail.com\",\r\n"
+				+ "  \"ip\": \"127.0.0.1\",\r\n"
+				+ "  \"token\": \"PQ3TLRXC\",\r\n"
+				+ "  \"userAgent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36\"\r\n"
+				+ "}")
+				;
+		 
+		JnEntityLoginSessionValidation.ENTITY.save(json);
+		boolean exists = JnEntityLoginSessionValidation.ENTITY.exists(json);
+		System.out.println(exists);
+		
+		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class); 
+
+		CcpSelectUnionAll unionAll = crud.unionAll(json, JnDeleteKeysFromCache.INSTANCE, JnEntityLoginSessionValidation.ENTITY);
+		boolean presentInThisUnionAll = JnEntityLoginSessionValidation.ENTITY.isPresentInThisUnionAll(unionAll, json);
+		System.out.println(presentInThisUnionAll);
+		//		countWords(); 
 //		saveSkills();
 //		relatoriosDasSkillsNosCurriculos();
 //		getSkillsFromText();

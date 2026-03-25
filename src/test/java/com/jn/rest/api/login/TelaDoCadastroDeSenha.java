@@ -69,6 +69,13 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 		this.execute(variaveisParaTeste,JnProcessStatusUpdatePassword.expectedStatus, x -> token);
 	}
 
+	public static void main(String[] args) {
+		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
+		CcpEntity mirrorEntity = JnEntityLoginToken.ENTITY.getTwinEntity();
+		mirrorEntity.save(variaveisParaTeste.REQUEST_TO_LOGIN);
+		
+	}
+	
 	private String getToken(VariaveisParaTeste variaveisParaTeste) {
 		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 
@@ -92,7 +99,7 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 	public void tokenRecemBloqueado() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		String token = this.getToken(variaveisParaTeste);
-		for(int k = 1; k <= 3; k++) {
+		for(int k = 1; k <= 2; k++) {
 			this.execute(variaveisParaTeste, JnProcessStatusUpdatePassword.wrongToken, x -> "abcdefgh");
 		}
 		this.execute(variaveisParaTeste, JnProcessStatusUpdatePassword.tokenLockedRecently, x -> "abcdefgh");
