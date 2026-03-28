@@ -7,18 +7,6 @@
             },
             "token": {
                 "type": "text"
-            },
-            "coordinates": {
-                "type": "text"
-            },
-            "ip": {
-                "type": "text"
-            },
-            "macAddress": {
-                "type": "text"
-            },
-            "userAgent": {
-                "type": "keyword"
             }
         }
     }

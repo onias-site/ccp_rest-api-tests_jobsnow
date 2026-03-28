@@ -34,6 +34,7 @@ import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginPasswordAttempts;
 import com.jn.entities.JnEntityLoginSessionConflict;
+import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.entities.JnEntityLoginTokenAttempts;
 import com.jn.status.login.JnProcessStatusCreateLoginEmail;
@@ -230,9 +231,9 @@ public abstract class VisTemplateDeTestes {
 	protected final CcpJsonRepresentation getSessionValuesToTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnEntityLoginToken.Fields.email, "onias85@gmail.com")
-				.put(JnEntityLoginToken.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
+				.put(JnEntityLoginSessionValidation.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
+				.put(JnEntityLoginSessionValidation.Fields.ip, "127.0.0.1")
 				.put(JsonFieldNames.language, "portuguese")
-				.put(JnEntityLoginToken.Fields.ip, "127.0.0.1")
 				;
 
 		return json;

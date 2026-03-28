@@ -16,7 +16,7 @@ O) Implementação de JWT
 P) Implementação do desbloqueio de token
 --Q) Correção da autenticação
 --R) Correção do logout
-S) Obter dados do token
+--S) Obter dados do token
 --T) Tornar token expurgável
 U) "Cachear" requisições de login
 

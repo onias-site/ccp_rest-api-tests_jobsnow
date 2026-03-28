@@ -12,7 +12,6 @@ import com.ccp.process.CcpProcessStatus;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityLoginSessionValidation;
-import com.jn.entities.fields.transformers.JnJsonTransformersFieldsEntityDefault;
 import com.jn.rest.api.commons.JnTemplateDeTestes;
 import com.jn.rest.api.commons.VariaveisParaTeste;
 import com.jn.status.login.JnProcessStatusExecuteLogout;
@@ -39,7 +38,7 @@ public class TelaDeLogout extends JnTemplateDeTestes {
 		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		JnEntityLoginSessionConflict.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		Function<VariaveisParaTeste, String> producer = variaveis -> {
-			CcpJsonRepresentation transformedJson = variaveis.REQUEST_TO_LOGIN.getTransformedJson(JnJsonTransformersFieldsEntityDefault.tokenHash);
+			CcpJsonRepresentation transformedJson = variaveis.REQUEST_TO_LOGIN;
 			String asString = JnEntityLoginSessionValidation.ENTITY
 					.save(transformedJson)
 					.getAsString(TelaDeLogoutConstants.originalToken);

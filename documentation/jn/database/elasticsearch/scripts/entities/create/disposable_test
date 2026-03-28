@@ -1,0 +1,11 @@
+{
+    "mappings": {
+            "dynamic": "strict",
+			"properties": {
+                "email": {
+                    "type": "keyword"
+                }
+                
+            }
+        }
+}

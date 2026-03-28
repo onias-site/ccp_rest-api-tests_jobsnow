@@ -23,12 +23,10 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.rest.api.utils.CcpRestApiUtils;
 import com.jn.entities.JnEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginSessionValidation;
-import com.jn.entities.JnEntityLoginToken;
 
 public class BaseTest {
 	public final static CcpJsonRepresentation REQUEST_TO_LOGIN = CcpOtherConstants.EMPTY_JSON
 			.put(JnEntityLoginSessionValidation.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
-			.put(JnEntityLoginToken.Fields.ip, "localhost:8080")
 			;
 
 	public final static CcpJsonRepresentation ANSWERS_JSON = REQUEST_TO_LOGIN.put(JnEntityLoginAnswers.Fields.goal, "jobs").put(JnEntityLoginAnswers.Fields.channel, "linkedin");

@@ -33,6 +33,7 @@ import com.ccp.especifications.db.crud.CcpSelectUnionAll;
 import com.ccp.especifications.db.query.CcpQueryExecutor;
 import com.ccp.especifications.db.query.CcpQueryOptions;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityExpurgableOptions;
 import com.ccp.especifications.db.utils.entity.fields.CcpEntityField;
 import com.ccp.especifications.db.utils.entity.fields.annotations.CcpEntityFieldPrimaryKey;
 import com.ccp.especifications.http.CcpHttpHandler;
@@ -54,6 +55,7 @@ import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
+import com.jn.entities.JnEntityDisposableTest;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
@@ -75,25 +77,23 @@ public class CcpRandomTests {
 	}
 
 	public static void main(String[] args) {
-
-		CcpJsonRepresentation json = new CcpJsonRepresentation("{\r\n"
-				+ "  \"email\": \"onias85@gmail.com\",\r\n"
-				+ "  \"ip\": \"127.0.0.1\",\r\n"
-				+ "  \"token\": \"PQ3TLRXC\",\r\n"
-				+ "  \"userAgent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36\"\r\n"
-				+ "}")
+	
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
+				.put(JnEntityDisposableTest.Fields.email, "onias85@gmail.com")
 				;
-		 
-		JnEntityLoginSessionValidation.ENTITY.save(json);
-		boolean exists = JnEntityLoginSessionValidation.ENTITY.exists(json);
-		System.out.println(exists);
-		
+		CcpEntity entity = JnEntityDisposableTest.ENTITY;
+		entity.save(json);
 		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class); 
-
-		CcpSelectUnionAll unionAll = crud.unionAll(json, JnDeleteKeysFromCache.INSTANCE, JnEntityLoginSessionValidation.ENTITY);
-		boolean presentInThisUnionAll = JnEntityLoginSessionValidation.ENTITY.isPresentInThisUnionAll(unionAll, json);
-		System.out.println(presentInThisUnionAll);
-		//		countWords(); 
+		for(int k = 0; k < 70; k++) {
+			CcpSelectUnionAll unionAll = crud.unionAll(json, JnDeleteKeysFromCache.INSTANCE, entity);
+			CcpTimeDecorator ctd = new CcpTimeDecorator();
+			String formattedDateTime = CcpEntityExpurgableOptions.millisecond.getFormattedDate();
+			var exists = entity.getRequiredEntityRow(unionAll, json);
+			System.out.println(formattedDateTime + ": " + exists);
+			ctd.sleep(1000);
+		}
+		
+//		countWords(); 
 //		saveSkills();
 //		relatoriosDasSkillsNosCurriculos();
 //		getSkillsFromText();
@@ -968,8 +968,8 @@ public class CcpRandomTests {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnEntityLoginToken.Fields.email, "onias85@gmail.com")
 				.put(JnEntityLoginToken.Fields.token, value)
-				.put(JnEntityLoginToken.Fields.ip, "127.0.0.1")
-				.put(JnEntityLoginToken.Fields.userAgent, "teste");
+				.put(JnEntityLoginSessionValidation.Fields.ip, "127.0.0.1")
+				.put(JnEntityLoginSessionValidation.Fields.userAgent, "teste");
 		JnEntityLoginToken.ENTITY.save(json);
 		CcpJsonRepresentation oneById = JnEntityLoginToken.ENTITY.getOneById(json);
 		String token = oneById.getAsString(JnEntityLoginToken.Fields.token);
