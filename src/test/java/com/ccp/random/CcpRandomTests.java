@@ -77,7 +77,7 @@ public class CcpRandomTests {
 	}
 
 	public static void main(String[] args) {
-	
+
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnEntityDisposableTest.Fields.email, "onias85@gmail.com")
 				;
