@@ -64,7 +64,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 	@Test
 	public void faltandoCadastrarSenha() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
-		this.getJsonResponseFromEndpoint(JnProcessStatusExecuteLogin.missingSavePassword, scenarioName, this.pathToJsonFile, JnEntityLoginPassword.ENTITY.getOperationCallback(CcpEntityOperationType.delete));
+		this.getJsonResponseFromEndpoint(JnProcessStatusExecuteLogin.missingSavePassword, scenarioName, this.pathToJsonFile, JnEntityLoginPassword.ENTITY.getEntityDetails().getOperationCallback(CcpEntityOperationType.delete));
 	}
 
 	@Test
@@ -111,7 +111,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 	public void faltandoCadastrarPreRegistro() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
 		this.getJsonResponseFromEndpoint(JnProcessStatusCreateLoginEmail.missingSaveAnswers, scenarioName, this.pathToJsonFile, 
-				JnEntityLoginAnswers.ENTITY.getOperationCallback(CcpEntityOperationType.delete)
+				JnEntityLoginAnswers.ENTITY.getEntityDetails().getOperationCallback(CcpEntityOperationType.delete)
 				);
 		
 	}
@@ -120,7 +120,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 	@Test
 	public void senhaBloqueada() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
-		this.getJsonResponseFromEndpoint(JnProcessStatusExecuteLogin.lockedPassword, scenarioName, this.pathToJsonFile, JnEntityLoginPassword.ENTITY.getTwinEntity().getOperationCallback(CcpEntityOperationType.save));
+		this.getJsonResponseFromEndpoint(JnProcessStatusExecuteLogin.lockedPassword, scenarioName, this.pathToJsonFile, JnEntityLoginPassword.ENTITY.getTwinEntity().getEntityDetails().getOperationCallback(CcpEntityOperationType.save));
 		
 	}
 
@@ -128,7 +128,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 	@Test
 	public void tokenBloqueado() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
-		this.getJsonResponseFromEndpoint(JnProcessStatusExecuteLogin.lockedToken, scenarioName, this.pathToJsonFile, JnEntityLoginToken.ENTITY.getTwinEntity().getOperationCallback(CcpEntityOperationType.save));
+		this.getJsonResponseFromEndpoint(JnProcessStatusExecuteLogin.lockedToken, scenarioName, this.pathToJsonFile, JnEntityLoginToken.ENTITY.getTwinEntity().getEntityDetails().getOperationCallback(CcpEntityOperationType.save));
 		
 	}
 
@@ -136,7 +136,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 	@Test
 	public void faltandoCadastrarEmail() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
-		this.getJsonResponseFromEndpoint(JnProcessStatusExecuteLogin.missingSavingEmail, scenarioName, this.pathToJsonFile, JnEntityLoginEmail.ENTITY.getOperationCallback(CcpEntityOperationType.delete));
+		this.getJsonResponseFromEndpoint(JnProcessStatusExecuteLogin.missingSavingEmail, scenarioName, this.pathToJsonFile, JnEntityLoginEmail.ENTITY.getEntityDetails().getOperationCallback(CcpEntityOperationType.delete));
 
 	}
 	

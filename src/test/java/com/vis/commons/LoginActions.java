@@ -7,6 +7,7 @@ import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityDetails;
 import com.ccp.especifications.db.utils.entity.fields.CcpErrorEntityPrimaryKeyIsMissing;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.business.CcpBusiness;
@@ -94,7 +95,8 @@ public enum LoginActions implements CcpBusiness {
 		CcpJsonRepresentation allStatus = CcpOtherConstants.EMPTY_JSON;
 		
 		for (CcpEntity entity : this.entities) {
-			String entityName = entity.getEntityName();
+			CcpEntityDetails entityDetails = entity.getEntityDetails();
+			String entityName = entityDetails.entityName;
 			try {
 				boolean exists = entity.exists(json);
 				allStatus = allStatus.getDynamicVersion().put(entityName, exists);

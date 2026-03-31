@@ -33,7 +33,7 @@ import com.ccp.especifications.db.crud.CcpSelectUnionAll;
 import com.ccp.especifications.db.query.CcpQueryExecutor;
 import com.ccp.especifications.db.query.CcpQueryOptions;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
-import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityExpurgableOptions;
+import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.ccp.especifications.db.utils.entity.fields.CcpEntityField;
 import com.ccp.especifications.db.utils.entity.fields.annotations.CcpEntityFieldPrimaryKey;
 import com.ccp.especifications.http.CcpHttpHandler;
@@ -960,7 +960,7 @@ public class CcpRandomTests {
 				+ "    \"token\": \"4ISALLOL\"\r\n"
 				+ "  }");
 		JnEntityLoginToken.ENTITY.save(json);
-		JnEntityLoginToken.ENTITY.transferToReverseEntity(json);
+		JnEntityLoginToken.ENTITY.delete(json);
 	}
 
 	static void saveLoginToken() {
