@@ -33,6 +33,7 @@ import com.ccp.especifications.db.crud.CcpSelectUnionAll;
 import com.ccp.especifications.db.query.CcpQueryExecutor;
 import com.ccp.especifications.db.query.CcpQueryOptions;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityDetails;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.ccp.especifications.db.utils.entity.fields.CcpEntityField;
 import com.ccp.especifications.db.utils.entity.fields.annotations.CcpEntityFieldPrimaryKey;
@@ -88,7 +89,8 @@ public class CcpRandomTests {
 			CcpSelectUnionAll unionAll = crud.unionAll(json, JnDeleteKeysFromCache.INSTANCE, entity);
 			CcpTimeDecorator ctd = new CcpTimeDecorator();
 			String formattedDateTime = CcpEntityExpurgableOptions.millisecond.getFormattedDate();
-			var exists = entity.getRequiredEntityRow(unionAll, json);
+			CcpEntityDetails entityDetails = entity.getEntityDetails();
+			var exists = entityDetails.getRequiredEntityRow(unionAll, json);
 			System.out.println(formattedDateTime + ": " + exists);
 			ctd.sleep(1000);
 		}
@@ -1131,7 +1133,7 @@ public class CcpRandomTests {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JsonFieldNames.cause, new CcpJsonRepresentation("{'nome':'onias'}")).put(JsonFieldNames.stackTrace, "{'nome':'vieira'}")
 				.put(JsonFieldNames.type, "any");
-		CcpJsonRepresentation oneById = JnEntityJobsnowError.ENTITY.getOneByIdOrHandleItIfThisIdWasNotFound(json,
+		CcpJsonRepresentation oneById = JnEntityJobsnowError.ENTITY.getEntityDetails().getOneByIdOrHandleItIfThisIdWasNotFound(json,
 				CcpOtherConstants.RETURNS_EMPTY_JSON);
 		System.out.println(oneById);
 	}
@@ -1146,7 +1148,7 @@ public class CcpRandomTests {
 				.getIntersectList(emailsDasVagas);
 
 		CcpJsonRepresentation mgetJson = CcpOtherConstants.EMPTY_JSON;
-		CcpEntityField idField = new CcpEntityField("email", false, CcpOtherConstants.DO_NOTHING);
+		CcpEntityField idField = new CcpEntityField("email", false, true, CcpOtherConstants.DO_NOTHING);
 
 		CcpQueryOptions queryToSearchViews = CcpQueryOptions.INSTANCE.startSimplifiedQuery()
 				.terms(idField, intersectList).endSimplifiedQueryAndBackToRequest();
@@ -1235,7 +1237,7 @@ public class CcpRandomTests {
 	}
 
 	static CcpJsonRepresentation getVagasAgrupadosPorRecrutadores(List<Object> intersectList) {
-		CcpEntityField idField = new CcpEntityField("mail", false, CcpOtherConstants.DO_NOTHING);
+		CcpEntityField idField = new CcpEntityField("mail", false, true, CcpOtherConstants.DO_NOTHING);
 		CcpQueryOptions query = CcpQueryOptions.INSTANCE.startSimplifiedQuery().terms(idField, intersectList)
 				.endSimplifiedQueryAndBackToRequest();
 

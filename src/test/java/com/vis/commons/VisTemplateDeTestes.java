@@ -39,6 +39,7 @@ import com.jn.entities.JnEntityLoginToken;
 import com.jn.entities.JnEntityLoginTokenAttempts;
 import com.jn.status.login.JnProcessStatusCreateLoginEmail;
 import com.jn.status.login.JnProcessStatusExecuteLogin;
+import com.jn.utils.JnDeleteKeysFromCache;
 public abstract class VisTemplateDeTestes {
 	enum JsonFieldNames implements CcpJsonFieldName{
 		message, statusName, x, url, method, actualStatus, expectedStatus, request, headers, response, timestamp, language
@@ -176,6 +177,7 @@ public abstract class VisTemplateDeTestes {
 		JnExecuteBulkOperation.INSTANCE.executeBulk(
 				jsonWithSubjectType 
 				,CcpBulkEntityOperationType.delete 
+				, JnDeleteKeysFromCache.INSTANCE
 				,JnEntityEmailMessageSent.ENTITY
 				,JnEntityLoginPassword.ENTITY
 				,JnEntityLoginSessionConflict.ENTITY

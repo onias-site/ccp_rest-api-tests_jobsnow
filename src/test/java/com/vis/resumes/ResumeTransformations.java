@@ -21,6 +21,7 @@ import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.entities.fields.transformers.JnJsonTransformersFieldsEntityDefault;
+import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
 public enum ResumeTransformations implements CcpTransformers{
 	AddDddsInResume {
@@ -143,6 +144,7 @@ public enum ResumeTransformations implements CcpTransformers{
 			JnExecuteBulkOperation.INSTANCE.executeBulk(
 					transformed, 
 					CcpBulkEntityOperationType.create, 
+					JnDeleteKeysFromCache.INSTANCE,
 					JnEntityLoginPassword.ENTITY,
 					JnEntityLoginAnswers.ENTITY,
 					JnEntityLoginToken.ENTITY,
