@@ -4,7 +4,9 @@ import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.jn.entities.JnEntityLoginAnswers;
+import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
+import com.jn.entities.fields.transformers.JnJsonTransformersFieldsEntityDefault;
 
 public class VariaveisParaTeste {
 	public final static String CORRECT_PASSWORD = "Jobsnow1!";
@@ -16,6 +18,8 @@ public class VariaveisParaTeste {
 	public CcpJsonRepresentation REQUEST_TO_LOGIN = CcpOtherConstants.EMPTY_JSON
 			.put(JnEntityLoginSessionValidation.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
 			.put(JnEntityLoginSessionValidation.Fields.ip, "127.0.0.1")
+			.put(JnEntityLoginPassword.Fields.password, "Novasenha1!")
+			.getTransformedJson(JnJsonTransformersFieldsEntityDefault.token)
 			;
 			
 	public final String VALID_EMAIL;

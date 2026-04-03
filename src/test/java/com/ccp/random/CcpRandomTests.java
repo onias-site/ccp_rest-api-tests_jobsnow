@@ -33,7 +33,6 @@ import com.ccp.especifications.db.crud.CcpSelectUnionAll;
 import com.ccp.especifications.db.query.CcpQueryExecutor;
 import com.ccp.especifications.db.query.CcpQueryOptions;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
-import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityDetails;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.ccp.especifications.db.utils.entity.fields.CcpEntityField;
 import com.ccp.especifications.db.utils.entity.fields.annotations.CcpEntityFieldPrimaryKey;
@@ -62,6 +61,7 @@ import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
+import com.jn.services.JnServiceLogin;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityGroupPositionsBySkills;
 import com.vis.entities.VisEntityResume;
@@ -79,6 +79,23 @@ public class CcpRandomTests {
 
 	public static void main(String[] args) {
 
+		CcpJsonRepresentation json = new CcpJsonRepresentation("{\r\n"
+				+ "  \"email\": \"2wqfysrc@teste.com\",\r\n"
+				+ "  \"ip\": \"127.0.0.1\",\r\n"
+				+ "  \"originalToken\": \"29SJ76I1\",\r\n"
+				+ "  \"password\": \"Jobsnow1!\",\r\n"
+				+ "  \"token\": \"29SJ76I1\",\r\n"
+				+ "  \"userAgent\": \"Apache-HttpClient/4.5.4 (Java/17.0.9)\"\r\n"
+				+ "}");
+		JnServiceLogin.SavePassword.apply(json);
+		
+//		countWords(); 
+//		saveSkills();
+//		relatoriosDasSkillsNosCurriculos();
+//		getSkillsFromText();
+	}
+
+	static void xxx() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnEntityDisposableTest.Fields.email, "onias85@gmail.com")
 				;
@@ -89,16 +106,10 @@ public class CcpRandomTests {
 			CcpSelectUnionAll unionAll = crud.unionAll(json, JnDeleteKeysFromCache.INSTANCE, entity);
 			CcpTimeDecorator ctd = new CcpTimeDecorator();
 			String formattedDateTime = CcpEntityExpurgableOptions.millisecond.getFormattedDate();
-			CcpEntityDetails entityDetails = entity.getEntityDetails();
-			var exists = entityDetails.getRequiredEntityRow(unionAll, json);
+			var exists = entity.getRecordFromUnionAll(unionAll, json);
 			System.out.println(formattedDateTime + ": " + exists);
 			ctd.sleep(1000);
 		}
-		
-//		countWords(); 
-//		saveSkills();
-//		relatoriosDasSkillsNosCurriculos();
-//		getSkillsFromText();
 	}
 
 	static void apagarTodosOsAgrupamentosDeSkills() {

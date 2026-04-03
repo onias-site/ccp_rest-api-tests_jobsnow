@@ -17,6 +17,10 @@ import com.jn.utils.JnLanguage;
 
 public class AoEntrarNaTelaDoCadastroDeSenha extends JnTemplateDeTestes{
 
+	public static void main(String[] args) {
+		new AoEntrarNaTelaDoCadastroDeSenha();
+	}
+	
 	@Test
 	public void emailInvalido() {
 		this.criarTokenDeLogin(VariaveisParaTeste.INVALID_EMAIL, JnProcessStatusCreateLoginToken.statusInvalidEmail);

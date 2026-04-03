@@ -205,7 +205,6 @@ public abstract class VisTemplateDeTestes {
 		
 		return endThisStatement; 
 	}
-	//LATER melhorar a intuitividade dos bounds no retorno do json
 
 	protected final CcpJsonRepresentation getJsonResponseFromEndpoint(CcpProcessStatus processStatus, String scenarioName,
 			String pathToJsonFile, CcpBusiness... whatToNext) {

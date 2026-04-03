@@ -24,7 +24,7 @@ public class ValidationsEndpointsUpdateResume  extends VisTemplateDeTestes{
 	}
 
 	protected String getUri() {
-		// FIXME Auto-generated method stub
+		// TODO Auto-generated method stub
 		return null;
 	}
 	
