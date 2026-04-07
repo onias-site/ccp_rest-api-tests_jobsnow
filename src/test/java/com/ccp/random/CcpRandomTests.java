@@ -61,7 +61,6 @@ import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
-import com.jn.services.JnServiceLogin;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityGroupPositionsBySkills;
 import com.vis.entities.VisEntityResume;
@@ -72,27 +71,19 @@ public class CcpRandomTests {
 
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
 	private static final String LINKEDIN_REGEX = "^https://(www\\.)?linkedin\\.com/in/[a-zA-Z0-9-_%]+/?$";
-
+	
 	public static boolean isValidLinkedInUrl(String url) {
 		return Pattern.matches(LINKEDIN_REGEX, url);
 	}
 
 	public static void main(String[] args) {
-
-		CcpJsonRepresentation json = new CcpJsonRepresentation("{\r\n"
-				+ "  \"email\": \"2wqfysrc@teste.com\",\r\n"
-				+ "  \"ip\": \"127.0.0.1\",\r\n"
-				+ "  \"originalToken\": \"29SJ76I1\",\r\n"
-				+ "  \"password\": \"Jobsnow1!\",\r\n"
-				+ "  \"token\": \"29SJ76I1\",\r\n"
-				+ "  \"userAgent\": \"Apache-HttpClient/4.5.4 (Java/17.0.9)\"\r\n"
-				+ "}");
-		JnServiceLogin.SavePassword.apply(json);
 		
-//		countWords(); 
-//		saveSkills();
-//		relatoriosDasSkillsNosCurriculos();
-//		getSkillsFromText();
+		CcpEntity twinEntity = JnEntityLoginToken.ENTITY.getTwinEntity();
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
+				.put(JnEntityLoginToken.Fields.email, "onias85@gmail.com")
+				;
+		CcpJsonRepresentation save = twinEntity.save(json);
+		System.out.println(save);
 	}
 
 	static void xxx() {

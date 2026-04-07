@@ -5,7 +5,6 @@ import java.util.function.Function;
 import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponseType;
@@ -103,7 +102,6 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 			this.execute(variaveisParaTeste, JnProcessStatusUpdatePassword.wrongToken, x -> "abcdefgh");
 		}
 		this.execute(variaveisParaTeste, JnProcessStatusUpdatePassword.tokenLockedRecently, x -> "abcdefgh");
-		new CcpTimeDecorator().sleep(10_000);
 		this.execute(variaveisParaTeste, JnProcessStatusUpdatePassword.lockedToken, x -> token);
 	}
 

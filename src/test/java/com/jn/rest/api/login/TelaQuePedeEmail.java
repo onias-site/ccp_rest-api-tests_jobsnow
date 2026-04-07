@@ -48,7 +48,7 @@ public class TelaQuePedeEmail extends JnTemplateDeTestes{
 	
 	@Test
 	public void usuarioJaLogado() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste("onias85@gmail.com");
+		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		JnEntityLoginSessionConflict.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusExistsLoginEmail.loginConflict);		

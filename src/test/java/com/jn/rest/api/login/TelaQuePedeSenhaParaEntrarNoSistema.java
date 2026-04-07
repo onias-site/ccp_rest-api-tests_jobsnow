@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponseType;
@@ -69,9 +68,8 @@ public class TelaQuePedeSenhaParaEntrarNoSistema extends JnTemplateDeTestes{
 
 	@Test
 	public void caminhoFeliz() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste("onias85@gmail.com");
+		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		new TelaDoCadastroDeSenha().fluxoEsperado(variaveisParaTeste);;
-		new CcpTimeDecorator().sleep(10000); 
 		JnEntityLoginSessionConflict.ENTITY.delete(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.expectedStatus, x -> VariaveisParaTeste.CORRECT_PASSWORD);
 	}
@@ -82,13 +80,11 @@ public class TelaQuePedeSenhaParaEntrarNoSistema extends JnTemplateDeTestes{
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		TelaDoCadastroDeSenha telaDoCadastroDeSenha = new TelaDoCadastroDeSenha();
 		telaDoCadastroDeSenha.fluxoEsperado(variaveisParaTeste);
-		new CcpTimeDecorator().sleep(10000);
 		JnEntityLoginSessionConflict.ENTITY.delete(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.wrongPassword, x -> VariaveisParaTeste.WRONG_PASSWORD);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.wrongPassword, x -> VariaveisParaTeste.WRONG_PASSWORD);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.passwordLockedRecently, x -> VariaveisParaTeste.WRONG_PASSWORD);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.lockedPassword, x -> VariaveisParaTeste.WRONG_PASSWORD);
-		new CcpTimeDecorator().sleep(10_000);
 		new TelaQuePedeEmail().execute(variaveisParaTeste, JnProcessStatusExistsLoginEmail.lockedPassword);
 	}
 	
@@ -96,7 +92,6 @@ public class TelaQuePedeSenhaParaEntrarNoSistema extends JnTemplateDeTestes{
 	public void errarParaDepoisAcertarSenha() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		new TelaDoCadastroDeSenha().fluxoEsperado(variaveisParaTeste);
-		new CcpTimeDecorator().sleep(10000);
 		JnEntityLoginSessionConflict.ENTITY.delete(variaveisParaTeste.REQUEST_TO_LOGIN);
 		
 		for(int k = 1; k < 3; k++) {
@@ -109,7 +104,6 @@ public class TelaQuePedeSenhaParaEntrarNoSistema extends JnTemplateDeTestes{
 	public void senhaRecemBloqueada() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		new TelaDoCadastroDeSenha().fluxoEsperado(variaveisParaTeste);;
-		new CcpTimeDecorator().sleep(10000);
 		JnEntityLoginSessionConflict.ENTITY.delete(variaveisParaTeste.REQUEST_TO_LOGIN);
 		
 		for(int k = 1; k <= 2; k++) {

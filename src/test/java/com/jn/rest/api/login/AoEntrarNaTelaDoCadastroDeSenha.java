@@ -28,7 +28,7 @@ public class AoEntrarNaTelaDoCadastroDeSenha extends JnTemplateDeTestes{
 	 
 	@Test
 	public void tokenBloqueado() { 
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
+		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste("onias85@gmail.com");
 		CcpEntity mirrorEntity = JnEntityLoginToken.ENTITY.getTwinEntity();
 		mirrorEntity.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusCreateLoginToken.statusLockedToken);
