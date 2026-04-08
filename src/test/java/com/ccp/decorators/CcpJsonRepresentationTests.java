@@ -315,12 +315,12 @@ public class CcpJsonRepresentationTests {
 	public void getOrDefaultTest() {
 		String json = "{'veiculo':'carro'}";
 		CcpJsonRepresentation objJson = new CcpJsonRepresentation(json);
-		String resultado2 = objJson.getOrDefault(veiculo2, "default");
-		String resultado = objJson.getOrDefault(veiculo, "default");
+		String resultado2 = objJson.getOrDefault(veiculo2, () -> "default");
+		String resultado = objJson.getOrDefault(veiculo, () -> "default");
 
 		assertEquals("default", resultado2);
 		assertEquals("carro", resultado);
-		String orDefault = objJson.getDynamicVersion().getOrDefault("1", "teste");
+		String orDefault = objJson.getDynamicVersion().getOrDefault("1", () -> "teste");
 		assertTrue("teste".equals(orDefault));
 	}
 
@@ -328,7 +328,7 @@ public class CcpJsonRepresentationTests {
 	@Test (expected = RuntimeException.class)
 	public void getOrDefaultErroTest() {
 		CcpJsonRepresentation objJson = new CcpJsonRepresentation("");
-		String resultado = objJson.getOrDefault(veiculo, "default");
+		String resultado = objJson.getOrDefault(veiculo, () -> "default");
 
 		assertEquals("default", resultado);
 	}

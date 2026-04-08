@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import org.junit.Test;
 
+import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.http.CcpHttpMethods;
@@ -59,7 +60,8 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 	@Test
 	public void jsonInvalido() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		this.execute(variaveisParaTeste,JnProcessStatusUpdatePassword.invalidJson, x -> null);
+		String uri = "login/" + variaveisParaTeste.VALID_EMAIL + "/password";
+		this.testarEndpoint(JnProcessStatusUpdatePassword.invalidJson, CcpOtherConstants.EMPTY_JSON, uri,  CcpHttpResponseType.singleRecord);
 
 	}
 	

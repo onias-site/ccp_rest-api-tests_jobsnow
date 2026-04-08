@@ -78,12 +78,13 @@ public class CcpRandomTests {
 
 	public static void main(String[] args) {
 		
-		CcpEntity twinEntity = JnEntityLoginToken.ENTITY.getTwinEntity();
+		CcpEntity twinEntity = JnEntityLoginPassword.ENTITY.getTwinEntity();
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(JnEntityLoginToken.Fields.email, "onias85@gmail.com")
+				.put(JnEntityLoginPassword.Fields.email, "onias85@gmail.com")
+				.put(JnEntityLoginPassword.Fields.password, "Novasenha1!")
 				;
-		CcpJsonRepresentation save = twinEntity.save(json);
-		System.out.println(save);
+		twinEntity.save(json);
+//		twinEntity.delete(json);
 	}
 
 	static void xxx() {
@@ -917,7 +918,7 @@ public class CcpRandomTests {
 			
 			String initials = companyName.substring(0, 3);
 			
-			LinkedHashSet<String> orDefault = groupedCompanies.getDynamicVersion().getOrDefault(initials, new LinkedHashSet<>());
+			LinkedHashSet<String> orDefault = groupedCompanies.getDynamicVersion().getOrDefault(initials, () -> new LinkedHashSet<>());
 			orDefault.add(capitalizedCompanyName);
 			groupedCompanies = groupedCompanies.getDynamicVersion().put(initials, orDefault);
 		};
