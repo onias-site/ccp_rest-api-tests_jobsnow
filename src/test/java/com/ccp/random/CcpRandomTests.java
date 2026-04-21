@@ -55,6 +55,7 @@ import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
+import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityDisposableTest;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginPassword;
@@ -77,17 +78,23 @@ public class CcpRandomTests {
 	}
 
 	public static void main(String[] args) {
-		
-		CcpEntity twinEntity = JnEntityLoginPassword.ENTITY.getTwinEntity();
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(JnEntityLoginPassword.Fields.email, "onias85@gmail.com")
-				.put(JnEntityLoginPassword.Fields.password, "Novasenha1!")
+				.put(JnEntityDisposableTest.Fields.email, "onias85@gmail.com")
 				;
-		twinEntity.save(json);
-//		twinEntity.delete(json);
+		JnEntityDisposableTest.ENTITY.save(json);
+		{
+			CcpJsonRepresentation dataWithTimeStamp = JnEntityDisposableRecord.getDataWithTimeStamp(JnEntityDisposableTest.ENTITY, json);
+			System.out.println(dataWithTimeStamp);
+		}
+		JnEntityDisposableTest.ENTITY.delete(json);
+		{
+			CcpJsonRepresentation dataWithTimeStamp = JnEntityDisposableRecord.getDataWithTimeStamp(JnEntityDisposableTest.ENTITY, json);
+			System.out.println(dataWithTimeStamp);
+		}
+
 	}
 
-	static void xxx() {
+	static void testarDisposable() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnEntityDisposableTest.Fields.email, "onias85@gmail.com")
 				;
@@ -140,7 +147,7 @@ public class CcpRandomTests {
 				+ "\r\n"
 				+ "📩 Interessou ou conhece alguém com esse perfil?\r\n"
 				+ "Envie o cv com pretensão salarial no e-mail: isadora@bluesix.com.br");
-		System.out.println(skillsFromText.getDynamicVersion().removeField("implicitSkills"));
+		System.out.println(skillsFromText.getDynamicVersion().removeFields("implicitSkills"));
 	}
 
 	static void countWords() {
@@ -604,13 +611,13 @@ public class CcpRandomTests {
 			
 				String skill = synonym.getDynamicVersion().getAsString("skill");
 				if(skill.trim().length() < 2) {
-					synonym = synonym.getDynamicVersion().removeField("skill");
+					synonym = synonym.getDynamicVersion().removeFields("skill");
 				}
 				if(skill.trim().length() > 50) {
-					synonym = synonym.getDynamicVersion().removeField("skill");
+					synonym = synonym.getDynamicVersion().removeFields("skill");
 				}
 				if(removidas.contains(skill)) {
-					synonym = synonym.getDynamicVersion().removeField("skill");
+					synonym = synonym.getDynamicVersion().removeFields("skill");
 				}
 				List<String> parent = synonym.getDynamicVersion().getAsStringList("parent").stream()
 						.filter(x -> x.length() > 2 && x.length() <= 50)
@@ -650,10 +657,10 @@ public class CcpRandomTests {
 		List<CcpJsonRepresentation> collect = newSynonyms.stream()
 		.filter(x -> x.getDynamicVersion().containsAllFields("skill") || false == x.getDynamicVersion().getAsJsonList("synonym").isEmpty())
 		.map(x -> x.getDynamicVersion().containsAllFields("skill") ? x : transferSynonymToSkill(x))
-		.map(x -> false == x.getDynamicVersion().getAsObjectList("parent").isEmpty() ?  x :  x.getDynamicVersion().removeField("parent"))
-		.map(x -> false == x.getDynamicVersion().getAsObjectList("similar").isEmpty() ?  x :  x.getDynamicVersion().removeField("similar"))
-		.map(x -> false == x.getDynamicVersion().getAsObjectList("synonym").isEmpty() ?  x :  x.getDynamicVersion().removeField("synonym"))
-		.map(x -> false == x.getDynamicVersion().getAsObjectList("preRequisite").isEmpty() ?  x :  x.getDynamicVersion().removeField("preRequisite"))
+		.map(x -> false == x.getDynamicVersion().getAsObjectList("parent").isEmpty() ?  x :  x.getDynamicVersion().removeFields("parent"))
+		.map(x -> false == x.getDynamicVersion().getAsObjectList("similar").isEmpty() ?  x :  x.getDynamicVersion().removeFields("similar"))
+		.map(x -> false == x.getDynamicVersion().getAsObjectList("synonym").isEmpty() ?  x :  x.getDynamicVersion().removeFields("synonym"))
+		.map(x -> false == x.getDynamicVersion().getAsObjectList("preRequisite").isEmpty() ?  x :  x.getDynamicVersion().removeFields("preRequisite"))
 		.collect(Collectors.toList());
 		CcpFileDecorator newSynonymsFile = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\skills\\new_synonyms.json").file().reset();
 		newSynonymsFile.append(collect.toString());

@@ -544,8 +544,8 @@ public class CcpJsonRepresentationTests {
 		
 		//SE O CAMPO NÃO EXISTIR ELE IGNORA
 		CcpJsonRepresentation json = new CcpJsonRepresentation(pessoa);
-		System.out.println("removeFieldTest() = "+json.removeField(tipo_sanguineo));
-		System.out.println("removeFieldTest() = "+json.getDynamicVersion().removeField(tipo_sanguineo.name()));
+		System.out.println("removeFieldTest() = "+json.removeFields(tipo_sanguineo));
+		System.out.println("removeFieldTest() = "+json.getDynamicVersion().removeFields(tipo_sanguineo.name()));
 	}
 
 	@Test
