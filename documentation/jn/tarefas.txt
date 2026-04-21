@@ -14,11 +14,10 @@ M) Endpoint de reenvio de token
 N) Endpoint de desbloqueio de token
 O) Implementação de JWT
 P) Implementação do desbloqueio de token
---Q) Correção da autenticação
---R) Correção do logout
---S) Obter dados do token
---T) Tornar token expurgável
-U) "Cachear" requisições de login
+Q) "Cachear" requisições de login
+R) Tradução de erros do salvamento de curriculo
+S) Problema do campo "language"
+
 
 Passos para liberar endpoints de curriculos na nuvem
 A) Gravar todos os curriculos localmente

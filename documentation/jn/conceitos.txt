@@ -3,7 +3,6 @@ Automatic Entity Id (AEI)
 Complex Query Dsl (CQD)
 Disposable Entity
 Versionable Entity
-Mirror Entity
 Twin Entity
 Read Only Entity
 Cache Entity
@@ -17,8 +16,10 @@ Mitigate If And Else Less (MIAEL)
 Null less
 Dto Less
 Dto Less Validation (DLV)
+Entity Decorators
 #Fortalecidos
 Decorator Everywhere
 Separated Business Type
 Abstraction Tecnology Provider
 Imutable Object
+Introspecção de operaçoes em entidade (Triggers)
