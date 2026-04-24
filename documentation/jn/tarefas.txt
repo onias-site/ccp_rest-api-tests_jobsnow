@@ -10,12 +10,10 @@ I) Notificação para suporte de hierarquia pendente
 J) Notificação para suporte de skill pendente
 K) Template de reenvio de token
 L) Template de desbloqueio de token
-M) Endpoint de reenvio de token
-N) Endpoint de desbloqueio de token
-O) Implementação de JWT
-P) Implementação do desbloqueio de token
-Q) Tradução de erros do salvamento de curriculo
-R) Problema do campo "language"
+M) Implementação de JWT
+N) Implementação do desbloqueio de token
+O) Tradução de erros do salvamento de curriculo
+P) Problema do campo "language"
 
 
 Passos para liberar endpoints de curriculos na nuvem
