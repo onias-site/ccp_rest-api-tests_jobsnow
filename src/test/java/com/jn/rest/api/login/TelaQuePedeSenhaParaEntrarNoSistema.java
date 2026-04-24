@@ -69,9 +69,14 @@ public class TelaQuePedeSenhaParaEntrarNoSistema extends JnTemplateDeTestes{
 	@Test
 	public void caminhoFeliz() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
+		this.fluxoEsperado(variaveisParaTeste);
+	}
+
+	public String fluxoEsperado(VariaveisParaTeste variaveisParaTeste) {
 		new TelaDoCadastroDeSenha().fluxoEsperado(variaveisParaTeste);;
 		JnEntityLoginSessionConflict.ENTITY.delete(variaveisParaTeste.REQUEST_TO_LOGIN);
-		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.expectedStatus, x -> VariaveisParaTeste.CORRECT_PASSWORD);
+		String execute = this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.expectedStatus, x -> VariaveisParaTeste.CORRECT_PASSWORD);
+		return execute;
 	}
  
 	
@@ -115,16 +120,17 @@ public class TelaQuePedeSenhaParaEntrarNoSistema extends JnTemplateDeTestes{
 
 	public String execute(VariaveisParaTeste variaveisParaTeste, CcpProcessStatus expectedStatus, Function<VariaveisParaTeste, String> producer) {
 		String senha = producer.apply(variaveisParaTeste);
-		this.executarLogin(variaveisParaTeste.VALID_EMAIL, senha, expectedStatus);
-		String apply = producer.apply(variaveisParaTeste);
-		return apply;
+		String executarLogin = this.executarLogin(variaveisParaTeste.VALID_EMAIL, senha, expectedStatus);
+		producer.apply(variaveisParaTeste);
+		return executarLogin;
 	}
 	
-	private void executarLogin(String email, String senha, CcpProcessStatus expectedStatus) {
+	private String executarLogin(String email, String senha, CcpProcessStatus expectedStatus) {
 		CcpJsonRepresentation body = CcpOtherConstants.EMPTY_JSON.put(JnEntityLoginPassword.Fields.password, senha);
 		String uri = "login/"
 		+ email;
-		this.testarEndpoint(expectedStatus, body, uri, CcpHttpResponseType.singleRecord);
+		CcpJsonRepresentation testarEndpoint = this.testarEndpoint(expectedStatus, body, uri, CcpHttpResponseType.singleRecord);
+		return testarEndpoint.toString();
 	}
 
 	

@@ -20,6 +20,7 @@ import com.jn.rest.api.commons.VariaveisParaTeste;
 import com.jn.status.login.JnProcessStatusUpdatePassword;
 
 public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
+	
 	@Test
 	public void emailInvalido() {
 		this.requisicaoFake(VariaveisParaTeste.INVALID_EMAIL, "abcdefgh", JnProcessStatusUpdatePassword.invalidEmail);
@@ -54,7 +55,8 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 	@Test
 	public void caminhoFeliz() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		this.fluxoEsperado(variaveisParaTeste);
+		String fluxoEsperado = this.fluxoEsperado(variaveisParaTeste);
+		System.out.println(fluxoEsperado);
 	}
 	
 	@Test
@@ -65,9 +67,10 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 
 	}
 	
-	public void fluxoEsperado(VariaveisParaTeste variaveisParaTeste) {
+	public String fluxoEsperado(VariaveisParaTeste variaveisParaTeste) {
 		String token = this.getToken(variaveisParaTeste);
-		this.execute(variaveisParaTeste,JnProcessStatusUpdatePassword.expectedStatus, x -> token);
+		String execute = this.execute(variaveisParaTeste,JnProcessStatusUpdatePassword.expectedStatus, x -> token);
+		return execute;
 	}
 
 	public static void main(String[] args) {
@@ -116,9 +119,8 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 		CcpJsonRepresentation body =  variaveisParaTeste.REQUEST_TO_LOGIN
 				.put(JnEntityLoginPassword.Fields.password, VariaveisParaTeste.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, tokenToValidateLogin);
-		this.testarEndpoint(expectedStatus, body, uri,  CcpHttpResponseType.singleRecord);
-		String apply = producer.apply(variaveisParaTeste);
-		return apply;
+		CcpJsonRepresentation testarEndpoint = this.testarEndpoint(expectedStatus, body, uri,  CcpHttpResponseType.singleRecord);
+		return testarEndpoint.toString();
 	}
 
 	private void requisicaoFake(String email, String tokenToValidateLogin, CcpProcessStatus expectedStatus) {
