@@ -54,6 +54,7 @@ import com.ccp.json.validations.fields.annotations.CcpJsonCopyFieldValidationsFr
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.ccp.rest.api.spring.exceptions.handler.CcpRestApiExceptionHandlerSpring;
 import com.jn.business.login.JnBusinessExecuteLogout;
 import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityDisposableTest;
@@ -78,6 +79,19 @@ public class CcpRandomTests {
 	}
 
 	public static void main(String[] args) {
+		RuntimeException e = new RuntimeException("Erro de teste x");
+		for(int k = 0; k < 3; k++) {
+//			e = new RuntimeException(e.getMessage() + " " + k, e);
+		}
+		CcpJsonRepresentation json = CcpRestApiExceptionHandlerSpring.getHandledExceptionToLog(e);
+		for(int k = 0; k < 3; k++) {
+			JnEntityJobsnowError.ENTITY.save(json);
+		}
+		
+		System.out.println(JnEntityJobsnowError.ENTITY.exists(json));
+	}
+
+	static void getDataWithTimeStamp() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnEntityDisposableTest.Fields.email, "onias85@gmail.com")
 				;
@@ -91,7 +105,6 @@ public class CcpRandomTests {
 			CcpJsonRepresentation dataWithTimeStamp = JnEntityDisposableRecord.getDataWithTimeStamp(JnEntityDisposableTest.ENTITY, json);
 			System.out.println(dataWithTimeStamp);
 		}
-
 	}
 
 	static void testarDisposable() {

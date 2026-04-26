@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
+import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatus;
 import com.jn.entities.JnEntityLoginEmail;
@@ -38,7 +39,9 @@ public class TelaDeLogout extends JnTemplateDeTestes {
 		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		JnEntityLoginSessionConflict.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		Function<VariaveisParaTeste, String> producer = variaveis -> {
-			CcpJsonRepresentation transformedJson = variaveis.REQUEST_TO_LOGIN;
+			CcpJsonRepresentation transformedJson = variaveis.REQUEST_TO_LOGIN
+					.put(JnEntityLoginSessionValidation.Fields.token, "12345678")
+					;
 			String asString = JnEntityLoginSessionValidation.ENTITY
 					.save(transformedJson)
 					.getAsString(TelaDeLogoutConstants.originalToken);
@@ -47,10 +50,6 @@ public class TelaDeLogout extends JnTemplateDeTestes {
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogout.expectedStatus, producer);
 	}
 	
-	public void caminhoFeliz2() {
-		
-	}
- 
 	protected CcpJsonRepresentation getHeaders() { 
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
 				;
@@ -65,7 +64,9 @@ public class TelaDeLogout extends JnTemplateDeTestes {
 
 	public String execute(VariaveisParaTeste variaveisParaTeste, CcpProcessStatus expectedStatus,
 			Function<VariaveisParaTeste, String> producer) {
-		String sessionToken = producer.apply(variaveisParaTeste);
+		String apply = producer.apply(variaveisParaTeste);
+		String asEnconded = new CcpStringDecorator(apply).url().asEnconded();
+		String sessionToken = asEnconded;
 		String uri = "/login/" + variaveisParaTeste.VALID_EMAIL + "/" + sessionToken;
 		this.testarEndpoint(uri, expectedStatus);
 		return sessionToken;
