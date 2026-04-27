@@ -10,15 +10,12 @@ I) Notificação para suporte de hierarquia pendente
 J) Notificação para suporte de skill pendente
 K) Template de reenvio de token
 L) Template de desbloqueio de token
-M) Exception sendo salva de modo feio
-N) Investigar problemas de stacktrace e cause
-O) Melhorar o "explainedSearch"
-P) Implementação do reenvio de token
-Q) Implementação do desbloqueio de token
-R) 3 Testes do reenvio de token
-S) 4 Testes do desbloqueio de token
-T) Tradução de erros do salvamento de curriculo
-U) Problema do campo "language"
+M) Implementação do reenvio de token
+N) Implementação do desbloqueio de token
+O) 3 Testes do reenvio de token
+P) 4 Testes do desbloqueio de token
+Q) Tradução de erros do salvamento de curriculo
+R) Problema do campo "language"
 
 
 Passos para liberar endpoints de curriculos na nuvem

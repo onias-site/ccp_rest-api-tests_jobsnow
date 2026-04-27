@@ -654,7 +654,7 @@ public class CcpJsonRepresentationTests {
 	    
 	}
 	
-	@Test (expected = ClassCastException.class)
+	@Test (expected = ClassCastException.class) 
 	public void getInnerJsonFromPathTestError() {
 				String pessoa = ""
 				+ "    	   { "

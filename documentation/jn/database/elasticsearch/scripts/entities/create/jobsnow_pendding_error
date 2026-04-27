@@ -17,6 +17,9 @@
 			"date": {
 				"type": "text"
 			},
+			"stackTraceHash": {
+				"type": "keyword"
+			},
 			"timestamp": {
 				"type": "long"
 			}

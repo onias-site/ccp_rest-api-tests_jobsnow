@@ -55,10 +55,12 @@ import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.rest.api.spring.exceptions.handler.CcpRestApiExceptionHandlerSpring;
+import com.ccp.utils.CcpHashAlgorithm;
 import com.jn.business.login.JnBusinessExecuteLogout;
 import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityDisposableTest;
 import com.jn.entities.JnEntityJobsnowError;
+import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
@@ -79,16 +81,15 @@ public class CcpRandomTests {
 	}
 
 	public static void main(String[] args) {
-		RuntimeException e = new RuntimeException("Erro de teste x");
-		for(int k = 0; k < 3; k++) {
-//			e = new RuntimeException(e.getMessage() + " " + k, e);
-		}
-		CcpJsonRepresentation json = CcpRestApiExceptionHandlerSpring.getHandledExceptionToLog(e);
-		for(int k = 0; k < 3; k++) {
-			JnEntityJobsnowError.ENTITY.save(json);
-		}
+
+		String x = new CcpStringDecorator("c:/logs/x.json").file().getStringContent();
+		String y = new CcpStringDecorator("c:/logs/y.json").file().getStringContent();
+		String h1 = new CcpStringDecorator(x).hash().asString(CcpHashAlgorithm.SHA1);
+		String h2 = new CcpStringDecorator(y).hash().asString(CcpHashAlgorithm.SHA1);
 		
-		System.out.println(JnEntityJobsnowError.ENTITY.exists(json));
+		System.out.println(h1);
+		System.out.println(h2);
+	
 	}
 
 	static void getDataWithTimeStamp() {
