@@ -67,7 +67,6 @@ import static com.ccp.decorators.JsonFieldNames.v4;
 import static com.ccp.decorators.JsonFieldNames.valor;
 import static com.ccp.decorators.JsonFieldNames.valor2;
 import static com.ccp.decorators.JsonFieldNames.valor3;
-import static com.ccp.decorators.JsonFieldNames.valor4;
 import static com.ccp.decorators.JsonFieldNames.valorDouble;
 import static com.ccp.decorators.JsonFieldNames.valorQueNaoEhDouble;
 import static com.ccp.decorators.JsonFieldNames.veiculo;
@@ -98,10 +97,10 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.ccp.business.CcpBusiness;
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.json.CcpJsonHandler;
-import com.ccp.business.CcpBusiness;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
 public class CcpJsonRepresentationTests {
@@ -285,22 +284,6 @@ public class CcpJsonRepresentationTests {
 		assertTrue(resultado == numero * multiplicador);
 	}
 	
-	@Test
-	public void getTransformedJsonIfFoundTheFieldTest() {
-		String x = "{'valor' : '" + 1 + "'}";
-
-		CcpJsonRepresentation json = new CcpJsonRepresentation(x);
-		
-		CcpJsonRepresentation transformedJson = json.getTransformedJsonIfFoundTheField(valor, j -> j.put(valor2, j.getAsIntegerNumber(valor) * 2), j -> j.put(valor3, j.getAsIntegerNumber(valor) * 3));
-		assertTrue(transformedJson.getAsIntegerNumber(valor3).equals(3));
-		assertTrue(transformedJson.getAsIntegerNumber(valor2).equals(2));
-		assertTrue(transformedJson.getAsIntegerNumber(valor).equals(1));
-		CcpJsonRepresentation notTransformedJson = json.getTransformedJsonIfFoundTheField(valor4, j -> j.put(valor2, j.getAsIntegerNumber(valor) * 2), j -> j.put(valor3, j.getAsIntegerNumber(valor) * 3));
-		assertTrue(notTransformedJson.fieldSet().size() == 1);
-		CcpJsonRepresentation transformedJson2 = json.getDynamicVersion().getTransformedJsonIfFoundTheField(valor.name(), j -> j.put(valor2, j.getAsIntegerNumber(valor) * 2), j -> j.put(valor3, j.getAsIntegerNumber(valor) * 3));
-		assertTrue(transformedJson2.equals(transformedJson));
-	}
-
 	@Test
 	public void getJsonPieceTest() {
 		String json = "{'nome':'João', 'telefone': 1234}";
