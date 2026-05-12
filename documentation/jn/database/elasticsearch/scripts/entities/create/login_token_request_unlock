@@ -5,7 +5,7 @@
                 "email": {
                     "type": "keyword"
                 },
-                 "supportAgent": {
+                 "chatId": {
                     "type": "keyword"
                 }
             }

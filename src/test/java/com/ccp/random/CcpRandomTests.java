@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -78,7 +79,9 @@ public class CcpRandomTests {
 	}
 
 	public static void main(String[] args) {
-		testarDisposable();
+		
+		
+		
 	}
 
 	static void getDataWithTimeStamp() {
@@ -108,7 +111,8 @@ public class CcpRandomTests {
 			CcpSelectUnionAll unionAll = crud.unionAll(json, JnDeleteKeysFromCache.INSTANCE, entity);
 			CcpTimeDecorator ctd = new CcpTimeDecorator();
 			String formattedDateTime = CcpEntityExpurgableOptions.millisecond.getFormattedDate();
-			var exists = entity.getRecordFromUnionAll(unionAll, json);
+			Supplier<CcpJsonRepresentation> jsonSupplier = json.getJsonSupplier();
+			var exists = entity.getRecordFromUnionAll(unionAll, jsonSupplier);
 			System.out.println(formattedDateTime + ": " + exists);
 			ctd.sleep(60*1000);
 		}
@@ -164,6 +168,7 @@ public class CcpRandomTests {
 				words.add(word);
 			}
 		};
+		
 		queryExecutor.consumeQueryResult(query, new String[] {"group_positions_by_skills"}, "1m", 10_000, consumer, "skill");
 		System.out.println(words.size());
 	}
