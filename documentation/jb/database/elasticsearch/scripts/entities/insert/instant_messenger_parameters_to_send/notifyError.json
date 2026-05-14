@@ -1,0 +1,9 @@
+{
+	"recipient": 751717896,
+	"templateId": "notifyError",
+	"subjectType": "notifyError",
+	"moreParameters":{
+		"maxTriesToSendMessage": 10,
+		"sleepToSendMessage":3000
+	}
+}

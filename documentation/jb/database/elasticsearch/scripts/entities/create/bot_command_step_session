@@ -1,0 +1,24 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"chatId": {
+				"type": "long"
+			},
+			"botName": {
+				"type": "keyword"
+			},
+			"commandName": {
+				"type": "keyword"
+			},
+			"stepName": {
+				"type": "keyword"
+			},
+			"json": {
+				"dynamic": "true",
+				"properties": {}
+			}
+		}
+	}
+}
+	

@@ -1,0 +1,8 @@
+{
+	"apiName": "instantMessenger",
+	"url": "urlInstantMessengerKey",
+	"token": "tokenInstantMessengerKey",
+	"method": "POST",
+	"sleep": 3000,
+	"maxTries": 3
+}

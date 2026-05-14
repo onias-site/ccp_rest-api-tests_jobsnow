@@ -1,0 +1,14 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"commandName": {
+				"type": "keyword"
+			},
+			"parameterName": {
+				"type": "text"
+			}
+		}
+	}
+}
+	

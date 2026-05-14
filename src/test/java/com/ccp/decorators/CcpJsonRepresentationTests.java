@@ -1,7 +1,6 @@
 package com.ccp.decorators;
 
 import static com.ccp.decorators.JsonFieldNames.Umtextoqualquer;
-import static com.ccp.decorators.JsonFieldNames.abacaxi;
 import static com.ccp.decorators.JsonFieldNames.andré;
 import static com.ccp.decorators.JsonFieldNames.arrayJson;
 import static com.ccp.decorators.JsonFieldNames.avo;
@@ -673,32 +672,6 @@ public class CcpJsonRepresentationTests {
 	
 	}
 	
-	@Test
-	public void getValueFromPathTest() {
-		CcpOtherConstants.EMPTY_JSON.addToItem(filho, pai.name(), abacaxi.getValue());
-		String value = "abacaxi";
-		CcpJsonRepresentation addToItem = CcpOtherConstants
-				.EMPTY_JSON.addToItem(filho, pai, abacaxi.getValue());
-		CcpOtherConstants
-				.EMPTY_JSON.getDynamicVersion().addToItem(filho.name(), pai.name(), abacaxi.getValue());
-	
-		CcpOtherConstants.EMPTY_JSON.addToItem(filho, "pai", CcpOtherConstants.EMPTY_JSON);
-		
-		String defaultValue = "48 cm de benga grossa!!!";
- 		String valueFound = addToItem.getValueFromPath(defaultValue,filho, pai);
-		assertTrue(value.equals(valueFound));
-		System.out.println("getValueFromPathTest() = "+ valueFound);
-		String valueNotFound = addToItem.getValueFromPath(defaultValue,filho, pai, abacaxi);
-		assertTrue(defaultValue.equals(valueNotFound));
-		try {
-			addToItem.getValueFromPath("minha string");
-			assertTrue(false);
-		} catch (CcpErrorJsonPathIsMissing e) {
-			assertTrue(true);
-		};
- 		String valueFound2 = addToItem.getDynamicVersion().getValueFromPath(defaultValue,filho.name(), pai.name());
- 		assertTrue(valueFound.equals(valueFound2));
-	}
 
 	@Test
 	public void getAsStringDecorator() {

@@ -1,0 +1,21 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"stepName": {
+				"type": "keyword"
+			},
+			"engine": {
+				"type": "keyword"
+			},
+			"nextStep": {
+				"type": "keyword"
+			},
+			"stepFlow": {
+				"dynamic": "true",
+				"properties": {}
+			}
+		}
+	}
+}
+	

@@ -1,0 +1,14 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"botName": {
+				"type": "keyword"
+			},
+			"allowedUser": {
+				"type": "long"
+			}
+		}
+	}
+}
+	
