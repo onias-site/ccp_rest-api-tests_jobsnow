@@ -41,6 +41,7 @@ import com.ccp.especifications.http.CcpHttpHandler;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpRequester;
 import com.ccp.especifications.http.CcpHttpResponse;
+import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
 import com.ccp.especifications.password.CcpPasswordHandler;
 import com.ccp.especifications.text.extractor.CcpTextExtractor;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
@@ -48,6 +49,7 @@ import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.query.elasticsearch.CcpElasticSearchQueryExecutor;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
+import com.ccp.implementations.instant.messenger.telegram.CcpTelegramInstantMessenger;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.implementations.text.extractor.apache.tika.CcpApacheTikaTextExtractor;
@@ -79,8 +81,13 @@ public class CcpRandomTests {
 	}
 
 	public static void main(String[] args) {
+		CcpDependencyInjection.loadAllDependencies(new CcpTelegramInstantMessenger());
+		CcpInstantMessenger dependency = CcpDependencyInjection.getDependency(CcpInstantMessenger.class);
 		
+		CcpJsonRepresentation sendFile = dependency.sendFile("1154866992:AAGvXIU01UXgpA1gFOBE4pJXjhicf7JnRd8", 751717896L, 0L, "teste.txt", "legenda", 
+				new CcpStringDecorator("teste do tio onias").getBytes());
 		
+		System.out.println(sendFile);
 		
 	}
 
@@ -961,8 +968,8 @@ public class CcpRandomTests {
 
 	static void saveResume() {
 		VisEntityResume.ENTITY.delete(CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, "onias85@gmail.com"));
-		CcpHttpHandler http = new CcpHttpHandler(200, CcpOtherConstants.DO_NOTHING);
 		String path = "http://localhost:9200/profissionais2/_doc/onias85@gmail.com/_source";
+		CcpHttpHandler http = new CcpHttpHandler(200, CcpOtherConstants.DO_NOTHING, path);
 		CcpHttpMethods method = CcpHttpMethods.GET;
 		CcpJsonRepresentation headers = CcpOtherConstants.EMPTY_JSON;
 		String asUgglyJson = "";

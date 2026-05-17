@@ -118,7 +118,7 @@ public enum ResumeTransformations implements CcpTransformers{
 			
 			String asUgglyJson = CcpOtherConstants.EMPTY_JSON.put(JnEntityLoginPassword.Fields.password, "Jobsnow1!").asUgglyJson();
 
-			CcpHttpHandler http = new CcpHttpHandler(200, CcpOtherConstants.DO_NOTHING);
+			CcpHttpHandler http = new CcpHttpHandler(200, CcpOtherConstants.DO_NOTHING, path);
 			
 			CcpHttpResponse response = http.ccpHttp.executeHttpRequest(path, CcpHttpMethods.POST, CcpOtherConstants.EMPTY_JSON, asUgglyJson, 200);
 			

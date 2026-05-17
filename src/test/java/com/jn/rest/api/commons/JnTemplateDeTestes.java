@@ -75,14 +75,14 @@ public abstract class JnTemplateDeTestes {
 		CcpJsonRepresentation headers = this.getHeaders();
 
 		int expectedStatus = scenarioName.asNumber();
-		CcpHttpHandler http = new CcpHttpHandler(expectedStatus, CcpOtherConstants.DO_NOTHING);
 		String path = this.ENDPOINT_URL + uri;
+		CcpHttpHandler http = new CcpHttpHandler(expectedStatus, CcpOtherConstants.DO_NOTHING, path);
 		String name = this.getClass().getName();
 		String asUgglyJson = body.asUgglyJson();
 
 		CcpHttpResponse response = http.ccpHttp.executeHttpRequest(path, method, headers, asUgglyJson);
 
-		CcpJsonRepresentation responseFromEndpoint = http.executeHttpRequest(name, path, method, headers, asUgglyJson, transformer, response);
+		CcpJsonRepresentation responseFromEndpoint = http.executeHttpRequest(name, method, headers, asUgglyJson, transformer, response);
 
 		int actualStatus = response.httpStatus;
 

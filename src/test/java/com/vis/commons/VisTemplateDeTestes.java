@@ -101,14 +101,14 @@ public abstract class VisTemplateDeTestes {
 			CcpJsonRepresentation headers) {
 		CcpHttpMethods method = this.getMethod();
 		int expectedStatus = status.asNumber();
-		CcpHttpHandler http = new CcpHttpHandler(expectedStatus, CcpOtherConstants.DO_NOTHING);
 		String path = this.ENDPOINT_URL + uri;
+		CcpHttpHandler http = new CcpHttpHandler(expectedStatus, CcpOtherConstants.DO_NOTHING, path);
 		String name = this.getClass().getName();
 		String asUgglyJson = body.asUgglyJson(); 
 
 		CcpHttpResponse response = http.ccpHttp.executeHttpRequest(path, method, headers, asUgglyJson);
 
-		CcpJsonRepresentation executeHttpRequest = http.executeHttpRequest(name, path, method, headers, asUgglyJson, CcpHttpResponseType.singleRecord, response);
+		CcpJsonRepresentation executeHttpRequest = http.executeHttpRequest(name, method, headers, asUgglyJson, CcpHttpResponseType.singleRecord, response);
 
 		int actualStatus = response.httpStatus;
 
