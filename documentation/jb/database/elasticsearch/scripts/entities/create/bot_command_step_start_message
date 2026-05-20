@@ -8,6 +8,18 @@
 			"language": {
 				"type": "keyword"
 			},
+			"caption":{
+				"type": "text"
+			},
+			"contentType":{
+				"type": "keyword"
+			},
+			"type":{
+				"type": "keyword"
+			},
+			"fileName": {
+				"type": "text"
+			},
 			"message": {
 				"type": "text"
 			}

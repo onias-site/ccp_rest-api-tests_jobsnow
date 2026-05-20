@@ -2,10 +2,10 @@
     "mappings": {
             "dynamic": "strict",
 			"properties": {
-                "recipient": {
+                "chatId": {
                     "type": "long"
                 },
-                 "token": {
+                 "botName": {
                     "type": "keyword"
                 },
                 "subjectType":{

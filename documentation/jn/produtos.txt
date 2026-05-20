@@ -19,5 +19,7 @@ CHN => Módulo de channel em lightning networ, módulo responsável por interlig
 
 TE => Módulo de Telegram, telegram customizado para o JobsNow
 
+CentroDeCusto_ProblemaParaSerResolvido_SolucionadorDoProblema
+
 
 

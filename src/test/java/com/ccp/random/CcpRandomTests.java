@@ -84,7 +84,7 @@ public class CcpRandomTests {
 		CcpDependencyInjection.loadAllDependencies(new CcpTelegramInstantMessenger());
 		CcpInstantMessenger dependency = CcpDependencyInjection.getDependency(CcpInstantMessenger.class);
 		
-		CcpJsonRepresentation sendFile = dependency.sendFile("1154866992:AAGvXIU01UXgpA1gFOBE4pJXjhicf7JnRd8", 751717896L, 0L, "teste.txt", "legenda", 
+		CcpJsonRepresentation sendFile = dependency.sendFile(() -> "", "1154866992:AAGvXIU01UXgpA1gFOBE4pJXjhicf7JnRd8", 751717896L, 0L, "teste.txt", "legenda", 
 				new CcpStringDecorator("teste do tio onias").getBytes());
 		
 		System.out.println(sendFile);
