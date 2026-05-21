@@ -27,6 +27,7 @@ import com.ccp.decorators.CcpJsonRepresentation.CcpDynamicJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpTextDecorator;
+import com.ccp.decorators.CcpTextDecorator.CcpTemplateFunctions;
 import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.crud.CcpCrud;
@@ -37,6 +38,7 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.ccp.especifications.db.utils.entity.fields.CcpEntityField;
 import com.ccp.especifications.db.utils.entity.fields.annotations.CcpEntityFieldPrimaryKey;
+import com.ccp.especifications.http.CcpHttpContentType;
 import com.ccp.especifications.http.CcpHttpHandler;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpRequester;
@@ -57,7 +59,9 @@ import com.ccp.json.validations.fields.annotations.CcpJsonCopyFieldValidationsFr
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.jn.business.http.JnBusinessSendHttpRequest;
 import com.jn.business.login.JnBusinessExecuteLogout;
+import com.jn.business.messages.JnBusinessSendInstantMessage;
 import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityDisposableTest;
 import com.jn.entities.JnEntityJobsnowError;
@@ -82,13 +86,30 @@ public class CcpRandomTests {
 
 	public static void main(String[] args) {
 		CcpDependencyInjection.loadAllDependencies(new CcpTelegramInstantMessenger());
+		CcpTemplateFunctions.currentTimeMillis.get();
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
+				.put(JnBusinessSendInstantMessage.JnJsonValidator.chatId, 751717896L)
+				.put(JnBusinessSendInstantMessage.JnJsonValidator.templateId, "teste")
+				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.fileName, "{chatId}.txt")
+				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.caption, "{templateId}")
+				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.message, "{currentTimeMillis} mensagem de teste")
+				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.contentType, CcpHttpContentType.TEXT_PLAIN)
+				.put(JnBusinessSendInstantMessage.JnJsonValidator.botName, JnBusinessSendInstantMessage.JnBotType.support)
+				.put(JnBusinessSendInstantMessage.JnJsonValidator.instantMessageType, JnBusinessSendInstantMessage.JnInstantMessageType.text)
+				;
+		
+		JnBusinessSendHttpRequest httpRequester = new JnBusinessSendHttpRequest(JnBusinessSendInstantMessage.INSTANCE);		
+		httpRequester.execute(json);
+	}
+
+	static void enviarArquivoPorTelegram() {
+		CcpDependencyInjection.loadAllDependencies(new CcpTelegramInstantMessenger());
 		CcpInstantMessenger dependency = CcpDependencyInjection.getDependency(CcpInstantMessenger.class);
 		
 		CcpJsonRepresentation sendFile = dependency.sendFile(() -> "", "1154866992:AAGvXIU01UXgpA1gFOBE4pJXjhicf7JnRd8", 751717896L, 0L, "teste.txt", "legenda", 
 				new CcpStringDecorator("teste do tio onias").getBytes());
 		
 		System.out.println(sendFile);
-		
 	}
 
 	static void getDataWithTimeStamp() {

@@ -2,14 +2,26 @@
 	"mappings": {
 		"dynamic": "strict",
 		"properties": {
-			"recipient":{
-				"type": "keyword"
+			"chatId":{
+				"type": "long"
 			},
-			"subjectType":{
+			"botName":{
 				"type": "keyword"
 			},
 			"templateId":{
 				"type": "keyword"
+			},
+			"caption":{
+				"type": "text"
+			},
+			"contentType":{
+				"type": "keyword"
+			},
+			"instantMessageType":{
+				"type": "keyword"
+			},
+			"fileName": {
+				"type": "text"
 			},
 			"moreParameters": {
 				"dynamic": "true",

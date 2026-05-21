@@ -14,7 +14,7 @@
 			"contentType":{
 				"type": "keyword"
 			},
-			"type":{
+			"instantMessageType":{
 				"type": "keyword"
 			},
 			"fileName": {

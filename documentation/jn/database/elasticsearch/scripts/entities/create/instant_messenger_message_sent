@@ -8,12 +8,21 @@
                  "botName": {
                     "type": "keyword"
                 },
-                "subjectType":{
+                "templateId":{
                 	"type": "keyword"
                 },
-                "interval":{
-                	"type": "integer"
-                }
+				"caption":{
+					"type": "text"
+				},
+				"contentType":{
+					"type": "keyword"
+				},
+				"instantMessageType":{
+					"type": "keyword"
+				},
+				"fileName": {
+					"type": "text"
+				}
             }
         }
 }
