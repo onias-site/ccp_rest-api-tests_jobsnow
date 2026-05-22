@@ -64,6 +64,7 @@ import com.jn.business.login.JnBusinessExecuteLogout;
 import com.jn.business.messages.JnBusinessSendInstantMessage;
 import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityDisposableTest;
+import com.jn.entities.JnEntityInstantMessengerMessageSent;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
@@ -91,15 +92,17 @@ public class CcpRandomTests {
 				.put(JnBusinessSendInstantMessage.JnJsonValidator.chatId, 751717896L)
 				.put(JnBusinessSendInstantMessage.JnJsonValidator.templateId, "teste")
 				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.fileName, "{chatId}.txt")
-				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.caption, "{templateId}")
-				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.message, "{currentTimeMillis} mensagem de teste")
+				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.caption, "{templateId}.{currentTimeMillis()}")
 				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.contentType, CcpHttpContentType.TEXT_PLAIN)
+				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.message, "mensagem de teste")
 				.put(JnBusinessSendInstantMessage.JnJsonValidator.botName, JnBusinessSendInstantMessage.JnBotType.support)
 				.put(JnBusinessSendInstantMessage.JnJsonValidator.instantMessageType, JnBusinessSendInstantMessage.JnInstantMessageType.text)
 				;
 		
 		JnBusinessSendHttpRequest httpRequester = new JnBusinessSendHttpRequest(JnBusinessSendInstantMessage.INSTANCE);		
 		httpRequester.execute(json);
+		boolean exists = JnEntityInstantMessengerMessageSent.ENTITY.exists(json);
+		System.out.println(exists);
 	}
 
 	static void enviarArquivoPorTelegram() {

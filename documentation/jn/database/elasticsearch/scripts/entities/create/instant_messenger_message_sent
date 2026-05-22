@@ -22,6 +22,9 @@
 				},
 				"fileName": {
 					"type": "text"
+				},
+				"message": {
+					"type": "text"
 				}
             }
         }
