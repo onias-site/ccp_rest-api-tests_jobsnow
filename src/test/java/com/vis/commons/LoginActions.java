@@ -99,9 +99,9 @@ public enum LoginActions implements CcpBusiness {
 			String entityName = entityDetails.entityName;
 			try {
 				boolean exists = entity.exists(json);
-				allStatus = allStatus.getDynamicVersion().put(entityName, exists);
+				allStatus = allStatus.put(() -> entityName, exists);
 			} catch (CcpErrorEntityPrimaryKeyIsMissing e) {
-				allStatus = allStatus.getDynamicVersion().put(entityName, false);
+				allStatus = allStatus.put(() -> entityName, false);
 			}
 		}
 	}

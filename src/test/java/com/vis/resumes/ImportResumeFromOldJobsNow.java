@@ -98,9 +98,9 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 	
 //		SyncServiceVisResume.INSTANCE.save(resume);
 		
-		String email = candidate.getDynamicVersion().getAsString("id");
+		String email = candidate.getAsString(() -> "id");
 		CcpJsonRepresentation put = resume.put(VisEntityResume.Fields.email, email)
-				.getDynamicVersion().put("language", "portuguese")
+				.put(() -> "language", "portuguese")
 				;
 		
 		VisServiceResume.Save.execute(put.content);

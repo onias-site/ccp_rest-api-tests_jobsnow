@@ -47,8 +47,8 @@ public class ValidarLogin  extends JnTemplateDeTestes{
 	@Test
 	public void caminhoFeliz() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		this.execute(variaveisParaTeste, CcpProcessStatusDefault.OK, x -> this.cadastrarSenhaParaEntrarNoSistema(x).getDynamicVersion().getAsString("sessionToken"));
-		this.execute(variaveisParaTeste, CcpProcessStatusDefault.OK, x -> this.executarLogin(x).getDynamicVersion().getAsString("sessionToken"));
+		this.execute(variaveisParaTeste, CcpProcessStatusDefault.OK, x -> this.cadastrarSenhaParaEntrarNoSistema(x).getAsString(() -> "sessionToken"));
+		this.execute(variaveisParaTeste, CcpProcessStatusDefault.OK, x -> this.executarLogin(x).getAsString(() -> "sessionToken"));
 	}
 
 	@Test

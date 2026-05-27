@@ -1,0 +1,1845 @@
+[{
+  "childrenCount": 0,
+  "directParent": ["MOBILE", "FRONTEND"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MOBILE", "FRONTEND"],
+  "skill": "DART",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "DART LANG"},
+    {"skill": "DART LANGUAGE"},
+    {"skill": "DART-LANG"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND"],
+  "skill": "LUA",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "LUA SCRIPT"},
+    {"skill": "LUA LANG"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND"],
+  "skill": "HASKELL",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "HASKELL LANG"},
+    {"skill": "HASKELL LANGUAGE"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND", "MENSAGERIA"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND", "MENSAGERIA"],
+  "skill": "ERLANG",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "ERLANG OTP"},
+    {"skill": "ERLANG LANG"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MACHINELEARNING"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MACHINELEARNING"],
+  "skill": "JULIA",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "JULIA LANG"},
+    {"skill": "JULIA LANGUAGE"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["JVM", "DOTNET"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["JVM", "DOTNET"],
+  "skill": "FSHARP",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "F#"},
+    {"skill": "F SHARP"},
+    {"skill": "F-SHARP"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["JVM"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["JVM"],
+  "skill": "CLOJURE",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "CLOJURESCRIPT"},
+    {"skill": "CLOJURE SCRIPT"},
+    {"skill": "CLOJURE LANG"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["FRONTEND"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["FRONTEND"],
+  "skill": "ELM",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "ELM LANG"},
+    {"skill": "ELM LANGUAGE"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND"],
+  "skill": "CRYSTAL",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "CRYSTAL LANG"},
+    {"skill": "CRYSTAL LANGUAGE"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND"],
+  "skill": "ZIG",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "ZIG LANG"},
+    {"skill": "ZIG LANGUAGE"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND"],
+  "skill": "NIM",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "NIM LANG"},
+    {"skill": "NIM LANGUAGE"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DEVOPS", "AUTOMATION"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DEVOPS", "AUTOMATION"],
+  "skill": "BASH",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "SHELL"},
+    {"skill": "SHELL SCRIPT"},
+    {"skill": "BASH SCRIPT"},
+    {"skill": "SH"},
+    {"skill": "BASH SCRIPTING"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DEVOPS", "AUTOMATION"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DEVOPS", "AUTOMATION"],
+  "skill": "POWERSHELL",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "POWER SHELL"},
+    {"skill": "PS1"},
+    {"skill": "PWSH"},
+    {"skill": "POWER-SHELL"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND"],
+  "skill": "VHDL",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "VHSIC"},
+    {"skill": "VHSIC HDL"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND"],
+  "skill": "OCAML",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "O CAML"},
+    {"skill": "OCAML LANG"},
+    {"skill": "OBJECTIVE CAML"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["FRONTEND", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["FRONTEND", "JAVASCRIPT"],
+  "skill": "SOLIDJS",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "SOLID JS"},
+    {"skill": "SOLID.JS"},
+    {"skill": "SOLID-JS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["FRONTEND", "HTML"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["FRONTEND", "HTML"],
+  "skill": "HTMX",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "HTM X"},
+    {"skill": "HTM-X"},
+    {"skill": "HTMX JS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["FRONTEND", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["FRONTEND", "JAVASCRIPT"],
+  "skill": "QWIK",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "QWIK JS"},
+    {"skill": "QWIK.JS"},
+    {"skill": "BUILDER IO QWIK"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["FRONTEND", "JAVASCRIPT", "NODE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["FRONTEND", "JAVASCRIPT", "NODE"],
+  "skill": "REMIX",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "REMIX JS"},
+    {"skill": "REMIX.JS"},
+    {"skill": "REMIX-JS"},
+    {"skill": "REMIX RUN"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["FRONTEND", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["FRONTEND", "JAVASCRIPT"],
+  "skill": "ASTRO",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "ASTRO JS"},
+    {"skill": "ASTRO.JS"},
+    {"skill": "ASTRO BUILD"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["FRONTEND", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["FRONTEND", "JAVASCRIPT"],
+  "skill": "ALPINEJS",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "ALPINE JS"},
+    {"skill": "ALPINE.JS"},
+    {"skill": "ALPINE-JS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["FRONTEND", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["FRONTEND", "JAVASCRIPT"],
+  "skill": "PREACT",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "PRE ACT"},
+    {"skill": "PREACT JS"},
+    {"skill": "PREACT.JS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["FRONTEND", "JAVASCRIPT", "MOBILE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["FRONTEND", "JAVASCRIPT", "MOBILE"],
+  "skill": "STENCIL",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "STENCIL JS"},
+    {"skill": "STENCIL.JS"},
+    {"skill": "STENCILJS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["FRONTEND", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["FRONTEND", "JAVASCRIPT"],
+  "skill": "LIT",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "LIT ELEMENT"},
+    {"skill": "LIT HTML"},
+    {"skill": "LIT JS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["FRONTEND", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["FRONTEND", "JAVASCRIPT"],
+  "skill": "STIMULUS",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "STIMULUS JS"},
+    {"skill": "HOTWIRE STIMULUS"},
+    {"skill": "STIMULUS REFLEX"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["FRONTEND", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["FRONTEND", "JAVASCRIPT"],
+  "skill": "MITHRIL",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "MITHRIL JS"},
+    {"skill": "MITHRIL.JS"},
+    {"skill": "MITHRILJS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["FRONTEND", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["FRONTEND", "JAVASCRIPT"],
+  "skill": "INFERNO",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "INFERNO JS"},
+    {"skill": "INFERNO.JS"},
+    {"skill": "INFERNOJS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND", "PYTHON"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND", "PYTHON"],
+  "skill": "FASTAPI",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "FAST API"},
+    {"skill": "FAST-API"},
+    {"skill": "FASTAPI PYTHON"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND", "GOLANG"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND", "GOLANG"],
+  "skill": "GIN",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "GIN GONIC"},
+    {"skill": "GIN-GONIC"},
+    {"skill": "GIN GO"},
+    {"skill": "GIN GOLANG"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND", "GOLANG"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND", "GOLANG"],
+  "skill": "ECHO",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "ECHO GO"},
+    {"skill": "ECHO GOLANG"},
+    {"skill": "ECHO FRAMEWORK"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND", "GOLANG"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND", "GOLANG"],
+  "skill": "FIBER",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "GOFIBER"},
+    {"skill": "GO FIBER"},
+    {"skill": "FIBER GO"},
+    {"skill": "FIBER GOLANG"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND", "RUST"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND", "RUST"],
+  "skill": "AXUM",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "AXUM RUST"},
+    {"skill": "AXUM FRAMEWORK"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND", "RUST"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND", "RUST"],
+  "skill": "ACTIX",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "ACTIX WEB"},
+    {"skill": "ACTIX-WEB"},
+    {"skill": "ACTIX RUST"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND", "NODE", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND", "NODE", "JAVASCRIPT"],
+  "skill": "KOA",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "KOA JS"},
+    {"skill": "KOA.JS"},
+    {"skill": "KOAJS"},
+    {"skill": "KOA NODE"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND", "NODE", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND", "NODE", "JAVASCRIPT"],
+  "skill": "HAPI",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "HAPI JS"},
+    {"skill": "HAPI.JS"},
+    {"skill": "HAPIJS"},
+    {"skill": "HAPI NODE"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND", "CMS", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND", "CMS", "JAVASCRIPT"],
+  "skill": "STRAPI",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "STRAPI JS"},
+    {"skill": "STRAPI CMS"},
+    {"skill": "STRAPI.JS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND", "CMS"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND", "CMS"],
+  "skill": "DIRECTUS",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "DIRECTUS CMS"},
+    {"skill": "DIRECTUS API"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND", "CMS", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND", "CMS", "JAVASCRIPT"],
+  "skill": "PAYLOAD",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "PAYLOAD CMS"},
+    {"skill": "PAYLOADCMS"},
+    {"skill": "PAYLOAD JS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND", "JAVASCRIPT"],
+  "skill": "ELYSIA",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "ELYSIA JS"},
+    {"skill": "ELYSIA BUN"},
+    {"skill": "ELYSIA.JS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND", "JAVASCRIPT"],
+  "skill": "HONO",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "HONO JS"},
+    {"skill": "HONO.JS"},
+    {"skill": "HONOJS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BACKEND", "PYTHON"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BACKEND", "PYTHON"],
+  "skill": "SANIC",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "SANIC PYTHON"},
+    {"skill": "SANIC FRAMEWORK"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "NOSQLDATABASE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "NOSQLDATABASE"],
+  "skill": "CLICKHOUSE",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "CLICK HOUSE"},
+    {"skill": "CLICK-HOUSE"},
+    {"skill": "CLICKHOUSE DB"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "SQLDATABASE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "SQLDATABASE"],
+  "skill": "COCKROACHDB",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "COCKROACH DB"},
+    {"skill": "COCKROACH DATABASE"},
+    {"skill": "COCKROACH"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "SQLDATABASE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "SQLDATABASE"],
+  "skill": "TIMESCALEDB",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "TIMESCALE DB"},
+    {"skill": "TIMESCALE DATABASE"},
+    {"skill": "TIMESCALE"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "NOSQLDATABASE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "NOSQLDATABASE"],
+  "skill": "INFLUXDB",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "INFLUX DB"},
+    {"skill": "INFLUX DATABASE"},
+    {"skill": "INFLUX"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "NOSQLDATABASE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "NOSQLDATABASE"],
+  "skill": "SCYLLADB",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "SCYLLA DB"},
+    {"skill": "SCYLLA DATABASE"},
+    {"skill": "SCYLLA"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "NOSQLDATABASE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "NOSQLDATABASE"],
+  "skill": "ARANGODB",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "ARANGO DB"},
+    {"skill": "ARANGO DATABASE"},
+    {"skill": "ARANGO"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "SQLDATABASE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "SQLDATABASE"],
+  "skill": "DUCKDB",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "DUCK DB"},
+    {"skill": "DUCK DATABASE"},
+    {"skill": "DUCK-DB"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "BACKEND"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "BACKEND"],
+  "skill": "SUPABASE",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "SUPA BASE"},
+    {"skill": "SUPA-BASE"},
+    {"skill": "SUPABASE DB"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "BACKEND"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "BACKEND"],
+  "skill": "POCKETBASE",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "POCKET BASE"},
+    {"skill": "POCKET-BASE"},
+    {"skill": "POCKETBASE DB"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "SQLDATABASE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "SQLDATABASE"],
+  "skill": "PLANETSCALE",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "PLANET SCALE"},
+    {"skill": "PLANET-SCALE"},
+    {"skill": "PLANETSCALE DB"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE"],
+  "skill": "EDGEDB",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "EDGE DB"},
+    {"skill": "EDGE DATABASE"},
+    {"skill": "EDGE-DB"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "NOSQLDATABASE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "NOSQLDATABASE"],
+  "skill": "SURREALDB",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "SURREAL DB"},
+    {"skill": "SURREAL DATABASE"},
+    {"skill": "SURREAL-DB"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MACHINELEARNING", "PYTHON"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MACHINELEARNING", "PYTHON"],
+  "skill": "TENSORFLOW",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "TENSOR FLOW"},
+    {"skill": "TENSOR-FLOW"},
+    {"skill": "TF"},
+    {"skill": "TENSORFLOW PYTHON"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MACHINELEARNING", "PYTHON"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MACHINELEARNING", "PYTHON"],
+  "skill": "PYTORCH",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "PY TORCH"},
+    {"skill": "PY-TORCH"},
+    {"skill": "TORCH"},
+    {"skill": "PYTORCH PYTHON"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MACHINELEARNING", "PYTHON"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MACHINELEARNING", "PYTHON"],
+  "skill": "KERAS",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "KERAS PYTHON"},
+    {"skill": "KERAS DL"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MACHINELEARNING", "PYTHON"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MACHINELEARNING", "PYTHON"],
+  "skill": "SCIKITLEARN",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "SCIKIT LEARN"},
+    {"skill": "SCIKIT-LEARN"},
+    {"skill": "SKL"},
+    {"skill": "SKLEARN"},
+    {"skill": "SK LEARN"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MACHINELEARNING", "LLM"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MACHINELEARNING", "LLM"],
+  "skill": "HUGGINGFACE",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "HUGGING FACE"},
+    {"skill": "HF"},
+    {"skill": "HUGGING-FACE"},
+    {"skill": "HF TRANSFORMERS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["LLM", "PYTHON", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["LLM", "PYTHON", "JAVASCRIPT"],
+  "skill": "LANGCHAIN",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "LANG CHAIN"},
+    {"skill": "LANG-CHAIN"},
+    {"skill": "LANGCHAIN PYTHON"},
+    {"skill": "LANGCHAIN JS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["LLM", "PYTHON"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["LLM", "PYTHON"],
+  "skill": "LLAMAINDEX",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "LLAMA INDEX"},
+    {"skill": "LLAMA-INDEX"},
+    {"skill": "GPT INDEX"},
+    {"skill": "LLAMAINDEX PYTHON"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["LLM", "CLOUD"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["LLM", "CLOUD"],
+  "skill": "OPENAI",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "OPEN AI"},
+    {"skill": "CHATGPT API"},
+    {"skill": "GPT API"},
+    {"skill": "OPENAI API"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MACHINELEARNING", "DEVOPS"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MACHINELEARNING", "DEVOPS"],
+  "skill": "MLFLOW",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "ML FLOW"},
+    {"skill": "ML-FLOW"},
+    {"skill": "MLFLOW PYTHON"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MACHINELEARNING", "KUBERNETES"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MACHINELEARNING", "KUBERNETES"],
+  "skill": "KUBEFLOW",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "KUBE FLOW"},
+    {"skill": "KUBE-FLOW"},
+    {"skill": "KUBEFLOW PIPELINES"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["LLM", "MACHINELEARNING"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["LLM", "MACHINELEARNING"],
+  "skill": "RAG",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "RETRIEVAL AUGMENTED GENERATION"},
+    {"skill": "RETRIEVAL-AUGMENTED-GENERATION"},
+    {"skill": "RAG PIPELINE"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "MACHINELEARNING"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "MACHINELEARNING"],
+  "skill": "VECTORDATABASE",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "VECTOR DATABASE"},
+    {"skill": "VECTOR DB"},
+    {"skill": "VECTOR-DATABASE"},
+    {"skill": "VECTOR STORE"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "MACHINELEARNING"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "MACHINELEARNING"],
+  "skill": "PINECONE",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "PINE CONE"},
+    {"skill": "PINECONE DB"},
+    {"skill": "PINECONE VECTOR"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "MACHINELEARNING"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "MACHINELEARNING"],
+  "skill": "WEAVIATE",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "WEAVIATE DB"},
+    {"skill": "WEAVIATE VECTOR"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "MACHINELEARNING"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "MACHINELEARNING"],
+  "skill": "QDRANT",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "QDRANT DB"},
+    {"skill": "QDRANT VECTOR"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MACHINELEARNING", "GCP"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MACHINELEARNING", "GCP"],
+  "skill": "VERTEXAI",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "VERTEX AI"},
+    {"skill": "VERTEX-AI"},
+    {"skill": "GCP VERTEX AI"},
+    {"skill": "GOOGLE VERTEX AI"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MACHINELEARNING", "AWS"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MACHINELEARNING", "AWS"],
+  "skill": "SAGEMAKER",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "SAGE MAKER"},
+    {"skill": "AWS SAGEMAKER"},
+    {"skill": "AMAZON SAGEMAKER"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MACHINELEARNING", "LLM"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MACHINELEARNING", "LLM"],
+  "skill": "GENERATIVEAI",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "GENERATIVE AI"},
+    {"skill": "GEN AI"},
+    {"skill": "GENAI"},
+    {"skill": "GENERATIVE-AI"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "ETL"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "ETL"],
+  "skill": "DBT",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "DATA BUILD TOOL"},
+    {"skill": "DBT CORE"},
+    {"skill": "DBT CLOUD"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["ETL", "INTEGRATION123"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["ETL", "INTEGRATION123"],
+  "skill": "AIRBYTE",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "AIR BYTE"},
+    {"skill": "AIR-BYTE"},
+    {"skill": "AIRBYTE ETL"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["PYTHON", "DATABASE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["PYTHON", "DATABASE"],
+  "skill": "POLARS",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "POLARS PYTHON"},
+    {"skill": "POLARS DF"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["PYTHON", "MACHINELEARNING"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["PYTHON", "MACHINELEARNING"],
+  "skill": "DASK",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "DASK PYTHON"},
+    {"skill": "DASK DISTRIBUTED"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["BIGDATA", "MENSAGERIA"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["BIGDATA", "MENSAGERIA"],
+  "skill": "FLINK",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "APACHE FLINK"},
+    {"skill": "FLINK STREAMING"},
+    {"skill": "FLINK SQL"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "BIGDATA"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "BIGDATA"],
+  "skill": "DELTA LAKE",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "DELTALAKE"},
+    {"skill": "DELTA"},
+    {"skill": "DELTA LAKE FORMAT"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "BIGDATA"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "BIGDATA"],
+  "skill": "ICEBERG",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "APACHE ICEBERG"},
+    {"skill": "ICEBERG TABLE FORMAT"},
+    {"skill": "ICEBERG FORMAT"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DATABASE", "BIGDATA"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DATABASE", "BIGDATA"],
+  "skill": "TRINO",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "PRESTO SQL"},
+    {"skill": "TRINO SQL"},
+    {"skill": "TRINODB"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["TDD", "DATABASE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["TDD", "DATABASE"],
+  "skill": "GREAT EXPECTATIONS",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "GREATEXPECTATIONS"},
+    {"skill": "GREAT-EXPECTATIONS"},
+    {"skill": "GX"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MACHINELEARNING"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MACHINELEARNING"],
+  "skill": "FEAST",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "FEAST FEATURE STORE"},
+    {"skill": "FEATURE STORE"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DEVOPS", "KUBERNETES"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DEVOPS", "KUBERNETES"],
+  "skill": "ARGOCD",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "ARGO CD"},
+    {"skill": "ARGO-CD"},
+    {"skill": "ARGO"},
+    {"skill": "ARGOCD GITOPS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DEVOPS", "KUBERNETES"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DEVOPS", "KUBERNETES"],
+  "skill": "FLUX",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "FLUXCD"},
+    {"skill": "FLUX CD"},
+    {"skill": "FLUX-CD"},
+    {"skill": "FLUX GITOPS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DEVOPS", "KUBERNETES"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DEVOPS", "KUBERNETES"],
+  "skill": "ISTIO",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "ISTIO MESH"},
+    {"skill": "ISTIO SERVICE MESH"},
+    {"skill": "ISTIO PROXY"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DEVOPS", "KUBERNETES"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DEVOPS", "KUBERNETES"],
+  "skill": "LINKERD",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "LINKERD MESH"},
+    {"skill": "LINKERD SERVICE MESH"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DEVOPS", "KUBERNETES"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DEVOPS", "KUBERNETES"],
+  "skill": "KEDA",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "KUBERNETES KEDA"},
+    {"skill": "KEDA AUTOSCALER"},
+    {"skill": "K8S KEDA"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DEVOPS", "VIRTUALIZATION"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DEVOPS", "VIRTUALIZATION"],
+  "skill": "PACKER",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "HASHICORP PACKER"},
+    {"skill": "PACKER HCL"},
+    {"skill": "PACKER BUILD"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DEVOPS", "AUTOMATION"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DEVOPS", "AUTOMATION"],
+  "skill": "CHEF",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "CHEF INFRA"},
+    {"skill": "CHEF AUTOMATE"},
+    {"skill": "OPSCODE CHEF"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DEVOPS", "AUTOMATION"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DEVOPS", "AUTOMATION"],
+  "skill": "SALTSTACK",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "SALT"},
+    {"skill": "SALT STACK"},
+    {"skill": "SALT-STACK"},
+    {"skill": "SALTPROJECT"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DEVOPS", "KUBERNETES"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DEVOPS", "KUBERNETES"],
+  "skill": "CROSSPLANE",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "CROSS PLANE"},
+    {"skill": "CROSS-PLANE"},
+    {"skill": "CROSSPLANE K8S"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DEVOPS", "IAC"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DEVOPS", "IAC"],
+  "skill": "PULUMI",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "PULUMI IAC"},
+    {"skill": "PULUMI IaC"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DEVOPS", "SECURITY123"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DEVOPS", "SECURITY123"],
+  "skill": "VAULT",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "HASHICORP VAULT"},
+    {"skill": "VAULT SECRET"},
+    {"skill": "VAULT PKI"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DEVOPS", "CLOUD"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DEVOPS", "CLOUD"],
+  "skill": "NOMAD",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "HASHICORP NOMAD"},
+    {"skill": "NOMAD SCHEDULER"},
+    {"skill": "NOMAD ORCHESTRATOR"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["DEVOPS", "KUBERNETES"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["DEVOPS", "KUBERNETES"],
+  "skill": "SKAFFOLD",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "SKAFFOLD K8S"},
+    {"skill": "GOOGLE SKAFFOLD"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MONITOR123", "DEVOPS"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MONITOR123", "DEVOPS"],
+  "skill": "OPENTELEMETRY",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "OTEL"},
+    {"skill": "OPEN TELEMETRY"},
+    {"skill": "OPEN-TELEMETRY"},
+    {"skill": "OTEL SDK"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MONITOR123", "DEVOPS"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MONITOR123", "DEVOPS"],
+  "skill": "JAEGER",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "JAEGER TRACING"},
+    {"skill": "JAEGERTRACING"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MONITOR123", "DEVOPS"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MONITOR123", "DEVOPS"],
+  "skill": "LOKI",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "GRAFANA LOKI"},
+    {"skill": "LOKI LOGS"},
+    {"skill": "LOKI LOG AGGREGATION"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MONITOR123", "DEVOPS"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MONITOR123", "DEVOPS"],
+  "skill": "TEMPO",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "GRAFANA TEMPO"},
+    {"skill": "TEMPO TRACING"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MONITOR123"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MONITOR123"],
+  "skill": "VICTORIAMETRICS",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "VICTORIA METRICS"},
+    {"skill": "VICTORIA-METRICS"},
+    {"skill": "VM METRICS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MONITOR123", "DEVOPS"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MONITOR123", "DEVOPS"],
+  "skill": "SIGNOZ",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "SIGN OZ"},
+    {"skill": "SIGNOZ APM"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["ANDROID", "MOBILE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["ANDROID", "MOBILE"],
+  "skill": "JETPACK COMPOSE",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "JETPACKCOMPOSE"},
+    {"skill": "COMPOSE ANDROID"},
+    {"skill": "COMPOSE MULTIPLATFORM"},
+    {"skill": "ANDROID COMPOSE"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["IOS", "MOBILE", "SWIFT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["IOS", "MOBILE", "SWIFT"],
+  "skill": "SWIFTUI",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "SWIFT UI"},
+    {"skill": "SWIFT-UI"},
+    {"skill": "SWIFTUI IOS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["REACTNATIVE", "MOBILE", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["REACTNATIVE", "MOBILE", "JAVASCRIPT"],
+  "skill": "EXPO",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "EXPO SDK"},
+    {"skill": "EXPO GO"},
+    {"skill": "EXPO REACT NATIVE"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MOBILE", "DEVOPS"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MOBILE", "DEVOPS"],
+  "skill": "FASTLANE",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "FAST LANE"},
+    {"skill": "FAST-LANE"},
+    {"skill": "FASTLANE CI"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MOBILE", "TDD"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MOBILE", "TDD"],
+  "skill": "DETOX",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "DETOX TEST"},
+    {"skill": "DETOX E2E"},
+    {"skill": "DETOX REACT NATIVE"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MOBILE", "JAVASCRIPT"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MOBILE", "JAVASCRIPT"],
+  "skill": "CAPACITOR",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "IONIC CAPACITOR"},
+    {"skill": "CAPACITOR JS"},
+    {"skill": "CAPACITOR IONIC"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["JAVASCRIPT", "NODE", "JSDEPENDENCYMANAGER"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["JAVASCRIPT", "NODE", "JSDEPENDENCYMANAGER"],
+  "skill": "BUN",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "BUN JS"},
+    {"skill": "BUNJS"},
+    {"skill": "BUN RUNTIME"},
+    {"skill": "BUN.SH"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["JAVASCRIPT", "NODE"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["JAVASCRIPT", "NODE"],
+  "skill": "DENO",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "DENO JS"},
+    {"skill": "DENO RUNTIME"},
+    {"skill": "DENO.LAND"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["JAVASCRIPT", "DEVOPS"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["JAVASCRIPT", "DEVOPS"],
+  "skill": "TURBOREPO",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "TURBO REPO"},
+    {"skill": "TURBO-REPO"},
+    {"skill": "TURBOREPO MONOREPO"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["JAVASCRIPT", "DEVOPS"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["JAVASCRIPT", "DEVOPS"],
+  "skill": "NX",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "NX MONOREPO"},
+    {"skill": "NRWL NX"},
+    {"skill": "NRWL"},
+    {"skill": "NX BUILD"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["JAVASCRIPT", "FRONTEND"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["JAVASCRIPT", "FRONTEND"],
+  "skill": "VITE",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "VITE JS"},
+    {"skill": "VITE.JS"},
+    {"skill": "VITEJS"},
+    {"skill": "VITE BUILD"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["CLOUD", "DEVOPS"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["CLOUD", "DEVOPS"],
+  "skill": "VERCEL",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "VERCEL DEPLOY"},
+    {"skill": "VERCEL CLOUD"},
+    {"skill": "NOW.SH"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["CLOUD", "DEVOPS"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["CLOUD", "DEVOPS"],
+  "skill": "NETLIFY",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "NETLIFY DEPLOY"},
+    {"skill": "NETLIFY CLOUD"},
+    {"skill": "NETLIFY CMS"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MENSAGERIA"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MENSAGERIA"],
+  "skill": "NATS",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "NATS IO"},
+    {"skill": "NATS.IO"},
+    {"skill": "NATS MESSAGING"},
+    {"skill": "NATS JETSTREAM"}
+  ]
+}, {
+  "childrenCount": 0,
+  "directParent": ["MENSAGERIA", "BIGDATA"],
+  "hasMirror": false,
+  "hasNoParent": false,
+  "hasRepeatedParent": false,
+  "hasSkillsWithCommonParentsSize": false,
+  "mirror": "",
+  "parent": ["MENSAGERIA", "BIGDATA"],
+  "skill": "PULSAR",
+  "skillsWithCommonParents": [],
+  "synonym": [
+    {"skill": "APACHE PULSAR"},
+    {"skill": "PULSAR MESSAGING"},
+    {"skill": "PULSAR STREAMING"}
+  ]
+}]
