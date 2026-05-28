@@ -77,6 +77,9 @@ import com.vis.services.VisServiceSkills;
 
 public class CcpRandomTests {
 
+	static enum JsonFields implements CcpJsonFieldName{
+		implicitSkills, skill, word, childrenCount, hasNoParent, parent, mirror, hasMirror, allParents, hasRepeatedParent, directParent, commonParents, hasSkillsWithCommonParentsSize, skillsWithCommonParents, synonym, similar, preRequisite, positionsCount, parentSize, skillSize, words, id, skillsPerParent, tipoVaga, curriculo, conteudo, text
+	}
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
 	private static final String LINKEDIN_REGEX = "^https://(www\\.)?linkedin\\.com/in/[a-zA-Z0-9-_%]+/?$";
 	
@@ -184,7 +187,7 @@ public class CcpRandomTests {
 				+ "\r\n"
 				+ "📩 Interessou ou conhece alguém com esse perfil?\r\n"
 				+ "Envie o cv com pretensão salarial no e-mail: isadora@bluesix.com.br");
-		System.out.println(skillsFromText.removeFields(() -> "implicitSkills"));
+		System.out.println(skillsFromText.removeFields(JsonFields.implicitSkills));
 	}
 
 	static void countWords() {
@@ -192,9 +195,9 @@ public class CcpRandomTests {
 		CcpQueryOptions query = CcpQueryOptions.INSTANCE.matchAll();
 		Set<String> words = new HashSet<>();
 		Consumer<CcpJsonRepresentation> consumer = json -> {
-			List<CcpJsonRepresentation> skills = json.getAsJsonList(() -> "skill");
+			List<CcpJsonRepresentation> skills = json.getAsJsonList(JsonFields.skill);
 			for (CcpJsonRepresentation skill : skills) {
-				String word = skill.getAsString(() -> "word");
+				String word = skill.getAsString(JsonFields.word);
 				words.add(word);
 			}
 		};
@@ -250,7 +253,7 @@ public class CcpRandomTests {
 		List<Set<String>> collect = lines.stream().map(x -> Arrays.asList(x.split(",")).stream().map(y -> y.trim().toUpperCase()).filter(y -> y.length() > 1).collect(Collectors.toSet())).collect(Collectors.toList());
 		List<String> allSynonyms = new ArrayList<>(lines);
 		for (CcpJsonRepresentation json : asJsonList) {
-			String skill = json.getAsString(() -> "skill");
+			String skill = json.getAsString(JsonFields.skill);
 			boolean skillFound = false;
 			for (Set<String> set : collect) {
 				skillFound = set.contains(skill);
@@ -307,20 +310,20 @@ public class CcpRandomTests {
 		
 		List<CcpJsonRepresentation> report = skills
 		.stream()
-		.map(x -> CcpOtherConstants.EMPTY_JSON.put(() -> "skill", x))
-		.map(x -> x.put(() -> "childrenCount", new ArrayList<>( filtered).stream().filter(skillsNestaLinha -> skillsNestaLinha.indexOf(x.getAsString(() -> "skill")) > 0).count()))
+		.map(x -> CcpOtherConstants.EMPTY_JSON.put(JsonFields.skill, x))
+		.map(x -> x.put(JsonFields.childrenCount, new ArrayList<>(filtered).stream().filter(skillsNestaLinha -> skillsNestaLinha.indexOf(x.getAsString(JsonFields.skill)) > 0).count()))
 		.map(x -> {
-			Optional<List<String>> findFirst = new ArrayList<>( filtered).stream().filter(skillsNestaLinha -> skillsNestaLinha.indexOf(x.getAsString(() -> "skill")) == 0).findFirst();
+			Optional<List<String>> findFirst = new ArrayList<>(filtered).stream().filter(skillsNestaLinha -> skillsNestaLinha.indexOf(x.getAsString(JsonFields.skill)) == 0).findFirst();
 			boolean hasNoParent = false == findFirst.isPresent();
 			if(hasNoParent) {
 				return x;
 			}
 			List<String> list = findFirst.get();
 			List<String> parent = list.subList(1, list.size());
-			CcpJsonRepresentation put = x.put(() -> "parent", parent);
+			CcpJsonRepresentation put = x.put(JsonFields.parent, parent);
 			return put;
 		})
-		.map(x -> x.put(() -> "hasNoParent", new ArrayList<>( filtered).stream().allMatch(skillsNestaLinha -> skillsNestaLinha.indexOf(x.getAsString(() -> "skill")) != 0)))
+		.map(x -> x.put(JsonFields.hasNoParent, new ArrayList<>( filtered).stream().allMatch(skillsNestaLinha -> skillsNestaLinha.indexOf(x.getAsString(JsonFields.skill)) != 0)))
 		.collect(Collectors.toList());
 		
 		
@@ -328,8 +331,8 @@ public class CcpRandomTests {
 		
 		List<CcpJsonRepresentation> collect = report
 		.stream()
-		.map(x -> x.put(() -> "mirror", getSynonym(x, report)))
-		.map(x -> x.put(() -> "hasMirror", false == x.getAsString(() -> "mirror").isEmpty()))
+		.map(x -> x.put(JsonFields.mirror, getSynonym(x, report)))
+		.map(x -> x.put(JsonFields.hasMirror, false == x.getAsString(JsonFields.mirror).isEmpty()))
 		.map(x -> getSkillsWithCommonParentsSize(x, report))
 		.collect(Collectors.toList());
 		
@@ -358,18 +361,18 @@ public class CcpRandomTests {
 			
 			HashSet<String> set = new HashSet<String>(allParents);
 			boolean hasRepeatedParent = set.size() != allParents.size();
-			CcpJsonRepresentation put = json.put(() -> "allParents", allParents.stream()
+			CcpJsonRepresentation put = json.put(JsonFields.allParents, allParents.stream()
 //					.map(skill -> CcpOtherConstants.EMPTY_JSON.getDynamicVersion().put("skill",skill)
 //							.getDynamicVersion()
 //							.put("parent", getParent(skill, report))
 //							)
 					.collect(Collectors.toList())
 					)
-					.put(() -> "hasRepeatedParent", hasRepeatedParent);
+					.put(JsonFields.hasRepeatedParent, hasRepeatedParent);
 					
 					;
 			
-			String skill = put.getAsString(() -> "skill");
+			String skill = put.getAsString(JsonFields.skill);
 			
 			List<Set<String>> foundSynonyms = synonyms.stream()
 					.filter(x -> x.stream().anyMatch(y -> y.trim().equals(skill)))
@@ -385,16 +388,16 @@ public class CcpRandomTests {
 
 			List<CcpJsonRepresentation> foundSynonym = foundSynonyms.get(0).stream()
 					.filter(x -> false == x.equals(skill))
-					.map(x -> CcpOtherConstants.EMPTY_JSON.put(() -> "skill", x)).collect(Collectors.toList());
+					.map(x -> CcpOtherConstants.EMPTY_JSON.put(JsonFields.skill, x)).collect(Collectors.toList());
 			
 			CcpJsonRepresentation withSynonym = put
-					.put(() -> "synonym", foundSynonym)
+					.put(JsonFields.synonym, foundSynonym)
 //					.getDynamicVersion().getJsonPiece(
 //					"skill", "childrenCount"
 //					, "parent"
 //					)
-					.renameField(() -> "parent", () -> "directParent")
-					.renameField(() -> "allParents", () -> "parent")
+					.renameField(JsonFields.parent, JsonFields.directParent)
+					.renameField(JsonFields.allParents, JsonFields.parent)
 //					.getDynamicVersion().getJsonPiece("parent", "skill", "directParent", "childrenCount", "synonym", "hasNoParent")
 //					.getDynamicVersion().removeFields("synonym")
 					;
@@ -407,8 +410,8 @@ public class CcpRandomTests {
 	}
 	
 	static List<String> getParent(String skill, List<CcpJsonRepresentation> report){
-		return report.stream().filter(x -> skill.equals(x.getAsString(() -> "skill"))).findFirst().get()
-				.getAsStringList(() -> "parent");
+		return report.stream().filter(x -> skill.equals(x.getAsString(JsonFields.skill))).findFirst().get()
+				.getAsStringList(JsonFields.parent);
 	}
 	static Comparator<? super CcpJsonRepresentation> getSorter(String... fields){
 		Comparator<? super CcpJsonRepresentation> sorter = (a, b) -> {
@@ -451,19 +454,19 @@ public class CcpRandomTests {
 	
 	static CcpJsonRepresentation getSkillsWithCommonParentsSize(CcpJsonRepresentation json, List<CcpJsonRepresentation> report) {
 		List<String> collect = report.stream()
-		.filter(x -> false == x.getAsString(() -> "skill").equals(json.getAsString(() -> "skill")))
-		.map(x -> x.put(() -> "commonParents", getCommonParents(x, json)))
-		.filter(x -> x.getAsStringList(() -> "commonParents").size() > 1)
-		.map(x -> x.getAsString(() -> "skill"))
+		.filter(x -> false == x.getAsString(JsonFields.skill).equals(json.getAsString(JsonFields.skill)))
+		.map(x -> x.put(JsonFields.commonParents, getCommonParents(x, json)))
+		.filter(x -> x.getAsStringList(JsonFields.commonParents).size() > 1)
+		.map(x -> x.getAsString(JsonFields.skill))
 		.collect(Collectors.toList());
-		CcpJsonRepresentation put = json.put(() -> "hasSkillsWithCommonParentsSize", false == collect.isEmpty())
-				.put(() -> "skillsWithCommonParents", collect);
+		CcpJsonRepresentation put = json.put(JsonFields.hasSkillsWithCommonParentsSize, false == collect.isEmpty())
+				.put(JsonFields.skillsWithCommonParents, collect);
 		return put;
 	}
 	
 	static List<String> getCommonParents(CcpJsonRepresentation json1, CcpJsonRepresentation json2) {
-		List<String> parent1 = json1.getAsStringList(() -> "parent");
-		List<String> parent2 = json2.getAsStringList(() -> "parent");
+		List<String> parent1 = json1.getAsStringList(JsonFields.parent);
+		List<String> parent2 = json2.getAsStringList(JsonFields.parent);
 		List<String> intersectList = new CcpCollectionDecorator(parent1).getIntersectList(parent2);
 		return intersectList;
 	}
@@ -471,14 +474,14 @@ public class CcpRandomTests {
 	
 	static List<String> getAllParents(List<String> allParents, List<CcpJsonRepresentation> report, CcpJsonRepresentation json){
 		
-		List<String> parents = json.getAsStringList(() -> "parent");
+		List<String> parents = json.getAsStringList(JsonFields.parent);
 
-		String skill = json.getAsString(() -> "skill");
+		String skill = json.getAsString(JsonFields.skill);
 		System.out.println(skill + ": " + parents);
 		allParents.addAll(parents);
 		for (String parent : parents) {
 			CcpJsonRepresentation parentJson = report.stream()
-			.filter(x -> parent.equals(x.getAsString(() -> "skill")))
+			.filter(x -> parent.equals(x.getAsString(JsonFields.skill)))
 			.findFirst()
 			.get();
 			getAllParents(allParents, report, parentJson);
@@ -487,16 +490,16 @@ public class CcpRandomTests {
 	}
 
 	static String getSynonym(CcpJsonRepresentation json, List<CcpJsonRepresentation> report) {
-		List<String> parent = json.getAsStringList(() -> "parent");
+		List<String> parent = json.getAsStringList(JsonFields.parent);
 		if(parent.size() != 1) {
 			return "";
 		}
 		String parentName = parent.get(0);
 		String orElseGet = new ArrayList<>(report)
 		.stream()
-		.filter(x -> x.getAsString(() -> "skill").equals(parentName))
-		.filter(x -> x.getAsIntegerNumber(() -> "childrenCount") == 1)
-		.map(x -> x.getAsString(() -> "skill"))
+		.filter(x -> x.getAsString(JsonFields.skill).equals(parentName))
+		.filter(x -> x.getAsIntegerNumber(JsonFields.childrenCount) == 1)
+		.map(x -> x.getAsString(JsonFields.skill))
 		.findFirst()
 		.orElseGet(() -> "");
 		
@@ -523,15 +526,15 @@ public class CcpRandomTests {
 		List<CcpJsonRepresentation> missing = new ArrayList<>();
 		for (CcpJsonRepresentation json : synonyms) {
 			
-			String skill = json.getAsString(() -> "skill");
+			String skill = json.getAsString(JsonFields.skill);
 
 
 			if(todos.contains(skill)) {
 				ajustadas ++;
 				continue;
 			}
-			List<CcpJsonRepresentation> asJsonList = json.getAsJsonList(() -> "synonym");
-			boolean anyMatch = asJsonList.stream().map(x -> x.getAsString(() -> "skill")).anyMatch(x -> todos.contains(x));
+			List<CcpJsonRepresentation> asJsonList = json.getAsJsonList(JsonFields.synonym);
+			boolean anyMatch = asJsonList.stream().map(x -> x.getAsString(JsonFields.skill)).anyMatch(x -> todos.contains(x));
 			
 			if(anyMatch) {
 				ajustadas ++;
@@ -542,7 +545,7 @@ public class CcpRandomTests {
 		List<String> removidas = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\removidas.txt").file().getLines().stream().map(x -> x.trim().split(" = ")[0]).collect(Collectors.toList());
 		int estudar = 0;
 		for (CcpJsonRepresentation copy : missing) {
-			String skill = copy.getAsString(() -> "skill");
+			String skill = copy.getAsString(JsonFields.skill);
 			if(removidas.contains(skill)) {
 				continue;
 			}
@@ -584,7 +587,7 @@ public class CcpRandomTests {
 		
 
 		for (String word : words) {
-			CcpJsonRepresentation synonym = CcpOtherConstants.EMPTY_JSON.put(() -> "skill", word);
+			CcpJsonRepresentation synonym = CcpOtherConstants.EMPTY_JSON.put(JsonFields.skill, word);
 			synonyms.add(synonym);
 		}
 		System.out.println(synonyms.size());
@@ -596,9 +599,9 @@ public class CcpRandomTests {
 		List<CcpJsonRepresentation> synonyms = synonymsFile.asJsonList();
 		Set<String> allSimilar = new HashSet<>();
 		for (CcpJsonRepresentation synonym : synonyms) {
-			var similar = synonym.getAsJsonList(() -> "similar")
+			var similar = synonym.getAsJsonList(JsonFields.similar)
 					.stream()
-					.map(x -> x.getAsString(() -> "word").replace("_", " "))
+					.map(x -> x.getAsString(JsonFields.word).replace("_", " "))
 					.collect(Collectors.toList())
 					;
 			allSimilar.addAll(similar);
@@ -606,17 +609,17 @@ public class CcpRandomTests {
 		System.out.println(allSimilar.size());
 		for (CcpJsonRepresentation synonym : synonyms) {
 			{
-				String skill = synonym.getAsString(() -> "skill");
+				String skill = synonym.getAsString(JsonFields.skill);
 				allSimilar.remove(skill);
 			}
-			List<String> parents = synonym.getAsStringList(() -> "parent");
+			List<String> parents = synonym.getAsStringList(JsonFields.parent);
 			for (String parent : parents) {
 				allSimilar.remove(parent);
 			}
 
-			List<CcpJsonRepresentation> asJsonList = synonym.getAsJsonList(() -> "synonym");
+			List<CcpJsonRepresentation> asJsonList = synonym.getAsJsonList(JsonFields.synonym);
 			for (CcpJsonRepresentation sym : asJsonList) {
-				String skill = sym.getAsString(() -> "skill");
+				String skill = sym.getAsString(JsonFields.skill);
 				allSimilar.remove(skill);
 				
 			}
@@ -640,73 +643,73 @@ public class CcpRandomTests {
 		
 		for (CcpJsonRepresentation synonym : synonyms) {
 			
-				String skill = synonym.getAsString(() -> "skill");
+				String skill = synonym.getAsString(JsonFields.skill);
 				if(skill.trim().length() < 2) {
-					synonym = synonym.removeFields(() -> "skill");
+					synonym = synonym.removeFields(JsonFields.skill);
 				}
 				if(skill.trim().length() > 50) {
-					synonym = synonym.removeFields(() -> "skill");
+					synonym = synonym.removeFields(JsonFields.skill);
 				}
 				if(removidas.contains(skill)) {
-					synonym = synonym.removeFields(() -> "skill");
+					synonym = synonym.removeFields(JsonFields.skill);
 				}
-				List<String> parent = synonym.getAsStringList(() -> "parent").stream()
+				List<String> parent = synonym.getAsStringList(JsonFields.parent).stream()
 						.filter(x -> x.length() > 2 && x.length() <= 50)
 						.filter(x -> false == removidas.contains(x))
 						.collect(Collectors.toList());
 				
 				
-				synonym = synonym.put(() -> "parent", parent);
+				synonym = synonym.put(JsonFields.parent, parent);
 				{
-					List<CcpJsonRepresentation> collect = synonym.getAsJsonList(() -> "synonym").stream().filter(x -> {
-						String word = x.getAsString(() -> "skill");
+					List<CcpJsonRepresentation> collect = synonym.getAsJsonList(JsonFields.synonym).stream().filter(x -> {
+						String word = x.getAsString(JsonFields.skill);
 						return word.length() > 2 && word.length() <= 50 && false == removidas.contains(word) && false == skill.equals(word);
 					}).collect(Collectors.toList());
 
-					synonym = synonym.put(() -> "synonym", collect);
+					synonym = synonym.put(JsonFields.synonym, collect);
 				}
 				{
-					List<CcpJsonRepresentation> collect = synonym.getAsJsonList(() -> "preRequisite").stream().filter(x -> {
-						String word = x.getAsString(() -> "word");
+					List<CcpJsonRepresentation> collect = synonym.getAsJsonList(JsonFields.preRequisite).stream().filter(x -> {
+						String word = x.getAsString(JsonFields.word);
 						return word.length() > 2 && word.length() <= 50 && false == removidas.contains(word);
 					}).collect(Collectors.toList());
 
-					synonym = synonym.put(() -> "preRequisite", collect);
+					synonym = synonym.put(JsonFields.preRequisite, collect);
 				}
 				{
-					List<CcpJsonRepresentation> collect = synonym.getAsJsonList(() -> "similar").stream().filter(x -> {
-						String word = x.getAsString(() -> "word").replace("_", " ");
+					List<CcpJsonRepresentation> collect = synonym.getAsJsonList(JsonFields.similar).stream().filter(x -> {
+						String word = x.getAsString(JsonFields.word).replace("_", " ");
 						return word.length() > 2 && word.length() <= 50 && false == removidas.contains(word);
 					}).collect(Collectors.toList());
 
-					synonym = synonym.put(() -> "similar", collect);
+					synonym = synonym.put(JsonFields.similar, collect);
 				}
 				
 				newSynonyms.add(synonym);
 			}
 
 		List<CcpJsonRepresentation> collect = newSynonyms.stream()
-		.filter(x -> x.containsAllFields(() -> "skill") || false == x.getAsJsonList(() -> "synonym").isEmpty())
-		.map(x -> x.containsAllFields(() -> "skill") ? x : transferSynonymToSkill(x))
-		.map(x -> false == x.getAsObjectList(() -> "parent").isEmpty() ?  x :  x.removeFields(() -> "parent"))
-		.map(x -> false == x.getAsObjectList(() -> "similar").isEmpty() ?  x :  x.removeFields(() -> "similar"))
-		.map(x -> false == x.getAsObjectList(() -> "synonym").isEmpty() ?  x :  x.removeFields(() -> "synonym"))
-		.map(x -> false == x.getAsObjectList(() -> "preRequisite").isEmpty() ?  x :  x.removeFields(() -> "preRequisite"))
+		.filter(x -> x.containsAllFields(JsonFields.skill) || false == x.getAsJsonList(JsonFields.synonym).isEmpty())
+		.map(x -> x.containsAllFields(JsonFields.skill) ? x : transferSynonymToSkill(x))
+		.map(x -> false == x.getAsObjectList(JsonFields.parent).isEmpty() ?  x :  x.removeFields(JsonFields.parent))
+		.map(x -> false == x.getAsObjectList(JsonFields.similar).isEmpty() ?  x :  x.removeFields(JsonFields.similar))
+		.map(x -> false == x.getAsObjectList(JsonFields.synonym).isEmpty() ?  x :  x.removeFields(JsonFields.synonym))
+		.map(x -> false == x.getAsObjectList(JsonFields.preRequisite).isEmpty() ?  x :  x.removeFields(JsonFields.preRequisite))
 		.collect(Collectors.toList());
 		CcpFileDecorator newSynonymsFile = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\skills\\new_synonyms.json").file().reset();
 		newSynonymsFile.append(collect.toString());
 		for (CcpJsonRepresentation json : collect) {
-			System.out.println(json.getAsString(() -> "skill"));
+			System.out.println(json.getAsString(JsonFields.skill));
 		}
 		System.out.println(collect.size());
 	}
 	
 	static CcpJsonRepresentation transferSynonymToSkill(CcpJsonRepresentation x) {
-		List<CcpJsonRepresentation> synonym = x.getAsJsonList(() -> "synonym");
+		List<CcpJsonRepresentation> synonym = x.getAsJsonList(JsonFields.synonym);
 		ArrayList<CcpJsonRepresentation> list = new ArrayList<>(synonym);
-		list.sort((a,b) ->  b.getAsIntegerNumber(() -> "positionsCount") - a.getAsIntegerNumber(() -> "positionsCount"));
-		String skill = list.remove(0).getAsString(() -> "skill");
-		CcpJsonRepresentation put = x.put(() -> "skill", skill).put(() -> "synonym", list);
+		list.sort((a,b) ->  b.getAsIntegerNumber(JsonFields.positionsCount) - a.getAsIntegerNumber(JsonFields.positionsCount));
+		String skill = list.remove(0).getAsString(JsonFields.skill);
+		CcpJsonRepresentation put = x.put(JsonFields.skill, skill).put(JsonFields.synonym, list);
 		return put;
 	}
 	
@@ -717,8 +720,8 @@ public class CcpRandomTests {
 		
 		Set<String> set = new HashSet<>();
 		for (CcpJsonRepresentation json : resultAsList) {
-			List<CcpJsonRepresentation> list = json.getAsJsonList(() -> "skill");
-			List<String> collect = list.stream().map(x -> x.getAsString(() -> "word")).collect(Collectors.toList());
+			List<CcpJsonRepresentation> list = json.getAsJsonList(JsonFields.skill);
+			List<String> collect = list.stream().map(x -> x.getAsString(JsonFields.word)).collect(Collectors.toList());
 			set.addAll(collect);
 		}
 		ArrayList<String> list = new ArrayList<>(set);
@@ -727,16 +730,16 @@ public class CcpRandomTests {
 	}
 	
 	static CcpJsonRepresentation getSubReportFromSkills(CcpJsonRepresentation md, String id) {
-		List<CcpJsonRepresentation> skills = md.getAsJsonList(() -> "skill");
+		List<CcpJsonRepresentation> skills = md.getAsJsonList(JsonFields.skill);
 
 		Set<String> set1 = new HashSet<>();
 		Set<String> allSkills = new HashSet<>();
 		Set<String> allWords = new HashSet<>();
 
 		for (CcpJsonRepresentation skill : skills) {
-			List<String> parents = skill.getAsStringList(() -> "parent");
-			String skillName = skill.getAsString(() -> "skill");
-			String word = skill.getAsString(() -> "word");
+			List<String> parents = skill.getAsStringList(JsonFields.parent);
+			String skillName = skill.getAsString(JsonFields.skill);
+			String word = skill.getAsString(JsonFields.word);
 			set1.addAll(parents);
 			allSkills.add(skillName);
 			allWords.add(word);
@@ -749,15 +752,15 @@ public class CcpRandomTests {
 		
 
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
-				.put(() -> "parentSize", allParentsSize)
-				.put(() -> "skillSize", allSkillsSize)
-				.put(() -> "words", allWords)
-				.put(() -> "id", id)
+				.put(JsonFields.parentSize, allParentsSize)
+				.put(JsonFields.skillSize, allSkillsSize)
+				.put(JsonFields.words, allWords)
+				.put(JsonFields.id, id)
 				;
 
 		if(allParentsSize > 0) {
 			double skillsPerParent = allSkillsSize / allParentsSize;
-			put = put.put(() -> "skillsPerParent", skillsPerParent);
+			put = put.put(JsonFields.skillsPerParent, skillsPerParent);
 		}
 		
 		return put;
@@ -775,15 +778,15 @@ public class CcpRandomTests {
 		Map<String, CcpJsonRepresentation> reports = new HashMap<>();
 		Consumer<CcpJsonRepresentation> consumer = json -> {
 			try {
-				String base64 = json.getValueFromPath("", () -> "curriculo", () -> "conteudo");
+				String base64 = json.getValueFromPath("", JsonFields.curriculo, JsonFields.conteudo);
 				
 				String resumeText = textExtractor.extractText(base64);
 				CcpJsonRepresentation md = getSkillsFromText(resumeText);
 				
-				String id = json.getAsString(() -> "id");
-				String tipoVaga = json.getAsString(() -> "tipoVaga");
+				String id = json.getAsString(JsonFields.id);
+				String tipoVaga = json.getAsString(JsonFields.tipoVaga);
 
-				List<CcpJsonRepresentation> skills = md.getAsJsonList(() -> "skill").stream()
+				List<CcpJsonRepresentation> skills = md.getAsJsonList(JsonFields.skill).stream()
 						.collect(Collectors.toList());
 				
 				CcpTextDecorator completeLeft = new CcpStringDecorator(""+ skills.size()).text().completeLeft('0', 3);
@@ -791,7 +794,7 @@ public class CcpRandomTests {
 				String fileName = completeLeft + "_" + id  + "_" + tipoVaga + ".json";
 				
 				for (CcpJsonRepresentation skill : skills) {
-					String word = skill.getAsString(() -> "word");
+					String word = skill.getAsString(JsonFields.word);
 					Integer counter = countByWords.getOrDefault(word, 0) + 1;
 					countByWords.put(word, counter);
 					Set<String> orDefault = groupedResumes.getOrDefault(word, new HashSet<>());
@@ -803,7 +806,7 @@ public class CcpRandomTests {
 				CcpJsonRepresentation subReportFromSkills = getSubReportFromSkills(md, id + "_" + tipoVaga);
 				
 				String asPrettyJson = md
-						.put(() -> "skill", skills)
+						.put(JsonFields.skill, skills)
 						.asPrettyJson();
 				
 				reports.put(fileName, subReportFromSkills);
@@ -843,8 +846,8 @@ public class CcpRandomTests {
 		
 		for (String string : keySet) {
 			CcpJsonRepresentation report = reports.get(string);
-			Integer parentSize = report.getAsIntegerNumber(() -> "parentSize");
-			Integer skillSize = report.getAsIntegerNumber(() -> "skillSize");
+			Integer parentSize = report.getAsIntegerNumber(JsonFields.parentSize);
+			Integer skillSize = report.getAsIntegerNumber(JsonFields.skillSize);
 			
 			skillsCount += skillSize;
 			parentsCount += parentSize;
@@ -855,16 +858,16 @@ public class CcpRandomTests {
 		List<CcpJsonRepresentation> arrayList = new ArrayList<>(reports.values());
 		arrayList.sort((a, b) -> {
 			
-			if(false == b.containsAllFields(() -> "skillsPerParent")) {
+			if(false == b.containsAllFields(JsonFields.skillsPerParent)) {
 				return -1;
 			}
 
-			if(false == a.containsAllFields(() -> "skillsPerParent")) {
+			if(false == a.containsAllFields(JsonFields.skillsPerParent)) {
 				return 1;
 			}
 
-			Integer x2 = (int)(b.getAsDoubleNumber(() -> "skillsPerParent") * 1000) ;
-			Integer x1 = (int)(a.getAsDoubleNumber(() -> "skillsPerParent") * 1000);
+			Integer x2 = (int)(b.getAsDoubleNumber(JsonFields.skillsPerParent) * 1000) ;
+			Integer x1 = (int)(a.getAsDoubleNumber(JsonFields.skillsPerParent) * 1000);
 			
 			return x2 - x1;
 		});
@@ -881,7 +884,7 @@ public class CcpRandomTests {
 	static CcpJsonRepresentation getSkillsFromText(String resumeText) {
 		String text = new CcpStringDecorator(resumeText).text().stripAccents().getContent();
 		Map<String, Object> sessionValues =  CcpOtherConstants.EMPTY_JSON
-				 .put(() -> "text", text)
+				 .put(JsonFields.text, text)
 				 .content
 				 ;
 		Map<String, Object> execute = VisServiceSkills.GetSkillsFromText.execute(sessionValues);
@@ -925,7 +928,7 @@ public class CcpRandomTests {
 		CcpQueryOptions query = CcpQueryOptions.INSTANCE.matchAll();
 		
 		Consumer<CcpJsonRepresentation> consumer = json -> {
-			String x = json.getAsString(() -> "id");
+			String x = json.getAsString(JsonFields.id);
 				String[] split = x.split("@");
 				if(split.length != 2) {
 					return;

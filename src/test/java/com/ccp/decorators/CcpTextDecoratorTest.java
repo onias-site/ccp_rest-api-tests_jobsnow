@@ -2,8 +2,11 @@ package com.ccp.decorators;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import org.junit.Test;
@@ -228,5 +231,90 @@ public class CcpTextDecoratorTest {
 	@Test
 	public void toStringTest() {
 		assertEquals("valor", new CcpStringDecorator("valor").text().toString());
+	}
+
+	// ── getContent ────────────────────────────────────────────────────────────
+
+	@Test
+	public void getContentTest() {
+		assertEquals("conteudo", new CcpStringDecorator("conteudo").text().getContent());
+	}
+
+	// ── sanitize ──────────────────────────────────────────────────────────────
+
+	@Test
+	public void sanitizeRemoveAcentosEMaiusculizaTest() {
+		CcpTextDecorator resultado = new CcpStringDecorator("Olá João").text().sanitize();
+		assertFalse(resultado.content.contains("á"));
+		assertFalse(resultado.content.contains("ã"));
+		assertEquals(resultado.content, resultado.content.toUpperCase());
+	}
+
+	@Test
+	public void sanitizeComDelimitadoresCustomTest() {
+		String[] delimiters = {",", ";"};
+		CcpTextDecorator resultado = new CcpStringDecorator("java,python;ruby").text().sanitize(delimiters);
+		assertFalse(resultado.content.contains(","));
+		assertFalse(resultado.content.contains(";"));
+		assertTrue(resultado.content.contains("PYTHON"));
+	}
+
+	// ── contains(String[], String) ────────────────────────────────────────────
+
+	@Test
+	public void containsComDelimitadoresCustomTrueTest() {
+		String[] delimiters = {","};
+		assertTrue(new CcpStringDecorator("java,python,ruby").text().contains(delimiters, "python"));
+	}
+
+	@Test
+	public void containsComDelimitadoresCustomFalseTest() {
+		String[] delimiters = {","};
+		assertFalse(new CcpStringDecorator("java,python,ruby").text().contains(delimiters, "go"));
+	}
+
+	// ── removePieces(Predicate, String) ──────────────────────────────────────
+
+	@Test
+	public void removePiecesComPredicadoTest() {
+		CcpTextDecorator resultado = new CcpStringDecorator("um dois tres quatro").text()
+				.removePieces(s -> s.length() > 3, " ");
+		assertFalse(resultado.content.contains("quatro"));
+		assertFalse(resultado.content.contains("tres"));
+		assertFalse(resultado.content.contains("dois"));
+	}
+
+	// ── getByteArrayInputStream ───────────────────────────────────────────────
+
+	@Test
+	public void getByteArrayInputStreamTest() throws Exception {
+		String original = "texto de teste";
+		String base64 = new CcpStringDecorator(original).text().asBase64().content;
+		InputStream is = new CcpStringDecorator(base64).text().getByteArrayInputStream();
+		assertNotNull(is);
+		byte[] bytes = is.readAllBytes();
+		assertEquals(original, new String(bytes));
+	}
+
+	// ── getParameterAsByteArrayInputStream ───────────────────────────────────
+
+	@Test
+	public void getParameterAsByteArrayInputStreamTest() throws Exception {
+		String original = "parametro";
+		String base64 = new CcpStringDecorator(original).text().asBase64().content;
+		ByteArrayInputStream bais = new CcpStringDecorator(base64).text().getParameterAsByteArrayInputStream();
+		assertNotNull(bais);
+		byte[] bytes = bais.readAllBytes();
+		assertEquals(original, new String(bytes));
+	}
+
+	// ── resolveTemplate com CcpTemplateFunctions ──────────────────────────────
+
+	@Test
+	public void resolveTemplateComCurrentTimeMillisTest() {
+		CcpTextDecorator template = new CcpStringDecorator("ts={currentTimeMillis()}").text();
+		String resultado = template.resolveTemplate(CcpOtherConstants.EMPTY_JSON).content;
+		assertFalse(resultado.contains("{currentTimeMillis()}"));
+		assertTrue(resultado.matches("ts=\\d+"));
 	}
 }

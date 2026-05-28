@@ -80,6 +80,16 @@ public class CcpInputStreamDecoratorTest {
 		new CcpStringDecorator(caminho).inputStreamFrom().fromEnvironmentVariablesOrClassLoaderOrFile();
 	}
 
+	// ── classLoader com recurso real ──────────────────────────────────────────
+
+	@Test
+	public void classLoaderRecursoExistenteRetornaStreamTest() throws Exception {
+		InputStream is = new CcpStringDecorator("test-recurso.properties").inputStreamFrom().classLoader();
+		assertNotNull(is);
+		assertTrue(is.readAllBytes().length > 0);
+		is.close();
+	}
+
 	// ── toString / getContent ─────────────────────────────────────────────────
 
 	@Test

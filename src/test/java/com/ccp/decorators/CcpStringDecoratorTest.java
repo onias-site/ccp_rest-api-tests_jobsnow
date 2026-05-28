@@ -10,6 +10,7 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
+import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
@@ -171,5 +172,74 @@ public class CcpStringDecoratorTest {
 	public void getBytesTest() {
 		Byte[] bytes = new CcpStringDecorator("abc").getBytes();
 		assertEquals(3, bytes.length);
+	}
+
+	// ── factories não cobertas ────────────────────────────────────────────────
+
+	@Test
+	public void fileFactoryTest() {
+		CcpFileDecorator file = new CcpStringDecorator(System.getProperty("java.io.tmpdir")).file();
+		assertNotNull(file);
+		assertTrue(file.exists());
+	}
+
+	@Test
+	public void folderFactoryTest() {
+		CcpFolderDecorator folder = new CcpStringDecorator(System.getProperty("java.io.tmpdir")).folder();
+		assertNotNull(folder);
+		assertTrue(folder.exists());
+	}
+
+	@Test
+	public void inputStreamFromFactoryTest() {
+		CcpInputStreamDecorator is = new CcpStringDecorator("qualquer").inputStreamFrom();
+		assertNotNull(is);
+		assertEquals("qualquer", is.getContent());
+	}
+
+	@Test
+	public void jsonFieldNameFactoryTest() {
+		CcpJsonRepresentation.CcpJsonFieldName field = new CcpStringDecorator("meuCampo").jsonFieldName();
+		assertNotNull(field);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(field, "valor");
+		assertEquals("valor", json.getAsString(field));
+	}
+
+	// ── construtor (CcpJsonRepresentation, String) ────────────────────────────
+
+	@Test
+	public void construtorJsonRepresentationTest() {
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(() -> "chave", "valor");
+		CcpStringDecorator d = new CcpStringDecorator(json, "chave");
+		assertEquals("valor", d.content);
+	}
+
+	// ── propertiesFrom ────────────────────────────────────────────────────────
+
+	@Test
+	public void propertiesFromRetornaPropertiesDecoratorTest() {
+		CcpPropertiesDecorator props = new CcpStringDecorator("qualquer").propertiesFrom();
+		assertNotNull(props);
+	}
+
+	// ── reflection ────────────────────────────────────────────────────────────
+
+	@Test
+	public void reflectionClasseExistenteTest() {
+		CcpReflectionConstructorDecorator refl = new CcpStringDecorator("java.util.ArrayList").reflection();
+		assertTrue(refl.thisClassExists());
+		assertEquals("java.util.ArrayList", refl.getContent());
+	}
+
+	@Test
+	public void reflectionClasseInexistenteTest() {
+		assertFalse(new CcpStringDecorator("com.nao.existe.Classe").reflection().thisClassExists());
+	}
+
+	@Test
+	public void reflectionNewInstanceCriaObjetoTest() {
+		Object instance = new CcpStringDecorator("java.util.ArrayList").reflection().newInstance();
+		assertNotNull(instance);
+		assertTrue(instance instanceof java.util.ArrayList);
 	}
 }

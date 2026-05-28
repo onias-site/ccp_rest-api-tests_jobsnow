@@ -9,5 +9,5 @@ public enum JsonFieldNames implements CcpJsonFieldName{
 	nomes5, nomes6, filho, netos, pai, avo, bisnetos, endereco, campoDeTeste, tipo_sanguineo, cor, cpf, carro, carro2,
 	cor2, arrayJson, veiculo, veiculo2, nome2, valor3, valor2, valor4, saudacoes, saudacoesAtualizadas, abacaxi,
 	valorQueNaoEhDouble, valorDouble, minhaPropriedadeJson, Umtextoqualquer, nacionalidade, nomes, nome_da_vó, cidade,
-	ciudad, city, town, cão, gato,estado, pais;
+	ciudad, city, town, cão, gato,estado, pais, teste;
 }

@@ -97,6 +97,13 @@ public class CcpFolderDecoratorTest {
 		assertTrue(arquivo.getStringContent().contains("conteudo escrito"));
 	}
 
+	@Test(expected = CcpErrorFolderParentIsMissing.class)
+	public void getStringContentFailTest() {
+		String path = BASE + File.separator + "nada";
+		CcpFileDecorator arquivo = new CcpStringDecorator(path).file();
+		arquivo.getStringContent();
+	}
+
 	// ── readFiles ─────────────────────────────────────────────────────────────
 
 	@Test
@@ -152,5 +159,49 @@ public class CcpFolderDecoratorTest {
 	public void getContentRetornaCaminhoTest() {
 		CcpFolderDecorator folder = new CcpStringDecorator(BASE).folder();
 		assertEquals(BASE, folder.getContent());
+	}
+
+	// ── zip ───────────────────────────────────────────────────────────────────
+
+	@Test
+	public void zipCriaArquivoZipTest() {
+		CcpFolderDecorator base = new CcpStringDecorator(BASE).folder();
+		base.createNewFileIfNotExists("a.txt");
+		base.zip();
+		File zipFile = new File(base.getName() + ".zip");
+		assertTrue(zipFile.exists());
+		zipFile.delete();
+	}
+
+	// ── parent ────────────────────────────────────────────────────────────────
+
+	@Test
+	public void parentApontaParaDiretorioPaiTest() {
+		CcpFolderDecorator folder = new CcpStringDecorator(BASE).folder();
+		assertNotNull(folder.parent);
+	}
+
+	// ── remove ────────────────────────────────────────────────────────────────
+
+	@Test
+	public void removeApagaPastaTest() {
+		String caminho = BASE + File.separator + "pasta_para_remover";
+		CcpFolderDecorator pasta = new CcpStringDecorator(caminho).folder();
+		pasta.createNewFileIfNotExists("dummy.txt"); 
+		assertTrue(pasta.exists());
+		pasta.remove();
+		assertFalse(pasta.exists());
+	}
+
+	// ── readFiles em pasta vazia ──────────────────────────────────────────────
+
+	@Test
+	public void readFilesEmptyFolderTest() {
+		String caminho = BASE + File.separator + "pasta_vazia_files";
+		new java.io.File(caminho).mkdir();
+		CcpFolderDecorator folder = new CcpStringDecorator(caminho).folder();
+		List<String> nomes = new ArrayList<>();
+		folder.readFiles(f -> nomes.add(f.getName()));
+		assertTrue(nomes.isEmpty());
 	}
 }

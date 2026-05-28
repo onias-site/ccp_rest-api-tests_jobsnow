@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Set;
+
 import org.junit.Test;
 
 //ela se instancia da seguinte forma: 
@@ -137,8 +139,20 @@ public class CcpEmailDecoratorTest {
 	public void extractFromTextTest() {
 		String delimiter   = ";";
 		String emailInText = "fulano@gmail.com; ciclano@gmail.com; beltrano@gmail.com";
-		CcpEmailDecorator decorator = new CcpStringDecorator(emailInText).email();	
-		System.out.println(decorator.extractFromText(delimiter));
+		CcpEmailDecorator decorator = new CcpStringDecorator(emailInText).email();
+		Set<String> emails = decorator.extractFromText(delimiter);
+		assertEquals(3, emails.size());
+		assertTrue(emails.contains("fulano@gmail.com"));
+		assertTrue(emails.contains("ciclano@gmail.com"));
+		assertTrue(emails.contains("beltrano@gmail.com"));
+	}
+
+	@Test
+	public void extractFromTextSemEmailsValidosTest() {
+		String delimiter = ";";
+		String texto = "nao-e-email; tampouco isso; invalido";
+		Set<String> emails = new CcpStringDecorator(texto).email().extractFromText(delimiter);
+		assertTrue(emails.isEmpty());
 	}
 
     @Test

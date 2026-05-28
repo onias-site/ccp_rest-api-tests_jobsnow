@@ -5,6 +5,7 @@ import java.util.function.Function;
 import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponseType;
 import com.ccp.process.CcpProcessStatus;
@@ -13,7 +14,10 @@ import com.jn.rest.api.commons.JnTemplateDeTestes;
 import com.jn.rest.api.commons.VariaveisParaTeste;
 
 public class ValidarLogin  extends JnTemplateDeTestes{
-
+	private static enum Fields implements CcpJsonFieldName{
+		sessionToken
+		
+	}
 	protected CcpHttpMethods getMethod() {
 		return CcpHttpMethods.GET;
 	}
@@ -47,8 +51,8 @@ public class ValidarLogin  extends JnTemplateDeTestes{
 	@Test
 	public void caminhoFeliz() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		this.execute(variaveisParaTeste, CcpProcessStatusDefault.OK, x -> this.cadastrarSenhaParaEntrarNoSistema(x).getAsString(() -> "sessionToken"));
-		this.execute(variaveisParaTeste, CcpProcessStatusDefault.OK, x -> this.executarLogin(x).getAsString(() -> "sessionToken"));
+		this.execute(variaveisParaTeste, CcpProcessStatusDefault.OK, x -> this.cadastrarSenhaParaEntrarNoSistema(x).getAsString(Fields.sessionToken));
+		this.execute(variaveisParaTeste, CcpProcessStatusDefault.OK, x -> this.executarLogin(x).getAsString(Fields.sessionToken));
 	}
 
 	@Test

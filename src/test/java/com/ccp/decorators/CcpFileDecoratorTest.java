@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.List;
 
 import org.junit.After;
@@ -194,5 +195,46 @@ public class CcpFileDecoratorTest {
 	public void toStringRetornaNomeTest() {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		assertEquals("teste.txt", file.toString());
+	}
+
+	// ── zip ───────────────────────────────────────────────────────────────────
+
+	@Test
+	public void zipCriaArquivoZipTest() {
+		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
+		file.write("conteudo para zipar");
+		file.zip();
+		File zipFile = new File(file.getName() + ".zip");
+		assertTrue(zipFile.exists());
+		zipFile.delete();
+	}
+
+	// ── parent ────────────────────────────────────────────────────────────────
+
+	@Test
+	public void parentApontaParaDiretorioPaiTest() {
+		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
+		assertNotNull(file.parent);
+		assertTrue(file.parent.content.contains("ccp_file_test"));
+	}
+
+	// ── isFile para diretório ─────────────────────────────────────────────────
+
+	@Test
+	public void isFileRetornaFalseParaDiretorioTest() {
+		CcpFileDecorator file = new CcpStringDecorator(BASE).file();
+		assertFalse(file.isFile());
+	}
+
+	// ── asJsonList ────────────────────────────────────────────────────────────
+
+	@Test
+	public void asJsonListTest() {
+		String caminho = BASE + "lista.json";
+		CcpFileDecorator file = new CcpStringDecorator(caminho).file();
+		file.write("[{\"nome\":\"Onias\"},{\"nome\":\"Alice\"}]");
+		List<CcpJsonRepresentation> lista = file.asJsonList();
+		assertEquals(2, lista.size());
+		file.remove();
 	}
 }
