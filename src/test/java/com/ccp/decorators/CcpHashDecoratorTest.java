@@ -9,7 +9,7 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
-import com.ccp.utils.CcpHashAlgorithm;
+import com.ccp.hash.CcpHashAlgorithm;
 
 public class CcpHashDecoratorTest {
 
@@ -85,5 +85,11 @@ public class CcpHashDecoratorTest {
 	public void hashResultadoHexadecimalTest() {
 		String resultado = new CcpStringDecorator("hex").hash().asString(CcpHashAlgorithm.MD5);
 		assertTrue(resultado.matches("[0-9a-f-]+"));
+	}
+	
+	
+	@Test(expected = CcpErrorHashAlgorithmNotFound.class)
+	public void throwsCcpErrorHashAlgorithmNotFoundTest() {
+		CcpHashAlgorithm.getMessageDigest("algoritmoquenaoexiste");
 	}
 }

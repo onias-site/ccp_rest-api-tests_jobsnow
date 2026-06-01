@@ -1407,8 +1407,8 @@ public class CcpJsonRepresentationTests {
 	public void getSha1HashTest() {
 		CcpJsonRepresentation json1 = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
 		CcpJsonRepresentation json2 = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
-		String hash1 = json1.getSha1Hash(com.ccp.utils.CcpHashAlgorithm.SHA1);
-		String hash2 = json2.getSha1Hash(com.ccp.utils.CcpHashAlgorithm.SHA1);
+		String hash1 = json1.getSha1Hash(com.ccp.hash.CcpHashAlgorithm.SHA1);
+		String hash2 = json2.getSha1Hash(com.ccp.hash.CcpHashAlgorithm.SHA1);
 		assertFalse(hash1.isEmpty());
 		assertEquals(hash1, hash2);
 	}

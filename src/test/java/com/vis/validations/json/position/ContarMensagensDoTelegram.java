@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpStringDecorator;
-import com.ccp.utils.CcpHashAlgorithm;
+import com.ccp.hash.CcpHashAlgorithm;
 
 public class ContarMensagensDoTelegram {
 
