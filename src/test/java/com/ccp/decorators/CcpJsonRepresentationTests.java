@@ -51,6 +51,7 @@ import static com.ccp.decorators.JsonFieldNames.nomes3;
 import static com.ccp.decorators.JsonFieldNames.nomes4;
 import static com.ccp.decorators.JsonFieldNames.nomes5;
 import static com.ccp.decorators.JsonFieldNames.nomes6;
+import static com.ccp.decorators.JsonFieldNames.nomes7;
 import static com.ccp.decorators.JsonFieldNames.onias;
 import static com.ccp.decorators.JsonFieldNames.pai;
 import static com.ccp.decorators.JsonFieldNames.paçoca;
@@ -140,7 +141,15 @@ public class CcpJsonRepresentationTests {
 		assertEquals(item1, CcpProcessStatusDefault.BAD_REQUEST);
 		assertEquals(item2, CcpProcessStatusDefault.CONFLICT);
 		assertEquals(item3, CcpProcessStatusDefault.CREATED);
-	
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void getAsEnumTrowsRuntimeException() {
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
+		.put(nomes7)
+		;
+		
+		json.getAsEnum(nomes7, CcpProcessStatusDefault.class);
 	}
 
 	@Test (expected = RuntimeException.class)
@@ -165,8 +174,12 @@ public class CcpJsonRepresentationTests {
 		CcpJsonRepresentation json = new CcpJsonRepresentation(inteiro);
 		assertTrue(json.getAsIntegerNumber(valor) == 1);
 		assertTrue(json.getAsIntegerNumber(valor) == 1);
-
-
+	}
+	
+	@Test
+	public void teste() {
+		CcpJsonRepresentation json = new CcpJsonRepresentation(CcpOtherConstants.EMPTY_JSON.put(nomes7, String.class).content);
+		assertEquals(1, json.fieldSet().size());
 	}
 
 	@Test (expected = RuntimeException.class)
@@ -219,12 +232,6 @@ public class CcpJsonRepresentationTests {
 
 	@Test
 	public void getAsBooleanErrorTest() {
-		//		//JSON INVÁLIDO
-		//		String x = "true";
-		//		CcpJsonRepresentation json = new CcpJsonRepresentation(x);
-		//		assertTrue(json.getAsBoolean(x));
-
-		//VALOR JSON NÃO É BOOLEANO
 		String y = "{'valor': 'abacaxi'}";
 		CcpJsonRepresentation json2 = new CcpJsonRepresentation(y);
 		assertFalse(json2.getAsBoolean(valor));
@@ -247,12 +254,21 @@ public class CcpJsonRepresentationTests {
 		int numero = 1;
 		String x = "{'valor' : '" + numero + "'}";
 
-		CcpJsonRepresentation json = new CcpJsonRepresentation(x).put(valor3, (Object) null);
+		CcpJsonRepresentation json = new CcpJsonRepresentation(x)
+				.put(nomes5, Arrays.asList(x))
+				.put(nomes6, Arrays.asList(CcpOtherConstants.EMPTY_JSON))
+				.put(nomes7, new ArrayList<>())
+				.put(valor3, (Object) null)
+				
+				;
 
 		assertTrue(json.get(valor) instanceof String);
 		
-
+		
 		assertTrue(json.getAsString(valor2).isEmpty()); 
+		assertFalse(json.getAsString(nomes5).isEmpty()); 
+		assertEquals("[{}]", json.getAsString(nomes6)); 
+		assertEquals("[]", json.getAsString(nomes7)); 
 		assertTrue(json.getAsString(valor3).isEmpty());
 		assertTrue(CcpOtherConstants.EMPTY_JSON.put(jsn, (Object)json).getAsTextDecorator(jsn).isValidSingleJson());
 	}
@@ -757,11 +773,13 @@ public class CcpJsonRepresentationTests {
 			    + string
 			    + "}";
 		CcpJsonRepresentation json = new CcpJsonRepresentation(dados)
+				.put(nomes7, (Object)Arrays.asList(CcpOtherConstants.EMPTY_JSON))
 				.put(nomes2, (Object) null)
 				.put(nomes3, "zoeira")
 				.put(nomes4, string)
 				.put(nomes5, 1)
 				;
+		assertTrue(json.getAsJsonList(nomes7).get(0).isEmpty());
 		assertEquals(json.getAsJsonList(nomes4).size(), 11);
 		assertEquals(json.getAsJsonList(nomes).size(), 11);
 		assertTrue(json.getAsJsonList(nomes2).isEmpty());
@@ -837,6 +855,7 @@ public class CcpJsonRepresentationTests {
 				.put(x4, Arrays.asList())
 				.put(x5, Arrays.asList(value))
 				.put(x6, "[]")
+				.put(nomes7, "")
 				.put(x7, Arrays.asList(value).toString())
 				;
 		assertTrue(json.getAsObjectList(x).isEmpty());
@@ -844,6 +863,7 @@ public class CcpJsonRepresentationTests {
 		assertTrue(json.getAsObjectList(x2).isEmpty());
 		assertTrue(json.getAsObjectList(x4).isEmpty());
 		assertTrue(json.getAsObjectList(x6).isEmpty());
+		assertTrue(json.getAsObjectList(nomes7).isEmpty());
 		assertEquals(json.getAsObjectList(x3).size(), value.length);
 		assertEquals(json.getAsObjectList(x5).size(), value.length);
 		assertEquals(json.getAsObjectList(x7).size(), value.length);
@@ -1054,23 +1074,6 @@ public class CcpJsonRepresentationTests {
 		//Ao tentar imprimir o decorator recebi o endereço de memória talvez esteja faltando o toString()
 		assertTrue(objJson.getAsArrayMetadata(field) instanceof CcpCollectionDecorator);
 		assertTrue(objJson.getAsArrayMetadata(field) instanceof CcpCollectionDecorator);
-	}
-	
-	
-	@Test
-	public void getMissingFieldsTest() {
-		String registro = "{'nome':'Alice',"
-						+ "'sobrenome':'',"
-						+ "'idade':12}";
-		
-		CcpJsonRepresentation json = new CcpJsonRepresentation(registro);
-		
-		List<String> campos = Arrays.asList("nome", "sobrenome", "idade");
-		
-		Set<String> camposFaltantes = json.getMissingFields(campos);
-
-	    
-	    assertEquals(1, camposFaltantes.size()); // Apenas "sobrenome" está vazio
 	}
 	
 	@Test

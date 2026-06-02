@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import com.ccp.constantes.CcpOtherConstants;
+import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
+
 public class CcpReflectionConstructorDecoratorTest {
 
 	// ── thisClassExists ────────────────────────────────────────────────────────
@@ -39,6 +42,12 @@ public class CcpReflectionConstructorDecoratorTest {
 		new CcpReflectionConstructorDecorator("com.nao.existe.Classe").forName();
 	}
 
+	@Test(expected = RuntimeException.class)
+	public void teste() {
+		CcpJsonFieldName field = () -> "nomes7";
+		new CcpReflectionConstructorDecorator(CcpOtherConstants.EMPTY_JSON.put(field, "com.nao.existe.Classe"), field.getValue()).forName();
+		
+	}
 	// ── newInstance ───────────────────────────────────────────────────────────
 
 	@Test
