@@ -90,7 +90,8 @@ public class TelaQuePedeSenhaParaEntrarNoSistema extends JnTemplateDeTestes{
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.wrongPassword, x -> VariaveisParaTeste.WRONG_PASSWORD);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.passwordLockedRecently, x -> VariaveisParaTeste.WRONG_PASSWORD);
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogin.lockedPassword, x -> VariaveisParaTeste.WRONG_PASSWORD);
-		new TelaQuePedeEmail().execute(variaveisParaTeste, JnProcessStatusExistsLoginEmail.lockedPassword);
+		TelaQuePedeEmail telaQuePedeEmail = new TelaQuePedeEmail();
+		telaQuePedeEmail.execute(variaveisParaTeste, JnProcessStatusExistsLoginEmail.lockedPassword);
 	}
 	
 	@Test
