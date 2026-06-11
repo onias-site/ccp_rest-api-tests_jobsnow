@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.dependency.injection.CcpDependencyInjection;
@@ -98,9 +99,9 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 	
 //		SyncServiceVisResume.INSTANCE.save(resume);
 		
-		String email = candidate.getAsString(() -> "id");
+		String email = candidate.getAsString(new CcpFieldName("id"));
 		CcpJsonRepresentation put = resume.put(VisEntityResume.Fields.email, email)
-				.put(() -> "language", "portuguese")
+				.put(new CcpFieldName("language"), "portuguese")
 				;
 		
 		VisServiceResume.Save.execute(put.content);

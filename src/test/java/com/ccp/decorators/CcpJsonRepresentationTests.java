@@ -136,7 +136,7 @@ public class CcpJsonRepresentationTests {
 		;
 		
 		CcpProcessStatusDefault item1 = json.getAsEnum(CcpProcessStatusDefault.BAD_REQUEST, CcpProcessStatusDefault.class);
-		CcpProcessStatusDefault item2 = json.getAsEnum(() -> CcpProcessStatusDefault.CONFLICT.name(), CcpProcessStatusDefault.class);
+		CcpProcessStatusDefault item2 = json.getAsEnum(new CcpFieldName(CcpProcessStatusDefault.CONFLICT.name()), CcpProcessStatusDefault.class);
 		CcpProcessStatusDefault item3 = json.getAsEnum(CcpProcessStatusDefault.CREATED, CcpProcessStatusDefault.class);
 		assertEquals(item1, CcpProcessStatusDefault.BAD_REQUEST);
 		assertEquals(item2, CcpProcessStatusDefault.CONFLICT);
@@ -219,7 +219,7 @@ public class CcpJsonRepresentationTests {
 		//JSON INVÁLIDO
 		String x = "valorQueNaoEhDouble':9.30";
 		CcpJsonRepresentation json2 = new CcpJsonRepresentation(x);
-		assert(json2.getAsDoubleNumber(() -> x) instanceof Double);
+		assert(json2.getAsDoubleNumber(new CcpFieldName(x)) instanceof Double);
 	}
 
 	@Test
@@ -329,7 +329,7 @@ public class CcpJsonRepresentationTests {
 
 		assertEquals("default", resultado2);
 		assertEquals("carro", resultado);
-		String orDefault = objJson.getOrDefault(() -> "1", () -> "teste");
+		String orDefault = objJson.getOrDefault(new CcpFieldName("1"), () -> "teste");
 		assertTrue("teste".equals(orDefault));
 	}
 
@@ -519,7 +519,7 @@ public class CcpJsonRepresentationTests {
 		assertTrue(renameField.containsAllFields(carro));
 		assertFalse(renameField.containsAllFields(cor));
 		assertFalse(renameField.containsAllFields(cor));
-		renameField.renameField(() -> "1", () -> "2");
+		renameField.renameField(new CcpFieldName("1"), new CcpFieldName("2"));
 	}
 
 	@Test
@@ -726,7 +726,7 @@ public class CcpJsonRepresentationTests {
 	@Test
 	public void addJsonTransformerInteger() {
 		CcpJsonRepresentation addJsonTransformer = CcpOtherConstants.EMPTY_JSON.addJsonTransformer(1, json -> json.put(filho, "filho"));
-		CcpBusiness business = addJsonTransformer.getAsObject(() -> "" + 1);
+		CcpBusiness business = addJsonTransformer.getAsObject(new CcpFieldName(1));
 		CcpJsonRepresentation apply = business.apply(CcpOtherConstants.EMPTY_JSON);
 		assertTrue(apply.fieldSet().size() == 1);
 		assertTrue(apply.containsAllFields(filho));
@@ -915,7 +915,7 @@ public class CcpJsonRepresentationTests {
 	    assertFalse(json.containsAnyFields(onias, juliana, luciellen, andré, camila, welton));	
 	    
 	    System.out.println("\ncontainsAllFieldsJsonTest() " + result+"\n");
-	    json.containsAllFields(() -> "1");
+	    json.containsAllFields(new CcpFieldName("1"));
 	    
 	    
 	}
@@ -955,7 +955,7 @@ public class CcpJsonRepresentationTests {
 		boolean result = json.containsAllFields(fields);
 
 		System.out.println("\ncontainsAnyFieldsTest() " + result+"\n");
-		json.containsAnyFields(() -> "1");
+		json.containsAnyFields(new CcpFieldName("1"));
 	}
 	
 	@Test
@@ -1132,8 +1132,8 @@ public class CcpJsonRepresentationTests {
 		
 		assertTrue(list.isEmpty());
 		
-		CcpOtherConstants.EMPTY_JSON.addToItem(() -> "1", () -> "2", json.toString());
-		CcpOtherConstants.EMPTY_JSON.addToItem(() -> "1", () -> "2", json);
+		CcpOtherConstants.EMPTY_JSON.addToItem(new CcpFieldName("1"), new CcpFieldName("2"), json.toString());
+		CcpOtherConstants.EMPTY_JSON.addToItem(new CcpFieldName("1"), new CcpFieldName("2"), json);
 		json.getInnerJsonListFromPath(avo, pai, filho, netos, bisnetos);
 	}
 	

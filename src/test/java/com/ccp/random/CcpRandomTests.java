@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpCollectionDecorator;
+import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpFolderDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
@@ -311,7 +312,7 @@ public class CcpRandomTests {
 				+ "    \"bitcoin\": \"15000\",\r\n"
 				+ "    \"status\": 0\r\n"
 				+ "  }\r\n"
-				+ "}").getInnerJson(() -> "_source");
+				+ "}").getInnerJson(new CcpFieldName("_source"));
 		
 		System.out.println(json.fieldSet());
 	}
@@ -338,7 +339,7 @@ public class CcpRandomTests {
 		CcpDependencyInjection.loadAllDependencies(new CcpTelegramInstantMessenger());
 		CcpInstantMessenger dependency = CcpDependencyInjection.getDependency(CcpInstantMessenger.class);
 		
-		CcpJsonRepresentation sendFile = dependency.sendFile(() -> "", "1154866992:AAGvXIU01UXgpA1gFOBE4pJXjhicf7JnRd8", 751717896L, 0L, "teste.txt", "legenda", 
+		CcpJsonRepresentation sendFile = dependency.sendFile(CcpOtherConstants.EMPTY_STRING, "1154866992:AAGvXIU01UXgpA1gFOBE4pJXjhicf7JnRd8", 751717896L, 0L, "teste.txt", "legenda",
 				new CcpStringDecorator("teste do tio onias").getBytes());
 		
 		System.out.println(sendFile);
@@ -644,11 +645,11 @@ public class CcpRandomTests {
 		Comparator<? super CcpJsonRepresentation> sorter = (a, b) -> {
 			
 			for (String field : fields) {
-				CcpStringDecorator sd1 = a.getAsStringDecorator(() -> field);
+				CcpStringDecorator sd1 = a.getAsStringDecorator(new CcpFieldName(field));
 
 				if(sd1.isLongNumber()) {
-					Integer int2 = b.getAsIntegerNumber(() -> field);
-					Integer int1 = a.getAsIntegerNumber(() -> field);
+					Integer int2 = b.getAsIntegerNumber(new CcpFieldName(field));
+					Integer int1 = a.getAsIntegerNumber(new CcpFieldName(field));
 					int subtration = int2 - int1;
 					if(subtration == 0) {
 						continue;
@@ -656,8 +657,8 @@ public class CcpRandomTests {
 					return subtration;
 				}
 
-				var b1 = a.getAsString(() -> field);
-				var b2 = b.getAsString(() -> field);
+				var b1 = a.getAsString(new CcpFieldName(field));
+				var b2 = b.getAsString(new CcpFieldName(field));
 
 				if(sd1.isBoolean()) {
 					int compareTo = b2.compareTo(b1);
@@ -799,7 +800,7 @@ public class CcpRandomTests {
 		Consumer<CcpJsonRepresentation> consumer = json -> {
 			String[] fields = new String[] {"requisitosDesejaveis", "requisitosObrigatorios", "must", "should"};
 			for (String field : fields) {
-				List<String> list = json.getAsStringList(() -> field).stream()
+				List<String> list = json.getAsStringList(new CcpFieldName(field)).stream()
 						.map(x -> new CcpStringDecorator(x).text().stripAccents().sanitize().getContent().toUpperCase().trim())
 						.filter(x -> x.length() > 2 && x.length() <= 50)
 						.filter(x -> false == existingWords.contains(x))
@@ -1176,24 +1177,24 @@ public class CcpRandomTests {
 			
 			String initials = companyName.substring(0, 3);
 			
-			LinkedHashSet<String> orDefault = groupedCompanies.getOrDefault(() -> initials, () -> new LinkedHashSet<>());
+			LinkedHashSet<String> orDefault = groupedCompanies.getOrDefault(new CcpFieldName(initials), () -> new LinkedHashSet<>());
 			orDefault.add(capitalizedCompanyName);
-			groupedCompanies = groupedCompanies.put(() -> initials, orDefault);
+			groupedCompanies = groupedCompanies.put(new CcpFieldName(initials), orDefault);
 		};
 		queryExecutor.consumeQueryResult(query, new String[] {"old_recruiters"}, "1s", 10000, consumer, "id");
 
 		ArrayList<String> arrayList = new ArrayList<> (groupedCompanies.fieldSet());
 		arrayList.sort((a, b) ->{
-			Set<String> set1 = groupedCompanies.getAsObject(() -> a);
-			Set<String> set2 = groupedCompanies.getAsObject(() -> b);
+			Set<String> set1 = groupedCompanies.getAsObject(new CcpFieldName(a));
+			Set<String> set2 = groupedCompanies.getAsObject(new CcpFieldName(b));
 			return set2.size() - set1.size();
 		});
 		
 		CcpJsonRepresentation result = CcpOtherConstants.EMPTY_JSON;
 		int total = 0;
 		for (String string : arrayList) {
-			Set<String> value = groupedCompanies.getAsObject(() -> string);
-			result = result.put(() -> string, value);
+			Set<String> value = groupedCompanies.getAsObject(new CcpFieldName(string));
+			result = result.put(new CcpFieldName(string), value);
 			int size = value.size();
 			System.out.println(string +" = " +  size);
 			total += size;
@@ -1441,7 +1442,7 @@ public class CcpRandomTests {
 
 		for (CcpJsonRepresentation curriculo : collect) {
 			String id = curriculo.getAsString(JsonFieldNames.id);
-			resumes = resumes.put(() -> id, curriculo);
+			resumes = resumes.put(new CcpFieldName(id), curriculo);
 		}
 
 		CcpJsonRepresentation candidatosAgrupadosPorRecrutadores = getCandidatosAgrupadosPorRecrutadores(queryMatchAll);
@@ -1450,10 +1451,10 @@ public class CcpRandomTests {
 		List<CcpJsonRepresentation> todasAsVagas = new ArrayList<>();
 		CcpJsonRepresentation res = new CcpJsonRepresentation(resumes.content);
 		for (String recrutador : recrutadores) {
-			List<CcpJsonRepresentation> curriculos = candidatosAgrupadosPorRecrutadores.getAsStringList(() -> recrutador)
-					.stream().map(x -> res.getInnerJson(() -> x)).collect(Collectors.toList());
+			List<CcpJsonRepresentation> curriculos = candidatosAgrupadosPorRecrutadores.getAsStringList(new CcpFieldName(recrutador))
+					.stream().map(x -> res.getInnerJson(new CcpFieldName(x))).collect(Collectors.toList());
 
-			List<CcpJsonRepresentation> vagas = vagasAgrupadosPorRecrutadores.getAsJsonList(() -> recrutador);
+			List<CcpJsonRepresentation> vagas = vagasAgrupadosPorRecrutadores.getAsJsonList(new CcpFieldName(recrutador));
 
 			int k = 0;
 			for (CcpJsonRepresentation curriculo : curriculos) {
@@ -1480,7 +1481,7 @@ public class CcpRandomTests {
 			CcpJsonRepresentation vaga = CcpOtherConstants.EMPTY_JSON.put(JsonFieldNames.channel, contato).put(JsonFieldNames.email, recrutador)
 					.put(JsonFieldNames.description, texto).put(JsonFieldNames.contactChannel, contactChannel);
 
-			this.vagasAgrupadasPorRecrutadores = this.vagasAgrupadasPorRecrutadores.addToList(() -> recrutador, vaga);
+			this.vagasAgrupadasPorRecrutadores = this.vagasAgrupadasPorRecrutadores.addToList(new CcpFieldName(recrutador), vaga);
 		}
 
 	}
@@ -1492,7 +1493,7 @@ public class CcpRandomTests {
 		public void accept(CcpJsonRepresentation json) {
 			String candidato = json.getAsObject(JsonFieldNames.candidate, JsonFieldNames.candidato);
 			String recrutador = json.getAsString(JsonFieldNames.email);
-			this.candidatosAgrupadosPorRecrutadores = this.candidatosAgrupadosPorRecrutadores.addToList(() -> recrutador,
+			this.candidatosAgrupadosPorRecrutadores = this.candidatosAgrupadosPorRecrutadores.addToList(new CcpFieldName(recrutador),
 					candidato);
 		}
 	}
@@ -1527,7 +1528,7 @@ public class CcpRandomTests {
 		queryExecutor.consumeQueryResult(query, resourcesNames, "10s", 10000, json -> {
 			for (String field : fields) {
 
-				String value = json.getAsTextDecorator(() -> field).content.trim().toLowerCase();
+				String value = json.getAsTextDecorator(new CcpFieldName(field)).content.trim().toLowerCase();
 
 				if (value.isEmpty()) {
 					continue;

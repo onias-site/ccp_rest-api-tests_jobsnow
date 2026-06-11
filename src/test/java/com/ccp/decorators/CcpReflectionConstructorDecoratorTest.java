@@ -44,7 +44,7 @@ public class CcpReflectionConstructorDecoratorTest {
 
 	@Test(expected = RuntimeException.class)
 	public void teste() {
-		CcpJsonFieldName field = () -> "nomes7";
+		CcpJsonFieldName field = new CcpFieldName("nomes7");
 		new CcpReflectionConstructorDecorator(CcpOtherConstants.EMPTY_JSON.put(field, "com.nao.existe.Classe"), field.getValue()).forName();
 		
 	}

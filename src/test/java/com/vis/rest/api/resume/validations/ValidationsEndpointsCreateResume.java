@@ -3,6 +3,7 @@ package com.vis.rest.api.resume.validations;
 import org.junit.Test;
 
 import com.ccp.constantes.CcpOtherConstants;
+import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.especifications.db.crud.CcpGetEntityId;
@@ -82,7 +83,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 			.ifThisIdIsNotPresentInEntity(JnEntityAsyncTask.ENTITY).returnStatus(SaveResumeStatus.naoCadastrouMensageria).and()
 			.ifThisIdIsNotPresentInEntity(JnEntityEmailMessageSent.ENTITY).returnStatus(SaveResumeStatus.naoEnviouEmail)
 			.andFinallyReturningTheseFields(jsonDeRetornoDoTeste.fieldSet())
-			.endThisProcedureRetrievingTheResultingData(new Object(){}.getClass().getEnclosingMethod().getName(), CcpOtherConstants.DO_NOTHING, CcpOtherConstants.DO_NOTHING, JnDeleteKeysFromCache.INSTANCE)
+			.endThisProcedureRetrievingTheResultingData(new CcpFieldName(new Object(){}.getClass().getEnclosingMethod().getName()), CcpOtherConstants.DO_NOTHING, CcpOtherConstants.DO_NOTHING, JnDeleteKeysFromCache.INSTANCE)
 			;
 		 
 		 System.out.println(result);
@@ -101,7 +102,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 			.toBeginProcedureAnd()
 			.ifThisIdIsNotPresentInEntity(JnEntityAsyncTask.ENTITY).returnStatus(SaveResumeStatus.naoCadastrouMensageria).and()
 			.ifThisIdIsNotPresentInEntity(JnEntityEmailMessageSent.ENTITY).returnStatus(SaveResumeStatus.naoEnviouEmail)
-			.andFinallyReturningTheseFields("x")
+			.andFinallyReturningTheseFields(new CcpFieldName("x"))
 			;
 	}
 	

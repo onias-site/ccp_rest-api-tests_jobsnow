@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import com.ccp.constantes.CcpOtherConstants;
+import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
@@ -99,9 +100,9 @@ public enum LoginActions implements CcpBusiness {
 			String entityName = entityDetails.entityName;
 			try {
 				boolean exists = entity.exists(json);
-				allStatus = allStatus.put(() -> entityName, exists);
+				allStatus = allStatus.put(new CcpFieldName(entityName), exists);
 			} catch (CcpErrorEntityPrimaryKeyIsMissing e) {
-				allStatus = allStatus.put(() -> entityName, false);
+				allStatus = allStatus.put(new CcpFieldName(entityName), false);
 			}
 		}
 	}

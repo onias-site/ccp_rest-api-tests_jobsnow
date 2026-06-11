@@ -209,7 +209,7 @@ public class CcpStringDecoratorTest {
 
 	@Test
 	public void construtorJsonRepresentationTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(() -> "chave", "valor");
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("chave"), "valor");
 		CcpStringDecorator d = new CcpStringDecorator(json, "chave");
 		assertEquals("valor", d.content);
 	}
