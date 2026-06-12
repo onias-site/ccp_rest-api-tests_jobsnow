@@ -1,5 +1,7 @@
 package com.vis.rest.api.resume.validations;
 
+import java.util.stream.Collectors;
+
 import org.junit.Test;
 
 import com.ccp.constantes.CcpOtherConstants;
@@ -82,7 +84,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 			.toBeginProcedureAnd()
 			.ifThisIdIsNotPresentInEntity(JnEntityAsyncTask.ENTITY).returnStatus(SaveResumeStatus.naoCadastrouMensageria).and()
 			.ifThisIdIsNotPresentInEntity(JnEntityEmailMessageSent.ENTITY).returnStatus(SaveResumeStatus.naoEnviouEmail)
-			.andFinallyReturningTheseFields(jsonDeRetornoDoTeste.fieldSet())
+			.andFinallyReturningTheseFields(jsonDeRetornoDoTeste.fieldSet().stream().map(x -> (CcpJsonFieldName)() -> x).collect(Collectors.toSet()))
 			.endThisProcedureRetrievingTheResultingData(new CcpFieldName(new Object(){}.getClass().getEnclosingMethod().getName()), CcpOtherConstants.DO_NOTHING, CcpOtherConstants.DO_NOTHING, JnDeleteKeysFromCache.INSTANCE)
 			;
 		 

@@ -17,10 +17,6 @@ import com.jn.utils.JnLanguage;
 
 public class AoEntrarNaTelaDoCadastroDeSenha extends JnTemplateDeTestes{
 
-	public static void main(String[] args) {
-		new AoEntrarNaTelaDoCadastroDeSenha();
-	}
-	
 	@Test
 	public void emailInvalido() {
 		this.criarTokenDeLogin(VariaveisParaTeste.INVALID_EMAIL, JnProcessStatusCreateLoginToken.statusInvalidEmail);
@@ -47,7 +43,7 @@ public class AoEntrarNaTelaDoCadastroDeSenha extends JnTemplateDeTestes{
 		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
 		this.execute(variaveisParaTeste, JnProcessStatusCreateLoginToken.expectedStatus);
-	}
+	} 
 
 	
 	
