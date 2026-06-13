@@ -69,6 +69,7 @@ import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
+import com.jn.services.JnServiceLogin;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityGroupPositionsBySkills;
 import com.vis.entities.VisEntityResume;
@@ -88,6 +89,12 @@ public class CcpRandomTests {
 	}
 
 	public static void main(String[] args) {
+		try {
+			JnServiceLogin.ExecuteLogin.execute(CcpOtherConstants.EMPTY_JSON);
+			
+		} catch (CcpJsonValidationError e) {
+		System.out.println(e.json.asUgglyJson());
+		}
 	}
 
 	static void fodasse() {
