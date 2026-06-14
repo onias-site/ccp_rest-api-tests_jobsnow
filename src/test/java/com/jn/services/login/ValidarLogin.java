@@ -34,7 +34,8 @@ public class ValidarLogin extends JnServiceLoginTemplateDeTestes {
 				.put(JnEntityLoginSessionValidation.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
 				.put(JnEntityLoginSessionValidation.Fields.ip, "127.0.0.1")
 ;
-		executarServico(JnServiceLogin.ValidateLogin, json2.duplicateValueFromField(() -> "originalToken", () -> "sessionToken"), CcpProcessStatusDefault.OK);
+		executarServico(JnServiceLogin.ValidateLogin, json2
+				, CcpProcessStatusDefault.OK);
 	}
 
 	@Test

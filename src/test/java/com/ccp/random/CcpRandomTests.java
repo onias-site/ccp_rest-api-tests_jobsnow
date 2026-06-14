@@ -125,22 +125,6 @@ public class CcpRandomTests {
 		System.out.println(sendFile);
 	}
 
-	static void getDataWithTimeStamp() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(JnEntityDisposableTest.Fields.email, "onias85@gmail.com")
-				;
-		JnEntityDisposableTest.ENTITY.save(json);
-		{
-			CcpJsonRepresentation dataWithTimeStamp = JnEntityDisposableRecord.getDataWithTimeStamp(JnEntityDisposableTest.ENTITY, json);
-			System.out.println(dataWithTimeStamp);
-		}
-		JnEntityDisposableTest.ENTITY.delete(json);
-		{
-			CcpJsonRepresentation dataWithTimeStamp = JnEntityDisposableRecord.getDataWithTimeStamp(JnEntityDisposableTest.ENTITY, json);
-			System.out.println(dataWithTimeStamp);
-		}
-	}
-
 	static void testarDisposable() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnEntityDisposableTest.Fields.email, "onias85@gmail.com")

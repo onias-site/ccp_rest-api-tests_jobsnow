@@ -17,6 +17,11 @@ P) Tradução de erros do salvamento de curriculo
 Q) Problema do campo "language"
 
 
+A) Salvamento de skills
+B) Empresas indesejadas
+C) Salvamento de curriculo
+D) Salvamento de vaga
+
 Passos para liberar endpoints de curriculos na nuvem
 A) Gravar todos os curriculos localmente
 B) Endpointizar a gravação de curriculos
