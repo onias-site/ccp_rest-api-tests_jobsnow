@@ -61,7 +61,6 @@ import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
 import com.jn.business.messages.JnBusinessSendInstantMessage;
-import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityDisposableTest;
 import com.jn.entities.JnEntityInstantMessengerMessageSent;
 import com.jn.entities.JnEntityJobsnowError;
