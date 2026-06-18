@@ -2,7 +2,7 @@ package com.jn.services.login;
 
 import java.util.Map;
 
-import com.ccp.constantes.CcpOtherConstants;
+import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpTimeDecorator;
@@ -23,6 +23,11 @@ import com.jn.rest.api.commons.VariaveisParaTeste;
 import com.jn.services.JnServiceLogin;
 
 public abstract class JnServiceLoginTemplateDeTestes {
+	public final JnServiceLogin service;
+	
+	public JnServiceLoginTemplateDeTestes() {
+		this.service = JnServiceLogin.valueOf(this.getClass().getSimpleName());
+	}
 
 	enum JsonFieldNames implements com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName {
 		actualStatus, expectedStatus, servico, request, response, timestamp
@@ -48,26 +53,26 @@ public abstract class JnServiceLoginTemplateDeTestes {
 		database.createTables(pathToCreateEntityScript, pathToJavaClasses, mappingJnEntitiesErrors, insertErrors);
 	}
 
-	protected CcpJsonRepresentation executarServico(JnServiceLogin servico, CcpJsonRepresentation json, CcpProcessStatus expectedStatus) {
+	protected CcpJsonRepresentation execute(CcpJsonRepresentation json, CcpProcessStatus expectedStatus) {
 		int statusAtual;
 		CcpJsonRepresentation resposta;
 		try {
-			Map<String, Object> result = servico.execute(json.content);
+			Map<String, Object> result = this.service.execute(json.content);
 			statusAtual = CcpProcessStatusDefault.OK.asNumber();
 			resposta = new CcpJsonRepresentation(result);
 		} catch (CcpErrorFlowDisturb e) {
 			statusAtual = e.status.asNumber();
 			resposta = e.json;
 		}
-		this.log(servico, json, resposta, expectedStatus, statusAtual);
-		expectedStatus.verifyStatus(statusAtual, "");
+		this.log(json, resposta, expectedStatus, statusAtual);
+		expectedStatus.verifyStatus(statusAtual, ""); 
 		return resposta;
 	}
 
-	private void log(JnServiceLogin servico, CcpJsonRepresentation request, CcpJsonRepresentation response, CcpProcessStatus expectedStatus, int statusAtual) {
+	private void log( CcpJsonRepresentation request, CcpJsonRepresentation response, CcpProcessStatus expectedStatus, int statusAtual) {
 		String date = new CcpTimeDecorator().getFormattedDateTime("dd/MM/yyyy HH:mm:ss");
 		CcpJsonRepresentation log = CcpOtherConstants.EMPTY_JSON
-				.put(JsonFieldNames.servico, servico.name())
+				.put(JsonFieldNames.servico, this.getClass().getSimpleName())
 				.put(JsonFieldNames.expectedStatus, expectedStatus.asNumber())
 				.put(JsonFieldNames.actualStatus, statusAtual)
 				.put(JsonFieldNames.request, request)

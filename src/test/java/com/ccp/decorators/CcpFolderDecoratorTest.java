@@ -13,6 +13,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.ccp.decorators.CcpFileDecorator.CcpErrorFolderParentIsMissing;
+
 public class CcpFolderDecoratorTest {
 
 	private static final String BASE = System.getProperty("java.io.tmpdir") + File.separator + "ccp_folder_test";

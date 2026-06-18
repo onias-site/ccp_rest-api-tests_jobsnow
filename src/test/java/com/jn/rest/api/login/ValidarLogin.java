@@ -50,7 +50,7 @@ public class ValidarLogin  extends JnTemplateDeTestes{
 	
 	@Test
 	public void caminhoFeliz() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste("onias85@gmail.com");
+		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		this.execute(variaveisParaTeste, CcpProcessStatusDefault.OK, x -> this.cadastrarSenhaParaEntrarNoSistema(x).getAsString(Fields.sessionToken));
 		this.execute(variaveisParaTeste, CcpProcessStatusDefault.OK, x -> this.executarLogin(x).getAsString(Fields.sessionToken));
 	}

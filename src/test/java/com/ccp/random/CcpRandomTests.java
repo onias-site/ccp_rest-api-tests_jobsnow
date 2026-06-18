@@ -1,4 +1,4 @@
-package com.ccp.random;
+﻿package com.ccp.random;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import com.ccp.constantes.CcpOtherConstants;
+import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpCollectionDecorator;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpFileDecorator;
@@ -31,7 +31,7 @@ import com.ccp.decorators.CcpTextDecorator.CcpTemplateFunctions;
 import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.crud.CcpCrud;
-import com.ccp.especifications.db.crud.CcpSelectUnionAll;
+import com.ccp.especifications.db.crud.CcpGetEntityId.CcpSelectUnionAll;
 import com.ccp.especifications.db.query.CcpQueryExecutor;
 import com.ccp.especifications.db.query.CcpQueryOptions;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
@@ -56,7 +56,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.implementations.text.extractor.apache.tika.CcpApacheTikaTextExtractor;
 import com.ccp.json.validations.fields.annotations.CcpJsonCopyFieldValidationsFrom;
-import com.ccp.json.validations.global.engine.CcpJsonValidationError;
+import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
@@ -81,7 +81,7 @@ public class CcpRandomTests {
 		implicitSkills, skill, word, childrenCount, hasNoParent, parent, mirror, hasMirror, allParents, hasRepeatedParent, directParent, commonParents, hasSkillsWithCommonParentsSize, skillsWithCommonParents, synonym, similar, preRequisite, positionsCount, parentSize, skillSize, words, id, skillsPerParent, tipoVaga, curriculo, conteudo, text
 	}
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
-	private static final String LINKEDIN_REGEX = "^https://(www\\.)?linkedin\\.com/in/[a-zA-Z0-9-_%]+/?$";
+	private static final String LINKEDIN_REGEX = "^https://(www\\.)?linkedi n\\.com/in/[a-zA-Z0-9-_%]+/?$";
 	
 	public static boolean isValidLinkedInUrl(String url) {
 		return Pattern.matches(LINKEDIN_REGEX, url);
@@ -89,10 +89,18 @@ public class CcpRandomTests {
 
 	public static void main(String[] args) {
 		try {
-			JnServiceLogin.ExecuteLogin.execute(CcpOtherConstants.EMPTY_JSON);
+			CcpJsonRepresentation execute = JnServiceLogin.ExecuteLogin.execute(CcpOtherConstants
+					.EMPTY_JSON
+					.put(JnEntityLoginPassword.Fields.email, "onias85@gmail.com")
+					.put(JnEntityLoginPassword.Fields.password, "Jobsnow1!")
+					.put(JnEntityLoginSessionValidation.Fields.userAgent, "Novasenha1!")
+					.put(JnEntityLoginSessionValidation.Fields.ip, "Novasenha1!")
+					);
+			
+			System.out.println(execute);
 			
 		} catch (CcpJsonValidationError e) {
-		System.out.println(e.json.asUgglyJson());
+			System.out.println(e.json.asUgglyJson());
 		}
 	}
 

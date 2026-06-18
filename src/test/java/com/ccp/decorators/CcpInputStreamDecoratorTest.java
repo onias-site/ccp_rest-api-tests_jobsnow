@@ -8,6 +8,8 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
+import com.ccp.decorators.CcpInputStreamDecorator.CcpErrorInputStreamMissing;
+
 public class CcpInputStreamDecoratorTest {
 
 	private static final String TMP = System.getProperty("java.io.tmpdir");

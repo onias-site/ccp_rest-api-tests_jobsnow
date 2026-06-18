@@ -1,6 +1,6 @@
-package com.vis.commons;
+﻿package com.vis.commons;
 
-import com.ccp.constantes.CcpOtherConstants;
+import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
@@ -17,7 +17,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.mensageria.sender.gcp.pubsub.CcpGcpPubSubMensageriaSender;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.implementations.text.extractor.apache.tika.CcpApacheTikaTextExtractor;
-import com.ccp.json.validations.global.engine.CcpJsonValidationError;
+import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.rest.api.utils.CcpRestApiUtils;

@@ -96,7 +96,10 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.ccp.business.CcpBusiness;
-import com.ccp.constantes.CcpOtherConstants;
+import com.ccp.decorators.CcpJsonRepresentation.CCpErrorJsonFieldIsNotValidJsonList;
+import com.ccp.decorators.CcpJsonRepresentation.CcpErrorJsonFieldNotFound;
+import com.ccp.decorators.CcpJsonRepresentation.CcpErrorJsonPathIsMissing;
+import com.ccp.constants.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.json.CcpJsonHandler;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;

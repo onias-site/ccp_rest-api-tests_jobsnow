@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import com.ccp.constantes.CcpOtherConstants;
+import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 
 public class CcpReflectionConstructorDecoratorTest {

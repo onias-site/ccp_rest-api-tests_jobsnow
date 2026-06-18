@@ -4,7 +4,6 @@ import java.util.function.Function;
 
 import org.junit.Test;
 
-import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatus;
 import com.ccp.process.CcpProcessStatusDefault;
@@ -13,7 +12,6 @@ import com.jn.entities.JnEntityLoginTokenRequestUnlock;
 import com.jn.rest.api.commons.JnTemplateDeTestes;
 import com.jn.rest.api.commons.VariaveisParaTeste;
 import com.jn.status.login.JnProcessStatusUnlockLoginToken;
-import com.jn.utils.JnLanguage;
 
 public class SolicitacaoDeDesbloqueioDeToken extends JnTemplateDeTestes {
 
@@ -27,8 +25,8 @@ public class SolicitacaoDeDesbloqueioDeToken extends JnTemplateDeTestes {
 	public void desbloqueioJaRealizado() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		JnEntityLoginToken.ENTITY.getTwinEntity().save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		CcpEntity twinEntity = JnEntityLoginTokenRequestUnlock.ENTITY.getTwinEntity();
-		twinEntity.save(variaveisParaTeste.REQUEST_TO_LOGIN);
+		this.execute(variaveisParaTeste, CcpProcessStatusDefault.OK);
+		JnEntityLoginTokenRequestUnlock.ENTITY.delete(variaveisParaTeste.REQUEST_TO_LOGIN);
 		this.execute(variaveisParaTeste, JnProcessStatusUnlockLoginToken.statusTokenAlredyUnlocked);
 	}
 
@@ -54,7 +52,7 @@ public class SolicitacaoDeDesbloqueioDeToken extends JnTemplateDeTestes {
 	}
 
 	private void solicitarDesbloqueio(String email, CcpProcessStatus expectedStatus) {
-		String uri = "login/" + email + "/token/language/" + JnLanguage.portuguese.name() + "/unlocking";
+		String uri = "login/" + email + "/token/request/unlocking";
 		this.testarEndpoint(uri, expectedStatus);
 	}
 

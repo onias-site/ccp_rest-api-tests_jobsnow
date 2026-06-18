@@ -3,15 +3,15 @@ package com.vis.commons;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
-import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityMetaData;
-import com.ccp.especifications.db.utils.entity.fields.CcpErrorEntityPrimaryKeyIsMissing;
+import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityMetaData.CcpErrorEntityPrimaryKeyIsMissing;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.business.CcpBusiness;
+import com.ccp.constants.CcpOtherConstants;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.jn.business.login.JnBusinessSendUserToken;
 import com.jn.entities.JnEntityEmailMessageSent;

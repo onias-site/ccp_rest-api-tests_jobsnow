@@ -10,6 +10,7 @@ import java.math.BigInteger;
 import org.junit.Test;
 
 import com.ccp.hash.CcpHashAlgorithm;
+import com.ccp.hash.CcpHashAlgorithm.CcpErrorHashAlgorithmNotFound;
 
 public class CcpHashDecoratorTest {
 

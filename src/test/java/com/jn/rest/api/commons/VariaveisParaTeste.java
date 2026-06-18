@@ -1,6 +1,6 @@
 package com.jn.rest.api.commons;
 
-import com.ccp.constantes.CcpOtherConstants;
+import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.jn.entities.JnEntityLoginAnswers;

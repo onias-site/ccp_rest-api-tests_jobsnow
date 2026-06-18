@@ -4,7 +4,7 @@ import java.util.function.Function;
 
 import org.junit.Test;
 
-import com.ccp.constantes.CcpOtherConstants;
+import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.decorators.CcpStringDecorator;

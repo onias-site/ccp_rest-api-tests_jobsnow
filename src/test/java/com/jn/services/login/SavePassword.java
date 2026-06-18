@@ -1,12 +1,12 @@
-package com.jn.services.login;
+﻿package com.jn.services.login;
 
 import org.junit.Test;
 
-import com.ccp.constantes.CcpOtherConstants;
+import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
-import com.ccp.json.validations.global.engine.CcpJsonValidationError;
+import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine.CcpJsonValidationError;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.entities.JnEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
@@ -14,10 +14,9 @@ import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.rest.api.commons.VariaveisParaTeste;
-import com.jn.services.JnServiceLogin;
 import com.jn.status.login.JnProcessStatusUpdatePassword;
 
-public class TelaDoCadastroDeSenha extends JnServiceLoginTemplateDeTestes {
+public class SavePassword extends JnServiceLoginTemplateDeTestes {
 
 	@Test(expected = CcpJsonValidationError.class)
 	public void emailInvalido() {
@@ -25,7 +24,7 @@ public class TelaDoCadastroDeSenha extends JnServiceLoginTemplateDeTestes {
 		CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
 				.put(JnEntityLoginPassword.Fields.password, VariaveisParaTeste.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, "abcdefgh");
-		executarServico(JnServiceLogin.SavePassword, body, CcpProcessStatusDefault.UNPROCESSABLE_ENTITY);
+		this.execute(body, CcpProcessStatusDefault.UNPROCESSABLE_ENTITY);
 	}
 
 	@Test
@@ -37,7 +36,7 @@ public class TelaDoCadastroDeSenha extends JnServiceLoginTemplateDeTestes {
 		CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
 				.put(JnEntityLoginPassword.Fields.password, VariaveisParaTeste.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, token);
-		executarServico(JnServiceLogin.SavePassword, body, JnProcessStatusUpdatePassword.lockedToken);
+		this.execute(body, JnProcessStatusUpdatePassword.lockedToken);
 	}
 
 	@Test
@@ -49,7 +48,7 @@ public class TelaDoCadastroDeSenha extends JnServiceLoginTemplateDeTestes {
 		CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
 				.put(JnEntityLoginPassword.Fields.password, VariaveisParaTeste.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, "12345678");
-		executarServico(JnServiceLogin.SavePassword, body, JnProcessStatusUpdatePassword.missingEmail);
+		this.execute(body, JnProcessStatusUpdatePassword.missingEmail);
 	}
 
 	@Test
@@ -63,13 +62,13 @@ public class TelaDoCadastroDeSenha extends JnServiceLoginTemplateDeTestes {
 
 	@Test
 	public void caminhoFeliz() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
+		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste("onias85@gmail.com");
 		this.fluxoEsperado(variaveisParaTeste);
 	}
 
 	@Test(expected = CcpJsonValidationError.class)
 	public void jsonInvalido() {
-		executarServico(JnServiceLogin.SavePassword, CcpOtherConstants.EMPTY_JSON, JnProcessStatusUpdatePassword.invalidJson);
+		this.execute(CcpOtherConstants.EMPTY_JSON, JnProcessStatusUpdatePassword.invalidJson);
 	}
 
 	@Test
@@ -80,12 +79,12 @@ public class TelaDoCadastroDeSenha extends JnServiceLoginTemplateDeTestes {
 			CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
 					.put(JnEntityLoginPassword.Fields.password, VariaveisParaTeste.CORRECT_PASSWORD)
 					.put(JnEntityLoginToken.Fields.token, "abcdefgh");
-			executarServico(JnServiceLogin.SavePassword, body, JnProcessStatusUpdatePassword.wrongToken);
+			this.execute(body, JnProcessStatusUpdatePassword.wrongToken);
 		}
 		CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
 				.put(JnEntityLoginPassword.Fields.password, VariaveisParaTeste.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, token);
-		executarServico(JnServiceLogin.SavePassword, body, JnProcessStatusUpdatePassword.expectedStatus);
+		this.execute(body, JnProcessStatusUpdatePassword.expectedStatus);
 	}
 
 	@Test
@@ -96,24 +95,24 @@ public class TelaDoCadastroDeSenha extends JnServiceLoginTemplateDeTestes {
 			CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
 					.put(JnEntityLoginPassword.Fields.password, VariaveisParaTeste.CORRECT_PASSWORD)
 					.put(JnEntityLoginToken.Fields.token, "abcdefgh");
-			executarServico(JnServiceLogin.SavePassword, body, JnProcessStatusUpdatePassword.wrongToken);
+			this.execute(body, JnProcessStatusUpdatePassword.wrongToken);
 		}
 		CcpJsonRepresentation bodyWrong = variaveisParaTeste.REQUEST_TO_LOGIN
 				.put(JnEntityLoginPassword.Fields.password, VariaveisParaTeste.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, "abcdefgh");
-		executarServico(JnServiceLogin.SavePassword, bodyWrong, JnProcessStatusUpdatePassword.tokenLockedRecently);
+		this.execute(bodyWrong, JnProcessStatusUpdatePassword.tokenLockedRecently);
 		CcpJsonRepresentation bodyRight = variaveisParaTeste.REQUEST_TO_LOGIN
 				.put(JnEntityLoginPassword.Fields.password, VariaveisParaTeste.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, token);
-		executarServico(JnServiceLogin.SavePassword, bodyRight, JnProcessStatusUpdatePassword.lockedToken);
+		this.execute(bodyRight, JnProcessStatusUpdatePassword.lockedToken);
 	}
 
 	public CcpJsonRepresentation fluxoEsperado(VariaveisParaTeste variaveisParaTeste) {
-		String token = getToken(variaveisParaTeste);
+		String token = this.getToken(variaveisParaTeste);
 		CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
 				.put(JnEntityLoginPassword.Fields.password, VariaveisParaTeste.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, token);
-		return executarServico(JnServiceLogin.SavePassword, body, JnProcessStatusUpdatePassword.expectedStatus);
+		return this.execute(body, JnProcessStatusUpdatePassword.expectedStatus);
 	}
 
 	private String getToken(VariaveisParaTeste variaveisParaTeste) {

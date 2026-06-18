@@ -10,7 +10,7 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
-import com.ccp.constantes.CcpOtherConstants;
+import com.ccp.constants.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
