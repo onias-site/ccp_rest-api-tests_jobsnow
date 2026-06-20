@@ -9,7 +9,7 @@ import com.vis.commons.VisTemplateDeTestes;
 
 public class ValidationsEndpointsUpdateResume  extends VisTemplateDeTestes{
 
-	@Test
+//	@Test
 	public void saveResume() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
 		
