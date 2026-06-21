@@ -2,8 +2,6 @@ package com.vis.rest.api.resume.validations;
 
 import java.util.stream.Collectors;
 
-import org.junit.Test;
-
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
