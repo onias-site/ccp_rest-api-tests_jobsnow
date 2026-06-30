@@ -34,6 +34,7 @@ import com.ccp.especifications.db.crud.CcpCrud;
 import com.ccp.especifications.db.crud.CcpSelectUnionAll;
 import com.ccp.especifications.db.query.CcpQueryExecutor;
 import com.ccp.especifications.db.query.CcpQueryOptions;
+import com.ccp.especifications.db.utils.CcpDbRequester;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.ccp.especifications.db.utils.entity.fields.CcpEntityField;
@@ -88,20 +89,16 @@ public class CcpRandomTests {
 	}
 
 	public static void main(String[] args) {
-		try {
-			CcpJsonRepresentation execute = JnServiceLogin.ExecuteLogin.execute(CcpOtherConstants
-					.EMPTY_JSON
-					.put(JnEntityLoginPassword.Fields.email, "onias85@gmail.com")
-					.put(JnEntityLoginPassword.Fields.password, "Jobsnow1!")
-					.put(JnEntityLoginSessionValidation.Fields.userAgent, "Novasenha1!")
-					.put(JnEntityLoginSessionValidation.Fields.ip, "Novasenha1!")
-					);
-			
-			System.out.println(execute);
-			
-		} catch (CcpJsonValidationError e) {
-			System.out.println(e.json.asUgglyJson());
-		}
+		createVisEntities();
+	}
+
+	static void createVisEntities() {
+		String pathToCreateEntityScript = "documentation\\vis\\database\\elasticsearch\\scripts\\entities\\create";
+		String pathToJavaClasses = "..\\vis_business_jobsnow\\src\\main\\java\\com\\vis\\entities";
+		String mappingJnEntitiesErrors = "c:\\logs\\mappingJnEntitiesErrors.json";
+		String insertErrors = "c:\\logs\\insertErrors.json";
+		CcpDbRequester database = CcpDependencyInjection.getDependency(CcpDbRequester.class);
+		database.createTables(pathToCreateEntityScript, pathToJavaClasses, mappingJnEntitiesErrors, insertErrors);
 	}
 
 	static void fodasse() {
