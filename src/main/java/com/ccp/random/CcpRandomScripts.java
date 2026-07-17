@@ -67,7 +67,7 @@ import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
 import com.vis.resumes.ImportResumeFromOldJobsNow;
 
-public class CcpRandomTests {
+public class CcpRandomScripts {
 
 	static enum JsonFields implements CcpJsonFieldName{
 		skill, 
