@@ -332,7 +332,7 @@ public class CcpJsonRepresentationTests {
 
 		assertEquals("default", resultado2);
 		assertEquals("carro", resultado);
-		String orDefault = objJson.getOrDefault(new CcpFieldName("1"), () -> "teste");
+		String orDefault = objJson.getOrDefault(new CcpFieldName(1), () -> "teste");
 		assertTrue("teste".equals(orDefault));
 	}
 
@@ -522,7 +522,7 @@ public class CcpJsonRepresentationTests {
 		assertTrue(renameField.containsAllFields(carro));
 		assertFalse(renameField.containsAllFields(cor));
 		assertFalse(renameField.containsAllFields(cor));
-		renameField.renameField(new CcpFieldName("1"), new CcpFieldName("2"));
+		renameField.renameField(new CcpFieldName(1), new CcpFieldName(2));
 	}
 
 	@Test
@@ -918,7 +918,7 @@ public class CcpJsonRepresentationTests {
 	    assertFalse(json.containsAnyFields(onias, juliana, luciellen, andré, camila, welton));	
 	    
 	    System.out.println("\ncontainsAllFieldsJsonTest() " + result+"\n");
-	    json.containsAllFields(new CcpFieldName("1"));
+	    json.containsAllFields(new CcpFieldName(1));
 	    
 	    
 	}
@@ -958,7 +958,7 @@ public class CcpJsonRepresentationTests {
 		boolean result = json.containsAllFields(fields);
 
 		System.out.println("\ncontainsAnyFieldsTest() " + result+"\n");
-		json.containsAnyFields(new CcpFieldName("1"));
+		json.containsAnyFields(new CcpFieldName(1));
 	}
 	
 	@Test
@@ -1135,8 +1135,8 @@ public class CcpJsonRepresentationTests {
 		
 		assertTrue(list.isEmpty());
 		
-		CcpOtherConstants.EMPTY_JSON.addToItem(new CcpFieldName("1"), new CcpFieldName("2"), json.toString());
-		CcpOtherConstants.EMPTY_JSON.addToItem(new CcpFieldName("1"), new CcpFieldName("2"), json);
+		CcpOtherConstants.EMPTY_JSON.addToItem(new CcpFieldName(1), new CcpFieldName(2), json.toString());
+		CcpOtherConstants.EMPTY_JSON.addToItem(new CcpFieldName(1), new CcpFieldName(2), json);
 		json.getInnerJsonListFromPath(avo, pai, filho, netos, bisnetos);
 	}
 	
