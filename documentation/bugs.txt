@@ -1,0 +1,9 @@
+A) Incrementando mesmo item duas vezes no stagesOvercome
+B) Pegando dados incorretos de timestamp
+C) Não está salvando fases quando passa de tela
+D) Retornar dados de token no cadastro de senha
+E) Notificar telegram ao usuário solicitar reenvio de token
+F) Notificar telegram ao usuário solicitar desbloqueio de token
+G) Rotina para reenvio de token
+H) Rotina para desbloqueio de token
+I) HmtlFor pros componentes

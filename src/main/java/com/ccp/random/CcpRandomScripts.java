@@ -59,6 +59,7 @@ import com.jn.business.messages.JnBusinessSendInstantMessage;
 import com.jn.entities.JnEntityDisposableTest;
 import com.jn.entities.JnEntityInstantMessengerMessageSent;
 import com.jn.entities.JnEntityJobsnowError;
+import com.jn.entities.JnEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
@@ -87,7 +88,7 @@ public class CcpRandomScripts {
 	}
 
 	public static void main(String[] args) {
-		createVisEntities();
+		JnEntityLoginAnswers.ENTITY.delete(CcpOtherConstants.EMPTY_JSON.put(() -> "email", "onias85@gmail.com"));
 	}
 
 	static void createVisEntities() {
