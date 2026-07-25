@@ -88,7 +88,8 @@ public class CcpRandomScripts {
 	}
 
 	public static void main(String[] args) {
-		JnEntityLoginAnswers.ENTITY.delete(CcpOtherConstants.EMPTY_JSON.put(() -> "email", "onias85@gmail.com"));
+		var x = JnEntityLoginAnswers.ENTITY.delete(CcpOtherConstants.EMPTY_JSON.put(() -> "email", "onias85@gmail.com"));
+		System.out.println(x);
 	}
 
 	static void createVisEntities() {

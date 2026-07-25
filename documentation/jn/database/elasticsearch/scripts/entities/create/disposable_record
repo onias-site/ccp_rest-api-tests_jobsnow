@@ -9,6 +9,9 @@
 			"date": {
 				"type": "text"
 			},
+			"trueTimestamp": {
+				"type": "long"
+			},
 			"id": {
 				"type": "keyword"
 			},

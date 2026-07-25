@@ -68,6 +68,7 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 	}
 	
 	public String fluxoEsperado(VariaveisParaTeste variaveisParaTeste) {
+		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
 		String token = this.getToken(variaveisParaTeste);
 		String execute = this.execute(variaveisParaTeste,JnProcessStatusUpdatePassword.expectedStatus, x -> token);
 		return execute;
@@ -93,6 +94,7 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 	public void errarParaDepoisAcertarToken() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		String token = this.getToken(variaveisParaTeste);
+		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
 		for(int k = 1; k < 3; k++) {
 			this.execute(variaveisParaTeste, JnProcessStatusUpdatePassword.wrongToken, x -> "abcdefgh");
 		}
@@ -103,6 +105,7 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 	public void tokenRecemBloqueado() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		String token = this.getToken(variaveisParaTeste);
+		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
 		for(int k = 1; k <= 2; k++) {
 			this.execute(variaveisParaTeste, JnProcessStatusUpdatePassword.wrongToken, x -> "abcdefgh");
 		}
@@ -135,8 +138,8 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 
 	
 	private String getTokenToValidateLogin(VariaveisParaTeste variaveisParaTeste) {
-		JnEntityLoginEmail.ENTITY.save( variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.save( variaveisParaTeste.ANSWERS_JSON);
+		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
 		return "12345678";
 
 	}

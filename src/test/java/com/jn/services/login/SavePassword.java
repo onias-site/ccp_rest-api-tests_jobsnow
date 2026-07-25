@@ -75,6 +75,7 @@ public class SavePassword extends JnServiceLoginTemplateDeTestes {
 	public void errarParaDepoisAcertarToken() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		String token = getToken(variaveisParaTeste);
+		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
 		for (int k = 1; k < 3; k++) {
 			CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
 					.put(JnEntityLoginPassword.Fields.password, VariaveisParaTeste.CORRECT_PASSWORD)
@@ -91,6 +92,7 @@ public class SavePassword extends JnServiceLoginTemplateDeTestes {
 	public void tokenRecemBloqueado() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		String token = getToken(variaveisParaTeste);
+		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
 		for (int k = 1; k <= 2; k++) {
 			CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
 					.put(JnEntityLoginPassword.Fields.password, VariaveisParaTeste.CORRECT_PASSWORD)
@@ -108,6 +110,8 @@ public class SavePassword extends JnServiceLoginTemplateDeTestes {
 	}
 
 	public CcpJsonRepresentation fluxoEsperado(VariaveisParaTeste variaveisParaTeste) {
+		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
+
 		String token = this.getToken(variaveisParaTeste);
 		CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
 				.put(JnEntityLoginPassword.Fields.password, VariaveisParaTeste.CORRECT_PASSWORD)
