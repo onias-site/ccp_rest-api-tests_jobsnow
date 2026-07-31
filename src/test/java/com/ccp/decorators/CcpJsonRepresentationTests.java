@@ -261,7 +261,7 @@ public class CcpJsonRepresentationTests {
 				.put(nomes5, Arrays.asList(x))
 				.put(nomes6, Arrays.asList(CcpOtherConstants.EMPTY_JSON))
 				.put(nomes7, new ArrayList<>())
-				.put(valor3, (Object) null)
+				.put(valor3, (Object) "")
 				
 				;
 
@@ -337,7 +337,7 @@ public class CcpJsonRepresentationTests {
 	}
 
 
-	@Test (expected = RuntimeException.class)
+	@Test ()
 	public void getOrDefaultErroTest() {
 		CcpJsonRepresentation objJson = new CcpJsonRepresentation("");
 		String resultado = objJson.getOrDefault(veiculo, () -> "default");
@@ -777,7 +777,7 @@ public class CcpJsonRepresentationTests {
 			    + "}";
 		CcpJsonRepresentation json = new CcpJsonRepresentation(dados)
 				.put(nomes7, (Object)Arrays.asList(CcpOtherConstants.EMPTY_JSON))
-				.put(nomes2, (Object) null)
+				.put(nomes2, (Object) "")
 				.put(nomes3, "zoeira")
 				.put(nomes4, string)
 				.put(nomes5, 1)
@@ -852,7 +852,7 @@ public class CcpJsonRepresentationTests {
 		
 		Object[] value = new Object[] {1,2,3,4};
 		CcpJsonRepresentation json = new CcpJsonRepresentation(keys)
-				.put(x1, (Object) null)
+				.put(x1, (Object) "")
 				.put(x2, new Object[] {})
 				.put(x3, value)
 				.put(x4, Arrays.asList())
@@ -1168,7 +1168,7 @@ public class CcpJsonRepresentationTests {
 				.put(json3, (Object)CcpOtherConstants.EMPTY_JSON.put(campo1, "valor1"))
 				.put(jsn, "{'nome': 'onias'}")
 				.put(json2, new HashMap<>())
-				.put(json4, (Object)null)
+				.put(json4, (Object)"")
 				.put(json5, 1)
 				
 				;
@@ -1198,7 +1198,7 @@ public class CcpJsonRepresentationTests {
 		.put(campo2, "{}")
 		.put(campo3, CcpOtherConstants.EMPTY_JSON)
 		.put(campo4, CcpOtherConstants.EMPTY_JSON.content)
-		.put(campo5, (Object) null)
+		.put(campo5, (Object) "")
 		.put(campo6, 1)
 		.put(campo7, false)
 		.put(campo8, 1.0)

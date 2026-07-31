@@ -1,4 +1,4 @@
-﻿package com.vis.commons;
+package com.vis.commons;
 
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFileDecorator;
@@ -41,7 +41,7 @@ public class BaseTest {
 				new CcpElasticSearchCrud(),
 				new CcpMindrotPasswordHandler(),
 				new CcpElasticSearchDbRequest(),
-				new CcpApacheTikaTextExtractor(),
+				new CcpApacheTikaTextExtractor(), 
 				localEnvironment ? CcpLocalInstances.bucket : new CcpGcpFileBucket(),
 			    localEnvironment ? CcpLocalCacheInstances.map : new CcpGcpMemCache(),
 	    		localEnvironment ? CcpLocalInstances.email : new CcpSendGridEmailSender(),

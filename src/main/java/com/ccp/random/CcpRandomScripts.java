@@ -1,4 +1,4 @@
-﻿package com.ccp.random;
+package com.ccp.random;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -78,7 +78,7 @@ public class CcpRandomScripts {
 		similar, 
 		preRequisite, 
 		positionsCount, 
-		id, 
+		id,  
 	}
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
 	private static final String LINKEDIN_REGEX = "^https://(www\\.)?linkedi n\\.com/in/[a-zA-Z0-9-_%]+/?$";
