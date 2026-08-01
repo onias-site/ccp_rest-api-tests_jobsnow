@@ -339,7 +339,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test ()
 	public void getOrDefaultErroTest() {
-		CcpJsonRepresentation objJson = new CcpJsonRepresentation("");
+		CcpJsonRepresentation objJson = new CcpJsonRepresentation("{}");
 		String resultado = objJson.getOrDefault(veiculo, () -> "default");
 
 		assertEquals("default", resultado);
@@ -662,7 +662,7 @@ public class CcpJsonRepresentationTests {
 	    
 	}
 	
-	@Test (expected = ClassCastException.class) 
+	@Test(expected = ClassCastException.class) 
 	public void getInnerJsonFromPathTestError() {
 				String pessoa = ""
 				+ "    	   { "
@@ -1168,7 +1168,7 @@ public class CcpJsonRepresentationTests {
 				.put(json3, (Object)CcpOtherConstants.EMPTY_JSON.put(campo1, "valor1"))
 				.put(jsn, "{'nome': 'onias'}")
 				.put(json2, new HashMap<>())
-				.put(json4, (Object)"")
+				.put(json4, (Object)"{}")
 				.put(json5, 1)
 				
 				;
