@@ -6,13 +6,17 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.ccp.aop.CcpNullParameterException;
+import com.ccp.aop.CcpNullReturnException;
 import com.ccp.decorators.CcpFileDecorator.CcpErrorFolderParentIsMissing;
 
 public class CcpFolderDecoratorTest {
@@ -205,5 +209,53 @@ public class CcpFolderDecoratorTest {
 		List<String> nomes = new ArrayList<>();
 		folder.readFiles(f -> nomes.add(f.getName()));
 		assertTrue(nomes.isEmpty());
+	}
+
+	// ── null-parameter tests (AOP) ────────────────────────────────────────────
+	// Nota: construtor protected — fora do escopo.
+
+	@Test(expected = CcpNullParameterException.class)
+	public void readFoldersNullParamTest() {
+		new CcpStringDecorator(BASE).folder().readFolders((Consumer<CcpFolderDecorator>) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void readFilesNullParamTest() {
+		new CcpStringDecorator(BASE).folder().readFiles((Consumer<CcpFileDecorator>) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void createNewFolderIfNotExistsNullParamTest() {
+		new CcpStringDecorator(BASE).folder().createNewFolderIfNotExists((String) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void createNewFileIfNotExistsNullParamTest() {
+		new CcpStringDecorator(BASE).folder().createNewFileIfNotExists(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void writeInTheFileNullFileNameTest() {
+		new CcpStringDecorator(BASE).folder().writeInTheFile(null, "x");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void writeInTheFileNullContentTest() {
+		new CcpStringDecorator(BASE).folder().writeInTheFile("f.txt", null);
+	}
+
+	// ── null-return tests (AOP) ───────────────────────────────────────────────
+
+	private static CcpFolderDecorator withNullContent() throws Exception {
+		CcpFolderDecorator d = new CcpStringDecorator(BASE).folder();
+		Field f = CcpFolderDecorator.class.getDeclaredField("content");
+		f.setAccessible(true);
+		f.set(d, null);
+		return d;
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void getContentNullReturnTest() throws Exception {
+		withNullContent().getContent();
 	}
 }

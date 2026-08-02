@@ -5,10 +5,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import org.junit.Test;
 
+import com.ccp.aop.CcpNullParameterException;
+import com.ccp.aop.CcpNullReturnException;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 
@@ -108,5 +111,47 @@ public class CcpReflectionConstructorDecoratorTest {
 		CcpReflectionOptionsDecorator opt = new CcpReflectionConstructorDecorator("java.util.ArrayList").fromInstance(lista);
 		assertNotNull(opt);
 		assertEquals(ArrayList.class, opt.getContent());
+	}
+
+	// ── null-parameter tests (AOP) ────────────────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorJsonNullParamJsonTest() {
+		new CcpReflectionConstructorDecorator((CcpJsonRepresentation) null, "campo");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorJsonNullParamFieldTest() {
+		new CcpReflectionConstructorDecorator(CcpOtherConstants.EMPTY_JSON, (String) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorClassNullParamTest() {
+		new CcpReflectionConstructorDecorator((Class<?>) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void fromInstanceNullParamTest() {
+		new CcpReflectionConstructorDecorator("java.util.ArrayList").fromInstance(null);
+	}
+
+	// ── null-return tests (AOP) ───────────────────────────────────────────────
+
+	private static CcpReflectionConstructorDecorator withNullContent() throws Exception {
+		CcpReflectionConstructorDecorator d = new CcpReflectionConstructorDecorator("java.util.ArrayList");
+		Field f = CcpReflectionConstructorDecorator.class.getDeclaredField("content");
+		f.setAccessible(true);
+		f.set(d, null);
+		return d;
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void getContentNullReturnTest() throws Exception {
+		withNullContent().getContent();
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void toStringNullReturnTest() throws Exception {
+		withNullContent().toString();
 	}
 }

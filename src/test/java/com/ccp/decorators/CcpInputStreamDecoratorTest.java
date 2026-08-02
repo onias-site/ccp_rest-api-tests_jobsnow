@@ -5,9 +5,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 
 import org.junit.Test;
 
+import com.ccp.aop.CcpNullReturnException;
 import com.ccp.decorators.CcpInputStreamDecorator.CcpErrorInputStreamMissing;
 
 public class CcpInputStreamDecoratorTest {
@@ -106,5 +108,28 @@ public class CcpInputStreamDecoratorTest {
 		String nome = "outro-recurso";
 		CcpInputStreamDecorator d = new CcpStringDecorator(nome).inputStreamFrom();
 		assertTrue(d.getContent().equals(nome));
+	}
+
+	// ── null-parameter tests (AOP) ────────────────────────────────────────────
+	// Nota: construtor protected e todos os métodos públicos são sem parâmetros.
+
+	// ── null-return tests (AOP) ───────────────────────────────────────────────
+
+	private static CcpInputStreamDecorator withNullContent() throws Exception {
+		CcpInputStreamDecorator d = new CcpStringDecorator("x").inputStreamFrom();
+		Field f = CcpInputStreamDecorator.class.getDeclaredField("content");
+		f.setAccessible(true);
+		f.set(d, null);
+		return d;
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void getContentNullReturnTest() throws Exception {
+		withNullContent().getContent();
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void toStringNullReturnTest() throws Exception {
+		withNullContent().toString();
 	}
 }

@@ -3,7 +3,11 @@ package com.ccp.decorators;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Field;
+
 import org.junit.Test;
+
+import com.ccp.aop.CcpNullReturnException;
 
 public class CcpUrlDecoratorTest {
 
@@ -61,5 +65,28 @@ public class CcpUrlDecoratorTest {
 		String conteudo = "valor";
 		CcpUrlDecorator url = new CcpStringDecorator(conteudo).url();
 		assertEquals(conteudo, url.getContent());
+	}
+
+	// ── null-parameter tests (AOP) ────────────────────────────────────────────
+	// Nota: construtor protected e todos os métodos públicos são sem parâmetros.
+
+	// ── null-return tests (AOP) ───────────────────────────────────────────────
+
+	private static CcpUrlDecorator withNullContent() throws Exception {
+		CcpUrlDecorator d = new CcpStringDecorator("x").url();
+		Field f = CcpUrlDecorator.class.getDeclaredField("content");
+		f.setAccessible(true);
+		f.set(d, null);
+		return d;
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void getContentNullReturnTest() throws Exception {
+		withNullContent().getContent();
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void toStringNullReturnTest() throws Exception {
+		withNullContent().toString();
 	}
 }

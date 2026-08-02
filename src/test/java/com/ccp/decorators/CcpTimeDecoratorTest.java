@@ -5,9 +5,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Field;
 import java.util.Calendar;
 
 import org.junit.Test;
+
+import com.ccp.aop.CcpNullParameterException;
+import com.ccp.aop.CcpNullReturnException;
 
 public class CcpTimeDecoratorTest {
 
@@ -110,5 +114,28 @@ public class CcpTimeDecoratorTest {
 		CcpTimeDecorator t = new CcpTimeDecorator();
 		boolean resultado = t.sleep(-100);
 		assertFalse(resultado);
+	}
+
+	// ── null-parameter tests (AOP) ────────────────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorLongNullParamTest() {
+		new CcpTimeDecorator((Long) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getFormattedDateTimeNullParamTest() {
+		new CcpTimeDecorator().getFormattedDateTime(null);
+	}
+
+	// ── null-return tests (AOP) ───────────────────────────────────────────────
+
+	@Test(expected = CcpNullReturnException.class)
+	public void getContentNullReturnTest() throws Exception {
+		CcpTimeDecorator t = new CcpTimeDecorator(1000L);
+		Field f = CcpTimeDecorator.class.getDeclaredField("content");
+		f.setAccessible(true);
+		f.set(t, null);
+		t.getContent();
 	}
 }

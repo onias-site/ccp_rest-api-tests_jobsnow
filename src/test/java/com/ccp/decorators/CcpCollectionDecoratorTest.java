@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,6 +17,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.ccp.aop.CcpNullParameterException;
+import com.ccp.aop.CcpNullReturnException;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
@@ -295,5 +298,57 @@ public class CcpCollectionDecoratorTest {
 		assertEquals(decorator1.getContent(), jsonBodyList);// ("pais" ,"Brazil", "Uruguai", "Chile")
 		assertTrue(decorator2.getContent().contains(json1.get(estado))); // ("estado","Sao Paulo")
 		assertTrue(decorator3.getContent().contains(json1.get(cidade))); // ("cidade","Santos")
+	}
+
+	// ── null-parameter tests (AOP) ────────────────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorCollectionNullParamTest() {
+		new CcpCollectionDecorator((Collection<?>) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorArrayNullParamTest() {
+		new CcpCollectionDecorator((Object[]) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorJsonNullParamJsonTest() {
+		new CcpCollectionDecorator((CcpJsonRepresentation) null, "k");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorJsonNullParamKeyTest() {
+		new CcpCollectionDecorator(CcpOtherConstants.EMPTY_JSON, (String) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getExclusiveListNullParamTest() {
+		new CcpCollectionDecorator(Arrays.asList(1, 2)).getExclusiveList(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getIntersectListNullParamTest() {
+		new CcpCollectionDecorator(Arrays.asList(1, 2)).getIntersectList(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void hasIntersectNullParamTest() {
+		new CcpCollectionDecorator(Arrays.asList(1, 2)).hasIntersect(null);
+	}
+
+	// ── null-return tests (AOP) ───────────────────────────────────────────────
+
+	private static CcpCollectionDecorator withNullContent() throws Exception {
+		CcpCollectionDecorator d = new CcpCollectionDecorator(Arrays.asList(1));
+		Field f = CcpCollectionDecorator.class.getDeclaredField("content");
+		f.setAccessible(true);
+		f.set(d, null);
+		return d;
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void getContentNullReturnTest() throws Exception {
+		withNullContent().getContent();
 	}
 }

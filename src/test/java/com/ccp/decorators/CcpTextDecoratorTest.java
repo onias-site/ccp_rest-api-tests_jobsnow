@@ -7,10 +7,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.junit.Test;
 
+import com.ccp.aop.CcpNullParameterException;
+import com.ccp.aop.CcpNullReturnException;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
@@ -316,5 +320,102 @@ public class CcpTextDecoratorTest {
 		String resultado = template.resolveTemplate(CcpOtherConstants.EMPTY_JSON).content;
 		assertFalse(resultado.contains("{currentTimeMillis()}"));
 		assertTrue(resultado.matches("ts=\\d+"));
+	}
+
+	// ── null-parameter tests (AOP) ────────────────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getPiecesDelimitadoresBeginNullTest() {
+		new CcpStringDecorator("x").text().getPieces((String) null, "]");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getPiecesDelimitadoresEndNullTest() {
+		new CcpStringDecorator("x").text().getPieces("[", (String) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getPiecesPredicateNullTest() {
+		new CcpStringDecorator("x").text().getPieces((Predicate<String>) null, " ");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getPiecesPredicateDelimiterNullTest() {
+		new CcpStringDecorator("x").text().getPieces(s -> true, (String) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void removePiecesPredicateNullTest() {
+		new CcpStringDecorator("x").text().removePieces((Predicate<String>) null, " ");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void removePiecesDelimitadoresBeginNullTest() {
+		new CcpStringDecorator("x").text().removePieces((String) null, "]");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void removePiecesListNullTest() {
+		new CcpStringDecorator("x").text().removePieces((List<String>) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void replaceOldNullTest() {
+		new CcpStringDecorator("x").text().replace(null, "y");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void replaceNewNullTest() {
+		new CcpStringDecorator("x").text().replace("x", null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void resolveTemplateNullTest() {
+		new CcpStringDecorator("x").text().resolveTemplate(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void regexMatchesNullTest() {
+		new CcpStringDecorator("x").text().regexMatches(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void containsPhraseNullTest() {
+		new CcpStringDecorator("x").text().contains((String) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void containsDelimitersNullTest() {
+		new CcpStringDecorator("x").text().contains((String[]) null, "y");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void containsPhraseWithDelimitersNullTest() {
+		new CcpStringDecorator("x").text().contains(new String[] {","}, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void sanitizeDelimitersNullTest() {
+		new CcpStringDecorator("x").text().sanitize((String[]) null);
+	}
+
+	// ── null-return tests (AOP) ───────────────────────────────────────────────
+
+	private static CcpTextDecorator withNullContent() throws Exception {
+		CcpTextDecorator d = new CcpStringDecorator("x").text();
+		Field f = CcpTextDecorator.class.getDeclaredField("content");
+		f.setAccessible(true);
+		f.set(d, null);
+		return d;
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void getContentNullReturnTest() throws Exception {
+		withNullContent().getContent();
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void toStringNullReturnTest() throws Exception {
+		withNullContent().toString();
 	}
 }

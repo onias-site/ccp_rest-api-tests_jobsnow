@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.ccp.aop.CcpNullParameterException;
+
 public class CcpNumberDecoratorTest {
 
 	@Test
@@ -76,4 +78,50 @@ public class CcpNumberDecoratorTest {
 		CcpNumberDecorator n = new CcpNumberDecorator("8");
 		assertTrue(n.toString().contains("8"));
 	}
+
+	// ── null-parameter tests (AOP) ────────────────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorNullParamTest() {
+		new CcpNumberDecorator((String) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void greaterThanNullParamTest() {
+		new CcpNumberDecorator("1").greaterThan(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void equalsOrGreaterThanNullParamTest() {
+		new CcpNumberDecorator("1").equalsOrGreaterThan(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void lessThanNullParamTest() {
+		new CcpNumberDecorator("1").lessThan(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void equalsOrLessThanNullParamTest() {
+		new CcpNumberDecorator("1").equalsOrLessThan(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void equalsToNullParamTest() {
+		new CcpNumberDecorator("1").equalsTo(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void belongsToRestrictedValuesVarargsNullParamTest() {
+		new CcpNumberDecorator("1").belongsToRestrictedValues((Double[]) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void belongsToRestrictedValuesCollectionNullParamTest() {
+		new CcpNumberDecorator("1").belongsToRestrictedValues((List<Double>) null);
+	}
+
+	// ── null-return tests (AOP) ───────────────────────────────────────────────
+	// Nota: getContent() e toString() nunca podem retornar null (content é primitivo double).
+	// Todos os outros métodos públicos retornam boolean primitivo, não sujeito ao aspecto.
 }

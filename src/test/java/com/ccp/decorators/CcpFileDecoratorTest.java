@@ -6,12 +6,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.ccp.aop.CcpNullParameterException;
+import com.ccp.aop.CcpNullReturnException;
+import com.ccp.decorators.CcpFileDecorator.FileLineReader;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
@@ -236,5 +240,43 @@ public class CcpFileDecoratorTest {
 		List<CcpJsonRepresentation> lista = file.asJsonList();
 		assertEquals(2, lista.size());
 		file.remove();
+	}
+
+	// ── null-parameter tests (AOP) ────────────────────────────────────────────
+	// Nota: construtor protected — fora do escopo.
+
+	@Test(expected = CcpNullParameterException.class)
+	public void writeNullParamTest() {
+		new CcpStringDecorator(ARQUIVO).file().write(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void appendNullParamTest() {
+		new CcpStringDecorator(ARQUIVO).file().append(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void readLinesNullParamTest() {
+		new CcpStringDecorator(ARQUIVO).file().readLines((FileLineReader) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void renameNullParamTest() {
+		new CcpStringDecorator(ARQUIVO).file().rename(null);
+	}
+
+	// ── null-return tests (AOP) ───────────────────────────────────────────────
+
+	private static CcpFileDecorator withNullContent() throws Exception {
+		CcpFileDecorator d = new CcpStringDecorator(ARQUIVO).file();
+		Field f = CcpFileDecorator.class.getDeclaredField("content");
+		f.setAccessible(true);
+		f.set(d, null);
+		return d;
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void getContentNullReturnTest() throws Exception {
+		withNullContent().getContent();
 	}
 }

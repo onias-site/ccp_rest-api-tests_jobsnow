@@ -86,22 +86,32 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import org.junit.Test;
 
+import com.ccp.aop.CcpNullParameterException;
+import com.ccp.aop.CcpNullReturnException;
 import com.ccp.business.CcpBusiness;
 import com.ccp.decorators.CcpJsonRepresentation.CCpErrorJsonFieldIsNotValidJsonList;
 import com.ccp.decorators.CcpJsonRepresentation.CcpErrorJsonFieldNotFound;
 import com.ccp.decorators.CcpJsonRepresentation.CcpErrorJsonPathIsMissing;
+import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.json.CcpJsonHandler;
+import com.ccp.hash.CcpHashAlgorithm;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.process.CcpProcessStatusDefault;
 
@@ -1418,6 +1428,572 @@ public class CcpJsonRepresentationTests {
 		assertFalse(hash1.isEmpty());
 		assertEquals(hash1, hash2);
 	}
+
+	// ══════════════════════════════════════════════════════════════════════════
+	// null-parameter tests (AOP)
+	// ══════════════════════════════════════════════════════════════════════════
+
+	// ── construtores públicos ─────────────────────────────────────────────────
+	// Nota: Throwable é anotado com @CcpAllowNullParameter internamente em getErrorDetails,
+	// mas o próprio construtor sem anotação lança CcpNullParameterException.
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorInputStreamNullParamTest() {
+		new CcpJsonRepresentation((InputStream) null);
+	}
+
+	// Nota: o construtor CcpJsonRepresentation(Throwable) foi marcado com
+	// @CcpAllowNullParameter porque a lógica interna trata null como caso válido.
+	@Test
+	public void construtorThrowableNullEhPermitidoTest() {
+		CcpJsonRepresentation json = new CcpJsonRepresentation((Throwable) null);
+		assertTrue(json.isEmpty());
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorStringNullParamTest() {
+		new CcpJsonRepresentation((String) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorMapNullParamTest() {
+		new CcpJsonRepresentation((Map<String, Object>) null);
+	}
+
+	// ── redoJson / getAsEnum / getAsLongNumber / getAsIntegerNumber ──────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void redoJsonNullParamTest() {
+		CcpOtherConstants.EMPTY_JSON.redoJson(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsEnumFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsEnum(null, CcpProcessStatusDefault.class);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsEnumClassNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsEnum(nome, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsEnumWithDefaultFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsEnum(null, CcpProcessStatusDefault.class, CcpProcessStatusDefault.OK);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsEnumWithDefaultClassNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsEnum(nome, null, CcpProcessStatusDefault.OK);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsEnumWithDefaultDefaultNullTest() {
+		CcpOtherConstants.EMPTY_JSON.put(nome, CcpProcessStatusDefault.OK.name()).getAsEnum(nome, CcpProcessStatusDefault.class, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsLongNumberNullParamTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsLongNumber(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsIntegerNumberNullParamTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsIntegerNumber(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsBooleanNullParamTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsBoolean(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsDoubleNumberNullParamTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsDoubleNumber(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsTextDecoratorNullParamTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsTextDecorator(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsStringDecoratorNullParamTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsStringDecorator(null);
+	}
+
+	// ── when*FieldsAreFound* ─────────────────────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void whenFieldsAreNotFoundBusinessNullTest() {
+		CcpOtherConstants.EMPTY_JSON.whenFieldsAreNotFound(null, nome);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void whenFieldsAreNotFoundFieldsNullTest() {
+		CcpOtherConstants.EMPTY_JSON.whenFieldsAreNotFound(j -> j, (CcpJsonFieldName[]) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void whenAnyFieldsAreFoundBusinessNullTest() {
+		CcpOtherConstants.EMPTY_JSON.whenAnyFieldsAreFound(null, nome);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void whenAnyFieldsAreFoundFieldsNullTest() {
+		CcpOtherConstants.EMPTY_JSON.whenAnyFieldsAreFound(j -> j, (CcpJsonFieldName[]) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void whenAllFieldsAreFoundBusinessNullTest() {
+		CcpOtherConstants.EMPTY_JSON.whenAllFieldsAreFound(null, nome);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void whenAllFieldsAreFoundFieldsNullTest() {
+		CcpOtherConstants.EMPTY_JSON.whenAllFieldsAreFound(j -> j, (CcpJsonFieldName[]) null);
+	}
+
+	// ── getAsString / getOrDefault / getJsonPiece ────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsStringNullParamTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsString(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getOrDefaultFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getOrDefault(null, () -> "x");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getOrDefaultSupplierNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getOrDefault(nome, (Supplier<String>) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getJsonPieceCollectionNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getJsonPiece((Collection<String>) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getJsonPieceVarargsNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getJsonPiece((CcpJsonFieldName[]) null);
+	}
+
+	// ── put (várias sobrecargas) ─────────────────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void putDecoratorFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.put(null, new CcpStringDecorator("x"));
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void putDecoratorMapNullTest() {
+		CcpOtherConstants.EMPTY_JSON.put(nome, (CcpDecorator<?>) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void putCollectionFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.put(null, Arrays.<CcpJsonRepresentation>asList());
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void putCollectionListNullTest() {
+		CcpOtherConstants.EMPTY_JSON.put(nome, (Collection<CcpJsonRepresentation>) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void putObjectFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.put(null, "x");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void putObjectValueNullTest() {
+		CcpOtherConstants.EMPTY_JSON.put(nome, (Object) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void putInnerJsonFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.put(null, CcpOtherConstants.EMPTY_JSON);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void putInnerJsonValueNullTest() {
+		CcpOtherConstants.EMPTY_JSON.put(nome, (CcpJsonRepresentation) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void putEnumOnlyNullTest() {
+		CcpOtherConstants.EMPTY_JSON.put((CcpJsonFieldName) null);
+	}
+
+	// ── extractInformationFromJson / getTransformedJson ──────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void extractInformationFromJsonNullTest() {
+		CcpOtherConstants.EMPTY_JSON.extractInformationFromJson((Function<CcpJsonRepresentation, ?>) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getTransformedJsonVarargsNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getTransformedJson((CcpBusiness[]) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getTransformedJsonListNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getTransformedJson((List<CcpBusiness>) null);
+	}
+
+	// ── addJsonTransformer ───────────────────────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void addJsonTransformerFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.addJsonTransformer((CcpJsonFieldName) null, j -> j);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void addJsonTransformerProcessNullTest() {
+		CcpOtherConstants.EMPTY_JSON.addJsonTransformer(nome, (CcpBusiness) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void addJsonTransformerIntegerFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.addJsonTransformer((Integer) null, j -> j);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void addJsonTransformerIntegerProcessNullTest() {
+		CcpOtherConstants.EMPTY_JSON.addJsonTransformer(Integer.valueOf(1), (CcpBusiness) null);
+	}
+
+	// ── putSameValueInManyFields / duplicateValueFromField / renameField ─────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void putSameValueInManyFieldsValueNullTest() {
+		CcpOtherConstants.EMPTY_JSON.putSameValueInManyFields((Object) null, nome);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void putSameValueInManyFieldsFieldsNullTest() {
+		CcpOtherConstants.EMPTY_JSON.putSameValueInManyFields("x", (CcpJsonFieldName[]) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void duplicateValueFromFieldFieldToCopyNullTest() {
+		CcpOtherConstants.EMPTY_JSON.duplicateValueFromField(null, nome);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void duplicateValueFromFieldFieldsToPasteNullTest() {
+		CcpOtherConstants.EMPTY_JSON.duplicateValueFromField(nome, (CcpJsonFieldName[]) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void renameFieldOldFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.renameField(null, nome);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void renameFieldNewFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.renameField(nome, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void removeFieldsNullTest() {
+		CcpOtherConstants.EMPTY_JSON.removeFields((CcpJsonFieldName[]) null);
+	}
+
+	// ── getInnerJsonFromPath / getValueFromPath / getInnerJsonListFromPath ───
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getInnerJsonFromPathNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getInnerJsonFromPath((CcpJsonFieldName[]) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getValueFromPathDefaultNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getValueFromPath((Object) null, nome);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getValueFromPathPathsNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getValueFromPath("x", (CcpJsonFieldName[]) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getInnerJsonListFromPathNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getInnerJsonListFromPath((CcpJsonFieldName[]) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getInnerJsonNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getInnerJson(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getInnerJsonFromPathFieldNameNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getInnerJsonFromPath(null, "x");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getInnerJsonFromPathValueNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getInnerJsonFromPath(nome, null);
+	}
+
+	// ── getTransformedJson condicionais ──────────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getTransformedJsonIfElseConditionNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getTransformedJsonExecutingIfAndElse((Predicate<CcpJsonRepresentation>) null, j -> j, j -> j);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getTransformedJsonIfElseMetNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getTransformedJsonExecutingIfAndElse(j -> true, null, j -> j);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getTransformedJsonIfElseDoNotMetNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getTransformedJsonExecutingIfAndElse(j -> true, j -> j, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getTransformedJsonAllConditionsMetNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getTransformedJsonWhenAllConditionsMatch(null, j -> j);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getTransformedJsonAllConditionsDoNotMetNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getTransformedJsonWhenAllConditionsMatch(j -> j, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getTransformedJsonAllConditionsArrayNullTest() {
+		@SuppressWarnings("unchecked")
+		Predicate<CcpJsonRepresentation>[] arr = (Predicate<CcpJsonRepresentation>[]) null;
+		CcpOtherConstants.EMPTY_JSON.getTransformedJsonWhenAllConditionsMatch(j -> j, j -> j, arr);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getTransformedJsonAnyConditionsMetNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getTransformedJsonConsideringIfAnyOfTheConditionsIsMet(null, j -> j);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getTransformedJsonAnyConditionsDoNotMetNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getTransformedJsonConsideringIfAnyOfTheConditionsIsMet(j -> j, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getTransformedJsonAnyConditionsArrayNullTest() {
+		@SuppressWarnings("unchecked")
+		Predicate<CcpJsonRepresentation>[] arr = (Predicate<CcpJsonRepresentation>[]) null;
+		CcpOtherConstants.EMPTY_JSON.getTransformedJsonConsideringIfAnyOfTheConditionsIsMet(j -> j, j -> j, arr);
+	}
+
+	// ── getAsJsonList / getAsCollectionDecorator / getAsStringList ───────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsJsonListNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsJsonList(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsCollectionDecoratorNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsCollectionDecorator(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsStringListNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsStringList((CcpJsonFieldName[]) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsStringArrayNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsStringArray((CcpJsonFieldName[]) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsObjectListNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsObjectList(null);
+	}
+
+	// ── mergeWithAnotherJson ─────────────────────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void mergeWithAnotherJsonMapNullTest() {
+		CcpOtherConstants.EMPTY_JSON.mergeWithAnotherJson((Map<String, Object>) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void mergeWithAnotherJsonNullTest() {
+		CcpOtherConstants.EMPTY_JSON.mergeWithAnotherJson((CcpJsonRepresentation) null);
+	}
+
+	// ── contains* ────────────────────────────────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void containsFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.containsField(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void containsAllFieldsCollectionNullTest() {
+		CcpOtherConstants.EMPTY_JSON.containsAllFields((Collection<String>) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void containsAnyFieldsCollectionNullTest() {
+		CcpOtherConstants.EMPTY_JSON.containsAnyFields((Collection<String>) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void containsAllFieldsVarargsNullTest() {
+		CcpOtherConstants.EMPTY_JSON.containsAllFields((CcpJsonFieldName[]) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void containsAnyFieldsVarargsNullTest() {
+		CcpOtherConstants.EMPTY_JSON.containsAnyFields((CcpJsonFieldName[]) null);
+	}
+
+	// ── get / getAsObject ────────────────────────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getNullTest() {
+		CcpOtherConstants.EMPTY_JSON.get(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsObjectNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsObject((CcpJsonFieldName[]) null);
+	}
+
+	// ── addToList / addToItem ────────────────────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void addToListFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.addToList((CcpJsonFieldName) null, "x");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void addToListValuesNullTest() {
+		CcpOtherConstants.EMPTY_JSON.addToList(nome, (Object[]) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void addToListInnerFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.addToList((CcpJsonFieldName) null, CcpOtherConstants.EMPTY_JSON);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void addToListInnerValueNullTest() {
+		CcpOtherConstants.EMPTY_JSON.addToList(nome, (CcpJsonRepresentation) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void addToItemObjectFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.addToItem(null, nome, "x");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void addToItemObjectSubFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.addToItem(nome, null, "x");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void addToItemObjectValueNullTest() {
+		CcpOtherConstants.EMPTY_JSON.addToItem(nome, campo1, (Object) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void addToItemJsonFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.addToItem(null, nome, CcpOtherConstants.EMPTY_JSON);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void addToItemJsonSubFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.addToItem(nome, null, CcpOtherConstants.EMPTY_JSON);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void addToItemJsonValueNullTest() {
+		CcpOtherConstants.EMPTY_JSON.addToItem(nome, campo1, (CcpJsonRepresentation) null);
+	}
+
+	// ── copyIfNotContains / putIfNotContains ────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void copyIfNotContainsFromNullTest() {
+		CcpOtherConstants.EMPTY_JSON.copyIfNotContains(null, nome);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void copyIfNotContainsToNullTest() {
+		CcpOtherConstants.EMPTY_JSON.copyIfNotContains(nome, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void putIfNotContainsFieldNullTest() {
+		CcpOtherConstants.EMPTY_JSON.putIfNotContains(null, "x");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void putIfNotContainsValueNullTest() {
+		CcpOtherConstants.EMPTY_JSON.putIfNotContains(nome, (Object) null);
+	}
+
+	// ── getAsArrayMetadata / getSha1Hash / isInnerJson ──────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getAsArrayMetadataNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getAsArrayMetadata(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getSha1HashNullTest() {
+		CcpOtherConstants.EMPTY_JSON.getSha1Hash((CcpHashAlgorithm) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void isInnerJsonNullTest() {
+		CcpOtherConstants.EMPTY_JSON.isInnerJson((CcpJsonFieldName) null);
+	}
+
+	// Nota: equals(Object) permite null pelas convenções de Object — não é testado como null-param.
+
+	// ══════════════════════════════════════════════════════════════════════════
+	// null-return tests (AOP)
+	// ══════════════════════════════════════════════════════════════════════════
+
+	private static CcpJsonRepresentation withNullContent() throws Exception {
+		CcpJsonRepresentation d = CcpOtherConstants.EMPTY_JSON;
+		Field f = CcpJsonRepresentation.class.getDeclaredField("content");
+		f.setAccessible(true);
+		f.set(d, null);
+		return d;
+	}
+
+	private static void restoreContent(CcpJsonRepresentation d) throws Exception {
+		Field f = CcpJsonRepresentation.class.getDeclaredField("content");
+		f.setAccessible(true);
+		f.set(d, new HashMap<>());
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void getContentNullReturnTest() throws Exception {
+		CcpJsonRepresentation d = withNullContent();
+		try {
+			d.getContent();
+		} finally {
+			restoreContent(d);
+		}
+	}
+
+	// Nota: fieldSet() chama this.content.keySet() diretamente — quando content é null,
+	// o NullPointerException nativo ocorre ANTES do aspecto conseguir avaliar o retorno,
+	// então CcpNullReturnException não é lançado. Não é testável externamente.
 
 }
 

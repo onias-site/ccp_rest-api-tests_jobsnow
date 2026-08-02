@@ -5,10 +5,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Field;
 import java.math.BigInteger;
 
 import org.junit.Test;
 
+import com.ccp.aop.CcpNullParameterException;
+import com.ccp.aop.CcpNullReturnException;
 import com.ccp.hash.CcpHashAlgorithm;
 import com.ccp.hash.CcpHashAlgorithm.CcpErrorHashAlgorithmNotFound;
 
@@ -92,5 +95,37 @@ public class CcpHashDecoratorTest {
 	@Test(expected = CcpErrorHashAlgorithmNotFound.class)
 	public void throwsCcpErrorHashAlgorithmNotFoundTest() {
 		CcpHashAlgorithm.getMessageDigest("algoritmoquenaoexiste");
+	}
+
+	// ── null-parameter tests (AOP) ────────────────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void asStringNullParamTest() {
+		new CcpStringDecorator("x").hash().asString(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void asBigIntegerNullParamTest() {
+		new CcpStringDecorator("x").hash().asBigInteger(null);
+	}
+
+	// ── null-return tests (AOP) ───────────────────────────────────────────────
+
+	private static CcpHashDecorator withNullContent() throws Exception {
+		CcpHashDecorator d = new CcpStringDecorator("x").hash();
+		Field f = CcpHashDecorator.class.getDeclaredField("content");
+		f.setAccessible(true);
+		f.set(d, null);
+		return d;
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void getContentNullReturnTest() throws Exception {
+		withNullContent().getContent();
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void toStringNullReturnTest() throws Exception {
+		withNullContent().toString();
 	}
 }

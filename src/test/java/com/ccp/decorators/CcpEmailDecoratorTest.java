@@ -4,9 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Field;
 import java.util.Set;
 
 import org.junit.Test;
+
+import com.ccp.aop.CcpNullParameterException;
+import com.ccp.aop.CcpNullReturnException;
 
 //ela se instancia da seguinte forma: 
 //	CcpEmailDecorator decorator = new CcpStringDecorator("onias85@gmail.com").email();
@@ -199,7 +203,40 @@ public class CcpEmailDecoratorTest {
 
 		boolean valid3 = new CcpStringDecorator("onias85@gmail.com.br").email().isValid();
 		assertTrue(valid3);
-    	
+
     }
+
+	// ── null-parameter tests (AOP) ────────────────────────────────────────────
+	// Nota: o construtor de CcpEmailDecorator é protected — fora do escopo (só public).
+
+	@Test(expected = CcpNullParameterException.class)
+	public void findFirstNullParamTest() {
+		new CcpEmailDecorator("x@y.com").findFirst(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void extractFromTextNullParamTest() {
+		new CcpEmailDecorator("x@y.com").extractFromText(null);
+	}
+
+	// ── null-return tests (AOP) ───────────────────────────────────────────────
+
+	@Test(expected = CcpNullReturnException.class)
+	public void getContentNullReturnTest() throws Exception {
+		CcpEmailDecorator d = new CcpEmailDecorator("x@y.com");
+		Field f = CcpEmailDecorator.class.getDeclaredField("content");
+		f.setAccessible(true);
+		f.set(d, null);
+		d.getContent();
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void toStringNullReturnTest() throws Exception {
+		CcpEmailDecorator d = new CcpEmailDecorator("x@y.com");
+		Field f = CcpEmailDecorator.class.getDeclaredField("content");
+		f.setAccessible(true);
+		f.set(d, null);
+		d.toString();
+	}
 
 }

@@ -7,9 +7,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 
 import org.junit.Test;
 
+import com.ccp.aop.CcpNullParameterException;
+import com.ccp.aop.CcpNullReturnException;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
@@ -241,5 +244,51 @@ public class CcpStringDecoratorTest {
 		Object instance = new CcpStringDecorator("java.util.ArrayList").reflection().newInstance();
 		assertNotNull(instance);
 		assertTrue(instance instanceof java.util.ArrayList);
+	}
+
+	// ── null-parameter tests (AOP) ────────────────────────────────────────────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorStringNullParamTest() {
+		new CcpStringDecorator((String) null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorInputStreamNullParamTest() {
+		new CcpStringDecorator((InputStream) null);
+	}
+
+	// Nota: construtores (byte[]) e (Byte[]) delegam via this(new String(...)) —
+	// a avaliação do argumento acontece antes do aspecto conseguir interceptar o
+	// próprio construtor, então NullPointerException nativa vence CcpNullParameterException.
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorJsonNullParamJsonTest() {
+		new CcpStringDecorator((CcpJsonRepresentation) null, "chave");
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void construtorJsonNullParamKeyTest() {
+		new CcpStringDecorator(CcpOtherConstants.EMPTY_JSON, (String) null);
+	}
+
+	// ── null-return tests (AOP) ───────────────────────────────────────────────
+
+	@Test(expected = CcpNullReturnException.class)
+	public void getContentNullReturnTest() throws Exception {
+		CcpStringDecorator d = new CcpStringDecorator("x");
+		Field f = CcpStringDecorator.class.getDeclaredField("content");
+		f.setAccessible(true);
+		f.set(d, null);
+		d.getContent();
+	}
+
+	@Test(expected = CcpNullReturnException.class)
+	public void toStringNullReturnTest() throws Exception {
+		CcpStringDecorator d = new CcpStringDecorator("x");
+		Field f = CcpStringDecorator.class.getDeclaredField("content");
+		f.setAccessible(true);
+		f.set(d, null);
+		d.toString();
 	}
 }
