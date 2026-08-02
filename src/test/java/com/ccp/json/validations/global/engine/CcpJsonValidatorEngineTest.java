@@ -2,7 +2,6 @@ package com.ccp.json.validations.global.engine;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.lang.reflect.Field;
 
 import org.junit.Test;
 

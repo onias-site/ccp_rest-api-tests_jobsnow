@@ -6,9 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.ccp.aop.CcpNullParameterException;
-import com.ccp.business.CcpBusiness;
 import com.ccp.constants.CcpOtherConstants;
-import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.json.CcpJsonHandler;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 

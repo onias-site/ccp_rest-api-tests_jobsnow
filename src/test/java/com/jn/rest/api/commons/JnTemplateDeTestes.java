@@ -32,6 +32,7 @@ public abstract class JnTemplateDeTestes {
 	protected final String ENDPOINT_URL = "http://localhost:8080/";
 
 	static {
+		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.mensageriaSender,
 				new CcpElasticSearchDbRequest(), 

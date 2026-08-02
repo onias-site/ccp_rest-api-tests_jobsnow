@@ -34,6 +34,8 @@ public abstract class JnServiceLoginTemplateDeTestes {
 	}
 
 	static {
+		CcpDependencyInjection.removeAllDependencies();
+		
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.mensageriaSender,
 				new CcpElasticSearchDbRequest(),

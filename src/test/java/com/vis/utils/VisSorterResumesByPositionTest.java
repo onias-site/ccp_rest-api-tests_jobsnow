@@ -22,7 +22,7 @@ public class VisSorterResumesByPositionTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void ctorNullTest() {
-		new VisSorterResumesByPosition(null);
+		new VisSorterResumesByPosition(null); 
 	}
 
 	@Test(expected = CcpNullParameterException.class)

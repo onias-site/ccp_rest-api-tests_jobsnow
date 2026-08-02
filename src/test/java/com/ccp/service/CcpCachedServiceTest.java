@@ -1,12 +1,9 @@
 package com.ccp.service;
 
-import java.util.HashMap;
-
 import org.junit.Test;
 
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 
 public class CcpCachedServiceTest {
 

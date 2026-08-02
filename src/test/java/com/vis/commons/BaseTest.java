@@ -50,7 +50,7 @@ public class BaseTest {
 		
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpElasticSearchCrud(),
 				new CcpElasticSearchDbRequest(), new CcpApacheMimeHttp(),
-				new CcpElasticSerchDbBulk());
+				new CcpElasticSerchDbBulk()); 
 		
 //		createTables();
 	}

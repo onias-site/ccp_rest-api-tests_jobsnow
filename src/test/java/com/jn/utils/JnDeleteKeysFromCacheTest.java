@@ -23,5 +23,5 @@ public class JnDeleteKeysFromCacheTest {
 	@Test(expected = CcpNullParameterException.class)
 	public void acceptNullTest() {
 		JnDeleteKeysFromCache.INSTANCE.accept(null);
-	}
+	} 
 }

@@ -24,7 +24,7 @@ public class JnSystemPropertiesTest {
 	public void getSystemPropertyStringNullTest() {
 		JnSystemProperties.INSTANCE.getSystemProperty((String) null);
 	}
-
+ 
 	@Test(expected = CcpNullParameterException.class)
 	public void getSystemInnerPropertyNullTest() {
 		JnSystemProperties.INSTANCE.getSystemInnerProperty((CcpJsonFieldName[]) null);

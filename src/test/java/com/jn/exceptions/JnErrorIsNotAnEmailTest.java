@@ -21,6 +21,6 @@ public class JnErrorIsNotAnEmailTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void ctorJsonNullTest() {
-		new JnErrorIsNotAnEmail("x", null);
+		new JnErrorIsNotAnEmail("x", null); 
 	}
 }

@@ -23,7 +23,7 @@ public class VisUtilsTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void isInsufficientFundsBalanceNullTest() {
-		VisUtils.isInsufficientFunds(1, CcpOtherConstants.EMPTY_JSON, null);
+		VisUtils.isInsufficientFunds(1, CcpOtherConstants.EMPTY_JSON, null); 
 	}
 
 	@Test(expected = CcpNullParameterException.class)

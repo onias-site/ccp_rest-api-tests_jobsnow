@@ -115,6 +115,7 @@ import com.ccp.hash.CcpHashAlgorithm;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.process.CcpProcessStatusDefault;
 
+@SuppressWarnings("unchecked")
 public class CcpJsonRepresentationTests {
 	{
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());	
@@ -1333,7 +1334,6 @@ public class CcpJsonRepresentationTests {
 
 	// ── getTransformedJsonWhenAllConditionsMatch ───────────────────────────────
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void getTransformedJsonWhenAllConditionsMatchTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias").put(idade, 39);
@@ -1343,7 +1343,6 @@ public class CcpJsonRepresentationTests {
 		assertEquals("met", result.getAsString(filho));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void getTransformedJsonWhenAllConditionsMatchNaoSatisfazTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
@@ -1355,7 +1354,6 @@ public class CcpJsonRepresentationTests {
 
 	// ── getTransformedJsonConsideringIfAnyOfTheConditionsIsMet ────────────────
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void getTransformedJsonConsideringIfAnyOfTheConditionsIsMetConditionMetTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
@@ -1365,7 +1363,6 @@ public class CcpJsonRepresentationTests {
 		assertEquals("met", result.getAsString(filho));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void getTransformedJsonConsideringIfAnyOfTheConditionsIsMetNenhumaCondicaoTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
