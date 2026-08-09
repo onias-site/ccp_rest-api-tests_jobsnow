@@ -117,6 +117,14 @@
 			<version>6.0.0</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- Declarado explicitamente porque o google-http-client arrasta jackson 2.9.5, versao
+		     anterior a StreamReadException/DatabindException usadas pelo handler Spring -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.15.3</version>
+			<scope>test</scope>
+		</dependency>
 		<!-- Modulos adicionados apenas para o report-aggregate do JaCoCo enxergar classes/fontes -->
 		<dependency>
 			<groupId>com.ccp</groupId>
