@@ -89,7 +89,7 @@ public class JnEntitiesStructureTest {
 
 	@Test public void asyncTaskCtorTest() { assertNotNull(new JnEntityAsyncTask()); }
 	@Test public void contactUsCtorTest() { assertNotNull(new JnEntityContactUs()); }
-	@Test public void loginEmailCtorTest() { assertNotNull(new JnEntityLoginEmail()); }
+	@Test public void loginEmailCtorTest() { assertNotNull(new JnEntityLoginEmail()); } 
 	@Test public void loginPasswordCtorTest() { assertNotNull(new JnEntityLoginPassword()); }
 	@Test public void loginTokenCtorTest() { assertNotNull(new JnEntityLoginToken()); }
 	@Test public void jobsnowErrorCtorTest() { assertNotNull(new JnEntityJobsnowError()); }

@@ -58,7 +58,7 @@ public class CcpEntityDecoratorEnumsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void operationTypeExecuteFlowJsonNullTest() {
-		CcpEntityDecoratorOperationType.save.executeFlow(null, CcpEntityOperationStepType.antes, OPERATIONS_CLASS,
+		CcpEntityDecoratorOperationType.save.executeFlow(null, CcpEntityOperationStepType._before, OPERATIONS_CLASS,
 				ENTITY);
 	}
 
@@ -69,12 +69,12 @@ public class CcpEntityDecoratorEnumsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void operationTypeExecuteFlowClassNullTest() {
-		CcpEntityDecoratorOperationType.save.executeFlow(JSON, CcpEntityOperationStepType.antes, null, ENTITY);
+		CcpEntityDecoratorOperationType.save.executeFlow(JSON, CcpEntityOperationStepType._before, null, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void operationTypeExecuteFlowEntityNullTest() {
-		CcpEntityDecoratorOperationType.save.executeFlow(JSON, CcpEntityOperationStepType.antes, OPERATIONS_CLASS,
+		CcpEntityDecoratorOperationType.save.executeFlow(JSON, CcpEntityOperationStepType._before, OPERATIONS_CLASS,
 				null);
 	}
 
@@ -102,7 +102,7 @@ public class CcpEntityDecoratorEnumsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void transferTypeExecuteFlowJsonNullTest() {
-		CcpEntityDecoratorTransferType.copyDataTo.executeFlow(null, CcpEntityOperationStepType.antes, OPERATIONS_CLASS,
+		CcpEntityDecoratorTransferType.copyDataTo.executeFlow(null, CcpEntityOperationStepType._before, OPERATIONS_CLASS,
 				ENTITY, ENTITY);
 	}
 
@@ -113,19 +113,19 @@ public class CcpEntityDecoratorEnumsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void transferTypeExecuteFlowClassNullTest() {
-		CcpEntityDecoratorTransferType.copyDataTo.executeFlow(JSON, CcpEntityOperationStepType.antes, null, ENTITY,
+		CcpEntityDecoratorTransferType.copyDataTo.executeFlow(JSON, CcpEntityOperationStepType._before, null, ENTITY,
 				ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void transferTypeExecuteFlowEntityNullTest() {
-		CcpEntityDecoratorTransferType.copyDataTo.executeFlow(JSON, CcpEntityOperationStepType.antes, OPERATIONS_CLASS,
+		CcpEntityDecoratorTransferType.copyDataTo.executeFlow(JSON, CcpEntityOperationStepType._before, OPERATIONS_CLASS,
 				null, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void transferTypeExecuteFlowEntityToTransferNullTest() {
-		CcpEntityDecoratorTransferType.copyDataTo.executeFlow(JSON, CcpEntityOperationStepType.antes, OPERATIONS_CLASS,
+		CcpEntityDecoratorTransferType.copyDataTo.executeFlow(JSON, CcpEntityOperationStepType._before, OPERATIONS_CLASS,
 				ENTITY, null);
 	}
 
@@ -133,7 +133,7 @@ public class CcpEntityDecoratorEnumsAopNullTest {
 
 	private static OperationWriter operationWriter() {
 		return CcpEntityDecoratorOperationType.save;
-	}
+	} 
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeBusinessJsonNullTest() {

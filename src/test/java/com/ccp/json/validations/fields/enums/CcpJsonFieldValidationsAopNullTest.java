@@ -74,22 +74,22 @@ public class CcpJsonFieldValidationsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void timeOptionsGetEnlapsedTimeJsonNullTest() {
-		TimeOptions.antes.getEnlapsedTime(null, field());
+		TimeOptions._before.getEnlapsedTime(null, field());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void timeOptionsGetEnlapsedTimeFieldNullTest() {
-		TimeOptions.antes.getEnlapsedTime(JSON, null);
+		TimeOptions._before.getEnlapsedTime(JSON, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void timeOptionsGetEnlapsedIntervalJsonNullTest() {
-		TimeOptions.antes.getEnlapsedInterval(null, field());
+		TimeOptions._before.getEnlapsedInterval(null, field());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void timeOptionsGetEnlapsedIntervalFieldNullTest() {
-		TimeOptions.antes.getEnlapsedInterval(JSON, null);
+		TimeOptions._before.getEnlapsedInterval(JSON, null);
 	}
 
 	// ── TimeValueExtractorFromAnnotation ──────────────────────────────────────
@@ -106,12 +106,12 @@ public class CcpJsonFieldValidationsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void timeExtractorHasErrorJsonNullTest() {
-		TimeValueExtractorFromAnnotation.max.hasError(null, field(), TimeOptions.antes);
+		TimeValueExtractorFromAnnotation.max.hasError(null, field(), TimeOptions._before);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void timeExtractorHasErrorFieldNullTest() {
-		TimeValueExtractorFromAnnotation.max.hasError(JSON, null, TimeOptions.antes);
+		TimeValueExtractorFromAnnotation.max.hasError(JSON, null, TimeOptions._before);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -121,12 +121,12 @@ public class CcpJsonFieldValidationsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void timeExtractorGetErrorMessageJsonNullTest() {
-		TimeValueExtractorFromAnnotation.max.getErrorMessage(null, field(), TimeOptions.antes);
+		TimeValueExtractorFromAnnotation.max.getErrorMessage(null, field(), TimeOptions._before);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void timeExtractorGetErrorMessageFieldNullTest() {
-		TimeValueExtractorFromAnnotation.max.getErrorMessage(JSON, null, TimeOptions.antes);
+		TimeValueExtractorFromAnnotation.max.getErrorMessage(JSON, null, TimeOptions._before);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -136,7 +136,7 @@ public class CcpJsonFieldValidationsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void timeExtractorGetRuleExplanationFieldNullTest() {
-		TimeValueExtractorFromAnnotation.max.getRuleExplanation(null, TimeOptions.antes);
+		TimeValueExtractorFromAnnotation.max.getRuleExplanation(null, TimeOptions._before);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
