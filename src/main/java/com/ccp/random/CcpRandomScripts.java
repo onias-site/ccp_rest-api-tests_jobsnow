@@ -62,6 +62,7 @@ import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
+import com.jn.entities.JnEntityLoginTokenRequestUnlock;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
@@ -87,8 +88,7 @@ public class CcpRandomScripts {
 	}
 
 	public static void main(String[] args) {
-		List<CcpJsonRepresentation> asJsonList = CcpOtherConstants.EMPTY_JSON.put(() -> "teste", "").getAsJsonList(() -> "teste");
-		System.out.println(asJsonList);
+		JnEntityLoginTokenRequestUnlock.ENTITY.save(CcpOtherConstants.EMPTY_JSON.put(()->"email", "onias85@gmail.com"));
 	}
 	static void createVisEntities() {
 		String pathToCreateEntityScript = "documentation\\vis\\database\\elasticsearch\\scripts\\entities\\create";
