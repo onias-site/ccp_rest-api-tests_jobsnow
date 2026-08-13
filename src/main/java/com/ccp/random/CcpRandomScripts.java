@@ -90,6 +90,7 @@ public class CcpRandomScripts {
 	public static void main(String[] args) {
 		JnEntityLoginTokenRequestUnlock.ENTITY.save(CcpOtherConstants.EMPTY_JSON.put(()->"email", "onias85@gmail.com"));
 	}
+	
 	static void createVisEntities() {
 		String pathToCreateEntityScript = "documentation\\vis\\database\\elasticsearch\\scripts\\entities\\create";
 		String pathToJavaClasses = "..\\vis_business_jobsnow\\src\\main\\java\\com\\vis\\entities";
