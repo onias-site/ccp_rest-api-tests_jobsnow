@@ -37,7 +37,7 @@ public class JnServiceTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		NoopJnService.INSTANCE.apply(null);
+		NoopJnService.INSTANCE.execute((CcpJsonRepresentation) null);
 	}
 
 	// ── JnErrorServiceValidationClassNotFound ────────────────────────────────

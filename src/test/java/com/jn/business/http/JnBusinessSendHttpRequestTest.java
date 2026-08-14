@@ -32,6 +32,6 @@ public class JnBusinessSendHttpRequestTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		new JnBusinessSendHttpRequest(new NoopExecutor()).apply(null);
+		new JnBusinessSendHttpRequest(new NoopExecutor()).execute(null);
 	}
 }

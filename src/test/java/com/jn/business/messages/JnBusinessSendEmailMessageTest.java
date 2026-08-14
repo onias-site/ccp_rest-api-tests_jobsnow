@@ -21,6 +21,6 @@ public class JnBusinessSendEmailMessageTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		JnBusinessSendEmailMessage.INSTANCE.apply(null);
+		JnBusinessSendEmailMessage.INSTANCE.execute(null);
 	}
 }

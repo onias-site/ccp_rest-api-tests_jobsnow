@@ -26,6 +26,6 @@ public class JbBotSolveLoginTokenTicketTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		new JbBotSolveLoginTokenTicket().apply(null);
+		new JbBotSolveLoginTokenTicket().execute(null);
 	}
 }

@@ -21,6 +21,6 @@ public class JnBusinessExecuteLoginTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		JnBusinessExecuteLogin.INSTANCE.apply(null);
+		JnBusinessExecuteLogin.INSTANCE.execute(null);
 	}
 }

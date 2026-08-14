@@ -729,7 +729,7 @@ public class CcpJsonRepresentationTests {
 	public void addJsonTransformer() {
 		CcpJsonRepresentation addJsonTransformer = CcpOtherConstants.EMPTY_JSON.addJsonTransformer(pai, json -> json.put(filho, "filho"));
 		CcpBusiness business = addJsonTransformer.getAsObject(pai);
-		CcpJsonRepresentation apply = business.apply(CcpOtherConstants.EMPTY_JSON);
+		CcpJsonRepresentation apply = business.execute(CcpOtherConstants.EMPTY_JSON);
 		assertTrue(apply.fieldSet().size() == 1);
 		assertTrue(apply.containsAllFields(filho));
 		assertTrue(apply.containsAllFields(filho));
@@ -741,7 +741,7 @@ public class CcpJsonRepresentationTests {
 	public void addJsonTransformerInteger() {
 		CcpJsonRepresentation addJsonTransformer = CcpOtherConstants.EMPTY_JSON.addJsonTransformer(1, json -> json.put(filho, "filho"));
 		CcpBusiness business = addJsonTransformer.getAsObject(new CcpFieldName(1));
-		CcpJsonRepresentation apply = business.apply(CcpOtherConstants.EMPTY_JSON);
+		CcpJsonRepresentation apply = business.execute(CcpOtherConstants.EMPTY_JSON);
 		assertTrue(apply.fieldSet().size() == 1);
 		assertTrue(apply.containsAllFields(filho));
 	

@@ -464,7 +464,7 @@ public class CcpRandomScripts {
 		System.out.println(parametersToSearch);
 
 		JnEntityLoginSessionValidation.ENTITY.getTwinEntity().save(json);
-		JnBusinessExecuteLogout.INSTANCE.apply(json);
+		JnBusinessExecuteLogout.INSTANCE.execute(json);
 	}
 
 	static void testarExpurgableEntity() {

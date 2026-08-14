@@ -21,7 +21,7 @@ public class JnBusinessNotifyErrorTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyJsonNullTest() {
-		JnBusinessNotifyError.INSTANCE.apply((com.ccp.decorators.CcpJsonRepresentation) null);
+		JnBusinessNotifyError.INSTANCE.execute((com.ccp.decorators.CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

@@ -26,6 +26,6 @@ public class JnBusinessResetLoginTokenTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		JnBusinessResetLoginToken.INSTANCE.apply(null);
+		JnBusinessResetLoginToken.INSTANCE.execute(null);
 	}
 }

@@ -315,11 +315,11 @@ public class CcpCrudAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void functionPutEntityApplyNullTest() {
-		FunctionPutEntity.INSTANCE.apply(null);
+		FunctionPutEntity.INSTANCE.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void functionPutStatusApplyNullTest() {
-		FunctionPutStatus.INSTANCE.apply(null);
+		FunctionPutStatus.INSTANCE.execute(null);
 	}
 }

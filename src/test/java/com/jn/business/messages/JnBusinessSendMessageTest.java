@@ -28,6 +28,6 @@ public class JnBusinessSendMessageTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		new TestSendMessage().apply(null);
+		new TestSendMessage().execute(null);
 	}
 }

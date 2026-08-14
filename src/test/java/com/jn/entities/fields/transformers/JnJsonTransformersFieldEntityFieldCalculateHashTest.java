@@ -32,6 +32,6 @@ public class JnJsonTransformersFieldEntityFieldCalculateHashTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		new JnJsonTransformersFieldEntityFieldCalculateHash.JnJsonTransformersFieldEntityTokenHash().apply(null);
+		new JnJsonTransformersFieldEntityFieldCalculateHash.JnJsonTransformersFieldEntityTokenHash().execute(null);
 	}
 }

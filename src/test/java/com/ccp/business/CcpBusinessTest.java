@@ -48,7 +48,7 @@ public class CcpBusinessTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullParamTest() {
-		new NoopBusiness().apply(null);
+		new NoopBusiness().execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -66,6 +66,6 @@ public class CcpBusinessTest {
 
 	@org.junit.Test(expected = com.ccp.aop.CcpNullReturnException.class)
 	public void applyRetornaNullDisparaAopTest() {
-		new RetornaNullBusiness().apply(CcpOtherConstants.EMPTY_JSON);
+		new RetornaNullBusiness().execute(CcpOtherConstants.EMPTY_JSON);
 	}
 }

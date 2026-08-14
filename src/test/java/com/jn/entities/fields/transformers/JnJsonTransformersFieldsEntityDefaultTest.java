@@ -58,27 +58,27 @@ public class JnJsonTransformersFieldsEntityDefaultTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyEmailNullTest() {
-		JnJsonTransformersFieldsEntityDefault.email.apply(null);
+		JnJsonTransformersFieldsEntityDefault.email.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyPasswordNullTest() {
-		JnJsonTransformersFieldsEntityDefault.password.apply(null);
+		JnJsonTransformersFieldsEntityDefault.password.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyTokenNullTest() {
-		JnJsonTransformersFieldsEntityDefault.token.apply(null);
+		JnJsonTransformersFieldsEntityDefault.token.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyTimestampNullTest() {
-		JnJsonTransformersFieldsEntityDefault.timestamp.apply(null);
+		JnJsonTransformersFieldsEntityDefault.timestamp.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyTokenHashNullTest() {
-		JnJsonTransformersFieldsEntityDefault.tokenHash.apply(null);
+		JnJsonTransformersFieldsEntityDefault.tokenHash.execute(null);
 	}
 
 	// ── JsonFieldNames inner enum ────────────────────────────────────────────

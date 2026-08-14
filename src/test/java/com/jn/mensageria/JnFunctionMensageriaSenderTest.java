@@ -35,7 +35,7 @@ public class JnFunctionMensageriaSenderTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyJsonNullTest() {
-		new JnFunctionMensageriaSender(new NoopBusiness()).apply((CcpJsonRepresentation) null);
+		new JnFunctionMensageriaSender(new NoopBusiness()).execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

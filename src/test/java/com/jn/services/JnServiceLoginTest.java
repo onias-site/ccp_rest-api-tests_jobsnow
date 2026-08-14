@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import com.ccp.aop.CcpNullParameterException;
+import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
@@ -50,52 +51,52 @@ public class JnServiceLoginTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeLoginApplyNullTest() {
-		JnServiceLogin.ExecuteLogin.apply(null);
+		JnServiceLogin.ExecuteLogin.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void validateLoginApplyNullTest() {
-		JnServiceLogin.ValidateLogin.apply(null);
+		JnServiceLogin.ValidateLogin.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void createLoginEmailApplyNullTest() {
-		JnServiceLogin.CreateLoginEmail.apply(null);
+		JnServiceLogin.CreateLoginEmail.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void existsLoginEmailApplyNullTest() {
-		JnServiceLogin.ExistsLoginEmail.apply(null);
+		JnServiceLogin.ExistsLoginEmail.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeLogoutApplyNullTest() {
-		JnServiceLogin.ExecuteLogout.apply(null);
+		JnServiceLogin.ExecuteLogout.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void saveAnswersApplyNullTest() {
-		JnServiceLogin.SaveAnswers.apply(null);
+		JnServiceLogin.SaveAnswers.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void createLoginTokenApplyNullTest() {
-		JnServiceLogin.CreateLoginToken.apply(null);
+		JnServiceLogin.CreateLoginToken.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void savePasswordApplyNullTest() {
-		JnServiceLogin.SavePassword.apply(null);
+		JnServiceLogin.SavePassword.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void resendLoginTokenApplyNullTest() {
-		JnServiceLogin.ResendLoginToken.apply(null);
+		JnServiceLogin.ResendLoginToken.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void unlockLoginTokenApplyNullTest() {
-		JnServiceLogin.UnlockLoginToken.apply(null);
+		JnServiceLogin.UnlockLoginToken.execute((CcpJsonRepresentation) null);
 	}
 
 	// ── JsonFieldNames inner enum ────────────────────────────────────────────

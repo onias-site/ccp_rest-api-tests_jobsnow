@@ -9,7 +9,7 @@ public class CcpFunctionThrowExceptionTest {
 
 	@Test(expected = IllegalStateException.class)
 	public void applyLancaExcecaoTest() {
-		new CcpFunctionThrowException(new IllegalStateException("x")).apply(CcpOtherConstants.EMPTY_JSON);
+		new CcpFunctionThrowException(new IllegalStateException("x")).execute(CcpOtherConstants.EMPTY_JSON);
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
@@ -21,7 +21,7 @@ public class CcpFunctionThrowExceptionTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullParamTest() {
-		new CcpFunctionThrowException(new RuntimeException()).apply(null);
+		new CcpFunctionThrowException(new RuntimeException()).execute(null);
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────

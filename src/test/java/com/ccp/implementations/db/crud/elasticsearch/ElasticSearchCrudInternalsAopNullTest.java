@@ -70,13 +70,13 @@ public class ElasticSearchCrudInternalsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void elasticSearchHttpStatusApplyNullTest() {
-		ElasticSearchHttpStatus.OK.apply(null);
+		ElasticSearchHttpStatus.OK.execute(null);
 	}
 
 	// ── FunctionResponseHandlerToMget ─────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void functionResponseHandlerToMgetApplyNullTest() {
-		FunctionResponseHandlerToMget.INSTANCE.apply(null);
+		FunctionResponseHandlerToMget.INSTANCE.execute(null);
 	}
 }

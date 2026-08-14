@@ -27,7 +27,7 @@ public class JnJsonTransformersFieldsEntityDoNothingTest {
 	@Test
 	public void applyReturnsSameJsonTest() {
 		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON;
-		CcpJsonRepresentation r = new JnJsonTransformersFieldsEntityDoNothing().apply(input);
+		CcpJsonRepresentation r = new JnJsonTransformersFieldsEntityDoNothing().execute(input);
 		assertSame(input, r);
 	}
 
@@ -43,6 +43,6 @@ public class JnJsonTransformersFieldsEntityDoNothingTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		new JnJsonTransformersFieldsEntityDoNothing().apply(null);
+		new JnJsonTransformersFieldsEntityDoNothing().execute(null);
 	}
 }

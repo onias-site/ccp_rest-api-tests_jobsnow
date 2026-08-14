@@ -60,70 +60,70 @@ public class VisRemainingAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void groupCompaniesByTheirFirstThreeInitialsApplyNullTest() {
-		new VisBusinessGroupCompaniesByTheirFirstThreeInitials().apply(null);
+		new VisBusinessGroupCompaniesByTheirFirstThreeInitials().execute(null);
 	}
 
 	// ── business/position ─────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void duplicateFieldEmailToFieldMastersApplyNullTest() {
-		VisBusinessDuplicateFieldEmailToFieldMasters.INSTANCE.apply(null);
+		VisBusinessDuplicateFieldEmailToFieldMasters.INSTANCE.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void groupPositionsGroupedByRecruitersApplyNullTest() {
-		VisBusinessGroupPositionsGroupedByRecruiters.INSTANCE.apply(null);
+		VisBusinessGroupPositionsGroupedByRecruiters.INSTANCE.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void positionResumesSendApplyNullTest() {
-		VisBusinessPositionResumesSend.INSTANCE.apply(null);
+		VisBusinessPositionResumesSend.INSTANCE.execute(null);
 	}
 
 	// ── business/recruiter ────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void recruiterReceivingResumesApplyNullTest() {
-		VisBusinessRecruiterReceivingResumes.INSTANCE.apply(null);
+		VisBusinessRecruiterReceivingResumes.INSTANCE.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void resumeViewSaveApplyNullTest() {
-		VisBusinessResumeViewSave.INSTANCE.apply(null);
+		VisBusinessResumeViewSave.INSTANCE.execute(null);
 	}
 
 	// ── business/resume ───────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void approvingSkillApplyNullTest() {
-		new VisBusinessApprovingSkill().apply(null);
+		new VisBusinessApprovingSkill().execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void calculateResumeHashesApplyNullTest() {
-		new VisBusinessCalculateResumeHashes().apply(null);
+		new VisBusinessCalculateResumeHashes().execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void resumeSaveViewFailedApplyNullTest() {
-		VisBusinessResumeSaveViewFailed.INSTANCE.apply(null);
+		VisBusinessResumeSaveViewFailed.INSTANCE.execute(null);
 	}
 
 	// ── business/templates/notify/support ─────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void templatesToNotifySupportApplyNullTest() {
-		VisTemplatesToNotifySupport.new_skill.apply(null);
+		VisTemplatesToNotifySupport.new_skill.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void newSkillApplyNullTest() {
-		new VisTemplatesToNotifySupport.NewSkill().apply(null);
+		new VisTemplatesToNotifySupport.NewSkill().execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void newSkillHierarchyApplyNullTest() {
-		new VisTemplatesToNotifySupport.NewSkillHierarchy().apply(null);
+		new VisTemplatesToNotifySupport.NewSkillHierarchy().execute(null);
 	}
 
 	// ── entities ──────────────────────────────────────────────────────────────
@@ -137,49 +137,49 @@ public class VisRemainingAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void putEmailHashAndDomainRecruiterApplyNullTest() {
-		VisJsonTransformerPutEmailHashAndDomainRecruiter.INSTANCE.apply(null);
+		VisJsonTransformerPutEmailHashAndDomainRecruiter.INSTANCE.execute(null);
 	}
 
 	// ── schedulling ───────────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void getRecentLoggedUsersApplyNullTest() {
-		VisBusinessGetRecentLoggedUsers.INSTANCE.apply(null);
+		VisBusinessGetRecentLoggedUsers.INSTANCE.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void groupResumesOpinionsByRecruiterApplyNullTest() {
-		VisBusinessGroupResumesOpinionsByRecruiter.INSTANCE.apply(null);
+		VisBusinessGroupResumesOpinionsByRecruiter.INSTANCE.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void groupResumesOpinionsByResumeApplyNullTest() {
-		VisBusinessGroupResumesOpinionsByResume.INSTANCE.apply(null);
+		VisBusinessGroupResumesOpinionsByResume.INSTANCE.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void groupResumeViewsByRecruiterApplyNullTest() {
-		VisBusinessGroupResumeViewsByRecruiter.INSTANCE.apply(null);
+		VisBusinessGroupResumeViewsByRecruiter.INSTANCE.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void groupResumeViewsByResumeApplyNullTest() {
-		VisBusinessGroupResumeViewsByResume.INSTANCE.apply(null);
+		VisBusinessGroupResumeViewsByResume.INSTANCE.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void groupSkillsApplyNullTest() {
-		VisBusinessGroupSkills.INSTANCE.apply(null);
+		VisBusinessGroupSkills.INSTANCE.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void positionResumesReceivingByFrequencyApplyNullTest() {
-		VisBusinessPositionResumesReceivingByFrequency.INSTANCE.apply(null);
+		VisBusinessPositionResumesReceivingByFrequency.INSTANCE.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void searchSkillsApplyNullTest() {
-		VisBusinessSearchSkills.INSTANCE.apply(null);
+		VisBusinessSearchSkills.INSTANCE.execute(null);
 	}
 
 	// ── status ────────────────────────────────────────────────────────────────
@@ -193,17 +193,17 @@ public class VisRemainingAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void positionUpdateGroupingByRecruitersApplyNullTest() {
-		VisBusinessPositionUpdateGroupingByRecruitersAndSendResumes.INSTANCE.apply(null);
+		VisBusinessPositionUpdateGroupingByRecruitersAndSendResumes.INSTANCE.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void resumeSendToRecruitersApplyNullTest() {
-		VisBusinessResumeSendToRecruiters.INSTANCE.apply(null);
+		VisBusinessResumeSendToRecruiters.INSTANCE.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void sendEmailMessageAndRegisterEmailSentApplyNullTest() {
-		VisSendEmailMessageAndRegisterEmailSent.resumeSuccessSaving.apply(null);
+		VisSendEmailMessageAndRegisterEmailSent.resumeSuccessSaving.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

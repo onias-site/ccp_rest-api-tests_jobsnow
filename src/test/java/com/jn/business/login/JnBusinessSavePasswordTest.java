@@ -26,6 +26,6 @@ public class JnBusinessSavePasswordTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		JnBusinessSavePassword.INSTANCE.apply(null);
+		JnBusinessSavePassword.INSTANCE.execute(null);
 	}
 }

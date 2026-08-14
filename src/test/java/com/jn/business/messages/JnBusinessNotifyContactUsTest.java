@@ -21,6 +21,6 @@ public class JnBusinessNotifyContactUsTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		JnBusinessNotifyContactUs.INSTANCE.apply(null);
+		JnBusinessNotifyContactUs.INSTANCE.execute(null);
 	}
 }

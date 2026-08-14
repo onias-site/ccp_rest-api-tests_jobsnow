@@ -17,7 +17,7 @@ public class JnDeleteKeysFromCacheTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		JnDeleteKeysFromCache.INSTANCE.apply(null);
+		JnDeleteKeysFromCache.INSTANCE.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

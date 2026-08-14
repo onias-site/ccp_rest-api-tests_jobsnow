@@ -27,7 +27,7 @@ public class JnBusinessSendInstantMessageTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		JnBusinessSendInstantMessage.INSTANCE.apply(null);
+		JnBusinessSendInstantMessage.INSTANCE.execute(null);
 	}
 
 	// ── enum JnInstantMessageType ────────────────────────────────────────────
@@ -60,7 +60,7 @@ public class JnBusinessSendInstantMessageTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void enumTextApplyNullTest() {
-		JnBusinessSendInstantMessage.JnInstantMessageType.text.apply(null);
+		JnBusinessSendInstantMessage.JnInstantMessageType.text.execute(null);
 	}
 
 	@Test

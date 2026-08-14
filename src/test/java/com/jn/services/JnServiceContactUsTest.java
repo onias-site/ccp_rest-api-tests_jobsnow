@@ -43,35 +43,35 @@ public class JnServiceContactUsTest {
 	@Test
 	public void saveContactUsApplyTest() {
 		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON;
-		assertSame(input, JnServiceContactUs.SaveContactUs.apply(input));
+		assertSame(input, JnServiceContactUs.SaveContactUs.execute(input));
 	}
 
 	@Test
 	public void listContactUsByUserApplyTest() {
 		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON;
-		assertSame(input, JnServiceContactUs.ListContactUsByUser.apply(input));
+		assertSame(input, JnServiceContactUs.ListContactUsByUser.execute(input));
 	}
 
 	@Test
 	public void getContactUsKpisApplyTest() {
 		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON;
-		assertSame(input, JnServiceContactUs.GetContactUsKpis.apply(input));
+		assertSame(input, JnServiceContactUs.GetContactUsKpis.execute(input));
 	}
 
 	// ── null-parameter tests ─────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void saveContactUsApplyNullTest() {
-		JnServiceContactUs.SaveContactUs.apply(null);
+		JnServiceContactUs.SaveContactUs.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void listContactUsByUserApplyNullTest() {
-		JnServiceContactUs.ListContactUsByUser.apply(null);
+		JnServiceContactUs.ListContactUsByUser.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void getContactUsKpisApplyNullTest() {
-		JnServiceContactUs.GetContactUsKpis.apply(null);
+		JnServiceContactUs.GetContactUsKpis.execute((CcpJsonRepresentation) null);
 	}
 }

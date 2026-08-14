@@ -30,13 +30,13 @@ public class JnServiceAsyncTaskTest {
 	@Test
 	public void getAsyncTaskStatusByIdReturnsSameJsonTest() {
 		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON;
-		CcpJsonRepresentation r = JnServiceAsyncTask.GetAsyncTaskStatusById.apply(input);
+		CcpJsonRepresentation r = JnServiceAsyncTask.GetAsyncTaskStatusById.execute(input);
 		assertSame(input, r);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		JnServiceAsyncTask.GetAsyncTaskStatusById.apply(null);
+		JnServiceAsyncTask.GetAsyncTaskStatusById.execute((CcpJsonRepresentation) null);
 	}
 
 	// ── JsonFieldNames inner enum ────────────────────────────────────────────

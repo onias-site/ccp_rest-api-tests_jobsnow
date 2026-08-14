@@ -21,6 +21,6 @@ public class JnBusinessSendUserTokenTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		JnBusinessSendUserToken.INSTANCE.apply(null);
+		JnBusinessSendUserToken.INSTANCE.execute(null);
 	}
 }

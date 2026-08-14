@@ -158,11 +158,11 @@ public abstract class VisTemplateDeTestes {
 		
 		
 		try {
-			CcpJsonRepresentation apply = first.apply(json);
+			CcpJsonRepresentation apply = first.execute(json);
 			return apply;
 		} catch (CcpErrorFlowDisturb e) {
 			CcpBusiness nextFlow = flow.getAsObject(e.status);
-			nextFlow.apply(json);
+			nextFlow.execute(json);
 			CcpJsonRepresentation executeThisFlow = this.executeThisFlow(first, flow, json);
 			return executeThisFlow;
 		}
