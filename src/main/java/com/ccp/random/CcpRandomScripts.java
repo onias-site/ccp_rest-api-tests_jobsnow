@@ -80,6 +80,35 @@ public class CcpRandomScripts {
 		positionsCount, 
 		id,  
 	}
+	
+	static {
+		CcpDependencyInjection.loadAllDependencies(
+				new CcpElasticSearchQueryExecutor(), 
+				new CcpElasticSearchDbRequest(),
+				CcpLocalInstances.mensageriaSender,
+				CcpLocalInstances.bucket,
+				CcpLocalInstances.email,
+				new CcpApacheTikaTextExtractor(),
+				new CcpMindrotPasswordHandler(), 
+				new CcpElasticSerchDbBulk(), 
+				CcpLocalCacheInstances.map,
+				new CcpElasticSearchCrud(), 
+				new CcpGsonJsonHandler(), 
+				new CcpTelegramInstantMessenger(),				
+				new CcpApacheMimeHttp()
+				);
+	}
+
+	public static void main(String[] args) {
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
+				.put(() -> "email", "onias85@gmail.com")
+				.put(() -> "language", "portuguese")
+				.put(() -> "token", "12345678")
+				
+				;
+		JnEntityLoginTokenRequestUnlock.ENTITY.save(json);
+	}
+
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
 	private static final String LINKEDIN_REGEX = "^https://(www\\.)?linkedi n\\.com/in/[a-zA-Z0-9-_%]+/?$";
 	
@@ -87,9 +116,6 @@ public class CcpRandomScripts {
 		return Pattern.matches(LINKEDIN_REGEX, url);
 	}
 
-	public static void main(String[] args) {
-		JnEntityLoginTokenRequestUnlock.ENTITY.save(CcpOtherConstants.EMPTY_JSON.put(()->"email", "onias85@gmail.com"));
-	}
 	
 	static void createVisEntities() {
 		String pathToCreateEntityScript = "documentation\\vis\\database\\elasticsearch\\scripts\\entities\\create";
@@ -319,22 +345,6 @@ public class CcpRandomScripts {
 
 	enum JsonFieldNames implements CcpJsonFieldName{
 		type, cause, stackTrace, email, mappings, properties, name, ddd, _id, docs, _source, id, mail, contato, vaga, channel, description, contactChannel, candidate, candidato
-	}
-	static {
-		CcpDependencyInjection.loadAllDependencies(
-				new CcpElasticSearchQueryExecutor(), 
-				new CcpElasticSearchDbRequest(),
-				CcpLocalInstances.mensageriaSender,
-				CcpLocalInstances.bucket,
-				CcpLocalInstances.email,
-				new CcpApacheTikaTextExtractor(),
-				new CcpMindrotPasswordHandler(), 
-				new CcpElasticSerchDbBulk(), 
-				CcpLocalCacheInstances.map,
-				new CcpElasticSearchCrud(), 
-				new CcpGsonJsonHandler(), 
-				new CcpApacheMimeHttp()
-				);
 	}
 
 	static Map<String, Object> getJson(CcpFileDecorator arquivo){

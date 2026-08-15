@@ -17,7 +17,7 @@ public class JnBusinessSendMessageTest {
 
 	static class TestSendMessage extends JnBusinessSendMessage {
 		public TestSendMessage() {
-			super(JnEntityJobsnowError.ENTITY);
+			super(JnEntityJobsnowError.ENTITY, JnMessageSenderExceptionHandler.THROWS);
 		}
 	}
 

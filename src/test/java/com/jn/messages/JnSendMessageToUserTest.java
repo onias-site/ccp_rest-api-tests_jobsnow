@@ -8,6 +8,7 @@ import com.ccp.aop.CcpNullParameterException;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.business.http.JnBusinessSendHttpRequest;
+import com.jn.business.messages.JnMessageSenderExceptionHandler;
 
 public class JnSendMessageToUserTest {
 
@@ -17,7 +18,7 @@ public class JnSendMessageToUserTest {
 
 	static class NoopBusiness extends JnBusinessSendHttpRequest {
 		NoopBusiness() {
-			super(json -> json);
+			super(json -> json, JnMessageSenderExceptionHandler.THROWS);
 		}
 	}
 
@@ -35,29 +36,6 @@ public class JnSendMessageToUserTest {
 
 	// ── subclasses públicas ──────────────────────────────────────────────────
 
-	@Test
-	public void construtorJustErrorsTest() {
-		assertNotNull(new JnSendMessageToUser.JnSendMessageAndJustErrors());
-	}
-
-	@Test
-	public void construtorIgnoringErrorsTest() {
-		assertNotNull(new JnSendMessageToUser.JnSendMessageIgnoringProcessErrors());
-	}
-
-	// ── null-parameter tests — JnSendMessageAndJustErrors.addOneStep ─────────
-
-	@Test(expected = CcpNullParameterException.class)
-	public void justErrorsAddOneStepStepNullTest() {
-		new JnSendMessageToUser.JnSendMessageAndJustErrors()
-				.addOneStep(null, null, null, null, null);
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void ignoringErrorsAddOneStepStepNullTest() {
-		new JnSendMessageToUser.JnSendMessageIgnoringProcessErrors()
-				.addOneStep(null, null, null, null, null);
-	}
 
 	// ── null-parameter tests — JnCreateStep ──────────────────────────────────
 

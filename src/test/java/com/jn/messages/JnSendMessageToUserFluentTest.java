@@ -9,6 +9,7 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.business.http.JnBusinessSendHttpRequest;
+import com.jn.business.messages.JnMessageSenderExceptionHandler;
 import com.jn.entities.JnEntityJobsnowError;
 
 public class JnSendMessageToUserFluentTest {
@@ -19,7 +20,7 @@ public class JnSendMessageToUserFluentTest {
 
 	static class NoopBusiness extends JnBusinessSendHttpRequest {
 		NoopBusiness() {
-			super(json -> json);
+			super(json -> json, JnMessageSenderExceptionHandler.THROWS);
 		}
 	}
 

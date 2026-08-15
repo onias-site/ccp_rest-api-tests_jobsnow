@@ -9,6 +9,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.http.CcpHttpApiExecutor;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import com.jn.business.messages.JnMessageSenderExceptionHandler;
 
 public class JnBusinessSendHttpRequestTest {
 
@@ -22,16 +23,16 @@ public class JnBusinessSendHttpRequestTest {
 
 	@Test
 	public void construtorTest() {
-		assertNotNull(new JnBusinessSendHttpRequest(new NoopExecutor()));
+		assertNotNull(new JnBusinessSendHttpRequest(new NoopExecutor(), JnMessageSenderExceptionHandler.THROWS));
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void construtorProcessNullTest() {
-		new JnBusinessSendHttpRequest(null);
+		new JnBusinessSendHttpRequest(null, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		new JnBusinessSendHttpRequest(new NoopExecutor()).execute(null);
+		new JnBusinessSendHttpRequest(new NoopExecutor(), JnMessageSenderExceptionHandler.THROWS).execute(null);
 	}
 }

@@ -25,12 +25,12 @@ public class JnMessagesInternalsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void sendMessageConstrutorNullTest() {
-		new JnBusinessSendMessage(null);
+		new JnBusinessSendMessage(null, JnMessageSenderExceptionHandler.THROWS);
 	}
 
 	@Test
 	public void sendMessageConstrutorTest() {
-		org.junit.Assert.assertNotNull(new JnBusinessSendMessage(JnEntityJobsnowError.ENTITY));
+		org.junit.Assert.assertNotNull(new JnBusinessSendMessage(JnEntityJobsnowError.ENTITY, JnMessageSenderExceptionHandler.THROWS));
 	}
 
 	@Test(expected = CcpNullParameterException.class)
