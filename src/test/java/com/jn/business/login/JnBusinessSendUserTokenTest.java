@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import com.jn.business.messages.JnMessages.JnBusinessSendUserToken;
 
 public class JnBusinessSendUserTokenTest {
 

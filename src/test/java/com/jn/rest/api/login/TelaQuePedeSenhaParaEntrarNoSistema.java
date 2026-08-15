@@ -1,9 +1,7 @@
 package com.jn.rest.api.login;
 
 import java.util.function.Function;
-
 import org.junit.Test;
-
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
@@ -19,6 +17,7 @@ import com.jn.rest.api.commons.JnTemplateDeTestes;
 import com.jn.rest.api.commons.VariaveisParaTeste;
 import com.jn.status.login.JnProcessStatusExecuteLogin;
 import com.jn.status.login.JnProcessStatusExistsLoginEmail;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 public class TelaQuePedeSenhaParaEntrarNoSistema extends JnTemplateDeTestes{
 
@@ -127,7 +126,7 @@ public class TelaQuePedeSenhaParaEntrarNoSistema extends JnTemplateDeTestes{
 	}
 	
 	private String executarLogin(String email, String senha, CcpProcessStatus expectedStatus) {
-		CcpJsonRepresentation body = CcpOtherConstants.EMPTY_JSON.put(JnEntityLoginPassword.Fields.password, senha);
+		CcpJsonRepresentation body = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.password, senha);
 		String uri = "login/"
 		+ email;
 		CcpJsonRepresentation testarEndpoint = this.testarEndpoint(expectedStatus, body, uri, CcpHttpResponseType.singleRecord);

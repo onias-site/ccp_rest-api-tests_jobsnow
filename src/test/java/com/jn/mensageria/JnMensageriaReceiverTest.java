@@ -9,7 +9,7 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jn.business.messages.JnBusinessNotifyError;
+import com.jn.business.messages.JnMessages.JnBusinessNotifyError;
 import com.jn.entities.JnEntityAsyncTask;
 
 public class JnMensageriaReceiverTest {
@@ -36,19 +36,19 @@ public class JnMensageriaReceiverTest {
 	@Test(expected = CcpNullParameterException.class)
 	public void executeProcessEntityNullTest() {
 		JnMensageriaReceiver.INSTANCE.executeProcess((CcpEntity) null, "topic",
-				CcpOtherConstants.EMPTY_JSON, JnBusinessNotifyError.INSTANCE);
+				CcpOtherConstants.EMPTY_JSON, JnBusinessNotifyError.instance);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeProcessProcessNameNullTest() {
 		JnMensageriaReceiver.INSTANCE.executeProcess(JnEntityAsyncTask.ENTITY, null,
-				CcpOtherConstants.EMPTY_JSON, JnBusinessNotifyError.INSTANCE);
+				CcpOtherConstants.EMPTY_JSON, JnBusinessNotifyError.instance);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeProcessJsonNullTest() {
 		JnMensageriaReceiver.INSTANCE.executeProcess(JnEntityAsyncTask.ENTITY, "topic",
-				null, JnBusinessNotifyError.INSTANCE);
+				null, JnBusinessNotifyError.instance);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

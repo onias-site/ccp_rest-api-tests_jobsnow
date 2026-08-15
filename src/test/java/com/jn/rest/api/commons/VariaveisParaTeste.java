@@ -4,9 +4,8 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.jn.entities.JnEntityLoginAnswers;
-import com.jn.entities.JnEntityLoginPassword;
-import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.fields.transformers.JnJsonTransformersFieldsEntityDefault;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 public class VariaveisParaTeste {
 	public final static String CORRECT_PASSWORD = "Jobsnow1!";
@@ -16,9 +15,9 @@ public class VariaveisParaTeste {
 
 	
 	public CcpJsonRepresentation REQUEST_TO_LOGIN = CcpOtherConstants.EMPTY_JSON
-			.put(JnEntityLoginSessionValidation.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
-			.put(JnEntityLoginSessionValidation.Fields.ip, "127.0.0.1")
-			.put(JnEntityLoginPassword.Fields.password, "Novasenha1!")
+			.put(JnJsonCommonsFields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
+			.put(JnJsonCommonsFields.ip, "127.0.0.1")
+			.put(JnJsonCommonsFields.password, "Novasenha1!")
 			.getTransformedJson(JnJsonTransformersFieldsEntityDefault.token)
 			;
 			
@@ -33,7 +32,7 @@ public class VariaveisParaTeste {
 	}
 	public VariaveisParaTeste(String email) {
 	
-		this.REQUEST_TO_LOGIN = this.REQUEST_TO_LOGIN.put(JnEntityLoginAnswers.Fields.email, email);
+		this.REQUEST_TO_LOGIN = this.REQUEST_TO_LOGIN.put(JnJsonCommonsFields.email, email);
 		this.VALID_EMAIL = email;
 		this.ANSWERS_JSON = this.REQUEST_TO_LOGIN.put(JnEntityLoginAnswers.Fields.goal, "jobs").put(JnEntityLoginAnswers.Fields.channel, "linkedin");
 	}	

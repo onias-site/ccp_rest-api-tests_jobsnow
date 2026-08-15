@@ -13,7 +13,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpCollectionDecorator;
 import com.ccp.decorators.CcpFieldName;
@@ -67,6 +66,7 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
 import com.vis.resumes.ImportResumeFromOldJobsNow;
+import com.vis.json.fields.validation.VisJsonCommonsFields;
 
 public class CcpRandomScripts {
 
@@ -131,11 +131,11 @@ public class CcpRandomScripts {
 		CcpTemplateFunctions.currentTimeMillis.get();
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnBusinessSendInstantMessage.JnJsonValidator.chatId, 751717896L)
-				.put(JnBusinessSendInstantMessage.JnJsonValidator.templateId, "teste")
+				.put(JnJsonCommonsFields.templateId, "teste")
 				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.fileName, "{chatId}.txt")
 				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.caption, "{templateId}.{currentTimeMillis()}")
-				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.contentType, CcpHttpContentType.TEXT_PLAIN)
-				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.message, "mensagem de teste")
+				.put(JnJsonCommonsFields.contentType, CcpHttpContentType.TEXT_PLAIN)
+				.put(JnJsonCommonsFields.message, "mensagem de teste")
 				.put(JnBusinessSendInstantMessage.JnJsonValidator.botName, JnBusinessSendInstantMessage.JnBotType.support)
 				.put(JnBusinessSendInstantMessage.JnJsonValidator.instantMessageType, JnBusinessSendInstantMessage.JnInstantMessageType.text)
 				;
@@ -156,7 +156,7 @@ public class CcpRandomScripts {
 
 	static void testarDisposable() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(JnEntityDisposableTest.Fields.email, "onias85@gmail.com")
+				.put(JnJsonCommonsFields.email, "onias85@gmail.com")
 				;
 		CcpEntity entity = JnEntityDisposableTest.ENTITY;
 		entity.save(json);
@@ -306,7 +306,7 @@ public class CcpRandomScripts {
 	}
 
 	static void saveResume() {
-		VisEntityResume.ENTITY.delete(CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, "onias85@gmail.com"));
+		VisEntityResume.ENTITY.delete(CcpOtherConstants.EMPTY_JSON.put(VisJsonCommonsFields.email, "onias85@gmail.com"));
 		String path = "http://localhost:9200/profissionais2/_doc/onias85@gmail.com/_source";
 		CcpHttpHandler http = new CcpHttpHandler(200, CcpOtherConstants.DO_NOTHING, path);
 		CcpHttpMethods method = CcpHttpMethods.GET;
@@ -332,10 +332,10 @@ public class CcpRandomScripts {
 	static void saveLoginToken() {
 		String value = "12345678";
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(JnEntityLoginToken.Fields.email, "onias85@gmail.com")
+				.put(JnJsonCommonsFields.email, "onias85@gmail.com")
 				.put(JnEntityLoginToken.Fields.token, value)
-				.put(JnEntityLoginSessionValidation.Fields.ip, "127.0.0.1")
-				.put(JnEntityLoginSessionValidation.Fields.userAgent, "teste");
+				.put(JnJsonCommonsFields.ip, "127.0.0.1")
+				.put(JnJsonCommonsFields.userAgent, "teste");
 		JnEntityLoginToken.ENTITY.save(json);
 		CcpJsonRepresentation oneById = JnEntityLoginToken.ENTITY.getOneById(json);
 		String token = oneById.getAsString(JnEntityLoginToken.Fields.token);
@@ -415,7 +415,7 @@ public class CcpRandomScripts {
 
 	static void testarSalvamentoDeSenha() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(JnEntityLoginPassword.Fields.password, "123456").put(JsonFieldNames.email, "onias85@gmail.com");
+				.put(JnJsonCommonsFields.password, "123456").put(JsonFieldNames.email, "onias85@gmail.com");
 		JnEntityLoginPassword.ENTITY.save(json);
 
 		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);

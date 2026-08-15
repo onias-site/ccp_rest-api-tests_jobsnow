@@ -1,7 +1,6 @@
 package com.jn.services.login;
 
 import org.junit.Test;
-
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine.CcpJsonValidationError;
@@ -13,6 +12,7 @@ import com.jn.entities.JnEntityLoginToken;
 import com.jn.rest.api.commons.VariaveisParaTeste;
 import com.jn.status.login.JnProcessStatusExecuteLogin;
 import com.jn.status.login.JnProcessStatusExistsLoginEmail;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 public class ExecuteLogin extends JnServiceLoginTemplateDeTestes {
 
@@ -112,7 +112,7 @@ public class ExecuteLogin extends JnServiceLoginTemplateDeTestes {
 	}
 
 	private CcpJsonRepresentation executarLogin(VariaveisParaTeste variaveisParaTeste, String senha, com.ccp.process.CcpProcessStatus expectedStatus) {
-		CcpJsonRepresentation json = variaveisParaTeste.REQUEST_TO_LOGIN.put(JnEntityLoginPassword.Fields.password, senha);
+		CcpJsonRepresentation json = variaveisParaTeste.REQUEST_TO_LOGIN.put(JnJsonCommonsFields.password, senha);
 		CcpJsonRepresentation executarServico = this.execute(json, expectedStatus);
 		return executarServico;
 	}

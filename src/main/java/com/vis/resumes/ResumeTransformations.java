@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
@@ -23,6 +22,9 @@ import com.jn.entities.JnEntityLoginToken;
 import com.jn.entities.fields.transformers.JnJsonTransformersFieldsEntityDefault;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
+import com.vis.json.fields.validation.VisJsonCommonsFields;
+
 public enum ResumeTransformations implements CcpTransformers{
 	AddDddsInResume {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
@@ -37,7 +39,7 @@ public enum ResumeTransformations implements CcpTransformers{
 
 			if (mudanca) {
 
-				CcpJsonRepresentation put = json.put(VisEntityResume.Fields.ddd, ddds);
+				CcpJsonRepresentation put = json.put(VisJsonCommonsFields.ddd, ddds);
 
 				return put;
 			}
@@ -46,31 +48,31 @@ public enum ResumeTransformations implements CcpTransformers{
 
 			if (homeoffice) {
 				List<String> ddd10 = Arrays.asList("10");
-				CcpJsonRepresentation put = json.put(VisEntityResume.Fields.ddd, ddd10);
+				CcpJsonRepresentation put = json.put(VisJsonCommonsFields.ddd, ddd10);
 				return put;
 			}
 
 			try {
-				Integer ddd = json.getAsIntegerNumber(VisEntityResume.Fields.ddd);
+				Integer ddd = json.getAsIntegerNumber(VisJsonCommonsFields.ddd);
 				boolean equals = Integer.valueOf(0).equals(ddd);
 				if(equals) {
-					CcpJsonRepresentation put = json.put(VisEntityResume.Fields.ddd, ddds);
+					CcpJsonRepresentation put = json.put(VisJsonCommonsFields.ddd, ddds);
 					return put;
 				}
 			} catch (Exception e) {
 
 			}
 			
-			String ddd = json.getAsString(VisEntityResume.Fields.ddd);
+			String ddd = json.getAsString(VisJsonCommonsFields.ddd);
 			List<String> ddd10 = Arrays.asList(ddd).stream().filter(x -> new CcpStringDecorator(x).isLongNumber()).collect(Collectors.toList());
-			CcpJsonRepresentation put = json.put(VisEntityResume.Fields.ddd, ddd10);
+			CcpJsonRepresentation put = json.put(VisJsonCommonsFields.ddd, ddd10);
 			return put;
 		}
 	},
 	AddExperience {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			
-			boolean containsAllFields = json.containsAllFields(VisEntityResume.Fields.experience);
+			boolean containsAllFields = json.containsAllFields(VisJsonCommonsFields.experience);
 			if(containsAllFields) {
 				return json;
 			}
@@ -83,14 +85,14 @@ public enum ResumeTransformations implements CcpTransformers{
 			
 			int year = cal.get(Calendar.YEAR);
 			
-			CcpJsonRepresentation put = json.put(VisEntityResume.Fields.experience, year);
+			CcpJsonRepresentation put = json.put(VisJsonCommonsFields.experience, year);
 			
 			return put;
 		}
 	},
 	AddDisponibility {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			CcpJsonRepresentation put = this.addLongValue(json, VisEntityResume.Fields.disponibility.name(), 0L);
+			CcpJsonRepresentation put = this.addLongValue(json, VisJsonCommonsFields.disponibility.name(), 0L);
 			return put;
 		}
 	},
@@ -116,7 +118,7 @@ public enum ResumeTransformations implements CcpTransformers{
 			
 			String path = "http://localhost:8080/login/{email}".replace("{email}", email);
 			
-			String asUgglyJson = CcpOtherConstants.EMPTY_JSON.put(JnEntityLoginPassword.Fields.password, "Jobsnow1!").asUgglyJson();
+			String asUgglyJson = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.password, "Jobsnow1!").asUgglyJson();
 
 			CcpHttpHandler http = new CcpHttpHandler(200, CcpOtherConstants.DO_NOTHING, path);
 			
@@ -131,14 +133,14 @@ public enum ResumeTransformations implements CcpTransformers{
 			String originalToken = JnJsonTransformersFieldsEntityDefault.getOriginalToken();
 			
 			CcpJsonRepresentation transformed = CcpOtherConstants.EMPTY_JSON
-			.put(JnEntityLoginSessionValidation.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
+			.put(JnJsonCommonsFields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
 			.put(JnJsonTransformersFieldsEntityDefault.JsonFieldNames.originalToken, originalToken)
 			.put(JnJsonTransformersFieldsEntityDefault.JsonFieldNames.token, originalToken)
-			.put(JnEntityLoginSessionValidation.Fields.ip, "127.0.0.1")
-			.put(JnEntityLoginPassword.Fields.password, "Jobsnow1!")
+			.put(JnJsonCommonsFields.ip, "127.0.0.1")
+			.put(JnJsonCommonsFields.password, "Jobsnow1!")
 			.put(JnEntityLoginAnswers.Fields.channel, "linkedin")
 			.put(JnEntityLoginAnswers.Fields.goal, "jobs")
-			.put(JnEntityLoginAnswers.Fields.email, email)
+			.put(JnJsonCommonsFields.email, email)
 			;
 			
 			JnExecuteBulkOperation.INSTANCE.executeBulk(
@@ -160,28 +162,28 @@ public enum ResumeTransformations implements CcpTransformers{
 	},
 	AddCltValue {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			CcpJsonRepresentation put = this.addRequiredAtLeastOne(json, VisEntityResume.Fields.clt.name(), 1000, 
-					VisEntityResume.Fields.clt.name(),
-					VisEntityResume.Fields.pj.name()
+			CcpJsonRepresentation put = this.addRequiredAtLeastOne(json, VisJsonCommonsFields.clt.name(), 1000, 
+					VisJsonCommonsFields.clt.name(),
+					VisJsonCommonsFields.pj.name()
 					);
 			return put;
 		}
 	},
 	AddBtcValue {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			CcpJsonRepresentation put = this.putMinValue(json, VisEntityResume.Fields.btc.name(), 1000);
+			CcpJsonRepresentation put = this.putMinValue(json, VisJsonCommonsFields.btc.name(), 1000);
 			return put;
 		}
 	},
 	AddMinCltValue {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			CcpJsonRepresentation put = this.putMinValue(json, VisEntityResume.Fields.clt.name(), 1000);
+			CcpJsonRepresentation put = this.putMinValue(json, VisJsonCommonsFields.clt.name(), 1000);
 			return put;
 		}
 	},
 	AddMinPjValue {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			CcpJsonRepresentation put = this.putMinValue(json, VisEntityResume.Fields.clt.name(), 1000);
+			CcpJsonRepresentation put = this.putMinValue(json, VisJsonCommonsFields.clt.name(), 1000);
 			return put;
 		}
 	},

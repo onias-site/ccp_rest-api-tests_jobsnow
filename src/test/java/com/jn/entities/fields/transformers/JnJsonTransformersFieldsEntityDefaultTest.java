@@ -90,6 +90,6 @@ public class JnJsonTransformersFieldsEntityDefaultTest {
 
 	@Test
 	public void jsonFieldNamesValueOfTest() {
-		assertNotNull(JnJsonTransformersFieldsEntityDefault.JsonFieldNames.valueOf("email"));
+		assertNotNull(JnJsonTransformersFieldsEntityDefault.JsonFieldNames.valueOf("originalEmail"));
 	}
 }

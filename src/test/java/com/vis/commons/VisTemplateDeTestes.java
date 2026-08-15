@@ -26,7 +26,7 @@ import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatus;
-import com.jn.business.login.JnBusinessSendUserToken;
+import com.jn.business.messages.JnMessages.JnBusinessSendUserToken;
 import com.jn.db.bulk.JnExecuteBulkOperation;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityLoginAnswers;
@@ -34,12 +34,13 @@ import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginPasswordAttempts;
 import com.jn.entities.JnEntityLoginSessionConflict;
-import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.entities.JnEntityLoginTokenAttempts;
 import com.jn.status.login.JnProcessStatusCreateLoginEmail;
 import com.jn.status.login.JnProcessStatusExecuteLogin;
 import com.jn.utils.JnDeleteKeysFromCache;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
+
 public abstract class VisTemplateDeTestes {
 	enum JsonFieldNames implements CcpJsonFieldName{
 		message, statusName, x, url, method, actualStatus, expectedStatus, request, headers, response, timestamp, language
@@ -172,7 +173,7 @@ public abstract class VisTemplateDeTestes {
 		
 		CcpJsonRepresentation sessionValuesToTest = this.getSessionValuesToTest();
 		
-		CcpJsonRepresentation jsonWithSubjectType = sessionValuesToTest.put(JnEntityEmailMessageSent.Fields.subjectType, JnBusinessSendUserToken.class.getName());
+		CcpJsonRepresentation jsonWithSubjectType = sessionValuesToTest.put(JnJsonCommonsFields.subjectType, JnBusinessSendUserToken.class.getName());
 		
 		JnExecuteBulkOperation.INSTANCE.executeBulk(
 				jsonWithSubjectType 
@@ -231,9 +232,9 @@ public abstract class VisTemplateDeTestes {
 
 	protected final CcpJsonRepresentation getSessionValuesToTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(JnEntityLoginToken.Fields.email, "onias85@gmail.com")
-				.put(JnEntityLoginSessionValidation.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
-				.put(JnEntityLoginSessionValidation.Fields.ip, "127.0.0.1")
+				.put(JnJsonCommonsFields.email, "onias85@gmail.com")
+				.put(JnJsonCommonsFields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
+				.put(JnJsonCommonsFields.ip, "127.0.0.1")
 				.put(JsonFieldNames.language, "portuguese")
 				;
 

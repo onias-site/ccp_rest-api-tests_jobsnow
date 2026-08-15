@@ -2,7 +2,6 @@ package com.vis.commons;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
@@ -13,7 +12,7 @@ import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.business.CcpBusiness;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.flow.CcpErrorFlowDisturb;
-import com.jn.business.login.JnBusinessSendUserToken;
+import com.jn.business.messages.JnMessages.JnBusinessSendUserToken;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
@@ -22,7 +21,7 @@ import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.services.JnServiceLogin;
-
+import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 public enum LoginActions implements CcpBusiness {
 	SaveAnswers(JnEntityLoginAnswers.ENTITY),
@@ -59,7 +58,7 @@ public enum LoginActions implements CcpBusiness {
 				if(loginActions.entities.length == 0) {
 					continue;
 				}
-				CcpJsonRepresentation jsonWithSubjectType = json.put(JnEntityEmailMessageSent.Fields.subjectType, JnBusinessSendUserToken.class.getName());
+				CcpJsonRepresentation jsonWithSubjectType = json.put(JnJsonCommonsFields.subjectType, JnBusinessSendUserToken.class.getName());
 				loginActions.printAllStatus(jsonWithSubjectType);
 			}
 			JnServiceLogin valueOf = JnServiceLogin.valueOf(this.name());

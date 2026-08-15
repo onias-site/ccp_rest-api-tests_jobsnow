@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import com.jn.business.messages.JnMessages.JnBusinessNotifyError;
 
 public class JnBusinessNotifyErrorTest {
 
@@ -16,16 +17,11 @@ public class JnBusinessNotifyErrorTest {
 
 	@Test
 	public void instanceExistsTest() {
-		assertNotNull(JnBusinessNotifyError.INSTANCE);
+		assertNotNull(JnBusinessNotifyError.instance);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyJsonNullTest() {
-		JnBusinessNotifyError.INSTANCE.execute((com.ccp.decorators.CcpJsonRepresentation) null);
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void applyThrowableNullTest() {
-		JnBusinessNotifyError.INSTANCE.apply((Throwable) null);
+		JnBusinessNotifyError.instance.execute((com.ccp.decorators.CcpJsonRepresentation) null);
 	}
 }

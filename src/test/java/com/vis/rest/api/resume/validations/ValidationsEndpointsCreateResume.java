@@ -1,7 +1,6 @@
 package com.vis.rest.api.resume.validations;
 
 import java.util.stream.Collectors;
-
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
@@ -10,7 +9,7 @@ import com.ccp.especifications.db.crud.CcpGetEntityId;
 import com.ccp.especifications.db.utils.entity.CcpEntityOperationType;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatusDefault;
-import com.jn.business.login.JnBusinessSendUserToken;
+import com.jn.business.messages.JnMessages.JnBusinessSendUserToken;
 import com.jn.entities.JnEntityAsyncTask;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityLoginAnswers;
@@ -22,6 +21,8 @@ import com.jn.status.login.JnProcessStatusExecuteLogin;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.commons.VisTemplateDeTestes;
 import com.vis.rest.api.resume.status.SaveResumeStatus;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
+
 public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 	enum JsonFieldNames implements CcpJsonFieldName{
 		sessionToken
@@ -75,7 +76,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 		
 		CcpJsonRepresentation jsonDeRetornoDoTeste = this
 				.getJsonResponseFromEndpoint(CcpProcessStatusDefault.OK, scenarioName, "documentation/vis/tests/resume/curriculoComArquivoInvalido.json")
-				.put(JnEntityEmailMessageSent.Fields.subjectType, JnBusinessSendUserToken.class.getName())
+				.put(JnJsonCommonsFields.subjectType, JnBusinessSendUserToken.class.getName())
 				;
 		
 		 CcpJsonRepresentation result = new CcpGetEntityId(jsonDeRetornoDoTeste)

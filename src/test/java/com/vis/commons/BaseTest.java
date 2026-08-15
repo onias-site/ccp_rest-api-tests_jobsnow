@@ -22,11 +22,11 @@ import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.rest.api.utils.CcpRestApiUtils;
 import com.jn.entities.JnEntityLoginAnswers;
-import com.jn.entities.JnEntityLoginSessionValidation;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 public class BaseTest {
 	public final static CcpJsonRepresentation REQUEST_TO_LOGIN = CcpOtherConstants.EMPTY_JSON
-			.put(JnEntityLoginSessionValidation.Fields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
+			.put(JnJsonCommonsFields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
 			;
 
 	public final static CcpJsonRepresentation ANSWERS_JSON = REQUEST_TO_LOGIN.put(JnEntityLoginAnswers.Fields.goal, "jobs").put(JnEntityLoginAnswers.Fields.channel, "linkedin");

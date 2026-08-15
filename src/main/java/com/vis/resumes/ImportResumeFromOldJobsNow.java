@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 import com.ccp.dependency.injection.CcpDependencyInjection;
@@ -14,6 +13,8 @@ import com.jn.services.JnServiceLogin;
 import com.jn.utils.JnLanguage;
 import com.vis.entities.VisEntityResume;
 import com.vis.services.VisServiceResume;
+import com.vis.json.fields.validation.VisJsonCommonsFields;
+
 public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentation>{
 	enum JsonFieldNames implements CcpJsonFieldName{
 		id, curriculo, conteudo, resumeBase64, arquivo, fileName, disponibilidade, profissaoDesejada, empresas, ultimaProfissao, experiencia, pretensaoClt, pretensaoPj, bitcoin, observacao, observations, name, originalEmail, status, language
@@ -48,20 +49,20 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 				.getJsonPiece(JsonFieldNames.resumeBase64, JsonFieldNames.fileName)
 		;
 		CcpJsonRepresentation resume = candidate
-		.renameField(JsonFieldNames.disponibilidade, VisEntityResume.Fields.disponibility)
+		.renameField(JsonFieldNames.disponibilidade, VisJsonCommonsFields.disponibility)
 		.renameField(JsonFieldNames.profissaoDesejada, VisEntityResume.Fields.desiredJob)
 		.renameField(JsonFieldNames.empresas,VisEntityResume.Fields.notAllowedCompany)
 		.renameField(JsonFieldNames.ultimaProfissao, VisEntityResume.Fields.lastJob)
-		.renameField(JsonFieldNames.experiencia, VisEntityResume.Fields.experience)
-		.renameField(JsonFieldNames.pretensaoClt, VisEntityResume.Fields.clt)
-		.renameField(JsonFieldNames.pretensaoPj, VisEntityResume.Fields.pj)
-		.renameField(JsonFieldNames.bitcoin, VisEntityResume.Fields.btc)
+		.renameField(JsonFieldNames.experiencia, VisJsonCommonsFields.experience)
+		.renameField(JsonFieldNames.pretensaoClt, VisJsonCommonsFields.clt)
+		.renameField(JsonFieldNames.pretensaoPj, VisJsonCommonsFields.pj)
+		.renameField(JsonFieldNames.bitcoin, VisJsonCommonsFields.btc)
 		.renameField(JsonFieldNames.observacao, JsonFieldNames.observations)
 		.put(JsonFieldNames.name, "NOME DO CANDIDATO")
 		.mergeWithAnotherJson(resumeFile)
 		.copyIfNotContains(VisEntityResume.Fields.lastJob, VisEntityResume.Fields.desiredJob)
 		.putIfNotContains(VisEntityResume.Fields.notAllowedCompany, Arrays.asList())
-		.putIfNotContains(VisEntityResume.Fields.disponibility, 0)
+		.putIfNotContains(VisJsonCommonsFields.disponibility, 0)
 		.putIfNotContains(VisEntityResume.Fields.desiredJob, "-")
 		.putIfNotContains(VisEntityResume.Fields.lastJob, "-")
 		.putIfNotContains(JsonFieldNames.observations, "-")
@@ -81,15 +82,15 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 				)
 		.getJsonPiece(
 				VisEntityResume.Fields.notAllowedCompany
-				,VisEntityResume.Fields.disponibility
+				,VisJsonCommonsFields.disponibility
 				,VisEntityResume.Fields.desiredJob
-				,VisEntityResume.Fields.experience
+				,VisJsonCommonsFields.experience
 				,VisEntityResume.Fields.lastJob
-				,VisEntityResume.Fields.email
-				,VisEntityResume.Fields.clt
-				,VisEntityResume.Fields.btc
-				,VisEntityResume.Fields.ddd
-				,VisEntityResume.Fields.pj
+				,VisJsonCommonsFields.email
+				,VisJsonCommonsFields.clt
+				,VisJsonCommonsFields.btc
+				,VisJsonCommonsFields.ddd
+				,VisJsonCommonsFields.pj
 				,JsonFieldNames.originalEmail
 				,JsonFieldNames.resumeBase64
 				,JsonFieldNames.observations
@@ -100,7 +101,7 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 //		SyncServiceVisResume.INSTANCE.save(resume);
 		
 		String email = candidate.getAsString(JsonFieldNames.id);
-		CcpJsonRepresentation put = resume.put(VisEntityResume.Fields.email, email)
+		CcpJsonRepresentation put = resume.put(VisJsonCommonsFields.email, email)
 				.put(JsonFieldNames.language, JnLanguage.portuguese)
 				;
 		
