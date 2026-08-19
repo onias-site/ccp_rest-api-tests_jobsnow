@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpCollectionDecorator;
 import com.ccp.decorators.CcpFieldName;
@@ -61,12 +62,12 @@ import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
-import com.jn.entities.JnEntityLoginTokenRequestUnlock;
+import com.jn.entities.JnEntityLoginTokenRequestResend;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
-import com.vis.resumes.ImportResumeFromOldJobsNow;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
+import com.vis.resumes.ImportResumeFromOldJobsNow;
 
 public class CcpRandomScripts {
 
@@ -102,17 +103,16 @@ public class CcpRandomScripts {
 	public static void main(String[] args) {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(() -> "email", "onias85@gmail.com")
-				.put(() -> "language", "portuguese")
 				.put(() -> "token", "12345678")
 				
 				;
-		JnEntityLoginTokenRequestUnlock.ENTITY.save(json);
+		JnEntityLoginTokenRequestResend.ENTITY.delete(json);
 	}
 
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
 	private static final String LINKEDIN_REGEX = "^https://(www\\.)?linkedi n\\.com/in/[a-zA-Z0-9-_%]+/?$";
 	
-	public static boolean isValidLinkedInUrl(String url) {
+	public static boolean isValidLinkedInUrl(String url) { 
 		return Pattern.matches(LINKEDIN_REGEX, url);
 	}
 
@@ -127,7 +127,6 @@ public class CcpRandomScripts {
 	}
 
 	static void fodasse() {
-		CcpDependencyInjection.loadAllDependencies(new CcpTelegramInstantMessenger());
 		CcpTemplateFunctions.currentTimeMillis.get();
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnBusinessSendInstantMessage.JnJsonValidator.chatId, 751717896L)
@@ -145,7 +144,6 @@ public class CcpRandomScripts {
 	}
 
 	static void enviarArquivoPorTelegram() {
-		CcpDependencyInjection.loadAllDependencies(new CcpTelegramInstantMessenger());
 		CcpInstantMessenger dependency = CcpDependencyInjection.getDependency(CcpInstantMessenger.class);
 		
 		CcpJsonRepresentation sendFile = dependency.sendFile(CcpOtherConstants.EMPTY_STRING, "1154866992:AAGvXIU01UXgpA1gFOBE4pJXjhicf7JnRd8", 751717896L, 0L, "teste.txt", "legenda",
