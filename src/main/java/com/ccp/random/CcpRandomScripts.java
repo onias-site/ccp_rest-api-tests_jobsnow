@@ -106,7 +106,10 @@ public class CcpRandomScripts {
 				.put(() -> "token", "12345678")
 				
 				;
-		JnEntityLoginTokenRequestResend.ENTITY.delete(json);
+		JnEntityLoginTokenRequestResend.ENTITY
+		.getTwinEntity()
+//		.getTwinEntity()
+		.delete(json);
 	}
 
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
