@@ -81,7 +81,7 @@ public class CcpRandomScripts {
 		positionsCount, 
 		id,  
 	}
-	
+	 
 	static {
 		CcpDependencyInjection.loadAllDependencies(
 				new CcpElasticSearchQueryExecutor(), 
@@ -101,15 +101,28 @@ public class CcpRandomScripts {
 	}
 
 	public static void main(String[] args) {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(() -> "email", "onias85@gmail.com")
-				.put(() -> "token", "12345678")
-				
-				;
-		JnEntityLoginTokenRequestResend.ENTITY
-		.getTwinEntity()
-//		.getTwinEntity()
-		.delete(json);
+		{
+			CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
+					.put(() -> "email", "onias85@gmail.com")
+					.put(() -> "token", "12345678")
+					
+					;
+			JnEntityLoginTokenRequestResend.ENTITY
+			.delete(json)
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			;
+		}
 	}
 
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
