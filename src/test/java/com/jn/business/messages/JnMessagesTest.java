@@ -18,6 +18,6 @@ public class JnMessagesTest {
 
 	@Test
 	public void notifyUnlockLoginTokenExistsTest() {
-		assertNotNull(JnMessages.NotifySupportAboutPendingUnlockLoginToken.class);
+		assertNotNull(JnMessages.NotifySupportAboutPendingLockedLoginToken.class);
 	}
 }

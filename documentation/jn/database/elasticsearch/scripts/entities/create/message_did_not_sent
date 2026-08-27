@@ -1,0 +1,19 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"subjectType": {
+				"type": "keyword"
+			},
+			"email": {
+				"type": "keyword"
+			},
+			"reasonType": {
+				"type": "keyword"
+			},
+			"reasonDescription": {
+				"type": "keyword"
+			}
+		}
+	}
+}
