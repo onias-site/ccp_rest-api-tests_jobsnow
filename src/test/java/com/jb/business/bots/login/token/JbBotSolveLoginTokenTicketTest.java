@@ -24,7 +24,7 @@ public class JbBotSolveLoginTokenTicketTest {
 		assertNotNull(new JbBotSolveLoginTokenTicket().getJsonValidationClass());
 	}
 
-	@Test(expected = CcpNullParameterException.class)
+	@Test(expected = CcpNullParameterException.class) 
 	public void applyNullTest() {
 		new JbBotSolveLoginTokenTicket().execute(null);
 	}

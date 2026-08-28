@@ -20,7 +20,7 @@ public class JnBusinessExecuteLogoutTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void applyNullTest() {
+	public void applyNullTest() { 
 		JnBusinessExecuteLogout.INSTANCE.execute(null);
 	}
 }

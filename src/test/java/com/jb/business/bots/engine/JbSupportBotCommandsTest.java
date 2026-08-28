@@ -13,7 +13,7 @@ public class JbSupportBotCommandsTest {
 
 	@Test
 	public void valuesTest() {
-		assertNotNull(JbSupportBotCommands.values());
+		assertNotNull(JbSupportBotCommands.values()); 
 	}
  
 	@Test

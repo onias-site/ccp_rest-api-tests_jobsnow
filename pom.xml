@@ -150,6 +150,12 @@
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.ccp.jb</groupId>
+			<artifactId>jb_instant-messenger-listener_jobsnow_dependency-chooser</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 

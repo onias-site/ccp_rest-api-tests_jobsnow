@@ -21,7 +21,7 @@ public class CcpApacheTikaTextExtractorTest {
 	// ── provider ──────────────────────────────────────────────────────────────
 
 	@Test
-	public void construtorProviderTest() {
+	public void construtorProviderTest() { 
 		assertNotNull(new CcpApacheTikaTextExtractor());
 	}
 

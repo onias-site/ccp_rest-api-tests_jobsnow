@@ -24,3 +24,4 @@ public class JnBusinessExecuteLoginTest {
 		JnBusinessExecuteLogin.INSTANCE.execute(null);
 	}
 }
+ 

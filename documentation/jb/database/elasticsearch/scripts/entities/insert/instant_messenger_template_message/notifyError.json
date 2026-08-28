@@ -1,5 +1,0 @@
-{
-	"language": "portuguese",
-	"templateId": "notifyError",
-	"message": "{type}\n\n{stackTrace}\n\n\n{msg}\n\nCaused by:\n{cause}"
-}

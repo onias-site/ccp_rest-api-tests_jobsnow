@@ -62,7 +62,6 @@ import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
-import com.jn.entities.JnEntityLoginTokenRequestResend;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
@@ -101,28 +100,7 @@ public class CcpRandomScripts {
 	}
 
 	public static void main(String[] args) {
-		{
-			CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-					.put(() -> "email", "onias85@gmail.com")
-					.put(() -> "token", "12345678")
-					
-					;
-			JnEntityLoginTokenRequestResend.ENTITY
-			.delete(json)
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			;
-		}
+		createEntities("jb");
 	}
 
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
@@ -133,9 +111,9 @@ public class CcpRandomScripts {
 	}
 
 	
-	static void createVisEntities() {
-		String pathToCreateEntityScript = "documentation\\vis\\database\\elasticsearch\\scripts\\entities\\create";
-		String pathToJavaClasses = "..\\vis_business_jobsnow\\src\\main\\java\\com\\vis\\entities";
+	static void createEntities(String systemName) {
+		String pathToCreateEntityScript = "documentation\\" + systemName + "\\database\\elasticsearch\\scripts\\entities\\create";
+		String pathToJavaClasses = "..\\" + systemName + "_business_jobsnow\\src\\main\\java\\com\\" + systemName + "\\entities";
 		String mappingJnEntitiesErrors = "c:\\logs\\mappingJnEntitiesErrors.json";
 		String insertErrors = "c:\\logs\\insertErrors.json";
 		CcpDbRequester database = CcpDependencyInjection.getDependency(CcpDbRequester.class);

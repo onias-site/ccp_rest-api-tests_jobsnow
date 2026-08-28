@@ -1,8 +1,0 @@
-{
-	"apiName": "email",
-	"url": "urlEmailKey",
-	"token": "tokenEmailKey",
-	"method": "POST",
-	"sleep": 3000,
-	"maxTries": 3
-}

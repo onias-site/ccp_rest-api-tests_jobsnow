@@ -20,7 +20,7 @@ public class JnBusinessEvaluateAttemptsTest {
 	}
 
 	@Test
-	public void newBuilderInstanceTest() {
+	public void newBuilderInstanceTest() { 
 		assertNotNull(new JnBusinessEvaluateAttempts.Builder());
 	}
 

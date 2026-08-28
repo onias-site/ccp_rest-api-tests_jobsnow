@@ -2,7 +2,7 @@
 	"mappings": {
 		"dynamic": "strict",
 		"properties": {
-			"stepdName": {
+			"stepName": {
 				"type": "keyword"
 			},
 			"status": {

@@ -23,7 +23,7 @@ public class JnBusinessSavePasswordTest {
 	public void getJsonValidationClassTest() {
 		assertNotNull(JnBusinessSavePassword.INSTANCE.getJsonValidationClass());
 	}
-
+ 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
 		JnBusinessSavePassword.INSTANCE.execute(null);

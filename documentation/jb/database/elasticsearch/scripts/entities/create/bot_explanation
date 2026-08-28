@@ -2,7 +2,7 @@
 	"mappings": {
 		"dynamic": "strict",
 		"properties": {
-			"commandName": {
+			"botName": {
 				"type": "keyword"
 			},
 			"language": {
