@@ -1,0 +1,13 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"botName": {
+				"type": "keyword"
+			},
+			"updateId": {
+				"type": "long"
+			}
+		}
+	}
+}

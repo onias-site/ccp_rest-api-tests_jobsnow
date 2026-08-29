@@ -8,9 +8,6 @@
                  "botName": {
                     "type": "keyword"
                 },
-                "templateId":{
-                	"type": "keyword"
-                },
 				"caption":{
 					"type": "text"
 				},

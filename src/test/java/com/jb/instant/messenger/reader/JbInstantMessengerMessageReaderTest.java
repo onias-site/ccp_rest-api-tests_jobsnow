@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -13,6 +15,9 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
+import com.ccp.especifications.db.bulk.CcpErrorBulkEntityRecordNotFound;
+import com.ccp.especifications.db.crud.CcpCrud;
+import com.ccp.especifications.db.crud.CcpUnionAllExecutor;
 import com.ccp.especifications.http.CcpHttpBodyBinary;
 import com.ccp.especifications.http.CcpHttpBodyText;
 import com.ccp.especifications.http.CcpHttpMethods;
@@ -21,19 +26,23 @@ import com.ccp.especifications.http.CcpHttpResponse;
 import com.ccp.especifications.http.CcpHttpTooManyRequests;
 import com.ccp.especifications.instant.messenger.CcpErrorInstantMessageThisBotWasBlockedByThisUser;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jb.instant.messenger.reader.JbInstantMessengerMessageReader.JbErrorUnableToReadInstantMessages;
 import com.jb.instant.messenger.reader.JbInstantMessengerMessageReader.JsonFieldNames;
+import com.jn.business.messages.JnBusinessSendInstantMessage.JnBotType;
 
 /**
  * Testa a leitura das mensagens recebidas pelo bot de suporte. A api do Telegram é substituída por
  * um {@code CcpHttpRequester} falso injetado no {@code CcpDependencyInjection}, de forma que os
  * testes exercitem a interpretação do {@code getUpdates} e o mapeamento de status do
- * {@code CcpHttpHandler} sem depender da rede.
+ * {@code CcpHttpHandler} sem depender da rede. O offset, que é gravado na entidade
+ * {@code JbEntityBotUpdateId}, é guardado por um {@code CcpCrud} em memória.
  */
 public class JbInstantMessengerMessageReaderTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpInstanceProvider<CcpCrud> bancoEmMemoria = () -> new FakeCrud();
+		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), CcpLocalCacheInstances.map, bancoEmMemoria);
 	}
 
 	private static final String DUAS_MENSAGENS_E_UMA_EDICAO = "{\"ok\":true,\"result\":["
@@ -57,7 +66,7 @@ public class JbInstantMessengerMessageReaderTest {
 
 		this.telegramRespondendo(200, DUAS_MENSAGENS_E_UMA_EDICAO);
 
-		List<CcpJsonRepresentation> mensagens = JbInstantMessengerMessageReader.INSTANCE.readMessages(0L, 0);
+		List<CcpJsonRepresentation> mensagens = JbInstantMessengerMessageReader.INSTANCE.readMessages(JnBotType.support, 0L, 0);
 
 		assertEquals(2, mensagens.size());
 
@@ -83,7 +92,7 @@ public class JbInstantMessengerMessageReaderTest {
 
 		this.telegramRespondendo(200, DUAS_MENSAGENS_E_UMA_EDICAO);
 
-		List<CcpJsonRepresentation> mensagens = JbInstantMessengerMessageReader.INSTANCE.readMessages(0L, 0);
+		List<CcpJsonRepresentation> mensagens = JbInstantMessengerMessageReader.INSTANCE.readMessages(JnBotType.support, 0L, 0);
 
 		boolean edicaoFoiDevolvida = mensagens.stream()
 				.anyMatch(x -> 101L == x.getAsLongNumber(JsonFieldNames.updateId).longValue());
@@ -96,7 +105,7 @@ public class JbInstantMessengerMessageReaderTest {
 
 		this.telegramRespondendo(200, NENHUMA_MENSAGEM);
 
-		List<CcpJsonRepresentation> mensagens = JbInstantMessengerMessageReader.INSTANCE.readMessages(0L, 0);
+		List<CcpJsonRepresentation> mensagens = JbInstantMessengerMessageReader.INSTANCE.readMessages(JnBotType.support, 0L, 0);
 
 		assertTrue(mensagens.isEmpty());
 	}
@@ -106,9 +115,11 @@ public class JbInstantMessengerMessageReaderTest {
 
 		FakeHttpRequester telegram = this.telegramRespondendo(200, DUAS_MENSAGENS_E_UMA_EDICAO, NENHUMA_MENSAGEM);
 
-		JbInstantMessengerMessageReader.INSTANCE.readNewMessages();
+		JbInstantMessengerMessageReader.INSTANCE.saveOffset(JnBotType.support, 0L);
 
-		List<CcpJsonRepresentation> segundaLeitura = JbInstantMessengerMessageReader.INSTANCE.readNewMessages();
+		JbInstantMessengerMessageReader.INSTANCE.readNewMessages(JnBotType.support);
+
+		List<CcpJsonRepresentation> segundaLeitura = JbInstantMessengerMessageReader.INSTANCE.readNewMessages(JnBotType.support);
 
 		CcpJsonRepresentation segundaRequisicao = new CcpStringDecorator(telegram.lastRequest).json();
 
@@ -116,10 +127,63 @@ public class JbInstantMessengerMessageReaderTest {
 		assertTrue(segundaLeitura.isEmpty());
 	}
 
+	// ── offset gravado na entidade JbEntityBotUpdateId ────────────────────────
+
+	@Test
+	public void offsetSalvoEhRecuperadoTest() {
+
+		JbInstantMessengerMessageReader.INSTANCE.saveOffset(JnBotType.support, 500L);
+
+		Long offset = JbInstantMessengerMessageReader.INSTANCE.getOffset(JnBotType.support);
+
+		assertEquals(500L, offset.longValue());
+	}
+
+	@Test
+	public void offsetIncrementadoEhGravadoAoLerMensagensNovasTest() {
+
+		this.telegramRespondendo(200, DUAS_MENSAGENS_E_UMA_EDICAO);
+
+		JbInstantMessengerMessageReader.INSTANCE.saveOffset(JnBotType.support, 0L);
+
+		JbInstantMessengerMessageReader.INSTANCE.readNewMessages(JnBotType.support);
+
+		Long offset = JbInstantMessengerMessageReader.INSTANCE.getOffset(JnBotType.support);
+
+		assertEquals(103L, offset.longValue());
+	}
+
+	@Test
+	public void offsetNaoEhGravadoQuandoNaoHaMensagensNovasTest() {
+
+		this.telegramRespondendo(200, NENHUMA_MENSAGEM);
+
+		JbInstantMessengerMessageReader.INSTANCE.saveOffset(JnBotType.support, 777L);
+
+		JbInstantMessengerMessageReader.INSTANCE.readNewMessages(JnBotType.support);
+
+		Long offset = JbInstantMessengerMessageReader.INSTANCE.getOffset(JnBotType.support);
+
+		assertEquals(777L, offset.longValue());
+	}
+
+	@Test
+	public void cadaBotTemSeuProprioOffsetTest() {
+
+		JbInstantMessengerMessageReader.INSTANCE.saveOffset(JnBotType.support, 111L);
+		JbInstantMessengerMessageReader.INSTANCE.saveOffset(JnBotType.user, 222L);
+
+		Long offsetDoSuporte = JbInstantMessengerMessageReader.INSTANCE.getOffset(JnBotType.support);
+		Long offsetDoUsuario = JbInstantMessengerMessageReader.INSTANCE.getOffset(JnBotType.user);
+
+		assertEquals(111L, offsetDoSuporte.longValue());
+		assertEquals(222L, offsetDoUsuario.longValue());
+	}
+
 	@Test
 	public void tokenDoBotDeSuporteTest() {
 
-		String botToken = JbInstantMessengerMessageReader.INSTANCE.getSupportBotToken();
+		String botToken = JbInstantMessengerMessageReader.INSTANCE.getBotToken(JnBotType.support);
 
 		assertFalse(botToken.trim().isEmpty());
 	}
@@ -129,46 +193,81 @@ public class JbInstantMessengerMessageReaderTest {
 	@Test(expected = JbErrorUnableToReadInstantMessages.class)
 	public void respostaNaoOkTest() {
 		this.telegramRespondendo(200, RESPOSTA_NAO_OK);
-		JbInstantMessengerMessageReader.INSTANCE.readMessages(0L, 0);
+		JbInstantMessengerMessageReader.INSTANCE.readMessages(JnBotType.support, 0L, 0);
 	}
 
 	@Test(expected = CcpErrorInstantMessageThisBotWasBlockedByThisUser.class)
 	public void botBloqueadoPeloUsuarioTest() {
 		this.telegramRespondendo(403, BOT_BLOQUEADO);
-		JbInstantMessengerMessageReader.INSTANCE.readMessages(0L, 0);
+		JbInstantMessengerMessageReader.INSTANCE.readMessages(JnBotType.support, 0L, 0);
 	}
 
 	@Test(expected = CcpHttpTooManyRequests.class)
 	public void excessoDeRequisicoesTest() {
 		this.telegramRespondendo(429, EXCESSO_DE_REQUISICOES);
-		JbInstantMessengerMessageReader.INSTANCE.readMessages(0L, 0);
+		JbInstantMessengerMessageReader.INSTANCE.readMessages(JnBotType.support, 0L, 0);
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
+	public void getUpdatesBotTypeNullTest() {
+		JbInstantMessengerMessageReader.INSTANCE.getUpdates(null, 0L, 0);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
 	public void getUpdatesOffsetNullTest() {
-		JbInstantMessengerMessageReader.INSTANCE.getUpdates(null, 0);
+		JbInstantMessengerMessageReader.INSTANCE.getUpdates(JnBotType.support, null, 0);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void getUpdatesTimeoutNullTest() {
-		JbInstantMessengerMessageReader.INSTANCE.getUpdates(0L, null);
+		JbInstantMessengerMessageReader.INSTANCE.getUpdates(JnBotType.support, 0L, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void readMessagesBotTypeNullTest() {
+		JbInstantMessengerMessageReader.INSTANCE.readMessages(null, 0L, 0);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void readMessagesOffsetNullTest() {
-		JbInstantMessengerMessageReader.INSTANCE.readMessages(null, 0);
+		JbInstantMessengerMessageReader.INSTANCE.readMessages(JnBotType.support, null, 0);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void readMessagesTimeoutNullTest() {
-		JbInstantMessengerMessageReader.INSTANCE.readMessages(0L, null);
+		JbInstantMessengerMessageReader.INSTANCE.readMessages(JnBotType.support, 0L, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void readNewMessagesBotTypeNullTest() {
+		JbInstantMessengerMessageReader.INSTANCE.readNewMessages(null, 0);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void readNewMessagesTimeoutNullTest() {
-		JbInstantMessengerMessageReader.INSTANCE.readNewMessages(null);
+		JbInstantMessengerMessageReader.INSTANCE.readNewMessages(JnBotType.support, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getOffsetBotTypeNullTest() {
+		JbInstantMessengerMessageReader.INSTANCE.getOffset(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void saveOffsetBotTypeNullTest() {
+		JbInstantMessengerMessageReader.INSTANCE.saveOffset(null, 0L);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void saveOffsetNullTest() {
+		JbInstantMessengerMessageReader.INSTANCE.saveOffset(JnBotType.support, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void getBotTokenBotTypeNullTest() {
+		JbInstantMessengerMessageReader.INSTANCE.getBotToken(null);
 	}
 
 	// ── api do Telegram substituída ───────────────────────────────────────────
@@ -208,6 +307,52 @@ public class JbInstantMessengerMessageReaderTest {
 		public CcpHttpResponse executeMultiPartHttpRequest(String url, CcpHttpMethods method, CcpJsonRepresentation headers, List<CcpHttpBodyText> bodyTexts, List<CcpHttpBodyBinary> bodyBinaries) {
 			CcpHttpResponse response = this.executeHttpRequest(url, method, headers, "");
 			return response;
+		}
+	}
+
+	// ── banco de dados substituído ────────────────────────────────────────────
+
+	private static class FakeCrud implements CcpCrud {
+
+		private static final Map<String, CcpJsonRepresentation> registros = new HashMap<>();
+
+		public CcpJsonRepresentation getOneById(String entityName, String id) {
+
+			String key = this.getKey(entityName, id);
+
+			boolean registroNaoEncontrado = false == registros.containsKey(key);
+
+			if (registroNaoEncontrado) {
+				throw new CcpErrorBulkEntityRecordNotFound(entityName, id);
+			}
+
+			CcpJsonRepresentation registro = registros.get(key);
+			return registro;
+		}
+
+		public CcpJsonRepresentation save(String entityName, CcpJsonRepresentation json, String id) {
+			registros.put(this.getKey(entityName, id), json);
+			return json;
+		}
+
+		public boolean exists(String entityName, String id) {
+			boolean exists = registros.containsKey(this.getKey(entityName, id));
+			return exists;
+		}
+
+		public boolean delete(String entityName, String id) {
+			CcpJsonRepresentation removido = registros.remove(this.getKey(entityName, id));
+			boolean deleted = removido != null;
+			return deleted;
+		}
+
+		public CcpUnionAllExecutor getUnionAllExecutor() {
+			throw new UnsupportedOperationException();
+		}
+
+		private String getKey(String entityName, String id) {
+			String key = entityName + "." + id;
+			return key;
 		}
 	}
 }
