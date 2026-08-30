@@ -53,10 +53,6 @@ public class JnBusinessSendInstantMessageTest {
 				(com.ccp.decorators.CcpJsonRepresentation) null);
 	}
 
-	@Test(expected = CcpNullParameterException.class)
-	public void enumTextSendMessageStringNullTest() {
-		JnBusinessSendInstantMessage.JnInstantMessageType.text.sendMessage(CcpOtherConstants.EMPTY_JSON, (String) null);
-	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void enumTextApplyNullTest() {

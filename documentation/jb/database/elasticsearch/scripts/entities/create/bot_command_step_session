@@ -17,8 +17,10 @@
 			"json": {
 				"dynamic": "true",
 				"properties": {}
+			},
+			"language": {
+				"type": "keyword"
 			}
 		}
 	}
 }
-	
