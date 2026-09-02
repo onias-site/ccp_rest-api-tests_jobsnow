@@ -3,3 +3,8 @@ B) Skill
 C) Resume
 D) Email
 E) Deploy
+
+A) Gravar mensagens para os steps
+B) Individualizar exceptions
+C) Extrair variaveis
+D) Separar classes 
