@@ -1,12 +1,9 @@
 package com.ccp.jn.cron.controller;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
-import com.ccp.business.CcpBusiness;
-import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import org.junit.Test;
 
 public class CcpCronTasksControllerTest {
 
@@ -14,11 +11,7 @@ public class CcpCronTasksControllerTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	static class NoopBusiness implements CcpBusiness {
-		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			return json;
-		}
-	}
+
 
 	// ── construtor ────────────────────────────────────────────────────────────
 

@@ -4,15 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
+import com.ccp.especifications.db.bulk.handlers.CcpBulkHandlerCreate;
 import com.ccp.especifications.db.crud.CcpHandleWithSearchResultsInTheEntity;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
-import com.ccp.especifications.db.bulk.handlers.CcpBulkHandlerCreate;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
@@ -20,6 +18,7 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.entities.JnEntityJobsnowError;
+import org.junit.Test;
 
 /**
  * Cobertura dos aspectos {@code CcpNullParameterAspect} / {@code CcpNullReturnAspect} sobre o
@@ -41,9 +40,9 @@ public class CcpBulkAopNullTest {
 
 	private static final CcpEntity ENTITY = JnEntityJobsnowError.ENTITY;
 
-	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;
+	static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;
 
-	private static CcpBulkItem bulkItem() {
+	static CcpBulkItem bulkItem() {
 		return new CcpBulkItem(JSON, CcpBulkEntityOperationType.create, ENTITY, "id");
 	}
 
@@ -56,24 +55,7 @@ public class CcpBulkAopNullTest {
 	}
 
 	/** Implementação mínima para alcançar os métodos default de {@code CcpBulkOperationResult}. */
-	private static final class BulkOperationResultForTest implements CcpBulkOperationResult {
 
-		public CcpJsonRepresentation getErrorDetails() {
-			return JSON;
-		}
-
-		public CcpBulkItem getBulkItem() {
-			return bulkItem();
-		}
-
-		public boolean hasError() {
-			return false;
-		}
-
-		public int status() {
-			return 200;
-		}
-	}
 
 	// ── CcpBulkItem ───────────────────────────────────────────────────────────
 

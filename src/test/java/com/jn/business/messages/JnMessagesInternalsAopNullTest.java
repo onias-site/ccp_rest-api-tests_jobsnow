@@ -7,7 +7,6 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jn.business.messages.JnBusinessSendInstantMessage.JnInstantMessageType;
 import com.jn.entities.JnEntityJobsnowError;
 
 /**

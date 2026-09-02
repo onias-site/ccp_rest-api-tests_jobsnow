@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
@@ -19,6 +17,7 @@ import com.jn.entities.JnEntityContactUs;
 import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginTokenRequestResend;
+import org.junit.Test;
 
 /**
  * Cobertura dos aspectos {@code CcpNullParameterAspect} / {@code CcpNullReturnAspect} sobre o motor
@@ -31,23 +30,18 @@ public class CcpEntityEngineAopNullTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	private static final CcpEntity ENTITY = JnEntityJobsnowError.ENTITY;
+	static final CcpEntity ENTITY = JnEntityJobsnowError.ENTITY;
 
 	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;
 
 	/** Subclasse concreta mínima para alcançar os métodos de {@code CcpDefaultEntityDelegator}. */
-	private static final class DefaultDelegatorForTest extends CcpDefaultEntityDelegator<Object> {
 
-		DefaultDelegatorForTest() {
-			super(ENTITY, bulkOperation(), keysToDelete());
-		}
-	}
 
-	private static CcpExecuteBulkOperation bulkOperation() {
+	static CcpExecuteBulkOperation bulkOperation() {
 		return com.jn.db.bulk.JnExecuteBulkOperation.INSTANCE;
 	}
 
-	private static Consumer<String[]> keysToDelete() {
+	static Consumer<String[]> keysToDelete() {
 		return com.jn.utils.JnDeleteKeysFromCache.INSTANCE;
 	}
 

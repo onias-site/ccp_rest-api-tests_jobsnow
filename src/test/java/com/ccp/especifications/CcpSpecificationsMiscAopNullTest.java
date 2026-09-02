@@ -3,8 +3,6 @@ package com.ccp.especifications;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
@@ -18,6 +16,7 @@ import com.ccp.especifications.mensageria.sender.CcpMensageriaSender;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import org.junit.Test;
 
 /**
  * Cobertura do {@code CcpNullParameterAspect} sobre as especificações que possuem poucos métodos
@@ -34,20 +33,7 @@ public class CcpSpecificationsMiscAopNullTest {
 	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;
 
 	/** Implementação mínima para alcançar os métodos concretos de {@code CcpMensageriaReceiver}. */
-	private static final class MensageriaReceiverForTest extends CcpMensageriaReceiver {
 
-		MensageriaReceiverForTest() {
-			super("operation");
-		}
-
-		public CcpExecuteBulkOperation getExecuteBulkOperation() {
-			return com.jn.db.bulk.JnExecuteBulkOperation.INSTANCE;
-		}
-
-		public Consumer<String[]> getFunctionToDeleteKeysInTheCache() {
-			return com.jn.utils.JnDeleteKeysFromCache.INSTANCE;
-		}
-	}
 
 	// ── CcpCache ──────────────────────────────────────────────────────────────
 

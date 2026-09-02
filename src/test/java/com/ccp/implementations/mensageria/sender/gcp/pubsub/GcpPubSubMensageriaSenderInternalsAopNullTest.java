@@ -1,10 +1,9 @@
 package com.ccp.implementations.mensageria.sender.gcp.pubsub;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.mensageria.sender.CcpMensageriaSender;
+import org.junit.Test;
 
 /**
  * Cobertura do {@code CcpNullParameterAspect} sobre os métodos {@code send1} / {@code send2} da
@@ -17,9 +16,7 @@ public class GcpPubSubMensageriaSenderInternalsAopNullTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGcpPubSubMensageriaSender());
 	}
 
-	private enum TopicoParaTeste {
-		topico
-	}
+
 
 	private static GcpPubSubMensageriaSender sender() {
 		CcpMensageriaSender dependency = CcpDependencyInjection.getDependency(CcpMensageriaSender.class);

@@ -17,21 +17,21 @@ public class JnJsonTransformersFieldEntityFieldCalculateHashTest {
 
 	@Test
 	public void construtorTokenHashTest() {
-		assertNotNull(new JnJsonTransformersFieldEntityFieldCalculateHash.JnJsonTransformersFieldEntityTokenHash());
+		assertNotNull(new JnJsonTransformersFieldEntityTokenHash());
 	}
 
 	@Test
 	public void canBePrimaryKeyTest() {
-		assertTrue(new JnJsonTransformersFieldEntityFieldCalculateHash.JnJsonTransformersFieldEntityTokenHash().canBePrimaryKey());
+		assertTrue(new JnJsonTransformersFieldEntityTokenHash().canBePrimaryKey());
 	}
 
 	@Test
 	public void nameTest() {
-		assertNotNull(new JnJsonTransformersFieldEntityFieldCalculateHash.JnJsonTransformersFieldEntityTokenHash().name());
+		assertNotNull(new JnJsonTransformersFieldEntityTokenHash().name());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		new JnJsonTransformersFieldEntityFieldCalculateHash.JnJsonTransformersFieldEntityTokenHash().execute(null);
+		new JnJsonTransformersFieldEntityTokenHash().execute(null);
 	}
 }

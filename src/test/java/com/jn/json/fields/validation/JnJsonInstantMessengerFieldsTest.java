@@ -13,7 +13,7 @@ public class JnJsonInstantMessengerFieldsTest {
 	public void valuesTest() {
 		JnJsonInstantMessengerFields[] values = JnJsonInstantMessengerFields.values();
 		assertNotNull(values);
-		assertEquals(11, values.length);
+		assertEquals(12, values.length);
 	}
 
 	@Test
@@ -60,9 +60,9 @@ public class JnJsonInstantMessengerFieldsTest {
 	}
 
 	@Test
-	public void chatIdFieldHasNumberUnsignedAnnotationTest() throws Exception {
+	public void chatIdFieldHasNumberAnnotationTest() throws Exception {
 		java.lang.reflect.Field f = JnJsonInstantMessengerFields.class.getField("chatId");
-		assertNotNull(f.getAnnotation(com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeNumberUnsigned.class));
+		assertNotNull(f.getAnnotation(com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeNumber.class));
 	}
 
 	@Test

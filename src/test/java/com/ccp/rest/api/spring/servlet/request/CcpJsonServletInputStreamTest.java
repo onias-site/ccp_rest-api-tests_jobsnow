@@ -49,9 +49,23 @@ public class CcpJsonServletInputStreamTest {
 			return is;
 			
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new CcpErrorServletInputStreamNotCreated(json, e);
 		}
 	}
-	
-	
+
+	/**
+	 * Exceção lançada quando o {@code CcpJsonServletInputStream} usado no teste não pôde ser criado ou fechado.
+	 */
+	@SuppressWarnings("serial")
+	public static class CcpErrorServletInputStreamNotCreated extends RuntimeException {
+		/**
+		 * Monta a mensagem com o json de origem e encadeia a exceção original como causa.
+		 * @param json o json que alimentaria o stream
+		 * @param cause a exceção original
+		 */
+		private CcpErrorServletInputStreamNotCreated(CcpJsonRepresentation json, Throwable cause) {
+			super("It was not possible to create the servlet input stream from the json: " + json, cause);
+		}
+	}
+
 }

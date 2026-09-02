@@ -13,7 +13,7 @@ import org.junit.Test;
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.aop.CcpNullReturnException;
 import com.ccp.hash.CcpHashAlgorithm;
-import com.ccp.hash.CcpHashAlgorithm.CcpErrorHashAlgorithmNotFound;
+import com.ccp.hash.CcpErrorHashAlgorithmNotFound;
 
 public class CcpHashDecoratorTest {
 

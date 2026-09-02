@@ -202,7 +202,7 @@ public class CcpStringDecoratorTest {
 
 	@Test
 	public void jsonFieldNameFactoryTest() {
-		CcpJsonRepresentation.CcpJsonFieldName field = new CcpStringDecorator("meuCampo").jsonFieldName();
+		CcpJsonFieldName field = new CcpStringDecorator("meuCampo").jsonFieldName();
 		assertNotNull(field);
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(field, "valor");
 		assertEquals("valor", json.getAsString(field));

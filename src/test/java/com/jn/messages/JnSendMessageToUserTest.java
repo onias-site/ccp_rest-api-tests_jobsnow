@@ -2,13 +2,10 @@ package com.jn.messages;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jn.business.http.JnBusinessSendHttpRequest;
-import com.jn.business.messages.JnMessageSenderExceptionHandler;
+import org.junit.Test;
 
 public class JnSendMessageToUserTest {
 
@@ -16,11 +13,7 @@ public class JnSendMessageToUserTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	static class NoopBusiness extends JnBusinessSendHttpRequest {
-		NoopBusiness() {
-			super(json -> json, JnMessageSenderExceptionHandler.THROWS);
-		}
-	}
+
 
 	// ── construtor + factories principais ────────────────────────────────────
 
@@ -48,19 +41,19 @@ public class JnSendMessageToUserTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void construtorWithTheProcessCreateStepNullTest() {
-		new JnSendMessageToUser.JnWithTheProcess(null, new NoopBusiness());
+		new JnWithTheProcess(null, new JnSendMessageToUserTestNoopBusiness());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void construtorWithTheProcessBusinessNullTest() {
-		JnSendMessageToUser.JnCreateStep step = new JnSendMessageToUser().createStep();
-		new JnSendMessageToUser.JnWithTheProcess(step, null);
+		JnCreateStep step = new JnSendMessageToUser().createStep();
+		new JnWithTheProcess(step, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void withTheProcessAndWithParametersEntityNullTest() {
-		JnSendMessageToUser.JnCreateStep step = new JnSendMessageToUser().createStep();
-		JnSendMessageToUser.JnWithTheProcess w = new JnSendMessageToUser.JnWithTheProcess(step, new NoopBusiness());
+		JnCreateStep step = new JnSendMessageToUser().createStep();
+		JnWithTheProcess w = new JnWithTheProcess(step, new JnSendMessageToUserTestNoopBusiness());
 		w.andWithTheParametersEntity(null);
 	}
 }

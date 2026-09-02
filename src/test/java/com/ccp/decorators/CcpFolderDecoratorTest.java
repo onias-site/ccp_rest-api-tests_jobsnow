@@ -17,7 +17,6 @@ import org.junit.Test;
 
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.aop.CcpNullReturnException;
-import com.ccp.decorators.CcpFileDecorator.CcpErrorFolderParentIsMissing;
 
 public class CcpFolderDecoratorTest {
 

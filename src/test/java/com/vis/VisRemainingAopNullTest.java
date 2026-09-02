@@ -39,6 +39,8 @@ import com.vis.utils.VisGroupDetailsByMasters;
 import com.vis.utils.VisSendEmailMessageAndRegisterEmailSent;
 import com.vis.utils.VisSendRecentUsersToGroupings;
 import com.vis.utils.VisUtils;
+import com.vis.business.templates.notify.support.NewSkill;
+import com.vis.business.templates.notify.support.NewSkillHierarchy;
 
 /**
  * Cobertura do {@code CcpNullParameterAspect} sobre os métodos de {@code vis_business_jobsnow} que
@@ -118,12 +120,12 @@ public class VisRemainingAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void newSkillApplyNullTest() {
-		new VisTemplatesToNotifySupport.NewSkill().execute(null);
+		new NewSkill().execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void newSkillHierarchyApplyNullTest() {
-		new VisTemplatesToNotifySupport.NewSkillHierarchy().execute(null);
+		new NewSkillHierarchy().execute(null);
 	}
 
 	// ── entities ──────────────────────────────────────────────────────────────

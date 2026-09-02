@@ -21,7 +21,7 @@ public class JnBusinessEvaluateAttemptsTest {
 
 	@Test
 	public void newBuilderInstanceTest() { 
-		assertNotNull(new JnBusinessEvaluateAttempts.Builder());
+		assertNotNull(new Builder());
 	}
 
 	// ── Builder fluent API — null-parameter tests ────────────────────────────

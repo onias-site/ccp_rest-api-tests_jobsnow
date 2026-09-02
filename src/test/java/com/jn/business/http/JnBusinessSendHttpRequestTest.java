@@ -2,14 +2,11 @@ package com.jn.business.http;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
-import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
-import com.ccp.especifications.http.CcpHttpApiExecutor;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.business.messages.JnMessageSenderExceptionHandler;
+import org.junit.Test;
 
 public class JnBusinessSendHttpRequestTest {
 
@@ -17,9 +14,7 @@ public class JnBusinessSendHttpRequestTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	static class NoopExecutor implements CcpHttpApiExecutor {
-		public CcpJsonRepresentation apply(CcpJsonRepresentation json) { return json; }
-	}
+
 
 	@Test
 	public void construtorTest() {

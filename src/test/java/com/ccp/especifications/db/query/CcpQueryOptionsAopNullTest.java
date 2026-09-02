@@ -1,27 +1,15 @@
 package com.ccp.especifications.db.query;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.constants.CcpOtherConstants;
-import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
+import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.dependency.injection.CcpDependencyInjection;
-import com.ccp.especifications.db.query.CcpQueryOptions.CcpQueryAggregations;
-import com.ccp.especifications.db.query.CcpQueryOptions.CcpQueryBool;
-import com.ccp.especifications.db.query.CcpQueryOptions.CcpQueryBooleanOperator;
-import com.ccp.especifications.db.query.CcpQueryOptions.CcpQueryExecutorDecorator;
-import com.ccp.especifications.db.query.CcpQueryOptions.CcpQueryFieldRange;
-import com.ccp.especifications.db.query.CcpQueryOptions.CcpQueryMust;
-import com.ccp.especifications.db.query.CcpQueryOptions.CcpQueryMustNot;
-import com.ccp.especifications.db.query.CcpQueryOptions.CcpQueryRange;
-import com.ccp.especifications.db.query.CcpQueryOptions.CcpQueryShould;
-import com.ccp.especifications.db.query.CcpQueryOptions.CcpQueryShouldNot;
-import com.ccp.especifications.db.query.CcpQueryOptions.CcpQuerySimplifiedQuery;
 import com.ccp.especifications.db.utils.entity.fields.CcpEntityField;
 import com.ccp.implementations.db.query.elasticsearch.CcpElasticSearchQueryExecutor;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import org.junit.Test;
 
 /**
  * Cobertura dos aspectos {@code CcpNullParameterAspect} / {@code CcpNullReturnAspect} sobre o
@@ -47,17 +35,7 @@ public class CcpQueryOptionsAopNullTest {
 	 * Subclasse concreta usada apenas para alcançar os métodos declarados diretamente em
 	 * {@code CcpQueryBooleanOperator}, que em todos os nós reais aparecem sobrescritos.
 	 */
-	private static final class BooleanOperatorForTest extends CcpQueryBooleanOperator {
 
-		BooleanOperatorForTest() {
-			super(CcpQueryOptions.INSTANCE, "test");
-		}
-
-		@SuppressWarnings("unchecked")
-		protected <T extends CcpQueryComponent> T getInstanceCopy() {
-			return (T) new BooleanOperatorForTest();
-		}
-	}
 
 	private static BooleanOperatorForTest operator() {
 		return new BooleanOperatorForTest();

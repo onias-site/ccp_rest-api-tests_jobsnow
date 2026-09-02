@@ -4,7 +4,7 @@ import com.ccp.business.CcpBusiness;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
+import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
@@ -26,7 +26,7 @@ import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatus;
-import com.jn.business.messages.JnMessages.JnBusinessSendUserToken;
+import com.jn.business.messages.JnBusinessSendUserToken;
 import com.jn.db.bulk.JnExecuteBulkOperation;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityLoginAnswers;
@@ -36,10 +36,10 @@ import com.jn.entities.JnEntityLoginPasswordAttempts;
 import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.entities.JnEntityLoginTokenAttempts;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.status.login.JnProcessStatusCreateLoginEmail;
 import com.jn.status.login.JnProcessStatusExecuteLogin;
 import com.jn.utils.JnDeleteKeysFromCache;
-import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 public abstract class VisTemplateDeTestes {
 	enum JsonFieldNames implements CcpJsonFieldName{
@@ -70,9 +70,7 @@ public abstract class VisTemplateDeTestes {
 	}
 	
 	public final Object getInnerClass(){
-		class InnerClass{
-			
-		}
+
 		return new InnerClass();
 	}
 	

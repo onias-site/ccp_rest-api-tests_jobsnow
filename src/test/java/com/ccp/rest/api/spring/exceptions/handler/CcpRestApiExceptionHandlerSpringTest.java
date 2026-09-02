@@ -31,7 +31,7 @@ public class CcpRestApiExceptionHandlerSpringTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void handleValidationErrorNullTest() {
-		new CcpRestApiExceptionHandlerSpring().handle((com.ccp.json.validations.global.engine.CcpJsonValidatorEngine.CcpJsonValidationError) null);
+		new CcpRestApiExceptionHandlerSpring().handle((com.ccp.json.validations.global.engine.CcpJsonValidationError) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

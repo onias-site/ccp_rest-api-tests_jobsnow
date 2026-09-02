@@ -3,13 +3,12 @@ package com.ccp.business;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import org.junit.Test;
 
 public class CcpBusinessTest {
 
@@ -17,11 +16,7 @@ public class CcpBusinessTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	static class NoopBusiness implements CcpBusiness {
-		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			return json;
-		}
-	}
+
 
 	@Test
 	public void canBeSavedAsAsyncTaskDefaultTest() {
@@ -58,11 +53,7 @@ public class CcpBusinessTest {
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
 
-	static class RetornaNullBusiness implements CcpBusiness {
-		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			return null;
-		}
-	}
+
 
 	@org.junit.Test(expected = com.ccp.aop.CcpNullReturnException.class)
 	public void applyRetornaNullDisparaAopTest() {

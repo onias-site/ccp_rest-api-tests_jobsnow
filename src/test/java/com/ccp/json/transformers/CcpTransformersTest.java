@@ -2,14 +2,13 @@ package com.ccp.json.transformers;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import org.junit.Test;
 
 public class CcpTransformersTest {
 
@@ -17,11 +16,7 @@ public class CcpTransformersTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	static class Impl implements CcpTransformers {
-		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			return json;
-		}
-	}
+
 
 	@Test
 	public void substringTest() {

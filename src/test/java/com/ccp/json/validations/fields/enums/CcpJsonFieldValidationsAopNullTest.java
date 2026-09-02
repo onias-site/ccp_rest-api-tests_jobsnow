@@ -2,14 +2,13 @@ package com.ccp.json.validations.fields.enums;
 
 import java.lang.reflect.Field;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.json.validations.fields.interfaces.CcpJsonFieldType;
+import org.junit.Test;
 
 /**
  * Cobertura do {@code CcpNullParameterAspect} sobre os enums de validação de campo
@@ -27,10 +26,7 @@ public class CcpJsonFieldValidationsAopNullTest {
 	private static final CcpJsonFieldType TYPE = CcpJsonFieldDefaultTypes.String;
 
 	/** Portadora de um {@code java.lang.reflect.Field} real para as chamadas. */
-	@SuppressWarnings("unused")
-	private static class FieldHolder {
-		private String campo;
-	}
+
 
 	private static Field field() {
 		return FieldHolder.class.getDeclaredFields()[0];

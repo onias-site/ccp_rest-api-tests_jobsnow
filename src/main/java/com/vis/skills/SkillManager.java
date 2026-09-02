@@ -14,7 +14,7 @@ import com.ccp.decorators.CcpCollectionDecorator;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
+import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.decorators.CcpStringDecorator;
 
 public class SkillManager {
@@ -212,11 +212,11 @@ public class SkillManager {
 					.collect(Collectors.toList());
 			
 			if(foundSynonyms.isEmpty()) {
-				throw new RuntimeException(skill + " has no synonyms");
+				throw new VisErrorSkillWithoutSynonyms(skill);
 			}
-			
+
 			if(foundSynonyms.size() > 1) {
-				throw new RuntimeException(skill + " has more than one synonym: " + foundSynonyms);
+				throw new VisErrorSkillWithManySynonymGroups(skill, foundSynonyms);
 			}
 
 			List<CcpJsonRepresentation> foundSynonym = foundSynonyms.get(0).stream()
@@ -332,7 +332,37 @@ public class SkillManager {
 		.map(x -> x.getAsString(JsonFields.skill))
 		.findFirst()
 		.orElseGet(() -> "");
-		
+
 		return orElseGet;
+	}
+
+	/**
+	 * Exceção lançada quando uma skill não é encontrada em nenhum grupo de sinônimos.
+	 */
+	@SuppressWarnings("serial")
+	public static class VisErrorSkillWithoutSynonyms extends RuntimeException {
+		/**
+		 * Monta a mensagem informando qual skill está sem sinônimos.
+		 * @param skill a skill sem grupo de sinônimos
+		 */
+		private VisErrorSkillWithoutSynonyms(String skill) {
+			super(skill + " has no synonyms");
+		}
+	}
+
+	/**
+	 * Exceção lançada quando uma skill aparece em mais de um grupo de sinônimos, o que torna ambígua
+	 * a escolha do grupo correto.
+	 */
+	@SuppressWarnings("serial")
+	public static class VisErrorSkillWithManySynonymGroups extends RuntimeException {
+		/**
+		 * Monta a mensagem informando a skill ambígua e todos os grupos em que ela foi encontrada.
+		 * @param skill a skill encontrada em mais de um grupo
+		 * @param foundSynonyms os grupos de sinônimos que contêm a skill
+		 */
+		private VisErrorSkillWithManySynonymGroups(String skill, List<Set<String>> foundSynonyms) {
+			super(skill + " has more than one synonym: " + foundSynonyms);
+		}
 	}
 }

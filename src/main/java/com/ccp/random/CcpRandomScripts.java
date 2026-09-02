@@ -20,9 +20,9 @@ import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpFolderDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
+import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.decorators.CcpStringDecorator;
-import com.ccp.decorators.CcpTextDecorator.CcpTemplateFunctions;
+import com.ccp.decorators.CcpTemplateFunctions;
 import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.crud.CcpCrud;
@@ -51,7 +51,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.implementations.text.extractor.apache.tika.CcpApacheTikaTextExtractor;
 import com.ccp.json.validations.fields.annotations.CcpJsonCopyFieldValidationsFrom;
-import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine.CcpJsonValidationError;
+import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
@@ -67,6 +67,7 @@ import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.resumes.ImportResumeFromOldJobsNow;
+import com.jn.business.messages.JnInstantMessageType;
 
 public class CcpRandomScripts {
 
@@ -130,7 +131,7 @@ public class CcpRandomScripts {
 				.put(JnJsonCommonsFields.contentType, CcpHttpContentType.TEXT_PLAIN)
 				.put(JnJsonCommonsFields.message, "mensagem de teste")
 				.put(JnBusinessSendInstantMessage.JnJsonValidator.botName, JnBusinessSendInstantMessage.JnBotType.support)
-				.put(JnBusinessSendInstantMessage.JnJsonValidator.instantMessageType, JnBusinessSendInstantMessage.JnInstantMessageType.text)
+				.put(JnBusinessSendInstantMessage.JnJsonValidator.instantMessageType, JnInstantMessageType.text)
 				;
 		
 		boolean exists = JnEntityInstantMessengerMessageSent.ENTITY.exists(json);
@@ -545,36 +546,9 @@ public class CcpRandomScripts {
 		vagasFile.append(todasAsVagas.toString());
 	}
 
-	static class AgruparVagasPorRecrutadores implements java.util.function.Consumer<CcpJsonRepresentation> {
 
-		CcpJsonRepresentation vagasAgrupadasPorRecrutadores = CcpOtherConstants.EMPTY_JSON;
 
-		public void accept(CcpJsonRepresentation json) {
 
-			String recrutador = json.getAsObject(JsonFieldNames.mail);
-			String contato = json.getAsString(JsonFieldNames.contato);
-			String texto = json.getAsString(JsonFieldNames.vaga);
-			String contactChannel = new CcpStringDecorator(contato.trim()).email().isValid() ? "email" : "link";
-
-			CcpJsonRepresentation vaga = CcpOtherConstants.EMPTY_JSON.put(JsonFieldNames.channel, contato).put(JsonFieldNames.email, recrutador)
-					.put(JsonFieldNames.description, texto).put(JsonFieldNames.contactChannel, contactChannel);
-
-			this.vagasAgrupadasPorRecrutadores = this.vagasAgrupadasPorRecrutadores.addToList(new CcpFieldName(recrutador), vaga);
-		}
-
-	}
-
-	static class AgruparCandidatosPorRecrutadores implements java.util.function.Consumer<CcpJsonRepresentation> {
-
-		CcpJsonRepresentation candidatosAgrupadosPorRecrutadores = CcpOtherConstants.EMPTY_JSON;
-
-		public void accept(CcpJsonRepresentation json) {
-			String candidato = json.getAsObject(JsonFieldNames.candidate, JsonFieldNames.candidato);
-			String recrutador = json.getAsString(JsonFieldNames.email);
-			this.candidatosAgrupadosPorRecrutadores = this.candidatosAgrupadosPorRecrutadores.addToList(new CcpFieldName(recrutador),
-					candidato);
-		}
-	}
 
 	static CcpJsonRepresentation getVagasAgrupadosPorRecrutadores(List<Object> intersectList) {
 		CcpEntityField idField = new CcpEntityField("mail", false, true, CcpOtherConstants.DO_NOTHING);
@@ -671,51 +645,21 @@ public class CcpRandomScripts {
 
 }
 
-abstract class Pai {
-	abstract void a();
-}
 
-class Filho1 extends Pai {
-	void a() {
 
-	}
-}
 
-class Filho2 extends Pai {
-	void a() {
 
-	}
-}
 
-interface MinhaInterface {
-	String meuMetodo(String p1, String p2);
-}
 
-class Pessoa {
-	final int idade;
-	final String nome;
 
-	public Pessoa(int idade, String nome) {
-		this.idade = idade;
-		this.nome = nome;
-	}
 
-	@Override
-	public String toString() {
-		return "Pessoa [idade=" + idade + ", nome=" + nome + "]";
-	}
-}
 
-class A {
-	Object a;
-}
-class B extends A{
-	static Object b;
-}
+
+
+
 enum Fields implements CcpJsonFieldName{
 	@CcpEntityFieldPrimaryKey
 	@CcpJsonCopyFieldValidationsFrom(JnJsonCommonsFields.class)
 	email, 
 	ddd,
 }
-

@@ -1,8 +1,7 @@
 package com.ccp.rest.api.spring.servlet.request;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
+import org.junit.Test;
 
 /**
  * Cobertura do {@code CcpNullParameterAspect} sobre o método default
@@ -17,8 +16,7 @@ import com.ccp.aop.CcpNullParameterException;
  */
 public class CcpJsonExtractorFromHttpServletRequestAopNullTest {
 
-	private static final class ExtractorForTest implements CcpJsonExtractorFromHttpServletRequest {
-	}
+
 
 	@Test(expected = CcpNullParameterException.class)
 	public void extractJsonFromHttpServletRequestNullTest() throws Exception {

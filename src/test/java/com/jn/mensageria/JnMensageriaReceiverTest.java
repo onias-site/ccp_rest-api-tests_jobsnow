@@ -9,7 +9,7 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jn.business.messages.JnMessages.JnBusinessNotifyError;
+import com.jn.business.messages.JnBusinessNotifyError;
 import com.jn.entities.JnEntityAsyncTask;
 
 public class JnMensageriaReceiverTest {

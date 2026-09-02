@@ -10,7 +10,6 @@ import java.lang.reflect.Field;
 import org.junit.Test;
 
 import com.ccp.aop.CcpNullReturnException;
-import com.ccp.decorators.CcpInputStreamDecorator.CcpErrorInputStreamMissing;
 
 public class CcpPropertiesDecoratorTest {
 

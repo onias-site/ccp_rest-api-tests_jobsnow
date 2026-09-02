@@ -2,15 +2,12 @@ package com.jn.messages;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jn.business.http.JnBusinessSendHttpRequest;
-import com.jn.business.messages.JnMessageSenderExceptionHandler;
 import com.jn.entities.JnEntityJobsnowError;
+import org.junit.Test;
 
 public class JnSendMessageToUserFluentTest {
 
@@ -18,13 +15,9 @@ public class JnSendMessageToUserFluentTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	static class NoopBusiness extends JnBusinessSendHttpRequest {
-		NoopBusiness() {
-			super(json -> json, JnMessageSenderExceptionHandler.THROWS);
-		}
-	}
 
-	private JnSendMessageToUser.JnCreateStep freshCreateStep() {
+
+	private JnCreateStep freshCreateStep() {
 		return new JnSendMessageToUser().createStep();
 	}
 
@@ -32,8 +25,8 @@ public class JnSendMessageToUserFluentTest {
 
 	@Test
 	public void andWithTheParametersEntityBuiltTest() {
-		JnSendMessageToUser.JnAndWithTheParametersEntity r = freshCreateStep()
-				.withTheProcess(new NoopBusiness())
+		JnAndWithTheParametersEntity r = freshCreateStep()
+				.withTheProcess(new JnSendMessageToUserFluentTestNoopBusiness())
 				.andWithTheParametersEntity(JnEntityJobsnowError.ENTITY);
 		assertNotNull(r);
 	}
@@ -41,7 +34,7 @@ public class JnSendMessageToUserFluentTest {
 	@Test(expected = CcpNullParameterException.class)
 	public void andWithTheParametersEntityAndWithTemplateNullTest() {
 		freshCreateStep()
-				.withTheProcess(new NoopBusiness())
+				.withTheProcess(new JnSendMessageToUserFluentTestNoopBusiness())
 				.andWithTheParametersEntity(JnEntityJobsnowError.ENTITY)
 				.andWithTheTemplateEntity(null);
 	}
@@ -50,8 +43,8 @@ public class JnSendMessageToUserFluentTest {
 
 	@Test
 	public void andWithTheTemplateEntityBuiltTest() {
-		JnSendMessageToUser.JnAndWithTheTemplateEntity t = freshCreateStep()
-				.withTheProcess(new NoopBusiness())
+		JnAndWithTheTemplateEntity t = freshCreateStep()
+				.withTheProcess(new JnSendMessageToUserFluentTestNoopBusiness())
 				.andWithTheParametersEntity(JnEntityJobsnowError.ENTITY)
 				.andWithTheTemplateEntity(JnEntityJobsnowError.ENTITY);
 		assertNotNull(t);
@@ -60,7 +53,7 @@ public class JnSendMessageToUserFluentTest {
 	@Test(expected = CcpNullParameterException.class)
 	public void andWithTheTemplateEntityAndCreateAnotherStepBlockNullTest() {
 		freshCreateStep()
-				.withTheProcess(new NoopBusiness())
+				.withTheProcess(new JnSendMessageToUserFluentTestNoopBusiness())
 				.andWithTheParametersEntity(JnEntityJobsnowError.ENTITY)
 				.andWithTheTemplateEntity(JnEntityJobsnowError.ENTITY)
 				.andCreateAnotherStep(null, JnEntityJobsnowError.ENTITY);
@@ -69,7 +62,7 @@ public class JnSendMessageToUserFluentTest {
 	@Test(expected = CcpNullParameterException.class)
 	public void andWithTheTemplateEntityAndCreateAnotherStepAlreadySentNullTest() {
 		freshCreateStep()
-				.withTheProcess(new NoopBusiness())
+				.withTheProcess(new JnSendMessageToUserFluentTestNoopBusiness())
 				.andWithTheParametersEntity(JnEntityJobsnowError.ENTITY)
 				.andWithTheTemplateEntity(JnEntityJobsnowError.ENTITY)
 				.andCreateAnotherStep(JnEntityJobsnowError.ENTITY, null);
@@ -78,7 +71,7 @@ public class JnSendMessageToUserFluentTest {
 	@Test(expected = CcpNullParameterException.class)
 	public void andWithTheTemplateEntitySoWithAllAddedStepsBlockNullTest() {
 		freshCreateStep()
-				.withTheProcess(new NoopBusiness())
+				.withTheProcess(new JnSendMessageToUserFluentTestNoopBusiness())
 				.andWithTheParametersEntity(JnEntityJobsnowError.ENTITY)
 				.andWithTheTemplateEntity(JnEntityJobsnowError.ENTITY)
 				.soWithAllAddedStepsAnd(null, JnEntityJobsnowError.ENTITY);
@@ -87,7 +80,7 @@ public class JnSendMessageToUserFluentTest {
 	@Test(expected = CcpNullParameterException.class)
 	public void andWithTheTemplateEntitySoWithAllAddedStepsAlreadySentNullTest() {
 		freshCreateStep()
-				.withTheProcess(new NoopBusiness())
+				.withTheProcess(new JnSendMessageToUserFluentTestNoopBusiness())
 				.andWithTheParametersEntity(JnEntityJobsnowError.ENTITY)
 				.andWithTheTemplateEntity(JnEntityJobsnowError.ENTITY)
 				.soWithAllAddedStepsAnd(JnEntityJobsnowError.ENTITY, null);
@@ -95,9 +88,9 @@ public class JnSendMessageToUserFluentTest {
 
 	// ── JnSoWithAllAddedStepsAnd ─────────────────────────────────────────────
 
-	private JnSendMessageToUser.JnSoWithAllAddedStepsAnd freshSoStep() {
+	private JnSoWithAllAddedStepsAnd freshSoStep() {
 		return freshCreateStep()
-				.withTheProcess(new NoopBusiness())
+				.withTheProcess(new JnSendMessageToUserFluentTestNoopBusiness())
 				.andWithTheParametersEntity(JnEntityJobsnowError.ENTITY)
 				.andWithTheTemplateEntity(JnEntityJobsnowError.ENTITY)
 				.soWithAllAddedStepsAnd(JnEntityJobsnowError.ENTITY, JnEntityJobsnowError.ENTITY);
@@ -117,7 +110,7 @@ public class JnSendMessageToUserFluentTest {
 
 	@Test
 	public void withTheTemplateIdBuiltTest() {
-		JnSendMessageToUser.JnWithTheTemplateId t = freshSoStep().withTheTemplateEntity("tid");
+		JnWithTheTemplateId t = freshSoStep().withTheTemplateEntity("tid");
 		assertNotNull(t);
 	}
 
@@ -130,7 +123,7 @@ public class JnSendMessageToUserFluentTest {
 
 	@Test
 	public void andWithTheEntityToBlockBuiltTest() {
-		JnSendMessageToUser.JnAndWithTheEntityToBlockMessageResend r = freshSoStep()
+		JnAndWithTheEntityToBlockMessageResend r = freshSoStep()
 				.withTheTemplateEntity("tid")
 				.andWithTheEntityToBlockMessageResend(JnEntityJobsnowError.ENTITY);
 		assertNotNull(r);
@@ -148,7 +141,7 @@ public class JnSendMessageToUserFluentTest {
 
 	@Test
 	public void andWithTheJsonValuesBuiltTest() {
-		JnSendMessageToUser.JnAndWithTheJsonValues r = freshSoStep()
+		JnAndWithTheJsonValues r = freshSoStep()
 				.withTheTemplateEntity("tid")
 				.andWithTheEntityToBlockMessageResend(JnEntityJobsnowError.ENTITY)
 				.andWithTheMessageValuesFromJson(CcpOtherConstants.EMPTY_JSON);
@@ -168,7 +161,7 @@ public class JnSendMessageToUserFluentTest {
 
 	@Test
 	public void andWithTheSupportLanguageBuiltTest() {
-		JnSendMessageToUser.JnAndWithTheSupportLanguage r = freshSoStep()
+		JnAndWithTheSupportLanguage r = freshSoStep()
 				.withTheTemplateEntity("tid")
 				.andWithTheEntityToBlockMessageResend(JnEntityJobsnowError.ENTITY)
 				.andWithTheMessageValuesFromJson(CcpOtherConstants.EMPTY_JSON)

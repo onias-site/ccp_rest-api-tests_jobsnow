@@ -1,29 +1,17 @@
 package com.ccp.service;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
-import com.ccp.decorators.CcpJsonRepresentation;
+import org.junit.Test;
 
 public class CcpCachedServiceTest {
 
-	static class StubService implements CcpService {
-		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			return json;
-		}
-		public Class<?> getJsonValidationClass() {
-			return StubService.class;
-		}
-		public String name() {
-			return "stub";
-		}
-	}
+
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void ctorFieldToCacheNullTest() {
-		new CcpCachedService(null, new StubService(), 10);
+		new CcpCachedService(null, new CcpCachedServiceTestStubService(), 10);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -33,7 +21,7 @@ public class CcpCachedServiceTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeNullTest() {
-		new CcpCachedService(() -> "x", new StubService(), 10).execute(null);
+		new CcpCachedService(() -> "x", new CcpCachedServiceTestStubService(), 10).execute(null);
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────

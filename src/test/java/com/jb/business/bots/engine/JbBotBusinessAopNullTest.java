@@ -1,17 +1,15 @@
 package com.jb.business.bots.engine;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
+import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.crud.CcpSelectUnionAll;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jb.business.bots.engine.JbBotEngine.JbBotBusiness;
 import com.jn.entities.JnEntityJobsnowError;
+import org.junit.Test;
 
 /**
  * Cobertura do {@code CcpNullParameterAspect} sobre os métodos default de
@@ -39,12 +37,7 @@ public class JbBotBusinessAopNullTest {
 	}
 
 	/** Implementação mínima usada para alcançar os métodos default da interface. */
-	private static final class BotBusinessForTest implements JbBotBusiness {
 
-		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			return json;
-		}
-	}
 
 	private static JbBotBusiness bot() {
 		return new BotBusinessForTest();

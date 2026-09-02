@@ -2,13 +2,11 @@ package com.jn.entities;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.business.CcpBusiness;
-import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import org.junit.Test;
 
 public class JnEntityLoginSessionTokenAttemptsTest {
 
@@ -16,11 +14,7 @@ public class JnEntityLoginSessionTokenAttemptsTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	static class NoopBusiness implements CcpBusiness {
-		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			return json;
-		}
-	}
+
 
 	@Test
 	public void incrementAttemptsReturnsNonNullTest() {

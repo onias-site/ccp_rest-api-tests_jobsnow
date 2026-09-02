@@ -2,8 +2,6 @@ package com.ccp.json.validations.fields.interfaces;
 
 import java.lang.reflect.Field;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
@@ -12,6 +10,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.json.validations.fields.enums.CcpJsonFieldDefaultTypes;
 import com.ccp.json.validations.fields.enums.CcpJsonFieldError;
 import com.ccp.json.validations.fields.enums.CcpJsonFieldsValidationContext;
+import org.junit.Test;
 
 /**
  * Cobertura do {@code CcpNullParameterAspect} sobre os métodos default de
@@ -29,10 +28,7 @@ public class CcpJsonFieldInterfacesAopNullTest {
 
 	private static final CcpJsonFieldValidatorInterface VALIDATOR = CcpJsonFieldError.requiredFieldIsMissing;
 
-	@SuppressWarnings("unused")
-	private static class FieldHolder {
-		private String campo;
-	}
+
 
 	private static Field field() {
 		return FieldHolder.class.getDeclaredFields()[0];

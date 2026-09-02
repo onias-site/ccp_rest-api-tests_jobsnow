@@ -2,19 +2,12 @@ package com.ccp.rest.api.spring.servlet.filters;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
-import com.ccp.business.CcpBusiness;
-import com.ccp.decorators.CcpJsonRepresentation;
+import org.junit.Test;
 
 public class CcpPutSessionValuesAndExecuteTaskFilterTest {
 
-	static class NoopBusiness implements CcpBusiness {
-		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			return json;
-		}
-	}
+
 
 	@Test
 	public void construtorTest() {

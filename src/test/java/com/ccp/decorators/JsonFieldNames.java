@@ -1,6 +1,5 @@
 package com.ccp.decorators;
 
-import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 
 public enum JsonFieldNames implements CcpJsonFieldName{
 	transformer, v1, v2, v3, v4, campo1, campo2, campo3, campo4, campo5, campo6, campo7, campo8, campo9, frutas, jsn,

@@ -4,18 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.List;
-
-import org.junit.Test;
-
-import com.ccp.aop.CcpAllowNullParameter;
-import com.ccp.aop.CcpAllowNullReturn;
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.aop.CcpNullReturnException;
-import com.ccp.constants.CcpOtherConstants;
-import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import org.junit.Test;
 
 /**
  * Verifica o contrato dos dois aspectos em si — que o weaving está ativo neste módulo de testes e
@@ -35,37 +28,7 @@ public class CcpNullReturnAspectAopNullTest {
 	}
 
 	/** Alvos de teste interceptados pelos aspectos por estarem em {@code com.ccp..}. */
-	static class InterceptedTargets {
 
-		String retornaNull() {
-			return null;
-		}
-
-		List<String> retornaListaNula() {
-			return null;
-		}
-
-		@CcpAllowNullReturn
-		String retornaNullPermitido() {
-			return null;
-		}
-
-		String recebeParametro(String value) {
-			return value;
-		}
-
-		@CcpAllowNullParameter
-		String recebeParametroNulavel(String value) {
-			return String.valueOf(value);
-		}
-
-		void metodoVoidComRetornoImplicito() {
-		}
-
-		CcpJsonRepresentation retornaJson() {
-			return CcpOtherConstants.EMPTY_JSON;
-		}
-	}
 
 	private static InterceptedTargets alvo() {
 		return new InterceptedTargets();

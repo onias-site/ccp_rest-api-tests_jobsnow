@@ -4,15 +4,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
+import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityMetaData;
-import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityMetaData.CcpErrorEntityPrimaryKeyIsMissing;
+import com.ccp.especifications.db.utils.entity.decorators.engine.CcpErrorEntityPrimaryKeyIsMissing;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.business.CcpBusiness;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.flow.CcpErrorFlowDisturb;
-import com.jn.business.messages.JnMessages.JnBusinessSendUserToken;
+import com.jn.business.messages.JnBusinessSendUserToken;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
@@ -72,7 +72,7 @@ public enum LoginActions implements CcpBusiness {
 			boolean thisMethodDoesNotThrownAnException = false == cause instanceof InvocationTargetException;
 			
 			if(thisMethodDoesNotThrownAnException) {
-				throw new RuntimeException(e);
+				throw new VisErrorLoginActionFailed(this, e);
 			}
 			
 			Throwable subCause = cause.getCause();
@@ -80,7 +80,7 @@ public enum LoginActions implements CcpBusiness {
 			boolean theExceptionThrownByTheMethodIsNotFlowDeviation = false == subCause instanceof CcpErrorFlowDisturb;
 			
 			if(theExceptionThrownByTheMethodIsNotFlowDeviation) {
-				throw new RuntimeException(e);
+				throw new VisErrorLoginActionFailed(this, e);
 			}
 			System.out.println(subCause.getMessage());
 			throw (CcpErrorFlowDisturb) subCause;
@@ -107,5 +107,21 @@ public enum LoginActions implements CcpBusiness {
 	}
 	enum JsonFieldNames implements CcpJsonFieldName{
 		sessionToken, token, originalToken
+	}
+
+	/**
+	 * Exceção lançada quando uma ação de login falha por um motivo que não é um desvio de fluxo esperado
+	 * ({@code CcpErrorFlowDisturb}), ou seja, uma falha real na execução do serviço.
+	 */
+	@SuppressWarnings("serial")
+	public static class VisErrorLoginActionFailed extends RuntimeException {
+		/**
+		 * Monta a mensagem informando qual ação falhou e encadeia a exceção original como causa.
+		 * @param action a ação de login em execução
+		 * @param cause a exceção original
+		 */
+		private VisErrorLoginActionFailed(LoginActions action, Throwable cause) {
+			super("The login action '" + action + "' has failed", cause);
+		}
 	}
 }

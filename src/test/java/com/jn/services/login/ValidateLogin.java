@@ -5,7 +5,7 @@ import org.junit.Test;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine.CcpJsonValidationError;
+import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.rest.api.commons.VariaveisParaTeste;

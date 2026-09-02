@@ -17,7 +17,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.mensageria.sender.gcp.pubsub.CcpGcpPubSubMensageriaSender;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.implementations.text.extractor.apache.tika.CcpApacheTikaTextExtractor;
-import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine.CcpJsonValidationError;
+import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.rest.api.utils.CcpRestApiUtils;
@@ -66,7 +66,7 @@ public class BaseTest {
 	protected void saveErrors(CcpFileDecorator file, CcpJsonValidationError e) {
 		String path = file.getPath();
 		this.saveErrors(path, e);
-		throw new RuntimeException(e);
+		throw new VisErrorJsonFileIsInvalid(file, e);
 	}
 	
 	protected void saveErrors(String path, CcpJsonValidationError e) {
@@ -82,5 +82,21 @@ public class BaseTest {
 		CcpJsonRepresentation json = file.asSingleJson();
 		return json;
 	}
-	
+
+	/**
+	 * Exceção lançada depois que os erros de validação de um arquivo JSON já foram gravados em disco,
+	 * para interromper o teste indicando qual arquivo é inválido.
+	 */
+	@SuppressWarnings("serial")
+	public static class VisErrorJsonFileIsInvalid extends RuntimeException {
+		/**
+		 * Monta a mensagem informando qual arquivo é inválido e encadeia os erros de validação como causa.
+		 * @param file o arquivo JSON reprovado na validação
+		 * @param cause os erros de validação encontrados
+		 */
+		private VisErrorJsonFileIsInvalid(CcpFileDecorator file, CcpJsonValidationError cause) {
+			super("The json file '" + file.getPath() + "' is invalid", cause);
+		}
+	}
+
 }

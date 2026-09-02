@@ -21,6 +21,7 @@ import com.ccp.process.CcpProcessStatus;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.rest.api.commons.VariaveisParaTeste;
 import com.jn.services.JnServiceLogin;
+import com.ccp.decorators.CcpJsonFieldName;
 
 public abstract class JnServiceLoginTemplateDeTestes {
 	public final JnServiceLogin service;
@@ -29,7 +30,7 @@ public abstract class JnServiceLoginTemplateDeTestes {
 		this.service = JnServiceLogin.valueOf(this.getClass().getSimpleName());
 	}
 
-	enum JsonFieldNames implements com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName {
+	enum JsonFieldNames implements CcpJsonFieldName {
 		actualStatus, expectedStatus, servico, request, response, timestamp
 	}
 

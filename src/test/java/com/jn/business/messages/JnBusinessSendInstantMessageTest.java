@@ -34,34 +34,34 @@ public class JnBusinessSendInstantMessageTest {
 
 	@Test
 	public void enumTextExistsTest() {
-		assertNotNull(JnBusinessSendInstantMessage.JnInstantMessageType.text);
+		assertNotNull(JnInstantMessageType.text);
 	}
 
 	@Test
 	public void enumFileExistsTest() {
-		assertNotNull(JnBusinessSendInstantMessage.JnInstantMessageType.file);
+		assertNotNull(JnInstantMessageType.file);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void enumTextSendMessageJsonNullTest() {
-		JnBusinessSendInstantMessage.JnInstantMessageType.text.sendMessage(null, CcpOtherConstants.EMPTY_JSON);
+		JnInstantMessageType.text.sendMessage(null, CcpOtherConstants.EMPTY_JSON);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void enumTextSendMessageMessageNullTest() {
-		JnBusinessSendInstantMessage.JnInstantMessageType.text.sendMessage(CcpOtherConstants.EMPTY_JSON,
+		JnInstantMessageType.text.sendMessage(CcpOtherConstants.EMPTY_JSON,
 				(com.ccp.decorators.CcpJsonRepresentation) null);
 	}
 
 
 	@Test(expected = CcpNullParameterException.class)
 	public void enumTextApplyNullTest() {
-		JnBusinessSendInstantMessage.JnInstantMessageType.text.execute(null);
+		JnInstantMessageType.text.execute(null);
 	}
 
 	@Test
 	public void enumGetJsonValidationClassTest() {
-		assertNotNull(JnBusinessSendInstantMessage.JnInstantMessageType.text.getJsonValidationClass());
-		assertNotNull(JnBusinessSendInstantMessage.JnInstantMessageType.file.getJsonValidationClass());
+		assertNotNull(JnInstantMessageType.text.getJsonValidationClass());
+		assertNotNull(JnInstantMessageType.file.getJsonValidationClass());
 	}
 }

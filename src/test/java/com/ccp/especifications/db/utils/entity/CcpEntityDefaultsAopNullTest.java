@@ -3,17 +3,15 @@ package com.ccp.especifications.db.utils.entity;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.junit.Test;
-
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
 import com.ccp.especifications.db.crud.CcpSelectUnionAll;
-import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityMetaData;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.entities.JnEntityJobsnowError;
+import org.junit.Test;
 
 /**
  * Cobertura do {@code CcpNullParameterAspect} sobre os métodos {@code default} da interface
@@ -29,12 +27,7 @@ public class CcpEntityDefaultsAopNullTest {
 	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;
 
 	/** Implementação mínima de {@code CcpEntity} que só resolve os metadados. */
-	private static final class PlainEntity implements CcpEntity {
 
-		public CcpEntityMetaData getEntityMetaData() {
-			return JnEntityJobsnowError.ENTITY.getEntityMetaData();
-		}
-	}
 
 	private static CcpEntity entity() {
 		return new PlainEntity();

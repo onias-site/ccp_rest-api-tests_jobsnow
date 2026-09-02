@@ -7,17 +7,12 @@ import org.junit.Test;
 public class JnMessagesTest {
 
 	@Test
-	public void construtorTest() {
-		assertNotNull(new JnMessages());
-	}
-
-	@Test
 	public void notifyResendLoginTokenExistsTest() {
-		assertNotNull(JnMessages.NotifySupportAboutPendingResendLoginToken.class);
+		assertNotNull(NotifySupportAboutPendingResendLoginToken.class);
 	}
 
 	@Test
 	public void notifyUnlockLoginTokenExistsTest() {
-		assertNotNull(JnMessages.NotifySupportAboutPendingLockedLoginToken.class);
+		assertNotNull(NotifySupportAboutPendingLockedLoginToken.class);
 	}
 }

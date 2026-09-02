@@ -13,7 +13,6 @@ import org.junit.Test;
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.aop.CcpNullReturnException;
 import com.ccp.constants.CcpOtherConstants;
-import com.ccp.decorators.CcpJsonRepresentation.CcpJsonFieldName;
 
 public class CcpReflectionConstructorDecoratorTest {
 
