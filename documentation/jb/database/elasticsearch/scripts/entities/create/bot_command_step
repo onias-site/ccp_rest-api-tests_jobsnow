@@ -12,10 +12,25 @@
 				"type": "keyword"
 			},
 			"stepFlow": {
-				"dynamic": "true",
-				"properties": {}
+				"properties": {
+					"status": {
+						"type": "integer"
+					},
+					"nextStep": {
+						"type": "keyword"
+					},
+					"message": {
+						"properties": {
+							"language": {
+								"type": "keyword"
+							},
+							"message": {
+								"type": "text"
+							}
+						}
+					}
+				}
 			}
 		}
 	}
 }
-	

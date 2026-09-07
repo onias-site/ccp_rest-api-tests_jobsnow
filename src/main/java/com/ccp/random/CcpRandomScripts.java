@@ -1,7 +1,9 @@
 package com.ccp.random;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -40,6 +42,7 @@ import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpRequester;
 import com.ccp.especifications.http.CcpHttpResponse;
 import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
+import com.ccp.especifications.json.CcpJsonHandler;
 import com.ccp.especifications.password.CcpPasswordHandler;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
@@ -101,7 +104,25 @@ public class CcpRandomScripts {
 	}
 
 	public static void main(String[] args) {
-		createEntities("jb");
+//		createEntities("jb");
+		
+		CcpJsonHandler dependency = CcpDependencyInjection.getDependency(CcpJsonHandler.class);
+		List<Class<?>> classes = Arrays.asList(JnJsonCommonsFields.class);
+	
+		
+		for (Class<?> class1 : classes) {
+			try {
+				Method declaredMethod = class1.getDeclaredMethod("values");
+				 Object[] invoke = (Object[])declaredMethod.invoke(null);
+				 List<?> list = dependency.fromJson(Arrays.asList(invoke).toString());
+				 System.out.println(list);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			
+		}
+		
+
 	}
 
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
