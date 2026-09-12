@@ -8,11 +8,11 @@ public class JnMessagesTest {
 
 	@Test
 	public void notifyResendLoginTokenExistsTest() {
-		assertNotNull(NotifySupportAboutPendingResendLoginToken.class);
+		assertNotNull(JnNotifySupportAboutPendingResendLoginToken.class);
 	}
 
 	@Test
 	public void notifyUnlockLoginTokenExistsTest() {
-		assertNotNull(NotifySupportAboutPendingLockedLoginToken.class);
+		assertNotNull(JnNotifySupportAboutPendingResendLoginToken.class);
 	}
 }

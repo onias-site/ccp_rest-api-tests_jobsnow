@@ -12,7 +12,7 @@ public class JnFunctionMensageriaSenderTest {
 
 	{
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(),
-				com.ccp.local.testings.implementations.CcpLocalInstances.mensageriaSender);
+				com.ccp.local.testings.implementations.CcpLocalInstances.syncMensageriaListener);
 	}
 
 

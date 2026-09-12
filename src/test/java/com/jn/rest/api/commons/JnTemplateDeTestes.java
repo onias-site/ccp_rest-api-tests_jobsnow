@@ -34,7 +34,7 @@ public abstract class JnTemplateDeTestes {
 	static {
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
-				CcpLocalInstances.mensageriaSender,
+				CcpLocalInstances.syncMensageriaListener,
 				new CcpElasticSearchDbRequest(), 
 				new CcpMindrotPasswordHandler(),
 				CcpLocalCacheInstances.mock,

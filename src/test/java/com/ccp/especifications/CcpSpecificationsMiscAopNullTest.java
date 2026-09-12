@@ -27,7 +27,7 @@ public class CcpSpecificationsMiscAopNullTest {
 
 	static {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), CcpLocalCacheInstances.mock,
-				CcpLocalInstances.mensageriaSender);
+				CcpLocalInstances.syncMensageriaListener);
 	}
 
 	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;

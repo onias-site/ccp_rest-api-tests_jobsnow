@@ -45,7 +45,7 @@ public class BaseTest {
 				localEnvironment ? CcpLocalInstances.bucket : new CcpGcpFileBucket(),
 			    localEnvironment ? CcpLocalCacheInstances.map : new CcpGcpMemCache(),
 	    		localEnvironment ? CcpLocalInstances.email : new CcpSendGridEmailSender(),
-				localEnvironment ? CcpLocalInstances.mensageriaSender : new CcpGcpPubSubMensageriaSender()
+				localEnvironment ? CcpLocalInstances.syncMensageriaListener : new CcpGcpPubSubMensageriaSender()
 				);	
 		
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpElasticSearchCrud(),

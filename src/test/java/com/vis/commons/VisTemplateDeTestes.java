@@ -49,7 +49,7 @@ public abstract class VisTemplateDeTestes {
 
 	static {
 		CcpDependencyInjection.loadAllDependencies(
-				CcpLocalInstances.mensageriaSender,
+				CcpLocalInstances.syncMensageriaListener,
 				new CcpElasticSearchQueryExecutor(),
 				new CcpElasticSearchDbRequest(), 
 				new CcpMindrotPasswordHandler(), 

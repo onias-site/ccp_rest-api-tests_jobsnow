@@ -86,7 +86,7 @@ public class CcpRandomScripts {
 		CcpDependencyInjection.loadAllDependencies(
 				new CcpElasticSearchQueryExecutor(), 
 				new CcpElasticSearchDbRequest(),
-				CcpLocalInstances.mensageriaSender,
+				CcpLocalInstances.syncMensageriaListener,
 				CcpLocalInstances.bucket,
 				CcpLocalInstances.email,
 				new CcpApacheTikaTextExtractor(),

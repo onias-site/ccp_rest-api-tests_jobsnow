@@ -24,7 +24,7 @@ public class CcpElasticSearchQueryExecutorTest {
 	public CcpElasticSearchQueryExecutorTest() {
 		CcpDependencyInjection.loadAllDependencies(
 				new CcpElasticSearchQueryExecutor(),
-				CcpLocalInstances.mensageriaSender,
+				CcpLocalInstances.syncMensageriaListener,
 				new CcpElasticSearchDbRequest(), 
 				new CcpMindrotPasswordHandler(),
 				CcpLocalCacheInstances.mock,

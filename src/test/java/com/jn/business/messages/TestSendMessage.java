@@ -6,4 +6,8 @@ class TestSendMessage extends JnBusinessSendMessage {
 	public TestSendMessage() {
 		super(JnEntityJobsnowError.ENTITY, JnMessageSenderExceptionHandler.THROWS);
 	}
+	public JnMessageType[] getMessageTypes() {
+		return new JnMessageType[] {JnMessageType.email};
+	}
+
 }
