@@ -22,7 +22,6 @@ import com.ccp.decorators.CcpFolderDecorator;
 import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
-import com.ccp.decorators.CcpTemplateFunctions;
 import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.crud.CcpCrud;
@@ -34,7 +33,6 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.ccp.especifications.db.utils.entity.fields.CcpEntityField;
 import com.ccp.especifications.db.utils.entity.fields.annotations.CcpEntityFieldPrimaryKey;
-import com.ccp.especifications.http.CcpHttpContentType;
 import com.ccp.especifications.http.CcpHttpHandler;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpRequester;
@@ -55,10 +53,7 @@ import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
-import com.jn.business.messages.JnBusinessSendInstantMessage;
-import com.jn.business.messages.JnInstantMessageType;
 import com.jn.entities.JnEntityDisposableTest;
-import com.jn.entities.JnEntityInstantMessengerMessageSent;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
@@ -68,6 +63,69 @@ import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.resumes.ImportResumeFromOldJobsNow;
+
+
+/* JBSUT
+		CcpJsonRepresentation request = json.getInnerJson(JnJsonCommonsFields.request);
+		CcpJsonRepresentation mergeWithAnotherJson = request.mergeWithAnotherJson(json);
+		CcpJsonRepresentation transformedJson2 = mergeWithAnotherJson
+				.getTransformedJson(JnJsonTransformersFieldsEntityDefault.token);
+				CcpJsonRepresentation duplicateValueFromField = transformedJson2
+				.duplicateValueFromField(JsonFieldNames.originalEmail, JnJsonCommonsFields.email, 
+						JnJsonInstantMessengerFields.chatId);
+						CcpJsonRepresentation transformedJson = duplicateValueFromField
+				.duplicateValueFromField(JsonFieldNames.originalToken, JnJsonTransformersFieldsEntityDefault.token)
+				;
+		CcpJsonRepresentation apply = super.apply(transformedJson);
+ */
+
+/*
+public class JnBusinessNotifyError extends SupportInstantMessengerNotification{
+	
+	public static final JnBusinessNotifyError instance = new JnBusinessNotifyError();
+	
+	private JnBusinessNotifyError() {
+		super(JnMessageSenderExceptionHandler.LENIENT);
+	}
+	
+	public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
+		
+		CcpJsonRepresentation result = super.apply(json);
+		JnEntityJobsnowPenddingError.ENTITY.save(result);
+
+		return result;
+	}
+
+ */
+
+/*
+ * class SupportInstantMessengerNotification extends JnBusinessSendMessage{
+
+	protected SupportInstantMessengerNotification(JnMessageSenderExceptionHandler exceptionHandler) {
+		super(exceptionHandler);
+	}
+		 
+	public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
+
+		String supportLanguage =  JnSystemProperties.INSTANCE.supportLanguage();
+		var clazz = this.getClass();
+
+		String templateId = clazz.getName();
+		CcpJsonRepresentation put2 = json
+				.put(JnJsonInstantMessengerFields.botName, JnBotType.support);
+				CcpJsonRepresentation put3 = put2
+				.put(JnJsonCommonsFields.templateId, templateId);
+
+				CcpJsonRepresentation put = put3
+				.put(JnJsonCommonsFields.language, supportLanguage)
+				;
+		
+		CcpJsonRepresentation apply = super.apply(put);
+		
+		return apply;
+	}
+
+ */
 
 public class CcpRandomScripts {
 
@@ -126,22 +184,6 @@ public class CcpRandomScripts {
 		return Pattern.matches(LINKEDIN_REGEX, url);
 	}
 
-	static void fodasse() {
-		CcpTemplateFunctions.currentTimeMillis.get();
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
-				.put(JnBusinessSendInstantMessage.JnJsonValidator.chatId, 751717896L)
-				.put(JnJsonCommonsFields.templateId, "teste")
-				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.fileName, "{chatId}.txt")
-				.put(JnBusinessSendInstantMessage.JnMessageFileJsonValidator.caption, "{templateId}.{currentTimeMillis()}")
-				.put(JnJsonCommonsFields.contentType, CcpHttpContentType.TEXT_PLAIN)
-				.put(JnJsonCommonsFields.message, "mensagem de teste")
-				.put(JnBusinessSendInstantMessage.JnJsonValidator.botName, JnBusinessSendInstantMessage.JnBotType.support)
-				.put(JnBusinessSendInstantMessage.JnJsonValidator.instantMessageType, JnInstantMessageType.text)
-				;
-		
-		boolean exists = JnEntityInstantMessengerMessageSent.ENTITY.exists(json);
-		System.out.println(exists);
-	}
 
 	static void enviarArquivoPorTelegram() {
 		CcpInstantMessenger dependency = CcpDependencyInjection.getDependency(CcpInstantMessenger.class);

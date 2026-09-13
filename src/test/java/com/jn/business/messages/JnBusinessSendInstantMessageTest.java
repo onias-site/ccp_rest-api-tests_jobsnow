@@ -15,22 +15,6 @@ public class JnBusinessSendInstantMessageTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	@Test
-	public void instanceExistsTest() {
-		assertNotNull(JnBusinessSendInstantMessage.INSTANCE);
-	}
-
-	@Test
-	public void getJsonValidationClassTest() {
-		assertNotNull(JnBusinessSendInstantMessage.INSTANCE.getJsonValidationClass());
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void applyNullTest() {
-		JnBusinessSendInstantMessage.INSTANCE.execute(null);
-	}
-
-	// ── enum JnInstantMessageType ────────────────────────────────────────────
 
 	@Test
 	public void enumTextExistsTest() {

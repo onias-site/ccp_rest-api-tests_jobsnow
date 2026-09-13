@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Test;
+
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
@@ -19,8 +21,8 @@ import com.ccp.especifications.instant.messenger.CcpErrorInstantMessageThisBotWa
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jb.instant.messenger.reader.JbInstantMessengerMessageReader.JsonFieldNames;
-import com.jn.business.messages.JnBusinessSendInstantMessage.JnBotType;
-import org.junit.Test;
+import com.jn.business.messages.JnMessageType;
+import com.jn.business.messages.JnMessageType.JnBotType;
 
 /**
  * Testa a leitura das mensagens recebidas pelo bot de suporte. A api do Telegram é substituída por
@@ -249,7 +251,7 @@ public class JbInstantMessengerMessageReaderTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void readNewMessagesTimeoutNullTest() {
-		JbInstantMessengerMessageReader.INSTANCE.readNewMessages(null, new BotFalso(JnBotType.support));
+		JbInstantMessengerMessageReader.INSTANCE.readNewMessages(null, new BotFalso(JnMessageType.JnBotType.support));
 	}
 
 	@Test(expected = CcpNullParameterException.class)

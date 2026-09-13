@@ -1,27 +1,28 @@
 package com.vis.rest.api.resume.validations;
 
 import java.util.stream.Collectors;
+
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFieldName;
-import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonFieldName;
+import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.crud.CcpGetEntityId;
 import com.ccp.especifications.db.utils.entity.CcpEntityOperationType;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatusDefault;
-import com.jn.business.messages.JnBusinessSendUserToken;
+import com.jn.business.messages.JnMessages.JnBusinessSendUserToken;
 import com.jn.entities.JnEntityAsyncTask;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginToken;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.status.login.JnProcessStatusCreateLoginEmail;
 import com.jn.status.login.JnProcessStatusExecuteLogin;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.commons.VisTemplateDeTestes;
 import com.vis.rest.api.resume.status.SaveResumeStatus;
-import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 	enum JsonFieldNames implements CcpJsonFieldName{

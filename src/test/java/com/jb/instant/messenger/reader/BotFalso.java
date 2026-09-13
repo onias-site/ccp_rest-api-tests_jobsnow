@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.ccp.business.CcpBusiness;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.jn.business.messages.JnBusinessSendInstantMessage.JnBotType;
+import com.jn.business.messages.JnMessageType;
 
 /**
  * Bot substituto para os testes de leitura de mensagens. O {@code readNewMessages} descobre qual bot
@@ -19,7 +19,7 @@ class BotFalso implements CcpBusiness {
 
 	private final String botName;
 
-	BotFalso(JnBotType botType) {
+	BotFalso(JnMessageType.JnBotType botType) {
 		this.botName = botType.name();
 	}
 
