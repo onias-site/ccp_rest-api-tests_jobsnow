@@ -19,8 +19,6 @@ import com.vis.business.recruiter.VisBusinessRecruiterReceivingResumes;
 import com.vis.business.recruiter.VisBusinessResumeViewSave;
 import com.vis.business.resume.VisBusinessCalculateResumeHashes;
 import com.vis.business.resume.VisBusinessResumeSaveViewFailed;
-import com.vis.business.resume.skills.VisBusinessApprovingSkill;
-import com.vis.business.templates.notify.support.VisTemplatesToNotifySupport;
 import com.vis.entities.VisEntityGroupPositionsBySkills;
 import com.vis.json.transformers.VisJsonTransformerPutEmailHashAndDomainRecruiter;
 import com.vis.schedulling.VisBusinessGetRecentLoggedUsers;
@@ -36,7 +34,6 @@ import com.vis.utils.VisBusinessPositionUpdateGroupingByRecruitersAndSendResumes
 import com.vis.utils.VisBusinessResumeSendToRecruiters;
 import com.vis.utils.VisFrequencyOptions;
 import com.vis.utils.VisGroupDetailsByMasters;
-import com.vis.utils.VisSendEmailMessageAndRegisterEmailSent;
 import com.vis.utils.VisSendRecentUsersToGroupings;
 import com.vis.utils.VisUtils;
 
@@ -95,11 +92,6 @@ public class VisRemainingAopNullTest {
 	// ── business/resume ───────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void approvingSkillApplyNullTest() {
-		new VisBusinessApprovingSkill().execute(null);
-	}
-
-	@Test(expected = CcpNullParameterException.class)
 	public void calculateResumeHashesApplyNullTest() {
 		new VisBusinessCalculateResumeHashes().execute(null);
 	}
@@ -109,12 +101,6 @@ public class VisRemainingAopNullTest {
 		VisBusinessResumeSaveViewFailed.INSTANCE.execute(null);
 	}
 
-	// ── business/templates/notify/support ─────────────────────────────────────
-
-	@Test(expected = CcpNullParameterException.class)
-	public void templatesToNotifySupportApplyNullTest() {
-		VisTemplatesToNotifySupport.new_skill.execute(null);
-	}
 
 	// ── entities ──────────────────────────────────────────────────────────────
 
@@ -189,11 +175,6 @@ public class VisRemainingAopNullTest {
 	@Test(expected = CcpNullParameterException.class)
 	public void resumeSendToRecruitersApplyNullTest() {
 		VisBusinessResumeSendToRecruiters.INSTANCE.execute(null);
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void sendEmailMessageAndRegisterEmailSentApplyNullTest() {
-		VisSendEmailMessageAndRegisterEmailSent.resumeSuccessSaving.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

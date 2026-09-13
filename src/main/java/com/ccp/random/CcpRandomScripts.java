@@ -101,25 +101,29 @@ public class CcpRandomScripts {
 	}
 
 	public static void main(String[] args) {
+		createEntities("jn");
 		createEntities("jb");
-		
 	}
-
-	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
-	private static final String LINKEDIN_REGEX = "^https://(www\\.)?linkedi n\\.com/in/[a-zA-Z0-9-_%]+/?$";
-	
-	public static boolean isValidLinkedInUrl(String url) { 
-		return Pattern.matches(LINKEDIN_REGEX, url);
-	}
-
 	
 	static void createEntities(String systemName) {
 		String pathToCreateEntityScript = "documentation\\" + systemName + "\\database\\elasticsearch\\scripts\\entities\\create";
 		String pathToJavaClasses = "..\\" + systemName + "_business_jobsnow\\src\\main\\java\\com\\" + systemName + "\\entities";
-		String mappingJnEntitiesErrors = "c:\\logs\\mappingJnEntitiesErrors.json";
-		String insertErrors = "c:\\logs\\insertErrors.json";
+		String mappingJnEntitiesErrors = "c:\\logs\\"
+				+ systemName
+				+ "\\mappingJnEntitiesErrors.json";
+		String insertErrors = "c:\\logs\\"
+				+ systemName
+				+ "\\insertErrors.json";
 		CcpDbRequester database = CcpDependencyInjection.getDependency(CcpDbRequester.class);
 		database.createTables(pathToCreateEntityScript, pathToJavaClasses, mappingJnEntitiesErrors, insertErrors);
+	}
+	
+	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
+
+	private static final String LINKEDIN_REGEX = "^https://(www\\.)?linkedi n\\.com/in/[a-zA-Z0-9-_%]+/?$";
+	
+	public static boolean isValidLinkedInUrl(String url) { 
+		return Pattern.matches(LINKEDIN_REGEX, url);
 	}
 
 	static void fodasse() {

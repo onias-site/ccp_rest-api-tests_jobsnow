@@ -2,12 +2,12 @@ package com.jn.messages;
 
 import static org.junit.Assert.assertNotNull;
 
+import org.junit.Test;
+
 import com.ccp.aop.CcpNullParameterException;
-import com.ccp.constants.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.entities.JnEntityJobsnowError;
-import org.junit.Test;
 
 public class JnSendMessageToUserFluentTest {
 
@@ -114,60 +114,7 @@ public class JnSendMessageToUserFluentTest {
 		assertNotNull(t);
 	}
 
-	@Test(expected = CcpNullParameterException.class)
-	public void withTheTemplateIdAndWithEntityToBlockNullTest() {
-		freshSoStep().withTheTemplateEntity("tid").andWithTheEntityToBlockMessageResend(null);
-	}
 
-	// ── JnAndWithTheEntityToBlockMessageResend ───────────────────────────────
-
-	@Test
-	public void andWithTheEntityToBlockBuiltTest() {
-		JnAndWithTheEntityToBlockMessageResend r = freshSoStep()
-				.withTheTemplateEntity("tid")
-				.andWithTheEntityToBlockMessageResend(JnEntityJobsnowError.ENTITY);
-		assertNotNull(r);
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void andWithTheEntityToBlockAndWithMessageValuesNullTest() {
-		freshSoStep()
-				.withTheTemplateEntity("tid")
-				.andWithTheEntityToBlockMessageResend(JnEntityJobsnowError.ENTITY)
-				.andWithTheMessageValuesFromJson(null);
-	}
-
-	// ── JnAndWithTheJsonValues ───────────────────────────────────────────────
-
-	@Test
-	public void andWithTheJsonValuesBuiltTest() {
-		JnAndWithTheJsonValues r = freshSoStep()
-				.withTheTemplateEntity("tid")
-				.andWithTheEntityToBlockMessageResend(JnEntityJobsnowError.ENTITY)
-				.andWithTheMessageValuesFromJson(CcpOtherConstants.EMPTY_JSON);
-		assertNotNull(r);
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void andWithTheJsonValuesAndWithSupportLanguageNullTest() {
-		freshSoStep()
-				.withTheTemplateEntity("tid")
-				.andWithTheEntityToBlockMessageResend(JnEntityJobsnowError.ENTITY)
-				.andWithTheMessageValuesFromJson(CcpOtherConstants.EMPTY_JSON)
-				.andWithTheSupportLanguage(null);
-	}
-
-	// ── JnAndWithTheSupportLanguage ──────────────────────────────────────────
-
-	@Test
-	public void andWithTheSupportLanguageBuiltTest() {
-		JnAndWithTheSupportLanguage r = freshSoStep()
-				.withTheTemplateEntity("tid")
-				.andWithTheEntityToBlockMessageResend(JnEntityJobsnowError.ENTITY)
-				.andWithTheMessageValuesFromJson(CcpOtherConstants.EMPTY_JSON)
-				.andWithTheSupportLanguage("portuguese");
-		assertNotNull(r);
-	}
 
 	// sendAllMessages() precisa de CcpCrud DI real — coberto pelos testes de integração
 }

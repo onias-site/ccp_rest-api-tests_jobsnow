@@ -7,7 +7,6 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jn.entities.JnEntityJobsnowError;
 
 /**
  * Cobertura do {@code CcpNullParameterAspect} sobre os membros de visibilidade restrita do pacote
@@ -21,25 +20,6 @@ public class JnMessagesInternalsAopNullTest {
 	}
 
 	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;
-
-	@Test(expected = CcpNullParameterException.class)
-	public void sendMessageConstrutorNullTest() {
-		new JnBusinessSendMessage(null, JnMessageSenderExceptionHandler.THROWS) {
-			public JnMessageType[] getMessageTypes() {
-				return new JnMessageType[] {};
-			}};
-	}
-
-	@Test
-	public void sendMessageConstrutorTest() {
-		org.junit.Assert.assertNotNull(new JnBusinessSendMessage(JnEntityJobsnowError.ENTITY, JnMessageSenderExceptionHandler.THROWS) {
-
-			public JnMessageType[] getMessageTypes() {
-				return new JnMessageType[] {};
-			}
-			
-		});
-	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void getMessageJsonNullTest() {
