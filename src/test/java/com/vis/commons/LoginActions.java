@@ -13,7 +13,7 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityMetaData;
 import com.ccp.especifications.db.utils.entity.decorators.engine.CcpErrorEntityPrimaryKeyIsMissing;
 import com.ccp.flow.CcpErrorFlowDisturb;
-import com.jn.business.messages.JnMessages.JnBusinessSendUserToken;
+import com.jn.business.messages.JnMessages.JnNotifyUserAboutLoginToken;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
@@ -39,7 +39,7 @@ public enum LoginActions implements CcpBusiness {
 	},
 	readTokenFromReceivedEmail{
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			String originalToken = new CcpStringDecorator("c:\\logs\\email\\"+ JnBusinessSendUserToken.class.getName() + ".json")
+			String originalToken = new CcpStringDecorator("c:\\logs\\email\\"+ JnNotifyUserAboutLoginToken.class.getName() + ".json")
 			.file().asSingleJson().getAsString(JsonFieldNames.originalToken);
 			CcpJsonRepresentation put = json.put(JsonFieldNames.token, originalToken);
 			return put;
@@ -59,7 +59,7 @@ public enum LoginActions implements CcpBusiness {
 				if(loginActions.entities.length == 0) {
 					continue;
 				}
-				CcpJsonRepresentation jsonWithSubjectType = json.put(JnJsonCommonsFields.subjectType, JnBusinessSendUserToken.class.getName());
+				CcpJsonRepresentation jsonWithSubjectType = json.put(JnJsonCommonsFields.subjectType, JnNotifyUserAboutLoginToken.class.getName());
 				loginActions.printAllStatus(jsonWithSubjectType);
 			}
 			JnServiceLogin valueOf = JnServiceLogin.valueOf(this.name());

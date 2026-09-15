@@ -26,7 +26,7 @@ import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatus;
-import com.jn.business.messages.JnMessages.JnBusinessSendUserToken;
+import com.jn.business.messages.JnMessages.JnNotifyUserAboutLoginToken;
 import com.jn.db.bulk.JnExecuteBulkOperation;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityLoginAnswers;
@@ -171,7 +171,7 @@ public abstract class VisTemplateDeTestes {
 		
 		CcpJsonRepresentation sessionValuesToTest = this.getSessionValuesToTest();
 		
-		CcpJsonRepresentation jsonWithSubjectType = sessionValuesToTest.put(JnJsonCommonsFields.subjectType, JnBusinessSendUserToken.class.getName());
+		CcpJsonRepresentation jsonWithSubjectType = sessionValuesToTest.put(JnJsonCommonsFields.subjectType, JnNotifyUserAboutLoginToken.class.getName());
 		
 		JnExecuteBulkOperation.INSTANCE.executeBulk(
 				jsonWithSubjectType 
