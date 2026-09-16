@@ -42,9 +42,9 @@ public class TelaDeLogout extends JnTemplateDeTestes {
 			CcpJsonRepresentation transformedJson = variaveis.REQUEST_TO_LOGIN
 					.put(JnEntityLoginSessionValidation.Fields.token, "12345678")
 					;
-			String asString = JnEntityLoginSessionValidation.ENTITY
-					.save(transformedJson)
-					.getAsString(TelaDeLogoutConstants.originalToken);
+			CcpJsonRepresentation handledJson = JnEntityLoginSessionValidation.ENTITY.getHandledJson(transformedJson);
+			JnEntityLoginSessionValidation.ENTITY.save(handledJson);
+			String asString = handledJson.getAsString(TelaDeLogoutConstants.originalToken);
 			return asString;
 		};
 		this.execute(variaveisParaTeste, JnProcessStatusExecuteLogout.expectedStatus, producer);

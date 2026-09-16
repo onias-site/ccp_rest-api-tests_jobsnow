@@ -3,12 +3,17 @@ package com.jb.instant.messenger.reader;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.bulk.CcpErrorBulkEntityRecordNotFound;
 import com.ccp.especifications.db.crud.CcpCrud;
 import com.ccp.especifications.db.crud.CcpUnionAllExecutor;
 
 class FakeCrud implements CcpCrud {
+
+	enum JsonFieldNames implements CcpJsonFieldName {
+		inserted
+	}
 
 	private static final Map<String, CcpJsonRepresentation> registros = new HashMap<>();
 
@@ -27,8 +32,16 @@ class FakeCrud implements CcpCrud {
 	}
 
 	public CcpJsonRepresentation save(String entityName, CcpJsonRepresentation json, String id) {
-		registros.put(this.getKey(entityName, id), json);
-		return json;
+		String key = this.getKey(entityName, id);
+		boolean inserted = false == registros.containsKey(key);
+		registros.put(key, json);
+		CcpJsonRepresentation response = json.put(JsonFieldNames.inserted, inserted);
+		return response;
+	}
+
+	public boolean isInsertedDocument(CcpJsonRepresentation saveResponse) {
+		boolean inserted = saveResponse.getAsBoolean(JsonFieldNames.inserted);
+		return inserted;
 	}
 
 	public boolean exists(String entityName, String id) {

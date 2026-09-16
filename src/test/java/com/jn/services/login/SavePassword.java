@@ -121,7 +121,8 @@ public class SavePassword extends JnServiceLoginTemplateDeTestes {
 
 	private String getToken(VariaveisParaTeste variaveisParaTeste) {
 		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		CcpJsonRepresentation createOrUpdate = JnEntityLoginToken.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
+		CcpJsonRepresentation createOrUpdate = JnEntityLoginToken.ENTITY.getHandledJson(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginToken.ENTITY.save(createOrUpdate);
 		String token = createOrUpdate.getAsString(new CcpFieldName("originalToken"));
 		return token;
 	}

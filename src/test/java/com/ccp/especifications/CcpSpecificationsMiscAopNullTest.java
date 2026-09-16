@@ -97,15 +97,11 @@ public class CcpSpecificationsMiscAopNullTest {
 				return com.jn.utils.JnDeleteKeysFromCache.INSTANCE;
 			}
 
-			@Override
 			protected CcpEntity getTwinEntity(CcpEntity entity) {
-				// TODO Auto-generated method stub
 				return null;
 			}
 
-			@Override
 			protected CcpEntity getCustomEntity(Object newInstance) {
-				// TODO Auto-generated method stub
 				return null;
 			}
 		};

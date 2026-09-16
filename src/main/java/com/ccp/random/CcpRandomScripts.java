@@ -65,7 +65,9 @@ import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.resumes.ImportResumeFromOldJobsNow;
 
 
-/* JBSUT
+/* 
+ * FIXME
+ * JBSUT
 		CcpJsonRepresentation request = json.getInnerJson(JnJsonCommonsFields.request);
 		CcpJsonRepresentation mergeWithAnotherJson = request.mergeWithAnotherJson(json);
 		CcpJsonRepresentation transformedJson2 = mergeWithAnotherJson
@@ -79,26 +81,7 @@ import com.vis.resumes.ImportResumeFromOldJobsNow;
 		CcpJsonRepresentation apply = super.apply(transformedJson);
  */
 
-/*
-public class JnBusinessNotifyError extends SupportInstantMessengerNotification{
-	
-	public static final JnBusinessNotifyError instance = new JnBusinessNotifyError();
-	
-	private JnBusinessNotifyError() {
-		super(JnMessageSenderExceptionHandler.LENIENT);
-	}
-	
-	public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-		
-		CcpJsonRepresentation result = super.apply(json);
-		JnEntityJobsnowPenddingError.ENTITY.save(result);
-
-		return result;
-	}
-
- */
-
-/*
+/*FIXME
  * class SupportInstantMessengerNotification extends JnBusinessSendMessage{
 
 	protected SupportInstantMessengerNotification(JnMessageSenderExceptionHandler exceptionHandler) {

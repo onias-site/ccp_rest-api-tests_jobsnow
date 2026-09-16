@@ -4,7 +4,9 @@ C) Resume
 D) Email
 E) Deploy
 
-A) Gravar mensagens para os steps
-B) Individualizar exceptions
-C) Extrair variaveis
-D) Separar classes 
+A) Erro da validação @CcpJsonGlobalValidations
+B) Erro da PK LGPD
+C) Erro do nonRepeatedItems
+D) Erro da validação JnJsonCommonsFields
+E) Rodar suite de testes completa
+F) Rodar suite de testes com paralelização

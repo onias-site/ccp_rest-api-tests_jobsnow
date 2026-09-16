@@ -84,7 +84,8 @@ public class TelaDoCadastroDeSenha extends JnTemplateDeTestes{
 		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
 
 		CcpJsonRepresentation entityValue =  variaveisParaTeste.REQUEST_TO_LOGIN;
-		CcpJsonRepresentation createOrUpdate = JnEntityLoginToken.ENTITY.save(entityValue);
+		CcpJsonRepresentation createOrUpdate = JnEntityLoginToken.ENTITY.getHandledJson(entityValue);
+		JnEntityLoginToken.ENTITY.save(createOrUpdate);
 		String token = createOrUpdate.getAsString(TelaDeLogoutConstants.originalToken);
 		return token;
 	}
