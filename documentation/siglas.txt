@@ -159,7 +159,6 @@
   CLCI     = CcpLocalCacheInstances
   CLI      = CcpLocalInstances
   CM       = CacheMap / CacheMock
-  CMCGPSPSS = CcpMensageriaConsumerGcpPubSubPushSpringStarter
   CMD      = CcpMapDecorator
   CMDT     = ContarMensagensDoTelegram
   CMPH     = CcpMindrotPasswordHandler
@@ -344,6 +343,7 @@
   JJTFEMH  = JnJsonTransformersFieldEntityMessageHash
   JL       = JnLanguage
   JM       = JnMessages
+  JMCGPSPSS = JnMensageriaConsumerGcpPubSubPushSpringStarter
   JMR      = JnMensageriaReceiver
   JOAAT    = JnOpenApiAsyncTask
   JOACU    = JnOpenApiContactUs

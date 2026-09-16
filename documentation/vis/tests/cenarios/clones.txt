@@ -4,7 +4,7 @@ git clone git@bitbucket.org:clean-code-programming/vis_rest-api_spring_jobsnow_d
 git clone git@bitbucket.org:clean-code-programming/vis_business_jobsnow.git
 git clone git@bitbucket.org:clean-code-programming/ccp_commons_jobsnow.git
 git clone git@bitbucket.org:clean-code-programming/jn_rest-api_spring_jobsnow_dependency-chooser.git
-git clone git@bitbucket.org:clean-code-programming/ccp_mensageria-consumer_gcp-pubsub-push-spring_dependency.git
+git clone git@bitbucket.org:clean-code-programming/jn_mensageria-consumer_gcp-pubsub-push-spring_dependency.git
 git clone git@bitbucket.org:clean-code-programming/ccp_mocking_jobsnow.git
 git clone git@bitbucket.org:clean-code-programming/jn_business_jobsnow.git
 git clone git@bitbucket.org:clean-code-programming/ccp_mensageria-consumer_gcp-pubsub-pull_dependency-chooser.git

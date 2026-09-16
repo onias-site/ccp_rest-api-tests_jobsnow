@@ -9,6 +9,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.cache.CcpCache;
 import com.ccp.especifications.db.bulk.CcpExecuteBulkOperation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.file.bucket.CcpFileBucketOperation;
 import com.ccp.especifications.instant.messenger.CcpErrorInstantMessageThisBotWasBlockedByThisUser;
 import com.ccp.especifications.mensageria.receiver.CcpMensageriaReceiver;
@@ -94,6 +95,18 @@ public class CcpSpecificationsMiscAopNullTest {
 
 			public Consumer<String[]> getFunctionToDeleteKeysInTheCache() {
 				return com.jn.utils.JnDeleteKeysFromCache.INSTANCE;
+			}
+
+			@Override
+			protected CcpEntity getTwinEntity(CcpEntity entity) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			protected CcpEntity getCustomEntity(Object newInstance) {
+				// TODO Auto-generated method stub
+				return null;
 			}
 		};
 	}

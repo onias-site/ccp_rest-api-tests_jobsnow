@@ -5785,12 +5785,12 @@ Todos os métodos delegam para `this.entity`:
 
 ---
 
-## Módulo: ccp_mensageria-consumer_gcp-pubsub-push-spring_dependency
+## Módulo: jn_mensageria-consumer_gcp-pubsub-push-spring_dependency
 
 ---
 
-## Classe: CcpMensageriaConsumerGcpPubSubPushSpringStarter
-**Pacote:** com.ccp.jn.topic.consumer.pubsub.push.application
+## Classe: JnMensageriaConsumerGcpPubSubPushSpringStarter
+**Pacote:** com.jn.topic.consumer.pubsub.push.application
 **Tipo:** classe (Spring Boot Application + RestController)
 **Propósito:** Aplicação Spring Boot que recebe mensagens do GCP Pub/Sub via push (HTTP POST). Funciona como endpoint HTTP onde o GCP envia as mensagens; desserializa o payload, decodifica o campo `data` de Base64 e delega ao `JnMensageriaReceiver`. Possui também um endpoint de teste direto sem Base64.
 
