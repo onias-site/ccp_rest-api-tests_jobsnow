@@ -13,6 +13,12 @@
 			},
 			"reasonDescription": {
 				"type": "keyword"
+			},
+			"reasonDetails": {
+				"type": "keyword"
+			},
+			"reasonMessage": {
+				"type": "text"
 			}
 		}
 	}

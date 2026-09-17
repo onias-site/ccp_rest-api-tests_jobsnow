@@ -9,6 +9,7 @@ import com.ccp.aop.CcpNullParameterException;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import com.ccp.json.fields.validation.CcpJsonCommonsFields;
 
 public class JnServiceLoginTest {
 
@@ -108,6 +109,12 @@ public class JnServiceLoginTest {
 
 	@Test
 	public void jsonFieldNamesValueOfTest() {
-		assertNotNull(JnServiceLogin.JsonFieldNames.valueOf("sessionToken"));
+		assertNotNull(JnServiceLogin.JsonFieldNames.valueOf("inexistentField"));
+	}
+
+	/** sessionToken saiu do enum local e passou a viver no centralizador do centro de custo ccp. */
+	@Test
+	public void sessionTokenCentralizadoTest() {
+		assertNotNull(CcpJsonCommonsFields.valueOf("sessionToken"));
 	}
 }

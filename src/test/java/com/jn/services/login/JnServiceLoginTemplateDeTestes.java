@@ -48,12 +48,6 @@ public abstract class JnServiceLoginTemplateDeTestes {
 				CcpLocalInstances.email,
 				new CcpApacheMimeHttp()
 		);
-		String pathToCreateEntityScript = "documentation\\jn\\database\\elasticsearch\\scripts\\entities\\create";
-		String pathToJavaClasses = "..\\jn_business_jobsnow\\src\\main\\java\\com\\jn\\entities";
-		String mappingJnEntitiesErrors = "c:\\logs\\mappingJnEntitiesErrors.json";
-		String insertErrors = "c:\\logs\\insertErrors.json";
-		CcpDbRequester database = CcpDependencyInjection.getDependency(CcpDbRequester.class);
-		database.createTables(pathToCreateEntityScript, pathToJavaClasses, mappingJnEntitiesErrors, insertErrors);
 	}
 
 	protected CcpJsonRepresentation execute(CcpJsonRepresentation json, CcpProcessStatus expectedStatus) {

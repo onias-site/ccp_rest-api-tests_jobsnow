@@ -65,51 +65,6 @@ import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.resumes.ImportResumeFromOldJobsNow;
 
 
-/* 
- * FIXME
- * JBSUT
-		CcpJsonRepresentation request = json.getInnerJson(JnJsonCommonsFields.request);
-		CcpJsonRepresentation mergeWithAnotherJson = request.mergeWithAnotherJson(json);
-		CcpJsonRepresentation transformedJson2 = mergeWithAnotherJson
-				.getTransformedJson(JnJsonTransformersFieldsEntityDefault.token);
-				CcpJsonRepresentation duplicateValueFromField = transformedJson2
-				.duplicateValueFromField(JsonFieldNames.originalEmail, JnJsonCommonsFields.email, 
-						JnJsonInstantMessengerFields.chatId);
-						CcpJsonRepresentation transformedJson = duplicateValueFromField
-				.duplicateValueFromField(JsonFieldNames.originalToken, JnJsonTransformersFieldsEntityDefault.token)
-				;
-		CcpJsonRepresentation apply = super.apply(transformedJson);
- */
-
-/*FIXME
- * class SupportInstantMessengerNotification extends JnBusinessSendMessage{
-
-	protected SupportInstantMessengerNotification(JnMessageSenderExceptionHandler exceptionHandler) {
-		super(exceptionHandler);
-	}
-		 
-	public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-
-		String supportLanguage =  JnSystemProperties.INSTANCE.supportLanguage();
-		var clazz = this.getClass();
-
-		String templateId = clazz.getName();
-		CcpJsonRepresentation put2 = json
-				.put(JnJsonInstantMessengerFields.botName, JnBotType.support);
-				CcpJsonRepresentation put3 = put2
-				.put(JnJsonCommonsFields.templateId, templateId);
-
-				CcpJsonRepresentation put = put3
-				.put(JnJsonCommonsFields.language, supportLanguage)
-				;
-		
-		CcpJsonRepresentation apply = super.apply(put);
-		
-		return apply;
-	}
-
- */
-
 public class CcpRandomScripts {
 
 	static enum JsonFields implements CcpJsonFieldName{
@@ -142,8 +97,9 @@ public class CcpRandomScripts {
 	}
 
 	public static void main(String[] args) {
-		createEntities("jn");
-		createEntities("jb");
+		System.out.println(JnEntityLoginToken.ENTITY.toString());
+//		createEntities("jn");
+//		createEntities("jb");
 	}
 	
 	static void createEntities(String systemName) {

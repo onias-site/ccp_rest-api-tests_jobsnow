@@ -60,13 +60,6 @@ public abstract class VisTemplateDeTestes {
 				new CcpApacheMimeHttp(),  
 				CcpLocalInstances.email
 				);
-		
-		String pathToCreateEntityScript = "documentation\\vis\\database\\elasticsearch\\scripts\\entities\\create";
-		String pathToJavaClasses = "..\\vis_business_jobsnow\\src\\main\\java\\com\\vis\\entities";
-		String mappingJnEntitiesErrors = "c:\\logs\\mappingJnEntitiesErrors.json";
-		String insertErrors = "c:\\logs\\insertErrors.json";
-		CcpDbRequester database = CcpDependencyInjection.getDependency(CcpDbRequester.class);
-		database.createTables(pathToCreateEntityScript, pathToJavaClasses, mappingJnEntitiesErrors, insertErrors);
 	}
 	
 	public final Object getInnerClass(){

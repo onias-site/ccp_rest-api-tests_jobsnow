@@ -3,12 +3,11 @@ package com.jn.rest.api.commons;
 import java.util.function.Function;
 
 import com.ccp.constants.CcpOtherConstants;
-import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonFieldName;
+import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
-import com.ccp.especifications.db.utils.CcpDbRequester;
 import com.ccp.especifications.http.CcpHttpHandler;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponse;
@@ -43,13 +42,6 @@ public abstract class JnTemplateDeTestes {
 				new CcpGsonJsonHandler(), 
 				new CcpApacheMimeHttp() 
 				);
-		
-		String pathToCreateEntityScript = "documentation\\jn\\database\\elasticsearch\\scripts\\entities\\create";
-		String pathToJavaClasses = "..\\jn_business_jobsnow\\src\\main\\java\\com\\jn\\entities";
-		String mappingJnEntitiesErrors = "c:\\logs\\mappingJnEntitiesErrors.json";
-		String insertErrors = "c:\\logs\\insertErrors.json";
-		CcpDbRequester database = CcpDependencyInjection.getDependency(CcpDbRequester.class);
-		database.createTables(pathToCreateEntityScript, pathToJavaClasses, mappingJnEntitiesErrors, insertErrors);
 	}
 
 

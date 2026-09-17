@@ -94,7 +94,7 @@ public class CcpQueryOptionsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void putPropertyValueNullTest() {
-		options().putProperty("name", null);
+		options().putProperty(SampleFieldName.sample, null);
 	}
 
 	// ── CcpQueryOptions ───────────────────────────────────────────────────────
