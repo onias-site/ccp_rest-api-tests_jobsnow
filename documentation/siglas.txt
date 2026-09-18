@@ -225,13 +225,15 @@
   CUDT     = CcpUrlDecoratorTest
   CUTGJ    = CcpUsingTheGivenJson
   CVEF     = CcpValidEmailFilter
+  DAOWE    = DecoratorAfterOperationsWriterEntity
+  DATDE    = DecoratorAfterTransferDataEntity
+  DBOWE    = DecoratorBeforeOperationsWriterEntity
+  DBTDE    = DecoratorBeforeTransferDataEntity
   DCE      = DecoratorCacheEntity
   DFTE     = DecoratorFieldsTransformerEntity
   DFVE     = DecoratorFieldsValidatorEntity
   DIE      = DefaultImplementationEntity
-  DOWE     = DecoratorOperationsWriterEntity
   DROE     = DecoratorReadOnlyEntity
-  DTDE     = DecoratorTransferDataEntity
   DTE      = DecoratorTwinEntity
   ESBOR    = ElasticSearchBulkOperationResult
   ESC      = ElasticSearchCrud

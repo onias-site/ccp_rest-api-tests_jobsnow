@@ -38,9 +38,14 @@ public enum LoginActions implements CcpBusiness {
 		}
 	},
 	readTokenFromReceivedEmail{
+		/**
+		 * O template {@code JnNotifyUserAboutLoginToken} renomeia {@code originalToken} para
+		 * {@code token} antes de compor a mensagem, então é sob {@code token} que o valor em claro
+		 * chega ao e-mail gravado em disco.
+		 */
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			String originalToken = new CcpStringDecorator("c:\\logs\\email\\"+ JnNotifyUserAboutLoginToken.class.getName() + ".json")
-			.file().asSingleJson().getAsString(JsonFieldNames.originalToken);
+			.file().asSingleJson().getAsString(JsonFieldNames.token);
 			CcpJsonRepresentation put = json.put(JsonFieldNames.token, originalToken);
 			return put;
 		}
@@ -107,7 +112,7 @@ public enum LoginActions implements CcpBusiness {
 		}
 	}
 	enum JsonFieldNames implements CcpJsonFieldName{
-		sessionToken, token, originalToken
+		sessionToken, token
 	}
 
 	/**

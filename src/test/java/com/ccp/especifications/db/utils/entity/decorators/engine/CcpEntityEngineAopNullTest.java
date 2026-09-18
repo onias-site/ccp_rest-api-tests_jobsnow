@@ -346,11 +346,6 @@ public class CcpEntityEngineAopNullTest {
 	// ── CcpEntityMetaData ─────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void metaDataGetOperationCallbackNullTest() {
-		metaData().getOperationCallback(null);
-	}
-
-	@Test(expected = CcpNullParameterException.class)
 	public void metaDataGetOnlyUpdatableFieldsNullTest() {
 		metaData().getOnlyUpdatableFields(null);
 	}
@@ -634,35 +629,66 @@ public class CcpEntityEngineAopNullTest {
 		validatorDecorator().copyDataTo(JSON, null);
 	}
 
-	// ── DecoratorOperationsWriterEntity ───────────────────────────────────────
+	// ── DecoratorBeforeOperationsWriterEntity ─────────────────────────────────
 
-	private static DecoratorOperationsWriterEntity operationsDecorator() {
-		return new DecoratorOperationsWriterEntity(ENTITY, JnEntityLoginTokenRequestResend.class);
+	private static DecoratorBeforeOperationsWriterEntity beforeOperationsDecorator() {
+		return new DecoratorBeforeOperationsWriterEntity(ENTITY, JnEntityLoginTokenRequestResend.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void operationsDecoratorConstrutorEntityNullTest() {
-		new DecoratorOperationsWriterEntity(null, JnEntityLoginTokenRequestResend.class);
+	public void beforeOperationsDecoratorConstrutorEntityNullTest() {
+		new DecoratorBeforeOperationsWriterEntity(null, JnEntityLoginTokenRequestResend.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void operationsDecoratorConstrutorClassNullTest() {
-		new DecoratorOperationsWriterEntity(ENTITY, null);
+	public void beforeOperationsDecoratorConstrutorClassNullTest() {
+		new DecoratorBeforeOperationsWriterEntity(ENTITY, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void operationsDecoratorSaveNullTest() {
-		operationsDecorator().save(null);
+	public void beforeOperationsDecoratorSaveNullTest() {
+		beforeOperationsDecorator().save(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void operationsDecoratorDeleteNullTest() {
-		operationsDecorator().delete(null);
+	public void beforeOperationsDecoratorDeleteNullTest() {
+		beforeOperationsDecorator().delete(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void operationsDecoratorDeleteAnyWhereNullTest() {
-		operationsDecorator().deleteAnyWhere(null);
+	public void beforeOperationsDecoratorDeleteAnyWhereNullTest() {
+		beforeOperationsDecorator().deleteAnyWhere(null);
+	}
+
+	// ── DecoratorAfterOperationsWriterEntity ──────────────────────────────────
+
+	private static DecoratorAfterOperationsWriterEntity afterOperationsDecorator() {
+		return new DecoratorAfterOperationsWriterEntity(ENTITY, JnEntityLoginTokenRequestResend.class);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void afterOperationsDecoratorConstrutorEntityNullTest() {
+		new DecoratorAfterOperationsWriterEntity(null, JnEntityLoginTokenRequestResend.class);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void afterOperationsDecoratorConstrutorClassNullTest() {
+		new DecoratorAfterOperationsWriterEntity(ENTITY, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void afterOperationsDecoratorSaveNullTest() {
+		afterOperationsDecorator().save(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void afterOperationsDecoratorDeleteNullTest() {
+		afterOperationsDecorator().delete(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void afterOperationsDecoratorDeleteAnyWhereNullTest() {
+		afterOperationsDecorator().deleteAnyWhere(null);
 	}
 
 	// ── DecoratorReadOnlyEntity ───────────────────────────────────────────────
@@ -706,40 +732,76 @@ public class CcpEntityEngineAopNullTest {
 		readOnlyDecorator().transferDataTo(JSON, (CcpEntity[]) null);
 	}
 
-	// ── DecoratorTransferDataEntity ───────────────────────────────────────────
+	// ── DecoratorBeforeTransferDataEntity ─────────────────────────────────────
 
-	private static DecoratorTransferDataEntity transferDecorator() {
-		return new DecoratorTransferDataEntity(ENTITY, JnEntityJobsnowError.class);
+	private static DecoratorBeforeTransferDataEntity beforeTransferDecorator() {
+		return new DecoratorBeforeTransferDataEntity(ENTITY, JnEntityJobsnowError.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void transferDecoratorConstrutorEntityNullTest() {
-		new DecoratorTransferDataEntity(null, JnEntityJobsnowError.class);
+	public void beforeTransferDecoratorConstrutorEntityNullTest() {
+		new DecoratorBeforeTransferDataEntity(null, JnEntityJobsnowError.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void transferDecoratorConstrutorClassNullTest() {
-		new DecoratorTransferDataEntity(ENTITY, null);
+	public void beforeTransferDecoratorConstrutorClassNullTest() {
+		new DecoratorBeforeTransferDataEntity(ENTITY, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void transferDecoratorCopyDataToJsonNullTest() {
-		transferDecorator().copyDataTo(null, ENTITY);
+	public void beforeTransferDecoratorCopyDataToJsonNullTest() {
+		beforeTransferDecorator().copyDataTo(null, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void transferDecoratorCopyDataToEntityNullTest() {
-		transferDecorator().copyDataTo(JSON, null);
+	public void beforeTransferDecoratorCopyDataToEntityNullTest() {
+		beforeTransferDecorator().copyDataTo(JSON, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void transferDecoratorTransferDataToJsonNullTest() {
-		transferDecorator().transferDataTo(null, ENTITY);
+	public void beforeTransferDecoratorTransferDataToJsonNullTest() {
+		beforeTransferDecorator().transferDataTo(null, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void transferDecoratorTransferDataToEntityNullTest() {
-		transferDecorator().transferDataTo(JSON, null);
+	public void beforeTransferDecoratorTransferDataToEntityNullTest() {
+		beforeTransferDecorator().transferDataTo(JSON, null);
+	}
+
+	// ── DecoratorAfterTransferDataEntity ──────────────────────────────────────
+
+	private static DecoratorAfterTransferDataEntity afterTransferDecorator() {
+		return new DecoratorAfterTransferDataEntity(ENTITY, JnEntityJobsnowError.class);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void afterTransferDecoratorConstrutorEntityNullTest() {
+		new DecoratorAfterTransferDataEntity(null, JnEntityJobsnowError.class);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void afterTransferDecoratorConstrutorClassNullTest() {
+		new DecoratorAfterTransferDataEntity(ENTITY, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void afterTransferDecoratorCopyDataToJsonNullTest() {
+		afterTransferDecorator().copyDataTo(null, ENTITY);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void afterTransferDecoratorCopyDataToEntityNullTest() {
+		afterTransferDecorator().copyDataTo(JSON, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void afterTransferDecoratorTransferDataToJsonNullTest() {
+		afterTransferDecorator().transferDataTo(null, ENTITY);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void afterTransferDecoratorTransferDataToEntityNullTest() {
+		afterTransferDecorator().transferDataTo(JSON, null);
 	}
 
 	// ── DecoratorTwinEntity ───────────────────────────────────────────────────
@@ -779,6 +841,11 @@ public class CcpEntityEngineAopNullTest {
 	}
 
 	// ── CcpEntityOperationType (pacote irmão, exercitado a partir daqui) ──────
+
+	@Test(expected = CcpNullParameterException.class)
+	public void operationTypeGetOperationCallbackNullTest() {
+		CcpEntityOperationType.save.getOperationCallback(null);
+	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void operationTypeGetTopicHandlerEntityNullTest() {

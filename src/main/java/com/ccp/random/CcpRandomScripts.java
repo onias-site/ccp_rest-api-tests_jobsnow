@@ -97,9 +97,9 @@ public class CcpRandomScripts {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(JnEntityLoginToken.ENTITY.toString());
-//		createEntities("jn");
-//		createEntities("jb");
+//		System.out.println(JnEntityLoginToken.ENTITY.toString());
+		createEntities("jn");
+		createEntities("jb");
 	}
 	
 	static void createEntities(String systemName) {

@@ -1789,16 +1789,29 @@ Cobre os pacotes `com.ccp.especifications.cache` e `com.ccp.especifications.db.b
 **Propósito:** Cataloga todos os tipos de decorator disponíveis para entidades, associando cada um à sua anotação correspondente, à classe de decorator e a uma prioridade de aplicação. A prioridade determina a ordem de encadeamento dos decorators ao construir a entidade final via `CcpEntityFactory`.
 
 ### Constantes e suas prioridades:
-- **Disposable** (prio 1): Associado a `@CcpEntityDisposable` / lógica de registros descartáveis.
-- **Versionable** (prio 2): Associado a `@CcpEntityVersionable` / histórico de versões.
 - **Cacheable** (prio 3): Associado a `@CcpEntityCache` / `DecoratorCacheEntity`.
-- **WriteOperations** (prio 4): Associado a `@CcpEntityOperations` / `DecoratorOperationsWriterEntity`.
-- **DataTransfer** (prio 4): Associado a `@CcpEntityDataTransfers` / `DecoratorTransferDataEntity`.
-- **Twin** (prio 5): Associado a `@CcpEntityTwin` / `DecoratorTwinEntity`.
-- **AsyncWriter** (prio 6): Associado a `@CcpEntityAsyncWriter`.
-- **DataReadOnly** (prio 7): Associado a `@CcpEntityOlyReadable` / `DecoratorReadOnlyEntity`.
-- **FieldsTransformer** (prio 8): Associado a `@CcpEntityFieldsTransformer` / `DecoratorFieldsTransformerEntity`.
-- **FieldsValidator** (prio 9): Associado a `@CcpEntityFieldsValidator` / `DecoratorFieldsValidatorEntity`.
+- **Twin** (prio 4): Associado a `@CcpEntityTwin` / `DecoratorTwinEntity`.
+- **AfterWriteOperations** (prio 5): Associado a `@CcpEntityOperations` / `DecoratorAfterOperationsWriterEntity`.
+- **AfterDataTransfer** (prio 5): Associado a `@CcpEntityDataTransfers` / `DecoratorAfterTransferDataEntity`.
+- **FieldsTransformer** (prio 6): Associado a `@CcpEntityFieldsTransformer` / `DecoratorFieldsTransformerEntity`.
+- **BeforeWriteOperations** (prio 7): Associado a `@CcpEntityOperations` / `DecoratorBeforeOperationsWriterEntity`.
+- **BeforeDataTransfer** (prio 7): Associado a `@CcpEntityDataTransfers` / `DecoratorBeforeTransferDataEntity`.
+- **DataReadOnly** (prio 9): Associado a `@CcpEntityOlyReadable` / `DecoratorReadOnlyEntity`.
+- **FieldsValidator** (prio 10): Associado a `@CcpEntityFieldsValidator` / `DecoratorFieldsValidatorEntity`.
+
+Cada anotação de side effect ativa um par de itens: o `Before*`, de prioridade alta, fica na parte externa da cadeia e executa o fluxo `before` antes de todos os demais decorators; o `After*`, de prioridade baixa, fica na parte interna e executa o fluxo `after` somente depois que a gravação ou a transferência de fato aconteceu.
+
+### O topo da faixa
+
+A ordem dos três primeiros é deliberada:
+
+1. **`FieldsValidator` (10)** — reprova a entrada antes de qualquer outra coisa.
+2. **`DataReadOnly` (9)** — entidade somente leitura recusa a escrita, então a recusa tem que vir antes de qualquer side effect, antes de transformar campo e antes de publicar mensagem em fila. Só o validador pode ficar acima dele.
+3. **prioridade 8, reservada** — é dos decorators custom que **cortam a cadeia e republicam a operação**, hoje apenas o `JnAsyncWriterEntity` (declarado via `@CcpEntityCustomDecorator(value = JnEntityAsyncWriterBuilder.class, priority = 8)`). Quem corta a cadeia serializa o JSON e o coloca numa fila, então precisa recebê-lo **cru**: se ficar por dentro do `FieldsTransformer`, o que vai para a fila já vem transformado e o `FieldsValidator` reprova a mensagem quando o consumidor a reprocessa. Com o async writer em 8, o passe do publicador faz apenas validar e publicar, e o consumidor — que remonta a cadeia sem o async writer — executa todo o resto exatamente uma vez. Nenhum item do enum usa a 8.
+
+### Empate de prioridade
+
+Quando dois decorators têm a mesma prioridade, o **custom fica por fora** do item de enum: `CcpEntityFactory` concatena os customs depois dos itens de enum e a ordenação é estável, então o custom é aplicado por último e vira o mais externo. Não use empate para expressar ordem — dê prioridades distintas.
 
 ### Métodos:
 - **isDecorated(Class&lt;?&gt; clazz)** → boolean: Verifica se a classe possui a anotação associada a este tipo de decorator.
@@ -1849,7 +1862,7 @@ Todos os métodos delegam para `this.entity`:
 - **getCustomEntity(CcpEntityConfigurator configurator, CcpEntityDecoratorTypes... decoratorsToAvoid)** → CcpEntity (static): Constrói uma entidade customizada a partir de um configurador, excluindo os tipos de decorator informados.
 - **getCustomEntity(CcpEntity entity, CcpEntityDecoratorTypes... decoratorsToAvoid)** → CcpEntity (static): Variante que recebe uma entidade existente para extrair a classe de configuração e reconstruir excluindo decorators.
 - **getEntity(Class&lt;?&gt; configurationClass, Function&lt;Class&lt;?&gt;, String&gt; entityNameExtractor, CcpEntityDecoratorTypes... decoratorsToAvoid)** → CcpEntity (static): Método principal de construção: cria `CcpEntityMetaData`, instancia `DefaultImplementationEntity` como base e aplica em cadeia todos os decorators encontrados na classe (em ordem de prioridade), exceto os informados em `decoratorsToAvoid`.
-- **getFields(Class&lt;?&gt; configurationClass)** → CcpEntityField[] (static): Extrai os campos da enum `Fields` interna da classe de configuração, determinando para cada campo se é chave primária, atualizável e qual transformador usar.
+- **getFields(Class&lt;?&gt; configurationClass)** → CcpEntityField[] (static): Extrai os campos da enum `Fields` interna da classe de configuração, determinando para cada campo se é chave primária, atualizável e qual transformador usar. A checagem de que o `Fields` existe varre **todos** os tipos aninhados, em qualquer posição: a ordem devolvida por `getDeclaredClasses()` não é especificada pela JVM e não corresponde nem à ordem do código-fonte, então a classe configuradora pode declarar outros enums auxiliares antes do `Fields`.
 
 ---
 
@@ -1925,15 +1938,27 @@ Todos os métodos delegam para `this.entity`:
 
 ---
 
-## Classe: DecoratorOperationsWriterEntity
+## Classe: DecoratorBeforeOperationsWriterEntity
 **Pacote:** com.ccp.especifications.db.utils.entity.decorators.engine
 **Tipo:** classe (package-private)
-**Propósito:** Decorator que adiciona side effects (operações de negócio antes e depois) às operações de escrita de uma entidade, conforme configurado na anotação `@CcpEntityOperations`. Usa `CcpEntityDecoratorOperationType` para executar os fluxos de negócio encadeados.
+**Propósito:** Decorator que adiciona os side effects prévios (fluxo `before`) às operações de escrita de uma entidade, conforme configurado na anotação `@CcpEntityOperations`. Usa `CcpEntityDecoratorOperationType.executeBefore` e, por ter prioridade alta, executa antes dos demais decorators, repassando o JSON resultante para dentro da cadeia.
 
 ### Métodos:
-- **save(CcpJsonRepresentation json)** → CcpJsonRepresentation: Executa os flows de negócio before/after do tipo `save` definidos na anotação e então salva na entidade base.
-- **delete(CcpJsonRepresentation json)** → CcpJsonRepresentation: Executa os flows de negócio before/after do tipo `delete` e então deleta na entidade base.
-- **deleteAnyWhere(CcpJsonRepresentation json)** → CcpJsonRepresentation: Executa os flows de negócio before/after do tipo `deleteAnyWhere` e então deleta na entidade base.
+- **save(CcpJsonRepresentation json)** → boolean: Executa os flows de negócio `before` do tipo `save` e então delega o salvamento à entidade base.
+- **delete(CcpJsonRepresentation json)** → boolean: Executa os flows de negócio `before` do tipo `delete` e então delega a remoção à entidade base.
+- **deleteAnyWhere(CcpJsonRepresentation json)** → boolean: Executa os flows de negócio `before` do tipo `deleteAnyWhere` e então delega a remoção à entidade base.
+
+---
+
+## Classe: DecoratorAfterOperationsWriterEntity
+**Pacote:** com.ccp.especifications.db.utils.entity.decorators.engine
+**Tipo:** classe (package-private)
+**Propósito:** Decorator que adiciona os side effects posteriores (fluxo `after`) às operações de escrita de uma entidade, conforme configurado na anotação `@CcpEntityOperations`. Usa `CcpEntityDecoratorOperationType.executeAfter` e, por ter prioridade baixa, só executa depois que a gravação de fato aconteceu.
+
+### Métodos:
+- **save(CcpJsonRepresentation json)** → boolean: Delega o salvamento à entidade base e, se um documento novo foi incluído, executa os flows de negócio `after` do tipo `save`.
+- **delete(CcpJsonRepresentation json)** → boolean: Delega a remoção à entidade base e, se algo foi removido, executa os flows de negócio `after` do tipo `delete`.
+- **deleteAnyWhere(CcpJsonRepresentation json)** → boolean: Delega a remoção à entidade base e, se algo foi removido, executa os flows de negócio `after` do tipo `deleteAnyWhere`.
 
 ---
 
@@ -1950,14 +1975,25 @@ Todos os métodos delegam para `this.entity`:
 
 ---
 
-## Classe: DecoratorTransferDataEntity
+## Classe: DecoratorBeforeTransferDataEntity
 **Pacote:** com.ccp.especifications.db.utils.entity.decorators.engine
 **Tipo:** classe (package-private)
-**Propósito:** Decorator que adiciona side effects (operações de negócio antes e depois) às transferências de dados entre entidades, conforme configurado na anotação `@CcpEntityDataTransfers`. Usa `CcpEntityDecoratorTransferType` para executar os fluxos de negócio encadeados.
+**Propósito:** Decorator que adiciona os side effects prévios (fluxo `before`) às transferências de dados entre entidades, conforme configurado na anotação `@CcpEntityDataTransfers`. Usa `CcpEntityDecoratorTransferType.executeBefore` e, por ter prioridade alta, executa antes dos demais decorators, repassando o JSON resultante para dentro da cadeia.
 
 ### Métodos:
-- **copyDataTo(CcpJsonRepresentation json, CcpEntity entityToTransferData)** → CcpJsonRepresentation: Executa os flows de negócio before/after para `copyDataTo` e então copia os dados na entidade base.
-- **transferDataTo(CcpJsonRepresentation json, CcpEntity entityToTransferData)** → CcpJsonRepresentation: Executa os flows de negócio before/after para `transferDataTo` e então transfere os dados na entidade base.
+- **copyDataTo(CcpJsonRepresentation json, CcpEntity entityToTransferData)** → boolean: Executa os flows de negócio `before` para `copyDataTo` e então delega a cópia à entidade base.
+- **transferDataTo(CcpJsonRepresentation json, CcpEntity entityToTransferData)** → boolean: Executa os flows de negócio `before` para `transferDataTo` e então delega a transferência à entidade base.
+
+---
+
+## Classe: DecoratorAfterTransferDataEntity
+**Pacote:** com.ccp.especifications.db.utils.entity.decorators.engine
+**Tipo:** classe (package-private)
+**Propósito:** Decorator que adiciona os side effects posteriores (fluxo `after`) às transferências de dados entre entidades, conforme configurado na anotação `@CcpEntityDataTransfers`. Usa `CcpEntityDecoratorTransferType.executeAfter` e, por ter prioridade baixa, só executa depois que a transferência de fato aconteceu.
+
+### Métodos:
+- **copyDataTo(CcpJsonRepresentation json, CcpEntity entityToTransferData)** → boolean: Delega a cópia à entidade base e, se houve registro de origem, executa os flows de negócio `after` para `copyDataTo`.
+- **transferDataTo(CcpJsonRepresentation json, CcpEntity entityToTransferData)** → boolean: Delega a transferência à entidade base e, se houve registro de origem, executa os flows de negócio `after` para `transferDataTo`.
 
 ---
 
@@ -1996,7 +2032,8 @@ Todos os métodos delegam para `this.entity`:
 
 ### Métodos:
 - **executeEntityOperation(CcpJsonRepresentation json, CcpEntity entity)** → CcpJsonRepresentation (abstrato): Executa a operação específica de cada constante (save/delete/deleteAnyWhere) na entidade.
-- **execute(CcpJsonRepresentation json, Class&lt;?&gt; clazz, CcpEntity entity, CcpEntity... entities)** → CcpJsonRepresentation: Executa o fluxo completo: flows before → operação → flows after.
+- **executeBefore(CcpJsonRepresentation json, Class&lt;?&gt; clazz, CcpEntity entity)** → boolean: Executa os flows `before` e então delega a operação ao restante da cadeia de decorators.
+- **executeAfter(CcpJsonRepresentation json, Class&lt;?&gt; clazz, CcpEntity entity)** → boolean: Delega a operação ao restante da cadeia e executa os flows `after` somente se a operação aconteceu de fato.
 - **executeFlow(CcpJsonRepresentation json, CcpEntityOperationStepType when, Class&lt;?&gt; clazz, CcpEntity entity)** → CcpJsonRepresentation (protected): Percorre as operações configuradas na anotação `@CcpEntityOperations`, encontra a correspondente à constante atual, ao momento (before/after) e à entidade, e executa os negócios em cadeia com tratamento de exceções.
 
 ---
@@ -2008,7 +2045,8 @@ Todos os métodos delegam para `this.entity`:
 
 ### Métodos:
 - **executeEntityTransfer(CcpJsonRepresentation json, CcpEntity entity, CcpEntity entities)** → CcpJsonRepresentation (abstrato): Executa a transferência ou cópia específica de cada constante.
-- **execute(CcpJsonRepresentation json, Class&lt;?&gt; clazz, CcpEntity entity, CcpEntity entityToTransfer)** → CcpJsonRepresentation: Executa o fluxo completo: flows before → transferência → flows after.
+- **executeBefore(CcpJsonRepresentation json, Class&lt;?&gt; clazz, CcpEntity entity, CcpEntity entityToTransfer)** → boolean: Executa os flows `before` e então delega a transferência ao restante da cadeia de decorators.
+- **executeAfter(CcpJsonRepresentation json, Class&lt;?&gt; clazz, CcpEntity entity, CcpEntity entityToTransfer)** → boolean: Delega a transferência ao restante da cadeia e executa os flows `after` somente se a transferência aconteceu de fato.
 - **executeFlow(CcpJsonRepresentation json, CcpEntityOperationStepType when, Class&lt;?&gt; clazz, CcpEntity entity, CcpEntity entityToTransfer)** → CcpJsonRepresentation (protected): Percorre as transferências configuradas na anotação `@CcpEntityDataTransfers`, filtra pela entidade destino, origem, tipo e momento, e executa os negócios em cadeia com tratamento de exceções.
 
 ---

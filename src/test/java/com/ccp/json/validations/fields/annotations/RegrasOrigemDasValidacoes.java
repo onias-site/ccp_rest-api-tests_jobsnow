@@ -11,5 +11,11 @@ public enum RegrasOrigemDasValidacoes implements CcpJsonFieldName {
 
 	@CcpJsonFieldTypeString(minLength = 3, maxLength = 8)
 	apelido,
+
+	@CcpJsonFieldTypeString
+	causaComRepetidos,
+
+	@CcpJsonFieldTypeString
+	causaSemRepetidos,
 	;
 }

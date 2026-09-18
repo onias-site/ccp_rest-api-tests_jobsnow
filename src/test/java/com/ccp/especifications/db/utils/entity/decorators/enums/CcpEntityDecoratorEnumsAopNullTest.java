@@ -37,23 +37,33 @@ public class CcpEntityDecoratorEnumsAopNullTest {
 	// ── CcpEntityDecoratorOperationType ───────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void operationTypeExecuteJsonNullTest() {
-		CcpEntityDecoratorOperationType.save.execute(null, OPERATIONS_CLASS, ENTITY);
+	public void operationTypeExecuteBeforeJsonNullTest() {
+		CcpEntityDecoratorOperationType.save.executeBefore(null, OPERATIONS_CLASS, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void operationTypeExecuteClassNullTest() {
-		CcpEntityDecoratorOperationType.save.execute(JSON, null, ENTITY);
+	public void operationTypeExecuteBeforeClassNullTest() {
+		CcpEntityDecoratorOperationType.save.executeBefore(JSON, null, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void operationTypeExecuteEntityNullTest() {
-		CcpEntityDecoratorOperationType.save.execute(JSON, OPERATIONS_CLASS, null);
+	public void operationTypeExecuteBeforeEntityNullTest() {
+		CcpEntityDecoratorOperationType.save.executeBefore(JSON, OPERATIONS_CLASS, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void operationTypeExecuteEntitiesNullTest() {
-		CcpEntityDecoratorOperationType.save.execute(JSON, OPERATIONS_CLASS, ENTITY, (CcpEntity[]) null);
+	public void operationTypeExecuteAfterJsonNullTest() {
+		CcpEntityDecoratorOperationType.save.executeAfter(null, OPERATIONS_CLASS, ENTITY);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void operationTypeExecuteAfterClassNullTest() {
+		CcpEntityDecoratorOperationType.save.executeAfter(JSON, null, ENTITY);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void operationTypeExecuteAfterEntityNullTest() {
+		CcpEntityDecoratorOperationType.save.executeAfter(JSON, OPERATIONS_CLASS, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -81,23 +91,43 @@ public class CcpEntityDecoratorEnumsAopNullTest {
 	// ── CcpEntityDecoratorTransferType ────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void transferTypeExecuteJsonNullTest() {
-		CcpEntityDecoratorTransferType.copyDataTo.execute(null, OPERATIONS_CLASS, ENTITY, ENTITY);
+	public void transferTypeExecuteBeforeJsonNullTest() {
+		CcpEntityDecoratorTransferType.copyDataTo.executeBefore(null, OPERATIONS_CLASS, ENTITY, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void transferTypeExecuteClassNullTest() {
-		CcpEntityDecoratorTransferType.copyDataTo.execute(JSON, null, ENTITY, ENTITY);
+	public void transferTypeExecuteBeforeClassNullTest() {
+		CcpEntityDecoratorTransferType.copyDataTo.executeBefore(JSON, null, ENTITY, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void transferTypeExecuteEntityNullTest() {
-		CcpEntityDecoratorTransferType.copyDataTo.execute(JSON, OPERATIONS_CLASS, null, ENTITY);
+	public void transferTypeExecuteBeforeEntityNullTest() {
+		CcpEntityDecoratorTransferType.copyDataTo.executeBefore(JSON, OPERATIONS_CLASS, null, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void transferTypeExecuteEntityToTransferNullTest() {
-		CcpEntityDecoratorTransferType.copyDataTo.execute(JSON, OPERATIONS_CLASS, ENTITY, null);
+	public void transferTypeExecuteBeforeEntityToTransferNullTest() {
+		CcpEntityDecoratorTransferType.copyDataTo.executeBefore(JSON, OPERATIONS_CLASS, ENTITY, null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void transferTypeExecuteAfterJsonNullTest() {
+		CcpEntityDecoratorTransferType.copyDataTo.executeAfter(null, OPERATIONS_CLASS, ENTITY, ENTITY);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void transferTypeExecuteAfterClassNullTest() {
+		CcpEntityDecoratorTransferType.copyDataTo.executeAfter(JSON, null, ENTITY, ENTITY);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void transferTypeExecuteAfterEntityNullTest() {
+		CcpEntityDecoratorTransferType.copyDataTo.executeAfter(JSON, OPERATIONS_CLASS, null, ENTITY);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void transferTypeExecuteAfterEntityToTransferNullTest() {
+		CcpEntityDecoratorTransferType.copyDataTo.executeAfter(JSON, OPERATIONS_CLASS, ENTITY, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
