@@ -2,7 +2,6 @@ package com.jn.services.login;
 
 import org.junit.Test;
 import com.ccp.constants.CcpOtherConstants;
-import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
@@ -119,11 +118,15 @@ public class SavePassword extends JnServiceLoginTemplateDeTestes {
 		return this.execute(body, JnProcessStatusUpdatePassword.expectedStatus);
 	}
 
+	/**
+	 * O token em claro já vem no json do pedido, posto ali pelo transformador de token, e o save o
+	 * reaproveita em vez de gerar outro. Gravar o json transformado seria gravar o e-mail já convertido em
+	 * hash, que as validações da entidade — aplicadas antes dos transformadores — recusariam.
+	 */
 	private String getToken(VariaveisParaTeste variaveisParaTeste) {
 		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		CcpJsonRepresentation createOrUpdate = JnEntityLoginToken.ENTITY.getHandledJson(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginToken.ENTITY.save(createOrUpdate);
-		String token = createOrUpdate.getAsString(new CcpFieldName("originalToken"));
+		JnEntityLoginToken.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
+		String token = variaveisParaTeste.REQUEST_TO_LOGIN.getAsString(JnJsonCommonsFields.originalToken);
 		return token;
 	}
 

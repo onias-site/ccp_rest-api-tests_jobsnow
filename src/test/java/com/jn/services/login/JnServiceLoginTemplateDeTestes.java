@@ -7,12 +7,12 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
-import com.ccp.especifications.db.utils.CcpDbRequester;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
+import com.ccp.implementations.instant.messenger.telegram.CcpTelegramInstantMessenger;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
@@ -46,6 +46,7 @@ public abstract class JnServiceLoginTemplateDeTestes {
 				new CcpElasticSearchCrud(),
 				new CcpGsonJsonHandler(),
 				CcpLocalInstances.email,
+				new CcpTelegramInstantMessenger(),
 				new CcpApacheMimeHttp()
 		);
 	}

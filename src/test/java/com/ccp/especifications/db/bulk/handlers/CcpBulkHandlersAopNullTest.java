@@ -170,21 +170,21 @@ public class CcpBulkHandlersAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void transferTwinConstrutorNullTest() {
-		new CcpEntityBulkHandlerTransferRecordToTwinEntity(null);
+		new CcpEntityBulkHandlerTransferRecordToTwinEntity(null, CcpOtherConstants.whenRecordWasNotFoundInTheEntityToSearch);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void transferTwinWhenFoundSearchParameterNullTest() {
-		new CcpEntityBulkHandlerTransferRecordToTwinEntity(TWIN_ENTITY).whenRecordWasFoundInTheEntitySearch(null, JSON);
+		new CcpEntityBulkHandlerTransferRecordToTwinEntity(TWIN_ENTITY, CcpOtherConstants.whenRecordWasNotFoundInTheEntityToSearch).whenRecordWasFoundInTheEntitySearch(null, JSON);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void transferTwinWhenFoundRecordNullTest() {
-		new CcpEntityBulkHandlerTransferRecordToTwinEntity(TWIN_ENTITY).whenRecordWasFoundInTheEntitySearch(JSON, null);
+		new CcpEntityBulkHandlerTransferRecordToTwinEntity(TWIN_ENTITY, CcpOtherConstants.whenRecordWasNotFoundInTheEntityToSearch).whenRecordWasFoundInTheEntitySearch(JSON, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void transferTwinWhenNotFoundNullTest() {
-		new CcpEntityBulkHandlerTransferRecordToTwinEntity(TWIN_ENTITY).whenRecordWasNotFoundInTheEntitySearch(null);
+		new CcpEntityBulkHandlerTransferRecordToTwinEntity(TWIN_ENTITY, CcpOtherConstants.whenRecordWasNotFoundInTheEntityToSearch).whenRecordWasNotFoundInTheEntitySearch(null);
 	}
 }

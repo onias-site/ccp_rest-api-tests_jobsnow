@@ -1203,12 +1203,13 @@ Cobre os pacotes `com.ccp.especifications.cache` e `com.ccp.especifications.db.b
 **Propósito:** Representa o resultado condensado de uma busca `unionAll` — múltiplas entidades buscadas em uma única chamada ao banco. Internamente organiza os resultados em um mapa aninhado `{ entidade → { id → dadosDoRegistro } }` e provê métodos para verificar presença e recuperar dados de entidades específicas.
 
 ### Métodos:
-- **CcpSelectUnionAll(CcpJsonRepresentation[] searchParameters, List\<CcpJsonRepresentation\> results, CcpEntity... entities)** → construtor: Constrói o objeto condensado a partir dos parâmetros de busca, dos resultados brutos retornados pelo banco e das entidades consultadas, organizando os dados no mapa interno e incluindo o `explainedSearch` (chave primária explicada por entidade e id).
-- **isPresent(String entityName, String id)** → boolean: Verifica se existe um registro com o id informado para a entidade de nome `entityName` dentro do resultado condensado.
+- **CcpSelectUnionAll(CcpJsonRepresentation[] searchParameters, List\<CcpJsonRepresentation\> results, CcpEntity... entities)** → construtor: Constrói o objeto condensado a partir dos parâmetros de busca, dos resultados brutos retornados pelo banco e das entidades consultadas, organizando os dados no mapa interno e gravando o `explainedSearch` (chave primária explicada) como subelemento de cada registro.
+- **isPresent(String entityName, String id)** → boolean: Verifica se existe um registro com o id informado para a entidade de nome `entityName` dentro do resultado condensado (o `explainedSearch` não conta como conteúdo do registro).
 - **handleRecordInUnionAll(CcpJsonRepresentation searchParameter, CcpHandleWithSearchResultsInTheEntity\<T\> handler)** → T: Verifica se o registro está presente e delega para o callback adequado do handler (`whenFound` ou `whenNotFound`), passando o registro encontrado quando aplicável.
-- **getEntityRow(String index, String id)** → CcpJsonRepresentation: Retorna os dados de um registro específico por nome de índice e id; retorna JSON vazio se não encontrado.
+- **getEntityRow(String index, String id)** → CcpJsonRepresentation: Retorna os dados de um registro específico por nome de índice e id, sem o `explainedSearch`; retorna JSON vazio se não encontrado.
 - **toString()** → String: Retorna a representação textual do mapa condensado.
-- **getEntityRows(CcpEntity entity)** → List\<CcpJsonRepresentation\>: Retorna todos os registros encontrados para a entidade informada como lista de JSONs, adicionando o campo de id a cada um.
+- **getEntityRows(CcpEntity entity)** → List\<CcpJsonRepresentation\>: Retorna todos os registros encontrados para a entidade informada como lista de JSONs sem o `explainedSearch`, adicionando o campo de id a cada um.
+- **getEntityRowsGroupedById(CcpEntity entity)** → CcpJsonRepresentation: Retorna os registros da entidade informada no formato `{ id → dadosDoRegistro }`, sem o `explainedSearch`; retorna JSON vazio se a entidade não estiver no resultado.
 
 ---
 

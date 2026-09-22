@@ -178,6 +178,11 @@ public class CcpCrudAopNullTest {
 		unionAll().getEntityRows(null);
 	}
 
+	@Test(expected = CcpNullParameterException.class)
+	public void selectUnionAllGetEntityRowsGroupedByIdNullTest() {
+		unionAll().getEntityRowsGroupedById(null);
+	}
+
 	// ── CcpGetEntityId ────────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)

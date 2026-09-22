@@ -23,14 +23,18 @@ public class UnlockLoginToken extends JnServiceLoginTemplateDeTestes {
 		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusTokenNotLocked);
 	}
 
+	/**
+	 * O pedido cumprido é o que está na entidade gêmea, e gravar nela é o que apaga o registro da
+	 * principal. Pedir o delete na gêmea faria o contrário: transferiria o registro da gêmea de volta para
+	 * a principal, montando o mesmo cenário de {@link #desbloqueioJaSolicitado()}.
+	 */
 	@Test
 	public void desbloqueioJaRealizado() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 
 		JnEntityLoginToken.ENTITY.getTwinEntity().save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginTokenRequestUnlock.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginTokenRequestUnlock.ENTITY.getTwinEntity().delete(variaveisParaTeste.REQUEST_TO_LOGIN);
-		
+		JnEntityLoginTokenRequestUnlock.ENTITY.getTwinEntity().save(variaveisParaTeste.REQUEST_TO_LOGIN);
+
 		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusTokenAlredyUnlocked);
 	}
 

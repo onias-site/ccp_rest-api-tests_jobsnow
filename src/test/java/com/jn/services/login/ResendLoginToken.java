@@ -17,12 +17,16 @@ public class ResendLoginToken extends JnServiceLoginTemplateDeTestes {
 		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, CcpProcessStatusDefault.UNPROCESSABLE_ENTITY);
 	}
 
+	/**
+	 * O pedido cumprido é o que está na entidade gêmea, e gravar nela é o que apaga o registro da
+	 * principal. Pedir o delete na gêmea faria o contrário: transferiria o registro da gêmea de volta para
+	 * a principal, montando o mesmo cenário de {@link #reenvioJaSolicitado()}.
+	 */
 	@Test
 	public void reenvioJaFoiFeito() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		JnEntityLoginToken.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginTokenRequestResend.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginTokenRequestResend.ENTITY.getTwinEntity().delete(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginTokenRequestResend.ENTITY.getTwinEntity().save(variaveisParaTeste.REQUEST_TO_LOGIN);
 
 		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusTokenAlredyResent);
 	}

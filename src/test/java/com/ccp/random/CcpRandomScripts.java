@@ -28,7 +28,6 @@ import com.ccp.especifications.db.crud.CcpCrud;
 import com.ccp.especifications.db.crud.CcpSelectUnionAll;
 import com.ccp.especifications.db.query.CcpQueryExecutor;
 import com.ccp.especifications.db.query.CcpQueryOptions;
-import com.ccp.especifications.db.utils.CcpDbRequester;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.ccp.especifications.db.utils.entity.fields.CcpEntityField;
@@ -59,6 +58,7 @@ import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
+import com.jn.services.JnServiceLogin;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
@@ -96,25 +96,6 @@ public class CcpRandomScripts {
 				);
 	}
 
-	public static void main(String[] args) {
-//		System.out.println(JnEntityLoginToken.ENTITY.toString());
-		createEntities("jn");
-		createEntities("jb");
-	}
-	
-	static void createEntities(String systemName) {
-		String pathToCreateEntityScript = "documentation\\" + systemName + "\\database\\elasticsearch\\scripts\\entities\\create";
-		String pathToJavaClasses = "..\\" + systemName + "_business_jobsnow\\src\\main\\java\\com\\" + systemName + "\\entities";
-		String mappingJnEntitiesErrors = "c:\\logs\\"
-				+ systemName
-				+ "\\mappingJnEntitiesErrors.json";
-		String insertErrors = "c:\\logs\\"
-				+ systemName
-				+ "\\insertErrors.json";
-		CcpDbRequester database = CcpDependencyInjection.getDependency(CcpDbRequester.class);
-		database.createTables(pathToCreateEntityScript, pathToJavaClasses, mappingJnEntitiesErrors, insertErrors);
-	}
-	
 	static CcpJsonRepresentation groupedCompanies = CcpOtherConstants.EMPTY_JSON;
 
 	private static final String LINKEDIN_REGEX = "^https://(www\\.)?linkedi n\\.com/in/[a-zA-Z0-9-_%]+/?$";
@@ -133,6 +114,10 @@ public class CcpRandomScripts {
 		System.out.println(sendFile);
 	}
 
+	public static void main(String[] args) {
+		JnServiceLogin.SavePassword.execute(new CcpJsonRepresentation(" {\"password\":\"Novasenha1!\",\"confirmPassword\":\"Novasenha1!\",\"token\":\"2MOSZ8H8\",\"attempts\":[\"2MOSZ8H8\"]}"));
+	}
+	
 	static void testarDisposable() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnJsonCommonsFields.email, "onias85@gmail.com")
