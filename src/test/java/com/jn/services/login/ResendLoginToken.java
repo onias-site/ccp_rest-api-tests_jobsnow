@@ -35,8 +35,6 @@ public class ResendLoginToken extends JnServiceLoginTemplateDeTestes {
 	public void tokenNaoExiste() {
 		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
 		JnEntityLoginTokenRequestResend.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginTokenRequestResend.ENTITY.getTwinEntity().delete(variaveisParaTeste.REQUEST_TO_LOGIN);
-
 		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusTokenNotExists);
 	}
 

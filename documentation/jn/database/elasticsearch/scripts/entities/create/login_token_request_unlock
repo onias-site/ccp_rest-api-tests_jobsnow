@@ -5,9 +5,6 @@
                 "email": {
                     "type": "keyword"
                 },
-                "password": {
-                    "type": "text"
-                },
                  "chatId": {
                     "type": "long"
                 }
