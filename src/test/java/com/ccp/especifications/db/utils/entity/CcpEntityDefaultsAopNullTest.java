@@ -9,6 +9,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
 import com.ccp.especifications.db.crud.CcpSelectUnionAll;
+import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.entities.JnEntityJobsnowError;
 import org.junit.Test;
@@ -20,8 +21,14 @@ import org.junit.Test;
  */
 public class CcpEntityDefaultsAopNullTest {
 
+	/**
+	 * O {@code CcpDbRequester} entra por causa do dublê de {@code CcpSelectUnionAll}: o construtor dele
+	 * pede essa dependência para descobrir os nomes dos campos de entidade e de id. Sem ela, montar o
+	 * cenário estoura antes de o método sob teste ser chamado, e o aspecto nunca chega a rodar. Nada
+	 * aqui toca o banco — os dois métodos usados devolvem nome de campo.
+	 */
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpElasticSearchDbRequest());
 	}
 
 	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;

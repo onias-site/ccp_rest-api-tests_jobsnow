@@ -17,6 +17,14 @@ class FakeCrud implements CcpCrud {
 
 	private static final Map<String, CcpJsonRepresentation> registros = new HashMap<>();
 
+	/**
+	 * Esvazia o banco. O mapa é estático, então sobrevive à troca de instância e faz um teste enxergar o
+	 * que o anterior gravou — quem usa este dublê precisa limpá-lo entre um teste e outro.
+	 */
+	static void limpar() {
+		registros.clear();
+	}
+
 	public CcpJsonRepresentation getOneById(String entityName, String id) {
 
 		String key = this.getKey(entityName, id);

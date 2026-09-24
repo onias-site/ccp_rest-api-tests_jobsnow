@@ -96,4 +96,31 @@ public class CcpJsonFieldTypeStringTest {
 		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.valorPermitido, "talvez");
 		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeString.valorPermitido, CcpJsonFieldTypeError.stringAllowedValues);
 	}
+
+	@Test
+	public void nomeDeClasseJavaAceitaTest() {
+		String nomeDeClasse = CcpJsonRepresentation.class.getName();
+		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.nomeDeClasseJava, nomeDeClasse);
+		ValidacaoDeCampo.aceita(this.negocio, json);
+	}
+
+	@Test
+	public void nomeDeClasseJavaAninhadaAceitaTest() {
+		String nomeDeClasse = RegrasFieldTypeString.ValoresPermitidos.class.getName();
+		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.nomeDeClasseJava, nomeDeClasse);
+		ValidacaoDeCampo.aceita(this.negocio, json);
+	}
+
+	@Test
+	public void nomeDeClasseJavaInexistenteRecusaTest() {
+		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.nomeDeClasseJava, "com.ccp.nao.existe.ClasseInexistente");
+		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeString.nomeDeClasseJava, CcpJsonFieldTypeError.stringJavaClass);
+	}
+
+	@Test
+	public void nomeDeClasseJavaSemPacoteRecusaTest() {
+		String nomeSimples = CcpJsonRepresentation.class.getSimpleName();
+		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.nomeDeClasseJava, nomeSimples);
+		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeString.nomeDeClasseJava, CcpJsonFieldTypeError.stringJavaClass);
+	}
 }

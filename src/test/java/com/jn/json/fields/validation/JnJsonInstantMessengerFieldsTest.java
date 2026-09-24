@@ -13,7 +13,7 @@ public class JnJsonInstantMessengerFieldsTest {
 	public void valuesTest() {
 		JnJsonInstantMessengerFields[] values = JnJsonInstantMessengerFields.values();
 		assertNotNull(values);
-		assertEquals(12, values.length);
+		assertEquals(10, values.length);
 	}
 
 	@Test
@@ -33,9 +33,9 @@ public class JnJsonInstantMessengerFieldsTest {
 		assertNotNull(JnJsonInstantMessengerFields.message);
 		assertNotNull(JnJsonInstantMessengerFields.chatId);
 		assertNotNull(JnJsonInstantMessengerFields.moreParameters);
-		assertNotNull(JnJsonInstantMessengerFields.templateId);
+		assertNotNull(JnJsonCommonsFields.templateId);
 		assertNotNull(JnJsonInstantMessengerFields.caption);
-		assertNotNull(JnJsonInstantMessengerFields.contentType);
+		assertNotNull(JnJsonCommonsFields.contentType);
 		assertNotNull(JnJsonInstantMessengerFields.fileName);
 		assertNotNull(JnJsonInstantMessengerFields.instantMessageType);
 		assertNotNull(JnJsonInstantMessengerFields.commandName);

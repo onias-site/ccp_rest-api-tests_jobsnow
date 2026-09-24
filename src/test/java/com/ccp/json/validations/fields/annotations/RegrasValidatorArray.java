@@ -29,5 +29,9 @@ public enum RegrasValidatorArray implements CcpJsonFieldName {
 	@CcpJsonFieldValidatorArray(nonRepeatedItems = false)
 	@CcpJsonFieldTypeString
 	aceitaItensRepetidos,
+
+	@CcpJsonFieldValidatorArray(minSize = 1)
+	@CcpJsonFieldTypeString(allowedValuesEnum = RegrasFieldTypeString.ValoresPermitidos.class)
+	colecaoDeEnums,
 	;
 }

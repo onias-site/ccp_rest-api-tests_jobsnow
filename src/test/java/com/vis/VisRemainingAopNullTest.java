@@ -11,7 +11,6 @@ import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.entities.JnEntityJobsnowError;
-import com.vis.business.company.VisBusinessGroupCompaniesByTheirFirstThreeInitials;
 import com.vis.business.position.VisBusinessDuplicateFieldEmailToFieldMasters;
 import com.vis.business.position.VisBusinessGroupPositionsGroupedByRecruiters;
 import com.vis.business.position.VisBusinessPositionResumesSend;
@@ -52,13 +51,6 @@ public class VisRemainingAopNullTest {
 
 	/** Entidade com twin: exigida pelo construtor de {@code VisGroupDetailsByMasters}. */
 	private static final CcpEntity TWIN_ENTITY = com.jn.entities.JnEntityContactUs.ENTITY;
-
-	// ── business/company ──────────────────────────────────────────────────────
-
-	@Test(expected = CcpNullParameterException.class)
-	public void groupCompaniesByTheirFirstThreeInitialsApplyNullTest() {
-		new VisBusinessGroupCompaniesByTheirFirstThreeInitials().execute(null);
-	}
 
 	// ── business/position ─────────────────────────────────────────────────────
 

@@ -112,28 +112,20 @@ public class AoDesbloquearTokenPeloBotDeSuporteTest {
 	}
 
 	/**
-	 * Deixa o ticket aberto na entidade principal. Quando ele está na gêmea — atendido numa execução
-	 * anterior deste mesmo teste — o caminho é pedir o delete na gêmea, que transfere o registro de volta
-	 * para a principal sem avisar ninguém. Só quando não há ticket em lugar nenhum é que ele é aberto com
-	 * uma gravação, que é o que avisa o suporte, e aí o registro daquele aviso precisa sair da frente: o
-	 * texto do aviso é fixo, então ele seria recusado como repetição do aviso da execução anterior.
+	 * Deixa o ticket aberto na entidade principal, gravando — gravar numa entidade gêmea escreve na
+	 * principal e apaga da gêmea, então a gravação resolve tanto o caso de não haver ticket nenhum
+	 * quanto o de haver um atendido numa execução anterior.
+	 *
+	 * <p>Gravar é o que avisa o suporte, e por isso o registro daquele aviso precisa sair da frente: o
+	 * texto é fixo, então ele seria recusado como repetição do aviso da execução anterior.
+	 *
+	 * <p>Uma versão anterior consultava o {@code exists} para decidir entre gravar e transferir da gêmea
+	 * de volta. Não serve: a entidade é descartável por dia, e o {@code exists} de uma descartável
+	 * responde pela cópia em {@code disposable_record}, que continua válida depois de o documento já ter
+	 * mudado de balde. Na virada do dia ele dizia que o registro existia e a transferência não o
+	 * encontrava.
 	 */
 	private void abrirOTicketDeDesbloqueio(CcpJsonRepresentation usuario) {
-
-		CcpEntity ticketAtendido = JnEntityLoginTokenRequestUnlock.ENTITY.getTwinEntity();
-
-		boolean atendidoAnteriormente = ticketAtendido.exists(usuario);
-
-		if (atendidoAnteriormente) {
-			ticketAtendido.delete(usuario);
-			return;
-		}
-
-		boolean jaEstaAberto = JnEntityLoginTokenRequestUnlock.ENTITY.exists(usuario);
-
-		if (jaEstaAberto) {
-			return;
-		}
 
 		this.apagarOAvisoDeTicketPendenteJaEnviado();
 

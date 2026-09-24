@@ -97,4 +97,39 @@ public class CcpJsonFieldValidatorArrayTest {
 		CcpJsonRepresentation json = this.json(RegrasValidatorArray.semItensRepetidos, "a");
 		ValidacaoDeCampo.recusa(this.negocio, json, RegrasValidatorArray.semItensRepetidos, CcpJsonFieldError.incompatibleType);
 	}
+
+	@Test
+	public void arrayJavaEhTratadoComoColecaoTest() {
+		String[] valor = { "a", "b" };
+		CcpJsonRepresentation json = this.json(RegrasValidatorArray.minimoDois, valor);
+		ValidacaoDeCampo.aceita(this.negocio, json);
+	}
+
+	@Test
+	public void arrayJavaObedeceAsRestricoesDaColecaoTest() {
+		String[] valor = { "a" };
+		CcpJsonRepresentation json = this.json(RegrasValidatorArray.minimoDois, valor);
+		ValidacaoDeCampo.recusa(this.negocio, json, RegrasValidatorArray.minimoDois, CcpJsonFieldTypeError.arrayMinSize);
+	}
+
+	@Test
+	public void arrayDeTipoPrimitivoEhTratadoComoColecaoTest() {
+		int[] valor = { 1, 2 };
+		CcpJsonRepresentation json = this.json(RegrasValidatorArray.minimoDois, valor);
+		ValidacaoDeCampo.aceita(this.negocio, json);
+	}
+
+	@Test
+	public void arrayDeEnumsEhTratadoComoColecaoTest() {
+		RegrasFieldTypeString.ValoresPermitidos[] valor = { RegrasFieldTypeString.ValoresPermitidos.sim, RegrasFieldTypeString.ValoresPermitidos.nao };
+		CcpJsonRepresentation json = this.json(RegrasValidatorArray.colecaoDeEnums, valor);
+		ValidacaoDeCampo.aceita(this.negocio, json);
+	}
+
+	@Test
+	public void arrayComItemForaDosValoresPermitidosTest() {
+		String[] valor = { "talvez" };
+		CcpJsonRepresentation json = this.json(RegrasValidatorArray.colecaoDeEnums, valor);
+		ValidacaoDeCampo.recusa(this.negocio, json, RegrasValidatorArray.colecaoDeEnums, CcpJsonFieldTypeError.stringAllowedValues);
+	}
 }

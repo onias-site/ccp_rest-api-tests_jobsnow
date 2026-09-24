@@ -3,10 +3,10 @@ B) Skill
 C) Resume
 D) Email
 E) Deploy
-
-A) Erro da validação @CcpJsonGlobalValidations
-B) Erro da PK LGPD
-C) Erro do nonRepeatedItems
-D) Erro da validação JnJsonCommonsFields
-E) Rodar suite de testes completa
-F) Rodar suite de testes com paralelização
+ 
+A) Relatorio de throwputs
+B) Teste de todo o comportamento de todas as entidades de acordo com os seus decorators.
+C) E-mail
+D) Responsividade de todo o front end
+E) Melhoria dos synonyms
+F) Teste de invasão 

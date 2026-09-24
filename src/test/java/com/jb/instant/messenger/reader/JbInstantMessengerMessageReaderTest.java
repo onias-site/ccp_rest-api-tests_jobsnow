@@ -7,9 +7,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.ccp.aop.CcpNullParameterException;
+import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
@@ -20,8 +22,10 @@ import com.ccp.especifications.http.CcpHttpTooManyRequests;
 import com.ccp.especifications.instant.messenger.CcpErrorInstantMessageThisBotWasBlockedByThisUser;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.jb.entities.JbEntityBotUpdateId;
 import com.jb.instant.messenger.reader.JbInstantMessengerMessageReader.JsonFieldNames;
 import com.jn.business.messages.JnMessageType;
+import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.jn.business.messages.JnMessageType.JnBotType;
 
 /**
@@ -33,9 +37,19 @@ import com.jn.business.messages.JnMessageType.JnBotType;
  */
 public class JbInstantMessengerMessageReaderTest {
 
+	/**
+	 * O cache é o nulo, e não o de mapa: o de mapa também guarda estado em campo estático, e sem chave
+	 * para limpá-lo o offset de um teste continuaria visível para o seguinte mesmo depois de o banco ser
+	 * esvaziado. Aqui o que se mede é a gravação do offset, não o cache.
+	 */
 	static {
 		CcpInstanceProvider<CcpCrud> bancoEmMemoria = () -> new FakeCrud();
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), CcpLocalCacheInstances.map, bancoEmMemoria);
+		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), CcpLocalCacheInstances.mock, bancoEmMemoria);
+	}
+
+	@Before
+	public void esvaziarOBanco() {
+		FakeCrud.limpar();
 	}
 
 	/**
@@ -284,12 +298,19 @@ public class JbInstantMessengerMessageReaderTest {
 	}
 
 	/**
-	 * Grava o offset do bot sem nenhuma mensagem lida. Como o {@code saveOffset} guarda o maior valor
-	 * entre o offset informado e o da última mensagem da lista, uma lista vazia faz com que o valor
-	 * informado seja gravado tal e qual.
+	 * Grava o offset do bot direto na entidade que o guarda.
+	 *
+	 * <p>Não dá para montar este cenário chamando o {@code saveOffset} com lista vazia: sem mensagens
+	 * novas ele devolve o offset recebido sem gravar nada — e isso é o comportamento certo, é o que
+	 * {@link #offsetNaoEhGravadoQuandoNaoHaMensagensNovasTest()} cobra. Usá-lo para preparar o cenário
+	 * fazia os testes afirmarem ter gravado um valor que nunca saiu do lugar.
 	 */
 	private void salvarOffset(String botType, long offset) {
-		JbInstantMessengerMessageReader.INSTANCE.saveOffset(botType, offset, new ArrayList<>());
+		CcpJsonRepresentation offsetDoBot = CcpOtherConstants.EMPTY_JSON
+				.put(JnJsonInstantMessengerFields.botName, botType)
+				.put(JbEntityBotUpdateId.Fields.updateId, offset);
+
+		JbEntityBotUpdateId.ENTITY.save(offsetDoBot);
 	}
 
 	/**

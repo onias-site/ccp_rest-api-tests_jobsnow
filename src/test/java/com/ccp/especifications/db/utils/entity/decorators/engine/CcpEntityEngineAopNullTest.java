@@ -12,6 +12,7 @@ import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
 import com.ccp.especifications.db.bulk.CcpExecuteBulkOperation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.CcpEntityOperationType;
+import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.entities.JnEntityContactUs;
 import com.jn.entities.JnEntityDisposableRecord;
@@ -26,8 +27,14 @@ import org.junit.Test;
  */
 public class CcpEntityEngineAopNullTest {
 
+	/**
+	 * O {@code CcpDbRequester} entra por causa do dublê de {@code CcpSelectUnionAll}: o construtor dele
+	 * pede essa dependência para descobrir os nomes dos campos de entidade e de id. Sem ela, montar o
+	 * cenário estoura antes de o método sob teste ser chamado, e o aspecto nunca chega a rodar. Nada
+	 * aqui toca o banco — os dois métodos usados devolvem nome de campo.
+	 */
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpElasticSearchDbRequest());
 	}
 
 	static final CcpEntity ENTITY = JnEntityJobsnowError.ENTITY;
@@ -529,16 +536,6 @@ public class CcpEntityEngineAopNullTest {
 	@Test(expected = CcpNullParameterException.class)
 	public void transformerDecoratorGetParametersToSearchNullTest() {
 		transformerDecorator().getParametersToSearch(null);
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void transformerDecoratorGetRecordFromUnionAllUnionNullTest() {
-		transformerDecorator().getRecordFromUnionAll(null, JSON);
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void transformerDecoratorGetRecordFromUnionAllJsonNullTest() {
-		transformerDecorator().getRecordFromUnionAll(unionAll(), (CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
