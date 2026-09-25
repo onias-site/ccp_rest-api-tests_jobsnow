@@ -58,9 +58,9 @@ import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
-import com.jn.services.JnServiceLogin;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
+import com.vis.entities.VisEntitySkillFixHierarchyPending;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.resumes.ImportResumeFromOldJobsNow;
 
@@ -115,7 +115,8 @@ public class CcpRandomScripts {
 	}
 
 	public static void main(String[] args) {
-		JnServiceLogin.SavePassword.execute(new CcpJsonRepresentation(" {\"password\":\"Novasenha1!\",\"confirmPassword\":\"Novasenha1!\",\"token\":\"2MOSZ8H8\",\"attempts\":[\"2MOSZ8H8\"]}"));
+		String string = VisEntitySkillFixHierarchyPending.ENTITY.toString();
+		System.out.println(string);
 	}
 	
 	static void testarDisposable() {

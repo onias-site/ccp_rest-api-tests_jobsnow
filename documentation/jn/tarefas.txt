@@ -6,7 +6,11 @@ E) Deploy
  
 A) Relatorio de throwputs
 B) Teste de todo o comportamento de todas as entidades de acordo com os seus decorators.
-C) E-mail
-D) Responsividade de todo o front end
-E) Melhoria dos synonyms
-F) Teste de invasão 
+C) Renomeio das entidades;
+D) Sanitização das entidades;
+E) Recriação das entidades do VIS. 
+F) E-mail
+G) Responsividade de todo o front end
+H) Melhoria dos synonyms
+I) Teste de invasão 
+

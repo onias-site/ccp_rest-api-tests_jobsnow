@@ -1,19 +1,22 @@
 {
-  "mappings": {
-    "dynamic": "strict",
-    "properties": {
-      "date": {
-        "type": "text"
-      },
-      "description": {
-        "type": "text"
-      },
-      "email": {
-        "type": "keyword"
-      },
-      "timestamp": {
-        "type": "long"
-      }
-    }
-  }
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"description": {
+				"type": "text"
+			},
+			"email": {
+				"type": "keyword"
+			},
+			"parent": {
+				"type": "keyword"
+			},
+			"skill": {
+				"type": "keyword"
+			},
+			"type": {
+				"type": "keyword"
+			}
+		}
+	}
 }

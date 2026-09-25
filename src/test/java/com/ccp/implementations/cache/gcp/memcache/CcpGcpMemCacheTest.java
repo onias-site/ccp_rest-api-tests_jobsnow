@@ -49,10 +49,13 @@ public class CcpGcpMemCacheTest {
 		getCache().put("key", null, 10);
 	}
 
-	// delete(String) retorna V que pode ser null quando a chave não existe -
-	// nesta suíte cobrimos apenas null-parameter.
 	@Test(expected = CcpNullParameterException.class)
 	public void deleteKeyNullTest() {
 		getCache().delete(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void deleteAllKeysNullTest() {
+		getCache().deleteAll(null);
 	}
 }
