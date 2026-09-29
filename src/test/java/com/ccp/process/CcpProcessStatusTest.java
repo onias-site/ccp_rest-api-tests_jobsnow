@@ -22,20 +22,20 @@ public class CcpProcessStatusTest {
 	}
 
 	@Test
-	public void verifyStatusCorretoTest() {
-		String r = CcpProcessStatusDefault.OK.verifyStatus(200, "ok");
-		assertEquals("OK", r);
+	public void verifyStatusCorrectTest() {
+		String verifiedStatusName = CcpProcessStatusDefault.OK.verifyStatus(200, "ok");
+		assertEquals("OK", verifiedStatusName);
 	}
 
 	@Test(expected = RuntimeException.class)
-	public void verifyStatusDivergenteLancaExcecaoTest() {
+	public void verifyStatusMismatchThrowsExceptionTest() {
 		CcpProcessStatusDefault.OK.verifyStatus(500, "diff");
 	}
 
 	@Test
-	public void verifyStatusNamesCorretoTest() {
-		CcpProcessStatus r = CcpProcessStatusDefault.OK.verifyStatusNames(200, "OK");
-		assertNotNull(r);
+	public void verifyStatusNamesCorrectTest() {
+		CcpProcessStatus processStatus = CcpProcessStatusDefault.OK.verifyStatusNames(200, "OK");
+		assertNotNull(processStatus);
 	}
 
 	@Test(expected = CcpErrorFlowDisturb.class)
@@ -61,6 +61,6 @@ public class CcpProcessStatusTest {
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
-	// asNumber retorna int primitivo. verifyStatus retorna String — nunca null naturalmente.
-	// verifyStatusNames retorna this — nunca null. asJsonFieldName retorna new CcpFieldName — nunca null.
+	// asNumber returns a primitive int. verifyStatus returns a String — naturally never null.
+	// verifyStatusNames returns this — never null. asJsonFieldName returns new CcpFieldName — never null.
 }

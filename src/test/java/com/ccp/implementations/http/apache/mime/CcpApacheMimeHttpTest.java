@@ -26,7 +26,7 @@ public class CcpApacheMimeHttpTest {
 	// ── provider ──────────────────────────────────────────────────────────────
 
 	@Test
-	public void construtorProviderTest() {
+	public void constructorProviderTest() {
 		assertNotNull(new CcpApacheMimeHttp());
 	}
 

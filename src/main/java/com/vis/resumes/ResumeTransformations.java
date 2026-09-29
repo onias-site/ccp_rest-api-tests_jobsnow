@@ -35,38 +35,38 @@ public enum ResumeTransformations implements CcpTransformers{
 					"71", "73", "74", "75", "77", "79", "81", "82", "83", "84", "85", "86", "87", "88", "89", "91",
 					"92", "93", "94", "95", "96", "97", "98", "99");
 			
-			boolean mudanca = json.getAsBoolean(JsonFieldNames.mudanca);
+			boolean willingToRelocate = json.getAsBoolean(JsonFieldNames.mudanca);
 
-			if (mudanca) {
+			if (willingToRelocate) {
 
-				CcpJsonRepresentation put = json.put(VisJsonCommonsFields.ddd, ddds);
+				CcpJsonRepresentation jsonWithAllDdds = json.put(VisJsonCommonsFields.ddd, ddds);
 
-				return put;
+				return jsonWithAllDdds;
 			}
 
 			boolean homeoffice = json.getAsBoolean(JsonFieldNames.homeoffice);
 
 			if (homeoffice) {
 				List<String> ddd10 = Arrays.asList("10");
-				CcpJsonRepresentation put = json.put(VisJsonCommonsFields.ddd, ddd10);
-				return put;
+				CcpJsonRepresentation jsonWithHomeOfficeDdd = json.put(VisJsonCommonsFields.ddd, ddd10);
+				return jsonWithHomeOfficeDdd;
 			}
 
 			try {
 				Integer ddd = json.getAsIntegerNumber(VisJsonCommonsFields.ddd);
-				boolean equals = Integer.valueOf(0).equals(ddd);
-				if(equals) {
-					CcpJsonRepresentation put = json.put(VisJsonCommonsFields.ddd, ddds);
-					return put;
+				boolean isZeroDdd = Integer.valueOf(0).equals(ddd);
+				if(isZeroDdd) {
+					CcpJsonRepresentation jsonWithAllDdds = json.put(VisJsonCommonsFields.ddd, ddds);
+					return jsonWithAllDdds;
 				}
 			} catch (Exception e) {
 
 			}
 			
 			String ddd = json.getAsString(VisJsonCommonsFields.ddd);
-			List<String> ddd10 = Arrays.asList(ddd).stream().filter(x -> new CcpStringDecorator(x).isLongNumber()).collect(Collectors.toList());
-			CcpJsonRepresentation put = json.put(VisJsonCommonsFields.ddd, ddd10);
-			return put;
+			List<String> numericDdds = Arrays.asList(ddd).stream().filter(x -> new CcpStringDecorator(x).isLongNumber()).collect(Collectors.toList());
+			CcpJsonRepresentation jsonWithNumericDdds = json.put(VisJsonCommonsFields.ddd, numericDdds);
+			return jsonWithNumericDdds;
 		}
 	},
 	AddExperience {
@@ -77,40 +77,40 @@ public enum ResumeTransformations implements CcpTransformers{
 				return json;
 			}
 			
-			Long dataDeInclusao = json.getAsLongNumber(JsonFieldNames.dataDeInclusao);
+			Long inclusionDate = json.getAsLongNumber(JsonFieldNames.dataDeInclusao);
 			
 			Calendar cal = Calendar.getInstance();
 			
-			cal.setTimeInMillis(dataDeInclusao);
+			cal.setTimeInMillis(inclusionDate);
 			
 			int year = cal.get(Calendar.YEAR);
 			
-			CcpJsonRepresentation put = json.put(VisJsonCommonsFields.experience, year);
+			CcpJsonRepresentation jsonWithExperience = json.put(VisJsonCommonsFields.experience, year);
 			
-			return put;
+			return jsonWithExperience;
 		}
 	},
 	AddDisponibility {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			CcpJsonRepresentation put = this.addLongValue(json, VisJsonCommonsFields.disponibility.name(), 0L);
-			return put;
+			CcpJsonRepresentation transformedJson = this.addLongValue(json, VisJsonCommonsFields.disponibility.name(), 0L);
+			return transformedJson;
 		}
 	},
 	CreateLoginAndSession {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			String email = json.getAsString(JsonFieldNames.id);
 			
-			CcpJsonRepresentation createLogin = this.createLogin(email);
+			CcpJsonRepresentation createdLogin = this.createLogin(email);
 			try {
 				CcpJsonRepresentation jsonWithSessionToken = this.executeLogin(email);
 				
-				CcpJsonRepresentation putAll = json.mergeWithAnotherJson(jsonWithSessionToken).mergeWithAnotherJson(createLogin);
+				CcpJsonRepresentation jsonWithLoginAndSession = json.mergeWithAnotherJson(jsonWithSessionToken).mergeWithAnotherJson(createdLogin);
 				
-				return putAll;
+				return jsonWithLoginAndSession;
 			} catch (Exception e) {
 				new CcpStringDecorator("c:\\logs\\resumes").folder().createNewFolderIfNotExists("wrongEmails").createNewFileIfNotExists(email);
-				CcpJsonRepresentation putAll = json.mergeWithAnotherJson(createLogin);
-				return putAll;
+				CcpJsonRepresentation jsonWithLogin = json.mergeWithAnotherJson(createdLogin);
+				return jsonWithLogin;
 			}
 		}
 		
@@ -118,21 +118,21 @@ public enum ResumeTransformations implements CcpTransformers{
 			
 			String path = "http://localhost:8080/login/{email}".replace("{email}", email);
 			
-			String asUgglyJson = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.password, "Jobsnow1!").asUgglyJson();
+			String requestBody = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.password, "Jobsnow1!").asUgglyJson();
 
 			CcpHttpHandler http = new CcpHttpHandler(200, CcpOtherConstants.DO_NOTHING, path);
 			
-			CcpHttpResponse response = http.ccpHttp.executeHttpRequest(path, CcpHttpMethods.POST, CcpOtherConstants.EMPTY_JSON, asUgglyJson, 200);
+			CcpHttpResponse response = http.ccpHttp.executeHttpRequest(path, CcpHttpMethods.POST, CcpOtherConstants.EMPTY_JSON, requestBody, 200);
 			
-			CcpJsonRepresentation asSingleJson = response.asSingleJson();
-			return asSingleJson;
+			CcpJsonRepresentation loginResponse = response.asSingleJson();
+			return loginResponse;
 		}
 		
 		private CcpJsonRepresentation createLogin(String email) {
 			
 			String originalToken = JnJsonTransformersFieldsEntityDefault.getOriginalToken();
 			
-			CcpJsonRepresentation transformed = CcpOtherConstants.EMPTY_JSON
+			CcpJsonRepresentation loginData = CcpOtherConstants.EMPTY_JSON
 			.put(JnJsonCommonsFields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
 			.put(JnJsonTransformersFieldsEntityDefault.JsonFieldNames.originalToken, originalToken)
 			.put(JnJsonTransformersFieldsEntityDefault.JsonFieldNames.token, originalToken)
@@ -144,7 +144,7 @@ public enum ResumeTransformations implements CcpTransformers{
 			;
 			
 			JnExecuteBulkOperation.INSTANCE.executeBulk(
-					transformed, 
+					loginData, 
 					CcpBulkEntityOperationType.create, 
 					JnDeleteKeysFromCache.INSTANCE,
 					JnEntityLoginPassword.ENTITY,
@@ -153,56 +153,56 @@ public enum ResumeTransformations implements CcpTransformers{
 					JnEntityLoginEmail.ENTITY
 					);
 			
-			JnEntityLoginSessionValidation.ENTITY.delete(transformed);
+			JnEntityLoginSessionValidation.ENTITY.delete(loginData);
 			
-			CcpJsonRepresentation renameField = transformed.renameField(JsonFieldNames.originalEmail, JsonFieldNames.email);
-			return renameField;
+			CcpJsonRepresentation loginDataWithEmail = loginData.renameField(JsonFieldNames.originalEmail, JsonFieldNames.email);
+			return loginDataWithEmail;
 		}
 
 	},
 	AddCltValue {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			CcpJsonRepresentation put = this.addRequiredAtLeastOne(json, VisJsonCommonsFields.clt.name(), 1000, 
+			CcpJsonRepresentation transformedJson = this.addRequiredAtLeastOne(json, VisJsonCommonsFields.clt.name(), 1000, 
 					VisJsonCommonsFields.clt.name(),
 					VisJsonCommonsFields.pj.name()
 					);
-			return put;
+			return transformedJson;
 		}
 	},
 	AddBtcValue {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			CcpJsonRepresentation put = this.putMinValue(json, VisJsonCommonsFields.btc.name(), 1000);
-			return put;
+			CcpJsonRepresentation transformedJson = this.putMinValue(json, VisJsonCommonsFields.btc.name(), 1000);
+			return transformedJson;
 		}
 	},
 	AddMinCltValue {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			CcpJsonRepresentation put = this.putMinValue(json, VisJsonCommonsFields.clt.name(), 1000);
-			return put;
+			CcpJsonRepresentation transformedJson = this.putMinValue(json, VisJsonCommonsFields.clt.name(), 1000);
+			return transformedJson;
 		}
 	},
 	AddMinPjValue {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			CcpJsonRepresentation put = this.putMinValue(json, VisJsonCommonsFields.clt.name(), 1000);
-			return put;
+			CcpJsonRepresentation transformedJson = this.putMinValue(json, VisJsonCommonsFields.clt.name(), 1000);
+			return transformedJson;
 		}
 	},
 	AddDesiredJob {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			CcpJsonRepresentation put = this.substring(json, VisEntityResume.Fields.desiredJob.name(), 100);
-			return put;
+			CcpJsonRepresentation transformedJson = this.substring(json, VisEntityResume.Fields.desiredJob.name(), 100);
+			return transformedJson;
 		}
 	},
 	AddLastJob {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			CcpJsonRepresentation put = this.substring(json, VisEntityResume.Fields.lastJob.name(), 100);
-			return put;
+			CcpJsonRepresentation transformedJson = this.substring(json, VisEntityResume.Fields.lastJob.name(), 100);
+			return transformedJson;
 		}
 	},
 	AddObservations {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			CcpJsonRepresentation put = this.substring(json, "observations", 500);
-			return put;
+			CcpJsonRepresentation transformedJson = this.substring(json, "observations", 500);
+			return transformedJson;
 		}
 	},
 	;

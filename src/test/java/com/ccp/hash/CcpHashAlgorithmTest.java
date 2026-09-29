@@ -41,8 +41,8 @@ public class CcpHashAlgorithmTest {
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
-	// Nota: getMessageDigest() nunca pode retornar null porque delega para
-	// MessageDigest.getInstance que ou retorna instância válida ou lança exceção.
-	// getMessageDigest() de instância (enum) usa cache — só retorna null se
-	// o cache/algorithm fossem manipulados por reflexão, o que seria artificial.
+	// Note: getMessageDigest() can never return null because it delegates to
+	// MessageDigest.getInstance, which either returns a valid instance or throws an exception.
+	// The instance (enum) getMessageDigest() uses a cache — it only returns null if
+	// the cache/algorithm were tampered with via reflection, which would be artificial.
 }

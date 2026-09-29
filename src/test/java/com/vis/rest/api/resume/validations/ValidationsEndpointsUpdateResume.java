@@ -4,9 +4,9 @@ package com.vis.rest.api.resume.validations;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatusDefault;
-import com.vis.commons.VisTemplateDeTestes;
+import com.vis.commons.VisTestTemplate;
 
-public class ValidationsEndpointsUpdateResume  extends VisTemplateDeTestes{
+public class ValidationsEndpointsUpdateResume  extends VisTestTemplate{
 
 //	@Test
 	public void saveResume() {

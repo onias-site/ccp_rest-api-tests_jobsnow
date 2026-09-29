@@ -82,7 +82,7 @@ public class CcpNumberDecoratorTest {
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorNullParamTest() {
+	public void constructorNullParamTest() {
 		new CcpNumberDecorator((String) null);
 	}
 

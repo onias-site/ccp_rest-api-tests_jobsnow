@@ -1,0 +1,48 @@
+package com.jb.entities.decorators;
+
+import org.junit.Test;
+
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.jb.entities.JbEntityBotCommandStepStartMessage;
+import com.jn.entities.decorators.TemplateDeTestesDeDecoratorDeEntidade;
+
+/** jb_bot_command_step_start_message: {@code @CcpEntityCache(3600)}, versionável, transformador e validador. */
+public class JbEntityBotCommandStepStartMessageDecoratorsTest extends TemplateDeTestesDeDecoratorDeEntidade {
+
+	protected CcpEntity entidade() {
+		return JbEntityBotCommandStepStartMessage.ENTITY;
+	}
+
+	protected CcpJsonRepresentation registroValido() {
+		return this.com(JbEntityBotCommandStepStartMessage.Fields.stepName, "passo" + this.unico)
+				.put(JbEntityBotCommandStepStartMessage.Fields.language, "portuguese")
+				.put(JbEntityBotCommandStepStartMessage.Fields.message, "inicio do passo de teste")
+				.put(JbEntityBotCommandStepStartMessage.Fields.instantMessageType, "text");
+	}
+
+	@Test
+	public void cadeia() {
+		this.deveTerACadeia("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "JnVersionablePurgeEntity", "DecoratorCacheEntity", "JnVersionableEntity", "DefaultImplementationEntity");
+	}
+
+	@Test
+	public void gravarLerEApagar() {
+		this.deveGravarLerEApagar();
+	}
+
+	@Test
+	public void validador() {
+		this.deveRecusarRegistroInvalido(this.registroValido().removeFields(JbEntityBotCommandStepStartMessage.Fields.instantMessageType));
+	}
+
+	@Test
+	public void cache() {
+		this.deveServirLeituraDoCacheEInvalidarNaEscrita();
+	}
+
+	@Test
+	public void versionavel() {
+		this.deveRegistrarHistoricoACadaEscrita();
+	}
+}

@@ -1,0 +1,71 @@
+package com.jn.entities.decorators.entidades;
+
+import org.junit.Test;
+
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
+import com.jn.entities.JnEntityLoginSessionValidation;
+import com.jn.entities.decorators.TemplateDeTestesDeDecoratorDeEntidade;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
+
+/**
+ * jn_login_session_validation: gêmea de jn_login_session_terminated (sessão encerrada),
+ * {@code @CcpEntityCache(3600)}, descartável por hora, transformador (hash do token, que é chave
+ * primária) e validador.
+ */
+public class JnEntityLoginSessionValidationDecoratorsTest extends TemplateDeTestesDeDecoratorDeEntidade {
+
+	private final String token = "TOKEN" + this.unico;
+
+	protected CcpEntity entidade() {
+		return JnEntityLoginSessionValidation.ENTITY;
+	}
+
+	protected CcpJsonRepresentation registroValido() {
+		return this.com(JnJsonCommonsFields.email, this.email)
+				.put(JnEntityLoginSessionValidation.Fields.token, this.token)
+				.put(JnJsonCommonsFields.ip, "127.0.0.1")
+				.put(JnJsonCommonsFields.userAgent, "junit");
+	}
+
+	@Test
+	public void cadeia() {
+		this.deveTerACadeia("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "DecoratorTwinEntity", "DecoratorCacheEntity", "JnDisposableEntity", "DefaultImplementationEntity");
+	}
+
+	@Test
+	public void gravarLerEApagar() {
+		this.deveGravarLerEApagar();
+	}
+
+	@Test
+	public void validador() {
+		this.deveRecusarRegistroInvalido(this.registroValido().put(JnJsonCommonsFields.ip, "1.1"));
+	}
+
+	@Test
+	public void transformadorDoEmail() {
+		this.deveGuardarEmailComoHash();
+	}
+
+	@Test
+	public void transformadorDoToken() {
+		this.deveGuardarTransformado(JnEntityLoginSessionValidation.Fields.token, this.token);
+	}
+
+	@Test
+	public void cache() {
+		this.deveServirLeituraDoCacheEInvalidarNaEscrita();
+	}
+
+	@Test
+	public void gemea() {
+		this.deveAlternarEntrePrincipalEGemea("jn_login_session_terminated");
+	}
+
+	@Test
+	public void descartavel() {
+		this.deveManterCopiaDescartavelAteOPrazo(CcpEntityExpurgableOptions.hourly);
+	}
+}

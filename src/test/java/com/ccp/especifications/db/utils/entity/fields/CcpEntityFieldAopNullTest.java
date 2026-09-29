@@ -6,17 +6,17 @@ import com.ccp.aop.CcpNullParameterException;
 import com.ccp.constants.CcpOtherConstants;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre o construtor de {@code CcpEntityField}.
+ * Coverage of {@code CcpNullParameterAspect} over the constructor of {@code CcpEntityField}.
  */
 public class CcpEntityFieldAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorNameNullTest() {
+	public void constructorNameNullTest() {
 		new CcpEntityField(null, false, true, CcpOtherConstants.DO_NOTHING);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorTransformerNullTest() {
-		new CcpEntityField("campo", false, true, null);
+	public void constructorTransformerNullTest() {
+		new CcpEntityField("field", false, true, null);
 	}
 }

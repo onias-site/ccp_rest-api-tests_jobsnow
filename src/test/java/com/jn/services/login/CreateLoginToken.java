@@ -9,44 +9,44 @@ import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.entities.JnEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginToken;
-import com.jn.rest.api.commons.VariaveisParaTeste;
+import com.jn.rest.api.commons.TestVariables;
 import com.jn.status.login.JnProcessStatusCreateLoginToken;
 import com.jn.utils.JnLanguage;
 
-public class CreateLoginToken extends JnServiceLoginTemplateDeTestes {
+public class CreateLoginToken extends JnServiceLoginTestTemplate {
 
-	public void emailInvalido() {
-		VariaveisParaTeste variaveisParaTeste = comEmailInvalido();
-		CcpJsonRepresentation comJsonDeToken = this.comJsonDeToken(variaveisParaTeste);
-		this.execute(comJsonDeToken, CcpProcessStatusDefault.UNPROCESSABLE_ENTITY);
+	public void invalidEmail() {
+		TestVariables testVariables = withInvalidEmail();
+		CcpJsonRepresentation jsonWithLanguage = this.withLanguage(testVariables);
+		this.execute(jsonWithLanguage, CcpProcessStatusDefault.UNPROCESSABLE_ENTITY);
 	}
 
 	@Test
-	public void tokenBloqueado() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
+	public void lockedToken() {
+		TestVariables testVariables = new TestVariables();
 		CcpEntity mirrorEntity = JnEntityLoginToken.ENTITY.getTwinEntity();
-		mirrorEntity.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		CcpJsonRepresentation comJsonDeToken = this.comJsonDeToken(variaveisParaTeste);
-		this.execute(comJsonDeToken, JnProcessStatusCreateLoginToken.statusLockedToken);
+		mirrorEntity.save(testVariables.REQUEST_TO_LOGIN);
+		CcpJsonRepresentation jsonWithLanguage = this.withLanguage(testVariables);
+		this.execute(jsonWithLanguage, JnProcessStatusCreateLoginToken.statusLockedToken);
 	}
 
 	@Test
-	public void tokenFaltando() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		CcpJsonRepresentation comJsonDeToken = this.comJsonDeToken(variaveisParaTeste);
-		this.execute(comJsonDeToken, JnProcessStatusCreateLoginToken.statusMissingEmail);
+	public void missingToken() {
+		TestVariables testVariables = new TestVariables();
+		CcpJsonRepresentation jsonWithLanguage = this.withLanguage(testVariables);
+		this.execute(jsonWithLanguage, JnProcessStatusCreateLoginToken.statusMissingEmail);
 	}
 
 	@Test
-	public void caminhoFeliz() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
-		CcpJsonRepresentation comJsonDeToken = this.comJsonDeToken(variaveisParaTeste);
-		this.execute(comJsonDeToken, JnProcessStatusCreateLoginToken.expectedStatus);
+	public void happyPath() {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		CcpJsonRepresentation jsonWithLanguage = this.withLanguage(testVariables);
+		this.execute(jsonWithLanguage, JnProcessStatusCreateLoginToken.expectedStatus);
 	}
 
-	private com.ccp.decorators.CcpJsonRepresentation comJsonDeToken(VariaveisParaTeste variaveisParaTeste) {
-		return variaveisParaTeste.REQUEST_TO_LOGIN.put(new CcpFieldName("language"), JnLanguage.portuguese.name());
+	private com.ccp.decorators.CcpJsonRepresentation withLanguage(TestVariables testVariables) {
+		return testVariables.REQUEST_TO_LOGIN.put(new CcpFieldName("language"), JnLanguage.portuguese.name());
 	}
 }

@@ -1,0 +1,106 @@
+package com.jn.entities.decorators;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.jn.entities.JnEntityContactUsSkiped;
+import com.jn.entities.JnEntityDisposableTest;
+import com.jn.entities.JnEntityLoginEmail;
+import com.jn.entities.JnEntityLoginSessionConflict;
+import com.jn.entities.JnEntityVersionable;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
+
+/**
+ * {@code transferDataTo} e {@code copyDataTo}. Até 2026-09-27 nenhuma entidade transferia nem copiava:
+ * as implementações recebiam {@code CcpEntity...}, não sobrescreviam o método da interface, e toda
+ * chamada caía no default que devolve {@code false}. Os dois caminhos de execução são cobertos: a
+ * camada mais interna (entidade sem decorator de bulk) e o delegator padrão (aqui, o descartável).
+ */
+public class TransferenciaECopiaDeDadosTest extends TemplateDeTestesDeDecoratorDeEntidade {
+
+	protected CcpEntity entidade() {
+		return JnEntityLoginEmail.ENTITY;
+	}
+
+	protected CcpJsonRepresentation registroValido() {
+		return this.com(JnJsonCommonsFields.email, this.email);
+	}
+
+	@Test
+	public void transferirPelaCamadaInterna() {
+		CcpEntity origem = JnEntityLoginEmail.ENTITY;
+		CcpEntity destino = JnEntityLoginSessionConflict.ENTITY;
+		CcpJsonRepresentation registro = this.registroValido();
+
+		origem.save(registro);
+		boolean transferiu = origem.transferDataTo(registro, destino);
+
+		assertTrue("transferDataTo devolveu false com a origem gravada", transferiu);
+		assertFalse("transferencia deixou o registro na origem", origem.exists(registro));
+		assertTrue("transferencia nao gravou no destino", destino.exists(registro));
+	}
+
+	@Test
+	public void copiarPelaCamadaInterna() {
+		CcpEntity origem = JnEntityLoginEmail.ENTITY;
+		CcpEntity destino = JnEntityContactUsSkiped.ENTITY;
+		CcpJsonRepresentation registro = this.registroValido();
+
+		origem.save(registro);
+		boolean copiou = origem.copyDataTo(registro, destino);
+
+		assertTrue("copyDataTo devolveu false com a origem gravada", copiou);
+		assertTrue("copia removeu o registro da origem", origem.exists(registro));
+		assertTrue("copia nao gravou no destino", destino.exists(registro));
+	}
+
+	@Test
+	public void transferirPeloDelegatorPadrao() {
+		CcpEntity origem = JnEntityDisposableTest.ENTITY;
+		CcpEntity destino = JnEntityLoginEmail.ENTITY;
+		CcpJsonRepresentation registro = this.registroValido();
+
+		origem.save(registro);
+		boolean transferiu = origem.transferDataTo(registro, destino);
+
+		assertTrue("transferDataTo devolveu false com a origem gravada", transferiu);
+		assertFalse("transferencia deixou o registro na origem descartavel", origem.exists(registro));
+		assertTrue("transferencia nao gravou no destino", destino.exists(registro));
+	}
+
+	@Test
+	public void origemAusenteNaoCriaNadaNoDestino() {
+		CcpEntity origem = JnEntityLoginEmail.ENTITY;
+		CcpEntity destino = JnEntityLoginSessionConflict.ENTITY;
+		CcpJsonRepresentation registro = this.registroValido();
+
+		boolean transferiu = origem.transferDataTo(registro, destino);
+
+		assertFalse("transferDataTo devolveu true sem registro na origem", transferiu);
+		assertFalse("transferencia de origem ausente criou registro no destino", destino.exists(registro));
+	}
+
+	/** O registro é posto na entidade somente leitura por fora, porque ela recusa gravar pela API. */
+	@Test
+	public void entidadeSomenteLeituraNaoTransfere() {
+		CcpEntity origem = JnEntityVersionable.ENTITY;
+		CcpJsonRepresentation registro = this.com(JnJsonCommonsFields.timestamp, this.unico)
+				.put(JnJsonCommonsFields.operation, "create")
+				.put(JnJsonCommonsFields.date, "27/09/2026 10:00:00.000")
+				.put(JnJsonCommonsFields.entity, "jn_login_email")
+				.put(JnJsonCommonsFields.id, "{\"email\":\"" + this.unico + "\"}")
+				.put(JnJsonCommonsFields.json, this.com(JnJsonCommonsFields.email, this.email));
+		String id = origem.calculateId(origem.getHandledJson(registro));
+		ElasticsearchLocal.gravar("jn_versionable", id, registro);
+
+		boolean transferiu = origem.transferDataTo(registro, JnEntityLoginEmail.ENTITY);
+
+		assertFalse("entidade somente leitura transferiu", transferiu);
+		assertTrue("entidade somente leitura perdeu o registro", origem.exists(registro));
+		ElasticsearchLocal.apagar("jn_versionable", id);
+	}
+}

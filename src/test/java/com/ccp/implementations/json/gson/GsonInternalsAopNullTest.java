@@ -7,7 +7,7 @@ import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.json.CcpJsonHandler;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre as classes internas do módulo
+ * Coverage of {@code CcpNullParameterAspect} over the internal classes of the module
  * {@code ccp_json_gson}.
  */
 public class GsonInternalsAopNullTest {

@@ -46,7 +46,7 @@ public class CcpElasticSearchQueryExecutorTest {
 	// ── provider ──────────────────────────────────────────────────────────────
 
 	@Test
-	public void construtorProviderTest() {
+	public void constructorProviderTest() {
 		assertNotNull(new CcpElasticSearchQueryExecutor());
 	}
 

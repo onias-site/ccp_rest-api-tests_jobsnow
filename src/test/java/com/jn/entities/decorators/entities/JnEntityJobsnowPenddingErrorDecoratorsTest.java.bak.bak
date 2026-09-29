@@ -1,0 +1,66 @@
+package com.jn.entities.decorators.entidades;
+
+import org.junit.Test;
+
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.jn.entities.JnEntityJobsnowPenddingError;
+import com.jn.entities.decorators.TemplateDeTestesDeDecoratorDeEntidade;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
+
+/**
+ * jn_jobsnow_pendding_error: gêmea de jn_jobsnow_solved_error, {@code @CcpEntityCache(3600)},
+ * versionável, transformador (carimba {@code timestamp}/{@code date}) e validador.
+ */
+public class JnEntityJobsnowPenddingErrorDecoratorsTest extends TemplateDeTestesDeDecoratorDeEntidade {
+
+	protected CcpEntity entidade() {
+		return JnEntityJobsnowPenddingError.ENTITY;
+	}
+
+	protected CcpJsonRepresentation registroValido() {
+		return this.com(JnEntityJobsnowPenddingError.Fields.stackTraceHash, "hash" + this.unico)
+				.put(JnEntityJobsnowPenddingError.Fields.type, "java.lang.RuntimeException")
+				.put(JnJsonCommonsFields.message, "erro de teste " + this.unico);
+	}
+
+	@Test
+	public void cadeia() {
+		this.deveTerACadeia("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "JnVersionablePurgeEntity", "DecoratorTwinEntity", "DecoratorCacheEntity", "JnVersionableEntity", "DefaultImplementationEntity");
+	}
+
+	@Test
+	public void gravarLerEApagar() {
+		this.deveGravarLerEApagar();
+	}
+
+	@Test
+	public void validador() {
+		this.deveRecusarRegistroInvalido(this.registroValido().put(JnJsonCommonsFields.message, "ops"));
+	}
+
+	@Test
+	public void transformador() {
+		this.deveCarimbarDataEHora();
+	}
+
+	@Test
+	public void cache() {
+		this.deveServirLeituraDoCacheEInvalidarNaEscrita();
+	}
+
+	@Test
+	public void gemea() {
+		this.deveAlternarEntrePrincipalEGemea("jn_jobsnow_solved_error");
+	}
+
+	@Test
+	public void versionavel() {
+		this.deveRegistrarHistoricoACadaEscrita();
+	}
+
+	@Test
+	public void expurgoDoHistorico() {
+		this.deveExpurgarOHistoricoNoDeleteAnyWhere();
+	}
+}

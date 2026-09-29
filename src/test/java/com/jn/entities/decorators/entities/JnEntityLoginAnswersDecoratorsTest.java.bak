@@ -1,0 +1,53 @@
+package com.jn.entities.decorators.entidades;
+
+import org.junit.Test;
+
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.jn.entities.JnEntityLoginAnswers;
+import com.jn.entities.decorators.TemplateDeTestesDeDecoratorDeEntidade;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
+
+/** jn_login_answers: {@code @CcpEntityCache(3600)}, versionável, transformador e validador. */
+public class JnEntityLoginAnswersDecoratorsTest extends TemplateDeTestesDeDecoratorDeEntidade {
+
+	protected CcpEntity entidade() {
+		return JnEntityLoginAnswers.ENTITY;
+	}
+
+	protected CcpJsonRepresentation registroValido() {
+		return this.com(JnJsonCommonsFields.email, this.email)
+				.put(JnEntityLoginAnswers.Fields.channel, "linkedin")
+				.put(JnEntityLoginAnswers.Fields.goal, "jobs");
+	}
+
+	@Test
+	public void cadeia() {
+		this.deveTerACadeia("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "JnVersionablePurgeEntity", "DecoratorCacheEntity", "JnVersionableEntity", "DefaultImplementationEntity");
+	}
+
+	@Test
+	public void gravarLerEApagar() {
+		this.deveGravarLerEApagar();
+	}
+
+	@Test
+	public void validador() {
+		this.deveRecusarRegistroInvalido(this.registroValido().put(JnEntityLoginAnswers.Fields.goal, "ferias"));
+	}
+
+	@Test
+	public void transformador() {
+		this.deveGuardarEmailComoHash();
+	}
+
+	@Test
+	public void cache() {
+		this.deveServirLeituraDoCacheEInvalidarNaEscrita();
+	}
+
+	@Test
+	public void versionavel() {
+		this.deveRegistrarHistoricoACadaEscrita();
+	}
+}

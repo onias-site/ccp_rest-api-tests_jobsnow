@@ -115,8 +115,8 @@ public class CcpTextDecoratorTest {
 
 	@Test
 	public void resolveTemplateSubstituiCamposTest() {
-		CcpJsonRepresentation params = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
-		CcpTextDecorator template = new CcpStringDecorator("Olá, {nome}!").text();
+		CcpJsonRepresentation params = CcpOtherConstants.EMPTY_JSON.put(name, "Onias");
+		CcpTextDecorator template = new CcpStringDecorator("Olá, {name}!").text();
 		String resultado = template.resolveTemplate(params).content;
 		assertEquals("Olá, Onias!", resultado);
 	}
@@ -124,9 +124,9 @@ public class CcpTextDecoratorTest {
 	@Test
 	public void resolveTemplateMultiplosCamposTest() {
 		CcpJsonRepresentation params = CcpOtherConstants.EMPTY_JSON
-				.put(nome, "João")
+				.put(name, "João")
 				.put(cidade, "Santos");
-		CcpTextDecorator template = new CcpStringDecorator("{nome} mora em {cidade}").text();
+		CcpTextDecorator template = new CcpStringDecorator("{name} mora em {cidade}").text();
 		String resultado = template.resolveTemplate(params).content;
 		assertEquals("João mora em Santos", resultado);
 	}

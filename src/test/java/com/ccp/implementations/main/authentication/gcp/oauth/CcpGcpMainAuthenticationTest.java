@@ -16,7 +16,7 @@ public class CcpGcpMainAuthenticationTest {
 	// ── provider ──────────────────────────────────────────────────────────────
 
 	@Test
-	public void construtorProviderTest() {
+	public void constructorProviderTest() {
 		assertNotNull(new CcpGcpMainAuthentication());
 	}
 
@@ -26,7 +26,7 @@ public class CcpGcpMainAuthenticationTest {
 		assertNotNull(instance);
 	}
 
-	// getJwtToken() não tem parâmetros → não há teste null-parameter;
-	// depende de credenciais externas (GOOGLE_APPLICATION_CREDENTIALS) → null-return não é
-	// testável sem ambiente configurado.
+	// getJwtToken() has no parameters → there is no null-parameter test;
+	// it depends on external credentials (GOOGLE_APPLICATION_CREDENTIALS) → null-return is not
+	// testable without a configured environment.
 }

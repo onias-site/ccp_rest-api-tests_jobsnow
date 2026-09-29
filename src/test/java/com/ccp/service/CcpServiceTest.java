@@ -30,5 +30,5 @@ public class CcpServiceTest {
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
-	// execute retorna apply.content — nunca null naturalmente.
+	// execute returns apply.content — naturally never null.
 }

@@ -6,50 +6,50 @@ import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.entities.JnEntityLoginTokenRequestUnlock;
-import com.jn.rest.api.commons.VariaveisParaTeste;
+import com.jn.rest.api.commons.TestVariables;
 import com.jn.status.login.JnProcessStatusUnlockLoginToken;
 
-public class UnlockLoginToken extends JnServiceLoginTemplateDeTestes {
+public class UnlockLoginToken extends JnServiceLoginTestTemplate {
 
 	@Test(expected = CcpJsonValidationError.class)
-	public void emailInvalido() {
-		VariaveisParaTeste variaveisParaTeste = comEmailInvalido();
-		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, CcpProcessStatusDefault.UNPROCESSABLE_ENTITY);
+	public void invalidEmail() {
+		TestVariables testVariables = withInvalidEmail();
+		this.execute(testVariables.REQUEST_TO_LOGIN, CcpProcessStatusDefault.UNPROCESSABLE_ENTITY);
 	}
 
 	@Test
-	public void tokenNaoBloqueado() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusTokenNotLocked);
+	public void tokenNotLocked() {
+		TestVariables testVariables = new TestVariables();
+		this.execute(testVariables.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusTokenNotLocked);
 	}
 
 	/**
-	 * O pedido cumprido é o que está na entidade gêmea, e gravar nela é o que apaga o registro da
-	 * principal. Pedir o delete na gêmea faria o contrário: transferiria o registro da gêmea de volta para
-	 * a principal, montando o mesmo cenário de {@link #desbloqueioJaSolicitado()}.
+	 * The fulfilled request is the one in the twin entity, and saving to it is what deletes the record
+	 * from the main one. Asking for the delete on the twin would do the opposite: it would transfer the
+	 * record from the twin back to the main entity, setting up the same scenario as {@link #unlockAlreadyRequested()}.
 	 */
 	@Test
-	public void desbloqueioJaRealizado() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
+	public void unlockAlreadyDone() {
+		TestVariables testVariables = new TestVariables();
 
-		JnEntityLoginToken.ENTITY.getTwinEntity().save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginTokenRequestUnlock.ENTITY.getTwinEntity().save(variaveisParaTeste.REQUEST_TO_LOGIN);
+		JnEntityLoginToken.ENTITY.getTwinEntity().save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginTokenRequestUnlock.ENTITY.getTwinEntity().save(testVariables.REQUEST_TO_LOGIN);
 
-		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusTokenAlredyUnlocked);
+		this.execute(testVariables.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusTokenAlredyUnlocked);
 	}
 
 	@Test
-	public void desbloqueioJaSolicitado() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginToken.ENTITY.getTwinEntity().save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginTokenRequestUnlock.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusAlreadyRequested);
+	public void unlockAlreadyRequested() {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginToken.ENTITY.getTwinEntity().save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginTokenRequestUnlock.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		this.execute(testVariables.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusAlreadyRequested);
 	}
 
 	@Test
-	public void caminhoFeliz() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginToken.ENTITY.getTwinEntity().save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, CcpProcessStatusDefault.OK);
+	public void happyPath() {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginToken.ENTITY.getTwinEntity().save(testVariables.REQUEST_TO_LOGIN);
+		this.execute(testVariables.REQUEST_TO_LOGIN, CcpProcessStatusDefault.OK);
 	}
 }

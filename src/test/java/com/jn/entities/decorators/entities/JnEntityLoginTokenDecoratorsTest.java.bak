@@ -1,0 +1,84 @@
+package com.jn.entities.decorators.entidades;
+
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
+import com.jn.entities.JnEntityLoginToken;
+import com.jn.entities.decorators.TemplateDeTestesDeDecoratorDeEntidade;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
+
+/**
+ * jn_login_token: a entidade mais decorada do jn. Escrita assíncrona pela fila, operação
+ * {@code beforeSave} ({@code JnBusinessPrepareLoginTokenBeforeSave}), e-mail com o token ao usuário só
+ * na inclusão, gêmea de jn_login_token_locked (token bloqueado), {@code @CcpEntityCache(86400)},
+ * descartável mensal, transformador (hash do e-mail, token gerado e guardado em BCrypt) e validador.
+ */
+public class JnEntityLoginTokenDecoratorsTest extends TemplateDeTestesDeDecoratorDeEntidade {
+
+	protected CcpEntity entidade() {
+		return JnEntityLoginToken.ENTITY;
+	}
+
+	protected CcpJsonRepresentation registroValido() {
+		return this.com(JnJsonCommonsFields.email, this.email);
+	}
+
+	@Test
+	public void cadeia() {
+		this.deveTerACadeia("DecoratorFieldsValidatorEntity", "JnAsyncWriterEntity", "JnSendMessageToUserEntityBeforeWrite", "DecoratorBeforeOperationsWriterEntity", "DecoratorFieldsTransformerEntity", "JnSendMessageToUserEntityAfterWrite", "DecoratorAfterOperationsWriterEntity", "DecoratorTwinEntity", "DecoratorCacheEntity", "JnDisposableEntity", "DefaultImplementationEntity");
+	}
+
+	@Test
+	public void gravarLerEApagar() {
+		this.deveGravarLerEApagar();
+	}
+
+	@Test
+	public void validador() {
+		this.deveRecusarRegistroInvalido(this.com(JnJsonCommonsFields.email, "isto-nao-e-email"));
+	}
+
+	@Test
+	public void escritaAssincrona() {
+		this.deveGravarPelaFila();
+	}
+
+	@Test
+	public void emailComTokenSoNaInclusao() {
+		this.deveMandarEmailSoNaInclusao();
+	}
+
+	@Test
+	public void transformadorDoEmail() {
+		this.deveGuardarEmailComoHash();
+	}
+
+	/** O token é gerado na gravação e só chega ao banco como BCrypt. */
+	@Test
+	public void transformadorDoToken() {
+		CcpJsonRepresentation registro = this.registroValido();
+		this.entidade().save(registro);
+		CcpJsonRepresentation gravado = this.comoFicouGravado(registro);
+		String token = gravado.getAsString(JnEntityLoginToken.Fields.token);
+		assertTrue("token de jn_login_token nao foi gravado como BCrypt: " + token, token.startsWith("$2"));
+	}
+
+	@Test
+	public void cache() {
+		this.deveServirLeituraDoCacheEInvalidarNaEscrita();
+	}
+
+	@Test
+	public void gemea() {
+		this.deveGravarNaPrincipalETransferirParaAGemeaAoApagar("jn_login_token_locked");
+	}
+
+	@Test
+	public void descartavel() {
+		this.deveManterCopiaDescartavelAteOPrazo(CcpEntityExpurgableOptions.monthly);
+	}
+}

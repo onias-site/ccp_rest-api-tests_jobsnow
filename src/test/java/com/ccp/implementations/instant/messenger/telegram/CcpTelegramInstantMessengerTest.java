@@ -27,7 +27,7 @@ public class CcpTelegramInstantMessengerTest {
 	// ── provider ──────────────────────────────────────────────────────────────
 
 	@Test
-	public void construtorProviderTest() {
+	public void constructorProviderTest() {
 		assertNotNull(new CcpTelegramInstantMessenger());
 	}
 

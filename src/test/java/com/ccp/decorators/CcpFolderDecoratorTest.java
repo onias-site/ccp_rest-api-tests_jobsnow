@@ -28,7 +28,7 @@ public class CcpFolderDecoratorTest {
 	}
 
 	@After
-	public void limpar() {
+	public void clear() {
 		limparDiretorio(BASE);
 	}
 
@@ -169,7 +169,7 @@ public class CcpFolderDecoratorTest {
 	// ── zip ───────────────────────────────────────────────────────────────────
 
 	@Test
-	public void zipCriaArquivoZipTest() {
+	public void zipCreatesZipFileTest() {
 		CcpFolderDecorator base = new CcpStringDecorator(BASE).folder();
 		base.createNewFileIfNotExists("a.txt");
 		base.zip();
@@ -181,7 +181,7 @@ public class CcpFolderDecoratorTest {
 	// ── parent ────────────────────────────────────────────────────────────────
 
 	@Test
-	public void parentApontaParaDiretorioPaiTest() {
+	public void parentPointsToParentDirectoryTest() {
 		CcpFolderDecorator folder = new CcpStringDecorator(BASE).folder();
 		assertNotNull(folder.parent);
 	}

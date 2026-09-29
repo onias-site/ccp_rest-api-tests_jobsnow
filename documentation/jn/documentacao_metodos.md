@@ -2908,7 +2908,7 @@ Todos os métodos delegam para `this.entity`:
 ## Classe: JnBusinessExecuteLogin
 **Pacote:** `com.jn.business.login`
 **Tipo:** classe (Singleton)
-**Propósito:** Executa o login do usuário após validação bem-sucedida da senha. Em operação bulk atômica: renomeia `sessionToken` para o campo `token` de sessão, invalida a senha atual (transferindo para entidade twin `login_password_locked`), apaga o registro de tentativas de senha, registra o login criando a sessão válida e o possível conflito de sessão.
+**Propósito:** Executa o login do usuário após validação bem-sucedida da senha. Em operação bulk atômica: renomeia `sessionToken` para o campo `token` de sessão, invalida a senha atual (transferindo para entidade twin `jn_login_password_locked`), apaga o registro de tentativas de senha, registra o login criando a sessão válida e o possível conflito de sessão.
 
 ### Métodos:
 - **apply(CcpJsonRepresentation json)** → `CcpJsonRepresentation`: Orquestra a operação bulk de login (unlock de senha, remoção de tentativas, registro de sessão) e retorna JSON vazio ao concluir.
@@ -2918,7 +2918,7 @@ Todos os métodos delegam para `this.entity`:
 ## Classe: JnBusinessExecuteLogout
 **Pacote:** `com.jn.business.login`
 **Tipo:** classe (Singleton)
-**Propósito:** Executa o logout do usuário. Em operação bulk atômica: transfere a sessão ativa para a entidade twin `login_session_terminated` (invalidando a sessão) e remove qualquer registro de conflito de sessão.
+**Propósito:** Executa o logout do usuário. Em operação bulk atômica: transfere a sessão ativa para a entidade twin `jn_login_session_terminated` (invalidando a sessão) e remove qualquer registro de conflito de sessão.
 
 ### Métodos:
 - **apply(CcpJsonRepresentation json)** → `CcpJsonRepresentation`: Realiza o logout via bulk, invalidando a sessão e limpando o cache. Retorna JSON vazio.
@@ -3154,8 +3154,8 @@ Todos os métodos delegam para `this.entity`:
 
 ## Classe: JnEntityContactUs
 **Pacote:** `com.jn.entities`
-**Tipo:** classe (entidade, `@CcpEntityCache(3600)`, `@CcpEntityTwin("contact_us_solved")`)
-**Propósito:** Representa uma solicitação de contato recebida pelo formulário "Fale Conosco". Possui entidade twin `contact_us_solved` para quando o contato for resolvido. Cache de 1 hora.
+**Tipo:** classe (entidade, `@CcpEntityCache(3600)`, `@CcpEntityTwin("jn_contact_us_solved")`)
+**Propósito:** Representa uma solicitação de contato recebida pelo formulário "Fale Conosco". Possui entidade twin `jn_contact_us_solved` para quando o contato for resolvido. Cache de 1 hora.
 
 ### Campos (`Fields`):
 | Campo | Descrição |
@@ -3170,8 +3170,8 @@ Todos os métodos delegam para `this.entity`:
 
 ## Classe: JnEntityContactUsIgnored
 **Pacote:** `com.jn.entities`
-**Tipo:** classe (entidade, `@CcpEntityDisposable(daily)`, `@CcpEntityCache(86400)`, `@CcpEntityTwin("contact_us_reread")`)
-**Propósito:** Registra contatos ignorados pelo suporte. Entidade descartável com expiração diária. Possui twin `contact_us_reread` para reaproveitamento posterior.
+**Tipo:** classe (entidade, `@CcpEntityDisposable(daily)`, `@CcpEntityCache(86400)`, `@CcpEntityTwin("jn_contact_us_reread")`)
+**Propósito:** Registra contatos ignorados pelo suporte. Entidade descartável com expiração diária. Possui twin `jn_contact_us_reread` para reaproveitamento posterior.
 
 ### Campos (`Fields`):
 | Campo | Descrição |
@@ -3364,8 +3364,8 @@ Todos os métodos delegam para `this.entity`:
 
 ## Classe: JnEntityJobsnowPenddingError
 **Pacote:** `com.jn.entities`
-**Tipo:** classe (entidade, `@CcpEntityVersionable`, `@CcpEntityCache(3600)`, `@CcpEntityTwin("jobsnow_solved_error")`)
-**Propósito:** Registra erros pendentes de resolução pela equipe de suporte. Diferente de `JnEntityJobsnowError` (que é efêmero), este possui versionamento e entidade twin `jobsnow_solved_error`, permitindo rastrear o ciclo de vida do erro até sua resolução.
+**Tipo:** classe (entidade, `@CcpEntityVersionable`, `@CcpEntityCache(3600)`, `@CcpEntityTwin("jn_jobsnow_solved_error")`)
+**Propósito:** Registra erros pendentes de resolução pela equipe de suporte. Diferente de `JnEntityJobsnowError` (que é efêmero), este possui versionamento e entidade twin `jn_jobsnow_solved_error`, permitindo rastrear o ciclo de vida do erro até sua resolução.
 
 ### Campos (`Fields`): `cause` (array), `stackTrace` (array), `stackTraceHash` (PK), `type` (PK), `message` (obrigatório), `timestamp`, `date`.
 
@@ -3405,8 +3405,8 @@ Todos os métodos delegam para `this.entity`:
 
 ## Classe: JnEntityLoginPassword
 **Pacote:** `com.jn.entities`
-**Tipo:** classe (entidade, `@CcpEntityVersionable`, `@CcpEntityCache(3600)`, `@CcpEntityTwin("login_password_locked")`)
-**Propósito:** Armazena o hash da senha do usuário. A entidade twin `login_password_locked` representa o estado de senha bloqueada após múltiplas tentativas incorretas. A senha é sempre armazenada como hash (via transformador `password`).
+**Tipo:** classe (entidade, `@CcpEntityVersionable`, `@CcpEntityCache(3600)`, `@CcpEntityTwin("jn_login_password_locked")`)
+**Propósito:** Armazena o hash da senha do usuário. A entidade twin `jn_login_password_locked` representa o estado de senha bloqueada após múltiplas tentativas incorretas. A senha é sempre armazenada como hash (via transformador `password`).
 
 ### Campos (`Fields`): `email` (PK), `password` (hash da senha, obrigatório).
 
@@ -3445,8 +3445,8 @@ Todos os métodos delegam para `this.entity`:
 
 ## Classe: JnEntityLoginSessionValidation
 **Pacote:** `com.jn.entities`
-**Tipo:** classe (entidade, `@CcpEntityDisposable(hourly)`, `@CcpEntityCache(3600)`, `@CcpEntityTwin("login_session_terminated")`)
-**Propósito:** Representa uma sessão de login ativa. A chave composta inclui email, token (armazenado como hash SHA-1), IP e userAgent, garantindo que cada sessão seja única por combinação de contexto. A twin `login_session_terminated` recebe a sessão ao fazer logout.
+**Tipo:** classe (entidade, `@CcpEntityDisposable(hourly)`, `@CcpEntityCache(3600)`, `@CcpEntityTwin("jn_login_session_terminated")`)
+**Propósito:** Representa uma sessão de login ativa. A chave composta inclui email, token (armazenado como hash SHA-1), IP e userAgent, garantindo que cada sessão seja única por combinação de contexto. A twin `jn_login_session_terminated` recebe a sessão ao fazer logout.
 
 ### Campos (`Fields`): `email` (PK), `token` (PK — transformado em hash SHA-1), `ip` (PK), `coordinates`, `macAddress`, `userAgent` (PK).
 
@@ -3463,8 +3463,8 @@ Todos os métodos delegam para `this.entity`:
 
 ## Classe: JnEntityLoginToken
 **Pacote:** `com.jn.entities`
-**Tipo:** classe (entidade, `@CcpEntityDisposable(monthly)`, `@CcpEntityCache(86400)`, `@CcpEntityTwin("login_token_locked")`)
-**Propósito:** Armazena o token de acesso enviado por email ao usuário durante o onboarding ou recuperação de senha. Expiração mensal. A twin `login_token_locked` indica token bloqueado após excesso de tentativas.
+**Tipo:** classe (entidade, `@CcpEntityDisposable(monthly)`, `@CcpEntityCache(86400)`, `@CcpEntityTwin("jn_login_token_locked")`)
+**Propósito:** Armazena o token de acesso enviado por email ao usuário durante o onboarding ou recuperação de senha. Expiração mensal. A twin `jn_login_token_locked` indica token bloqueado após excesso de tentativas.
 
 ### Campos (`Fields`): `email` (PK), `token` (hash do token gerado).
 
@@ -3481,7 +3481,7 @@ Todos os métodos delegam para `this.entity`:
 
 ## Classe: JnEntityLoginTokenRequestResend
 **Pacote:** `com.jn.entities`
-**Tipo:** classe (entidade, `@CcpEntityAsyncWriter`, `@CcpEntityDisposable(daily)`, `@CcpEntityCache(3600)`, `@CcpEntityTwin("login_token_fulfilled_resend")`)
+**Tipo:** classe (entidade, `@CcpEntityAsyncWriter`, `@CcpEntityDisposable(daily)`, `@CcpEntityCache(3600)`, `@CcpEntityTwin("jn_login_token_fulfilled_resend")`)
 **Propósito:** Registra a solicitação de reenvio de token de login feita por um usuário. Ao ser salvo (operação `save`), automaticamente: antes da operação, reseta e reenvia o token (`JnBusinessResetLoginToken`, `JnBusinessResendLoginToken`); depois da operação, notifica o suporte via `JnMessages.NotifySupportAboutPendingResendLoginToken`. As operações são assíncronas via mensageria.
 
 ### Campos (`Fields`): `email` (PK, sem transformação), `chatId` (ID do chat Telegram).
@@ -3490,7 +3490,7 @@ Todos os métodos delegam para `this.entity`:
 
 ## Classe: JnEntityLoginTokenRequestUnlock
 **Pacote:** `com.jn.entities`
-**Tipo:** classe (entidade, `@CcpEntityAsyncWriter`, `@CcpEntityDisposable(daily)`, `@CcpEntityCache(3600)`, `@CcpEntityTwin("login_token_fulfilled_unlock")`)
+**Tipo:** classe (entidade, `@CcpEntityAsyncWriter`, `@CcpEntityDisposable(daily)`, `@CcpEntityCache(3600)`, `@CcpEntityTwin("jn_login_token_fulfilled_unlock")`)
 **Propósito:** Registra a solicitação de desbloqueio de token de login feita por um usuário. Comportamento idêntico a `JnEntityLoginTokenRequestResend` mas notifica o suporte via `JnMessages.NotifySupportAboutPendingUnlockLoginToken`. As operações são assíncronas via mensageria.
 
 ### Campos (`Fields`): `email` (PK, sem transformação), `chatId` (ID do chat Telegram).
@@ -4345,7 +4345,7 @@ Todos os métodos delegam para `this.entity`:
 ## Classe: VisEntityDeniedViewToCompany
 **Pacote:** `com.vis.entities`
 **Tipo:** classe (configurador de entidade Elasticsearch)
-**Propósito:** Representa a tabela/índice que registra domínios de empresas cujos recrutadores não podem visualizar determinados currículos. Utiliza o padrão Twin Entity para rastrear quando um bloqueio é revertido (entidade twin: `reallowed_view_to_company`). Possui cache de 1 hora e versionamento.
+**Propósito:** Representa a tabela/índice que registra domínios de empresas cujos recrutadores não podem visualizar determinados currículos. Utiliza o padrão Twin Entity para rastrear quando um bloqueio é revertido (entidade twin: `vis_reallowed_view_to_company`). Possui cache de 1 hora e versionamento.
 
 ### Campos (enum `Fields`):
 - **domain** (chave primária): Domínio da empresa recrutadora bloqueada.
@@ -4497,7 +4497,7 @@ Todos os métodos delegam para `this.entity`:
 ## Classe: VisEntityPosition
 **Pacote:** `com.vis.entities`
 **Tipo:** classe (configurador de entidade Elasticsearch)
-**Propósito:** Representa a entidade central de Vaga (position) no sistema. Armazena todos os dados de uma vaga publicada por um recrutador: cargo, senioridade, localização (DDD), disponibilidade, canais de contato, skills requeridas e desejadas, faixa salarial (CLT, PJ, BTC), frequência de envio de currículos, data de expiração e critérios de ordenação. Utiliza o padrão Twin Entity para controlar vagas inativas (`inactive_position`), tem escrita assíncrona, versionamento e cache de 1 hora. Ao salvar ou deletar, dispara fluxos de reagrupamento e envio de currículos para recrutadores.
+**Propósito:** Representa a entidade central de Vaga (position) no sistema. Armazena todos os dados de uma vaga publicada por um recrutador: cargo, senioridade, localização (DDD), disponibilidade, canais de contato, skills requeridas e desejadas, faixa salarial (CLT, PJ, BTC), frequência de envio de currículos, data de expiração e critérios de ordenação. Utiliza o padrão Twin Entity para controlar vagas inativas (`vis_inactive_position`), tem escrita assíncrona, versionamento e cache de 1 hora. Ao salvar ou deletar, dispara fluxos de reagrupamento e envio de currículos para recrutadores.
 
 ### Campos (enum `Fields`):
 - **channel**: Canais de contato aceitos (telegram, whatsapp, email, sms) — array obrigatório.

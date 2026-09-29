@@ -15,17 +15,17 @@ import com.jn.entities.JnEntityJobsnowError;
 import org.junit.Test;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre os métodos {@code default} da interface
- * {@code CcpEntity}. Uma implementação mínima é usada para que as chamadas resolvam para as
- * implementações default e não para as dos decorators.
+ * Coverage of {@code CcpNullParameterAspect} over the {@code default} methods of the
+ * {@code CcpEntity} interface. A minimal implementation is used so that the calls resolve to the
+ * default implementations and not to the decorators' ones.
  */
 public class CcpEntityDefaultsAopNullTest {
 
 	/**
-	 * O {@code CcpDbRequester} entra por causa do dublê de {@code CcpSelectUnionAll}: o construtor dele
-	 * pede essa dependência para descobrir os nomes dos campos de entidade e de id. Sem ela, montar o
-	 * cenário estoura antes de o método sob teste ser chamado, e o aspecto nunca chega a rodar. Nada
-	 * aqui toca o banco — os dois métodos usados devolvem nome de campo.
+	 * {@code CcpDbRequester} is needed because of the {@code CcpSelectUnionAll} test double: its
+	 * constructor asks for this dependency to find out the entity and id field names. Without it,
+	 * building the scenario blows up before the method under test is called, and the aspect never
+	 * gets to run. Nothing here touches the database — both methods used return a field name.
 	 */
 	static {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpElasticSearchDbRequest());
@@ -33,7 +33,7 @@ public class CcpEntityDefaultsAopNullTest {
 
 	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;
 
-	/** Implementação mínima de {@code CcpEntity} que só resolve os metadados. */
+	/** Minimal implementation of {@code CcpEntity} that only resolves the metadata. */
 
 
 	private static CcpEntity entity() {

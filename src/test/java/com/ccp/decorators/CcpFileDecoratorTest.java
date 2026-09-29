@@ -33,7 +33,7 @@ public class CcpFileDecoratorTest {
 	}
 
 	@After
-	public void limpar() {
+	public void clear() {
 		new CcpStringDecorator(ARQUIVO).file().remove();
 	}
 
@@ -99,9 +99,9 @@ public class CcpFileDecoratorTest {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		file.write("primeira");
 		file.append("segunda");
-		int[] contador = {0};
-		file.readLines((linha, numero) -> contador[0]++);
-		assertTrue(contador[0] >= 2);
+		int[] counter = {0};
+		file.readLines((linha, numero) -> counter[0]++);
+		assertTrue(counter[0] >= 2);
 	}
 
 	// ── exists / isFile ───────────────────────────────────────────────────────
@@ -171,7 +171,7 @@ public class CcpFileDecoratorTest {
 	@Test
 	public void asSingleJsonTest() {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
-		file.write("{'nome':'Onias','idade':39}");
+		file.write("{'name':'Onias','age':39}");
 		CcpJsonRepresentation json = file.asSingleJson();
 		assertNotNull(json);
 		assertFalse(json.isEmpty());
@@ -203,7 +203,7 @@ public class CcpFileDecoratorTest {
 	// ── zip ───────────────────────────────────────────────────────────────────
 
 	@Test
-	public void zipCriaArquivoZipTest() {
+	public void zipCreatesZipFileTest() {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		file.write("conteudo para zipar");
 		file.zip();
@@ -215,7 +215,7 @@ public class CcpFileDecoratorTest {
 	// ── parent ────────────────────────────────────────────────────────────────
 
 	@Test
-	public void parentApontaParaDiretorioPaiTest() {
+	public void parentPointsToParentDirectoryTest() {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		assertNotNull(file.parent);
 		assertTrue(file.parent.content.contains("ccp_file_test"));

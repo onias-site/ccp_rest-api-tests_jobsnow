@@ -24,9 +24,9 @@ import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.entities.JnEntityJobsnowError;
 
 /**
- * Cobertura dos aspectos {@code CcpNullParameterAspect} / {@code CcpNullReturnAspect} sobre o
- * pacote de CRUD: {@code CcpCrud}, {@code CcpSelectUnionAll}, o fluent chain de
- * {@code CcpGetEntityId} e as funções {@code FunctionPutEntity} / {@code FunctionPutStatus}.
+ * Coverage of the {@code CcpNullParameterAspect} / {@code CcpNullReturnAspect} aspects over the
+ * CRUD package: {@code CcpCrud}, {@code CcpSelectUnionAll}, the fluent chain of
+ * {@code CcpGetEntityId} and the functions {@code FunctionPutEntity} / {@code FunctionPutStatus}.
  */
 public class CcpCrudAopNullTest {
 
@@ -72,7 +72,7 @@ public class CcpCrudAopNullTest {
 		return loadData().andFinally(new CcpJsonFieldName[0]);
 	}
 
-	// ── CcpCrud (métodos default) ─────────────────────────────────────────────
+	// ── CcpCrud (default methods) ─────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void unionAllArrayJsonsNullTest() {
@@ -128,17 +128,17 @@ public class CcpCrudAopNullTest {
 	// ── CcpSelectUnionAll ─────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void selectUnionAllConstrutorSearchParametersNullTest() {
+	public void selectUnionAllConstructorSearchParametersNullTest() {
 		new CcpSelectUnionAll(null, new ArrayList<CcpJsonRepresentation>(Arrays.asList(JSON)), ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void selectUnionAllConstrutorResultsNullTest() {
+	public void selectUnionAllConstructorResultsNullTest() {
 		new CcpSelectUnionAll(new CcpJsonRepresentation[] { JSON }, null, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void selectUnionAllConstrutorEntitiesNullTest() {
+	public void selectUnionAllConstructorEntitiesNullTest() {
 		new CcpSelectUnionAll(new CcpJsonRepresentation[] { JSON },
 				new ArrayList<CcpJsonRepresentation>(Arrays.asList(JSON)), (CcpEntity[]) null);
 	}
@@ -186,7 +186,7 @@ public class CcpCrudAopNullTest {
 	// ── CcpGetEntityId ────────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void getEntityIdConstrutorNullTest() {
+	public void getEntityIdConstructorNullTest() {
 		new CcpGetEntityId((CcpJsonRepresentation[]) null);
 	}
 
@@ -285,7 +285,7 @@ public class CcpCrudAopNullTest {
 				json -> json, json -> json, null);
 	}
 
-	// ── exceções de CcpGetEntityId ────────────────────────────────────────────
+	// ── CcpGetEntityId exceptions ─────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void errorMultiGetSearchFailedNullTest() {

@@ -17,7 +17,7 @@ public class JnBusinessSendHttpRequestTest {
 
 
 	@Test
-	public void construtorTest() {
+	public void constructorTest() {
 		assertNotNull(new JnBusinessSendHttpRequest(new NoopExecutor(), JnMessageSenderExceptionHandler.THROWS));
 	}
 

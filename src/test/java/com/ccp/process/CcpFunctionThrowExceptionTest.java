@@ -8,14 +8,14 @@ import com.ccp.constants.CcpOtherConstants;
 public class CcpFunctionThrowExceptionTest {
 
 	@Test(expected = IllegalStateException.class)
-	public void applyLancaExcecaoTest() {
+	public void applyThrowsExceptionTest() {
 		new CcpFunctionThrowException(new IllegalStateException("x")).execute(CcpOtherConstants.EMPTY_JSON);
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorNullParamTest() {
+	public void constructorNullParamTest() {
 		new CcpFunctionThrowException(null);
 	}
 
@@ -25,5 +25,5 @@ public class CcpFunctionThrowExceptionTest {
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
-	// apply sempre lança exceção; nunca retorna null.
+	// apply always throws an exception; it never returns null.
 }

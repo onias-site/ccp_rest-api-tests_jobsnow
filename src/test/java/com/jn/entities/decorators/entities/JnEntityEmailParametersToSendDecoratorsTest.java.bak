@@ -1,0 +1,59 @@
+package com.jn.entities.decorators.entidades;
+
+import org.junit.Test;
+
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.jn.entities.JnEntityEmailParametersToSend;
+import com.jn.entities.decorators.TemplateDeTestesDeDecoratorDeEntidade;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
+
+/**
+ * jn_email_parameters_to_send: {@code @CcpEntityCache(3600)}, versionável, transformador e validador.
+ * O {@code templateId} tem que ser nome de classe Java existente; usa-se o desta própria classe de
+ * teste para não sobrescrever parâmetros reais de envio no banco local. O e-mail declara
+ * {@code JnJsonTransformersFieldsEntityDoNothing}: fica em claro.
+ */
+public class JnEntityEmailParametersToSendDecoratorsTest extends TemplateDeTestesDeDecoratorDeEntidade {
+
+	protected CcpEntity entidade() {
+		return JnEntityEmailParametersToSend.ENTITY;
+	}
+
+	protected CcpJsonRepresentation registroValido() {
+		return this.com(JnJsonCommonsFields.templateId, this.getClass().getName())
+				.put(JnJsonCommonsFields.email, this.email)
+				.put(JnJsonCommonsFields.sender, "devs.jobsnow@gmail.com")
+				.put(JnJsonCommonsFields.subjectType, "teste");
+	}
+
+	@Test
+	public void cadeia() {
+		this.deveTerACadeia("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "JnVersionablePurgeEntity", "DecoratorCacheEntity", "JnVersionableEntity", "DefaultImplementationEntity");
+	}
+
+	@Test
+	public void gravarLerEApagar() {
+		this.deveGravarLerEApagar();
+	}
+
+	@Test
+	public void validador() {
+		this.deveRecusarRegistroInvalido(this.registroValido().put(JnJsonCommonsFields.templateId, "classe.que.nao.Existe"));
+	}
+
+	@Test
+	public void transformador() {
+		this.deveGuardarEmailEmClaro();
+	}
+
+	@Test
+	public void cache() {
+		this.deveServirLeituraDoCacheEInvalidarNaEscrita();
+	}
+
+	@Test
+	public void versionavel() {
+		this.deveRegistrarHistoricoACadaEscrita();
+	}
+}

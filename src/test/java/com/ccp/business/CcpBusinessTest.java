@@ -34,9 +34,9 @@ public class CcpBusinessTest {
 	}
 
 	@Test
-	public void executeSemValidacoesTest() {
-		CcpJsonRepresentation r = new NoopBusiness().execute(CcpOtherConstants.EMPTY_JSON);
-		assertNotNull(r);
+	public void executeWithoutValidationsTest() {
+		CcpJsonRepresentation result = new NoopBusiness().execute(CcpOtherConstants.EMPTY_JSON);
+		assertNotNull(result);
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
@@ -56,7 +56,7 @@ public class CcpBusinessTest {
 
 
 	@org.junit.Test(expected = com.ccp.aop.CcpNullReturnException.class)
-	public void applyRetornaNullDisparaAopTest() {
-		new RetornaNullBusiness().execute(CcpOtherConstants.EMPTY_JSON);
+	public void applyReturningNullTriggersAopTest() {
+		new ReturnsNullBusiness().execute(CcpOtherConstants.EMPTY_JSON);
 	}
 }

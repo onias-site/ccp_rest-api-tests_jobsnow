@@ -21,10 +21,10 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.status.login.JnProcessStatusCreateLoginEmail;
 import com.jn.status.login.JnProcessStatusExecuteLogin;
 import com.jn.utils.JnDeleteKeysFromCache;
-import com.vis.commons.VisTemplateDeTestes;
+import com.vis.commons.VisTestTemplate;
 import com.vis.rest.api.resume.status.SaveResumeStatus;
 
-public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
+public class ValidationsEndpointsCreateResume  extends VisTestTemplate{
 	enum JsonFieldNames implements CcpJsonFieldName{
 		sessionToken
 	}
@@ -65,7 +65,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 	}
 	
 	//@Test
-	public void faltandoCadastrarSenha() {
+	public void missingPasswordRegistration() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
 		this.getJsonResponseFromEndpoint(JnProcessStatusExecuteLogin.missingSavePassword, scenarioName, this.pathToJsonFile, CcpEntityOperationType.delete.getOperationCallback(JnEntityLoginPassword.ENTITY));
 	}
@@ -82,8 +82,8 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 		
 		 CcpJsonRepresentation result = new CcpGetEntityId(jsonDeRetornoDoTeste)
 			.toBeginProcedureAnd()
-			.ifThisIdIsNotPresentInEntity(JnEntityAsyncTask.ENTITY).returnStatus(SaveResumeStatus.naoCadastrouMensageria).and()
-			.ifThisIdIsNotPresentInEntity(JnEntityEmailMessageSent.ENTITY).returnStatus(SaveResumeStatus.naoEnviouEmail)
+			.ifThisIdIsNotPresentInEntity(JnEntityAsyncTask.ENTITY).returnStatus(SaveResumeStatus.didNotRegisterMessaging).and()
+			.ifThisIdIsNotPresentInEntity(JnEntityEmailMessageSent.ENTITY).returnStatus(SaveResumeStatus.didNotSendEmail)
 			.andFinallyReturningTheseFields(jsonDeRetornoDoTeste.fieldSet().stream().map(x -> (CcpJsonFieldName)() -> x).collect(Collectors.toSet()))
 			.endThisProcedureRetrievingTheResultingData(new CcpFieldName(new Object(){}.getClass().getEnclosingMethod().getName()), CcpOtherConstants.DO_NOTHING, CcpOtherConstants.DO_NOTHING, JnDeleteKeysFromCache.INSTANCE)
 			;
@@ -102,8 +102,8 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 		
 		 new CcpGetEntityId(responseFromEndpoint)
 			.toBeginProcedureAnd()
-			.ifThisIdIsNotPresentInEntity(JnEntityAsyncTask.ENTITY).returnStatus(SaveResumeStatus.naoCadastrouMensageria).and()
-			.ifThisIdIsNotPresentInEntity(JnEntityEmailMessageSent.ENTITY).returnStatus(SaveResumeStatus.naoEnviouEmail)
+			.ifThisIdIsNotPresentInEntity(JnEntityAsyncTask.ENTITY).returnStatus(SaveResumeStatus.didNotRegisterMessaging).and()
+			.ifThisIdIsNotPresentInEntity(JnEntityEmailMessageSent.ENTITY).returnStatus(SaveResumeStatus.didNotSendEmail)
 			.andFinallyReturningTheseFields(new CcpFieldName("x"))
 			;
 	}
@@ -121,7 +121,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 	
 	
 	//@Test
-	public void senhaBloqueada() {
+	public void lockedPassword() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
 		this.getJsonResponseFromEndpoint(JnProcessStatusExecuteLogin.lockedPassword, scenarioName, this.pathToJsonFile, CcpEntityOperationType.save.getOperationCallback(JnEntityLoginPassword.ENTITY.getTwinEntity()));
 		
@@ -129,7 +129,7 @@ public class ValidationsEndpointsCreateResume  extends VisTemplateDeTestes{
 
 	
 	//@Test
-	public void tokenBloqueado() {
+	public void lockedToken() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
 		this.getJsonResponseFromEndpoint(JnProcessStatusExecuteLogin.lockedToken, scenarioName, this.pathToJsonFile, CcpEntityOperationType.save.getOperationCallback(JnEntityLoginToken.ENTITY.getTwinEntity()));
 		

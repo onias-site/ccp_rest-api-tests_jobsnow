@@ -19,70 +19,70 @@ public class CcpJsonFieldTypeNumberIntegerTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	private final NegocioFieldTypeNumberInteger negocio = new NegocioFieldTypeNumberInteger();
+	private final BusinessFieldTypeNumberInteger business = new BusinessFieldTypeNumberInteger();
 
-	private CcpJsonRepresentation json(RegrasFieldTypeNumberInteger campo, Object valor) {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(campo, valor);
+	private CcpJsonRepresentation json(RulesFieldTypeNumberInteger field, Object valor) {
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(field, valor);
 		return json;
 	}
 
 	@Test
-	public void valorMinimoAceitaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNumberInteger.valorMinimo, 10);
-		ValidacaoDeCampo.aceita(this.negocio, json);
+	public void minValueAcceptsTest() {
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNumberInteger.valorMinimo, 10);
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
-	public void valorMinimoRecusaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNumberInteger.valorMinimo, 9);
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeNumberInteger.valorMinimo, CcpJsonFieldTypeError.longNumberMinValue);
+	public void minValueRefusesTest() {
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNumberInteger.valorMinimo, 9);
+		FieldValidation.refuses(this.business, json, RulesFieldTypeNumberInteger.valorMinimo, CcpJsonFieldTypeError.longNumberMinValue);
 	}
 
 	@Test
-	public void valorMaximoAceitaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNumberInteger.valorMaximo, 20);
-		ValidacaoDeCampo.aceita(this.negocio, json);
+	public void maxValueAcceptsTest() {
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNumberInteger.valorMaximo, 20);
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
-	public void valorMaximoRecusaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNumberInteger.valorMaximo, 21);
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeNumberInteger.valorMaximo, CcpJsonFieldTypeError.longNumberMaxValue);
+	public void maxValueRefusesTest() {
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNumberInteger.valorMaximo, 21);
+		FieldValidation.refuses(this.business, json, RulesFieldTypeNumberInteger.valorMaximo, CcpJsonFieldTypeError.longNumberMaxValue);
 	}
 
 	@Test
-	public void valorExatoAceitaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNumberInteger.valorExato, 1500);
-		ValidacaoDeCampo.aceita(this.negocio, json);
+	public void exactValueAcceptsTest() {
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNumberInteger.valorExato, 1500);
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
-	public void valorExatoRecusaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNumberInteger.valorExato, 1501);
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeNumberInteger.valorExato, CcpJsonFieldTypeError.longNumberExactValue);
+	public void exactValueRefusesTest() {
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNumberInteger.valorExato, 1501);
+		FieldValidation.refuses(this.business, json, RulesFieldTypeNumberInteger.valorExato, CcpJsonFieldTypeError.longNumberExactValue);
 	}
 
 	@Test
-	public void valorPermitidoAceitaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNumberInteger.valorPermitido, 2);
-		ValidacaoDeCampo.aceita(this.negocio, json);
+	public void allowedValueAcceptsTest() {
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNumberInteger.valorPermitido, 2);
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
-	public void valorPermitidoRecusaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNumberInteger.valorPermitido, 9);
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeNumberInteger.valorPermitido, CcpJsonFieldTypeError.longNumberAllowed);
+	public void allowedValueRefusesTest() {
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNumberInteger.valorPermitido, 9);
+		FieldValidation.refuses(this.business, json, RulesFieldTypeNumberInteger.valorPermitido, CcpJsonFieldTypeError.longNumberAllowed);
 	}
 
 	@Test
 	public void numeroNegativoAceitaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNumberInteger.semRestricao, -42);
-		ValidacaoDeCampo.aceita(this.negocio, json);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNumberInteger.semRestricao, -42);
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
-	public void textoNaoNumericoTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNumberInteger.semRestricao, "abc");
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeNumberInteger.semRestricao, CcpJsonFieldError.incompatibleType);
+	public void nonNumericTextTest() {
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNumberInteger.semRestricao, "abc");
+		FieldValidation.refuses(this.business, json, RulesFieldTypeNumberInteger.semRestricao, CcpJsonFieldError.incompatibleType);
 	}
 }

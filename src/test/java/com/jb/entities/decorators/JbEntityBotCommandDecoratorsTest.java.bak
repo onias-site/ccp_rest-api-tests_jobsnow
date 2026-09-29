@@ -1,0 +1,48 @@
+package com.jb.entities.decorators;
+
+import java.util.Arrays;
+
+import org.junit.Test;
+
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.jb.entities.JbEntityBotCommand;
+import com.jn.entities.decorators.TemplateDeTestesDeDecoratorDeEntidade;
+
+/** jb_bot_command: {@code @CcpEntityCache(3600)}, versionável (prioridade 2), transformador e validador. */
+public class JbEntityBotCommandDecoratorsTest extends TemplateDeTestesDeDecoratorDeEntidade {
+
+	protected CcpEntity entidade() {
+		return JbEntityBotCommand.ENTITY;
+	}
+
+	protected CcpJsonRepresentation registroValido() {
+		return this.com(JbEntityBotCommand.Fields.commandName, "/comando" + this.unico)
+				.put(JbEntityBotCommand.Fields.parameterName, Arrays.asList("email"));
+	}
+
+	@Test
+	public void cadeia() {
+		this.deveTerACadeia("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "JnVersionablePurgeEntity", "DecoratorCacheEntity", "JnVersionableEntity", "DefaultImplementationEntity");
+	}
+
+	@Test
+	public void gravarLerEApagar() {
+		this.deveGravarLerEApagar();
+	}
+
+	@Test
+	public void validador() {
+		this.deveRecusarRegistroInvalido(this.registroValido().put(JbEntityBotCommand.Fields.parameterName, Arrays.asList("")));
+	}
+
+	@Test
+	public void cache() {
+		this.deveServirLeituraDoCacheEInvalidarNaEscrita();
+	}
+
+	@Test
+	public void versionavel() {
+		this.deveRegistrarHistoricoACadaEscrita();
+	}
+}

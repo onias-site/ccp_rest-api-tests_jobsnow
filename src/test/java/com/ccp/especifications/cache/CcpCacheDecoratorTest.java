@@ -16,9 +16,9 @@ public class CcpCacheDecoratorTest {
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 
-	// Nota: ctor(CcpBulkItem) e ctor(CcpEntity, String) delegam via this(...) — a
-	// avaliação de argumentos ocorre antes do aspecto interceptar (item.entity, item.id),
-	// então NullPointerException nativa vence CcpNullParameterException.
+	// Note: ctor(CcpBulkItem) and ctor(CcpEntity, String) delegate via this(...) — argument
+	// evaluation happens before the aspect intercepts (item.entity, item.id),
+	// so the native NullPointerException wins over CcpNullParameterException.
 
 	@Test(expected = CcpNullParameterException.class)
 	public void ctorStringNullTest() {
@@ -81,5 +81,5 @@ public class CcpCacheDecoratorTest {
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
-	// delete() é anotado com @CcpAllowNullReturn — pode retornar null legalmente.
+	// delete() is annotated with @CcpAllowNullReturn — it may legitimately return null.
 }

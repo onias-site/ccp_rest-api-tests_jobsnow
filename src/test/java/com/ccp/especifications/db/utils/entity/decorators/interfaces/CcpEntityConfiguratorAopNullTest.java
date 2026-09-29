@@ -11,7 +11,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.entities.JnEntityJobsnowError;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre os métodos default de
+ * Coverage of {@code CcpNullParameterAspect} over the default methods of
  * {@code CcpEntityConfigurator}.
  */
 public class CcpEntityConfiguratorAopNullTest {

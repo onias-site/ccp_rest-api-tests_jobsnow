@@ -1,0 +1,60 @@
+package com.jn.entities.decorators.entidades;
+
+import org.junit.Test;
+
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
+import com.jn.entities.JnEntityContactUsIgnored;
+import com.jn.entities.decorators.TemplateDeTestesDeDecoratorDeEntidade;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
+
+/**
+ * jn_contact_us_ignored: gêmea de jn_contact_us_reread, {@code @CcpEntityCache(86400)}, descartável
+ * diário, transformador e validador.
+ */
+public class JnEntityContactUsIgnoredDecoratorsTest extends TemplateDeTestesDeDecoratorDeEntidade {
+
+	protected CcpEntity entidade() {
+		return JnEntityContactUsIgnored.ENTITY;
+	}
+
+	protected CcpJsonRepresentation registroValido() {
+		return this.com(JnJsonCommonsFields.email, this.email);
+	}
+
+	@Test
+	public void cadeia() {
+		this.deveTerACadeia("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "DecoratorTwinEntity", "DecoratorCacheEntity", "JnDisposableEntity", "DefaultImplementationEntity");
+	}
+
+	@Test
+	public void gravarLerEApagar() {
+		this.deveGravarLerEApagar();
+	}
+
+	@Test
+	public void validador() {
+		this.deveRecusarRegistroInvalido(this.com(JnJsonCommonsFields.email, "isto-nao-e-email"));
+	}
+
+	@Test
+	public void transformador() {
+		this.deveGuardarEmailComoHash();
+	}
+
+	@Test
+	public void cache() {
+		this.deveServirLeituraDoCacheEInvalidarNaEscrita();
+	}
+
+	@Test
+	public void gemea() {
+		this.deveAlternarEntrePrincipalEGemea("jn_contact_us_reread");
+	}
+
+	@Test
+	public void descartavel() {
+		this.deveManterCopiaDescartavelAteOPrazo(CcpEntityExpurgableOptions.daily);
+	}
+}

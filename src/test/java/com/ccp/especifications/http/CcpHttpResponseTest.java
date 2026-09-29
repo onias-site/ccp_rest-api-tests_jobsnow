@@ -21,15 +21,15 @@ public class CcpHttpResponseTest {
 
 	@Test
 	public void ctorStringTest() {
-		CcpHttpResponse r = new CcpHttpResponse("{}", 200, "curl");
-		assertTrue(r.isSuccess());
+		CcpHttpResponse response = new CcpHttpResponse("{}", 200, "curl");
+		assertTrue(response.isSuccess());
 	}
 
 	@Test
 	public void ctorInputStreamTest() {
-		InputStream is = new ByteArrayInputStream("{}".getBytes());
-		CcpHttpResponse r = new CcpHttpResponse(is, 200, "curl");
-		assertNotNull(r);
+		InputStream inputStream = new ByteArrayInputStream("{}".getBytes());
+		CcpHttpResponse response = new CcpHttpResponse(inputStream, 200, "curl");
+		assertNotNull(response);
 	}
 
 	@Test
@@ -76,7 +76,7 @@ public class CcpHttpResponseTest {
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
-	// Todos os métodos públicos retornam String/JSON/List não-null naturalmente,
-	// ou primitivos (boolean/int) fora do escopo do aspecto.
-	// Manipular httpResponse via reflexão levaria a NPE nativa antes do aspecto.
+	// Every public method naturally returns a non-null String/JSON/List,
+	// or primitives (boolean/int) outside the aspect's scope.
+	// Tampering with httpResponse via reflection would lead to a native NPE before the aspect.
 }

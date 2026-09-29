@@ -13,23 +13,23 @@ import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
- * Mede de onde vêm as regras de validação de cada campo de uma entidade.
+ * Measures where the validation rules of each field of an entity come from.
  *
- * <p>A dúvida registrada em {@code JnEntityLoginTokenRequestResend} era se o motor estaria sempre
- * copiando as regras de {@code JnJsonCommonsFields}, independentemente do que cada campo declara. A
- * entidade fictícia {@link FakeEntityCopyFieldValidations} responde a isso com dois campos de mesmo
- * nome que os de lá e procedência oposta, e as duas provas são simétricas:
+ * <p>The doubt recorded in {@code JnEntityLoginTokenRequestResend} was whether the engine would always
+ * be copying the rules from {@code JnJsonCommonsFields}, regardless of what each field declares. The
+ * fictitious entity {@link FakeEntityCopyFieldValidations} answers that with two fields with the same
+ * names as the ones there and opposite origins, and the two proofs are symmetric:
  *
  * <ul>
- * <li>o {@code email} aceita valores que {@code JnJsonCommonsFields.email} recusaria — logo a cópia
- * <b>não</b> acontece onde não foi pedida;</li>
- * <li>o {@code password} recusa valores que passariam se o campo estivesse sem regra — logo a cópia
- * <b>acontece</b> onde foi pedida.</li>
+ * <li>{@code email} accepts values that {@code JnJsonCommonsFields.email} would refuse — so the copy
+ * does <b>not</b> happen where it was not asked for;</li>
+ * <li>{@code password} refuses values that would pass if the field had no rule — so the copy
+ * <b>does happen</b> where it was asked for.</li>
  * </ul>
  *
- * <p>A validação é disparada por {@code ENTITY.validateJson}, e não montando o json na mão para o
- * motor: é o decorator de {@code @CcpEntityFieldsValidator} que se quer exercitar, que é por onde
- * qualquer gravação de entidade passa.
+ * <p>Validation is triggered by {@code ENTITY.validateJson}, not by building the json by hand for the
+ * engine: it is the {@code @CcpEntityFieldsValidator} decorator that is meant to be exercised, which is
+ * what every entity save goes through.
  */
 public class CopyFieldValidationsFromTest {
 
@@ -37,94 +37,93 @@ public class CopyFieldValidationsFromTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	private static final String EMAIL_DE_VERDADE = "onias85@gmail.com";
+	private static final String REAL_EMAIL = "onias85@gmail.com";
 
-	private static final String SENHA_FORTE = "Senha#12345";
+	private static final String STRONG_PASSWORD = "Strong#12345";
 
-	// ── email: vale o que está escrito no próprio campo ───────────────────────
-
-	/**
-	 * Dez caracteres que não formam um e-mail. Passa pela regra própria do campo (10 a 500) e seria
-	 * recusado pela expressão regular de {@code JnJsonCommonsFields.email}.
-	 */
-	@Test
-	public void emailAceitaTextoQueNaoEhEmail() {
-		this.deveSerAceito("abcdefghij", SENHA_FORTE);
-	}
+	// ── email: what is written on the field itself applies ────────────────────
 
 	/**
-	 * Duzentos caracteres. Passa pelo limite próprio de 500 e seria recusado pelo limite de 100 de
-	 * {@code JnJsonCommonsFields.email}. Prova a mesma coisa que o teste acima, sem depender da
-	 * expressão regular.
+	 * Ten characters that do not form an e-mail. It passes the field's own rule (10 to 500) and would be
+	 * refused by the regular expression of {@code JnJsonCommonsFields.email}.
 	 */
 	@Test
-	public void emailAceitaTextoMaiorQueOLimiteDoCentralizador() {
-		String duzentosCaracteres = "a".repeat(200);
-		this.deveSerAceito(duzentosCaracteres, SENHA_FORTE);
+	public void emailAcceptsTextThatIsNotAnEmail() {
+		this.shouldBeAccepted("abcdefghij", STRONG_PASSWORD);
 	}
-
-	/** A regra própria vale inteira, e não só na parte que afrouxa: três caracteres são poucos. */
-	@Test
-	public void emailRecusaTextoMenorQueOSeuProprioMinimo() {
-		this.deveSerRecusado("abc", SENHA_FORTE, JnJsonCommonsFields.email.name());
-	}
-
-	/** E o limite próprio de 500 também é cobrado. */
-	@Test
-	public void emailRecusaTextoMaiorQueOSeuProprioMaximo() {
-		String quinhentosEUmCaracteres = "a".repeat(501);
-		this.deveSerRecusado(quinhentosEUmCaracteres, SENHA_FORTE, JnJsonCommonsFields.email.name());
-	}
-
-	// ── password: vale o que veio de JnJsonCommonsFields ──────────────────────
 
 	/**
-	 * O campo não declara regra nenhuma. Sem a cópia ele aceitaria qualquer texto; a recusa da senha
-	 * fraca é o que mostra que a regra de {@code JnJsonCommonsFields.password} chegou até aqui.
+	 * Two hundred characters. It passes the own limit of 500 and would be refused by the limit of 100 of
+	 * {@code JnJsonCommonsFields.email}. It proves the same thing as the test above, without depending on
+	 * the regular expression.
 	 */
 	@Test
-	public void passwordRecusaSenhaFraca() {
-		this.deveSerRecusado(EMAIL_DE_VERDADE, "fraca", JnJsonCommonsFields.password.name());
+	public void emailAcceptsTextLongerThanTheCentralizerLimit() {
+		String twoHundredCharacters = "a".repeat(200);
+		this.shouldBeAccepted(twoHundredCharacters, STRONG_PASSWORD);
 	}
 
-	/** E aceita a senha que satisfaz aquela regra: maiúscula, minúscula, dígito, símbolo e oito. */
+	/** The field's own rule applies in full, not only in the part that loosens: three characters are too few. */
 	@Test
-	public void passwordAceitaSenhaForte() {
-		this.deveSerAceito(EMAIL_DE_VERDADE, SENHA_FORTE);
+	public void emailRefusesTextShorterThanItsOwnMinimum() {
+		this.shouldBeRefused("abc", STRONG_PASSWORD, JnJsonCommonsFields.email.name());
 	}
 
-	// ── e o email de verdade passa nas duas leituras, por isso não prova nada ──
+	/** And the own limit of 500 is enforced too. */
+	@Test
+	public void emailRefusesTextLongerThanItsOwnMaximum() {
+		String fiveHundredAndOneCharacters = "a".repeat(501);
+		this.shouldBeRefused(fiveHundredAndOneCharacters, STRONG_PASSWORD, JnJsonCommonsFields.email.name());
+	}
+
+	// ── password: what came from JnJsonCommonsFields applies ──────────────────
 
 	/**
-	 * Registrado para deixar claro por que os demais testes usam valores esquisitos: um e-mail de
-	 * verdade passa tanto pela regra própria quanto pela do centralizador, e portanto não distingue
-	 * uma da outra.
+	 * The field declares no rule at all. Without the copy it would accept any text; refusing the weak
+	 * password is what shows that the rule of {@code JnJsonCommonsFields.password} got here.
 	 */
 	@Test
-	public void emailDeVerdadePassaPelasDuasRegrasEPorIssoNaoDistingueNada() {
-		this.deveSerAceito(EMAIL_DE_VERDADE, SENHA_FORTE);
+	public void passwordRefusesWeakPassword() {
+		this.shouldBeRefused(REAL_EMAIL, "weak", JnJsonCommonsFields.password.name());
 	}
 
-	// ── mecânica ──────────────────────────────────────────────────────────────
+	/** And it accepts the password that satisfies that rule: uppercase, lowercase, digit, symbol and eight. */
+	@Test
+	public void passwordAcceptsStrongPassword() {
+		this.shouldBeAccepted(REAL_EMAIL, STRONG_PASSWORD);
+	}
 
-	private void deveSerAceito(String email, String password) {
+	// ── and the real email passes both readings, so it proves nothing ─────────
+
+	/**
+	 * Recorded to make clear why the other tests use odd values: a real e-mail passes both the field's
+	 * own rule and the centralizer's, and therefore does not tell one from the other.
+	 */
+	@Test
+	public void realEmailPassesBothRulesAndSoDistinguishesNothing() {
+		this.shouldBeAccepted(REAL_EMAIL, STRONG_PASSWORD);
+	}
+
+	// ── mechanics ─────────────────────────────────────────────────────────────
+
+	private void shouldBeAccepted(String email, String password) {
 		CcpJsonRepresentation json = this.json(email, password);
 		FakeEntityCopyFieldValidations.ENTITY.validateJson(json);
 	}
 
-	private void deveSerRecusado(String email, String password, String campoEsperado) {
+	private void shouldBeRefused(String email, String password, String expectedField) {
 
 		CcpJsonRepresentation json = this.json(email, password);
 
 		try {
 			FakeEntityCopyFieldValidations.ENTITY.validateJson(json);
 		} catch (CcpJsonValidationError e) {
-			String mensagem = e.getMessage();
-			boolean acusaOCampoCerto = mensagem.contains(campoEsperado);
-			assertTrue("o erro deveria acusar o campo " + campoEsperado + ", mas veio: " + mensagem, acusaOCampoCerto);
+			String message = e.getMessage();
+			boolean pointsToTheRightField = message.contains(expectedField);
+			assertTrue("the error should point to the field " + expectedField + ", but got: " + message, pointsToTheRightField);
 			return;
 		}
-		fail("o json deveria ter sido recusado por causa do campo " + campoEsperado);
+		fail("the json should have been refused because of the field " + expectedField);
 	}
 
 	private CcpJsonRepresentation json(String email, String password) {

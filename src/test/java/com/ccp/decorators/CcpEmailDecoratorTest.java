@@ -12,28 +12,28 @@ import org.junit.Test;
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.aop.CcpNullReturnException;
 
-//ela se instancia da seguinte forma: 
+//it is instantiated as follows: 
 //	CcpEmailDecorator decorator = new CcpStringDecorator("onias85@gmail.com").email();
 
 public class CcpEmailDecoratorTest {
 	
 	@Test
 	public void constructorTest() {
-		String strEmail = "onias85@gmail.com";
-		CcpEmailDecorator decorator = new CcpStringDecorator(strEmail).email();
-		assertEquals(decorator.content, strEmail);	
+		String email = "onias85@gmail.com";
+		CcpEmailDecorator decorator = new CcpStringDecorator(email).email();
+		assertEquals(decorator.content, email);	
 	} 
 	
 	@Test
 	public void toStringTest() {
-		String str =  "String";
-		CcpEmailDecorator decorator = new CcpStringDecorator(str).email();
-		assertEquals(decorator.toString(),str);
+		String text =  "String";
+		CcpEmailDecorator decorator = new CcpStringDecorator(text).email();
+		assertEquals(decorator.toString(),text);
 	}
 
 	@Test
 	public void stripAccentsTest(){
-		// fora do IF
+		// outside the IF
 		String emailAccent   = "áãéíóú@áãéíóú"; //No Valid
 		String emailNoAccent = "aaeiou@aaeiou"; //expected return
 		CcpEmailDecorator decorator = new CcpStringDecorator(emailAccent).email();
@@ -41,83 +41,83 @@ public class CcpEmailDecoratorTest {
 		System.out.println(emailNoAccent);
 		assertEquals(decorator.stripAccents().toString(),emailNoAccent);
 		
-		//Dentro do IF isValid()
-		String emailNoValid1  = "fulano@ciclano@beltrano"; //split.length != 2
-		String emailNoValid2  = "@gmail.com";              //(split[0].trim().isEmpty())
-		String emailNoValid3  = "email@something.digital"; //endsWith(".digital")
-		String emailNoValid4  = "email@wayon.global";      //endsWith("@wayon.global"))
-		String emailNoValid5  = "email@corp.inovation.com.br";//endsWith("@corp.inovation.com.br")
-		String emailNoValid6  = "email@something.docx";        //endsWith(".docx")
-		String emailNoValid7  = "email@something.digi";        //endsWith(".digi")) 
-		String emailNoValid8  = "email@something.onli";        //endsWith(".onli"))
-		String emailNoValid9  = "email@something.glob";        //endsWith(".glob"))
-		String emailNoValid10 = "email@something.soci";        //endsWith(".soci"))
-		String emailNoValid11 = "email@something.bren";        //endsWith(".bren")) 
-		String emailNoValid12 = "email@something.coom";        //endsWith(".coom"))
+		//inside the IF of isValid()
+		String emailWithManyAtSigns  = "fulano@ciclano@beltrano"; //split.length != 2
+		String emailWithoutLocalPart  = "@gmail.com";              //(split[0].trim().isEmpty())
+		String digitalDomainEmail  = "email@something.digital"; //endsWith(".digital")
+		String wayonGlobalEmail  = "email@wayon.global";      //endsWith("@wayon.global"))
+		String corpInovationEmail  = "email@corp.inovation.com.br";//endsWith("@corp.inovation.com.br")
+		String docxDomainEmail  = "email@something.docx";        //endsWith(".docx")
+		String digiDomainEmail  = "email@something.digi";        //endsWith(".digi")) 
+		String onliDomainEmail  = "email@something.onli";        //endsWith(".onli"))
+		String globDomainEmail  = "email@something.glob";        //endsWith(".glob"))
+		String sociDomainEmail = "email@something.soci";        //endsWith(".soci"))
+		String brenDomainEmail = "email@something.bren";        //endsWith(".bren")) 
+		String coomDomainEmail = "email@something.coom";        //endsWith(".coom"))
 
-		CcpEmailDecorator decorator1 = new CcpStringDecorator(emailNoValid1).email();
-		CcpEmailDecorator decorator2 = new CcpStringDecorator(emailNoValid2).email();
-		CcpEmailDecorator decorator3 = new CcpStringDecorator(emailNoValid3).email();
-		CcpEmailDecorator decorator4 = new CcpStringDecorator(emailNoValid4).email();
-		CcpEmailDecorator decorator5 = new CcpStringDecorator(emailNoValid5).email();
-		CcpEmailDecorator decorator6 = new CcpStringDecorator(emailNoValid6).email();
-		CcpEmailDecorator decorator7 = new CcpStringDecorator(emailNoValid7).email();
-		CcpEmailDecorator decorator8 = new CcpStringDecorator(emailNoValid8).email();
-		CcpEmailDecorator decorator9 = new CcpStringDecorator(emailNoValid9).email();
-		CcpEmailDecorator decorator10 = new CcpStringDecorator(emailNoValid10).email();
-		CcpEmailDecorator decorator11 = new CcpStringDecorator(emailNoValid11).email();
-		CcpEmailDecorator decorator12 = new CcpStringDecorator(emailNoValid12).email();
+		CcpEmailDecorator manyAtSignsDecorator = new CcpStringDecorator(emailWithManyAtSigns).email();
+		CcpEmailDecorator withoutLocalPartDecorator = new CcpStringDecorator(emailWithoutLocalPart).email();
+		CcpEmailDecorator digitalDomainDecorator = new CcpStringDecorator(digitalDomainEmail).email();
+		CcpEmailDecorator wayonGlobalDecorator = new CcpStringDecorator(wayonGlobalEmail).email();
+		CcpEmailDecorator corpInovationDecorator = new CcpStringDecorator(corpInovationEmail).email();
+		CcpEmailDecorator docxDomainDecorator = new CcpStringDecorator(docxDomainEmail).email();
+		CcpEmailDecorator digiDomainDecorator = new CcpStringDecorator(digiDomainEmail).email();
+		CcpEmailDecorator onliDomainDecorator = new CcpStringDecorator(onliDomainEmail).email();
+		CcpEmailDecorator globDomainDecorator = new CcpStringDecorator(globDomainEmail).email();
+		CcpEmailDecorator sociDomainDecorator = new CcpStringDecorator(sociDomainEmail).email();
+		CcpEmailDecorator brenDomainDecorator = new CcpStringDecorator(brenDomainEmail).email();
+		CcpEmailDecorator coomDomainDecorator = new CcpStringDecorator(coomDomainEmail).email();
 	 	
-		System.out.println(decorator1.stripAccents()); //false
-		System.out.println(decorator2.stripAccents()); //false
-		System.out.println(decorator3.stripAccents()); //true
-		System.out.println(decorator4.stripAccents()); //true
-		System.out.println(decorator5.stripAccents()); //true
-		System.out.println(decorator6.stripAccents()); //false
-		System.out.println(decorator7.stripAccents()); //false
-		System.out.println(decorator8.stripAccents()); //false
-		System.out.println(decorator9.stripAccents()); //false
-		System.out.println(decorator10.stripAccents()); //false
-		System.out.println(decorator11.stripAccents()); //false
-		System.out.println(decorator12.stripAccents()); //false
+		System.out.println(manyAtSignsDecorator.stripAccents()); //false
+		System.out.println(withoutLocalPartDecorator.stripAccents()); //false
+		System.out.println(digitalDomainDecorator.stripAccents()); //true
+		System.out.println(wayonGlobalDecorator.stripAccents()); //true
+		System.out.println(corpInovationDecorator.stripAccents()); //true
+		System.out.println(docxDomainDecorator.stripAccents()); //false
+		System.out.println(digiDomainDecorator.stripAccents()); //false
+		System.out.println(onliDomainDecorator.stripAccents()); //false
+		System.out.println(globDomainDecorator.stripAccents()); //false
+		System.out.println(sociDomainDecorator.stripAccents()); //false
+		System.out.println(brenDomainDecorator.stripAccents()); //false
+		System.out.println(coomDomainDecorator.stripAccents()); //false
 		
 		// isValid() 
-		assertFalse(decorator1.stripAccents().isValid()); //false
-		assertFalse(decorator2.stripAccents().isValid()); //false
-		assertTrue(decorator3.stripAccents().isValid()); //true
-		assertTrue(decorator4.stripAccents().isValid()); //true
-		assertTrue(decorator5.stripAccents().isValid()); //true
-		assertFalse(decorator6.stripAccents().isValid()); //false
-		assertFalse(decorator7.stripAccents().isValid()); //false
-		assertFalse(decorator8.stripAccents().isValid()); //false
-		assertFalse(decorator9.stripAccents().isValid()); //false
-		assertFalse(decorator10.stripAccents().isValid()); //false
-		assertFalse(decorator11.stripAccents().isValid()); //false
-		assertFalse(decorator12.stripAccents().isValid()); //false
+		assertFalse(manyAtSignsDecorator.stripAccents().isValid()); //false
+		assertFalse(withoutLocalPartDecorator.stripAccents().isValid()); //false
+		assertTrue(digitalDomainDecorator.stripAccents().isValid()); //true
+		assertTrue(wayonGlobalDecorator.stripAccents().isValid()); //true
+		assertTrue(corpInovationDecorator.stripAccents().isValid()); //true
+		assertFalse(docxDomainDecorator.stripAccents().isValid()); //false
+		assertFalse(digiDomainDecorator.stripAccents().isValid()); //false
+		assertFalse(onliDomainDecorator.stripAccents().isValid()); //false
+		assertFalse(globDomainDecorator.stripAccents().isValid()); //false
+		assertFalse(sociDomainDecorator.stripAccents().isValid()); //false
+		assertFalse(brenDomainDecorator.stripAccents().isValid()); //false
+		assertFalse(coomDomainDecorator.stripAccents().isValid()); //false
 	};
 	
 	@Test
 	public void getDomainTest(){
-		String emailDomain1 = "@myDomain1";          //expected "","myDomain" == 2
-		String emailDomain2 = "something@myDomain2"; //expected "something","myDomain" == 2
-		String emailDomain3 = "emailSemArroba";      //expected ""
-		String emailDomain4 = "email@com@br"; //expected [email, com, br] -> ""
+		String emailWithoutLocalPart = "@myDomain1";          //expected "","myDomain" == 2
+		String emailWithLocalPart = "something@myDomain2"; //expected "something","myDomain" == 2
+		String emailWithoutAtSign = "emailWithoutAtSign";  //expected ""
+		String emailWithManyAtSigns = "email@com@br"; //expected [email, com, br] -> ""
 
-		CcpEmailDecorator decorator1 = new CcpStringDecorator(emailDomain1).email();
-		CcpEmailDecorator decorator2 = new CcpStringDecorator(emailDomain2).email();
-		CcpEmailDecorator decorator3 = new CcpStringDecorator(emailDomain3).email();
-		CcpEmailDecorator decorator4 = new CcpStringDecorator(emailDomain4).email();
+		CcpEmailDecorator withoutLocalPartDecorator = new CcpStringDecorator(emailWithoutLocalPart).email();
+		CcpEmailDecorator withLocalPartDecorator = new CcpStringDecorator(emailWithLocalPart).email();
+		CcpEmailDecorator withoutAtSignDecorator = new CcpStringDecorator(emailWithoutAtSign).email();
+		CcpEmailDecorator manyAtSignsDecorator = new CcpStringDecorator(emailWithManyAtSigns).email();
 		
 		
-		System.out.println(decorator1.getDomain());
-		System.out.println(decorator2.getDomain());
-		System.out.println(decorator3.getDomain()); // ""
-		System.out.println(decorator4.getDomain()); // ""
+		System.out.println(withoutLocalPartDecorator.getDomain());
+		System.out.println(withLocalPartDecorator.getDomain());
+		System.out.println(withoutAtSignDecorator.getDomain()); // ""
+		System.out.println(manyAtSignsDecorator.getDomain()); // ""
 		
-		assertEquals(decorator1.getDomain(),"myDomain1");
-		assertEquals(decorator2.getDomain(),"myDomain2");
-		assertEquals(decorator3.getDomain(), ""); // ""
-		assertEquals(decorator4.getDomain(), ""); // ""
+		assertEquals(withoutLocalPartDecorator.getDomain(),"myDomain1");
+		assertEquals(withLocalPartDecorator.getDomain(),"myDomain2");
+		assertEquals(withoutAtSignDecorator.getDomain(), ""); // ""
+		assertEquals(manyAtSignsDecorator.getDomain(), ""); // ""
 		
 	}	
 	
@@ -152,10 +152,10 @@ public class CcpEmailDecoratorTest {
 	}
 
 	@Test
-	public void extractFromTextSemEmailsValidosTest() {
+	public void extractFromTextWithoutValidEmailsTest() {
 		String delimiter = ";";
-		String texto = "nao-e-email; tampouco isso; invalido";
-		Set<String> emails = new CcpStringDecorator(texto).email().extractFromText(delimiter);
+		String text = "not-an-email; nor this; invalid";
+		Set<String> emails = new CcpStringDecorator(text).email().extractFromText(delimiter);
 		assertTrue(emails.isEmpty());
 	}
 
@@ -191,23 +191,23 @@ public class CcpEmailDecoratorTest {
     public void findFirstEmailWithAccentsTest() {
     	CcpEmailDecorator processor = new CcpEmailDecorator("téstê@exemplo.com");
         CcpEmailDecorator result = processor.findFirst("\\s+");
-        assertEquals("teste@exemplo.com", result.content); // assumindo stripAccents()
+        assertEquals("teste@exemplo.com", result.content); // assuming stripAccents()
     }
     
     @Test
     public void isValidTest() {
-    	boolean valid = new CcpStringDecorator("onias85@gmail.come").email().isValid();
-		assertFalse(valid);
-    	boolean valid2 = new CcpStringDecorator("onias85@gmail.com.brx").email().isValid();
-		assertFalse(valid2);
+    	boolean comeDomainIsValid = new CcpStringDecorator("onias85@gmail.come").email().isValid();
+		assertFalse(comeDomainIsValid);
+    	boolean brxDomainIsValid = new CcpStringDecorator("onias85@gmail.com.brx").email().isValid();
+		assertFalse(brxDomainIsValid);
 
-		boolean valid3 = new CcpStringDecorator("onias85@gmail.com.br").email().isValid();
-		assertTrue(valid3);
+		boolean comBrDomainIsValid = new CcpStringDecorator("onias85@gmail.com.br").email().isValid();
+		assertTrue(comBrDomainIsValid);
 
     }
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
-	// Nota: o construtor de CcpEmailDecorator é protected — fora do escopo (só public).
+	// Note: the CcpEmailDecorator constructor is protected, so it is out of scope (public only).
 
 	@Test(expected = CcpNullParameterException.class)
 	public void findFirstNullParamTest() {
@@ -223,20 +223,20 @@ public class CcpEmailDecoratorTest {
 
 	@Test(expected = CcpNullReturnException.class)
 	public void getContentNullReturnTest() throws Exception {
-		CcpEmailDecorator d = new CcpEmailDecorator("x@y.com");
-		Field f = CcpEmailDecorator.class.getDeclaredField("content");
-		f.setAccessible(true);
-		f.set(d, null);
-		d.getContent();
+		CcpEmailDecorator decorator = new CcpEmailDecorator("x@y.com");
+		Field contentField = CcpEmailDecorator.class.getDeclaredField("content");
+		contentField.setAccessible(true);
+		contentField.set(decorator, null);
+		decorator.getContent();
 	}
 
 	@Test(expected = CcpNullReturnException.class)
 	public void toStringNullReturnTest() throws Exception {
-		CcpEmailDecorator d = new CcpEmailDecorator("x@y.com");
-		Field f = CcpEmailDecorator.class.getDeclaredField("content");
-		f.setAccessible(true);
-		f.set(d, null);
-		d.toString();
+		CcpEmailDecorator decorator = new CcpEmailDecorator("x@y.com");
+		Field contentField = CcpEmailDecorator.class.getDeclaredField("content");
+		contentField.setAccessible(true);
+		contentField.set(decorator, null);
+		decorator.toString();
 	}
 
 }

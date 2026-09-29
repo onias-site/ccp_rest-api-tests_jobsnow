@@ -18,7 +18,7 @@ public class JnSendMessageToUserTest {
 	// ── construtor + factories principais ────────────────────────────────────
 
 	@Test
-	public void construtorTest() {
+	public void constructorTest() {
 		assertNotNull(new JnSendMessageToUser());
 	}
 

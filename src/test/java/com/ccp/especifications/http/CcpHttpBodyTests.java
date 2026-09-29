@@ -13,8 +13,8 @@ public class CcpHttpBodyTests {
 
 	@Test
 	public void bodyBinaryCtorTest() {
-		CcpHttpBodyBinary b = new CcpHttpBodyBinary(CcpHttpContentType.TEXT_PLAIN, "n", "f.txt", new Byte[]{1, 2, 3});
-		assertEquals(3, b.getBytes().length);
+		CcpHttpBodyBinary bodyBinary = new CcpHttpBodyBinary(CcpHttpContentType.TEXT_PLAIN, "n", "f.txt", new Byte[]{1, 2, 3});
+		assertEquals(3, bodyBinary.getBytes().length);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -41,8 +41,8 @@ public class CcpHttpBodyTests {
 
 	@Test
 	public void bodyTextCtorTest() {
-		CcpHttpBodyText b = new CcpHttpBodyText(CcpHttpContentType.TEXT_PLAIN, "n", "t");
-		assertNotNull(b);
+		CcpHttpBodyText bodyText = new CcpHttpBodyText(CcpHttpContentType.TEXT_PLAIN, "n", "t");
+		assertNotNull(bodyText);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -61,6 +61,6 @@ public class CcpHttpBodyTests {
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
-	// CcpHttpBodyBinary.getBytes() converte para byte[] primitivo — não sujeito ao aspecto.
-	// CcpHttpBodyText não tem método público.
+	// CcpHttpBodyBinary.getBytes() converts to a primitive byte[] — not subject to the aspect.
+	// CcpHttpBodyText has no public method.
 }

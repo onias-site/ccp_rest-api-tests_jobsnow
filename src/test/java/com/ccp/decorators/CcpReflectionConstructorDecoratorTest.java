@@ -45,7 +45,7 @@ public class CcpReflectionConstructorDecoratorTest {
 	}
 
 	@Test(expected = RuntimeException.class)
-	public void teste() {
+	public void test() {
 		CcpJsonFieldName field = new CcpFieldName("nomes7");
 		new CcpReflectionConstructorDecorator(CcpOtherConstants.EMPTY_JSON.put(field, "com.nao.existe.Classe"), field.getValue()).forName();
 		
@@ -115,7 +115,7 @@ public class CcpReflectionConstructorDecoratorTest {
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorJsonNullParamJsonTest() {
+	public void constructorJsonNullParamJsonTest() {
 		new CcpReflectionConstructorDecorator((CcpJsonRepresentation) null, "campo");
 	}
 

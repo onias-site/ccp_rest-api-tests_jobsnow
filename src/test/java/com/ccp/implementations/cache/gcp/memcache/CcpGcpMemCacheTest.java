@@ -22,7 +22,7 @@ public class CcpGcpMemCacheTest {
 	// ── provider ──────────────────────────────────────────────────────────────
 
 	@Test
-	public void construtorProviderTest() {
+	public void constructorProviderTest() {
 		assertNotNull(new CcpGcpMemCache());
 	}
 

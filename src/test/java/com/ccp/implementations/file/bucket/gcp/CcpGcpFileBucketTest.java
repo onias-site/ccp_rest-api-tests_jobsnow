@@ -21,7 +21,7 @@ public class CcpGcpFileBucketTest {
 	// ── provider ──────────────────────────────────────────────────────────────
 
 	@Test
-	public void construtorProviderTest() {
+	public void constructorProviderTest() {
 		assertNotNull(new CcpGcpFileBucket());
 	}
 

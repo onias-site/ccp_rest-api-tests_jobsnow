@@ -25,5 +25,5 @@ public class CcpCachedServiceTest {
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
-	// execute retorna put.content — nunca null naturalmente porque put sempre gera novo mapa.
+	// execute returns put.content — naturally never null because put always creates a new map.
 }

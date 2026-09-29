@@ -1,0 +1,235 @@
+package com.vis.commons;
+
+import com.ccp.business.CcpBusiness;
+import com.ccp.constants.CcpOtherConstants;
+import com.ccp.decorators.CcpFileDecorator;
+import com.ccp.decorators.CcpJsonFieldName;
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.decorators.CcpStringDecorator;
+import com.ccp.decorators.CcpTimeDecorator;
+import com.ccp.dependency.injection.CcpDependencyInjection;
+import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
+import com.ccp.especifications.db.utils.CcpDbRequester;
+import com.ccp.especifications.http.CcpHttpHandler;
+import com.ccp.especifications.http.CcpHttpMethods;
+import com.ccp.especifications.http.CcpHttpResponse;
+import com.ccp.especifications.http.CcpHttpResponseType;
+import com.ccp.flow.CcpErrorFlowDisturb;
+import com.ccp.flow.CcpTreeFlow;
+import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
+import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
+import com.ccp.implementations.db.query.elasticsearch.CcpElasticSearchQueryExecutor;
+import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
+import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
+import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
+import com.ccp.local.testings.implementations.CcpLocalInstances;
+import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.ccp.process.CcpProcessStatus;
+import com.jn.business.messages.JnMessages.JnNotifyUserAboutLoginToken;
+import com.jn.db.bulk.JnExecuteBulkOperation;
+import com.jn.entities.JnEntityEmailMessageSent;
+import com.jn.entities.JnEntityLoginAnswers;
+import com.jn.entities.JnEntityLoginEmail;
+import com.jn.entities.JnEntityLoginPassword;
+import com.jn.entities.JnEntityLoginPasswordAttempts;
+import com.jn.entities.JnEntityLoginSessionConflict;
+import com.jn.entities.JnEntityLoginToken;
+import com.jn.entities.JnEntityLoginTokenAttempts;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
+import com.jn.status.login.JnProcessStatusCreateLoginEmail;
+import com.jn.status.login.JnProcessStatusExecuteLogin;
+import com.jn.utils.JnDeleteKeysFromCache;
+
+public abstract class VisTestTemplate {
+	enum JsonFieldNames implements CcpJsonFieldName{
+		message, statusName, x, url, method, actualStatus, expectedStatus, request, headers, response, timestamp, language
+	}
+	protected final String ENDPOINT_URL = "http://localhost:8081/";
+
+	static {
+		CcpDependencyInjection.loadAllDependencies(
+				CcpLocalInstances.syncMensageriaListener,
+				new CcpElasticSearchQueryExecutor(),
+				new CcpElasticSearchDbRequest(), 
+				new CcpMindrotPasswordHandler(), 
+				CcpLocalCacheInstances.mock,
+				new CcpElasticSerchDbBulk(),
+				new CcpElasticSearchCrud(),
+				new CcpGsonJsonHandler(), 
+				new CcpApacheMimeHttp(),  
+				CcpLocalInstances.email
+				);
+	}
+	
+	public final Object getInnerClass(){
+
+		return new InnerClass();
+	}
+	
+	
+	protected abstract CcpHttpMethods getMethod();
+
+	protected CcpJsonRepresentation getHeaders() {
+		return CcpOtherConstants.EMPTY_JSON;
+	}
+
+	protected CcpJsonRepresentation testEndpoint(String uri, String scenarioName, CcpProcessStatus expectedStatus) {
+		CcpJsonRepresentation responseJson = this.getJsonResponseFromEndpoint(expectedStatus, scenarioName, CcpOtherConstants.EMPTY_JSON, uri);
+		return responseJson;
+	}
+
+	protected CcpJsonRepresentation getJsonResponseFromEndpoint(CcpProcessStatus status, String scenarioName, CcpJsonRepresentation body, String uri) {
+
+		CcpJsonRepresentation headers = this.getHeaders();
+
+		CcpJsonRepresentation responseJson = this.getJsonResponseFromEndpoint(status, scenarioName, body, uri, headers);
+
+		return responseJson;
+	}
+
+
+	protected CcpJsonRepresentation getJsonResponseFromEndpoint(CcpProcessStatus status, String scenarioName, CcpJsonRepresentation body, String uri,
+			CcpJsonRepresentation headers) {
+		CcpHttpMethods method = this.getMethod();
+		int expectedStatus = status.asNumber();
+		String path = this.ENDPOINT_URL + uri;
+		CcpHttpHandler http = new CcpHttpHandler(expectedStatus, CcpOtherConstants.DO_NOTHING, path);
+		String name = this.getClass().getName();
+		String requestBody = body.asUgglyJson();
+
+		CcpHttpResponse response = http.ccpHttp.executeHttpRequest(path, method, headers, requestBody);
+
+		CcpJsonRepresentation responseJson = http.executeHttpRequest(name, method, headers, requestBody, CcpHttpResponseType.singleRecord, response);
+
+		int actualStatus = response.httpStatus;
+
+		this.logRequestAndResponse(path, method, status, scenarioName, actualStatus, body, headers, responseJson);
+		String message = false == responseJson.isInnerJson(JsonFieldNames.message) ? responseJson.getAsString(JsonFieldNames.message) :
+			responseJson.getValueFromPath("", JsonFieldNames.message, JsonFieldNames.statusName);
+		status.verifyStatusNames(actualStatus, message);
+		return responseJson;
+	}
+
+	private <V> void logRequestAndResponse(String url, CcpHttpMethods method, CcpProcessStatus status, String scenarioName, int actualStatus,
+			CcpJsonRepresentation body, CcpJsonRepresentation headers, V responseBody) {
+
+		CcpJsonRepresentation loggedResponse = CcpOtherConstants.EMPTY_JSON.put(JsonFieldNames.x, responseBody);
+
+		if (responseBody instanceof CcpJsonRepresentation json) {
+			loggedResponse = json;
+		}
+
+		String date = new CcpTimeDecorator().getFormattedDateTime("dd/MM/yyyy HH:mm:ss");
+
+		int expectedStatus = status.asNumber();
+		CcpJsonRepresentation logEntry = CcpOtherConstants.EMPTY_JSON.put(JsonFieldNames.url, url).put(JsonFieldNames.method, method).put(JsonFieldNames.actualStatus, actualStatus)
+				.put(JsonFieldNames.expectedStatus, expectedStatus).put(JsonFieldNames.headers, headers).put(JsonFieldNames.request, body).put(JsonFieldNames.response, loggedResponse)
+				.put(JsonFieldNames.timestamp, date);
+		String logContent = logEntry.asPrettyJson();
+
+		String testName = this.getClass().getSimpleName();
+		new CcpStringDecorator("c:\\logs\\vis\\logs\\").folder().createNewFolderIfNotExists(testName)
+				.writeInTheFile(scenarioName + ".json", logContent);
+	}
+
+
+	public CcpJsonRepresentation getJsonFile(String path) {
+		CcpStringDecorator pathDecorator =	new CcpStringDecorator(path);
+		CcpFileDecorator file = pathDecorator.file();
+		CcpJsonRepresentation json = file.asSingleJson();
+		return json;
+
+	}
+	
+	public CcpJsonRepresentation executeThisFlow(
+			CcpBusiness first
+			, CcpJsonRepresentation flow
+			, CcpJsonRepresentation json
+			) {
+		
+		
+		try {
+			CcpJsonRepresentation result = first.execute(json);
+			return result;
+		} catch (CcpErrorFlowDisturb e) {
+			CcpBusiness nextFlow = flow.getAsObject(e.status);
+			nextFlow.execute(json);
+			CcpJsonRepresentation retriedResult = this.executeThisFlow(first, flow, json);
+			return retriedResult;
+		}
+	}
+
+	protected final CcpJsonRepresentation createLogin(CcpBusiness... whatToNext) {
+		
+		CcpJsonRepresentation sessionValuesToTest = this.getSessionValuesToTest();
+		
+		CcpJsonRepresentation jsonWithSubjectType = sessionValuesToTest.put(JnJsonCommonsFields.subjectType, JnNotifyUserAboutLoginToken.class.getName());
+		
+		JnExecuteBulkOperation.INSTANCE.executeBulk(
+				jsonWithSubjectType 
+				,CcpBulkEntityOperationType.delete 
+				, JnDeleteKeysFromCache.INSTANCE
+				,JnEntityEmailMessageSent.ENTITY
+				,JnEntityLoginPassword.ENTITY
+				,JnEntityLoginSessionConflict.ENTITY
+				,JnEntityLoginToken.ENTITY
+				,JnEntityLoginEmail.ENTITY
+				,JnEntityLoginPasswordAttempts.ENTITY
+				,JnEntityLoginAnswers.ENTITY
+				,JnEntityLoginPassword.ENTITY.getTwinEntity()
+				,JnEntityLoginToken.ENTITY.getTwinEntity()
+				,JnEntityLoginTokenAttempts.ENTITY
+				);
+		
+		CcpJsonRepresentation loginResult = CcpTreeFlow
+		.beginThisStatement()
+		.tryToExecuteTheGivenFinalTargetProcess(LoginActions.ExecuteLogin).usingTheGivenJson(sessionValuesToTest)
+		.butIfThisExecutionReturns(JnProcessStatusExecuteLogin.missingSavingEmail).thenExecuteTheGivenProcesses(LoginActions.CreateLoginEmail)
+		.and()
+		.ifThisExecutionReturns(JnProcessStatusCreateLoginEmail.missingSavePassword).thenExecuteTheGivenProcesses(
+				LoginActions.SaveAnswers, LoginActions.CreateLoginToken, LoginActions.readTokenFromReceivedEmail, 
+				LoginActions.SavePassword, LoginActions.renameTokenField, LoginActions.ExecuteLogout)
+		.and()
+		.ifThisExecutionReturns(JnProcessStatusCreateLoginEmail.missingSaveAnswers).thenExecuteTheGivenProcesses(LoginActions.SaveAnswers)
+		.and()
+		.endThisStatement(whatToNext);
+		
+		return loginResult;
+	}
+
+	protected final CcpJsonRepresentation getJsonResponseFromEndpoint(CcpProcessStatus processStatus, String scenarioName,
+			String pathToJsonFile, CcpBusiness... whatToNext) {
+		CcpJsonRepresentation jsonFile = this.getJsonFile(pathToJsonFile);
+		CcpJsonRepresentation loginData = this.createLogin(whatToNext);
+		CcpJsonRepresentation body = loginData.mergeWithAnotherJson(jsonFile);
+		CcpJsonRepresentation headers = loginData;
+		
+		String uri = this.getUri();
+		CcpJsonRepresentation responseFromEndpoint = this.getJsonResponseFromEndpoint(processStatus, scenarioName, body, uri, headers);
+		JnEntityLoginEmail.ENTITY.delete(body);
+		JnEntityLoginPassword.ENTITY.delete(body);
+		JnEntityLoginPasswordAttempts.ENTITY.delete(body);
+		JnEntityLoginAnswers.ENTITY.delete(body);
+		JnEntityLoginPassword.ENTITY.getTwinEntity().delete(body);
+		JnEntityLoginTokenAttempts.ENTITY.delete(body);
+		JnEntityLoginToken.ENTITY.getTwinEntity().delete(body);
+		JnEntityLoginToken.ENTITY.delete(body);
+		
+		return responseFromEndpoint;
+	}
+
+	protected abstract String getUri();
+
+	protected final CcpJsonRepresentation getSessionValuesToTest() {
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
+				.put(JnJsonCommonsFields.email, "onias85@gmail.com")
+				.put(JnJsonCommonsFields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
+				.put(JnJsonCommonsFields.ip, "127.0.0.1")
+				.put(JsonFieldNames.language, "portuguese")
+				;
+
+		return json;
+	}
+
+}

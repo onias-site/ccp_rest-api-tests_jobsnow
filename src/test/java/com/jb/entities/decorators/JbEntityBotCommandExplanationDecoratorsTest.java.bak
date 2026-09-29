@@ -1,0 +1,47 @@
+package com.jb.entities.decorators;
+
+import org.junit.Test;
+
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.jb.entities.JbEntityBotCommandExplanation;
+import com.jn.entities.decorators.TemplateDeTestesDeDecoratorDeEntidade;
+
+/** jb_bot_command_explanation: {@code @CcpEntityCache(3600)}, versionável, transformador e validador. */
+public class JbEntityBotCommandExplanationDecoratorsTest extends TemplateDeTestesDeDecoratorDeEntidade {
+
+	protected CcpEntity entidade() {
+		return JbEntityBotCommandExplanation.ENTITY;
+	}
+
+	protected CcpJsonRepresentation registroValido() {
+		return this.com(JbEntityBotCommandExplanation.Fields.commandName, "/comando" + this.unico)
+				.put(JbEntityBotCommandExplanation.Fields.language, "portuguese")
+				.put(JbEntityBotCommandExplanation.Fields.message, "explica o comando de teste");
+	}
+
+	@Test
+	public void cadeia() {
+		this.deveTerACadeia("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "JnVersionablePurgeEntity", "DecoratorCacheEntity", "JnVersionableEntity", "DefaultImplementationEntity");
+	}
+
+	@Test
+	public void gravarLerEApagar() {
+		this.deveGravarLerEApagar();
+	}
+
+	@Test
+	public void validador() {
+		this.deveRecusarRegistroInvalido(this.registroValido().removeFields(JbEntityBotCommandExplanation.Fields.message));
+	}
+
+	@Test
+	public void cache() {
+		this.deveServirLeituraDoCacheEInvalidarNaEscrita();
+	}
+
+	@Test
+	public void versionavel() {
+		this.deveRegistrarHistoricoACadaEscrita();
+	}
+}

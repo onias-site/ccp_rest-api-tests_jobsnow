@@ -18,12 +18,12 @@ public class JnFunctionMensageriaSenderTest {
 
 
 	@Test
-	public void construtorTest() {
+	public void constructorTest() {
 		assertNotNull(new JnFunctionMensageriaSender(new NoopBusiness()));
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorNullTest() {
+	public void constructorNullTest() {
 		new JnFunctionMensageriaSender(null);
 	}
 

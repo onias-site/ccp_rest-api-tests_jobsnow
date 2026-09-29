@@ -18,109 +18,109 @@ public class CcpJsonFieldTypeStringTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	private final NegocioFieldTypeString negocio = new NegocioFieldTypeString();
+	private final BusinessFieldTypeString business = new BusinessFieldTypeString();
 
-	private CcpJsonRepresentation json(RegrasFieldTypeString campo, Object valor) {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(campo, valor);
+	private CcpJsonRepresentation json(RulesFieldTypeString field, Object valor) {
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(field, valor);
 		return json;
 	}
 
 	@Test
 	public void comprimentoMinimoAceitaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.comprimentoMinimo, "abc");
-		ValidacaoDeCampo.aceita(this.negocio, json);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.comprimentoMinimo, "abc");
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
 	public void comprimentoMinimoRecusaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.comprimentoMinimo, "ab");
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeString.comprimentoMinimo, CcpJsonFieldTypeError.stringMinLength);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.comprimentoMinimo, "ab");
+		FieldValidation.refuses(this.business, json, RulesFieldTypeString.comprimentoMinimo, CcpJsonFieldTypeError.stringMinLength);
 	}
 
 	@Test
 	public void comprimentoMaximoAceitaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.comprimentoMaximo, "abcde");
-		ValidacaoDeCampo.aceita(this.negocio, json);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.comprimentoMaximo, "abcde");
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
 	public void comprimentoMaximoRecusaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.comprimentoMaximo, "abcdef");
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeString.comprimentoMaximo, CcpJsonFieldTypeError.stringMaxLength);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.comprimentoMaximo, "abcdef");
+		FieldValidation.refuses(this.business, json, RulesFieldTypeString.comprimentoMaximo, CcpJsonFieldTypeError.stringMaxLength);
 	}
 
 	@Test
 	public void comprimentoExatoAceitaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.comprimentoExato, "abcd");
-		ValidacaoDeCampo.aceita(this.negocio, json);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.comprimentoExato, "abcd");
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
 	public void comprimentoExatoRecusaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.comprimentoExato, "abcde");
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeString.comprimentoExato, CcpJsonFieldTypeError.stringExactLength);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.comprimentoExato, "abcde");
+		FieldValidation.refuses(this.business, json, RulesFieldTypeString.comprimentoExato, CcpJsonFieldTypeError.stringExactLength);
 	}
 
 	@Test
 	public void naoAceitaVazioRecusaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.naoAceitaVazio, "");
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeString.naoAceitaVazio, CcpJsonFieldTypeError.stringNotEmpty);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.naoAceitaVazio, "");
+		FieldValidation.refuses(this.business, json, RulesFieldTypeString.naoAceitaVazio, CcpJsonFieldTypeError.stringNotEmpty);
 	}
 
 	@Test
 	public void aceitaVazioTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.aceitaVazio, "");
-		ValidacaoDeCampo.aceita(this.negocio, json);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.aceitaVazio, "");
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
 	public void regexAceitaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.apenasTresDigitos, "123");
-		ValidacaoDeCampo.aceita(this.negocio, json);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.apenasTresDigitos, "123");
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
 	public void regexRecusaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.apenasTresDigitos, "12a");
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeString.apenasTresDigitos, CcpJsonFieldTypeError.stringRegex);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.apenasTresDigitos, "12a");
+		FieldValidation.refuses(this.business, json, RulesFieldTypeString.apenasTresDigitos, CcpJsonFieldTypeError.stringRegex);
 	}
 
 	@Test
-	public void valorPermitidoAceitaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.valorPermitido, "sim");
-		ValidacaoDeCampo.aceita(this.negocio, json);
+	public void allowedValueAcceptsTest() {
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.valorPermitido, "yes");
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
-	public void valorPermitidoRecusaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.valorPermitido, "talvez");
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeString.valorPermitido, CcpJsonFieldTypeError.stringAllowedValues);
+	public void allowedValueRefusesTest() {
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.valorPermitido, "talvez");
+		FieldValidation.refuses(this.business, json, RulesFieldTypeString.valorPermitido, CcpJsonFieldTypeError.stringAllowedValues);
 	}
 
 	@Test
 	public void nomeDeClasseJavaAceitaTest() {
 		String nomeDeClasse = CcpJsonRepresentation.class.getName();
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.nomeDeClasseJava, nomeDeClasse);
-		ValidacaoDeCampo.aceita(this.negocio, json);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.nomeDeClasseJava, nomeDeClasse);
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
 	public void nomeDeClasseJavaAninhadaAceitaTest() {
-		String nomeDeClasse = RegrasFieldTypeString.ValoresPermitidos.class.getName();
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.nomeDeClasseJava, nomeDeClasse);
-		ValidacaoDeCampo.aceita(this.negocio, json);
+		String nomeDeClasse = RulesFieldTypeString.AllowedValues.class.getName();
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.nomeDeClasseJava, nomeDeClasse);
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
 	public void nomeDeClasseJavaInexistenteRecusaTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.nomeDeClasseJava, "com.ccp.nao.existe.ClasseInexistente");
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeString.nomeDeClasseJava, CcpJsonFieldTypeError.stringJavaClass);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.nomeDeClasseJava, "com.ccp.nao.existe.ClasseInexistente");
+		FieldValidation.refuses(this.business, json, RulesFieldTypeString.nomeDeClasseJava, CcpJsonFieldTypeError.stringJavaClass);
 	}
 
 	@Test
 	public void nomeDeClasseJavaSemPacoteRecusaTest() {
 		String nomeSimples = CcpJsonRepresentation.class.getSimpleName();
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeString.nomeDeClasseJava, nomeSimples);
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeString.nomeDeClasseJava, CcpJsonFieldTypeError.stringJavaClass);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeString.nomeDeClasseJava, nomeSimples);
+		FieldValidation.refuses(this.business, json, RulesFieldTypeString.nomeDeClasseJava, CcpJsonFieldTypeError.stringJavaClass);
 	}
 }

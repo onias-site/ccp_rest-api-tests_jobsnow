@@ -20,7 +20,7 @@ public class JnJsonTransformersFieldsEntityDoNothingTest {
 	}
 
 	@Test
-	public void construtorTest() {
+	public void constructorTest() {
 		assertNotNull(new JnJsonTransformersFieldsEntityDoNothing());
 	}
 

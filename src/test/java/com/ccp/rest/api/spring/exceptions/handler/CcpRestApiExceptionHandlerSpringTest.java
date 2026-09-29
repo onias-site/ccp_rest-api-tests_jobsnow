@@ -18,7 +18,7 @@ public class CcpRestApiExceptionHandlerSpringTest {
 	}
 
 	@Test
-	public void construtorTest() {
+	public void constructorTest() {
 		assertNotNull(new CcpRestApiExceptionHandlerSpring());
 	}
 
@@ -41,7 +41,7 @@ public class CcpRestApiExceptionHandlerSpringTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void handleThrowableNullTest() {
-		new CcpRestApiExceptionHandlerSpring().handle((Throwable) null);
+		new CcpRestApiExceptionHandlerSpring().handle((Throwable) null, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

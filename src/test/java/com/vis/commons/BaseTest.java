@@ -59,29 +59,29 @@ public class BaseTest {
 	}
 	
 	protected void saveErrors(String path, CcpJsonValidationError e) {
-		String replace = path.replace(".json", "_errors.json");
+		String errorsFilePath = path.replace(".json", "_errors.json");
 		String message = e.getMessage();
-		CcpFileDecorator reset = new CcpStringDecorator(replace).file().reset();
-		reset.append(message);
+		CcpFileDecorator errorsFile = new CcpStringDecorator(errorsFilePath).file().reset();
+		errorsFile.append(message);
 	}
 	
 	protected CcpJsonRepresentation getJson (String filePath) {
-		CcpStringDecorator ccpStringDecorator = new CcpStringDecorator(filePath);
-		CcpFileDecorator file = ccpStringDecorator.file();
+		CcpStringDecorator filePathDecorator = new CcpStringDecorator(filePath);
+		CcpFileDecorator file = filePathDecorator.file();
 		CcpJsonRepresentation json = file.asSingleJson();
 		return json;
 	}
 
 	/**
-	 * Exceção lançada depois que os erros de validação de um arquivo JSON já foram gravados em disco,
-	 * para interromper o teste indicando qual arquivo é inválido.
+	 * Exception thrown after the validation errors of a JSON file have already been written to disk, to
+	 * stop the test indicating which file is invalid.
 	 */
 	@SuppressWarnings("serial")
 	public static class VisErrorJsonFileIsInvalid extends RuntimeException {
 		/**
-		 * Monta a mensagem informando qual arquivo é inválido e encadeia os erros de validação como causa.
-		 * @param file o arquivo JSON reprovado na validação
-		 * @param cause os erros de validação encontrados
+		 * Builds the message stating which file is invalid and chains the validation errors as the cause.
+		 * @param file the JSON file that failed validation
+		 * @param cause the validation errors found
 		 */
 		private VisErrorJsonFileIsInvalid(CcpFileDecorator file, CcpJsonValidationError cause) {
 			super("The json file '" + file.getPath() + "' is invalid", cause);

@@ -1,16 +1,20 @@
-A) Token
-B) Skill
-C) Resume
-D) Email
-E) Deploy
- 
-A) Relatorio de throwputs
-B) Teste de todo o comportamento de todas as entidades de acordo com os seus decorators.
-C) Renomeio das entidades;
-D) Sanitização das entidades;
-E) Recriação das entidades do VIS. 
-F) E-mail
-G) Responsividade de todo o front end
-H) Melhoria dos synonyms
-I) Teste de invasão 
+A) Skill hierarchy
+B) New Skill
+C) Agrupamento de entidades
+D) Entidade de notificação
+E) Revisitar cache e bulk
+F) Endpoints genéricos
+G) Lógica do agrupador
+H) Pendding warnings
 
+F) Tradução do codigo
+G) Melhoria dos synonyms
+H) Estatisticas das skills 
+I) Recriação das entidades do VIS. 
+J) E-mail
+K) Cadastro de vagas
+L) Responsividade de todo o front end
+M) Deploy
+N) Teste de invasão 
+O) Traduzir todo o sistema.
+P) Versão Mobile

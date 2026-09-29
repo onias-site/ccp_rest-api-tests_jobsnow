@@ -1,0 +1,79 @@
+package com.jn.entities.decorators.entidades;
+
+import org.junit.Test;
+
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
+import com.jn.entities.JnEntityLoginTokenRequestUnlock;
+import com.jn.entities.decorators.TemplateDeTestesDeDecoratorDeEntidade;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
+import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
+
+/**
+ * jn_login_token_request_unlock: pedido de desbloqueio de token. Escrita assíncrona pela fila, aviso
+ * ao suporte na inclusão (pedido pendente) e na exclusão (pedido atendido), gêmea de
+ * jn_login_token_fulfilled_unlock, {@code @CcpEntityCache(3600)}, descartável diário, e-mail em claro
+ * e validador.
+ */
+public class JnEntityLoginTokenRequestUnlockDecoratorsTest extends TemplateDeTestesDeDecoratorDeEntidade {
+
+	protected CcpEntity entidade() {
+		return JnEntityLoginTokenRequestUnlock.ENTITY;
+	}
+
+	protected CcpJsonRepresentation registroValido() {
+		return this.com(JnJsonCommonsFields.email, this.email)
+				.put(JnJsonInstantMessengerFields.chatId, 751717896L);
+	}
+
+	@Test
+	public void cadeia() {
+		this.deveTerACadeia("DecoratorFieldsValidatorEntity", "JnAsyncWriterEntity", "JnSendMessageToUserEntityBeforeWrite", "DecoratorFieldsTransformerEntity", "JnSendMessageToUserEntityAfterWrite", "DecoratorTwinEntity", "DecoratorCacheEntity", "JnDisposableEntity", "DefaultImplementationEntity");
+	}
+
+	@Test
+	public void gravarLerEApagar() {
+		this.deveGravarLerEApagar();
+	}
+
+	@Test
+	public void validador() {
+		this.deveRecusarRegistroInvalido(this.registroValido().put(JnJsonCommonsFields.email, "isto-nao-e-email"));
+	}
+
+	@Test
+	public void escritaAssincrona() {
+		this.deveGravarPelaFila();
+	}
+
+	@Test
+	public void avisoAoSuporteSoNaInclusao() {
+		this.deveAvisarPorTelegramSoNaInclusao();
+	}
+
+	@Test
+	public void avisoAoSuporteAoAtender() {
+		this.deveAvisarPorTelegramAoApagar();
+	}
+
+	@Test
+	public void transformador() {
+		this.deveGuardarEmailEmClaro();
+	}
+
+	@Test
+	public void cache() {
+		this.deveServirLeituraDoCacheEInvalidarNaEscrita();
+	}
+
+	@Test
+	public void gemea() {
+		this.deveGravarNaPrincipalETransferirParaAGemeaAoApagar("jn_login_token_fulfilled_unlock");
+	}
+
+	@Test
+	public void descartavel() {
+		this.deveManterCopiaDescartavelAteOPrazo(CcpEntityExpurgableOptions.daily);
+	}
+}

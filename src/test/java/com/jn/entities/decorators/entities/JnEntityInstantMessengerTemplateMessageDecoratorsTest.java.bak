@@ -1,0 +1,53 @@
+package com.jn.entities.decorators.entidades;
+
+import org.junit.Test;
+
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.jn.entities.JnEntityInstantMessengerTemplateMessage;
+import com.jn.entities.decorators.TemplateDeTestesDeDecoratorDeEntidade;
+
+/** jn_instant_messenger_template_message: {@code @CcpEntityCache(3600)}, versionável, transformador e validador. */
+public class JnEntityInstantMessengerTemplateMessageDecoratorsTest extends TemplateDeTestesDeDecoratorDeEntidade {
+
+	protected CcpEntity entidade() {
+		return JnEntityInstantMessengerTemplateMessage.ENTITY;
+	}
+
+	protected CcpJsonRepresentation registroValido() {
+		return this.com(JnEntityInstantMessengerTemplateMessage.Fields.templateId, this.getClass().getName())
+				.put(JnEntityInstantMessengerTemplateMessage.Fields.language, "portuguese")
+				.put(JnEntityInstantMessengerTemplateMessage.Fields.message, "mensagem de teste");
+	}
+
+	@Test
+	public void cadeia() {
+		this.deveTerACadeia("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "JnVersionablePurgeEntity", "DecoratorCacheEntity", "JnVersionableEntity", "DefaultImplementationEntity");
+	}
+
+	@Test
+	public void gravarLerEApagar() {
+		this.deveGravarLerEApagar();
+	}
+
+	@Test
+	public void validador() {
+		this.deveRecusarRegistroInvalido(this.registroValido().removeFields(JnEntityInstantMessengerTemplateMessage.Fields.message));
+	}
+
+	/** Até 2026-09-27 copiava a regra de JnJsonInstantMessengerFields, que não declara templateId. */
+	@Test
+	public void validadorDoTemplateId() {
+		this.deveRecusarRegistroInvalido(this.registroValido().put(JnEntityInstantMessengerTemplateMessage.Fields.templateId, "classe.que.nao.Existe"));
+	}
+
+	@Test
+	public void cache() {
+		this.deveServirLeituraDoCacheEInvalidarNaEscrita();
+	}
+
+	@Test
+	public void versionavel() {
+		this.deveRegistrarHistoricoACadaEscrita();
+	}
+}

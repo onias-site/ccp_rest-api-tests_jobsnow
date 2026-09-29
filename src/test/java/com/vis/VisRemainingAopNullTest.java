@@ -37,9 +37,9 @@ import com.vis.utils.VisSendRecentUsersToGroupings;
 import com.vis.utils.VisUtils;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre os métodos de {@code vis_business_jobsnow} que
- * ainda não estavam exercitados. Todos os {@code apply}/{@code accept} recebem {@code null}: o
- * aspecto dispara antes do corpo, então nenhum recurso externo é acionado.
+ * Coverage of {@code CcpNullParameterAspect} over the methods of {@code vis_business_jobsnow} that
+ * were not exercised yet. Every {@code apply}/{@code accept} receives {@code null}: the aspect fires
+ * before the body, so no external resource is triggered.
  */
 public class VisRemainingAopNullTest {
 
@@ -49,7 +49,7 @@ public class VisRemainingAopNullTest {
 
 	private static final CcpEntity ENTITY = JnEntityJobsnowError.ENTITY;
 
-	/** Entidade com twin: exigida pelo construtor de {@code VisGroupDetailsByMasters}. */
+	/** Entity with a twin: required by the constructor of {@code VisGroupDetailsByMasters}. */
 	private static final CcpEntity TWIN_ENTITY = com.jn.entities.JnEntityContactUs.ENTITY;
 
 	// ── business/position ─────────────────────────────────────────────────────
@@ -170,17 +170,17 @@ public class VisRemainingAopNullTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void groupDetailsByMastersConstrutorMasterFieldNameNullTest() {
+	public void groupDetailsByMastersConstructorMasterFieldNameNullTest() {
 		new VisGroupDetailsByMasters(null, ENTITY, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void groupDetailsByMastersConstrutorEntityNullTest() {
+	public void groupDetailsByMastersConstructorEntityNullTest() {
 		new VisGroupDetailsByMasters("master", null, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void groupDetailsByMastersConstrutorEntityGrouperNullTest() {
+	public void groupDetailsByMastersConstructorEntityGrouperNullTest() {
 		new VisGroupDetailsByMasters("master", ENTITY, null);
 	}
 
@@ -196,12 +196,12 @@ public class VisRemainingAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void visUtilsGetLastUpdatedEntityNullTest() {
-		VisUtils.getLastUpdated(null, VisFrequencyOptions.daily, "campo");
+		VisUtils.getLastUpdated(null, VisFrequencyOptions.daily, "field");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void visUtilsGetLastUpdatedFrequencyNullTest() {
-		VisUtils.getLastUpdated(ENTITY, null, "campo");
+		VisUtils.getLastUpdated(ENTITY, null, "field");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -214,9 +214,9 @@ public class VisRemainingAopNullTest {
 		VisUtils.getAllPositionsGroupedByRecruiters(null);
 	}
 
-	/** Garante que a lista auxiliar usada nos testes acima não é nula (null-return). */
+	/** Ensures that the auxiliary list used in the tests above is not null (null-return). */
 	@Test
-	public void listaAuxiliarNaoEhNulaTest() {
+	public void auxiliaryListIsNotNullTest() {
 		org.junit.Assert.assertNotNull(new ArrayList<CcpJsonRepresentation>());
 	}
 }

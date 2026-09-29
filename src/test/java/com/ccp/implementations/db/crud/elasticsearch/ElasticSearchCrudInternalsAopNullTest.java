@@ -21,7 +21,7 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.entities.JnEntityJobsnowError;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre as classes internas do módulo
+ * Coverage of {@code CcpNullParameterAspect} over the internal classes of the module
  * {@code ccp_db-crud_elasticsearch}.
  */
 public class ElasticSearchCrudInternalsAopNullTest {

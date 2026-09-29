@@ -9,20 +9,20 @@ import com.ccp.aop.CcpNullParameterException;
 public class CcpValidEmailFilterTest {
 
 	@Test
-	public void construtorTest() {
-		CcpValidEmailFilter f = new CcpValidEmailFilter("/login/");
-		assertNotNull(f);
+	public void constructorTest() {
+		CcpValidEmailFilter filter = new CcpValidEmailFilter("/login/");
+		assertNotNull(filter);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorFilteredNullTest() {
+	public void constructorFilteredNullTest() {
 		new CcpValidEmailFilter((String[]) null);
 	} 
 
 	@Test
 	public void getEmailSyntaxFilterTest() {
-		CcpValidEmailFilter f = CcpValidEmailFilter.getEmailSyntaxFilter("/login/");
-		assertNotNull(f);
+		CcpValidEmailFilter filter = CcpValidEmailFilter.getEmailSyntaxFilter("/login/");
+		assertNotNull(filter);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

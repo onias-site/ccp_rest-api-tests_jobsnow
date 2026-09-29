@@ -24,16 +24,16 @@ public class CcpTreeFlowTest {
 	}
 
 	@Test
-	public void fluenteEncadeamentoTest() {
+	public void fluentChainingTest() {
 		CcpBusiness noop = json -> json;
-		CcpJsonRepresentation r = CcpTreeFlow.beginThisStatement()
+		CcpJsonRepresentation result = CcpTreeFlow.beginThisStatement()
 				.tryToExecuteTheGivenFinalTargetProcess(noop)
 				.usingTheGivenJson(CcpOtherConstants.EMPTY_JSON)
 				.butIfThisExecutionReturns(CcpProcessStatusDefault.OK)
 				.thenExecuteTheGivenProcesses(noop)
 				.and()
 				.endThisStatement();
-		assertNotNull(r);
+		assertNotNull(result);
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
@@ -122,5 +122,5 @@ public class CcpTreeFlowTest {
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
-	// Todos os métodos retornam builders novos (`return new ...`) — nunca null naturalmente.
+	// Every method returns new builders (`return new ...`) — naturally never null.
 }

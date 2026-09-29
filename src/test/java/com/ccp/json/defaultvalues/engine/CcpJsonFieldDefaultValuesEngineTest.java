@@ -11,7 +11,7 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.ccp.json.defaultvalues.annotations.RegrasValorPadraoStrings;
+import com.ccp.json.defaultvalues.annotations.RulesDefaultValueStrings;
 
 /**
  * Verifica a engine que aplica {@code @CcpJsonFieldDefaultValue}, chamada diretamente e não pelo
@@ -41,9 +41,9 @@ public class CcpJsonFieldDefaultValuesEngineTest {
 
 	@Test
 	public void aplicaValorPadraoSemPassarPeloExecuteTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RegrasValorPadraoStrings.nome, "onias");
-		CcpJsonRepresentation retorno = CcpJsonFieldDefaultValuesEngine.INSTANCE.putDefaultValues(RegrasValorPadraoStrings.class, json);
-		String valor = retorno.getAsString(RegrasValorPadraoStrings.comTemplate);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesDefaultValueStrings.name, "onias");
+		CcpJsonRepresentation retorno = CcpJsonFieldDefaultValuesEngine.INSTANCE.putDefaultValues(RulesDefaultValueStrings.class, json);
+		String valor = retorno.getAsString(RulesDefaultValueStrings.comTemplate);
 		assertEquals("ola onias", valor);
 	}
 

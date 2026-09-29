@@ -1,0 +1,65 @@
+package com.jn.entities.decorators.entidades;
+
+import org.junit.Test;
+
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.jn.entities.JnEntityContactUs;
+import com.jn.entities.decorators.TemplateDeTestesDeDecoratorDeEntidade;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
+import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
+
+/**
+ * jn_contact_us: gêmea de jn_contact_us_solved (pendente na principal, resolvido na gêmea),
+ * {@code @CcpEntityCache(3600)}, transformador e validador.
+ */
+public class JnEntityContactUsDecoratorsTest extends TemplateDeTestesDeDecoratorDeEntidade {
+
+	protected CcpEntity entidade() {
+		return JnEntityContactUs.ENTITY;
+	}
+
+	protected CcpJsonRepresentation registroValido() {
+		return this.com(JnJsonCommonsFields.subjectType, "duvida")
+				.put(JnJsonCommonsFields.email, this.email)
+				.put(JnJsonCommonsFields.subject, "assunto de teste")
+				.put(JnJsonInstantMessengerFields.chatId, 751717896L)
+				.put(JnJsonCommonsFields.sender, "devs.jobsnow@gmail.com");
+	}
+
+	@Test
+	public void cadeia() {
+		this.deveTerACadeia("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "DecoratorTwinEntity", "DecoratorCacheEntity", "DefaultImplementationEntity");
+	}
+
+	@Test
+	public void gravarLerEApagar() {
+		this.deveGravarLerEApagar();
+	}
+
+	@Test
+	public void validador() {
+		this.deveRecusarRegistroInvalido(this.registroValido().removeFields(JnJsonCommonsFields.subject));
+	}
+
+	/** Até 2026-09-27 copiava a regra de JnJsonCommonsFields, que não declara chatId: aceitava qualquer coisa. */
+	@Test
+	public void validadorDoChatId() {
+		this.deveRecusarRegistroInvalido(this.registroValido().put(JnJsonInstantMessengerFields.chatId, "nao-e-numero"));
+	}
+
+	@Test
+	public void transformador() {
+		this.deveGuardarEmailComoHash();
+	}
+
+	@Test
+	public void cache() {
+		this.deveServirLeituraDoCacheEInvalidarNaEscrita();
+	}
+
+	@Test
+	public void gemea() {
+		this.deveAlternarEntrePrincipalEGemea("jn_contact_us_solved");
+	}
+}

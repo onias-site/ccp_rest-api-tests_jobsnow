@@ -21,9 +21,9 @@ import com.jn.entities.JnEntityJobsnowError;
 import org.junit.Test;
 
 /**
- * Cobertura dos aspectos {@code CcpNullParameterAspect} / {@code CcpNullReturnAspect} sobre o
- * pacote de operações bulk: {@code CcpBulkItem}, {@code CcpBulkExecutor},
- * {@code CcpExecuteBulkOperation}, {@code CcpBulkOperationResult} e
+ * Coverage of the {@code CcpNullParameterAspect} / {@code CcpNullReturnAspect} aspects over the
+ * bulk operations package: {@code CcpBulkItem}, {@code CcpBulkExecutor},
+ * {@code CcpExecuteBulkOperation}, {@code CcpBulkOperationResult} and
  * {@code CcpBulkEntityOperationType}.
  */
 public class CcpBulkAopNullTest {
@@ -54,38 +54,38 @@ public class CcpBulkAopNullTest {
 		return com.jn.db.bulk.JnExecuteBulkOperation.INSTANCE;
 	}
 
-	/** Implementação mínima para alcançar os métodos default de {@code CcpBulkOperationResult}. */
+	/** Minimal implementation to reach the default methods of {@code CcpBulkOperationResult}. */
 
 
 	// ── CcpBulkItem ───────────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void bulkItemConstrutorCopiaOtherNullTest() {
+	public void bulkItemCopyConstructorOtherNullTest() {
 		new CcpBulkItem(null, CcpBulkEntityOperationType.update);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void bulkItemConstrutorCopiaOperationNullTest() {
+	public void bulkItemCopyConstructorOperationNullTest() {
 		new CcpBulkItem(bulkItem(), null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void bulkItemConstrutorJsonNullTest() {
+	public void bulkItemConstructorJsonNullTest() {
 		new CcpBulkItem(null, CcpBulkEntityOperationType.create, ENTITY, "id");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void bulkItemConstrutorOperationNullTest() {
+	public void bulkItemConstructorOperationNullTest() {
 		new CcpBulkItem(JSON, null, ENTITY, "id");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void bulkItemConstrutorEntityNullTest() {
+	public void bulkItemConstructorEntityNullTest() {
 		new CcpBulkItem(JSON, CcpBulkEntityOperationType.create, null, "id");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void bulkItemConstrutorIdNullTest() {
+	public void bulkItemConstructorIdNullTest() {
 		new CcpBulkItem(JSON, CcpBulkEntityOperationType.create, ENTITY, null);
 	}
 

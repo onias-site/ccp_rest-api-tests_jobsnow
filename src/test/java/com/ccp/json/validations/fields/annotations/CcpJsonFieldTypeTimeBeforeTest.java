@@ -14,42 +14,42 @@ import com.ccp.json.validations.fields.enums.CcpJsonFieldTypeError;
  */
 public class CcpJsonFieldTypeTimeBeforeTest {
 
-	private static final long UM_DIA = 86_400_000L;
+	private static final long ONE_DAY = 86_400_000L;
 
 	{
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	private final NegocioFieldTypeTimeBefore negocio = new NegocioFieldTypeTimeBefore();
+	private final BusinessFieldTypeTimeBefore business = new BusinessFieldTypeTimeBefore();
 
-	private CcpJsonRepresentation jsonComDiasAtras(RegrasFieldTypeTimeBefore campo, long dias) {
+	private CcpJsonRepresentation jsonComDiasAtras(RulesFieldTypeTimeBefore field, long dias) {
 		long currentTimeMillis = System.currentTimeMillis();
-		long timestamp = currentTimeMillis - (dias * UM_DIA);
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(campo, timestamp);
+		long timestamp = currentTimeMillis - (dias * ONE_DAY);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(field, timestamp);
 		return json;
 	}
 
 	@Test
-	public void dentroDoLimiteMaximoTest() {
-		CcpJsonRepresentation json = this.jsonComDiasAtras(RegrasFieldTypeTimeBefore.noMaximoSeteDiasAtras, 3);
-		ValidacaoDeCampo.aceita(this.negocio, json);
+	public void withinMaxLimitTest() {
+		CcpJsonRepresentation json = this.jsonComDiasAtras(RulesFieldTypeTimeBefore.noMaximoSeteDiasAtras, 3);
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
-	public void foraDoLimiteMaximoTest() {
-		CcpJsonRepresentation json = this.jsonComDiasAtras(RegrasFieldTypeTimeBefore.noMaximoSeteDiasAtras, 30);
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeTimeBefore.noMaximoSeteDiasAtras, CcpJsonFieldTypeError.timeMaxValueBeforeCurrentTime);
+	public void beyondMaxLimitTest() {
+		CcpJsonRepresentation json = this.jsonComDiasAtras(RulesFieldTypeTimeBefore.noMaximoSeteDiasAtras, 30);
+		FieldValidation.refuses(this.business, json, RulesFieldTypeTimeBefore.noMaximoSeteDiasAtras, CcpJsonFieldTypeError.timeMaxValueBeforeCurrentTime);
 	}
 
 	@Test
-	public void dentroDoLimiteMinimoTest() {
-		CcpJsonRepresentation json = this.jsonComDiasAtras(RegrasFieldTypeTimeBefore.noMinimoDoisDiasAtras, 5);
-		ValidacaoDeCampo.aceita(this.negocio, json);
+	public void withinMinLimitTest() {
+		CcpJsonRepresentation json = this.jsonComDiasAtras(RulesFieldTypeTimeBefore.noMinimoDoisDiasAtras, 5);
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
-	public void foraDoLimiteMinimoTest() {
-		CcpJsonRepresentation json = this.jsonComDiasAtras(RegrasFieldTypeTimeBefore.noMinimoDoisDiasAtras, 0);
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeTimeBefore.noMinimoDoisDiasAtras, CcpJsonFieldTypeError.timeMinValueBeforeCurrentTime);
+	public void belowMinLimitTest() {
+		CcpJsonRepresentation json = this.jsonComDiasAtras(RulesFieldTypeTimeBefore.noMinimoDoisDiasAtras, 0);
+		FieldValidation.refuses(this.business, json, RulesFieldTypeTimeBefore.noMinimoDoisDiasAtras, CcpJsonFieldTypeError.timeMinValueBeforeCurrentTime);
 	}
 }

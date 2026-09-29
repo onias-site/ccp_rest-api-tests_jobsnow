@@ -33,21 +33,21 @@ public enum LoginActions implements CcpBusiness {
 	CreateLoginEmail(JnEntityLoginEmail.ENTITY),
 	renameTokenField{
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			CcpJsonRepresentation renameField = json.renameField(JsonFieldNames.sessionToken, JsonFieldNames.token);
-			return renameField; 
+			CcpJsonRepresentation jsonWithRenamedToken = json.renameField(JsonFieldNames.sessionToken, JsonFieldNames.token);
+			return jsonWithRenamedToken;
 		}
 	},
 	readTokenFromReceivedEmail{
 		/**
-		 * O template {@code JnNotifyUserAboutLoginToken} renomeia {@code originalToken} para
-		 * {@code token} antes de compor a mensagem, então é sob {@code token} que o valor em claro
-		 * chega ao e-mail gravado em disco.
+		 * The {@code JnNotifyUserAboutLoginToken} template renames {@code originalToken} to
+		 * {@code token} before composing the message, so it is under {@code token} that the plain value
+		 * reaches the e-mail saved on disk.
 		 */
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			String originalToken = new CcpStringDecorator("c:\\logs\\email\\"+ JnNotifyUserAboutLoginToken.class.getName() + ".json")
 			.file().asSingleJson().getAsString(JsonFieldNames.token);
-			CcpJsonRepresentation put = json.put(JsonFieldNames.token, originalToken);
-			return put;
+			CcpJsonRepresentation jsonWithToken = json.put(JsonFieldNames.token, originalToken);
+			return jsonWithToken;
 		}
 	},
 	;
@@ -59,17 +59,17 @@ public enum LoginActions implements CcpBusiness {
 
 	public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 		try {
-			LoginActions[] values = values();
-			for (LoginActions loginActions : values) {
-				if(loginActions.entities.length == 0) {
+			LoginActions[] allActions = values();
+			for (LoginActions loginAction : allActions) {
+				if(loginAction.entities.length == 0) {
 					continue;
 				}
 				CcpJsonRepresentation jsonWithSubjectType = json.put(JnJsonCommonsFields.subjectType, JnNotifyUserAboutLoginToken.class.getName());
-				loginActions.printAllStatus(jsonWithSubjectType);
+				loginAction.printAllStatus(jsonWithSubjectType);
 			}
-			JnServiceLogin valueOf = JnServiceLogin.valueOf(this.name());
-			Map<String, Object> execute = valueOf.execute(json.content);
-			CcpJsonRepresentation result = new CcpJsonRepresentation(execute);
+			JnServiceLogin service = JnServiceLogin.valueOf(this.name());
+			Map<String, Object> serviceResult = service.execute(json.content);
+			CcpJsonRepresentation result = new CcpJsonRepresentation(serviceResult);
 			return result;
 		}catch (Exception e) {
 			
@@ -116,15 +116,15 @@ public enum LoginActions implements CcpBusiness {
 	}
 
 	/**
-	 * Exceção lançada quando uma ação de login falha por um motivo que não é um desvio de fluxo esperado
-	 * ({@code CcpErrorFlowDisturb}), ou seja, uma falha real na execução do serviço.
+	 * Exception thrown when a login action fails for a reason that is not an expected flow deviation
+	 * ({@code CcpErrorFlowDisturb}), that is, a real failure in the execution of the service.
 	 */
 	@SuppressWarnings("serial")
 	public static class VisErrorLoginActionFailed extends RuntimeException {
 		/**
-		 * Monta a mensagem informando qual ação falhou e encadeia a exceção original como causa.
-		 * @param action a ação de login em execução
-		 * @param cause a exceção original
+		 * Builds the message stating which action failed and chains the original exception as the cause.
+		 * @param action the login action being executed
+		 * @param cause the original exception
 		 */
 		private VisErrorLoginActionFailed(LoginActions action, Throwable cause) {
 			super("The login action '" + action + "' has failed", cause);

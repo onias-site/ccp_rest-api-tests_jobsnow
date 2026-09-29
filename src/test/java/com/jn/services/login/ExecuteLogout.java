@@ -8,33 +8,33 @@ import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityLoginSessionValidation;
-import com.jn.rest.api.commons.VariaveisParaTeste;
+import com.jn.rest.api.commons.TestVariables;
 import com.jn.status.login.JnProcessStatusExecuteLogout;
 
-public class ExecuteLogout extends JnServiceLoginTemplateDeTestes {
+public class ExecuteLogout extends JnServiceLoginTestTemplate {
 
 	@Test(expected = CcpJsonValidationError.class)
-	public void emailInvalido() {
-		VariaveisParaTeste variaveisParaTeste = comEmailInvalido();
-		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, CcpProcessStatusDefault.UNPROCESSABLE_ENTITY);
+	public void invalidEmail() {
+		TestVariables testVariables = withInvalidEmail();
+		this.execute(testVariables.REQUEST_TO_LOGIN, CcpProcessStatusDefault.UNPROCESSABLE_ENTITY);
 	}
 
 	@Test
-	public void usuarioNaoLogado() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, JnProcessStatusExecuteLogout.missingLogin);
+	public void userNotLoggedIn() {
+		TestVariables testVariables = new TestVariables();
+		this.execute(testVariables.REQUEST_TO_LOGIN, JnProcessStatusExecuteLogout.missingLogin);
 	}
 
 	@Test
-	public void caminhoFeliz() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste("onias85@gmail.com");
-		this.fluxoEsperado(variaveisParaTeste);
+	public void happyPath() {
+		TestVariables testVariables = new TestVariables("onias85@gmail.com");
+		this.expectedFlow(testVariables);
 	}
 
-	public void fluxoEsperado(VariaveisParaTeste variaveisParaTeste) {
-		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginSessionConflict.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		CcpJsonRepresentation withToken = variaveisParaTeste.REQUEST_TO_LOGIN
+	public void expectedFlow(TestVariables testVariables) {
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		CcpJsonRepresentation withToken = testVariables.REQUEST_TO_LOGIN
 				.put(JnEntityLoginSessionValidation.Fields.token, "12345678");
 		JnEntityLoginSessionValidation.ENTITY.save(withToken);
 		this.execute(withToken, JnProcessStatusExecuteLogout.expectedStatus);

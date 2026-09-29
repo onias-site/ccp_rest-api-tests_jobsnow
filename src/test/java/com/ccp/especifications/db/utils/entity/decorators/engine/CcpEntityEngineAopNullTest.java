@@ -21,17 +21,17 @@ import com.jn.entities.JnEntityLoginTokenRequestResend;
 import org.junit.Test;
 
 /**
- * Cobertura dos aspectos {@code CcpNullParameterAspect} / {@code CcpNullReturnAspect} sobre o motor
- * de entidades: {@code CcpEntityDelegator}, {@code CcpDefaultEntityDelegator}, {@code CcpEntityFactory},
- * {@code CcpEntityMetaData}, {@code DefaultImplementationEntity} e todos os decorators do pacote.
+ * Coverage of the {@code CcpNullParameterAspect} / {@code CcpNullReturnAspect} aspects over the
+ * entity engine: {@code CcpEntityDelegator}, {@code CcpDefaultEntityDelegator}, {@code CcpEntityFactory},
+ * {@code CcpEntityMetaData}, {@code DefaultImplementationEntity} and every decorator of the package.
  */
 public class CcpEntityEngineAopNullTest {
 
 	/**
-	 * O {@code CcpDbRequester} entra por causa do dublê de {@code CcpSelectUnionAll}: o construtor dele
-	 * pede essa dependência para descobrir os nomes dos campos de entidade e de id. Sem ela, montar o
-	 * cenário estoura antes de o método sob teste ser chamado, e o aspecto nunca chega a rodar. Nada
-	 * aqui toca o banco — os dois métodos usados devolvem nome de campo.
+	 * {@code CcpDbRequester} is needed because of the {@code CcpSelectUnionAll} test double: its
+	 * constructor asks for this dependency to find out the entity and id field names. Without it,
+	 * building the scenario blows up before the method under test is called, and the aspect never
+	 * gets to run. Nothing here touches the database — both methods used return a field name.
 	 */
 	static {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpElasticSearchDbRequest());
@@ -41,7 +41,7 @@ public class CcpEntityEngineAopNullTest {
 
 	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;
 
-	/** Subclasse concreta mínima para alcançar os métodos de {@code CcpDefaultEntityDelegator}. */
+	/** Minimal concrete subclass to reach the methods of {@code CcpDefaultEntityDelegator}. */
 
 
 	static CcpExecuteBulkOperation bulkOperation() {
@@ -67,7 +67,7 @@ public class CcpEntityEngineAopNullTest {
 	// ── CcpEntityDelegator ────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void delegatorConstrutorNullTest() {
+	public void delegatorConstructorNullTest() {
 		new CcpEntityDelegator(null);
 	}
 
@@ -184,19 +184,19 @@ public class CcpEntityEngineAopNullTest {
 	// ── CcpDefaultEntityDelegator ─────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void defaultDelegatorConstrutorEntityNullTest() {
+	public void defaultDelegatorConstructorEntityNullTest() {
 		new CcpDefaultEntityDelegator<Object>(null, bulkOperation(), keysToDelete()) {
 		};
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void defaultDelegatorConstrutorBulkNullTest() {
+	public void defaultDelegatorConstructorBulkNullTest() {
 		new CcpDefaultEntityDelegator<Object>(ENTITY, null, keysToDelete()) {
 		};
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void defaultDelegatorConstrutorCacheFunctionNullTest() {
+	public void defaultDelegatorConstructorCacheFunctionNullTest() {
 		new CcpDefaultEntityDelegator<Object>(ENTITY, bulkOperation(), null) {
 		};
 	}
@@ -268,7 +268,7 @@ public class CcpEntityEngineAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void defaultDelegatorTransferDataToEntitiesNullTest() {
-		defaultDelegator().transferDataTo(JSON, (CcpEntity[]) null);
+		defaultDelegator().transferDataTo(JSON, (CcpEntity) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -278,7 +278,7 @@ public class CcpEntityEngineAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void defaultDelegatorCopyDataToEntitiesNullTest() {
-		defaultDelegator().copyDataTo(JSON, (CcpEntity[]) null);
+		defaultDelegator().copyDataTo(JSON, (CcpEntity) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -304,7 +304,7 @@ public class CcpEntityEngineAopNullTest {
 	// ── CcpEntityFactory ──────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void factoryConstrutorNullTest() {
+	public void factoryConstructorNullTest() {
 		new CcpEntityFactory(null);
 	}
 
@@ -405,7 +405,7 @@ public class CcpEntityEngineAopNullTest {
 	// ── DefaultImplementationEntity ───────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void defaultImplementationConstrutorNullTest() {
+	public void defaultImplementationConstructorNullTest() {
 		new DefaultImplementationEntity(null);
 	}
 
@@ -433,12 +433,12 @@ public class CcpEntityEngineAopNullTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void cacheDecoratorConstrutorEntityNullTest() {
+	public void cacheDecoratorConstructorEntityNullTest() {
 		new DecoratorCacheEntity(null, JnEntityJobsnowError.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void cacheDecoratorConstrutorClassNullTest() {
+	public void cacheDecoratorConstructorClassNullTest() {
 		new DecoratorCacheEntity(ENTITY, null);
 	}
 
@@ -504,12 +504,12 @@ public class CcpEntityEngineAopNullTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void transformerDecoratorConstrutorEntityNullTest() {
+	public void transformerDecoratorConstructorEntityNullTest() {
 		new DecoratorFieldsTransformerEntity(null, JnEntityJobsnowError.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void transformerDecoratorConstrutorClassNullTest() {
+	public void transformerDecoratorConstructorClassNullTest() {
 		new DecoratorFieldsTransformerEntity(ENTITY, null);
 	}
 
@@ -573,7 +573,7 @@ public class CcpEntityEngineAopNullTest {
 		transformerDecorator().copyDataTo(JSON, null);
 	}
 
-	/** {@code AlreadyTransformedJson.redoJson} só é alcançável pelo retorno de {@code getHandledJson}. */
+	/** {@code AlreadyTransformedJson.redoJson} is only reachable through the return of {@code getHandledJson}. */
 	@Test(expected = CcpNullParameterException.class)
 	public void alreadyTransformedJsonRedoJsonNullTest() {
 		CcpJsonRepresentation alreadyTransformed = transformerDecorator().getHandledJson(JSON);
@@ -587,12 +587,12 @@ public class CcpEntityEngineAopNullTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void validatorDecoratorConstrutorEntityNullTest() {
+	public void validatorDecoratorConstructorEntityNullTest() {
 		new DecoratorFieldsValidatorEntity(null, JnEntityJobsnowError.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void validatorDecoratorConstrutorClassNullTest() {
+	public void validatorDecoratorConstructorClassNullTest() {
 		new DecoratorFieldsValidatorEntity(ENTITY, null);
 	}
 
@@ -633,12 +633,12 @@ public class CcpEntityEngineAopNullTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void beforeOperationsDecoratorConstrutorEntityNullTest() {
+	public void beforeOperationsDecoratorConstructorEntityNullTest() {
 		new DecoratorBeforeOperationsWriterEntity(null, JnEntityLoginTokenRequestResend.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void beforeOperationsDecoratorConstrutorClassNullTest() {
+	public void beforeOperationsDecoratorConstructorClassNullTest() {
 		new DecoratorBeforeOperationsWriterEntity(ENTITY, null);
 	}
 
@@ -664,12 +664,12 @@ public class CcpEntityEngineAopNullTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void afterOperationsDecoratorConstrutorEntityNullTest() {
+	public void afterOperationsDecoratorConstructorEntityNullTest() {
 		new DecoratorAfterOperationsWriterEntity(null, JnEntityLoginTokenRequestResend.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void afterOperationsDecoratorConstrutorClassNullTest() {
+	public void afterOperationsDecoratorConstructorClassNullTest() {
 		new DecoratorAfterOperationsWriterEntity(ENTITY, null);
 	}
 
@@ -695,12 +695,12 @@ public class CcpEntityEngineAopNullTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void readOnlyDecoratorConstrutorEntityNullTest() {
+	public void readOnlyDecoratorConstructorEntityNullTest() {
 		new DecoratorReadOnlyEntity(null, JnEntityDisposableRecord.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void readOnlyDecoratorConstrutorClassNullTest() {
+	public void readOnlyDecoratorConstructorClassNullTest() {
 		new DecoratorReadOnlyEntity(ENTITY, null);
 	}
 
@@ -726,7 +726,7 @@ public class CcpEntityEngineAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void readOnlyDecoratorTransferDataToEntitiesNullTest() {
-		readOnlyDecorator().transferDataTo(JSON, (CcpEntity[]) null);
+		readOnlyDecorator().transferDataTo(JSON, (CcpEntity) null);
 	}
 
 	// ── DecoratorBeforeTransferDataEntity ─────────────────────────────────────
@@ -736,12 +736,12 @@ public class CcpEntityEngineAopNullTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void beforeTransferDecoratorConstrutorEntityNullTest() {
+	public void beforeTransferDecoratorConstructorEntityNullTest() {
 		new DecoratorBeforeTransferDataEntity(null, JnEntityJobsnowError.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void beforeTransferDecoratorConstrutorClassNullTest() {
+	public void beforeTransferDecoratorConstructorClassNullTest() {
 		new DecoratorBeforeTransferDataEntity(ENTITY, null);
 	}
 
@@ -772,12 +772,12 @@ public class CcpEntityEngineAopNullTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void afterTransferDecoratorConstrutorEntityNullTest() {
+	public void afterTransferDecoratorConstructorEntityNullTest() {
 		new DecoratorAfterTransferDataEntity(null, JnEntityJobsnowError.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void afterTransferDecoratorConstrutorClassNullTest() {
+	public void afterTransferDecoratorConstructorClassNullTest() {
 		new DecoratorAfterTransferDataEntity(ENTITY, null);
 	}
 
@@ -808,12 +808,12 @@ public class CcpEntityEngineAopNullTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void twinDecoratorConstrutorEntityNullTest() {
+	public void twinDecoratorConstructorEntityNullTest() {
 		new DecoratorTwinEntity(null, JnEntityContactUs.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void twinDecoratorConstrutorClassNullTest() {
+	public void twinDecoratorConstructorClassNullTest() {
 		new DecoratorTwinEntity(ENTITY, null);
 	}
 
@@ -837,7 +837,7 @@ public class CcpEntityEngineAopNullTest {
 		twinDecorator().getParametersToSearch(null);
 	}
 
-	// ── CcpEntityOperationType (pacote irmão, exercitado a partir daqui) ──────
+	// ── CcpEntityOperationType (sibling package, exercised from here) ─────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void operationTypeGetOperationCallbackNullTest() {

@@ -21,7 +21,7 @@ public class CcpMindrotPasswordHandlerTest {
 	// ── provider ──────────────────────────────────────────────────────────────
 
 	@Test
-	public void construtorProviderTest() {
+	public void constructorProviderTest() {
 		assertNotNull(new CcpMindrotPasswordHandler());
 	}
 

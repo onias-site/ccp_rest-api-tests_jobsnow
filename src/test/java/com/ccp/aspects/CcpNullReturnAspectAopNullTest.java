@@ -11,14 +11,14 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import org.junit.Test;
 
 /**
- * Verifica o contrato dos dois aspectos em si — que o weaving está ativo neste módulo de testes e
- * que as anotações de dispensa são respeitadas.
+ * Verifies the contract of the two aspects themselves — that weaving is active in this test module
+ * and that the opt-out annotations are honored.
  *
  * <p>
- * O {@code CcpNullReturnAspect} não pode ser exercitado contra o código de produção (nenhum método
- * de produção devolve {@code null}: se devolvesse, seria justamente o defeito que o aspecto
- * denuncia). Por isso os retornos nulos são produzidos aqui, por classes deste pacote — que também
- * está sob {@code com.ccp..} e portanto é interceptado pelos mesmos pointcuts.
+ * {@code CcpNullReturnAspect} cannot be exercised against production code (no production method
+ * returns {@code null}: if one did, that would be precisely the defect the aspect reports). That is
+ * why the null returns are produced here, by classes of this package — which is also under
+ * {@code com.ccp..} and is therefore intercepted by the same pointcuts.
  * </p>
  */
 public class CcpNullReturnAspectAopNullTest {
@@ -27,80 +27,80 @@ public class CcpNullReturnAspectAopNullTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	/** Alvos de teste interceptados pelos aspectos por estarem em {@code com.ccp..}. */
+	/** Test targets intercepted by the aspects because they live in {@code com.ccp..}. */
 
 
-	private static InterceptedTargets alvo() {
+	private static InterceptedTargets target() {
 		return new InterceptedTargets();
 	}
 
 	// ── CcpNullReturnAspect ───────────────────────────────────────────────────
 
 	@Test(expected = CcpNullReturnException.class)
-	public void retornoNuloDisparaExcecaoTest() {
-		alvo().retornaNull();
+	public void nullReturnThrowsExceptionTest() {
+		target().returnsNull();
 	}
 
 	@Test(expected = CcpNullReturnException.class)
-	public void retornoDeColecaoNulaDisparaExcecaoTest() {
-		alvo().retornaListaNula();
+	public void nullCollectionReturnThrowsExceptionTest() {
+		target().returnsNullList();
 	}
 
 	@Test
-	public void retornoNuloAnotadoNaoDisparaExcecaoTest() {
-		assertNull(alvo().retornaNullPermitido());
+	public void annotatedNullReturnDoesNotThrowExceptionTest() {
+		assertNull(target().returnsAllowedNull());
 	}
 
 	@Test
-	public void metodoVoidNaoDisparaExcecaoTest() {
-		alvo().metodoVoidComRetornoImplicito();
+	public void voidMethodDoesNotThrowExceptionTest() {
+		target().voidMethodWithImplicitReturn();
 	}
 
 	@Test
-	public void retornoNaoNuloNaoDisparaExcecaoTest() {
-		assertNotNull(alvo().retornaJson());
+	public void nonNullReturnDoesNotThrowExceptionTest() {
+		assertNotNull(target().returnsJson());
 	}
 
 	// ── CcpNullParameterAspect ────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void parametroNuloDisparaExcecaoTest() {
-		alvo().recebeParametro(null);
+	public void nullParameterThrowsExceptionTest() {
+		target().receivesParameter(null);
 	}
 
 	@Test
-	public void parametroNuloAnotadoNaoDisparaExcecaoTest() {
-		assertEquals("null", alvo().recebeParametroNulavel(null));
+	public void annotatedNullParameterDoesNotThrowExceptionTest() {
+		assertEquals("null", target().receivesNullableParameter(null));
 	}
 
 	@Test
-	public void parametroPreenchidoNaoDisparaExcecaoTest() {
-		assertEquals("ok", alvo().recebeParametro("ok"));
+	public void filledParameterDoesNotThrowExceptionTest() {
+		assertEquals("ok", target().receivesParameter("ok"));
 	}
 
-	// ── mensagens das exceções ────────────────────────────────────────────────
+	// ── exception messages ────────────────────────────────────────────────────
 
 	@Test
-	public void mensagemDaExcecaoDeRetornoNuloTest() {
+	public void nullReturnExceptionMessageTest() {
 		try {
-			alvo().retornaNull();
-			org.junit.Assert.fail("deveria ter lançado CcpNullReturnException");
+			target().returnsNull();
+			org.junit.Assert.fail("should have thrown CcpNullReturnException");
 		} catch (CcpNullReturnException e) {
 			String message = e.getMessage();
 			assertNotNull(message);
-			org.junit.Assert.assertTrue(message.contains("retornaNull"));
+			org.junit.Assert.assertTrue(message.contains("returnsNull"));
 		}
 	}
 
 	@Test
-	public void mensagemDaExcecaoDeParametroNuloTest() {
+	public void nullParameterExceptionMessageTest() {
 		try {
-			alvo().recebeParametro(null);
-			org.junit.Assert.fail("deveria ter lançado CcpNullParameterException");
+			target().receivesParameter(null);
+			org.junit.Assert.fail("should have thrown CcpNullParameterException");
 		} catch (CcpNullParameterException e) {
 			String message = e.getMessage();
 			assertNotNull(message);
-			org.junit.Assert.assertTrue(message.contains("recebeParametro"));
+			org.junit.Assert.assertTrue(message.contains("receivesParameter"));
 		}
 	}
 }

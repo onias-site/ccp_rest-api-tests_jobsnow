@@ -16,7 +16,7 @@ public class CcpCronTasksControllerTest {
 	// ── construtor ────────────────────────────────────────────────────────────
 
 	@Test
-	public void construtorTest() {
+	public void constructorTest() {
 		new CcpCronTasksController();
 	}
 

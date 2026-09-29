@@ -24,7 +24,7 @@ public class CcpElasticSearchDbRequestTest {
 	// ── provider ──────────────────────────────────────────────────────────────
 
 	@Test
-	public void construtorProviderTest() {
+	public void constructorProviderTest() {
 		assertNotNull(new CcpElasticSearchDbRequest());
 	}
 
@@ -34,7 +34,7 @@ public class CcpElasticSearchDbRequestTest {
 		assertNotNull(instance);
 	}
 
-	// ── null-parameter tests — executeHttpRequest (variantes) ─────────────────
+	// ── null-parameter tests — executeHttpRequest (variants) ──────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeHttpRequestTraceNullTest() {

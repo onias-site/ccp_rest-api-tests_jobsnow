@@ -20,7 +20,7 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.entities.JnEntityJobsnowError;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre as classes internas do módulo
+ * Coverage of {@code CcpNullParameterAspect} over the internal classes of the module
  * {@code ccp_db-bulk_elasticsearch}.
  */
 public class ElasticSearchBulkAopNullTest {
@@ -45,7 +45,7 @@ public class ElasticSearchBulkAopNullTest {
 	// ── BulkItem ──────────────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void bulkItemConstrutorNullTest() {
+	public void bulkItemConstructorNullTest() {
 		new BulkItem(null);
 	}
 
@@ -64,19 +64,19 @@ public class ElasticSearchBulkAopNullTest {
 	// ── ElasticSearchBulkOperationResult ──────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void bulkOperationResultConstrutorItemNullTest() {
+	public void bulkOperationResultConstructorItemNullTest() {
 		new ElasticSearchBulkOperationResult(null, new ArrayList<CcpJsonRepresentation>(Arrays.asList(JSON)));
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void bulkOperationResultConstrutorResultNullTest() {
+	public void bulkOperationResultConstructorResultNullTest() {
 		new ElasticSearchBulkOperationResult(ccpBulkItem(), null);
 	}
 
 	// ── ElasticSerchDbBulkExecutor ────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void bulkExecutorConstrutorNullTest() {
+	public void bulkExecutorConstructorNullTest() {
 		new ElasticSerchDbBulkExecutor((List<CcpBulkItem>) null);
 	}
 

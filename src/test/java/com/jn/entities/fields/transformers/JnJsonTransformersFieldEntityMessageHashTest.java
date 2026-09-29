@@ -16,7 +16,7 @@ public class JnJsonTransformersFieldEntityMessageHashTest {
 	}
 
 	@Test
-	public void construtorTest() {
+	public void constructorTest() {
 		assertNotNull(new JnJsonTransformersFieldEntityMessageHash());
 	}
 

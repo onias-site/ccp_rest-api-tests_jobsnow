@@ -7,20 +7,20 @@ import org.junit.Test;
 public class CustomContentTypeTest {
 
 	@Test
-	public void valoresEnumTest() {
+	public void enumValuesTest() {
 		assertNotNull(CustomContentType.TEXT_PLAIN);
 		assertNotNull(CustomContentType.TEXT_HTML);
 	}
 
 	@Test
 	public void valuesTest() {
-		CustomContentType[] all = CustomContentType.values();
-		assertNotNull(all);
+		CustomContentType[] allContentTypes = CustomContentType.values();
+		assertNotNull(allContentTypes);
 	}
 
 	@Test
 	public void valueOfTest() {
-		CustomContentType t = CustomContentType.valueOf("TEXT_PLAIN");
-		assertNotNull(t);
+		CustomContentType contentType = CustomContentType.valueOf("TEXT_PLAIN");
+		assertNotNull(contentType);
 	}
 }

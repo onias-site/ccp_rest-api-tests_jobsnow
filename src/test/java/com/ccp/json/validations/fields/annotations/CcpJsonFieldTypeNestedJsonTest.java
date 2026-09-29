@@ -19,51 +19,51 @@ public class CcpJsonFieldTypeNestedJsonTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	private final NegocioFieldTypeNestedJson negocio = new NegocioFieldTypeNestedJson();
+	private final BusinessFieldTypeNestedJson business = new BusinessFieldTypeNestedJson();
 
-	private CcpJsonRepresentation json(RegrasFieldTypeNestedJson campo, Object valor) {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(campo, valor);
+	private CcpJsonRepresentation json(RulesFieldTypeNestedJson field, Object valor) {
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(field, valor);
 		return json;
 	}
 
 	@Test
 	public void jsonInternoValidoTest() {
-		CcpJsonRepresentation interno = CcpOtherConstants.EMPTY_JSON.put(RegrasEnderecoAninhado.rua, "Rua das Flores");
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNestedJson.endereco, interno);
-		ValidacaoDeCampo.aceita(this.negocio, json);
+		CcpJsonRepresentation interno = CcpOtherConstants.EMPTY_JSON.put(RulesNestedAddress.rua, "Rua das Flores");
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNestedJson.endereco, interno);
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
 	public void jsonInternoComCampoObrigatorioAusenteTest() {
 		CcpJsonRepresentation interno = CcpOtherConstants.EMPTY_JSON;
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNestedJson.endereco, interno);
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeNestedJson.endereco, CcpJsonFieldTypeError.nestedJson);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNestedJson.endereco, interno);
+		FieldValidation.refuses(this.business, json, RulesFieldTypeNestedJson.endereco, CcpJsonFieldTypeError.nestedJson);
 	}
 
 	@Test
 	public void jsonInternoComCampoForaDaRegraTest() {
-		CcpJsonRepresentation interno = CcpOtherConstants.EMPTY_JSON.put(RegrasEnderecoAninhado.rua, "ab");
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNestedJson.endereco, interno);
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeNestedJson.endereco, CcpJsonFieldTypeError.nestedJson);
+		CcpJsonRepresentation interno = CcpOtherConstants.EMPTY_JSON.put(RulesNestedAddress.rua, "ab");
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNestedJson.endereco, interno);
+		FieldValidation.refuses(this.business, json, RulesFieldTypeNestedJson.endereco, CcpJsonFieldTypeError.nestedJson);
 	}
 
 	@Test
 	public void jsonInternoVazioRecusadoTest() {
 		CcpJsonRepresentation interno = CcpOtherConstants.EMPTY_JSON;
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNestedJson.naoAceitaVazio, interno);
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeNestedJson.naoAceitaVazio, CcpJsonFieldTypeError.emptyJson);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNestedJson.naoAceitaVazio, interno);
+		FieldValidation.refuses(this.business, json, RulesFieldTypeNestedJson.naoAceitaVazio, CcpJsonFieldTypeError.emptyJson);
 	}
 
 	@Test
 	public void jsonInternoVazioAceitoTest() {
 		CcpJsonRepresentation interno = CcpOtherConstants.EMPTY_JSON;
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNestedJson.aceitaVazio, interno);
-		ValidacaoDeCampo.aceita(this.negocio, json);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNestedJson.aceitaVazio, interno);
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
 	public void valorQueNaoEhJsonTest() {
-		CcpJsonRepresentation json = this.json(RegrasFieldTypeNestedJson.aceitaVazio, "abc");
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasFieldTypeNestedJson.aceitaVazio, CcpJsonFieldError.incompatibleType);
+		CcpJsonRepresentation json = this.json(RulesFieldTypeNestedJson.aceitaVazio, "abc");
+		FieldValidation.refuses(this.business, json, RulesFieldTypeNestedJson.aceitaVazio, CcpJsonFieldError.incompatibleType);
 	}
 }

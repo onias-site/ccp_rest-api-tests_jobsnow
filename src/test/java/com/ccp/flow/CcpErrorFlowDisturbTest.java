@@ -18,21 +18,21 @@ public class CcpErrorFlowDisturbTest {
 	}
 
 	@Test
-	public void construtorStatusFieldsTest() {
-		CcpErrorFlowDisturb e = new CcpErrorFlowDisturb(CcpProcessStatusDefault.OK);
-		assertNotNull(e.status);
+	public void constructorStatusFieldsTest() {
+		CcpErrorFlowDisturb error = new CcpErrorFlowDisturb(CcpProcessStatusDefault.OK);
+		assertNotNull(error.status);
 	}
 
 	@Test
-	public void construtorJsonStatusFieldsTest() {
-		CcpErrorFlowDisturb e = new CcpErrorFlowDisturb(CcpOtherConstants.EMPTY_JSON, CcpProcessStatusDefault.OK);
-		assertNotNull(e.json);
+	public void constructorJsonStatusFieldsTest() {
+		CcpErrorFlowDisturb error = new CcpErrorFlowDisturb(CcpOtherConstants.EMPTY_JSON, CcpProcessStatusDefault.OK);
+		assertNotNull(error.json);
 	}
 
 	@Test
-	public void construtorJsonStatusMessageFieldsTest() {
-		CcpErrorFlowDisturb e = new CcpErrorFlowDisturb(CcpOtherConstants.EMPTY_JSON, CcpProcessStatusDefault.OK, "msg");
-		assertNotNull(e.getMessage());
+	public void constructorJsonStatusMessageFieldsTest() {
+		CcpErrorFlowDisturb error = new CcpErrorFlowDisturb(CcpOtherConstants.EMPTY_JSON, CcpProcessStatusDefault.OK, "msg");
+		assertNotNull(error.getMessage());
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
@@ -83,5 +83,5 @@ public class CcpErrorFlowDisturbTest {
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
-	// Não há métodos públicos além dos herdados de RuntimeException; campos são finals públicos.
+	// There are no public methods besides those inherited from RuntimeException; fields are public finals.
 }

@@ -8,15 +8,15 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.process.CcpProcessStatusDefault;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre os construtores das etapas do fluent chain de
- * {@code CcpTreeFlow}, que só são alcançáveis de dentro do próprio pacote.
+ * Coverage of {@code CcpNullParameterAspect} over the constructors of the fluent chain steps of
+ * {@code CcpTreeFlow}, which are only reachable from inside the package itself.
  */
 public class CcpTreeFlowConstructorsAopNullTest {
 
 	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;
 
 	@Test(expected = CcpNullParameterException.class)
-	public void tryToExecuteConstrutorNullTest() {
+	public void tryToExecuteConstructorNullTest() {
 		new CcpTryToExecuteTheGivenFinalTargetProcess(null);
 	}
 

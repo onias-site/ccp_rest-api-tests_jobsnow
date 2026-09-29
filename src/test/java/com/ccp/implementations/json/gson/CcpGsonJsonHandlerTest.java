@@ -21,7 +21,7 @@ public class CcpGsonJsonHandlerTest {
 	// ── provider ──────────────────────────────────────────────────────────────
 
 	@Test
-	public void construtorProviderTest() {
+	public void constructorProviderTest() {
 		assertNotNull(new CcpGsonJsonHandler());
 	}
 

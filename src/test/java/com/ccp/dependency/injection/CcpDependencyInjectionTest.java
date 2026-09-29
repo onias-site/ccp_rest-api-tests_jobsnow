@@ -23,9 +23,9 @@ public class CcpDependencyInjectionTest {
 		assertNotNull(CcpDependencyInjection.getDependency(CcpJsonHandler.class));
 	}
 
-	// Nota: replaceDependenciesTemporally requer que a interface CcpInstanceProvider
-	// já esteja registrada como dependência, o que não é o caso em testes isolados.
-	// Não há teste positivo trivial sem infraestrutura mais elaborada.
+	// Note: replaceDependenciesTemporally requires the CcpInstanceProvider interface
+	// to be already registered as a dependency, which is not the case in isolated tests.
+	// There is no trivial positive test without more elaborate infrastructure.
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 
@@ -70,7 +70,7 @@ public class CcpDependencyInjectionTest {
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
-	// Nota: getDependency lança exceção quando não encontra (nunca retorna null).
-	// hasDependency retorna primitivo boolean.
-	// replaceDependenciesTemporally e getInstance dependem de argumentos válidos.
+	// Note: getDependency throws an exception when nothing is found (never returns null).
+	// hasDependency returns a primitive boolean.
+	// replaceDependenciesTemporally and getInstance depend on valid arguments.
 }

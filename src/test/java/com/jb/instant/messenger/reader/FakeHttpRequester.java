@@ -12,25 +12,25 @@ import com.ccp.especifications.http.CcpHttpResponse;
 class FakeHttpRequester implements CcpHttpRequester {
 
 	private final int httpStatus;
-	private final String[] respostas;
-	private int chamadas = 0;
+	private final String[] responses;
+	private int calls = 0;
 	String lastRequest = "";
 
-	FakeHttpRequester(int httpStatus, String... respostas) {
+	FakeHttpRequester(int httpStatus, String... responses) {
 		this.httpStatus = httpStatus;
-		this.respostas = respostas;
+		this.responses = responses;
 	}
 
 	public CcpHttpResponse executeHttpRequest(String url, CcpHttpMethods method, CcpJsonRepresentation headers, String body) {
 
 		this.lastRequest = body;
 
-		int ultima = this.respostas.length - 1;
-		int indice = this.chamadas > ultima ? ultima : this.chamadas;
+		int ultima = this.responses.length - 1;
+		int indice = this.calls > ultima ? ultima : this.calls;
 
-		this.chamadas++;
+		this.calls++;
 
-		CcpHttpResponse response = new CcpHttpResponse(this.respostas[indice], this.httpStatus, "");
+		CcpHttpResponse response = new CcpHttpResponse(this.responses[indice], this.httpStatus, "");
 		return response;
 	}
 

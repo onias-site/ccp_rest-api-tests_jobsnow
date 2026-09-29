@@ -17,7 +17,7 @@ public class CcpFieldNameTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorStringNullParamTest() {
+	public void constructorStringNullParamTest() {
 		new CcpFieldName((String) null);
 	}
 

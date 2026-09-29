@@ -179,13 +179,13 @@
 						<include>**/com/vis/rest/api/resume/validations/*.java</include>
 					</includes>
 					<excludes>
-						<!-- classes de suporte / template (nao sao testes) -->
-						<exclude>**/JnTemplateDeTestes.java</exclude>
-						<exclude>**/VisTemplateDeTestes.java</exclude>
-						<exclude>**/JnServiceLoginTemplateDeTestes.java</exclude>
+						<!-- classes de suporte / template (no sao testes) -->
+						<exclude>**/JnTestTemplate.java</exclude>
+						<exclude>**/VisTestTemplate.java</exclude>
+						<exclude>**/JnServiceLoginTestTemplate.java</exclude>
 						<exclude>**/BaseTest.java</exclude>
 						<exclude>**/LoginActions.java</exclude>
-						<exclude>**/VariaveisParaTeste.java</exclude>
+						<exclude>**/TestVariables.java</exclude>
 					</excludes>
 				</configuration>
 			</plugin>

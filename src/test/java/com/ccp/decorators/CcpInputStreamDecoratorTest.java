@@ -60,7 +60,7 @@ public class CcpInputStreamDecoratorTest {
 	// ── environmentVariables ─────────────────────────────────────────────────
 
 	@Test(expected = CcpErrorInputStreamMissing.class)
-	public void environmentVariableInexistenteLancaExcecaoTest() {
+	public void nonexistentEnvironmentVariableThrowsExceptionTest() {
 		new CcpStringDecorator("VARIAVEL_QUE_NAO_EXISTE_CCP_TEST").inputStreamFrom().environmentVariables();
 	}
 
@@ -97,16 +97,16 @@ public class CcpInputStreamDecoratorTest {
 
 	@Test
 	public void toStringTest() {
-		String nome = "meu-recurso";
-		CcpInputStreamDecorator d = new CcpStringDecorator(nome).inputStreamFrom();
-		assertTrue(d.toString().equals(nome));
+		String name = "meu-recurso";
+		CcpInputStreamDecorator d = new CcpStringDecorator(name).inputStreamFrom();
+		assertTrue(d.toString().equals(name));
 	}
 
 	@Test
 	public void getContentTest() {
-		String nome = "outro-recurso";
-		CcpInputStreamDecorator d = new CcpStringDecorator(nome).inputStreamFrom();
-		assertTrue(d.getContent().equals(nome));
+		String name = "outro-recurso";
+		CcpInputStreamDecorator d = new CcpStringDecorator(name).inputStreamFrom();
+		assertTrue(d.getContent().equals(name));
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────

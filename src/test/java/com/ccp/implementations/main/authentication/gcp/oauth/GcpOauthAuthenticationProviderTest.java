@@ -7,10 +7,10 @@ import org.junit.Test;
 public class GcpOauthAuthenticationProviderTest {
 
 	@Test
-	public void construtorTest() {
+	public void constructorTest() {
 		assertNotNull(new GcpOauthAuthenticationProvider());
 	}
 
-	// getJwtToken() não tem parâmetros nulos possíveis e depende de credenciais externas;
-	// AOP-null-parameter e AOP-null-return não se aplicam aqui.
+	// getJwtToken() has no parameters that could be null and depends on external credentials;
+	// AOP-null-parameter and AOP-null-return do not apply here.
 }

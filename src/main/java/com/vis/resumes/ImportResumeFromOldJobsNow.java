@@ -22,7 +22,7 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 
 	public static final ImportResumeFromOldJobsNow INSTANCE = new ImportResumeFromOldJobsNow();
 	private Set<String> ids;			
-	int contador;
+	int counter;
 
 	private ImportResumeFromOldJobsNow() {
 		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
@@ -37,7 +37,7 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 	
 	public void accept(CcpJsonRepresentation candidate) {
 		
-		boolean alreadyInserted = this.contador++ < this.ids.size();
+		boolean alreadyInserted = this.counter++ < this.ids.size();
 		
 		if(alreadyInserted) {
 //			return;
@@ -101,11 +101,11 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 //		SyncServiceVisResume.INSTANCE.save(resume);
 		
 		String email = candidate.getAsString(JsonFieldNames.id);
-		CcpJsonRepresentation put = resume.put(VisJsonCommonsFields.email, email)
+		CcpJsonRepresentation resumeWithEmailAndLanguage = resume.put(VisJsonCommonsFields.email, email)
 				.put(JsonFieldNames.language, JnLanguage.portuguese)
 				;
 		
-		VisServiceResume.Save.execute(put.content);
+		VisServiceResume.Save.execute(resumeWithEmailAndLanguage.content);
 		
 		Integer status = candidate.getAsIntegerNumber(JsonFieldNames.status);
 		

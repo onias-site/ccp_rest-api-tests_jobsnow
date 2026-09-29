@@ -6,50 +6,50 @@ import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.entities.JnEntityLoginTokenRequestResend;
-import com.jn.rest.api.commons.VariaveisParaTeste;
+import com.jn.rest.api.commons.TestVariables;
 import com.jn.status.login.JnProcessStatusUnlockLoginToken;
 
-public class ResendLoginToken extends JnServiceLoginTemplateDeTestes {
+public class ResendLoginToken extends JnServiceLoginTestTemplate {
 
 	@Test(expected = CcpJsonValidationError.class)
-	public void emailInvalido() {
-		VariaveisParaTeste variaveisParaTeste = comEmailInvalido();
-		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, CcpProcessStatusDefault.UNPROCESSABLE_ENTITY);
+	public void invalidEmail() {
+		TestVariables testVariables = withInvalidEmail();
+		this.execute(testVariables.REQUEST_TO_LOGIN, CcpProcessStatusDefault.UNPROCESSABLE_ENTITY);
 	}
 
 	/**
-	 * O pedido cumprido é o que está na entidade gêmea, e gravar nela é o que apaga o registro da
-	 * principal. Pedir o delete na gêmea faria o contrário: transferiria o registro da gêmea de volta para
-	 * a principal, montando o mesmo cenário de {@link #reenvioJaSolicitado()}.
+	 * The fulfilled request is the one in the twin entity, and saving to it is what deletes the record
+	 * from the main one. Asking for the delete on the twin would do the opposite: it would transfer the
+	 * record from the twin back to the main entity, setting up the same scenario as {@link #resendAlreadyRequested()}.
 	 */
 	@Test
-	public void reenvioJaFoiFeito() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginToken.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginTokenRequestResend.ENTITY.getTwinEntity().save(variaveisParaTeste.REQUEST_TO_LOGIN);
+	public void resendAlreadyDone() {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginToken.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginTokenRequestResend.ENTITY.getTwinEntity().save(testVariables.REQUEST_TO_LOGIN);
 
-		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusTokenAlredyResent);
+		this.execute(testVariables.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusTokenAlredyResent);
 	}
 
 	@Test
-	public void tokenNaoExiste() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginTokenRequestResend.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusTokenNotExists);
+	public void tokenDoesNotExist() {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginTokenRequestResend.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		this.execute(testVariables.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusTokenNotExists);
 	}
 
 	@Test
-	public void reenvioJaSolicitado() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginToken.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginTokenRequestResend.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusAlreadyRequested);
+	public void resendAlreadyRequested() {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginToken.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginTokenRequestResend.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		this.execute(testVariables.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusAlreadyRequested);
 	}
 
 	@Test
-	public void caminhoFeliz() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginToken.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		this.execute(variaveisParaTeste.REQUEST_TO_LOGIN, CcpProcessStatusDefault.OK);
+	public void happyPath() {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginToken.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		this.execute(testVariables.REQUEST_TO_LOGIN, CcpProcessStatusDefault.OK);
 	}
 }

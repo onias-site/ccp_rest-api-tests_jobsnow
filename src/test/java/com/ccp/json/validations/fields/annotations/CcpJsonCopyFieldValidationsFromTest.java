@@ -21,29 +21,29 @@ public class CcpJsonCopyFieldValidationsFromTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	private final NegocioCopyFieldValidationsFrom negocio = new NegocioCopyFieldValidationsFrom();
+	private final BusinessCopyFieldValidationsFrom business = new BusinessCopyFieldValidationsFrom();
 
 	private CcpJsonRepresentation json(Object valor) {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RegrasCopyFieldValidationsFrom.apelido, valor);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesCopyFieldValidationsFrom.apelido, valor);
 		return json;
 	}
 
 	@Test
 	public void valorDentroDasRegrasCopiadasTest() {
 		CcpJsonRepresentation json = this.json("joao");
-		ValidacaoDeCampo.aceita(this.negocio, json);
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
 	public void comprimentoMinimoCopiadoTest() {
 		CcpJsonRepresentation json = this.json("ab");
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasCopyFieldValidationsFrom.apelido, CcpJsonFieldTypeError.stringMinLength);
+		FieldValidation.refuses(this.business, json, RulesCopyFieldValidationsFrom.apelido, CcpJsonFieldTypeError.stringMinLength);
 	}
 
 	@Test
 	public void comprimentoMaximoCopiadoTest() {
 		CcpJsonRepresentation json = this.json("abcdefghij");
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasCopyFieldValidationsFrom.apelido, CcpJsonFieldTypeError.stringMaxLength);
+		FieldValidation.refuses(this.business, json, RulesCopyFieldValidationsFrom.apelido, CcpJsonFieldTypeError.stringMaxLength);
 	}
 
 	/**
@@ -53,14 +53,14 @@ public class CcpJsonCopyFieldValidationsFromTest {
 	@Test
 	public void nonRepeatedItemsFalseConviveComValidacoesCopiadasTest() {
 		List<String> valor = Arrays.asList("a", "a");
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RegrasCopyFieldValidationsFrom.causaComRepetidos, valor);
-		ValidacaoDeCampo.aceita(this.negocio, json);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesCopyFieldValidationsFrom.causaComRepetidos, valor);
+		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
 	public void nonRepeatedItemsPadraoConviveComValidacoesCopiadasTest() {
 		List<String> valor = Arrays.asList("a", "a");
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RegrasCopyFieldValidationsFrom.causaSemRepetidos, valor);
-		ValidacaoDeCampo.recusa(this.negocio, json, RegrasCopyFieldValidationsFrom.causaSemRepetidos, CcpJsonFieldTypeError.arrayNonReapeted);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesCopyFieldValidationsFrom.causaSemRepetidos, valor);
+		FieldValidation.refuses(this.business, json, RulesCopyFieldValidationsFrom.causaSemRepetidos, CcpJsonFieldTypeError.arrayNonReapeted);
 	}
 }

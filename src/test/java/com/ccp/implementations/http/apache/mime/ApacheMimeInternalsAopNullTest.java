@@ -11,7 +11,7 @@ import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre as classes internas do módulo
+ * Coverage of {@code CcpNullParameterAspect} over the internal classes of the module
  * {@code ccp_http_apache-mime}.
  */
 public class ApacheMimeInternalsAopNullTest {
@@ -29,7 +29,7 @@ public class ApacheMimeInternalsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void retryRequestContextNullTest() {
-		new CcpHttpRequestRetryHandler().retryRequest(new IOException("falha"), 1, null);
+		new CcpHttpRequestRetryHandler().retryRequest(new IOException("failure"), 1, null);
 	}
 
 	// ── HttpMethod ────────────────────────────────────────────────────────────

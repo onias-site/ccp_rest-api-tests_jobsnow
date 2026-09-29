@@ -10,61 +10,61 @@ import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityLoginToken;
-import com.jn.rest.api.commons.VariaveisParaTeste;
+import com.jn.rest.api.commons.TestVariables;
 import com.jn.status.login.JnProcessStatusSaveAnswers;
 
-public class SaveAnswers extends JnServiceLoginTemplateDeTestes {
+public class SaveAnswers extends JnServiceLoginTestTemplate {
 
 	@Test(expected = CcpJsonValidationError.class)
-	public void emailInvalido() {
-		VariaveisParaTeste variaveisParaTeste = comEmailInvalido();
-		this.execute(variaveisParaTeste.ANSWERS_JSON, CcpProcessStatusDefault.UNPROCESSABLE_ENTITY);
+	public void invalidEmail() {
+		TestVariables testVariables = withInvalidEmail();
+		this.execute(testVariables.ANSWERS_JSON, CcpProcessStatusDefault.UNPROCESSABLE_ENTITY);
 	}
 
 	@Test
-	public void tokenBloqueado() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
+	public void lockedToken() {
+		TestVariables testVariables = new TestVariables();
 		CcpEntity mirrorEntity = JnEntityLoginToken.ENTITY.getTwinEntity();
-		mirrorEntity.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		this.execute(variaveisParaTeste.ANSWERS_JSON, JnProcessStatusSaveAnswers.lockedToken);
+		mirrorEntity.save(testVariables.REQUEST_TO_LOGIN);
+		this.execute(testVariables.ANSWERS_JSON, JnProcessStatusSaveAnswers.lockedToken);
 	}
 
 	@Test
-	public void tokenFaltando() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		this.execute(variaveisParaTeste.ANSWERS_JSON, JnProcessStatusSaveAnswers.tokenFaltando);
+	public void missingToken() {
+		TestVariables testVariables = new TestVariables();
+		this.execute(testVariables.ANSWERS_JSON, JnProcessStatusSaveAnswers.missingToken);
 	}
 
 	@Test
-	public void usuarioJaLogado() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginSessionConflict.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		this.execute(variaveisParaTeste.ANSWERS_JSON, JnProcessStatusSaveAnswers.loginConflict);
+	public void userAlreadyLoggedIn() {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		this.execute(testVariables.ANSWERS_JSON, JnProcessStatusSaveAnswers.loginConflict);
 	}
 
 	@Test
-	public void faltandoCadastrarSenha() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
-		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		this.execute(variaveisParaTeste.ANSWERS_JSON, JnProcessStatusSaveAnswers.missingPassword);
+	public void missingPasswordRegistration() {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		this.execute(testVariables.ANSWERS_JSON, JnProcessStatusSaveAnswers.missingPassword);
 	}
 
 	@Test
-	public void senhaBloqueada() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
+	public void lockedPassword() {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		CcpEntity mirrorEntity = JnEntityLoginPassword.ENTITY.getTwinEntity();
-		mirrorEntity.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		this.execute(variaveisParaTeste.ANSWERS_JSON, JnProcessStatusSaveAnswers.lockedPassword);
+		mirrorEntity.save(testVariables.REQUEST_TO_LOGIN);
+		this.execute(testVariables.ANSWERS_JSON, JnProcessStatusSaveAnswers.lockedPassword);
 	}
 
 	@Test
-	public void caminhoFeliz() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginPassword.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		this.execute(variaveisParaTeste.ANSWERS_JSON, JnProcessStatusSaveAnswers.expectedStatus);
+	public void happyPath() {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginPassword.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		this.execute(testVariables.ANSWERS_JSON, JnProcessStatusSaveAnswers.expectedStatus);
 	}
 }

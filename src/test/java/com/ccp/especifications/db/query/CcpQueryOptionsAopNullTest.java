@@ -12,8 +12,8 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import org.junit.Test;
 
 /**
- * Cobertura dos aspectos {@code CcpNullParameterAspect} / {@code CcpNullReturnAspect} sobre o
- * builder fluent de queries ({@code CcpQueryComponent} e todos os nós de {@code CcpQueryOptions}).
+ * Coverage of the {@code CcpNullParameterAspect} / {@code CcpNullReturnAspect} aspects over the
+ * fluent query builder ({@code CcpQueryComponent} and every node of {@code CcpQueryOptions}).
  */
 public class CcpQueryOptionsAopNullTest {
 
@@ -32,8 +32,8 @@ public class CcpQueryOptionsAopNullTest {
 	}
 
 	/**
-	 * Subclasse concreta usada apenas para alcançar os métodos declarados diretamente em
-	 * {@code CcpQueryBooleanOperator}, que em todos os nós reais aparecem sobrescritos.
+	 * Concrete subclass used only to reach the methods declared directly in
+	 * {@code CcpQueryBooleanOperator}, which are overridden in every real node.
 	 */
 
 
@@ -613,12 +613,12 @@ public class CcpQueryOptionsAopNullTest {
 	// ── CcpQueryExecutorDecorator ─────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void executorConstrutorQueryNullTest() {
+	public void executorConstructorQueryNullTest() {
 		new CcpQueryExecutorDecorator(null, "any_index");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void executorConstrutorResourcesNullTest() {
+	public void executorConstructorResourcesNullTest() {
 		new CcpQueryExecutorDecorator(options(), (String[]) null);
 	}
 
@@ -680,10 +680,10 @@ public class CcpQueryOptionsAopNullTest {
 		executor().getMap(null);
 	}
 
-	// ── null-return: os nós do builder nunca podem devolver null ──────────────
+	// ── null-return: builder nodes can never return null ──────────────────────
 
 	@Test
-	public void nenhumNoDoBuilderRetornaNullTest() {
+	public void noBuilderNodeReturnsNullTest() {
 		CcpQueryOptions query = options()
 				.setSize(1)
 				.setFrom(0)

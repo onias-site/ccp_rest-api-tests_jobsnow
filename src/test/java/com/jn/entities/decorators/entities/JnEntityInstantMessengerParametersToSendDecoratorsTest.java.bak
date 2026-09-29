@@ -1,0 +1,48 @@
+package com.jn.entities.decorators.entidades;
+
+import org.junit.Test;
+
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.jn.entities.JnEntityInstantMessengerParametersToSend;
+import com.jn.entities.decorators.TemplateDeTestesDeDecoratorDeEntidade;
+
+/** jn_instant_messenger_parameters_to_send: {@code @CcpEntityCache(3600)}, versionável, transformador e validador. */
+public class JnEntityInstantMessengerParametersToSendDecoratorsTest extends TemplateDeTestesDeDecoratorDeEntidade {
+
+	protected CcpEntity entidade() {
+		return JnEntityInstantMessengerParametersToSend.ENTITY;
+	}
+
+	protected CcpJsonRepresentation registroValido() {
+		return this.com(JnEntityInstantMessengerParametersToSend.Fields.botName, "bot" + this.unico)
+				.put(JnEntityInstantMessengerParametersToSend.Fields.templateId, this.getClass().getName())
+				.put(JnEntityInstantMessengerParametersToSend.Fields.chatId, 751717896L)
+				.put(JnEntityInstantMessengerParametersToSend.Fields.instantMessageType, "text");
+	}
+
+	@Test
+	public void cadeia() {
+		this.deveTerACadeia("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "JnVersionablePurgeEntity", "DecoratorCacheEntity", "JnVersionableEntity", "DefaultImplementationEntity");
+	}
+
+	@Test
+	public void gravarLerEApagar() {
+		this.deveGravarLerEApagar();
+	}
+
+	@Test
+	public void validador() {
+		this.deveRecusarRegistroInvalido(this.registroValido().put(JnEntityInstantMessengerParametersToSend.Fields.instantMessageType, "pombo-correio"));
+	}
+
+	@Test
+	public void cache() {
+		this.deveServirLeituraDoCacheEInvalidarNaEscrita();
+	}
+
+	@Test
+	public void versionavel() {
+		this.deveRegistrarHistoricoACadaEscrita();
+	}
+}

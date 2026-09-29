@@ -11,128 +11,129 @@ import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityLoginToken;
-import com.jn.rest.api.commons.VariaveisParaTeste;
+import com.jn.rest.api.commons.TestVariables;
 import com.jn.status.login.JnProcessStatusUpdatePassword;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-public class SavePassword extends JnServiceLoginTemplateDeTestes {
+public class SavePassword extends JnServiceLoginTestTemplate {
 
 	@Test(expected = CcpJsonValidationError.class)
-	public void emailInvalido() {
-		VariaveisParaTeste variaveisParaTeste = comEmailInvalido();
-		CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
-				.put(JnJsonCommonsFields.password, VariaveisParaTeste.CORRECT_PASSWORD)
+	public void invalidEmail() {
+		TestVariables testVariables = withInvalidEmail();
+		CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
+				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, "abcdefgh");
 		this.execute(body, CcpProcessStatusDefault.UNPROCESSABLE_ENTITY);
 	}
 
 	@Test
-	public void tokenBloqueado() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
+	public void lockedToken() {
+		TestVariables testVariables = new TestVariables();
 		CcpEntity mirrorEntity = JnEntityLoginToken.ENTITY.getTwinEntity();
-		mirrorEntity.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		String token = getTokenToValidateLogin(variaveisParaTeste);
-		CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
-				.put(JnJsonCommonsFields.password, VariaveisParaTeste.CORRECT_PASSWORD)
+		mirrorEntity.save(testVariables.REQUEST_TO_LOGIN);
+		String token = getTokenToValidateLogin(testVariables);
+		CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
+				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, token);
 		this.execute(body, JnProcessStatusUpdatePassword.lockedToken);
 	}
 
 	@Test
-	public void tokenFaltando() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
-		JnEntityLoginEmail.ENTITY.delete(variaveisParaTeste.REQUEST_TO_LOGIN);
-		CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
-				.put(JnJsonCommonsFields.password, VariaveisParaTeste.CORRECT_PASSWORD)
+	public void missingToken() {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JnEntityLoginEmail.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
+		CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
+				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, "12345678");
 		this.execute(body, JnProcessStatusUpdatePassword.missingEmail);
 	}
 
 	@Test
-	public void efetuarDesbloqueios() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
+	public void performUnlocks() {
+		TestVariables testVariables = new TestVariables();
 		CcpEntity mirrorEntity = JnEntityLoginPassword.ENTITY.getTwinEntity();
-		mirrorEntity.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginSessionConflict.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		this.fluxoEsperado(variaveisParaTeste);
+		mirrorEntity.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		this.expectedFlow(testVariables);
 	}
 
 	@Test
-	public void caminhoFeliz() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste("onias85@gmail.com");
-		this.fluxoEsperado(variaveisParaTeste);
+	public void happyPath() {
+		TestVariables testVariables = new TestVariables("onias85@gmail.com");
+		this.expectedFlow(testVariables);
 	}
 
 	@Test(expected = CcpJsonValidationError.class)
-	public void jsonInvalido() {
+	public void invalidJson() {
 		this.execute(CcpOtherConstants.EMPTY_JSON, JnProcessStatusUpdatePassword.invalidJson);
 	}
 
 	@Test
-	public void errarParaDepoisAcertarToken() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		String token = getToken(variaveisParaTeste);
-		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
+	public void missTokenThenGetItRight() {
+		TestVariables testVariables = new TestVariables();
+		String token = getToken(testVariables);
+		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		for (int k = 1; k < 3; k++) {
-			CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
-					.put(JnJsonCommonsFields.password, VariaveisParaTeste.CORRECT_PASSWORD)
+			CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
+					.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
 					.put(JnEntityLoginToken.Fields.token, "abcdefgh");
 			this.execute(body, JnProcessStatusUpdatePassword.wrongToken);
 		}
-		CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
-				.put(JnJsonCommonsFields.password, VariaveisParaTeste.CORRECT_PASSWORD)
+		CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
+				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, token);
 		this.execute(body, JnProcessStatusUpdatePassword.expectedStatus);
 	}
 
 	@Test
-	public void tokenRecemBloqueado() {
-		VariaveisParaTeste variaveisParaTeste = new VariaveisParaTeste();
-		String token = getToken(variaveisParaTeste);
-		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
+	public void recentlyLockedToken() {
+		TestVariables testVariables = new TestVariables();
+		String token = getToken(testVariables);
+		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		for (int k = 1; k <= 2; k++) {
-			CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
-					.put(JnJsonCommonsFields.password, VariaveisParaTeste.CORRECT_PASSWORD)
+			CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
+					.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
 					.put(JnEntityLoginToken.Fields.token, "abcdefgh");
 			this.execute(body, JnProcessStatusUpdatePassword.wrongToken);
 		}
-		CcpJsonRepresentation bodyWrong = variaveisParaTeste.REQUEST_TO_LOGIN
-				.put(JnJsonCommonsFields.password, VariaveisParaTeste.CORRECT_PASSWORD)
+		CcpJsonRepresentation bodyWrong = testVariables.REQUEST_TO_LOGIN
+				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, "abcdefgh");
 		this.execute(bodyWrong, JnProcessStatusUpdatePassword.tokenLockedRecently);
-		CcpJsonRepresentation bodyRight = variaveisParaTeste.REQUEST_TO_LOGIN
-				.put(JnJsonCommonsFields.password, VariaveisParaTeste.CORRECT_PASSWORD)
+		CcpJsonRepresentation bodyRight = testVariables.REQUEST_TO_LOGIN
+				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, token);
 		this.execute(bodyRight, JnProcessStatusUpdatePassword.lockedToken);
 	}
 
-	public CcpJsonRepresentation fluxoEsperado(VariaveisParaTeste variaveisParaTeste) {
-		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
+	public CcpJsonRepresentation expectedFlow(TestVariables testVariables) {
+		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 
-		String token = this.getToken(variaveisParaTeste);
-		CcpJsonRepresentation body = variaveisParaTeste.REQUEST_TO_LOGIN
-				.put(JnJsonCommonsFields.password, VariaveisParaTeste.CORRECT_PASSWORD)
+		String token = this.getToken(testVariables);
+		CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
+				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
 				.put(JnEntityLoginToken.Fields.token, token);
 		return this.execute(body, JnProcessStatusUpdatePassword.expectedStatus);
 	}
 
 	/**
-	 * O token em claro já vem no json do pedido, posto ali pelo transformador de token, e o save o
-	 * reaproveita em vez de gerar outro. Gravar o json transformado seria gravar o e-mail já convertido em
-	 * hash, que as validações da entidade — aplicadas antes dos transformadores — recusariam.
+	 * The plain token already comes in the request json, put there by the token transformer, and save
+	 * reuses it instead of generating another one. Saving the transformed json would mean saving the
+	 * e-mail already converted into a hash, which the entity's validations — applied before the
+	 * transformers — would refuse.
 	 */
-	private String getToken(VariaveisParaTeste variaveisParaTeste) {
-		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginToken.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		String token = variaveisParaTeste.REQUEST_TO_LOGIN.getAsString(JnJsonCommonsFields.originalToken);
+	private String getToken(TestVariables testVariables) {
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginToken.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		String token = testVariables.REQUEST_TO_LOGIN.getAsString(JnJsonCommonsFields.originalToken);
 		return token;
 	}
 
-	private String getTokenToValidateLogin(VariaveisParaTeste variaveisParaTeste) {
-		JnEntityLoginEmail.ENTITY.save(variaveisParaTeste.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.save(variaveisParaTeste.ANSWERS_JSON);
+	private String getTokenToValidateLogin(TestVariables testVariables) {
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		return "12345678";
 	}
 }

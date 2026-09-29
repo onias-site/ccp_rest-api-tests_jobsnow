@@ -1,0 +1,54 @@
+package com.jb.entities.decorators;
+
+import java.util.Arrays;
+
+import org.junit.Test;
+
+import com.ccp.constants.CcpOtherConstants;
+import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.jb.entities.JbEntityBotCommandStep;
+import com.jb.entities.subfields.JbNextStepFields;
+import com.jn.entities.decorators.TemplateDeTestesDeDecoratorDeEntidade;
+
+/** jb_bot_command_step: {@code @CcpEntityCache(3600)}, versionável, transformador e validador. */
+public class JbEntityBotCommandStepDecoratorsTest extends TemplateDeTestesDeDecoratorDeEntidade {
+
+	protected CcpEntity entidade() {
+		return JbEntityBotCommandStep.ENTITY;
+	}
+
+	protected CcpJsonRepresentation registroValido() {
+		CcpJsonRepresentation proximoPasso = CcpOtherConstants.EMPTY_JSON
+				.put(JbNextStepFields.status, 200)
+				.put(JbNextStepFields.nextStep, "fim");
+		return this.com(JbEntityBotCommandStep.Fields.stepName, "passo" + this.unico)
+				.put(JbEntityBotCommandStep.Fields.stepFlow, Arrays.asList(proximoPasso))
+				.put(JbEntityBotCommandStep.Fields.engine, "com.jb.business.Teste");
+	}
+
+	@Test
+	public void cadeia() {
+		this.deveTerACadeia("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "JnVersionablePurgeEntity", "DecoratorCacheEntity", "JnVersionableEntity", "DefaultImplementationEntity");
+	}
+
+	@Test
+	public void gravarLerEApagar() {
+		this.deveGravarLerEApagar();
+	}
+
+	@Test
+	public void validador() {
+		this.deveRecusarRegistroInvalido(this.registroValido().removeFields(JbEntityBotCommandStep.Fields.engine));
+	}
+
+	@Test
+	public void cache() {
+		this.deveServirLeituraDoCacheEInvalidarNaEscrita();
+	}
+
+	@Test
+	public void versionavel() {
+		this.deveRegistrarHistoricoACadaEscrita();
+	}
+}

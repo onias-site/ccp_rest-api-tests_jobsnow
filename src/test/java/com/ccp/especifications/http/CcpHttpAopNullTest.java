@@ -14,8 +14,8 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
 /**
- * Cobertura dos aspectos {@code CcpNullParameterAspect} / {@code CcpNullReturnAspect} sobre
- * {@code CcpHttpHandler} e os métodos default de {@code CcpHttpRequester}.
+ * Coverage of the {@code CcpNullParameterAspect} / {@code CcpNullReturnAspect} aspects over
+ * {@code CcpHttpHandler} and the default methods of {@code CcpHttpRequester}.
  */
 public class CcpHttpAopNullTest {
 
@@ -36,37 +36,37 @@ public class CcpHttpAopNullTest {
 	// ── construtores de CcpHttpHandler ────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorFlowsNullTest() {
+	public void constructorFlowsNullTest() {
 		new CcpHttpHandler((CcpJsonRepresentation) null, "http://localhost:9200");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorFlowsUrlNullTest() {
+	public void constructorFlowsUrlNullTest() {
 		new CcpHttpHandler(JSON, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorAlternativeFlowStatusNullTest() {
+	public void constructorAlternativeFlowStatusNullTest() {
 		new CcpHttpHandler(null, json -> json, "http://localhost:9200");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorAlternativeFlowBusinessNullTest() {
+	public void constructorAlternativeFlowBusinessNullTest() {
 		new CcpHttpHandler(200, null, "http://localhost:9200");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorAlternativeFlowUrlNullTest() {
+	public void constructorAlternativeFlowUrlNullTest() {
 		new CcpHttpHandler(200, json -> json, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorStatusNullTest() {
+	public void constructorStatusNullTest() {
 		new CcpHttpHandler((Integer) null, "http://localhost:9200");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorUrlNullTest() {
+	public void constructorUrlNullTest() {
 		new CcpHttpHandler(200, (String) null);
 	}
 
@@ -219,11 +219,11 @@ public class CcpHttpAopNullTest {
 	// ── CcpErrorHttp ──────────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void errorHttpConstrutorNullTest() {
+	public void errorHttpConstructorNullTest() {
 		new CcpErrorHttp(null);
 	}
 
-	// ── CcpHttpRequester (métodos default) ────────────────────────────────────
+	// ── CcpHttpRequester (default methods) ────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void requesterExecuteHttpRequestUrlNullTest() {
@@ -252,34 +252,34 @@ public class CcpHttpAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void requesterGetHttpErrorTraceNullTest() {
-		requester().getHttpError(null, "url", CcpHttpMethods.GET, JSON, "{}", 500, "resposta", new HashSet<String>());
+		requester().getHttpError(null, "url", CcpHttpMethods.GET, JSON, "{}", 500, "response", new HashSet<String>());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void requesterGetHttpErrorUrlNullTest() {
-		requester().getHttpError("trace", null, CcpHttpMethods.GET, JSON, "{}", 500, "resposta", new HashSet<String>());
+		requester().getHttpError("trace", null, CcpHttpMethods.GET, JSON, "{}", 500, "response", new HashSet<String>());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void requesterGetHttpErrorMethodNullTest() {
-		requester().getHttpError("trace", "url", null, JSON, "{}", 500, "resposta", new HashSet<String>());
+		requester().getHttpError("trace", "url", null, JSON, "{}", 500, "response", new HashSet<String>());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void requesterGetHttpErrorHeadersNullTest() {
-		requester().getHttpError("trace", "url", CcpHttpMethods.GET, null, "{}", 500, "resposta",
+		requester().getHttpError("trace", "url", CcpHttpMethods.GET, null, "{}", 500, "response",
 				new HashSet<String>());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void requesterGetHttpErrorRequestNullTest() {
-		requester().getHttpError("trace", "url", CcpHttpMethods.GET, JSON, null, 500, "resposta",
+		requester().getHttpError("trace", "url", CcpHttpMethods.GET, JSON, null, 500, "response",
 				new HashSet<String>());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void requesterGetHttpErrorStatusNullTest() {
-		requester().getHttpError("trace", "url", CcpHttpMethods.GET, JSON, "{}", null, "resposta",
+		requester().getHttpError("trace", "url", CcpHttpMethods.GET, JSON, "{}", null, "response",
 				new HashSet<String>());
 	}
 
@@ -290,6 +290,6 @@ public class CcpHttpAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void requesterGetHttpErrorExpectedStatusNullTest() {
-		requester().getHttpError("trace", "url", CcpHttpMethods.GET, JSON, "{}", 500, "resposta", null);
+		requester().getHttpError("trace", "url", CcpHttpMethods.GET, JSON, "{}", 500, "response", null);
 	}
 }

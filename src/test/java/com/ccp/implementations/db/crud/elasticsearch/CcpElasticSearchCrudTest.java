@@ -22,7 +22,7 @@ public class CcpElasticSearchCrudTest {
 	// ── provider ──────────────────────────────────────────────────────────────
 
 	@Test
-	public void construtorProviderTest() {
+	public void constructorProviderTest() {
 		assertNotNull(new CcpElasticSearchCrud());
 	}
 

@@ -19,7 +19,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.json.defaultvalues.business.CcpJsonFieldDefaultValueDoNothing;
-import com.ccp.json.validations.fields.annotations.ValidacaoDeCampo;
+import com.ccp.json.validations.fields.annotations.FieldValidation;
 import com.ccp.json.validations.fields.enums.CcpJsonFieldError;
 import com.ccp.json.validations.fields.interfaces.CcpJsonFieldValidatorInterface.RuleFields;
 import com.ccp.json.validations.global.engine.CcpJsonValidationRulesEngine;
@@ -36,53 +36,53 @@ public class CcpJsonFieldDefaultValueTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	private CcpJsonRepresentation comNome() {
-		CcpJsonRepresentation comNome = CcpOtherConstants.EMPTY_JSON.put(RegrasValorPadraoStrings.nome, "onias");
-		return comNome;
+	private CcpJsonRepresentation withName() {
+		CcpJsonRepresentation withName = CcpOtherConstants.EMPTY_JSON.put(RulesDefaultValueStrings.name, "onias");
+		return withName;
 	}
 
 	// ── defaultStrings ────────────────────────────────────────────────────────
 
 	@Test
 	public void umItemSoViraStringTest() {
-		CcpJsonRepresentation json = this.comNome();
-		CcpJsonRepresentation resultado = ValorPadraoDeCampo.executa(RegrasValorPadraoStrings.class, json);
-		String valor = resultado.getAsString(RegrasValorPadraoStrings.umItemSo);
+		CcpJsonRepresentation json = this.withName();
+		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		String valor = resultado.getAsString(RulesDefaultValueStrings.umItemSo);
 		assertEquals("valor unico", valor);
 	}
 
 	@Test
 	public void umItemSoEhGravadoComoStringENaoComoListaTest() {
-		CcpJsonRepresentation json = this.comNome();
-		CcpJsonRepresentation resultado = ValorPadraoDeCampo.executa(RegrasValorPadraoStrings.class, json);
-		Object valor = resultado.get(RegrasValorPadraoStrings.umItemSo);
+		CcpJsonRepresentation json = this.withName();
+		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		Object valor = resultado.get(RulesDefaultValueStrings.umItemSo);
 		boolean ehString = valor instanceof String;
 		assertTrue("Um unico defaultString deve ser gravado como String, mas veio " + valor.getClass(), ehString);
 	}
 
 	@Test
 	public void variosItensViramListaDeStringsTest() {
-		CcpJsonRepresentation json = this.comNome();
-		CcpJsonRepresentation resultado = ValorPadraoDeCampo.executa(RegrasValorPadraoStrings.class, json);
-		List<Object> valor = resultado.getAsObjectList(RegrasValorPadraoStrings.variosItens);
+		CcpJsonRepresentation json = this.withName();
+		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		List<Object> valor = resultado.getAsObjectList(RulesDefaultValueStrings.variosItens);
 		List<String> esperado = Arrays.asList("primeiro", "segundo", "terceiro");
 		assertEquals(esperado, valor);
 	}
 
 	@Test
 	public void variosItensSaoGravadosComoColecaoENaoComoStringTest() {
-		CcpJsonRepresentation json = this.comNome();
-		CcpJsonRepresentation resultado = ValorPadraoDeCampo.executa(RegrasValorPadraoStrings.class, json);
-		Object valor = resultado.get(RegrasValorPadraoStrings.variosItens);
+		CcpJsonRepresentation json = this.withName();
+		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		Object valor = resultado.get(RulesDefaultValueStrings.variosItens);
 		boolean ehColecao = valor instanceof List;
 		assertTrue("Varios defaultStrings devem virar lista, mas veio " + valor.getClass(), ehColecao);
 	}
 
 	@Test
 	public void templateEhResolvidoComOsValoresDoJsonTest() {
-		CcpJsonRepresentation json = this.comNome();
-		CcpJsonRepresentation resultado = ValorPadraoDeCampo.executa(RegrasValorPadraoStrings.class, json);
-		String valor = resultado.getAsString(RegrasValorPadraoStrings.comTemplate);
+		CcpJsonRepresentation json = this.withName();
+		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		String valor = resultado.getAsString(RulesDefaultValueStrings.comTemplate);
 		assertEquals("ola onias", valor);
 	}
 
@@ -93,34 +93,34 @@ public class CcpJsonFieldDefaultValueTest {
 	 */
 	@Test
 	public void templateSemOrigemPermaneceLiteralTest() {
-		CcpJsonRepresentation json = this.comNome();
-		CcpJsonRepresentation resultado = ValorPadraoDeCampo.executa(RegrasValorPadraoStrings.class, json);
-		String valor = resultado.getAsString(RegrasValorPadraoStrings.comTemplateSemOrigem);
+		CcpJsonRepresentation json = this.withName();
+		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		String valor = resultado.getAsString(RulesDefaultValueStrings.comTemplateSemOrigem);
 		assertEquals("[{inexistente}]", valor);
 	}
 
 	@Test
 	public void campoJaInformadoNaoEhSobrescritoTest() {
-		CcpJsonRepresentation comNome = this.comNome();
-		CcpJsonRepresentation json = comNome.put(RegrasValorPadraoStrings.umItemSo, "valor que veio de fora");
-		CcpJsonRepresentation resultado = ValorPadraoDeCampo.executa(RegrasValorPadraoStrings.class, json);
-		String valor = resultado.getAsString(RegrasValorPadraoStrings.umItemSo);
+		CcpJsonRepresentation withName = this.withName();
+		CcpJsonRepresentation json = withName.put(RulesDefaultValueStrings.umItemSo, "valor que veio de fora");
+		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		String valor = resultado.getAsString(RulesDefaultValueStrings.umItemSo);
 		assertEquals("valor que veio de fora", valor);
 	}
 
 	@Test
 	public void campoSemAnotacaoContinuaAusenteTest() {
-		CcpJsonRepresentation json = this.comNome();
-		CcpJsonRepresentation resultado = ValorPadraoDeCampo.executa(RegrasValorPadraoStrings.class, json);
-		boolean contem = resultado.containsField(RegrasValorPadraoStrings.semValorPadrao);
+		CcpJsonRepresentation json = this.withName();
+		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		boolean contem = resultado.containsField(RulesDefaultValueStrings.semValorPadrao);
 		assertFalse("Campo sem a anotacao nao pode ganhar valor padrao", contem);
 	}
 
 	@Test
 	public void jsonDeEntradaNaoEhAlteradoTest() {
-		CcpJsonRepresentation json = this.comNome();
-		ValorPadraoDeCampo.executa(RegrasValorPadraoStrings.class, json);
-		boolean contem = json.containsField(RegrasValorPadraoStrings.umItemSo);
+		CcpJsonRepresentation json = this.withName();
+		FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		boolean contem = json.containsField(RulesDefaultValueStrings.umItemSo);
 		assertFalse("O json de entrada deve permanecer intacto", contem);
 	}
 
@@ -128,33 +128,33 @@ public class CcpJsonFieldDefaultValueTest {
 
 	@Test
 	public void jsonProducerEhAcionadoQuandoDefaultStringsEstaVazioTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RegrasValorPadraoJsonProducer.nome, "onias");
-		CcpJsonRepresentation resultado = ValorPadraoDeCampo.executa(RegrasValorPadraoJsonProducer.class, json);
-		String valor = resultado.getAsString(RegrasValorPadraoJsonProducer.produzido);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesDefaultValueJsonProducer.name, "onias");
+		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueJsonProducer.class, json);
+		String valor = resultado.getAsString(RulesDefaultValueJsonProducer.produzido);
 		assertEquals("produzido para onias", valor);
 	}
 
 	@Test
 	public void jsonProducerNaoEhAcionadoQuandoOCampoJaVeioTest() {
-		CcpJsonRepresentation comNome = CcpOtherConstants.EMPTY_JSON.put(RegrasValorPadraoJsonProducer.nome, "onias");
-		CcpJsonRepresentation json = comNome.put(RegrasValorPadraoJsonProducer.produzido, "valor que veio de fora");
-		CcpJsonRepresentation resultado = ValorPadraoDeCampo.executa(RegrasValorPadraoJsonProducer.class, json);
-		String valor = resultado.getAsString(RegrasValorPadraoJsonProducer.produzido);
+		CcpJsonRepresentation withName = CcpOtherConstants.EMPTY_JSON.put(RulesDefaultValueJsonProducer.name, "onias");
+		CcpJsonRepresentation json = withName.put(RulesDefaultValueJsonProducer.produzido, "valor que veio de fora");
+		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueJsonProducer.class, json);
+		String valor = resultado.getAsString(RulesDefaultValueJsonProducer.produzido);
 		assertEquals("valor que veio de fora", valor);
 	}
 
 	@Test
 	public void jsonProducerPadraoNaoDefineValorNenhumTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RegrasValorPadraoJsonProducer.nome, "onias");
-		CcpJsonRepresentation resultado = ValorPadraoDeCampo.executa(RegrasValorPadraoJsonProducer.class, json);
-		boolean contem = resultado.containsField(RegrasValorPadraoJsonProducer.inerte);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesDefaultValueJsonProducer.name, "onias");
+		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueJsonProducer.class, json);
+		boolean contem = resultado.containsField(RulesDefaultValueJsonProducer.inerte);
 		assertFalse("A anotacao sem atributos cai no produtor padrao, que nao define valor algum", contem);
 	}
 
 	@Test
 	public void produtorPadraoDevolveOMesmoJsonTest() {
 		CcpBusiness doNothing = new CcpJsonFieldDefaultValueDoNothing();
-		CcpJsonRepresentation json = this.comNome();
+		CcpJsonRepresentation json = this.withName();
 		CcpJsonRepresentation retorno = doNothing.execute(json);
 		assertSame(json, retorno);
 	}
@@ -163,20 +163,20 @@ public class CcpJsonFieldDefaultValueTest {
 
 	@Test
 	public void defaultStringsPadraoEhArrayVazioTest() throws Exception {
-		CcpJsonFieldDefaultValue anotacao = this.anotacaoDe(RegrasValorPadraoJsonProducer.class, "inerte");
+		CcpJsonFieldDefaultValue anotacao = this.anotacaoDe(RulesDefaultValueJsonProducer.class, "inerte");
 		String[] defaultStrings = anotacao.defaultStrings();
 		assertEquals(0, defaultStrings.length);
 	}
 
 	@Test
 	public void jsonProducerPadraoEhODoNothingTest() throws Exception {
-		CcpJsonFieldDefaultValue anotacao = this.anotacaoDe(RegrasValorPadraoJsonProducer.class, "inerte");
+		CcpJsonFieldDefaultValue anotacao = this.anotacaoDe(RulesDefaultValueJsonProducer.class, "inerte");
 		Class<? extends CcpBusiness> jsonProducer = anotacao.jsonProducer();
 		assertEquals(CcpJsonFieldDefaultValueDoNothing.class, jsonProducer);
 	}
 
-	private CcpJsonFieldDefaultValue anotacaoDe(Class<?> classeDeRegras, String nomeDoCampo) throws Exception {
-		Field field = classeDeRegras.getDeclaredField(nomeDoCampo);
+	private CcpJsonFieldDefaultValue anotacaoDe(Class<?> rulesClass, String nomeDoCampo) throws Exception {
+		Field field = rulesClass.getDeclaredField(nomeDoCampo);
 		CcpJsonFieldDefaultValue anotacao = field.getAnnotation(CcpJsonFieldDefaultValue.class);
 		return anotacao;
 	}
@@ -185,22 +185,22 @@ public class CcpJsonFieldDefaultValueTest {
 
 	@Test
 	public void campoObrigatorioComValorPadraoNaoEhMaisExigidoTest() {
-		CcpJsonRepresentation resultado = ValorPadraoDeCampo.executa(RegrasValorPadraoComRequired.class, CcpOtherConstants.EMPTY_JSON);
-		String valor = resultado.getAsString(RegrasValorPadraoComRequired.obrigatorioComValorPadrao);
+		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueWithRequired.class, CcpOtherConstants.EMPTY_JSON);
+		String valor = resultado.getAsString(RulesDefaultValueWithRequired.obrigatorioComValorPadrao);
 		assertEquals("preenchido pelo valor padrao", valor);
 	}
 
 	@Test
 	public void chavePrimariaComValorPadraoNaoEhMaisExigidaTest() {
-		CcpJsonRepresentation resultado = ValorPadraoDeCampo.executa(RegrasValorPadraoComRequired.class, CcpOtherConstants.EMPTY_JSON);
-		String valor = resultado.getAsString(RegrasValorPadraoComRequired.chavePrimariaComValorPadrao);
+		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueWithRequired.class, CcpOtherConstants.EMPTY_JSON);
+		String valor = resultado.getAsString(RulesDefaultValueWithRequired.chavePrimariaComValorPadrao);
 		assertEquals("chave gerada", valor);
 	}
 
 	@Test
 	public void campoObrigatorioSemValorPadraoContinuaSendoExigidoTest() {
-		NegocioDeValorPadrao negocio = new NegocioDeValorPadrao(RegrasRequiredSemValorPadrao.class);
-		ValidacaoDeCampo.recusa(negocio, CcpOtherConstants.EMPTY_JSON, RegrasRequiredSemValorPadrao.obrigatorioSemValorPadrao, CcpJsonFieldError.requiredFieldIsMissing);
+		DefaultValueBusiness business = new DefaultValueBusiness(RulesRequiredWithoutDefaultValue.class);
+		FieldValidation.refuses(business, CcpOtherConstants.EMPTY_JSON, RulesRequiredWithoutDefaultValue.obrigatorioSemValorPadrao, CcpJsonFieldError.requiredFieldIsMissing);
 	}
 
 	/**
@@ -209,7 +209,7 @@ public class CcpJsonFieldDefaultValueTest {
 	 */
 	@Test
 	public void regraDeObrigatoriedadeSomeDaExplicacaoTest() {
-		List<String> regras = this.regrasDoCampo(RegrasValorPadraoComRequired.class, RegrasValorPadraoComRequired.obrigatorioComValorPadrao);
+		List<String> regras = this.regrasDoCampo(RulesDefaultValueWithRequired.class, RulesDefaultValueWithRequired.obrigatorioComValorPadrao);
 		String nomeDaRegra = CcpJsonFieldError.requiredFieldIsMissing.getValue();
 		boolean contem = regras.contains(nomeDaRegra);
 		assertFalse("A regra de obrigatoriedade nao deveria aparecer, mas as regras foram: " + regras, contem);
@@ -217,16 +217,16 @@ public class CcpJsonFieldDefaultValueTest {
 
 	@Test
 	public void regraDeObrigatoriedadeContinuaSemValorPadraoTest() {
-		List<String> regras = this.regrasDoCampo(RegrasRequiredSemValorPadrao.class, RegrasRequiredSemValorPadrao.obrigatorioSemValorPadrao);
+		List<String> regras = this.regrasDoCampo(RulesRequiredWithoutDefaultValue.class, RulesRequiredWithoutDefaultValue.obrigatorioSemValorPadrao);
 		String nomeDaRegra = CcpJsonFieldError.requiredFieldIsMissing.getValue();
 		boolean contem = regras.contains(nomeDaRegra);
 		assertTrue("A regra de obrigatoriedade deveria aparecer, mas as regras foram: " + regras, contem);
 	}
 
-	private List<String> regrasDoCampo(Class<?> classeDeRegras, CcpJsonFieldName campo) {
+	private List<String> regrasDoCampo(Class<?> rulesClass, CcpJsonFieldName field) {
 
-		CcpJsonRepresentation explicacao = CcpJsonValidationRulesEngine.INSTANCE.getRulesExplanation(classeDeRegras);
-		List<CcpJsonRepresentation> regrasDoCampo = explicacao.getAsJsonList(campo);
+		CcpJsonRepresentation explicacao = CcpJsonValidationRulesEngine.INSTANCE.getRulesExplanation(rulesClass);
+		List<CcpJsonRepresentation> regrasDoCampo = explicacao.getAsJsonList(field);
 		List<String> nomes = new ArrayList<>();
 
 		for (CcpJsonRepresentation regra : regrasDoCampo) {
@@ -246,18 +246,18 @@ public class CcpJsonFieldDefaultValueTest {
 	 */
 	@Test
 	public void valorPadraoHerdadoDaClasseDeOrigemTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RegrasValorPadraoCopiado.origem, "curriculo");
-		CcpJsonRepresentation resultado = ValorPadraoDeCampo.executa(RegrasValorPadraoCopiado.class, json);
-		String valor = resultado.getAsString(RegrasValorPadraoCopiado.copiado);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesCopiedDefaultValue.origem, "curriculo");
+		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesCopiedDefaultValue.class, json);
+		String valor = resultado.getAsString(RulesCopiedDefaultValue.copiado);
 		assertEquals("derivado de curriculo", valor);
 	}
 
 	@Test
 	public void campoHerdadoJaInformadoNaoEhSobrescritoTest() {
-		CcpJsonRepresentation comOrigem = CcpOtherConstants.EMPTY_JSON.put(RegrasValorPadraoCopiado.origem, "curriculo");
-		CcpJsonRepresentation json = comOrigem.put(RegrasValorPadraoCopiado.copiado, "valor que veio de fora");
-		CcpJsonRepresentation resultado = ValorPadraoDeCampo.executa(RegrasValorPadraoCopiado.class, json);
-		String valor = resultado.getAsString(RegrasValorPadraoCopiado.copiado);
+		CcpJsonRepresentation comOrigem = CcpOtherConstants.EMPTY_JSON.put(RulesCopiedDefaultValue.origem, "curriculo");
+		CcpJsonRepresentation json = comOrigem.put(RulesCopiedDefaultValue.copiado, "valor que veio de fora");
+		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesCopiedDefaultValue.class, json);
+		String valor = resultado.getAsString(RulesCopiedDefaultValue.copiado);
 		assertEquals("valor que veio de fora", valor);
 	}
 }

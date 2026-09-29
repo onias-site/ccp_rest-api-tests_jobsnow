@@ -2,6 +2,7 @@ package com.ccp.especifications.db.bulk.handlers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.junit.Test;
 
@@ -16,9 +17,9 @@ import com.jn.entities.JnEntityContactUs;
 import com.jn.entities.JnEntityJobsnowError;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre os handlers bulk
- * ({@code CcpBulkHandlerCreate}, {@code Delete}, {@code Read}, {@code Save} e os handlers de
- * entidade twin).
+ * Coverage of {@code CcpNullParameterAspect} over the bulk handlers
+ * ({@code CcpBulkHandlerCreate}, {@code Delete}, {@code Read}, {@code Save} and the twin entity
+ * handlers).
  */
 public class CcpBulkHandlersAopNullTest {
 
@@ -39,7 +40,7 @@ public class CcpBulkHandlersAopNullTest {
 	// ── CcpBulkHandlerCreate ──────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void createConstrutorNullTest() {
+	public void createConstructorNullTest() {
 		new CcpBulkHandlerCreate(null);
 	}
 
@@ -61,17 +62,17 @@ public class CcpBulkHandlersAopNullTest {
 	// ── CcpBulkHandlerDelete ──────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void deleteConstrutorNullTest() {
+	public void deleteConstructorNullTest() {
 		new CcpBulkHandlerDelete(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void deleteConstrutorComCallbackEntityNullTest() {
+	public void deleteConstructorWithCallbackEntityNullTest() {
 		new CcpBulkHandlerDelete(null, notFound());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void deleteConstrutorComCallbackFunctionNullTest() {
+	public void deleteConstructorWithCallbackFunctionNullTest() {
 		new CcpBulkHandlerDelete(ENTITY, null);
 	}
 
@@ -93,17 +94,17 @@ public class CcpBulkHandlersAopNullTest {
 	// ── CcpBulkHandlerRead ────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void readConstrutorNullTest() {
+	public void readConstructorNullTest() {
 		new CcpBulkHandlerRead(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void readConstrutorComCallbackEntityNullTest() {
+	public void readConstructorWithCallbackEntityNullTest() {
 		new CcpBulkHandlerRead(null, notFound());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void readConstrutorComCallbackFunctionNullTest() {
+	public void readConstructorWithCallbackFunctionNullTest() {
 		new CcpBulkHandlerRead(ENTITY, null);
 	}
 
@@ -125,7 +126,7 @@ public class CcpBulkHandlersAopNullTest {
 	// ── CcpBulkHandlerSave ────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void saveConstrutorNullTest() {
+	public void saveConstructorNullTest() {
 		new CcpBulkHandlerSave(null);
 	}
 
@@ -147,7 +148,7 @@ public class CcpBulkHandlersAopNullTest {
 	// ── CcpEntityBulkHandlerSaveTwinEntity ────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void saveTwinConstrutorNullTest() {
+	public void saveTwinConstructorNullTest() {
 		new CcpEntityBulkHandlerSaveTwinEntity(null);
 	}
 
@@ -168,23 +169,26 @@ public class CcpBulkHandlersAopNullTest {
 
 	// ── CcpEntityBulkHandlerTransferRecordToTwinEntity ────────────────────────
 
+	/** Any non-null function will do: these tests only exercise the null-parameter check. */
+	private static final Function<CcpBulkItem, List<CcpBulkItem>> NOTHING_TO_DO = item -> new ArrayList<>();
+
 	@Test(expected = CcpNullParameterException.class)
-	public void transferTwinConstrutorNullTest() {
-		new CcpEntityBulkHandlerTransferRecordToTwinEntity(null, CcpOtherConstants.whenRecordWasNotFoundInTheEntityToSearch);
+	public void transferTwinConstructorNullTest() {
+		new CcpEntityBulkHandlerTransferRecordToTwinEntity(null, NOTHING_TO_DO);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void transferTwinWhenFoundSearchParameterNullTest() {
-		new CcpEntityBulkHandlerTransferRecordToTwinEntity(TWIN_ENTITY, CcpOtherConstants.whenRecordWasNotFoundInTheEntityToSearch).whenRecordWasFoundInTheEntitySearch(null, JSON);
+		new CcpEntityBulkHandlerTransferRecordToTwinEntity(TWIN_ENTITY, NOTHING_TO_DO).whenRecordWasFoundInTheEntitySearch(null, JSON);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void transferTwinWhenFoundRecordNullTest() {
-		new CcpEntityBulkHandlerTransferRecordToTwinEntity(TWIN_ENTITY, CcpOtherConstants.whenRecordWasNotFoundInTheEntityToSearch).whenRecordWasFoundInTheEntitySearch(JSON, null);
+		new CcpEntityBulkHandlerTransferRecordToTwinEntity(TWIN_ENTITY, NOTHING_TO_DO).whenRecordWasFoundInTheEntitySearch(JSON, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void transferTwinWhenNotFoundNullTest() {
-		new CcpEntityBulkHandlerTransferRecordToTwinEntity(TWIN_ENTITY, CcpOtherConstants.whenRecordWasNotFoundInTheEntityToSearch).whenRecordWasNotFoundInTheEntitySearch(null);
+		new CcpEntityBulkHandlerTransferRecordToTwinEntity(TWIN_ENTITY, NOTHING_TO_DO).whenRecordWasNotFoundInTheEntitySearch(null);
 	}
 }

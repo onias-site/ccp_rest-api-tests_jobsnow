@@ -23,7 +23,7 @@ public class CcpSendGridEmailSenderTest {
 	// ── provider ──────────────────────────────────────────────────────────────
 
 	@Test
-	public void construtorProviderTest() {
+	public void constructorProviderTest() {
 		assertNotNull(new CcpSendGridEmailSender());
 	}
 

@@ -9,32 +9,32 @@ import com.ccp.decorators.CcpJsonRepresentation;
 
 class InterceptedTargets {
 
-	String retornaNull() {
+	String returnsNull() {
 		return null;
 	}
 
-	List<String> retornaListaNula() {
+	List<String> returnsNullList() {
 		return null;
 	}
 
 	@CcpAllowNullReturn
-	String retornaNullPermitido() {
+	String returnsAllowedNull() {
 		return null;
 	}
 
-	String recebeParametro(String value) {
+	String receivesParameter(String value) {
 		return value;
 	}
 
 	@CcpAllowNullParameter
-	String recebeParametroNulavel(String value) {
+	String receivesNullableParameter(String value) {
 		return String.valueOf(value);
 	}
 
-	void metodoVoidComRetornoImplicito() {
+	void voidMethodWithImplicitReturn() {
 	}
 
-	CcpJsonRepresentation retornaJson() {
+	CcpJsonRepresentation returnsJson() {
 		return CcpOtherConstants.EMPTY_JSON;
 	}
 }

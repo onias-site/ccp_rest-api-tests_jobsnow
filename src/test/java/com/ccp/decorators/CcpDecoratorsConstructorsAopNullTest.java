@@ -5,60 +5,60 @@ import org.junit.Test;
 import com.ccp.aop.CcpNullParameterException;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre os construtores dos decorators que só são
- * alcançáveis de dentro do próprio pacote (visibilidade {@code protected}).
+ * Coverage of {@code CcpNullParameterAspect} over the constructors of the decorators that are only
+ * reachable from inside their own package ({@code protected} visibility).
  */
 public class CcpDecoratorsConstructorsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
-	public void fileDecoratorConstrutorNullTest() {
+	public void fileDecoratorConstructorNullTest() {
 		new CcpFileDecorator(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void folderDecoratorConstrutorNullTest() {
+	public void folderDecoratorConstructorNullTest() {
 		new CcpFolderDecorator(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void hashDecoratorConstrutorNullTest() {
+	public void hashDecoratorConstructorNullTest() {
 		new CcpHashDecorator(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void inputStreamDecoratorConstrutorNullTest() {
+	public void inputStreamDecoratorConstructorNullTest() {
 		new CcpInputStreamDecorator(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void passwordDecoratorConstrutorNullTest() {
+	public void passwordDecoratorConstructorNullTest() {
 		new CcpPasswordDecorator(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void propertiesDecoratorConstrutorNullTest() {
+	public void propertiesDecoratorConstructorNullTest() {
 		new CcpPropertiesDecorator(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void textDecoratorConstrutorNullTest() {
+	public void textDecoratorConstructorNullTest() {
 		new CcpTextDecorator(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void urlDecoratorConstrutorNullTest() {
+	public void urlDecoratorConstructorNullTest() {
 		new CcpUrlDecorator(null);
 	}
 
-	/** {@code CcpReflectionOptionsDecorator} é abstrata; o construtor é alcançado por uma subclasse. */
+	/** {@code CcpReflectionOptionsDecorator} is abstract; its constructor is reached through a subclass. */
 	@Test(expected = CcpNullParameterException.class)
-	public void reflectionOptionsDecoratorConstrutorNullTest() {
+	public void reflectionOptionsDecoratorConstructorNullTest() {
 		new CcpReflectionOptionsDecorator(null) {
 		};
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void reflectionStaticContextDecoratorConstrutorNullTest() {
+	public void reflectionStaticContextDecoratorConstructorNullTest() {
 		new CcpReflectionStaticContextDecorator(null);
 	}
 
@@ -69,7 +69,7 @@ public class CcpDecoratorsConstructorsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void reflectionNewInstanceDecoratorClassNullTest() {
-		new CcpReflectionNewInstanceDecorator("instancia", null);
+		new CcpReflectionNewInstanceDecorator("instance", null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

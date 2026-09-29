@@ -99,7 +99,7 @@ public class CcpStringDecoratorTest {
 
 	@Test
 	public void jsonFactoryTest() {
-		CcpJsonRepresentation json = new CcpStringDecorator("{'nome':'Alice'}").json();
+		CcpJsonRepresentation json = new CcpStringDecorator("{'name':'Alice'}").json();
 		assertNotNull(json);
 		assertFalse(json.isEmpty());
 	}
@@ -249,12 +249,12 @@ public class CcpStringDecoratorTest {
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorStringNullParamTest() {
+	public void constructorStringNullParamTest() {
 		new CcpStringDecorator((String) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorInputStreamNullParamTest() {
+	public void constructorInputStreamNullParamTest() {
 		new CcpStringDecorator((InputStream) null);
 	}
 
@@ -263,12 +263,12 @@ public class CcpStringDecoratorTest {
 	// próprio construtor, então NullPointerException nativa vence CcpNullParameterException.
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorJsonNullParamJsonTest() {
+	public void constructorJsonNullParamJsonTest() {
 		new CcpStringDecorator((CcpJsonRepresentation) null, "chave");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorJsonNullParamKeyTest() {
+	public void constructorJsonNullParamKeyTest() {
 		new CcpStringDecorator(CcpOtherConstants.EMPTY_JSON, (String) null);
 	}
 

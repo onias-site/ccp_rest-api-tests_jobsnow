@@ -15,34 +15,34 @@ class FakeCrud implements CcpCrud {
 		inserted
 	}
 
-	private static final Map<String, CcpJsonRepresentation> registros = new HashMap<>();
+	private static final Map<String, CcpJsonRepresentation> records = new HashMap<>();
 
 	/**
 	 * Esvazia o banco. O mapa é estático, então sobrevive à troca de instância e faz um teste enxergar o
 	 * que o anterior gravou — quem usa este dublê precisa limpá-lo entre um teste e outro.
 	 */
-	static void limpar() {
-		registros.clear();
+	static void clear() {
+		records.clear();
 	}
 
 	public CcpJsonRepresentation getOneById(String entityName, String id) {
 
 		String key = this.getKey(entityName, id);
 
-		boolean registroNaoEncontrado = false == registros.containsKey(key);
+		boolean registroNaoEncontrado = false == records.containsKey(key);
 
 		if (registroNaoEncontrado) {
 			throw new CcpErrorBulkEntityRecordNotFound(entityName, id);
 		}
 
-		CcpJsonRepresentation registro = registros.get(key);
+		CcpJsonRepresentation registro = records.get(key);
 		return registro;
 	}
 
 	public CcpJsonRepresentation save(String entityName, CcpJsonRepresentation json, String id) {
 		String key = this.getKey(entityName, id);
-		boolean inserted = false == registros.containsKey(key);
-		registros.put(key, json);
+		boolean inserted = false == records.containsKey(key);
+		records.put(key, json);
 		CcpJsonRepresentation response = json.put(JsonFieldNames.inserted, inserted);
 		return response;
 	}
@@ -53,12 +53,12 @@ class FakeCrud implements CcpCrud {
 	}
 
 	public boolean exists(String entityName, String id) {
-		boolean exists = registros.containsKey(this.getKey(entityName, id));
+		boolean exists = records.containsKey(this.getKey(entityName, id));
 		return exists;
 	}
 
 	public boolean delete(String entityName, String id) {
-		CcpJsonRepresentation removido = registros.remove(this.getKey(entityName, id));
+		CcpJsonRepresentation removido = records.remove(this.getKey(entityName, id));
 		boolean deleted = removido != null;
 		return deleted;
 	}

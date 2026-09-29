@@ -20,9 +20,9 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import org.junit.Test;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre as especificações que possuem poucos métodos
- * pendentes: {@code CcpCache}, {@code CcpFileBucketOperation}, {@code CcpMensageriaReceiver},
- * {@code CcpMensageriaSender} e a exceção de bot bloqueado do instant messenger.
+ * Coverage of {@code CcpNullParameterAspect} over the specifications that have few pending
+ * methods: {@code CcpCache}, {@code CcpFileBucketOperation}, {@code CcpMensageriaReceiver},
+ * {@code CcpMensageriaSender} and the instant messenger's blocked-bot exception.
  */
 public class CcpSpecificationsMiscAopNullTest {
 
@@ -33,7 +33,7 @@ public class CcpSpecificationsMiscAopNullTest {
 
 	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;
 
-	/** Implementação mínima para alcançar os métodos concretos de {@code CcpMensageriaReceiver}. */
+	/** Minimal implementation to reach the concrete methods of {@code CcpMensageriaReceiver}. */
 
 
 	// ── CcpCache ──────────────────────────────────────────────────────────────
@@ -48,45 +48,45 @@ public class CcpSpecificationsMiscAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void fileBucketExecuteVarargsTenantNullTest() {
-		CcpFileBucketOperation.get.execute(null, "pasta", "arquivo1", "arquivo2");
+		CcpFileBucketOperation.get.execute(null, "folder", "file1", "file2");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void fileBucketExecuteVarargsFolderNullTest() {
-		CcpFileBucketOperation.get.execute("tenant", null, "arquivo1", "arquivo2");
+		CcpFileBucketOperation.get.execute("tenant", null, "file1", "file2");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void fileBucketExecuteVarargsFilesNullTest() {
-		CcpFileBucketOperation.get.execute("tenant", "pasta", (String[]) null);
+		CcpFileBucketOperation.get.execute("tenant", "folder", (String[]) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void fileBucketExecuteTenantNullTest() {
-		CcpFileBucketOperation.get.execute(null, "pasta", "arquivo");
+		CcpFileBucketOperation.get.execute(null, "folder", "file");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void fileBucketExecuteFolderNullTest() {
-		CcpFileBucketOperation.get.execute("tenant", null, "arquivo");
+		CcpFileBucketOperation.get.execute("tenant", null, "file");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void fileBucketExecuteFileNullTest() {
-		CcpFileBucketOperation.get.execute("tenant", "pasta", (String) null);
+		CcpFileBucketOperation.get.execute("tenant", "folder", (String) null);
 	}
 
 	// ── CcpErrorInstantMessageThisBotWasBlockedByThisUser ─────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void errorBotBlockedConstrutorNullTest() {
+	public void errorBotBlockedConstructorNullTest() {
 		new CcpErrorInstantMessageThisBotWasBlockedByThisUser(null);
 	}
 
 	// ── CcpMensageriaReceiver ─────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void mensageriaReceiverConstrutorNullTest() {
+	public void mensageriaReceiverConstructorNullTest() {
 		new CcpMensageriaReceiver(null) {
 
 			public CcpExecuteBulkOperation getExecuteBulkOperation() {
@@ -136,12 +136,12 @@ public class CcpSpecificationsMiscAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void senderSendToMensageriaListValidationClassNullTest() {
-		sender().sendToMensageria("topico", null, new ArrayList<CcpJsonRepresentation>());
+		sender().sendToMensageria("topic", null, new ArrayList<CcpJsonRepresentation>());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void senderSendToMensageriaListMsgsNullTest() {
-		sender().sendToMensageria("topico", CcpSpecificationsMiscAopNullTest.class,
+		sender().sendToMensageria("topic", CcpSpecificationsMiscAopNullTest.class,
 				(java.util.List<CcpJsonRepresentation>) null);
 	}
 
@@ -152,12 +152,12 @@ public class CcpSpecificationsMiscAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void senderSendToMensageriaVarargsValidationClassNullTest() {
-		sender().sendToMensageria("topico", null, JSON);
+		sender().sendToMensageria("topic", null, JSON);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void senderSendToMensageriaVarargsMsgsNullTest() {
-		sender().sendToMensageria("topico", CcpSpecificationsMiscAopNullTest.class,
+		sender().sendToMensageria("topic", CcpSpecificationsMiscAopNullTest.class,
 				(CcpJsonRepresentation[]) null);
 	}
 }

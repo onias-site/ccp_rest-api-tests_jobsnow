@@ -30,7 +30,7 @@ import static com.ccp.decorators.JsonFieldNames.f4;
 import static com.ccp.decorators.JsonFieldNames.field;
 import static com.ccp.decorators.JsonFieldNames.filho;
 import static com.ccp.decorators.JsonFieldNames.frutas;
-import static com.ccp.decorators.JsonFieldNames.idade;
+import static com.ccp.decorators.JsonFieldNames.age;
 import static com.ccp.decorators.JsonFieldNames.jsn;
 import static com.ccp.decorators.JsonFieldNames.json2;
 import static com.ccp.decorators.JsonFieldNames.json3;
@@ -41,7 +41,7 @@ import static com.ccp.decorators.JsonFieldNames.luciellen;
 import static com.ccp.decorators.JsonFieldNames.minhaPropriedadeJson;
 import static com.ccp.decorators.JsonFieldNames.nacionalidade;
 import static com.ccp.decorators.JsonFieldNames.netos;
-import static com.ccp.decorators.JsonFieldNames.nome;
+import static com.ccp.decorators.JsonFieldNames.name;
 import static com.ccp.decorators.JsonFieldNames.nome2;
 import static com.ccp.decorators.JsonFieldNames.nomeCopiado;
 import static com.ccp.decorators.JsonFieldNames.nome_da_vó;
@@ -57,7 +57,7 @@ import static com.ccp.decorators.JsonFieldNames.pai;
 import static com.ccp.decorators.JsonFieldNames.paçoca;
 import static com.ccp.decorators.JsonFieldNames.peso;
 import static com.ccp.decorators.JsonFieldNames.peso2;
-import static com.ccp.decorators.JsonFieldNames.teste;
+import static com.ccp.decorators.JsonFieldNames.test;
 import static com.ccp.decorators.JsonFieldNames.tipo_sanguineo;
 import static com.ccp.decorators.JsonFieldNames.v1;
 import static com.ccp.decorators.JsonFieldNames.v2;
@@ -187,7 +187,7 @@ public class CcpJsonRepresentationTests {
 	}
 	
 	@Test
-	public void teste() {
+	public void test() {
 		CcpJsonRepresentation json = new CcpJsonRepresentation(CcpOtherConstants.EMPTY_JSON.put(nomes7, String.class).content);
 		assertEquals(1, json.fieldSet().size());
 	}
@@ -200,9 +200,9 @@ public class CcpJsonRepresentationTests {
 		//		assertTrue(json.getAsIntegerNumber("EuNãoSouUmJson") instanceof Integer);
 		//		
 		//		//Parâmetro não é um inteiro
-		String x = "{'nome':'Fulano da Silva'}";
+		String x = "{'name':'Fulano da Silva'}";
 		CcpJsonRepresentation json2 = new CcpJsonRepresentation(x);
-		assertTrue(json2.getAsIntegerNumber(nome) instanceof Integer);
+		assertTrue(json2.getAsIntegerNumber(name) instanceof Integer);
 
 		//Parâmetro estoura a capacidade de integer
 		//		String explodeCoracao = "{'valor':"+Math.pow(2, 32)+"}";
@@ -249,13 +249,13 @@ public class CcpJsonRepresentationTests {
 
 	@Test
 	public void getAsTextDecoratorTest() {
-		String x = "{'nome':'Lucas'}";
+		String x = "{'name':'Lucas'}";
 
 		CcpJsonRepresentation json = new CcpJsonRepresentation(x);
-		System.out.println(json.getAsTextDecorator(nome));
+		System.out.println(json.getAsTextDecorator(name));
 
-		assertTrue(json.getAsTextDecorator(nome) instanceof CcpTextDecorator);
-		assertTrue(json.getAsTextDecorator(nome) instanceof CcpTextDecorator);
+		assertTrue(json.getAsTextDecorator(name) instanceof CcpTextDecorator);
+		assertTrue(json.getAsTextDecorator(name) instanceof CcpTextDecorator);
 	}
 
 	@Test
@@ -322,10 +322,10 @@ public class CcpJsonRepresentationTests {
 	
 	@Test
 	public void getJsonPieceTest() {
-		String json = "{'nome':'João', 'telefone': 1234}";
+		String json = "{'name':'João', 'telefone': 1234}";
 		CcpJsonRepresentation objJson = new CcpJsonRepresentation(json);
-		assertEquals(objJson.getJsonPiece(Arrays.asList( "nome", "telefone")).fieldSet().size(), 2);
-		assertEquals(objJson.getJsonPiece(nome).fieldSet().size(), 1);
+		assertEquals(objJson.getJsonPiece(Arrays.asList( "name", "telefone")).fieldSet().size(), 2);
+		assertEquals(objJson.getJsonPiece(name).fieldSet().size(), 1);
 		assertTrue(objJson.getJsonPiece(nome2).isEmpty());
 		assertTrue(objJson.getJsonPiece(nome2).isEmpty());
 	}
@@ -356,13 +356,13 @@ public class CcpJsonRepresentationTests {
 	@Test
 	public void getgetAsUglyJsonTest() {
 		String filha = "{"
-				+ "'nome':'Márcia',"
-				+ "'idade':34"
+				+ "'name':'Márcia',"
+				+ "'age':34"
 				+ "}";
 
 		String mae = "{"
-				+ "'nome':'Maria',"
-				+ "'idade': 58',"
+				+ "'name':'Maria',"
+				+ "'age': 58',"
 				+ "'filha': "+filha
 				+ "}";
 
@@ -374,13 +374,13 @@ public class CcpJsonRepresentationTests {
 	@Test
 	public void getgetAsPrettyJsonTest() {
 		String filha = "{"
-				+ "'nome':'Márcia',"
-				+ "'idade':34"
+				+ "'name':'Márcia',"
+				+ "'age':34"
 				+ "}";
 
 		String mae = "{"
-				+ "'nome':'Maria',"
-				+ "'idade': 58',"
+				+ "'name':'Maria',"
+				+ "'age': 58',"
 				+ "'filha': "+filha
 				+ "}";
 
@@ -415,13 +415,13 @@ public class CcpJsonRepresentationTests {
 	@Test
 	public void toStringTest() {
 		String filha = "{"
-				+ "'nome':'Márcia',"
-				+ "'idade':34"
+				+ "'name':'Márcia',"
+				+ "'age':34"
 				+ "}";
 
 		String mae = "{"
-				+ "'nome':'Maria',"
-				+ "'idade': 58',"
+				+ "'name':'Maria',"
+				+ "'age': 58',"
 				+ "'filha': "+filha
 				+ "}";
 
@@ -433,13 +433,13 @@ public class CcpJsonRepresentationTests {
 	@Test
 	public void fieldSetTest() {
 		String filha = "{"
-				+ "'nome':'Márcia',"
-				+ "'idade':34"
+				+ "'name':'Márcia',"
+				+ "'age':34"
 				+ "}";
 
 		String mae = "{"
-				+ "'nome':'Maria',"
-				+ "'idade': 58',"
+				+ "'name':'Maria',"
+				+ "'age': 58',"
 				+ "'filha': "+filha
 				+ "}";
 
@@ -463,9 +463,9 @@ public class CcpJsonRepresentationTests {
 	@Test
 	public void putMultiTest() {
 
-		CcpJsonRepresentation pessoa1 = new CcpJsonRepresentation("{'nome':'João','idade':49}");
-		CcpJsonRepresentation pessoa2 = new CcpJsonRepresentation("{'nome':'Maria','idade':51}");
-		CcpJsonRepresentation pessoa3 = new CcpJsonRepresentation("{'nome':'José','idade':11}");
+		CcpJsonRepresentation pessoa1 = new CcpJsonRepresentation("{'name':'João','age':49}");
+		CcpJsonRepresentation pessoa2 = new CcpJsonRepresentation("{'name':'Maria','age':51}");
+		CcpJsonRepresentation pessoa3 = new CcpJsonRepresentation("{'name':'José','age':11}");
 
 		List<CcpJsonRepresentation> listaDePessoas = Arrays.asList(pessoa1, pessoa2, pessoa3);
 
@@ -482,22 +482,22 @@ public class CcpJsonRepresentationTests {
 	//Se o campo não existir ele cria e copia o valor para ele
 	public void duplicateValueFromFieldErrorTest() {
 		String variavel = "{"
-				+ "'nome':'Pedro',"
+				+ "'name':'Pedro',"
 				+ "'nome_copiado':''"
 				+ "}";
 
 		CcpJsonRepresentation json = new CcpJsonRepresentation(variavel);
 
 		System.out.println("duplicateValueFromFieldTestError() = "+
-				json.duplicateValueFromField(nome, nome_da_vó));
+				json.duplicateValueFromField(name, nome_da_vó));
 	}
 
 	@Test
 	public void renameFieldTest() {
 		String pessoa = ""
 				+ "    	   { "
-				+ "        'nome': 'Alexandre Thomas Figueiredo', "
-				+ "        'idade': 19, "
+				+ "        'name': 'Alexandre Thomas Figueiredo', "
+				+ "        'age': 19, "
 				+ "        'cpf': '09051710984', "
 				+ "        'rg': '237564956', "
 				+ "        'data_nasc': '01/05/2005', "
@@ -536,8 +536,8 @@ public class CcpJsonRepresentationTests {
 	public void removeFieldTest() {
 		String pessoa = ""
 				+ "    	   { "
-				+ "        'nome': 'Alexandre Thomas Figueiredo', "
-				+ "        'idade': 19, "
+				+ "        'name': 'Alexandre Thomas Figueiredo', "
+				+ "        'age': 19, "
 				+ "        'cpf': '09051710984', "
 				+ "        'rg': '237564956', "
 				+ "        'data_nasc': '01/05/2005', "
@@ -571,8 +571,8 @@ public class CcpJsonRepresentationTests {
 	public void removeFieldsTest() {
 		String pessoa = ""
 				+ "    	   { "
-				+ "        'nome': 'Alexandre Thomas Figueiredo', "
-				+ "        'idade': 19, "
+				+ "        'name': 'Alexandre Thomas Figueiredo', "
+				+ "        'age': 19, "
 				+ "        'cpf': '09051710984', "
 				+ "        'rg': '237564956', "
 				+ "        'data_nasc': '01/05/2005', "
@@ -610,7 +610,7 @@ public class CcpJsonRepresentationTests {
 	
 	@Test
 	public void getContentTest() {
-		String pessoa = "{'nome':'fulano','idade':30}";
+		String pessoa = "{'name':'fulano','age':30}";
 		
 		CcpJsonRepresentation json = new CcpJsonRepresentation(pessoa);
 		System.out.println("getContentTest() = "+json.getContent()+"\n");
@@ -618,7 +618,7 @@ public class CcpJsonRepresentationTests {
 	
 	@Test
 	public void copyTest() {
-		String pessoa = "{'nome':'fulano','idade':30}";
+		String pessoa = "{'name':'fulano','age':30}";
 		
 		CcpJsonRepresentation json = new CcpJsonRepresentation(pessoa);
 		CcpJsonRepresentation jsonCopia = json.copy();
@@ -630,8 +630,8 @@ public class CcpJsonRepresentationTests {
 	public void getInnerJsonFromPathTest() {
 	    String pessoa = ""
 	        + "       { "
-	        + "        'nome': 'Alexandre Thomas Figueiredo', "
-	        + "        'idade': 19, "
+	        + "        'name': 'Alexandre Thomas Figueiredo', "
+	        + "        'age': 19, "
 	        + "        'cpf': '09051710984', "
 	        + "        'rg': '237564956', "
 	        + "        'data_nasc': '01/05/2005', "
@@ -673,8 +673,8 @@ public class CcpJsonRepresentationTests {
 	public void getInnerJsonFromPathTestError() {
 				String pessoa = ""
 				+ "    	   { "
-				+ "        'nome': 'Alexandre Thomas Figueiredo', "
-				+ "        'idade': 19, "
+				+ "        'name': 'Alexandre Thomas Figueiredo', "
+				+ "        'age': 19, "
 				+ "        'cpf': '09051710984', "
 				+ "        'rg': '237564956', "
 				+ "        'data_nasc': '01/05/2005', "
@@ -729,7 +729,7 @@ public class CcpJsonRepresentationTests {
 		assertTrue(apply.fieldSet().size() == 1);
 		assertTrue(apply.containsAllFields(filho));
 		assertTrue(apply.containsAllFields(filho));
-		apply.addJsonTransformer(teste, CcpOtherConstants.RETURNS_EMPTY_JSON);
+		apply.addJsonTransformer(test, CcpOtherConstants.RETURNS_EMPTY_JSON);
 	
 	}
 
@@ -767,17 +767,17 @@ public class CcpJsonRepresentationTests {
 	@Test
 	public void getAsJsonListTest() {
 		String string = "	  ["
-					    + "  {'nome': 'Alice Monteiro'}, "
-					    + "  {'nome': 'Bruno Silva'}, "
-					    + "  {'nome': 'Carla Souza'}, "
-					    + "  {'nome': 'Diego Almeida'}, "
-					    + "  {'nome': 'Eduarda Ferreira'}, "
-					    + "  {'nome': 'Felipe Costa'}, "
-					    + "  {'nome': 'Gabriela Santos'}, "
-					    + "  {'nome': 'Hugo Pereira'}, "
-					    + "  {'nome': 'Isabela Rocha'}, "
-					    + "  {'nome': 'João Oliveira'}, "
-					    + "  {'nome': 'Lara Ramos'}"
+					    + "  {'name': 'Alice Monteiro'}, "
+					    + "  {'name': 'Bruno Silva'}, "
+					    + "  {'name': 'Carla Souza'}, "
+					    + "  {'name': 'Diego Almeida'}, "
+					    + "  {'name': 'Eduarda Ferreira'}, "
+					    + "  {'name': 'Felipe Costa'}, "
+					    + "  {'name': 'Gabriela Santos'}, "
+					    + "  {'name': 'Hugo Pereira'}, "
+					    + "  {'name': 'Isabela Rocha'}, "
+					    + "  {'name': 'João Oliveira'}, "
+					    + "  {'name': 'Lara Ramos'}"
 					    + "]";
 		String dados = "{'nomes':"
 			    + string
@@ -804,17 +804,17 @@ public class CcpJsonRepresentationTests {
 	public void getAsCollectionDecoratorTest() {
 		String dados = "{"
 			    + "	 'nomes': ["
-			    + "  {'nome': 'Alice Monteiro'}, "
-			    + "  {'nome': 'Bruno Silva'}, "
-			    + "  {'nome': 'Carla Souza'}, "
-			    + "  {'nome': 'Diego Almeida'}, "
-			    + "  {'nome': 'Eduarda Ferreira'}, "
-			    + "  {'nome': 'Felipe Costa'}, "
-			    + "  {'nome': 'Gabriela Santos'}, "
-			    + "  {'nome': 'Hugo Pereira'}, "
-			    + "  {'nome': 'Isabela Rocha'}, "
-			    + "  {'nome': 'João Oliveira'}, "
-			    + "  {'nome': 'Lara Ramos'}"
+			    + "  {'name': 'Alice Monteiro'}, "
+			    + "  {'name': 'Bruno Silva'}, "
+			    + "  {'name': 'Carla Souza'}, "
+			    + "  {'name': 'Diego Almeida'}, "
+			    + "  {'name': 'Eduarda Ferreira'}, "
+			    + "  {'name': 'Felipe Costa'}, "
+			    + "  {'name': 'Gabriela Santos'}, "
+			    + "  {'name': 'Hugo Pereira'}, "
+			    + "  {'name': 'Isabela Rocha'}, "
+			    + "  {'name': 'João Oliveira'}, "
+			    + "  {'name': 'Lara Ramos'}"
 			    + "]"
 			    + "}";
 		CcpJsonRepresentation json = new CcpJsonRepresentation(dados);
@@ -853,7 +853,7 @@ public class CcpJsonRepresentationTests {
 	@Test
 	public void getAsObjectListTest() {
 		String keys = "{"
-					+ "'nome': 'Lucas',"
+					+ "'name': 'Lucas',"
 					+ "'pais': 'Brasil'"
 					+ "}";
 		
@@ -893,14 +893,14 @@ public class CcpJsonRepresentationTests {
 	@Test
 	public void containsFieldTest() {
 		String campos = "{"
-					  + "'nome':'Chico',"
-					  + "'idade':50,"
+					  + "'name':'Chico',"
+					  + "'age':50,"
 					  + "'peso':62.3,"
 					  + "'nacionalidade':'brasileiro'"
 					  + "}";
 		
 		CcpJsonRepresentation json = new CcpJsonRepresentation(campos);
-		System.out.println("\ncontainsFieldTest() "+json.containsField(nome));
+		System.out.println("\ncontainsFieldTest() "+json.containsField(name));
 		System.out.println("containsFieldTest() "+json.containsField(paçoca));
 		System.out.println("containsFieldTest() "+json.containsField(nacionalidade)+"\n");
 	}
@@ -908,19 +908,19 @@ public class CcpJsonRepresentationTests {
 	@Test
 	public void containsAllFieldsJsonTest() {
 		String campos = "{"
-					  + "'nome':'Chico',"
-					  + "'idade':50,"
+					  + "'name':'Chico',"
+					  + "'age':50,"
 					  + "'peso':62.3,"
 					  + "'nacionalidade':'brasileiro'"
 					  + "}";
 		
 		CcpJsonRepresentation json = new CcpJsonRepresentation(campos);
 
-	    Collection<String> fields = Arrays.asList("nome", "idade", "peso");
+	    Collection<String> fields = Arrays.asList("name", "age", "peso");
 
 	    boolean result = json.containsAllFields(fields);
 	    assertTrue(result);	
-	    boolean result2 = json.containsAllFields(nome, idade, peso, campoQueNaoExiste);
+	    boolean result2 = json.containsAllFields(name, age, peso, campoQueNaoExiste);
 	    assertFalse(result2);	
 	    assertFalse(json.containsAnyFields(onias, juliana, luciellen, andré, camila, welton));	
 	    
@@ -933,15 +933,15 @@ public class CcpJsonRepresentationTests {
 	@Test
 	public void containsAllFieldsTest() {
 		String campos = "{"
-				+ "'nome':'Chico',"
-				+ "'idade':50,"
+				+ "'name':'Chico',"
+				+ "'age':50,"
 				+ "'peso':62.3,"
 				+ "'nacionalidade':'brasileiro'"
 				+ "}";
 
 		CcpJsonRepresentation json = new CcpJsonRepresentation(campos);
 
-		Collection<String> fields = Arrays.asList("nome", "idade", "peso");
+		Collection<String> fields = Arrays.asList("name", "age", "peso");
 
 		boolean result = json.containsAllFields(fields);
 
@@ -949,18 +949,18 @@ public class CcpJsonRepresentationTests {
 	}
 	
 	@Test
-	//Retorna false apenas de conter o campo "nome"
+	//Retorna false apenas de conter o campo "name"
 	public void containsAnyFieldsTest() {
 		String campos = "{"
-				+ "'nome':'Chico',"
-				+ "'idade':50,"
+				+ "'name':'Chico',"
+				+ "'age':50,"
 				+ "'peso':62.3,"
 				+ "'nacionalidade':'brasileiro'"
 				+ "}";
 
 		CcpJsonRepresentation json = new CcpJsonRepresentation(campos);
 
-		Collection<String> fields = Arrays.asList("nome", "sobrenome", "carro");
+		Collection<String> fields = Arrays.asList("name", "sobrenome", "carro");
 
 		boolean result = json.containsAllFields(fields);
 
@@ -971,22 +971,22 @@ public class CcpJsonRepresentationTests {
 	@Test
 	public void containsAnyFieldsJsonTest() {
 		String campos = "{"
-				+ "'nome':'Chico',"
-				+ "'idade':50,"
+				+ "'name':'Chico',"
+				+ "'age':50,"
 				+ "'peso':62.3,"
 				+ "'nacionalidade':'brasileiro'"
 				+ "}";
 
 		CcpJsonRepresentation json = new CcpJsonRepresentation(campos);
 
-		System.out.println("\ncontainsAnyFieldsJsonTest() " + json.containsAnyFields(peso,carro,idade)+"\n");
+		System.out.println("\ncontainsAnyFieldsJsonTest() " + json.containsAnyFields(peso,carro,age)+"\n");
 	}
 	
 	@Test
 	public void getTest() {
 		String campos = "{"
-				+ "'nome':'Chico',"
-				+ "'idade':50,"
+				+ "'name':'Chico',"
+				+ "'age':50,"
 				+ "'peso':62.3,"
 				+ "'nacionalidade':'brasileiro'"
 				+ "}";
@@ -1009,8 +1009,8 @@ public class CcpJsonRepresentationTests {
 	@Test
 	public void getAsObjectTest() {
 		String campos = "{"
-				+ "'nome':'Chico',"
-				+ "'idade':50,"
+				+ "'name':'Chico',"
+				+ "'age':50,"
 				+ "'peso':62.3,"
 				+ "'nacionalidade':'brasileiro'"
 				+ "}";
@@ -1041,21 +1041,21 @@ public class CcpJsonRepresentationTests {
 	//VERIFICAR SE MÉTODO ESTÁ FUNCIONANDO
 	@Test
 	public void copyIfNotContainsTest() {
-		String json = "{'nome':'Lucas'}";
+		String json = "{'name':'Lucas'}";
 
 		CcpJsonRepresentation objJson = new CcpJsonRepresentation(json);
 		assertFalse(objJson.containsAllFields(nomeCopiado));
-		CcpJsonRepresentation copyIfNotContains = objJson.copyIfNotContains(nome, nomeCopiado);
+		CcpJsonRepresentation copyIfNotContains = objJson.copyIfNotContains(name, nomeCopiado);
 		assertTrue(copyIfNotContains.containsAllFields(nomeCopiado));
 		String nomeCopiadoStr = copyIfNotContains.getAsString(nomeCopiado);
-		String nomeStr = copyIfNotContains.getAsString(nome);
+		String nomeStr = copyIfNotContains.getAsString(name);
 		assertEquals(nomeStr, nomeCopiadoStr);
 		String actual = "merda";
 		CcpJsonRepresentation copyIfNotContains2 = copyIfNotContains
-				.put(nome, actual).copyIfNotContains(nomeCopiado, nome);
-		assertNotEquals(copyIfNotContains2.getAsString(nome), copyIfNotContains.getAsString(nomeCopiado));
-		assertEquals(copyIfNotContains2.getAsString(nome), actual);
-		objJson.copyIfNotContains(nome, nomeCopiado);
+				.put(name, actual).copyIfNotContains(nomeCopiado, name);
+		assertNotEquals(copyIfNotContains2.getAsString(name), copyIfNotContains.getAsString(nomeCopiado));
+		assertEquals(copyIfNotContains2.getAsString(name), actual);
+		objJson.copyIfNotContains(name, nomeCopiado);
 	}
 	
 	//VERIFICAR SE MÉTODO ESTÁ FUNCIONANDO
@@ -1072,7 +1072,7 @@ public class CcpJsonRepresentationTests {
 		assertTrue("teste".equals(putIfNotContains2.getAsString(valor)));
 		assertTrue("teste".equals(putIfNotContains2.getAsString(valor)));
 		assertTrue("teste".equals(putIfNotContains2.getAsString(valor)));
-		putIfNotContains2.putIfNotContains(teste, putIfNotContains2);
+		putIfNotContains2.putIfNotContains(test, putIfNotContains2);
 	}	
 	
 	@Test
@@ -1111,9 +1111,9 @@ public class CcpJsonRepresentationTests {
 	@Test
 	public void getInnerJsonListFromPathTest() {
 		List<Object> granChildreen = Arrays.asList(
-				CcpOtherConstants.EMPTY_JSON.put(nome, "onias").content,
-				CcpOtherConstants.EMPTY_JSON.put(nome, "juliana"),
-				"{'nome': 'luciellen'}"
+				CcpOtherConstants.EMPTY_JSON.put(name, "onias").content,
+				CcpOtherConstants.EMPTY_JSON.put(name, "juliana"),
+				"{'name': 'luciellen'}"
 				);
 		CcpJsonRepresentation dad = CcpOtherConstants.EMPTY_JSON.addToItem(filho, netos, 
 				granChildreen);
@@ -1173,13 +1173,13 @@ public class CcpJsonRepresentationTests {
 	public void getInnerJsonTest() {
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
 				.put(json3, (Object)CcpOtherConstants.EMPTY_JSON.put(campo1, "valor1"))
-				.put(jsn, "{'nome': 'onias'}")
+				.put(jsn, "{'name': 'onias'}")
 				.put(json2, new HashMap<>())
 				.put(json4, (Object)"{}")
 				.put(json5, 1)
 				
 				;
-		assertTrue(put.getInnerJson(jsn).containsAllFields(nome));
+		assertTrue(put.getInnerJson(jsn).containsAllFields(name));
 		assertTrue(put.getInnerJson(json3).fieldSet().size() == 1);
 		assertTrue(put.getInnerJson(json2).isEmpty());
 		assertTrue(put.getInnerJson(json4).isEmpty());
@@ -1194,8 +1194,8 @@ public class CcpJsonRepresentationTests {
 				.addToList(x7, CcpOtherConstants.EMPTY_JSON)
 				;
 		assertEquals(addToList.getAsStringList(frutas).size(), 4);
-		addToList.addToList(teste, addToList);
-		addToList.addToList(teste, addToList, addToList);
+		addToList.addToList(test, addToList);
+		addToList.addToList(test, addToList, addToList);
 	}
 	
 	@Test
@@ -1258,7 +1258,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test
 	public void getJsonSupplierTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(name, "Onias");
 		var supplier = json.getJsonSupplier();
 		assertEquals(json, supplier.get());
 	}
@@ -1267,14 +1267,14 @@ public class CcpJsonRepresentationTests {
 
 	@Test
 	public void whenAnyFieldsAreFoundExecutaBusinessTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
-		CcpJsonRepresentation result = json.whenAnyFieldsAreFound(j -> j.put(filho, "ok"), nome, campoQueNaoExiste);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(name, "Onias");
+		CcpJsonRepresentation result = json.whenAnyFieldsAreFound(j -> j.put(filho, "ok"), name, campoQueNaoExiste);
 		assertTrue(result.containsAllFields(filho));
 	}
 
 	@Test
 	public void whenAnyFieldsAreFoundNaoExecutaBusinessTest() {
-		CcpJsonRepresentation result = CcpOtherConstants.EMPTY_JSON.whenAnyFieldsAreFound(j -> j.put(filho, "ok"), nome, campoQueNaoExiste);
+		CcpJsonRepresentation result = CcpOtherConstants.EMPTY_JSON.whenAnyFieldsAreFound(j -> j.put(filho, "ok"), name, campoQueNaoExiste);
 		assertFalse(result.containsAllFields(filho));
 	}
 
@@ -1282,15 +1282,15 @@ public class CcpJsonRepresentationTests {
 
 	@Test
 	public void whenAllFieldsAreFoundExecutaBusinessTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias").put(idade, 39);
-		CcpJsonRepresentation result = json.whenAllFieldsAreFound(j -> j.put(filho, "ok"), nome, idade);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(name, "Onias").put(age, 39);
+		CcpJsonRepresentation result = json.whenAllFieldsAreFound(j -> j.put(filho, "ok"), name, age);
 		assertTrue(result.containsAllFields(filho));
 	}
 
 	@Test
 	public void whenAllFieldsAreFoundNaoExecutaBusinessTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
-		CcpJsonRepresentation result = json.whenAllFieldsAreFound(j -> j.put(filho, "ok"), nome, idade);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(name, "Onias");
+		CcpJsonRepresentation result = json.whenAllFieldsAreFound(j -> j.put(filho, "ok"), name, age);
 		assertFalse(result.containsAllFields(filho));
 	}
 
@@ -1298,8 +1298,8 @@ public class CcpJsonRepresentationTests {
 
 	@Test
 	public void getValueFromPathTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
-		String result = json.getValueFromPath("default", nome);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(name, "Onias");
+		String result = json.getValueFromPath("default", name);
 		assertEquals("Onias", result);
 		String missing = json.getValueFromPath("default", campoQueNaoExiste);
 		assertEquals("default", missing);
@@ -1314,15 +1314,15 @@ public class CcpJsonRepresentationTests {
 
 	@Test
 	public void getTransformedJsonExecutingIfAndElseConditionMetTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(name, "Onias");
 		CcpJsonRepresentation result = json.getTransformedJsonExecutingIfAndElse(
-				j -> j.containsAllFields(nome), j -> j.put(filho, "met"), j -> j.put(filho, "notmet"));
+				j -> j.containsAllFields(name), j -> j.put(filho, "met"), j -> j.put(filho, "notmet"));
 		assertEquals("met", result.getAsString(filho));
 	}
 
 	@Test
 	public void getTransformedJsonExecutingIfAndElseConditionNotMetTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(name, "Onias");
 		CcpJsonRepresentation result = json.getTransformedJsonExecutingIfAndElse(
 				j -> j.containsAllFields(campoQueNaoExiste), j -> j.put(filho, "met"), j -> j.put(filho, "notmet"));
 		assertEquals("notmet", result.getAsString(filho));
@@ -1332,19 +1332,19 @@ public class CcpJsonRepresentationTests {
 
 	@Test
 	public void getTransformedJsonWhenAllConditionsMatchTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias").put(idade, 39);
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(name, "Onias").put(age, 39);
 		CcpJsonRepresentation result = json.getTransformedJsonWhenAllConditionsMatch(
 				j -> j.put(filho, "met"), j -> j.put(filho, "notmet"),
-				j -> j.containsAllFields(nome), j -> j.containsAllFields(idade));
+				j -> j.containsAllFields(name), j -> j.containsAllFields(age));
 		assertEquals("met", result.getAsString(filho));
 	}
 
 	@Test
 	public void getTransformedJsonWhenAllConditionsMatchNaoSatisfazTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(name, "Onias");
 		CcpJsonRepresentation result = json.getTransformedJsonWhenAllConditionsMatch(
 				j -> j.put(filho, "met"), j -> j.put(filho, "notmet"),
-				j -> j.containsAllFields(nome), j -> j.containsAllFields(campoQueNaoExiste));
+				j -> j.containsAllFields(name), j -> j.containsAllFields(campoQueNaoExiste));
 		assertEquals("notmet", result.getAsString(filho));
 	}
 
@@ -1352,16 +1352,16 @@ public class CcpJsonRepresentationTests {
 
 	@Test
 	public void getTransformedJsonConsideringIfAnyOfTheConditionsIsMetConditionMetTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(name, "Onias");
 		CcpJsonRepresentation result = json.getTransformedJsonConsideringIfAnyOfTheConditionsIsMet(
 				j -> j.put(filho, "met"), j -> j.put(filho, "notmet"),
-				j -> j.containsAllFields(nome), j -> j.containsAllFields(campoQueNaoExiste));
+				j -> j.containsAllFields(name), j -> j.containsAllFields(campoQueNaoExiste));
 		assertEquals("met", result.getAsString(filho));
 	}
 
 	@Test
 	public void getTransformedJsonConsideringIfAnyOfTheConditionsIsMetNenhumaCondicaoTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(name, "Onias");
 		CcpJsonRepresentation result = json.getTransformedJsonConsideringIfAnyOfTheConditionsIsMet(
 				j -> j.put(filho, "met"), j -> j.put(filho, "notmet"),
 				j -> j.containsAllFields(campoQueNaoExiste));
@@ -1383,27 +1383,27 @@ public class CcpJsonRepresentationTests {
 
 	@Test
 	public void mergeWithAnotherJsonMapTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(name, "Onias");
 		HashMap<String, Object> extra = new HashMap<>();
-		extra.put(idade.getValue(), 39);
+		extra.put(age.getValue(), 39);
 		CcpJsonRepresentation merged = json.mergeWithAnotherJson(extra);
-		assertTrue(merged.containsAllFields(nome));
-		assertEquals(39, (int) merged.getAsIntegerNumber(idade));
+		assertTrue(merged.containsAllFields(name));
+		assertEquals(39, (int) merged.getAsIntegerNumber(age));
 	}
 
 	// ── put(CcpJsonFieldName, CcpDecorator) ───────────────────────────────────
 
 	@Test
 	public void putDecoratorTest() {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, new CcpStringDecorator("Onias"));
-		assertEquals("Onias", json.getAsString(nome));
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(name, new CcpStringDecorator("Onias"));
+		assertEquals("Onias", json.getAsString(name));
 	}
 
 	// ── toInputStream ─────────────────────────────────────────────────────────
 
 	@Test
 	public void toInputStreamTest() throws Exception {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(name, "Onias");
 		var is = json.toInputStream();
 		byte[] bytes = is.readAllBytes();
 		String str = new String(bytes);
@@ -1414,8 +1414,8 @@ public class CcpJsonRepresentationTests {
 
 	@Test
 	public void getSha1HashTest() {
-		CcpJsonRepresentation json1 = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
-		CcpJsonRepresentation json2 = CcpOtherConstants.EMPTY_JSON.put(nome, "Onias");
+		CcpJsonRepresentation json1 = CcpOtherConstants.EMPTY_JSON.put(name, "Onias");
+		CcpJsonRepresentation json2 = CcpOtherConstants.EMPTY_JSON.put(name, "Onias");
 		String hash1 = json1.getSha1Hash(com.ccp.hash.CcpHashAlgorithm.SHA1);
 		String hash2 = json2.getSha1Hash(com.ccp.hash.CcpHashAlgorithm.SHA1);
 		assertFalse(hash1.isEmpty());
@@ -1431,7 +1431,7 @@ public class CcpJsonRepresentationTests {
 	// mas o próprio construtor sem anotação lança CcpNullParameterException.
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorInputStreamNullParamTest() {
+	public void constructorInputStreamNullParamTest() {
 		new CcpJsonRepresentation((InputStream) null);
 	}
 
@@ -1444,7 +1444,7 @@ public class CcpJsonRepresentationTests {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorStringNullParamTest() {
+	public void constructorStringNullParamTest() {
 		new CcpJsonRepresentation((String) null);
 	}
 
@@ -1467,7 +1467,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void getAsEnumClassNullTest() {
-		CcpOtherConstants.EMPTY_JSON.getAsEnum(nome, null);
+		CcpOtherConstants.EMPTY_JSON.getAsEnum(name, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1477,12 +1477,12 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void getAsEnumWithDefaultClassNullTest() {
-		CcpOtherConstants.EMPTY_JSON.getAsEnum(nome, null, CcpProcessStatusDefault.OK);
+		CcpOtherConstants.EMPTY_JSON.getAsEnum(name, null, CcpProcessStatusDefault.OK);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void getAsEnumWithDefaultDefaultNullTest() {
-		CcpOtherConstants.EMPTY_JSON.put(nome, CcpProcessStatusDefault.OK.name()).getAsEnum(nome, CcpProcessStatusDefault.class, null);
+		CcpOtherConstants.EMPTY_JSON.put(name, CcpProcessStatusDefault.OK.name()).getAsEnum(name, CcpProcessStatusDefault.class, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1519,7 +1519,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void whenFieldsAreNotFoundBusinessNullTest() {
-		CcpOtherConstants.EMPTY_JSON.whenFieldsAreNotFound(null, nome);
+		CcpOtherConstants.EMPTY_JSON.whenFieldsAreNotFound(null, name);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1529,7 +1529,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void whenAnyFieldsAreFoundBusinessNullTest() {
-		CcpOtherConstants.EMPTY_JSON.whenAnyFieldsAreFound(null, nome);
+		CcpOtherConstants.EMPTY_JSON.whenAnyFieldsAreFound(null, name);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1539,7 +1539,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void whenAllFieldsAreFoundBusinessNullTest() {
-		CcpOtherConstants.EMPTY_JSON.whenAllFieldsAreFound(null, nome);
+		CcpOtherConstants.EMPTY_JSON.whenAllFieldsAreFound(null, name);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1561,7 +1561,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void getOrDefaultSupplierNullTest() {
-		CcpOtherConstants.EMPTY_JSON.getOrDefault(nome, (Supplier<String>) null);
+		CcpOtherConstants.EMPTY_JSON.getOrDefault(name, (Supplier<String>) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1583,7 +1583,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void putDecoratorMapNullTest() {
-		CcpOtherConstants.EMPTY_JSON.put(nome, (CcpDecorator<?>) null);
+		CcpOtherConstants.EMPTY_JSON.put(name, (CcpDecorator<?>) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1593,7 +1593,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void putCollectionListNullTest() {
-		CcpOtherConstants.EMPTY_JSON.put(nome, (Collection<CcpJsonRepresentation>) null);
+		CcpOtherConstants.EMPTY_JSON.put(name, (Collection<CcpJsonRepresentation>) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1603,7 +1603,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void putObjectValueNullTest() {
-		CcpOtherConstants.EMPTY_JSON.put(nome, (Object) null);
+		CcpOtherConstants.EMPTY_JSON.put(name, (Object) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1613,7 +1613,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void putInnerJsonValueNullTest() {
-		CcpOtherConstants.EMPTY_JSON.put(nome, (CcpJsonRepresentation) null);
+		CcpOtherConstants.EMPTY_JSON.put(name, (CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1647,7 +1647,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addJsonTransformerProcessNullTest() {
-		CcpOtherConstants.EMPTY_JSON.addJsonTransformer(nome, (CcpBusiness) null);
+		CcpOtherConstants.EMPTY_JSON.addJsonTransformer(name, (CcpBusiness) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1664,7 +1664,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void putSameValueInManyFieldsValueNullTest() {
-		CcpOtherConstants.EMPTY_JSON.putSameValueInManyFields((Object) null, nome);
+		CcpOtherConstants.EMPTY_JSON.putSameValueInManyFields((Object) null, name);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1674,22 +1674,22 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void duplicateValueFromFieldFieldToCopyNullTest() {
-		CcpOtherConstants.EMPTY_JSON.duplicateValueFromField(null, nome);
+		CcpOtherConstants.EMPTY_JSON.duplicateValueFromField(null, name);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void duplicateValueFromFieldFieldsToPasteNullTest() {
-		CcpOtherConstants.EMPTY_JSON.duplicateValueFromField(nome, (CcpJsonFieldName[]) null);
+		CcpOtherConstants.EMPTY_JSON.duplicateValueFromField(name, (CcpJsonFieldName[]) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void renameFieldOldFieldNullTest() {
-		CcpOtherConstants.EMPTY_JSON.renameField(null, nome);
+		CcpOtherConstants.EMPTY_JSON.renameField(null, name);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void renameFieldNewFieldNullTest() {
-		CcpOtherConstants.EMPTY_JSON.renameField(nome, null);
+		CcpOtherConstants.EMPTY_JSON.renameField(name, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1706,7 +1706,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void getValueFromPathDefaultNullTest() {
-		CcpOtherConstants.EMPTY_JSON.getValueFromPath((Object) null, nome);
+		CcpOtherConstants.EMPTY_JSON.getValueFromPath((Object) null, name);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1731,7 +1731,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void getInnerJsonFromPathValueNullTest() {
-		CcpOtherConstants.EMPTY_JSON.getInnerJsonFromPath(nome, null);
+		CcpOtherConstants.EMPTY_JSON.getInnerJsonFromPath(name, null);
 	}
 
 	// ── getTransformedJson condicionais ──────────────────────────────────────
@@ -1872,7 +1872,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addToListValuesNullTest() {
-		CcpOtherConstants.EMPTY_JSON.addToList(nome, (Object[]) null);
+		CcpOtherConstants.EMPTY_JSON.addToList(name, (Object[]) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1882,49 +1882,49 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addToListInnerValueNullTest() {
-		CcpOtherConstants.EMPTY_JSON.addToList(nome, (CcpJsonRepresentation) null);
+		CcpOtherConstants.EMPTY_JSON.addToList(name, (CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addToItemObjectFieldNullTest() {
-		CcpOtherConstants.EMPTY_JSON.addToItem(null, nome, "x");
+		CcpOtherConstants.EMPTY_JSON.addToItem(null, name, "x");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addToItemObjectSubFieldNullTest() {
-		CcpOtherConstants.EMPTY_JSON.addToItem(nome, null, "x");
+		CcpOtherConstants.EMPTY_JSON.addToItem(name, null, "x");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addToItemObjectValueNullTest() {
-		CcpOtherConstants.EMPTY_JSON.addToItem(nome, campo1, (Object) null);
+		CcpOtherConstants.EMPTY_JSON.addToItem(name, campo1, (Object) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addToItemJsonFieldNullTest() {
-		CcpOtherConstants.EMPTY_JSON.addToItem(null, nome, CcpOtherConstants.EMPTY_JSON);
+		CcpOtherConstants.EMPTY_JSON.addToItem(null, name, CcpOtherConstants.EMPTY_JSON);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addToItemJsonSubFieldNullTest() {
-		CcpOtherConstants.EMPTY_JSON.addToItem(nome, null, CcpOtherConstants.EMPTY_JSON);
+		CcpOtherConstants.EMPTY_JSON.addToItem(name, null, CcpOtherConstants.EMPTY_JSON);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addToItemJsonValueNullTest() {
-		CcpOtherConstants.EMPTY_JSON.addToItem(nome, campo1, (CcpJsonRepresentation) null);
+		CcpOtherConstants.EMPTY_JSON.addToItem(name, campo1, (CcpJsonRepresentation) null);
 	}
 
 	// ── copyIfNotContains / putIfNotContains ────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void copyIfNotContainsFromNullTest() {
-		CcpOtherConstants.EMPTY_JSON.copyIfNotContains(null, nome);
+		CcpOtherConstants.EMPTY_JSON.copyIfNotContains(null, name);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void copyIfNotContainsToNullTest() {
-		CcpOtherConstants.EMPTY_JSON.copyIfNotContains(nome, null);
+		CcpOtherConstants.EMPTY_JSON.copyIfNotContains(name, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -1934,7 +1934,7 @@ public class CcpJsonRepresentationTests {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void putIfNotContainsValueNullTest() {
-		CcpOtherConstants.EMPTY_JSON.putIfNotContains(nome, (Object) null);
+		CcpOtherConstants.EMPTY_JSON.putIfNotContains(name, (Object) null);
 	}
 
 	// ── getAsArrayMetadata / getSha1Hash / isInnerJson ──────────────────────

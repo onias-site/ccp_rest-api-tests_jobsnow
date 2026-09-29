@@ -18,9 +18,9 @@ import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginTokenRequestResend;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre os enums de decorators de entidade
+ * Coverage of {@code CcpNullParameterAspect} over the entity decorator enums
  * ({@code CcpEntityDecoratorOperationType}, {@code CcpEntityDecoratorTransferType},
- * {@code CcpEntityExpurgableOptions}) e sobre os métodos default de {@code OperationWriter}.
+ * {@code CcpEntityExpurgableOptions}) and over the default methods of {@code OperationWriter}.
  */
 public class CcpEntityDecoratorEnumsAopNullTest {
 
@@ -159,7 +159,7 @@ public class CcpEntityDecoratorEnumsAopNullTest {
 				ENTITY, null);
 	}
 
-	// ── OperationWriter (métodos default) ─────────────────────────────────────
+	// ── OperationWriter (default methods) ─────────────────────────────────────
 
 	private static OperationWriter operationWriter() {
 		return CcpEntityDecoratorOperationType.save;
@@ -198,7 +198,7 @@ public class CcpEntityDecoratorEnumsAopNullTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void getMillisecondsSobrescritoNullTest() {
+	public void getMillisecondsOverriddenNullTest() {
 		CcpEntityExpurgableOptions.yearly.getMilliseconds(null);
 	}
 

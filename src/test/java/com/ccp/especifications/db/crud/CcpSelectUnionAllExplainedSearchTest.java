@@ -25,10 +25,10 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.entities.JnEntityJobsnowError;
 
 /**
- * Garante o formato do mapa condensado do {@code CcpSelectUnionAll}: o {@code explainedSearch}
- * fica dentro do próprio registro (e não como um irmão {@code explainedSearch.<id>}) e continua
- * presente mesmo quando o registro não foi encontrado, para que uma auditoria saiba como a busca
- * foi feita a despeito do resultado vazio.
+ * Ensures the shape of the condensed map of {@code CcpSelectUnionAll}: {@code explainedSearch}
+ * lives inside the record itself (not as a sibling {@code explainedSearch.<id>}) and stays
+ * present even when the record was not found, so that an audit knows how the search was made
+ * despite the empty result.
  */
 public class CcpSelectUnionAllExplainedSearchTest {
 
@@ -43,9 +43,9 @@ public class CcpSelectUnionAllExplainedSearchTest {
 
 	private static final CcpEntity ENTITY = JnEntityJobsnowError.ENTITY;
 
-	private static final String STACK_TRACE_HASH = "hashdeteste";
+	private static final String STACK_TRACE_HASH = "testhash";
 
-	private static final String TYPE = "tipodeteste";
+	private static final String TYPE = "testtype";
 
 	private static String entityName() {
 		CcpEntityMetaData entityMetaData = ENTITY.getEntityMetaData();
@@ -54,10 +54,10 @@ public class CcpSelectUnionAllExplainedSearchTest {
 	}
 
 	private static CcpJsonRepresentation searchParameter() {
-		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
+		CcpJsonRepresentation searchParameterJson = CcpOtherConstants.EMPTY_JSON
 				.put(JnEntityJobsnowError.Fields.stackTraceHash, STACK_TRACE_HASH)
 				.put(JnEntityJobsnowError.Fields.type, TYPE);
-		return put;
+		return searchParameterJson;
 	}
 
 	private static CcpSelectUnionAll unionAllWithNotFoundRecord() {
@@ -81,7 +81,7 @@ public class CcpSelectUnionAllExplainedSearchTest {
 	}
 
 	@Test
-	public void explainedSearchEhSubElementoDoRegistroTest() {
+	public void explainedSearchIsSubElementOfRecordTest() {
 		CcpJsonRepresentation record = condensedRecord();
 		CcpFieldName explainedSearchFieldName = new CcpFieldName("explainedSearch");
 		boolean containsExplainedSearch = record.containsAllFields(explainedSearchFieldName);
@@ -89,7 +89,7 @@ public class CcpSelectUnionAllExplainedSearchTest {
 	}
 
 	@Test
-	public void naoExisteMaisOIrmaoExplainedSearchPontoIdTest() {
+	public void siblingExplainedSearchDotIdNoLongerExistsTest() {
 		CcpSelectUnionAll unionAll = unionAllWithNotFoundRecord();
 		String id = ENTITY.calculateId(searchParameter());
 		CcpFieldName entityFieldName = new CcpFieldName(entityName());
@@ -101,7 +101,7 @@ public class CcpSelectUnionAllExplainedSearchTest {
 	}
 
 	@Test
-	public void registroNaoEncontradoMantemOExplainedSearchTest() {
+	public void recordNotFoundKeepsExplainedSearchTest() {
 		CcpJsonRepresentation record = condensedRecord();
 		CcpFieldName explainedSearchFieldName = new CcpFieldName("explainedSearch");
 		CcpJsonRepresentation explainedSearch = record.getInnerJson(explainedSearchFieldName);
@@ -112,7 +112,7 @@ public class CcpSelectUnionAllExplainedSearchTest {
 	}
 
 	@Test
-	public void registroNaoEncontradoContinuaAusenteParaQuemConsultaTest() {
+	public void recordNotFoundStaysAbsentForCallerTest() {
 		CcpSelectUnionAll unionAll = unionAllWithNotFoundRecord();
 		String id = ENTITY.calculateId(searchParameter());
 		boolean present = unionAll.isPresent(entityName(), id);
@@ -120,7 +120,7 @@ public class CcpSelectUnionAllExplainedSearchTest {
 	}
 
 	@Test
-	public void getEntityRowNaoDevolveOExplainedSearchTest() {
+	public void getEntityRowDoesNotReturnExplainedSearchTest() {
 		CcpSelectUnionAll unionAll = unionAllWithNotFoundRecord();
 		String id = ENTITY.calculateId(searchParameter());
 		CcpJsonRepresentation entityRow = unionAll.getEntityRow(entityName(), id);

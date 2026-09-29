@@ -4,14 +4,14 @@ import com.ccp.aop.CcpNullParameterException;
 import org.junit.Test;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre o método default
+ * Coverage of {@code CcpNullParameterAspect} over the default method
  * {@code extractJsonFromHttpServletRequest}.
  *
  * <p>
- * O construtor de {@code CcpPutSessionValuesRequestWrapper} não é testável aqui: ele exige um
- * {@code HttpServletRequest} real (mock de container servlet) e, no caso do próprio {@code request}
- * nulo, quem rejeita é {@code jakarta.servlet.http.HttpServletRequestWrapper} — classe fora de
- * {@code com.ccp..}, portanto fora do alcance do aspecto.
+ * The constructor of {@code CcpPutSessionValuesRequestWrapper} is not testable here: it requires a
+ * real {@code HttpServletRequest} (a servlet container mock) and, in the case of the {@code request}
+ * itself being null, the one that rejects it is {@code jakarta.servlet.http.HttpServletRequestWrapper} — a class outside
+ * {@code com.ccp..}, therefore out of the aspect's reach.
  * </p>
  */
 public class CcpJsonExtractorFromHttpServletRequestAopNullTest {

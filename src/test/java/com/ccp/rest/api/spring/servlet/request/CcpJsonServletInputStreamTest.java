@@ -18,13 +18,13 @@ public class CcpJsonServletInputStreamTest {
 	}
 
 	@Test
-	public void construtorTest() {
-		CcpJsonServletInputStream is = new CcpJsonServletInputStream(CcpOtherConstants.EMPTY_JSON);
-		assertNotNull(is);
+	public void constructorTest() {
+		CcpJsonServletInputStream inputStream = new CcpJsonServletInputStream(CcpOtherConstants.EMPTY_JSON);
+		assertNotNull(inputStream);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorNullTest() {
+	public void constructorNullTest() {
 		this.get(null);
 	}
 
@@ -44,9 +44,9 @@ public class CcpJsonServletInputStreamTest {
 	}
 
 	protected CcpJsonServletInputStream get(CcpJsonRepresentation json) {
-		try(CcpJsonServletInputStream is = new CcpJsonServletInputStream(json);) {
+		try(CcpJsonServletInputStream inputStream = new CcpJsonServletInputStream(json);) {
 			
-			return is;
+			return inputStream;
 			
 		} catch (Exception e) {
 			throw new CcpErrorServletInputStreamNotCreated(json, e);
@@ -54,14 +54,14 @@ public class CcpJsonServletInputStreamTest {
 	}
 
 	/**
-	 * Exceção lançada quando o {@code CcpJsonServletInputStream} usado no teste não pôde ser criado ou fechado.
+	 * Exception thrown when the {@code CcpJsonServletInputStream} used in the test could not be created or closed.
 	 */
 	@SuppressWarnings("serial")
 	public static class CcpErrorServletInputStreamNotCreated extends RuntimeException {
 		/**
-		 * Monta a mensagem com o json de origem e encadeia a exceção original como causa.
-		 * @param json o json que alimentaria o stream
-		 * @param cause a exceção original
+		 * Builds the message with the source json and chains the original exception as the cause.
+		 * @param json the json that would feed the stream
+		 * @param cause the original exception
 		 */
 		private CcpErrorServletInputStreamNotCreated(CcpJsonRepresentation json, Throwable cause) {
 			super("It was not possible to create the servlet input stream from the json: " + json, cause);

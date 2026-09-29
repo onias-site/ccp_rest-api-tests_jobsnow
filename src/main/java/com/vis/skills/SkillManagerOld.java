@@ -59,14 +59,14 @@ public class SkillManagerOld {
 		text
 	}
 	static int counter;
-	static void apagarTodosOsAgrupamentosDeSkills() {
+	static void deleteAllSkillGroupings() {
 		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
 		CcpQueryOptions query = CcpQueryOptions.INSTANCE.matchAll();
 		queryExecutor.delete(query, "group_positions_by_skills");
 	} 
 
-	static void relatorioDeSkillsPesquisadas(String...skils) {
-		for (String skill : skils) {
+	static void searchedSkillsReport(String...skills) {
+		for (String skill : skills) {
 			int wordStatus = VisEntityGroupPositionsBySkills.getWordStatus(skill);
 			System.out.println(skill + " = " + wordStatus);
 		}
@@ -78,11 +78,11 @@ public class SkillManagerOld {
 				 .put(JsonFields.text, text)
 				 .content
 				 ;
-		Map<String, Object> execute = VisServiceSkills.GetSkillsFromText.execute(sessionValues);
+		Map<String, Object> skillsResult = VisServiceSkills.GetSkillsFromText.execute(sessionValues);
 
 		
-		CcpJsonRepresentation md = new CcpJsonRepresentation(execute);
-		return md;
+		CcpJsonRepresentation extractedSkills = new CcpJsonRepresentation(skillsResult);
+		return extractedSkills;
 	}
 
 	static void getSkillsFromText() {
@@ -128,26 +128,26 @@ public class SkillManagerOld {
 
 
 	static Set<String> getOtherWords(String word){
-		String[] split = word.split(" ");
-		if(split.length != 2) {
-			List<String> asList = Arrays.asList(word);
-			HashSet<String> hashSet = new HashSet<>(asList);
-			return hashSet;
+		String[] wordPieces = word.split(" ");
+		if(wordPieces.length != 2) {
+			List<String> singleWordList = Arrays.asList(word);
+			HashSet<String> singleWordSet = new HashSet<>(singleWordList);
+			return singleWordSet;
 		}
 		
-		String r1 = word.replace(" ", "");
-		String r2 = word.replace(" ", "-");
-		String r3 = word.replace(" ", ".");
+		String wordWithoutSpace = word.replace(" ", "");
+		String hyphenatedWord = word.replace(" ", "-");
+		String dottedWord = word.replace(" ", ".");
 		
-		Set<String> response = new HashSet<>( Arrays.asList(r1, r2, r3));
-		String secondPiece = split[1];
+		Set<String> response = new HashSet<>( Arrays.asList(wordWithoutSpace, hyphenatedWord, dottedWord));
+		String secondPiece = wordPieces[1];
 		
-		boolean longNumber = new CcpStringDecorator(secondPiece).isLongNumber();
+		boolean secondPieceIsNumber = new CcpStringDecorator(secondPiece).isLongNumber();
 		
-		if(longNumber) {
+		if(secondPieceIsNumber) {
 			return response;
 		}
-		String firstPiece = split[0];
+		String firstPiece = wordPieces[0];
 		
 		String reverse = secondPiece + " " + firstPiece;
 		
@@ -157,10 +157,10 @@ public class SkillManagerOld {
 	}	
 	
 	static Set<String> getAllWords(List<String> lines){
-		List<Set<String>> collect = lines.stream().map(x -> Arrays.asList(x.split(",")).stream().map(y -> y.trim().toUpperCase()).filter(y -> y.length() > 1).collect(Collectors.toSet())).collect(Collectors.toList());
+		List<Set<String>> wordGroups = lines.stream().map(x -> Arrays.asList(x.split(",")).stream().map(y -> y.trim().toUpperCase()).filter(y -> y.length() > 1).collect(Collectors.toSet())).collect(Collectors.toList());
 		Set<String> allWords = new HashSet<>();
-		for (Set<String> set : collect) {
-			allWords.addAll(set);
+		for (Set<String> wordGroup : wordGroups) {
+			allWords.addAll(wordGroup);
 		}
 		return allWords;
 	}
@@ -172,8 +172,8 @@ public class SkillManagerOld {
 			if("JAVAGRAPHQL".equals(word)) {
 				System.out.println();
 			}
-			Set<String> otherWords2 = getOtherWords(word);
-			response.addAll(otherWords2);
+			Set<String> wordVariants = getOtherWords(word);
+			response.addAll(wordVariants);
 		}
 		return response;
 	}
@@ -181,16 +181,16 @@ public class SkillManagerOld {
 	
 	static void saveSynonyms() {
 		String folder = "C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\";
-		List<CcpJsonRepresentation> asJsonList = new CcpStringDecorator(folder+ "report_skills.json").file().asJsonList();
+		List<CcpJsonRepresentation> skillsReport = new CcpStringDecorator(folder+ "report_skills.json").file().asJsonList();
 		List<String> lines = new CcpStringDecorator(folder+ "synonyms.txt").file().getLines();
-		CcpFileDecorator synonyms2 = new CcpStringDecorator(folder+ "synonyms2.txt").file().reset();
-		List<Set<String>> collect = lines.stream().map(x -> Arrays.asList(x.split(",")).stream().map(y -> y.trim().toUpperCase()).filter(y -> y.length() > 1).collect(Collectors.toSet())).collect(Collectors.toList());
+		CcpFileDecorator synonymsOutputFile = new CcpStringDecorator(folder+ "synonyms2.txt").file().reset();
+		List<Set<String>> synonymGroups = lines.stream().map(x -> Arrays.asList(x.split(",")).stream().map(y -> y.trim().toUpperCase()).filter(y -> y.length() > 1).collect(Collectors.toSet())).collect(Collectors.toList());
 		List<String> allSynonyms = new ArrayList<>(lines);
-		for (CcpJsonRepresentation json : asJsonList) {
+		for (CcpJsonRepresentation json : skillsReport) {
 			String skill = json.getAsString(JsonFields.skill);
 			boolean skillFound = false;
-			for (Set<String> set : collect) {
-				skillFound = set.contains(skill);
+			for (Set<String> synonymGroup : synonymGroups) {
+				skillFound = synonymGroup.contains(skill);
 				if(skillFound) {
 					break;
 				}
@@ -202,12 +202,12 @@ public class SkillManagerOld {
 		
 		allSynonyms.sort((a, b) -> a.compareTo(b));
 		
-		for (String string : allSynonyms) {
-			String trim = string.toUpperCase().trim();
-			if(trim.length() < 2) {
+		for (String synonym : allSynonyms) {
+			String normalizedSynonym = synonym.toUpperCase().trim();
+			if(normalizedSynonym.length() < 2) {
 				continue;
 			}
-			synonyms2.append(trim);
+			synonymsOutputFile.append(normalizedSynonym);
 		}
 	}
 
@@ -215,7 +215,7 @@ public class SkillManagerOld {
 	static void saveSkills() {
 		String folder = "C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\";
 		List<String> lines = new CcpStringDecorator(folder+ "ajustes_synonyms.txt").file().getLines();
-		List<List<String>> filtered = lines
+		List<List<String>> skillLines = lines
 		.stream()
 		.filter(x -> x.startsWith("adicionarParent="))
 		.map(x-> x.split("=")[1])
@@ -226,32 +226,32 @@ public class SkillManagerOld {
 		
 		HashSet<String> skills = new HashSet<>();
 		
-		for (List<String> list : filtered) {
-			skills.addAll(list);
+		for (List<String> skillLine : skillLines) {
+			skills.addAll(skillLine);
 		}
 		
 		List<CcpJsonRepresentation> report = skills
 		.stream()
 		.map(x -> CcpOtherConstants.EMPTY_JSON.put(JsonFields.skill, x))
-		.map(x -> x.put(JsonFields.childrenCount, new ArrayList<>(filtered).stream().filter(skillsNestaLinha -> skillsNestaLinha.indexOf(x.getAsString(JsonFields.skill)) > 0).count()))
+		.map(x -> x.put(JsonFields.childrenCount, new ArrayList<>(skillLines).stream().filter(skillsInThisLine -> skillsInThisLine.indexOf(x.getAsString(JsonFields.skill)) > 0).count()))
 		.map(x -> {
-			Optional<List<String>> findFirst = new ArrayList<>(filtered).stream().filter(skillsNestaLinha -> skillsNestaLinha.indexOf(x.getAsString(JsonFields.skill)) == 0).findFirst();
-			boolean hasNoParent = false == findFirst.isPresent();
+			Optional<List<String>> lineStartingWithSkill = new ArrayList<>(skillLines).stream().filter(skillsInThisLine -> skillsInThisLine.indexOf(x.getAsString(JsonFields.skill)) == 0).findFirst();
+			boolean hasNoParent = false == lineStartingWithSkill.isPresent();
 			if(hasNoParent) {
 				return x;
 			}
-			List<String> list = findFirst.get();
-			List<String> parent = list.subList(1, list.size());
-			CcpJsonRepresentation put = x.put(JsonFields.parent, parent);
-			return put;
+			List<String> skillLine = lineStartingWithSkill.get();
+			List<String> parent = skillLine.subList(1, skillLine.size());
+			CcpJsonRepresentation skillWithParent = x.put(JsonFields.parent, parent);
+			return skillWithParent;
 		})
-		.map(x -> x.put(JsonFields.hasNoParent, new ArrayList<>( filtered).stream().allMatch(skillsNestaLinha -> skillsNestaLinha.indexOf(x.getAsString(JsonFields.skill)) != 0)))
+		.map(x -> x.put(JsonFields.hasNoParent, new ArrayList<>( skillLines).stream().allMatch(skillsInThisLine -> skillsInThisLine.indexOf(x.getAsString(JsonFields.skill)) != 0)))
 		.collect(Collectors.toList());
 		
 		
 		Comparator<? super CcpJsonRepresentation> sorter = getSorter("hasRepeatedParent", "hasSkillsWithCommonParentsSize", "hasMirror", "childrenCount", "skill");
 		
-		List<CcpJsonRepresentation> collect = report
+		List<CcpJsonRepresentation> skillsWithMirrors = report
 		.stream()
 		.map(x -> x.put(JsonFields.mirror, getSynonym(x, report)))
 		.map(x -> x.put(JsonFields.hasMirror, false == x.getAsString(JsonFields.mirror).isEmpty()))
@@ -263,9 +263,9 @@ public class SkillManagerOld {
 		
 		List<CcpJsonRepresentation> newList = new ArrayList<>();
 		
-		List<String> synonyms3 = new CcpStringDecorator(folder+ "synonyms3.txt").file().getLines();
+		List<String> synonymLines = new CcpStringDecorator(folder+ "synonyms3.txt").file().getLines();
 
-		List<Set<String>> synonyms = synonyms3.stream()
+		List<Set<String>> synonyms = synonymLines.stream()
 				.map(x -> Arrays.asList(x.split(",")).stream()
 						.map(y -> y.trim().toUpperCase())
 						.filter(y -> y.length() > 1)
@@ -274,13 +274,13 @@ public class SkillManagerOld {
 				.map(x -> getOtherWords(x))
 				.collect(Collectors.toList());
 		
-		for (CcpJsonRepresentation json : collect) {
+		for (CcpJsonRepresentation json : skillsWithMirrors) {
 			List<String> allParents = new ArrayList<>();
 			getAllParents(allParents, report, json);
 			
-			HashSet<String> set = new HashSet<String>(allParents);
-			boolean hasRepeatedParent = set.size() != allParents.size();
-			CcpJsonRepresentation put = json.put(JsonFields.allParents, allParents.stream()
+			HashSet<String> distinctParents = new HashSet<String>(allParents);
+			boolean hasRepeatedParent = distinctParents.size() != allParents.size();
+			CcpJsonRepresentation skillWithAllParents = json.put(JsonFields.allParents, allParents.stream()
 					.map(skill -> CcpOtherConstants.EMPTY_JSON.put(JsonFields.skill, skill)
 							
 							.put(JsonFields.parent, getParent(skill, report))
@@ -291,7 +291,7 @@ public class SkillManagerOld {
 					
 					;
 			
-			String skill = put.getAsString(JsonFields.skill);
+			String skill = skillWithAllParents.getAsString(JsonFields.skill);
 			
 			List<Set<String>> foundSynonyms = synonyms.stream()
 					.filter(x -> x.stream().anyMatch(y -> y.trim().equals(skill)))
@@ -305,12 +305,12 @@ public class SkillManagerOld {
 				throw new VisErrorSkillWithManySynonymGroups(skill, foundSynonyms);
 			}
 
-			List<CcpJsonRepresentation> foundSynonym = foundSynonyms.get(0).stream()
+			List<CcpJsonRepresentation> synonymsAsJson = foundSynonyms.get(0).stream()
 					.filter(x -> false == x.equals(skill))
 					.map(x -> CcpOtherConstants.EMPTY_JSON.put(JsonFields.skill, x)).collect(Collectors.toList());
 			
-			CcpJsonRepresentation withSynonym = put
-					.put(JsonFields.synonym, foundSynonym)
+			CcpJsonRepresentation withSynonym = skillWithAllParents
+					.put(JsonFields.synonym, synonymsAsJson)
 					.getJsonPiece(
 							JsonFields.skill, JsonFields.childrenCount
 					, JsonFields.parent
@@ -334,33 +334,33 @@ public class SkillManagerOld {
 		Comparator<? super CcpJsonRepresentation> sorter = (a, b) -> {
 			
 			for (String field : fields) {
-				CcpStringDecorator sd1 = a.getAsStringDecorator(new CcpFieldName(field));
+				CcpStringDecorator firstFieldValue = a.getAsStringDecorator(new CcpFieldName(field));
 
-				if(sd1.isLongNumber()) {
-					Integer int2 = b.getAsIntegerNumber(new CcpFieldName(field));
-					Integer int1 = a.getAsIntegerNumber(new CcpFieldName(field));
-					int subtration = int2 - int1;
-					if(subtration == 0) {
+				if(firstFieldValue.isLongNumber()) {
+					Integer secondNumber = b.getAsIntegerNumber(new CcpFieldName(field));
+					Integer firstNumber = a.getAsIntegerNumber(new CcpFieldName(field));
+					int difference = secondNumber - firstNumber;
+					if(difference == 0) {
 						continue;
 					}
-					return subtration;
+					return difference;
 				}
 
-				var b1 = a.getAsString(new CcpFieldName(field));
-				var b2 = b.getAsString(new CcpFieldName(field));
+				var firstString = a.getAsString(new CcpFieldName(field));
+				var secondString = b.getAsString(new CcpFieldName(field));
 
-				if(sd1.isBoolean()) {
-					int compareTo = b2.compareTo(b1);
-					if(compareTo == 0) {
+				if(firstFieldValue.isBoolean()) {
+					int comparison = secondString.compareTo(firstString);
+					if(comparison == 0) {
 						continue;
 					}
-					return compareTo;
+					return comparison;
 				}
-				int compareTo = b1.compareTo(b2);
-				if(compareTo == 0) {
+				int comparison = firstString.compareTo(secondString);
+				if(comparison == 0) {
 					continue;
 				}
-				return compareTo;
+				return comparison;
 			}
 			
 			return 0;
@@ -369,22 +369,22 @@ public class SkillManagerOld {
 	}
 
 	static CcpJsonRepresentation getSkillsWithCommonParentsSize(CcpJsonRepresentation json, List<CcpJsonRepresentation> report) {
-		List<String> collect = report.stream()
+		List<String> skillsWithCommonParents = report.stream()
 		.filter(x -> false == x.getAsString(JsonFields.skill).equals(json.getAsString(JsonFields.skill)))
 		.map(x -> x.put(JsonFields.commonParents, getCommonParents(x, json)))
 		.filter(x -> x.getAsStringList(JsonFields.commonParents).size() > 1)
 		.map(x -> x.getAsString(JsonFields.skill))
 		.collect(Collectors.toList());
-		CcpJsonRepresentation put = json.put(JsonFields.hasSkillsWithCommonParentsSize, false == collect.isEmpty())
-				.put(JsonFields.skillsWithCommonParents, collect);
-		return put;
+		CcpJsonRepresentation jsonWithCommonParents = json.put(JsonFields.hasSkillsWithCommonParentsSize, false == skillsWithCommonParents.isEmpty())
+				.put(JsonFields.skillsWithCommonParents, skillsWithCommonParents);
+		return jsonWithCommonParents;
 	}
 	
 	static List<String> getCommonParents(CcpJsonRepresentation json1, CcpJsonRepresentation json2) {
-		List<String> parent1 = json1.getAsStringList(JsonFields.parent);
-		List<String> parent2 = json2.getAsStringList(JsonFields.parent);
-		List<String> intersectList = new CcpCollectionDecorator(parent1).getIntersectList(parent2);
-		return intersectList;
+		List<String> firstParents = json1.getAsStringList(JsonFields.parent);
+		List<String> secondParents = json2.getAsStringList(JsonFields.parent);
+		List<String> commonParents = new CcpCollectionDecorator(firstParents).getIntersectList(secondParents);
+		return commonParents;
 	}
 	
 	
@@ -406,12 +406,12 @@ public class SkillManagerOld {
 	}
 
 	static String getSynonym(CcpJsonRepresentation json, List<CcpJsonRepresentation> report) {
-		List<String> parent = json.getAsStringList(JsonFields.parent);
-		if(parent.size() != 1) {
+		List<String> parents = json.getAsStringList(JsonFields.parent);
+		if(parents.size() != 1) {
 			return "";
 		}
-		String parentName = parent.get(0);
-		String orElseGet = new ArrayList<>(report)
+		String parentName = parents.get(0);
+		String synonym = new ArrayList<>(report)
 		.stream()
 		.filter(x -> x.getAsString(JsonFields.skill).equals(parentName))
 		.filter(x -> x.getAsIntegerNumber(JsonFields.childrenCount) == 1)
@@ -419,63 +419,63 @@ public class SkillManagerOld {
 		.findFirst()
 		.orElseGet(() -> "");
 		
-		return orElseGet;
+		return synonym;
 	}
 	
 	static void getMissingWords() {
-		HashSet<String> todos = new HashSet<>();
-		List<List<String>> collect = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\ajustes_synonyms.txt").file().getLines()
+		HashSet<String> allAdjustedSkills = new HashSet<>();
+		List<List<String>> adjustedSkillLines = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\ajustes_synonyms.txt").file().getLines()
 		.stream().filter(x -> x.startsWith("adicionarParent="))
 		.map(x -> x.trim().split("=")[1])
 		.map(x -> x.split(","))
 		.map(x -> Arrays.asList(x).stream().map(y -> y.trim().toUpperCase()).collect(Collectors.toList()))
 		.collect(Collectors.toList());
 		
-		for (List<String> list : collect) {
-			todos.addAll(list);
+		for (List<String> adjustedSkillLine : adjustedSkillLines) {
+			allAdjustedSkills.addAll(adjustedSkillLine);
 		}
 		CcpFileDecorator synonymsFile = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\skills\\synonyms.json").file();
 		List<CcpJsonRepresentation> synonyms = new ArrayList<CcpJsonRepresentation>(synonymsFile.asJsonList());
 		
 		
-		int ajustadas = 0;
+		int adjustedCount = 0;
 		List<CcpJsonRepresentation> missing = new ArrayList<>();
 		for (CcpJsonRepresentation json : synonyms) {
 			
 			String skill = json.getAsString(JsonFields.skill);
 
 
-			if(todos.contains(skill)) {
-				ajustadas ++;
+			if(allAdjustedSkills.contains(skill)) {
+				adjustedCount ++;
 				continue;
 			}
-			List<CcpJsonRepresentation> asJsonList = json.getAsJsonList(JsonFields.synonym);
-			boolean anyMatch = asJsonList.stream().map(x -> x.getAsString(JsonFields.skill)).anyMatch(x -> todos.contains(x));
+			List<CcpJsonRepresentation> synonymsOfSkill = json.getAsJsonList(JsonFields.synonym);
+			boolean anySynonymAdjusted = synonymsOfSkill.stream().map(x -> x.getAsString(JsonFields.skill)).anyMatch(x -> allAdjustedSkills.contains(x));
 			
-			if(anyMatch) {
-				ajustadas ++;
+			if(anySynonymAdjusted) {
+				adjustedCount ++;
 				continue;
 			}
 			missing.add(json);
 		}
-		List<String> removidas = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\removidas.txt").file().getLines().stream().map(x -> x.trim().split(" = ")[0]).collect(Collectors.toList());
-		int estudar = 0;
-		for (CcpJsonRepresentation copy : missing) {
-			String skill = copy.getAsString(JsonFields.skill);
-			if(removidas.contains(skill)) {
+		List<String> removedSkills = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\removidas.txt").file().getLines().stream().map(x -> x.trim().split(" = ")[0]).collect(Collectors.toList());
+		int toStudyCount = 0;
+		for (CcpJsonRepresentation missingSkill : missing) {
+			String skill = missingSkill.getAsString(JsonFields.skill);
+			if(removedSkills.contains(skill)) {
 				continue;
 			}
 			System.out.println(skill);
-			estudar++;
+			toStudyCount++;
 		}
-		System.out.println("INICIO: " + synonyms.size());
-		System.out.println("TODOS: " + todos.size());
-		System.out.println("REMOVIDAS: " + removidas.size());
-		System.out.println("AJUSTADAS: " + ajustadas);
-		System.out.println("ESTUDAR: " + estudar);
+		System.out.println("START: " + synonyms.size());
+		System.out.println("ALL: " + allAdjustedSkills.size());
+		System.out.println("REMOVED: " + removedSkills.size());
+		System.out.println("ADJUSTED: " + adjustedCount);
+		System.out.println("TO STUDY: " + toStudyCount);
 	}
 
-		static void aumentarArquivoDeSinonimos() {
+		static void increaseSynonymsFile() {
 		CcpFileDecorator synonymsFile = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\skills\\synonyms.json").file();
 		CcpFileDecorator countByWords = new CcpStringDecorator("c:/logs/skills/countByWords.txt").file();
 		List<String> existingWords = countByWords.getLines().subList(0, 1408).stream().map(x -> x.split(" = ")[0]).collect(Collectors.toList());
@@ -488,13 +488,13 @@ public class SkillManagerOld {
 		Consumer<CcpJsonRepresentation> consumer = json -> {
 			String[] fields = new String[] {"requisitosDesejaveis", "requisitosObrigatorios", "must", "should"};
 			for (String field : fields) {
-				List<String> list = json.getAsStringList(new CcpFieldName(field)).stream()
+				List<String> newFieldWords = json.getAsStringList(new CcpFieldName(field)).stream()
 						.map(x -> new CcpStringDecorator(x).text().stripAccents().sanitize().getContent().toUpperCase().trim())
 						.filter(x -> x.length() > 2 && x.length() <= 50)
 						.filter(x -> false == existingWords.contains(x))
 						.collect(Collectors.toList());
 				
-				words.addAll(list);
+				words.addAll(newFieldWords);
 				
 			}
 			System.out.println(counter++ + " = " + words.size());
@@ -533,9 +533,9 @@ public class SkillManagerOld {
 				allSimilar.remove(parent);
 			}
 
-			List<CcpJsonRepresentation> asJsonList = synonym.getAsJsonList(JsonFields.synonym);
-			for (CcpJsonRepresentation sym : asJsonList) {
-				String skill = sym.getAsString(JsonFields.skill);
+			List<CcpJsonRepresentation> synonymsOfSkill = synonym.getAsJsonList(JsonFields.synonym);
+			for (CcpJsonRepresentation synonymEntry : synonymsOfSkill) {
+				String skill = synonymEntry.getAsString(JsonFields.skill);
 				allSimilar.remove(skill);
 				
 			}
@@ -545,12 +545,12 @@ public class SkillManagerOld {
 		var countByWords = new CcpStringDecorator("c:/logs/skills/countByWords.txt").file().getLines();
 		
 		for (String similar : allSimilar) {
-			String string = countByWords.stream().filter(x -> x.startsWith(similar)).findFirst().get();
-			newWords.append(string);
+			String wordCountLine = countByWords.stream().filter(x -> x.startsWith(similar)).findFirst().get();
+			newWords.append(wordCountLine);
 		}
 	}
 	
-	static void relatoriosDasSkillsNosCurriculos() {
+	static void skillsInResumesReports() {
 		CcpTextExtractor textExtractor = CcpDependencyInjection.getDependency(CcpTextExtractor.class);
 		
 		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
@@ -564,37 +564,37 @@ public class SkillManagerOld {
 				String base64 = json.getValueFromPath("", JsonFields.curriculo, JsonFields.conteudo);
 				
 				String resumeText = textExtractor.extractText(base64);
-				CcpJsonRepresentation md = getSkillsFromText(resumeText);
+				CcpJsonRepresentation extractedSkills = getSkillsFromText(resumeText);
 				
 				String id = json.getAsString(JsonFields.id);
-				String tipoVaga = json.getAsString(JsonFields.tipoVaga);
+				String positionType = json.getAsString(JsonFields.tipoVaga);
 
-				List<CcpJsonRepresentation> skills = md.getAsJsonList(JsonFields.skill).stream()
+				List<CcpJsonRepresentation> skills = extractedSkills.getAsJsonList(JsonFields.skill).stream()
 						.collect(Collectors.toList());
 				
-				CcpTextDecorator completeLeft = new CcpStringDecorator(""+ skills.size()).text().completeLeft('0', 3);
+				CcpTextDecorator paddedSkillCount = new CcpStringDecorator(""+ skills.size()).text().completeLeft('0', 3);
 				
-				String fileName = completeLeft + "_" + id  + "_" + tipoVaga + ".json";
+				String fileName = paddedSkillCount + "_" + id  + "_" + positionType + ".json";
 				
 				for (CcpJsonRepresentation skill : skills) {
 					String word = skill.getAsString(JsonFields.word);
-					Integer counter = countByWords.getOrDefault(word, 0) + 1;
-					countByWords.put(word, counter);
-					Set<String> orDefault = groupedResumes.getOrDefault(word, new HashSet<>());
-					orDefault.add(id);
-					groupedResumes.put(word, orDefault);
+					Integer wordCount = countByWords.getOrDefault(word, 0) + 1;
+					countByWords.put(word, wordCount);
+					Set<String> resumesWithWord = groupedResumes.getOrDefault(word, new HashSet<>());
+					resumesWithWord.add(id);
+					groupedResumes.put(word, resumesWithWord);
 				}
 				
 				countByResume.put(id, skills.size());
-				CcpJsonRepresentation subReportFromSkills = getSubReportFromSkills(md, id + "_" + tipoVaga);
+				CcpJsonRepresentation subReportFromSkills = getSubReportFromSkills(extractedSkills, id + "_" + positionType);
 				
-				String asPrettyJson = md
+				String resumeSkillsJson = extractedSkills
 						.put(JsonFields.skill, skills)
 						.asPrettyJson();
 				
 				reports.put(fileName, subReportFromSkills);
 				
-				new CcpStringDecorator("c:/logs/skills/" + fileName).file().reset().append(asPrettyJson);
+				new CcpStringDecorator("c:/logs/skills/" + fileName).file().reset().append(resumeSkillsJson);
 				System.out.println(counter++ + " = " + fileName);
 				
 			}
@@ -613,9 +613,9 @@ public class SkillManagerOld {
 		
 		createReport(countByResume, "c:/logs/skills/countByResume.txt",  word -> {});
 		
-		CcpFileDecorator removidas = new CcpStringDecorator("c:/logs/skills/removidas.txt").file().reset();
+		CcpFileDecorator removedWordsFile = new CcpStringDecorator("c:/logs/skills/removidas.txt").file().reset();
 		for (String removedWord : allWords) {
-			removidas.append(removedWord);
+			removedWordsFile.append(removedWord);
 		}
 		CcpFileDecorator groupedResumesFile = new CcpStringDecorator("c:/logs/skills/groupedResumes.txt").file().reset();
 		Set<String> skills = groupedResumes.keySet();
@@ -623,12 +623,12 @@ public class SkillManagerOld {
 			groupedResumesFile.append(skill + "=" + groupedResumes.get(skill));
 		}
 		
-		Set<String> keySet = reports.keySet();
+		Set<String> reportFileNames = reports.keySet();
 		double skillsCount = 0;
 		double parentsCount = 0;
 		
-		for (String string : keySet) {
-			CcpJsonRepresentation report = reports.get(string);
+		for (String reportFileName : reportFileNames) {
+			CcpJsonRepresentation report = reports.get(reportFileName);
 			Integer parentSize = report.getAsIntegerNumber(JsonFields.parentSize);
 			Integer skillSize = report.getAsIntegerNumber(JsonFields.skillSize);
 			
@@ -638,8 +638,8 @@ public class SkillManagerOld {
 		
 		System.out.println(skillsCount / parentsCount);
 		
-		List<CcpJsonRepresentation> arrayList = new ArrayList<>(reports.values());
-		arrayList.sort((a, b) -> {
+		List<CcpJsonRepresentation> sortedReports = new ArrayList<>(reports.values());
+		sortedReports.sort((a, b) -> {
 			
 			if(false == b.containsAllFields(JsonFields.skillsPerParent)) {
 				return -1;
@@ -649,23 +649,23 @@ public class SkillManagerOld {
 				return 1;
 			}
 
-			Integer x2 = (int)(b.getAsDoubleNumber(JsonFields.skillsPerParent) * 1000) ;
-			Integer x1 = (int)(a.getAsDoubleNumber(JsonFields.skillsPerParent) * 1000);
+			Integer secondSkillsPerParent = (int)(b.getAsDoubleNumber(JsonFields.skillsPerParent) * 1000) ;
+			Integer firstSkillsPerParent = (int)(a.getAsDoubleNumber(JsonFields.skillsPerParent) * 1000);
 			
-			return x2 - x1;
+			return secondSkillsPerParent - firstSkillsPerParent;
 		});
 		
 		CcpFileDecorator report = new CcpStringDecorator("c:/logs/skills/report.txt").file().reset();
 		
-		for (CcpJsonRepresentation rep : arrayList) {
-			report.append(rep.asUgglyJson());
+		for (CcpJsonRepresentation sortedReport : sortedReports) {
+			report.append(sortedReport.asUgglyJson());
 		}
 	}
 	
-	static CcpJsonRepresentation getSubReportFromSkills(CcpJsonRepresentation md, String id) {
-		List<CcpJsonRepresentation> skills = md.getAsJsonList(JsonFields.skill);
+	static CcpJsonRepresentation getSubReportFromSkills(CcpJsonRepresentation extractedSkills, String id) {
+		List<CcpJsonRepresentation> skills = extractedSkills.getAsJsonList(JsonFields.skill);
 
-		Set<String> set1 = new HashSet<>();
+		Set<String> parentsOfSkills = new HashSet<>();
 		Set<String> allSkills = new HashSet<>();
 		Set<String> allWords = new HashSet<>();
 
@@ -673,18 +673,18 @@ public class SkillManagerOld {
 			List<String> parents = skill.getAsStringList(JsonFields.parent);
 			String skillName = skill.getAsString(JsonFields.skill);
 			String word = skill.getAsString(JsonFields.word);
-			set1.addAll(parents);
+			parentsOfSkills.addAll(parents);
 			allSkills.add(skillName);
 			allWords.add(word);
 		}
 		
-		List<String> allParents = set1.stream().filter(parent -> false == allSkills.contains(parent)).collect(Collectors.toList());
+		List<String> allParents = parentsOfSkills.stream().filter(parent -> false == allSkills.contains(parent)).collect(Collectors.toList());
 		
 		double allSkillsSize = allSkills.size();
 		double allParentsSize = allParents.size();
 		
 
-		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
+		CcpJsonRepresentation subReport = CcpOtherConstants.EMPTY_JSON
 				.put(JsonFields.parentSize, allParentsSize)
 				.put(JsonFields.skillSize, allSkillsSize)
 				.put(JsonFields.words, allWords)
@@ -693,9 +693,9 @@ public class SkillManagerOld {
 
 		if(allParentsSize > 0) {
 			double skillsPerParent = allSkillsSize / allParentsSize;
-			put = put.put(JsonFields.skillsPerParent, skillsPerParent);
+			subReport = subReport.put(JsonFields.skillsPerParent, skillsPerParent);
 		}
-		return put;
+		return subReport;
 	}
 	
 	static List<String> getAllWords() {
@@ -703,51 +703,51 @@ public class SkillManagerOld {
 		CcpQueryOptions query = CcpQueryOptions.INSTANCE.matchAll().setSize(10000);
 		List<CcpJsonRepresentation> resultAsList = queryExecutor.getResultAsList(query, new String[] {"group_positions_by_skills"}, "skill");
 		
-		Set<String> set = new HashSet<>();
+		Set<String> uniqueWords = new HashSet<>();
 		for (CcpJsonRepresentation json : resultAsList) {
-			List<CcpJsonRepresentation> list = json.getAsJsonList(JsonFields.skill);
-			List<String> collect = list.stream().map(x -> x.getAsString(JsonFields.word)).collect(Collectors.toList());
-			set.addAll(collect);
+			List<CcpJsonRepresentation> skillsOfGroup = json.getAsJsonList(JsonFields.skill);
+			List<String> wordsOfGroup = skillsOfGroup.stream().map(x -> x.getAsString(JsonFields.word)).collect(Collectors.toList());
+			uniqueWords.addAll(wordsOfGroup);
 		}
-		ArrayList<String> list = new ArrayList<>(set);
-		list.sort((a,b) -> a.length() - b.length());
-		return list;
+		ArrayList<String> sortedWords = new ArrayList<>(uniqueWords);
+		sortedWords.sort((a,b) -> a.length() - b.length());
+		return sortedWords;
 	}
 
 	static void createReport(Map<String, Integer> reportSource, String reportFile, Consumer<String> consumer) {
 		
-		ArrayList<String> list = new ArrayList<String>(reportSource.keySet());
-		list.sort((a, b) -> reportSource.get(b) - reportSource.get(a));
+		ArrayList<String> sortedWords = new ArrayList<String>(reportSource.keySet());
+		sortedWords.sort((a, b) -> reportSource.get(b) - reportSource.get(a));
 		CcpFileDecorator report = new CcpStringDecorator(reportFile).file().reset();
 		Integer total = 0;
 		Map<Integer, Integer> numbers = new TreeMap<>();
-		for (String word : list) {
+		for (String word : sortedWords) {
 			Integer count = reportSource.get(word);
 			report.append(word + " = " + count);
 			consumer.accept(word);
 			total += count;
-			Integer orDefault = numbers.getOrDefault(count, 0) + 1;
-			numbers.put(count, orDefault);
+			Integer wordsWithThisCount = numbers.getOrDefault(count, 0) + 1;
+			numbers.put(count, wordsWithThisCount);
 		}
-		Integer average = total / list.size();
+		Integer average = total / sortedWords.size();
 		
 		report.append("AVERAGE = " + average);
 		
-		Set<Integer> keySet = numbers.keySet();
-		for (Integer integer : keySet) {
-			Integer value = numbers.get(integer);
-			report.append(integer + " = " + value);
+		Set<Integer> distinctCounts = numbers.keySet();
+		for (Integer distinctCount : distinctCounts) {
+			Integer wordsWithThisCount = numbers.get(distinctCount);
+			report.append(distinctCount + " = " + wordsWithThisCount);
 		}
 	}
 
 	/**
-	 * Exceção lançada quando uma skill não é encontrada em nenhum grupo de sinônimos.
+	 * Exception thrown when a skill is not found in any synonym group.
 	 */
 	@SuppressWarnings("serial")
 	public static class VisErrorSkillWithoutSynonyms extends RuntimeException {
 		/**
-		 * Monta a mensagem informando qual skill está sem sinônimos.
-		 * @param skill a skill sem grupo de sinônimos
+		 * Builds the message stating which skill has no synonyms.
+		 * @param skill the skill without a synonym group
 		 */
 		private VisErrorSkillWithoutSynonyms(String skill) {
 			super(skill + " has no synonyms");
@@ -755,15 +755,15 @@ public class SkillManagerOld {
 	}
 
 	/**
-	 * Exceção lançada quando uma skill aparece em mais de um grupo de sinônimos, o que torna ambígua
-	 * a escolha do grupo correto.
+	 * Exception thrown when a skill appears in more than one synonym group, which makes the choice
+	 * of the correct group ambiguous.
 	 */
 	@SuppressWarnings("serial")
 	public static class VisErrorSkillWithManySynonymGroups extends RuntimeException {
 		/**
-		 * Monta a mensagem informando a skill ambígua e todos os grupos em que ela foi encontrada.
-		 * @param skill a skill encontrada em mais de um grupo
-		 * @param foundSynonyms os grupos de sinônimos que contêm a skill
+		 * Builds the message stating the ambiguous skill and every group it was found in.
+		 * @param skill the skill found in more than one group
+		 * @param foundSynonyms the synonym groups that contain the skill
 		 */
 		private VisErrorSkillWithManySynonymGroups(String skill, List<Set<String>> foundSynonyms) {
 			super(skill + " has more than one synonym: " + foundSynonyms);

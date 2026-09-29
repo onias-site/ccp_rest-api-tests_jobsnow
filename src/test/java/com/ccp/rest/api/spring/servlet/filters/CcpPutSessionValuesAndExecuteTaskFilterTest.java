@@ -10,12 +10,12 @@ public class CcpPutSessionValuesAndExecuteTaskFilterTest {
 
 
 	@Test
-	public void construtorTest() {
+	public void constructorTest() {
 		assertNotNull(new CcpPutSessionValuesAndExecuteTaskFilter(new NoopBusiness()));
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorTaskNullTest() {
+	public void constructorTaskNullTest() {
 		new CcpPutSessionValuesAndExecuteTaskFilter(null);
 	}
 

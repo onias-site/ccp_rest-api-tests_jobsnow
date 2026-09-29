@@ -59,7 +59,7 @@ public class CcpPropertiesDecoratorTest {
 	// ── environmentVariables ──────────────────────────────────────────────────
 
 	@Test(expected = CcpErrorInputStreamMissing.class)
-	public void environmentVariableInexistenteLancaExcecaoTest() {
+	public void nonexistentEnvironmentVariableThrowsExceptionTest() {
 		new CcpStringDecorator("VARIAVEL_QUE_NAO_EXISTE_PROPS_TEST").propertiesFrom().environmentVariables();
 	}
 

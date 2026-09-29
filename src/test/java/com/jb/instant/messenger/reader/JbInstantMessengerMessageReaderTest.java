@@ -29,201 +29,201 @@ import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.jn.business.messages.JnMessageType.JnBotType;
 
 /**
- * Testa a leitura das mensagens recebidas pelo bot de suporte. A api do Telegram é substituída por
- * um {@code CcpHttpRequester} falso injetado no {@code CcpDependencyInjection}, de forma que os
- * testes exercitem a interpretação do {@code getUpdates} e o mapeamento de status do
- * {@code CcpHttpHandler} sem depender da rede. O offset, que é gravado na entidade
- * {@code JbEntityBotUpdateId}, é guardado por um {@code CcpCrud} em memória.
+ * Tests reading the messages received by the support bot. The Telegram api is replaced by a fake
+ * {@code CcpHttpRequester} injected into {@code CcpDependencyInjection}, so that the tests exercise
+ * the interpretation of {@code getUpdates} and the status mapping of {@code CcpHttpHandler} without
+ * depending on the network. The offset, which is saved in the {@code JbEntityBotUpdateId} entity, is
+ * kept by an in-memory {@code CcpCrud}.
  */
 public class JbInstantMessengerMessageReaderTest {
 
 	/**
-	 * O cache é o nulo, e não o de mapa: o de mapa também guarda estado em campo estático, e sem chave
-	 * para limpá-lo o offset de um teste continuaria visível para o seguinte mesmo depois de o banco ser
-	 * esvaziado. Aqui o que se mede é a gravação do offset, não o cache.
+	 * The cache is the null one, not the map one: the map one also keeps state in a static field, and
+	 * with no key to clear it the offset of one test would remain visible to the next one even after the
+	 * database is emptied. What is measured here is the saving of the offset, not the cache.
 	 */
 	static {
-		CcpInstanceProvider<CcpCrud> bancoEmMemoria = () -> new FakeCrud();
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), CcpLocalCacheInstances.mock, bancoEmMemoria);
+		CcpInstanceProvider<CcpCrud> inMemoryCrud = () -> new FakeCrud();
+		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), CcpLocalCacheInstances.mock, inMemoryCrud);
 	}
 
 	@Before
-	public void esvaziarOBanco() {
-		FakeCrud.limpar();
+	public void clearDatabase() {
+		FakeCrud.clear();
 	}
 
 	/**
-	 * O leitor identifica o bot pelo nome, e não pelo enum, por isso os testes convertem o
-	 * {@link JnBotType} uma única vez aqui, mantendo o enum como fonte da verdade.
+	 * The reader identifies the bot by name, not by the enum, so the tests convert the
+	 * {@link JnBotType} only once here, keeping the enum as the source of truth.
 	 */
-	private static final String SUPORTE = JnBotType.support.name();
+	private static final String SUPPORT = JnBotType.support.name();
 
-	private static final String USUARIO = JnBotType.user.name();
+	private static final String USER = JnBotType.user.name();
 
-	private static final String DUAS_MENSAGENS_E_UMA_EDICAO = "{\"ok\":true,\"result\":["
+	private static final String TWO_MESSAGES_AND_ONE_EDIT = "{\"ok\":true,\"result\":["
 			+ "{\"update_id\":100,\"message\":{\"message_id\":11,\"date\":1700000000,\"from\":{\"id\":55,\"username\":\"onias\"},\"chat\":{\"id\":55},\"text\":\"/solveLoginTokenTicket\"}},"
-			+ "{\"update_id\":101,\"edited_message\":{\"message_id\":11,\"chat\":{\"id\":55},\"text\":\"texto editado\"}},"
-			+ "{\"update_id\":102,\"message\":{\"message_id\":12,\"date\":1700000060,\"from\":{\"id\":66,\"username\":\"maria\"},\"chat\":{\"id\":66},\"text\":\"bom dia\"}}"
+			+ "{\"update_id\":101,\"edited_message\":{\"message_id\":11,\"chat\":{\"id\":55},\"text\":\"edited text\"}},"
+			+ "{\"update_id\":102,\"message\":{\"message_id\":12,\"date\":1700000060,\"from\":{\"id\":66,\"username\":\"maria\"},\"chat\":{\"id\":66},\"text\":\"good morning\"}}"
 			+ "]}";
 
-	private static final String NENHUMA_MENSAGEM = "{\"ok\":true,\"result\":[]}";
+	private static final String NO_MESSAGES = "{\"ok\":true,\"result\":[]}";
 
-	private static final String RESPOSTA_NAO_OK = "{\"ok\":false,\"error_code\":401,\"description\":\"Unauthorized\"}";
+	private static final String NOT_OK_RESPONSE = "{\"ok\":false,\"error_code\":401,\"description\":\"Unauthorized\"}";
 
-	private static final String BOT_BLOQUEADO = "{\"ok\":false,\"error_code\":403,\"description\":\"Forbidden: bot was blocked by the user\"}";
+	private static final String BOT_BLOCKED = "{\"ok\":false,\"error_code\":403,\"description\":\"Forbidden: bot was blocked by the user\"}";
 
-	private static final String EXCESSO_DE_REQUISICOES = "{\"ok\":false,\"error_code\":429,\"description\":\"Too Many Requests\"}";
+	private static final String TOO_MANY_REQUESTS = "{\"ok\":false,\"error_code\":429,\"description\":\"Too Many Requests\"}";
 
-	// ── leitura das mensagens do bot de suporte ───────────────────────────────
+	// ── reading the support bot messages ──────────────────────────────────────
 
 	@Test
-	public void lerMensagensDoBotDeSuporteTest() {
+	public void readSupportBotMessagesTest() {
 
-		this.telegramRespondendo(200, DUAS_MENSAGENS_E_UMA_EDICAO);
+		this.telegramResponding(200, TWO_MESSAGES_AND_ONE_EDIT);
 
-		List<CcpJsonRepresentation> mensagens = JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPORTE, 0L, 0);
+		List<CcpJsonRepresentation> messages = JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPPORT, 0L, 0);
 
-		assertEquals(2, mensagens.size());
+		assertEquals(2, messages.size());
 
-		CcpJsonRepresentation primeira = mensagens.get(0);
+		CcpJsonRepresentation firstMessage = messages.get(0);
 
-		assertEquals("support", primeira.getAsString(JsonFieldNames.botName));
-		// o texto sai do leitor no campo `message`; quem o renomeia para `typedValue` é o
-		// JbBotEngine.Bot, já dentro do fluxo de atendimento do bot
-		assertEquals("/solveLoginTokenTicket", primeira.getAsString(JsonFieldNames.message));
-		assertEquals("onias", primeira.getAsString(JsonFieldNames.userName));
-		assertEquals(55L, primeira.getAsLongNumber(JsonFieldNames.chatId).longValue());
-		assertEquals(11L, primeira.getAsLongNumber(JsonFieldNames.message_id).longValue());
-		assertEquals(100L, primeira.getAsLongNumber(JsonFieldNames.updateId).longValue());
-		assertEquals(1700000000L, primeira.getAsLongNumber(JsonFieldNames.sentAt).longValue());
+		assertEquals("support", firstMessage.getAsString(JsonFieldNames.botName));
+		// the text leaves the reader in the `message` field; the one that renames it to `typedValue` is
+		// JbBotEngine.Bot, already inside the bot's handling flow
+		assertEquals("/solveLoginTokenTicket", firstMessage.getAsString(JsonFieldNames.message));
+		assertEquals("onias", firstMessage.getAsString(JsonFieldNames.userName));
+		assertEquals(55L, firstMessage.getAsLongNumber(JsonFieldNames.chatId).longValue());
+		assertEquals(11L, firstMessage.getAsLongNumber(JsonFieldNames.message_id).longValue());
+		assertEquals(100L, firstMessage.getAsLongNumber(JsonFieldNames.updateId).longValue());
+		assertEquals(1700000000L, firstMessage.getAsLongNumber(JsonFieldNames.sentAt).longValue());
 
-		CcpJsonRepresentation segunda = mensagens.get(1);
+		CcpJsonRepresentation secondMessage = messages.get(1);
 
-		assertEquals("bom dia", segunda.getAsString(JsonFieldNames.message));
-		assertEquals(66L, segunda.getAsLongNumber(JsonFieldNames.chatId).longValue());
-		assertEquals(102L, segunda.getAsLongNumber(JsonFieldNames.updateId).longValue());
+		assertEquals("good morning", secondMessage.getAsString(JsonFieldNames.message));
+		assertEquals(66L, secondMessage.getAsLongNumber(JsonFieldNames.chatId).longValue());
+		assertEquals(102L, secondMessage.getAsLongNumber(JsonFieldNames.updateId).longValue());
 	}
 
 	@Test
-	public void atualizacaoSemMensagemEhIgnoradaTest() {
+	public void updateWithoutMessageIsIgnoredTest() {
 
-		this.telegramRespondendo(200, DUAS_MENSAGENS_E_UMA_EDICAO);
+		this.telegramResponding(200, TWO_MESSAGES_AND_ONE_EDIT);
 
-		List<CcpJsonRepresentation> mensagens = JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPORTE, 0L, 0);
+		List<CcpJsonRepresentation> messages = JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPPORT, 0L, 0);
 
-		boolean edicaoFoiDevolvida = mensagens.stream()
+		boolean editWasReturned = messages.stream()
 				.anyMatch(x -> 101L == x.getAsLongNumber(JsonFieldNames.updateId).longValue());
 
-		assertFalse(edicaoFoiDevolvida);
+		assertFalse(editWasReturned);
 	}
 
 	@Test
-	public void semMensagensParaLerTest() {
+	public void noMessagesToReadTest() {
 
-		this.telegramRespondendo(200, NENHUMA_MENSAGEM);
+		this.telegramResponding(200, NO_MESSAGES);
 
-		List<CcpJsonRepresentation> mensagens = JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPORTE, 0L, 0);
+		List<CcpJsonRepresentation> messages = JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPPORT, 0L, 0);
 
-		assertTrue(mensagens.isEmpty());
+		assertTrue(messages.isEmpty());
 	}
 
 	@Test
-	public void offsetAvancaParaNaoRelerAsMesmasMensagensTest() {
+	public void offsetAdvancesToNotRereadSameMessagesTest() {
 
-		FakeHttpRequester telegram = this.telegramRespondendo(200, DUAS_MENSAGENS_E_UMA_EDICAO, NENHUMA_MENSAGEM);
+		FakeHttpRequester telegram = this.telegramResponding(200, TWO_MESSAGES_AND_ONE_EDIT, NO_MESSAGES);
 
-		this.salvarOffset(SUPORTE, 0L);
+		this.saveOffset(SUPPORT, 0L);
 
-		BotFalso primeiraLeitura = this.lerMensagensNovas(JnBotType.support);
+		FakeBot firstRead = this.readNewMessages(JnBotType.support);
 
-		BotFalso segundaLeitura = this.lerMensagensNovas(JnBotType.support);
+		FakeBot secondRead = this.readNewMessages(JnBotType.support);
 
-		CcpJsonRepresentation segundaRequisicao = new CcpStringDecorator(telegram.lastRequest).json();
+		CcpJsonRepresentation secondRequest = new CcpStringDecorator(telegram.lastRequest).json();
 
-		assertEquals(2, primeiraLeitura.recebidas.size());
-		assertEquals(103L, segundaRequisicao.getAsLongNumber(JsonFieldNames.offset).longValue());
-		assertTrue(segundaLeitura.recebidas.isEmpty());
+		assertEquals(2, firstRead.received.size());
+		assertEquals(103L, secondRequest.getAsLongNumber(JsonFieldNames.offset).longValue());
+		assertTrue(secondRead.received.isEmpty());
 	}
 
-	// ── offset gravado na entidade JbEntityBotUpdateId ────────────────────────
+	// ── offset saved in the JbEntityBotUpdateId entity ────────────────────────
 
 	@Test
-	public void offsetSalvoEhRecuperadoTest() {
+	public void savedOffsetIsRetrievedTest() {
 
-		this.salvarOffset(SUPORTE, 500L);
+		this.saveOffset(SUPPORT, 500L);
 
-		Long offset = JbInstantMessengerMessageReader.INSTANCE.getOffset(SUPORTE);
+		Long offset = JbInstantMessengerMessageReader.INSTANCE.getOffset(SUPPORT);
 
 		assertEquals(500L, offset.longValue());
 	}
 
 	@Test
-	public void offsetIncrementadoEhGravadoAoLerMensagensNovasTest() {
+	public void incrementedOffsetIsSavedWhenReadingNewMessagesTest() {
 
-		this.telegramRespondendo(200, DUAS_MENSAGENS_E_UMA_EDICAO);
+		this.telegramResponding(200, TWO_MESSAGES_AND_ONE_EDIT);
 
-		this.salvarOffset(SUPORTE, 0L);
+		this.saveOffset(SUPPORT, 0L);
 
-		this.lerMensagensNovas(JnBotType.support);
+		this.readNewMessages(JnBotType.support);
 
-		Long offset = JbInstantMessengerMessageReader.INSTANCE.getOffset(SUPORTE);
+		Long offset = JbInstantMessengerMessageReader.INSTANCE.getOffset(SUPPORT);
 
 		assertEquals(103L, offset.longValue());
 	}
 
 	@Test
-	public void offsetNaoEhGravadoQuandoNaoHaMensagensNovasTest() {
+	public void offsetIsNotSavedWhenThereAreNoNewMessagesTest() {
 
-		this.telegramRespondendo(200, NENHUMA_MENSAGEM);
+		this.telegramResponding(200, NO_MESSAGES);
 
-		this.salvarOffset(SUPORTE, 777L);
+		this.saveOffset(SUPPORT, 777L);
 
-		this.lerMensagensNovas(JnBotType.support);
+		this.readNewMessages(JnBotType.support);
 
-		Long offset = JbInstantMessengerMessageReader.INSTANCE.getOffset(SUPORTE);
+		Long offset = JbInstantMessengerMessageReader.INSTANCE.getOffset(SUPPORT);
 
 		assertEquals(777L, offset.longValue());
 	}
 
 	@Test
-	public void cadaBotTemSeuProprioOffsetTest() {
+	public void eachBotHasItsOwnOffsetTest() {
 
-		this.salvarOffset(SUPORTE, 111L);
-		this.salvarOffset(USUARIO, 222L);
+		this.saveOffset(SUPPORT, 111L);
+		this.saveOffset(USER, 222L);
 
-		Long offsetDoSuporte = JbInstantMessengerMessageReader.INSTANCE.getOffset(SUPORTE);
-		Long offsetDoUsuario = JbInstantMessengerMessageReader.INSTANCE.getOffset(USUARIO);
+		Long supportOffset = JbInstantMessengerMessageReader.INSTANCE.getOffset(SUPPORT);
+		Long userOffset = JbInstantMessengerMessageReader.INSTANCE.getOffset(USER);
 
-		assertEquals(111L, offsetDoSuporte.longValue());
-		assertEquals(222L, offsetDoUsuario.longValue());
+		assertEquals(111L, supportOffset.longValue());
+		assertEquals(222L, userOffset.longValue());
 	}
 
 	@Test
-	public void tokenDoBotDeSuporteTest() {
+	public void supportBotTokenTest() {
 
-		String botToken = JbInstantMessengerMessageReader.INSTANCE.getBotToken(SUPORTE);
+		String botToken = JbInstantMessengerMessageReader.INSTANCE.getBotToken(SUPPORT);
 
 		assertFalse(botToken.trim().isEmpty());
 	}
 
-	// ── tratamento dos status devolvidos pela api ─────────────────────────────
+	// ── handling of the statuses returned by the api ──────────────────────────
 
 	@Test(expected = JbErrorUnableToReadInstantMessages.class)
-	public void respostaNaoOkTest() {
-		this.telegramRespondendo(200, RESPOSTA_NAO_OK);
-		JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPORTE, 0L, 0);
+	public void notOkResponseTest() {
+		this.telegramResponding(200, NOT_OK_RESPONSE);
+		JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPPORT, 0L, 0);
 	}
 
 	@Test(expected = CcpErrorInstantMessageThisBotWasBlockedByThisUser.class)
-	public void botBloqueadoPeloUsuarioTest() {
-		this.telegramRespondendo(403, BOT_BLOQUEADO);
-		JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPORTE, 0L, 0);
+	public void botBlockedByUserTest() {
+		this.telegramResponding(403, BOT_BLOCKED);
+		JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPPORT, 0L, 0);
 	}
 
 	@Test(expected = CcpHttpTooManyRequests.class)
-	public void excessoDeRequisicoesTest() {
-		this.telegramRespondendo(429, EXCESSO_DE_REQUISICOES);
-		JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPORTE, 0L, 0);
+	public void tooManyRequestsTest() {
+		this.telegramResponding(429, TOO_MANY_REQUESTS);
+		JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPPORT, 0L, 0);
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
@@ -235,12 +235,12 @@ public class JbInstantMessengerMessageReaderTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void getUpdatesOffsetNullTest() {
-		JbInstantMessengerMessageReader.INSTANCE.getUpdates(SUPORTE, null, 0);
+		JbInstantMessengerMessageReader.INSTANCE.getUpdates(SUPPORT, null, 0);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void getUpdatesTimeoutNullTest() {
-		JbInstantMessengerMessageReader.INSTANCE.getUpdates(SUPORTE, 0L, null);
+		JbInstantMessengerMessageReader.INSTANCE.getUpdates(SUPPORT, 0L, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -250,12 +250,12 @@ public class JbInstantMessengerMessageReaderTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void readMessagesOffsetNullTest() {
-		JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPORTE, null, 0);
+		JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPPORT, null, 0);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void readMessagesTimeoutNullTest() {
-		JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPORTE, 0L, null);
+		JbInstantMessengerMessageReader.INSTANCE.readMessages(SUPPORT, 0L, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -265,7 +265,7 @@ public class JbInstantMessengerMessageReaderTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void readNewMessagesTimeoutNullTest() {
-		JbInstantMessengerMessageReader.INSTANCE.readNewMessages(null, new BotFalso(JnMessageType.JnBotType.support));
+		JbInstantMessengerMessageReader.INSTANCE.readNewMessages(null, new FakeBot(JnMessageType.JnBotType.support));
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -280,7 +280,7 @@ public class JbInstantMessengerMessageReaderTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void saveOffsetMessagesNullTest() {
-		JbInstantMessengerMessageReader.INSTANCE.saveOffset(SUPORTE, 0L, null);
+		JbInstantMessengerMessageReader.INSTANCE.saveOffset(SUPPORT, 0L, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -288,44 +288,44 @@ public class JbInstantMessengerMessageReaderTest {
 		JbInstantMessengerMessageReader.INSTANCE.getBotToken(null);
 	}
 
-	// ── api do Telegram substituída ───────────────────────────────────────────
+	// ── replaced Telegram api ─────────────────────────────────────────────────
 
-	private FakeHttpRequester telegramRespondendo(int httpStatus, String... respostas) {
-		FakeHttpRequester telegram = new FakeHttpRequester(httpStatus, respostas);
+	private FakeHttpRequester telegramResponding(int httpStatus, String... responses) {
+		FakeHttpRequester telegram = new FakeHttpRequester(httpStatus, responses);
 		CcpInstanceProvider<CcpHttpRequester> provider = () -> telegram;
 		CcpDependencyInjection.loadAllDependencies(provider);
 		return telegram;
 	}
 
 	/**
-	 * Grava o offset do bot direto na entidade que o guarda.
+	 * Saves the bot's offset directly in the entity that keeps it.
 	 *
-	 * <p>Não dá para montar este cenário chamando o {@code saveOffset} com lista vazia: sem mensagens
-	 * novas ele devolve o offset recebido sem gravar nada — e isso é o comportamento certo, é o que
-	 * {@link #offsetNaoEhGravadoQuandoNaoHaMensagensNovasTest()} cobra. Usá-lo para preparar o cenário
-	 * fazia os testes afirmarem ter gravado um valor que nunca saiu do lugar.
+	 * <p>This scenario cannot be set up by calling {@code saveOffset} with an empty list: without new
+	 * messages it returns the received offset without saving anything — and that is the right behavior,
+	 * it is what {@link #offsetIsNotSavedWhenThereAreNoNewMessagesTest()} checks. Using it to prepare the
+	 * scenario made the tests claim to have saved a value that never moved.
 	 */
-	private void salvarOffset(String botType, long offset) {
-		CcpJsonRepresentation offsetDoBot = CcpOtherConstants.EMPTY_JSON
+	private void saveOffset(String botType, long offset) {
+		CcpJsonRepresentation botOffset = CcpOtherConstants.EMPTY_JSON
 				.put(JnJsonInstantMessengerFields.botName, botType)
 				.put(JbEntityBotUpdateId.Fields.updateId, offset);
 
-		JbEntityBotUpdateId.ENTITY.save(offsetDoBot);
+		JbEntityBotUpdateId.ENTITY.save(botOffset);
 	}
 
 	/**
-	 * Lê as mensagens novas do bot de suporte devolvendo o dublê que as recebeu, já que o
-	 * {@code readNewMessages} entrega cada mensagem ao {@code CcpBusiness} ao invés de devolvê-las.
+	 * Reads the support bot's new messages, returning the test double that received them, since
+	 * {@code readNewMessages} hands each message to the {@code CcpBusiness} instead of returning them.
 	 */
-	private BotFalso lerMensagensNovas(JnBotType botType) {
-		BotFalso bot = new BotFalso(botType);
+	private FakeBot readNewMessages(JnBotType botType) {
+		FakeBot bot = new FakeBot(botType);
 		JbInstantMessengerMessageReader.INSTANCE.readNewMessages(0, bot);
 		return bot;
 	}
 
 
 
-	// ── banco de dados substituído ────────────────────────────────────────────
+	// ── replaced database ─────────────────────────────────────────────────────
 
 
 }
