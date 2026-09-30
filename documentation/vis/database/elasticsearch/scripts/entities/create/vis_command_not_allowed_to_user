@@ -1,0 +1,17 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"commandName": {
+				"type": "keyword"
+			},
+			"description": {
+				"type": "object",
+				"enabled": false
+			},
+			"email": {
+				"type": "keyword"
+			}
+		}
+	}
+}

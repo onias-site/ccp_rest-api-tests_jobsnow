@@ -8,15 +8,19 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
+import com.ccp.especifications.db.bulk.CcpBulkItem;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.ccp.especifications.db.utils.entity.decorators.interfaces.CcpEntityConfigurator;
 import com.ccp.especifications.email.CcpEmailSender;
 import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
+import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
@@ -25,19 +29,28 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.jb.entities.JbEntityBot;
+import com.jb.entities.JbEntityBotCommand;
+import com.jb.entities.JbEntityBotCommandStep;
+import com.jb.entities.JbEntityBotCommandStepEndMessage;
 import com.jb.entities.JbEntityBotCommandStepSession;
 import com.jn.business.messages.JnInstantMessageType;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityInstantMessengerMessageSent;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
+import com.vis.business.skill.VisBusinessSkillFixHierarchyIgnoreUser;
+import com.vis.entities.VisEntityCommandNotAllowedToUser;
 import com.vis.entities.VisEntitySkillFixHierarchyApproved;
 import com.vis.entities.VisEntitySkillFixHierarchyItemApproved;
 import com.vis.entities.VisEntitySkillFixHierarchyItemPending;
 import com.vis.entities.VisEntitySkillFixHierarchyPending;
 import com.vis.entities.VisEntitySkillFixHierarchyRejected;
 import com.vis.json.fields.validation.VisSkillFixHierarchyTypes;
+import com.vis.json.fields.validation.VisUserRequestCommands;
 import com.vis.messages.VisMessages;
+import com.vis.services.VisServiceSkillFixHierarchy;
+import com.vis.status.VisProcessStatusFixSkillHierarchy;
 
 /**
  * Exercises the whole circuit of a skill hierarchy fix request: the user's request notifies the support bot
@@ -79,6 +92,31 @@ public class SkillFixHierarchyThroughSupportBotTest {
 	private static final String ONE_BY_ONE_USER = "revisao.um.a.um@teste.com";
 
 	private static final String APPROVE_ALL_USER = "revisao.aprovar.tudo@teste.com";
+
+	private static final String DECIDED_BEFORE_USER = "revisao.decididos.antes@teste.com";
+
+	private static final String ALL_DECIDED_BEFORE_USER = "revisao.todos.decididos.antes@teste.com";
+
+	private static final String IGNORED_USER = "usuario.ignorado@teste.com";
+
+	private static final String UNIGNORED_USER = "usuario.nao.mais.ignorado@teste.com";
+
+	private static final String BLOCKED_USER = "usuario.bloqueado.no.comando@teste.com";
+
+	/**
+	 * Saves the bot, its commands, their steps and their end messages again so that the index follows what is declared
+	 * in java (the create operation of the initial records does not overwrite what is already there).
+	 */
+	@BeforeClass
+	public static void resaveBotConfiguration() {
+		List<CcpEntityConfigurator> configurators = Arrays.asList(new JbEntityBot(), new JbEntityBotCommand(), new JbEntityBotCommandStep(), new JbEntityBotCommandStepEndMessage());
+		for (CcpEntityConfigurator configurator : configurators) {
+			List<CcpBulkItem> records = configurator.getFirstRecordsToInsert();
+			for (CcpBulkItem record : records) {
+				record.entity.save(record.json);
+			}
+		}
+	}
 
 	@Before
 	public void clearTheBotSession() {
@@ -164,6 +202,249 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		assertTrue(again, again.startsWith("Não há itens pendentes"));
 	}
 
+	/**
+	 * A new request that repeats skills decided in an earlier review: the email about the pending request keeps
+	 * every skill, the operator is asked only about the new one, and the feedback to the user carries the earlier
+	 * decisions as they were (spring approved, hibernate rejected) together with the new one.
+	 */
+	@Test
+	public void itemsDecidedBeforeAreNotAskedAgain() {
+
+		this.clearItems(DECIDED_BEFORE_USER, VisSkillFixHierarchyTypes.add, "kotlin", "ktor");
+		this.openRequest(DECIDED_BEFORE_USER, VisSkillFixHierarchyTypes.add, "kotlin", "Uso spring e hibernate com kotlin", "spring", "hibernate");
+		this.operatorTypes("/fixSkillHierarchy kotlin " + DECIDED_BEFORE_USER);
+		this.operatorTypes("um a um");
+		this.operatorTypes("aprovar spring roda em kotlin");
+		this.operatorTypes("rejeitar hibernate não tem relação");
+
+		EMAIL_INBOX.sentEmails.clear();
+		this.sendRequestAgain(DECIDED_BEFORE_USER, VisSkillFixHierarchyTypes.add, "kotlin", "Agora com ktor também", "spring", "hibernate", "ktor");
+
+		CcpJsonRepresentation pendingEmail = this.emailSentTo(DECIDED_BEFORE_USER, VisMessages.VisNotifySupportAndUserAboutPendingSkillHierarchyRequest.class);
+		String pendingBody = pendingEmail.getAsString(JnJsonCommonsFields.message);
+		assertTrue(pendingBody, pendingBody.contains("spring, hibernate, ktor"));
+
+		String request = this.operatorTypes("/fixSkillHierarchy kotlin " + DECIDED_BEFORE_USER);
+		assertTrue(request, request.contains("Itens pendentes: ktor"));
+		assertTrue(request, request.contains("Já aprovados anteriormente (não serão perguntados): spring"));
+		assertTrue(request, request.contains("Já reprovados anteriormente (não serão perguntados): hibernate"));
+
+		String firstItem = this.operatorTypes("um a um");
+		assertTrue(firstItem, firstItem.startsWith("Item 1 de 1: ktor"));
+
+		String summary = this.operatorTypes("aprovar ktor é framework kotlin");
+		assertTrue(summary, summary.contains("Aprovados: spring, ktor"));
+		assertTrue(summary, summary.contains("Reprovados: hibernate"));
+
+		CcpJsonRepresentation spring = this.item(DECIDED_BEFORE_USER, VisSkillFixHierarchyTypes.add, "kotlin", "spring");
+		CcpJsonRepresentation hibernate = this.item(DECIDED_BEFORE_USER, VisSkillFixHierarchyTypes.add, "kotlin", "hibernate");
+		CcpJsonRepresentation ktor = this.item(DECIDED_BEFORE_USER, VisSkillFixHierarchyTypes.add, "kotlin", "ktor");
+		CcpEntity rejectedItems = VisEntitySkillFixHierarchyItemPending.ENTITY.getTwinEntity();
+		assertTrue(VisEntitySkillFixHierarchyItemApproved.ENTITY.exists(spring));
+		assertTrue(rejectedItems.exists(hibernate));
+		assertTrue(VisEntitySkillFixHierarchyItemApproved.ENTITY.exists(ktor));
+		assertFalse(VisEntitySkillFixHierarchyItemPending.ENTITY.exists(ktor));
+
+		CcpJsonRepresentation email = this.emailSentTo(DECIDED_BEFORE_USER, VisMessages.VisNotifyUserAboutAprovedSkillHierarchy.class);
+		String body = email.getAsString(JnJsonCommonsFields.message);
+		assertTrue(body, body.contains("<li><b>spring</b>: item já aprovado em revisão anterior</li>"));
+		assertTrue(body, body.contains("<li><b>ktor</b>: ktor é framework kotlin</li>"));
+		assertTrue(body, body.contains("Itens reprovados:</p><ul><li><b>hibernate</b>: item já reprovado em revisão anterior</li></ul>"));
+	}
+
+	/**
+	 * A new request made only of skills decided before: there is nothing to ask the operator, so the command
+	 * finishes the review right away and the user gets the feedback.
+	 */
+	@Test
+	public void requestWithEveryItemDecidedBeforeFinishesRightAway() {
+
+		this.openRequest(ALL_DECIDED_BEFORE_USER, VisSkillFixHierarchyTypes.remove, "scala", "Akka não é scala puro", "akka", "play");
+		this.operatorTypes("/fixSkillHierarchy scala " + ALL_DECIDED_BEFORE_USER);
+		this.operatorTypes("um a um");
+		this.operatorTypes("aprovar akka é biblioteca");
+		this.operatorTypes("rejeitar play depende de scala");
+
+		EMAIL_INBOX.sentEmails.clear();
+		this.sendRequestAgain(ALL_DECIDED_BEFORE_USER, VisSkillFixHierarchyTypes.remove, "scala", "Pedindo de novo a mesma coisa", "akka", "play");
+
+		String summary = this.operatorTypes("/fixSkillHierarchy scala " + ALL_DECIDED_BEFORE_USER);
+		assertTrue(summary, summary.startsWith("Revisão concluída para " + ALL_DECIDED_BEFORE_USER + " / scala."));
+		assertTrue(summary, summary.contains("Aprovados: akka"));
+		assertTrue(summary, summary.contains("Reprovados: play"));
+
+		CcpJsonRepresentation request = this.request(ALL_DECIDED_BEFORE_USER, VisSkillFixHierarchyTypes.remove, "scala");
+		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(request));
+		assertTrue(VisEntitySkillFixHierarchyApproved.ENTITY.exists(request));
+
+		CcpJsonRepresentation email = this.emailSentTo(ALL_DECIDED_BEFORE_USER, VisMessages.VisNotifyUserAboutAprovedSkillHierarchy.class);
+		String body = email.getAsString(JnJsonCommonsFields.message);
+		assertTrue(body, body.contains("<li><b>akka</b>: item já aprovado em revisão anterior</li>"));
+		assertTrue(body, body.contains("<li><b>play</b>: item já reprovado em revisão anterior</li>"));
+	}
+
+	/**
+	 * The operator ignores a user who only plays with the requests: the intention is confirmed (a "no" goes back
+	 * to the options), the user is recorded in vis_command_not_allowed_to_user with the request, the request and
+	 * its items are discarded without any email, and the next request of the user reaches nobody.
+	 */
+	@Test
+	public void operatorIgnoresTheUser() {
+
+		CcpJsonRepresentation ignoredUser = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityCommandNotAllowedToUser.Fields.email, IGNORED_USER)
+				.put(VisEntityCommandNotAllowedToUser.Fields.commandName, VisUserRequestCommands.fixSkillHierarchy);
+		VisEntityCommandNotAllowedToUser.ENTITY.delete(ignoredUser);
+
+		this.openRequest(IGNORED_USER, VisSkillFixHierarchyTypes.add, "rust", "Palavrão e bobagem sem sentido", "blablabla", "blebleble");
+
+		String request = this.operatorTypes("/fixSkillHierarchy rust " + IGNORED_USER);
+		assertTrue(request, request.contains("• ignorar"));
+
+		String confirmation = this.operatorTypes("ignorar");
+		assertTrue(confirmation, confirmation.startsWith("Confirma que o usuário " + IGNORED_USER + " será ignorado"));
+
+		String notUnderstood = this.operatorTypes("talvez");
+		assertTrue(notUnderstood, notUnderstood.startsWith("Não entendi a resposta."));
+		assertTrue(notUnderstood, notUnderstood.contains("Confirma que o usuário"));
+
+		String canceled = this.operatorTypes("não");
+		assertTrue(canceled, canceled.startsWith("O usuário não será ignorado."));
+		assertTrue(canceled, canceled.contains("• um a um"));
+		assertFalse(VisEntityCommandNotAllowedToUser.ENTITY.exists(ignoredUser));
+
+		this.operatorTypes("ignorar");
+		String ignored = this.operatorTypes("sim");
+		assertTrue(ignored, ignored.startsWith("O usuário " + IGNORED_USER + " foi ignorado no comando fixSkillHierarchy."));
+
+		assertTrue(VisEntityCommandNotAllowedToUser.ENTITY.exists(ignoredUser));
+		CcpJsonRepresentation record = VisEntityCommandNotAllowedToUser.ENTITY.getOneById(ignoredUser);
+		CcpJsonRepresentation description = record.getInnerJson(VisEntityCommandNotAllowedToUser.Fields.description);
+		assertEquals("rust", description.getAsString(VisEntitySkillFixHierarchyPending.Fields.parent));
+		String requests = description.getAsJsonList(VisBusinessSkillFixHierarchyIgnoreUser.JsonFieldNames.requests).toString();
+		assertTrue(requests, requests.contains("Palavrão e bobagem sem sentido"));
+		assertTrue(requests, requests.contains("blablabla"));
+
+		CcpJsonRepresentation pendingRequest = this.request(IGNORED_USER, VisSkillFixHierarchyTypes.add, "rust");
+		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(pendingRequest));
+		assertFalse(VisEntitySkillFixHierarchyApproved.ENTITY.exists(pendingRequest));
+		assertFalse(VisEntitySkillFixHierarchyRejected.ENTITY.exists(pendingRequest));
+
+		CcpEntity rejectedItems = VisEntitySkillFixHierarchyItemPending.ENTITY.getTwinEntity();
+		for (String skill : Arrays.asList("blablabla", "blebleble")) {
+			CcpJsonRepresentation item = this.item(IGNORED_USER, VisSkillFixHierarchyTypes.add, "rust", skill);
+			assertFalse(VisEntitySkillFixHierarchyItemPending.ENTITY.exists(item));
+			assertFalse(rejectedItems.exists(item));
+			assertFalse(VisEntitySkillFixHierarchyItemApproved.ENTITY.exists(item));
+		}
+
+		assertTrue(EMAIL_INBOX.sentEmails.toString(), EMAIL_INBOX.sentEmails.size() == 1);
+
+		// the next request of the ignored user is refused with userNotAllowed (403), neither saved nor notified
+		TELEGRAM.sentMessages.clear();
+		EMAIL_INBOX.sentEmails.clear();
+		CcpJsonRepresentation newRequestKey = this.request(IGNORED_USER, VisSkillFixHierarchyTypes.remove, "rust");
+		CcpJsonRepresentation newRequest = this.newRequest(newRequestKey, "Mais uma bobagem qualquer", "xpto");
+		CcpErrorFlowDisturb refusal = this.refusalOf(newRequest);
+		assertEquals(VisProcessStatusFixSkillHierarchy.userNotAllowed, refusal.status);
+		assertEquals(403, refusal.status.asNumber());
+
+		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(newRequestKey));
+		assertTrue(TELEGRAM.sentMessages.toString(), TELEGRAM.sentMessages.isEmpty());
+		assertTrue(EMAIL_INBOX.sentEmails.toString(), EMAIL_INBOX.sentEmails.isEmpty());
+	}
+
+	/**
+	 * The operator undoes the decision with {@code /allowCommandToUser <command> <email>}: the record leaves
+	 * vis_command_not_allowed_to_user and the next request of the user is saved and reaches the operator again.
+	 * Asking it again for the same user tells the operator that the user is not ignored.
+	 */
+	@Test
+	public void operatorStopsIgnoringTheUser() {
+
+		CcpJsonRepresentation ignoredUserKey = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityCommandNotAllowedToUser.Fields.email, UNIGNORED_USER)
+				.put(VisEntityCommandNotAllowedToUser.Fields.commandName, VisUserRequestCommands.fixSkillHierarchy);
+		CcpJsonRepresentation ignoredDescription = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillFixHierarchyPending.Fields.parent, "go");
+		CcpJsonRepresentation ignoredUser = ignoredUserKey.put(VisEntityCommandNotAllowedToUser.Fields.description, ignoredDescription);
+		VisEntityCommandNotAllowedToUser.ENTITY.save(ignoredUser);
+
+		CcpJsonRepresentation requestKey = this.request(UNIGNORED_USER, VisSkillFixHierarchyTypes.add, "go");
+		CcpJsonRepresentation request = this.newRequest(requestKey, "Gin é framework web em go", "gin");
+		CcpErrorFlowDisturb refusal = this.refusalOf(request);
+		assertEquals(VisProcessStatusFixSkillHierarchy.userNotAllowed, refusal.status);
+
+		String allowed = this.operatorTypes("/allowCommandToUser fixSkillHierarchy " + UNIGNORED_USER);
+		assertEquals("O usuário " + UNIGNORED_USER + " não é mais ignorado no comando fixSkillHierarchy: as próximas solicitações dele voltarão a chegar ao suporte.", allowed);
+		assertFalse(VisEntityCommandNotAllowedToUser.ENTITY.exists(ignoredUserKey));
+
+		// the record is kept in the twin, for control and tracking
+		CcpEntity reallowedUsers = VisEntityCommandNotAllowedToUser.ENTITY.getTwinEntity();
+		assertTrue(reallowedUsers.exists(ignoredUserKey));
+		CcpJsonRepresentation reallowedUser = reallowedUsers.getOneById(ignoredUserKey);
+		CcpJsonRepresentation reallowedDescription = reallowedUser.getInnerJson(VisEntityCommandNotAllowedToUser.Fields.description);
+		assertEquals("go", reallowedDescription.getAsString(VisEntitySkillFixHierarchyPending.Fields.parent));
+
+		String notIgnored = this.operatorTypes("/allowCommandToUser fixSkillHierarchy " + UNIGNORED_USER);
+		assertEquals("O usuário " + UNIGNORED_USER + " não está sendo ignorado no comando fixSkillHierarchy", notIgnored);
+
+		// the request goes through again: cleans what a previous run left and sends it through the service
+		this.clearItems(UNIGNORED_USER, VisSkillFixHierarchyTypes.add, "go", "gin");
+		this.clearRequest(UNIGNORED_USER, VisSkillFixHierarchyTypes.add, "go", "Gin é framework web em go", "gin");
+		TELEGRAM.sentMessages.clear();
+		VisServiceSkillFixHierarchy.FixSkillHierarchy.execute(request);
+
+		assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
+		String notice = TELEGRAM.lastMessageFor(SUPPORT_CHAT).getAsString(JnJsonCommonsFields.message);
+		assertEquals("/fixSkillHierarchy go " + UNIGNORED_USER, notice);
+	}
+
+	/**
+	 * A request left pending from before the user was ignored (another parent, for instance) cannot be reviewed:
+	 * the command refuses it, telling the operator how to stop ignoring the user, and leaves the request as it
+	 * is. Once the user is allowed again, the same command shows the request.
+	 */
+	@Test
+	public void operatorCannotReviewAnIgnoredUser() {
+
+		this.openRequest(BLOCKED_USER, VisSkillFixHierarchyTypes.add, "elixir", "Phoenix é framework web em elixir", "phoenix");
+
+		CcpJsonRepresentation ignoredUserKey = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityCommandNotAllowedToUser.Fields.email, BLOCKED_USER)
+				.put(VisEntityCommandNotAllowedToUser.Fields.commandName, VisUserRequestCommands.fixSkillHierarchy);
+		CcpJsonRepresentation ignoredDescription = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillFixHierarchyPending.Fields.parent, "outro termo");
+		CcpJsonRepresentation ignoredUser = ignoredUserKey.put(VisEntityCommandNotAllowedToUser.Fields.description, ignoredDescription);
+		VisEntityCommandNotAllowedToUser.ENTITY.save(ignoredUser);
+
+		String refused = this.operatorTypes("/fixSkillHierarchy elixir " + BLOCKED_USER);
+		assertEquals("O usuário " + BLOCKED_USER + " está sendo ignorado no comando fixSkillHierarchy e as solicitações dele não são atendidas. "
+				+ "Para voltar a atendê-lo, use /allowCommandToUser fixSkillHierarchy " + BLOCKED_USER, refused);
+
+		CcpJsonRepresentation requestKey = this.request(BLOCKED_USER, VisSkillFixHierarchyTypes.add, "elixir");
+		CcpJsonRepresentation item = this.item(BLOCKED_USER, VisSkillFixHierarchyTypes.add, "elixir", "phoenix");
+		assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
+		assertTrue(VisEntitySkillFixHierarchyItemPending.ENTITY.exists(item));
+
+		this.operatorTypes("/allowCommandToUser fixSkillHierarchy " + BLOCKED_USER);
+		String request = this.operatorTypes("/fixSkillHierarchy elixir " + BLOCKED_USER);
+		assertTrue(request, request.contains("Itens pendentes: phoenix"));
+	}
+
+	private CcpJsonRepresentation newRequest(CcpJsonRepresentation requestKey, String description, String... skills) {
+		CcpJsonRepresentation requestWithDescription = requestKey.put(VisEntitySkillFixHierarchyPending.Fields.description, description);
+		CcpJsonRepresentation newRequest = requestWithDescription.put(VisEntitySkillFixHierarchyPending.Fields.skill, Arrays.asList(skills));
+		return newRequest;
+	}
+
+	private CcpErrorFlowDisturb refusalOf(CcpJsonRepresentation request) {
+		try {
+			VisServiceSkillFixHierarchy.FixSkillHierarchy.execute(request);
+		} catch (CcpErrorFlowDisturb refusal) {
+			return refusal;
+		}
+		throw new AssertionError("The request of the ignored user was accepted: " + request);
+	}
+
 	@Test
 	public void requestThatDoesNotExist() {
 		String answer = this.operatorTypes("/fixSkillHierarchy termoinexistente ninguem@teste.com");
@@ -188,23 +469,39 @@ public class SkillFixHierarchyThroughSupportBotTest {
 	 * interrupts the save) and then saves the request, which notifies the operator and creates the items.
 	 */
 	private void openRequest(String email, VisSkillFixHierarchyTypes type, String parent, String description, String... skills) {
+		this.clearItems(email, type, parent, skills);
+		this.sendRequestAgain(email, type, parent, description, skills);
+	}
 
-		CcpJsonRepresentation request = this.request(email, type, parent);
-		List<String> skillList = Arrays.asList(skills);
-		CcpJsonRepresentation newRequest = request
-				.put(VisEntitySkillFixHierarchyPending.Fields.description, description)
-				.put(VisEntitySkillFixHierarchyPending.Fields.skill, skillList);
-
-		// the pending entity writes through the messaging, which validates the whole record, even to delete it
-		VisEntitySkillFixHierarchyPending.ENTITY.delete(newRequest);
-		VisEntitySkillFixHierarchyApproved.ENTITY.delete(request);
-		VisEntitySkillFixHierarchyRejected.ENTITY.delete(request);
-
+	private void clearItems(String email, VisSkillFixHierarchyTypes type, String parent, String... skills) {
 		for (String skill : skills) {
 			CcpJsonRepresentation item = this.item(email, type, parent, skill);
 			VisEntitySkillFixHierarchyItemPending.ENTITY.deleteAnyWhere(item);
 			VisEntitySkillFixHierarchyItemApproved.ENTITY.delete(item);
 		}
+	}
+
+	/**
+	 * Same as {@link #openRequest} but keeps the items: those already decided stay approved or rejected.
+	 */
+	private void sendRequestAgain(String email, VisSkillFixHierarchyTypes type, String parent, String description, String... skills) {
+		CcpJsonRepresentation newRequest = this.clearRequest(email, type, parent, description, skills);
+		VisEntitySkillFixHierarchyPending.ENTITY.save(newRequest);
+	}
+
+	/**
+	 * Removes the request from the request entities and the "already sent" records of its notices, returning the
+	 * complete request, ready to be saved.
+	 */
+	private CcpJsonRepresentation clearRequest(String email, VisSkillFixHierarchyTypes type, String parent, String description, String... skills) {
+
+		CcpJsonRepresentation request = this.request(email, type, parent);
+		CcpJsonRepresentation newRequest = this.newRequest(request, description, skills);
+
+		// the pending entity writes through the messaging, which validates the whole record, even to delete it
+		VisEntitySkillFixHierarchyPending.ENTITY.delete(newRequest);
+		VisEntitySkillFixHierarchyApproved.ENTITY.delete(request);
+		VisEntitySkillFixHierarchyRejected.ENTITY.delete(request);
 
 		List<Class<?>> templates = Arrays.asList(
 				VisMessages.VisNotifySupportAndUserAboutPendingSkillHierarchyRequest.class,
@@ -226,7 +523,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 				.put(JnJsonCommonsFields.message, "/fixSkillHierarchy " + parent + " " + email);
 		JnEntityInstantMessengerMessageSent.ENTITY.delete(sentNotice);
 
-		VisEntitySkillFixHierarchyPending.ENTITY.save(newRequest);
+		return newRequest;
 	}
 
 	private CcpJsonRepresentation request(String email, VisSkillFixHierarchyTypes type, String parent) {
