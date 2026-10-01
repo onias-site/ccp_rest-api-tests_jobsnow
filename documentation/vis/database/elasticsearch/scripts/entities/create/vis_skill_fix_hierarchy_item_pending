@@ -2,9 +2,6 @@
 	"mappings": {
 		"dynamic": "strict",
 		"properties": {
-			"email": {
-				"type": "keyword"
-			},
 			"parent": {
 				"type": "keyword"
 			},

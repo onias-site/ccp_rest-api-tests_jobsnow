@@ -1,8 +1,12 @@
 package com.ccp.rest.api.spring.exceptions.handler;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -52,5 +56,28 @@ public class CcpRestApiExceptionHandlerSpringTest {
 	@Test(expected = CcpNullParameterException.class)
 	public void getHandledExceptionToLogJsonNullTest() {
 		CcpRestApiExceptionHandlerSpring.getHandledExceptionToLog((CcpJsonRepresentation) null);
+	}
+
+	@Test
+	public void getHandledExceptionToLogKeepsTheMessageOfEveryCauseTest() {
+		IllegalStateException rootCause = new IllegalStateException("root message");
+		IllegalArgumentException directCause = new IllegalArgumentException("direct message", rootCause);
+		RuntimeException mainException = new RuntimeException("main message", directCause);
+
+		CcpJsonRepresentation handledException = CcpRestApiExceptionHandlerSpring.getHandledExceptionToLog(mainException);
+
+		List<String> causeChain = handledException.getAsStringList(CcpJsonRepresentation.CcpStackTraceFields.cause);
+		List<String> expectedCauseChain = Arrays.asList("java.lang.IllegalArgumentException: direct message", "java.lang.IllegalStateException: root message");
+		assertEquals(expectedCauseChain, causeChain);
+	}
+
+	@Test
+	public void getHandledExceptionToLogWithoutCauseTest() {
+		RuntimeException mainException = new RuntimeException("main message");
+
+		CcpJsonRepresentation handledException = CcpRestApiExceptionHandlerSpring.getHandledExceptionToLog(mainException);
+
+		List<String> causeChain = handledException.getAsStringList(CcpJsonRepresentation.CcpStackTraceFields.cause);
+		assertTrue(causeChain.isEmpty());
 	}
 }

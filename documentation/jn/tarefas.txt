@@ -18,3 +18,12 @@ M) Deploy
 N) Teste de invasão 
 O) Traduzir todo o sistema.
 P) Versão Mobile
+
+
+Está sempre mostrando status aprovado
+No e-mail, nao mostrar (re)aprovados anteriormente que nao pertençam ao usuário
+criar opção de ignorar temporariamente o usuário
+Exibir ao usuário uma mensagem pra ele tentar novamente mais tarde.
+Novas solicitações no mesmo parent fazem update nas antigas já aprovadas ou reprovadas?
+Excluir solicitação de fato exclui a solicitação? 
+É possível alterar solicitação já existente?
