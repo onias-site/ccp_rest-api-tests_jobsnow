@@ -35,7 +35,6 @@ import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
-import com.ccp.implementations.text.extractor.apache.tika.CcpApacheTikaTextExtractor;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
@@ -68,7 +67,6 @@ public abstract class EntityDecoratorTestTemplate {
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
 				CcpLocalInstances.bucket,
-				new CcpApacheTikaTextExtractor(),
 				new CcpElasticSearchQueryExecutor(),
 				new CcpElasticSearchDbRequest(),
 				new CcpMindrotPasswordHandler(),

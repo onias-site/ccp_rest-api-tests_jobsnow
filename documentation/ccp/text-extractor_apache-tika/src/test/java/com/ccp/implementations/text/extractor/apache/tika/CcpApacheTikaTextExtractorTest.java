@@ -29,7 +29,7 @@ public class CcpApacheTikaTextExtractorTest {
 	public void getInstanceTest() {
 		CcpTextExtractor instance = new CcpApacheTikaTextExtractor().getInstance();
 		assertNotNull(instance); 
-	}
+	} 
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 

@@ -15,7 +15,6 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.mensageria.sender.gcp.pubsub.CcpGcpPubSubMensageriaSender;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
-import com.ccp.implementations.text.extractor.apache.tika.CcpApacheTikaTextExtractor;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
@@ -40,7 +39,6 @@ public class BaseTest {
 				new CcpElasticSearchCrud(),
 				new CcpMindrotPasswordHandler(),
 				new CcpElasticSearchDbRequest(),
-				new CcpApacheTikaTextExtractor(), 
 				localEnvironment ? CcpLocalInstances.bucket : new CcpGcpFileBucket(),
 			    localEnvironment ? CcpLocalCacheInstances.map : new CcpGcpMemCache(),
 	    		localEnvironment ? CcpLocalInstances.email : new CcpSendGridEmailSender(),

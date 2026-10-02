@@ -106,12 +106,13 @@ public class SkillFixHierarchyThroughSupportBotTest {
 	private static final String TWO_TYPES_USER = "associa.e.desassocia@teste.com";
 
 	/**
-	 * Saves the bot, its commands, their steps and their end messages again so that the index follows what is declared
-	 * in java (the create operation of the initial records does not overwrite what is already there).
+	 * Saves the bot, its commands, their steps, their end messages and the message templates of the requests again so
+	 * that the index follows what is declared in java (the create operation of the initial records does not overwrite
+	 * what is already there).
 	 */
 	@BeforeClass
 	public static void resaveBotConfiguration() {
-		List<CcpEntityConfigurator> configurators = Arrays.asList(new JbEntityBot(), new JbEntityBotCommand(), new JbEntityBotCommandStep(), new JbEntityBotCommandStepEndMessage());
+		List<CcpEntityConfigurator> configurators = Arrays.asList(new JbEntityBot(), new JbEntityBotCommand(), new JbEntityBotCommandStep(), new JbEntityBotCommandStepEndMessage(), new VisEntitySkillFixHierarchyPending());
 		for (CcpEntityConfigurator configurator : configurators) {
 			List<CcpBulkItem> records = configurator.getFirstRecordsToInsert();
 			for (CcpBulkItem record : records) {
@@ -257,11 +258,12 @@ public class SkillFixHierarchyThroughSupportBotTest {
 	}
 
 	/**
-	 * A new request made only of skills decided before: there is nothing to ask the operator, so the command
-	 * finishes the review right away and the user gets the feedback.
+	 * A new request made only of skills reviewed before (one approved, one rejected): the before save of the
+	 * pending entity refuses it, so it is not saved, the operator is not notified and the user gets an email
+	 * telling that every skill was already handled in earlier requests.
 	 */
 	@Test
-	public void requestWithEveryItemDecidedBeforeFinishesRightAway() {
+	public void requestWithEveryItemReviewedBeforeIsRefused() {
 
 		this.openRequest(ALL_DECIDED_BEFORE_USER, VisSkillFixHierarchyTypes.remove, "scala", "Akka não é scala puro", "akka", "play");
 		this.operatorTypes("/fixSkillHierarchy scala remove " + ALL_DECIDED_BEFORE_USER);
@@ -270,21 +272,21 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		this.operatorTypes("rejeitar play depende de scala");
 
 		EMAIL_INBOX.sentEmails.clear();
+		TELEGRAM.sentMessages.clear();
 		this.sendRequestAgain(ALL_DECIDED_BEFORE_USER, VisSkillFixHierarchyTypes.remove, "scala", "Pedindo de novo a mesma coisa", "akka", "play");
-
-		String summary = this.operatorTypes("/fixSkillHierarchy scala remove " + ALL_DECIDED_BEFORE_USER);
-		assertTrue(summary, summary.startsWith("Revisão concluída para " + ALL_DECIDED_BEFORE_USER + " / scala."));
-		assertTrue(summary, summary.contains("Aprovados: akka"));
-		assertTrue(summary, summary.contains("Reprovados: play"));
 
 		CcpJsonRepresentation request = this.request(ALL_DECIDED_BEFORE_USER, VisSkillFixHierarchyTypes.remove, "scala");
 		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(request));
-		assertTrue(VisEntitySkillFixHierarchyApproved.ENTITY.exists(request));
 
-		CcpJsonRepresentation email = this.emailSentTo(ALL_DECIDED_BEFORE_USER, VisMessages.VisNotifyUserAboutAprovedSkillHierarchy.class);
+		CcpJsonRepresentation email = this.emailSentTo(ALL_DECIDED_BEFORE_USER, VisMessages.VisNotifyUserAboutAlreadyReviewedSkillHierarchy.class);
 		String body = email.getAsString(JnJsonCommonsFields.message);
-		assertTrue(body, body.contains("<li><b>akka</b>: item já aprovado em revisão anterior</li>"));
-		assertTrue(body, body.contains("<li><b>play</b>: item já reprovado em revisão anterior</li>"));
+		assertTrue(body, body.contains("desassociação entre os termos akka, play e scala"));
+		assertTrue(body, body.contains("já foram atendidos em solicitações anteriores"));
+		assertFalse(EMAIL_INBOX.sentEmails.toString(), this.anyEmailSentTo(ALL_DECIDED_BEFORE_USER, VisMessages.VisNotifySupportAndUserAboutPendingSkillHierarchyRequest.class));
+		assertTrue(TELEGRAM.sentMessages.toString(), TELEGRAM.sentMessages.isEmpty());
+
+		String answer = this.operatorTypes("/fixSkillHierarchy scala remove " + ALL_DECIDED_BEFORE_USER);
+		assertTrue(answer, answer.startsWith("Não há itens pendentes"));
 	}
 
 	/**
@@ -550,7 +552,8 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		List<Class<?>> templates = Arrays.asList(
 				VisMessages.VisNotifySupportAndUserAboutPendingSkillHierarchyRequest.class,
 				VisMessages.VisNotifyUserAboutAprovedSkillHierarchy.class,
-				VisMessages.VisNotifyUserAboutRejectedSkillHierarchy.class);
+				VisMessages.VisNotifyUserAboutRejectedSkillHierarchy.class,
+				VisMessages.VisNotifyUserAboutAlreadyReviewedSkillHierarchy.class);
 
 		for (Class<?> template : templates) {
 			CcpJsonRepresentation sentEmail = CcpOtherConstants.EMPTY_JSON

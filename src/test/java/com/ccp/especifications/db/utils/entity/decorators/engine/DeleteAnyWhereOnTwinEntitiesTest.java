@@ -18,7 +18,6 @@ import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.query.elasticsearch.CcpElasticSearchQueryExecutor;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
-import com.ccp.implementations.text.extractor.apache.tika.CcpApacheTikaTextExtractor;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
@@ -62,7 +61,6 @@ public class DeleteAnyWhereOnTwinEntitiesTest {
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
 				CcpLocalInstances.bucket,
-				new CcpApacheTikaTextExtractor(),
 				new CcpElasticSearchQueryExecutor(),
 				new CcpElasticSearchDbRequest(),
 				new CcpMindrotPasswordHandler(),

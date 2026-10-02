@@ -46,7 +46,6 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.instant.messenger.telegram.CcpTelegramInstantMessenger;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
-import com.ccp.implementations.text.extractor.apache.tika.CcpApacheTikaTextExtractor;
 import com.ccp.json.validations.fields.annotations.CcpJsonCopyFieldValidationsFrom;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
@@ -85,7 +84,6 @@ public class CcpRandomScripts {
 				CcpLocalInstances.syncMensageriaListener,
 				CcpLocalInstances.bucket,
 				CcpLocalInstances.email,
-				new CcpApacheTikaTextExtractor(),
 				new CcpMindrotPasswordHandler(), 
 				new CcpElasticSerchDbBulk(), 
 				CcpLocalCacheInstances.map,

@@ -19,7 +19,6 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.instant.messenger.telegram.CcpTelegramInstantMessenger;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
-import com.ccp.implementations.text.extractor.apache.tika.CcpApacheTikaTextExtractor;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 
@@ -32,7 +31,6 @@ public class CcpCreateEntities {
 				CcpLocalInstances.syncMensageriaListener,
 				CcpLocalInstances.bucket,
 				CcpLocalInstances.email,
-				new CcpApacheTikaTextExtractor(),
 				new CcpMindrotPasswordHandler(),
 				new CcpElasticSerchDbBulk(),
 				CcpLocalCacheInstances.map,
