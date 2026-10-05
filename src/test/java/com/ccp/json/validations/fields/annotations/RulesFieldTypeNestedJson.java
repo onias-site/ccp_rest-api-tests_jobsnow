@@ -4,8 +4,8 @@ import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeNestedJson;
 
 /**
- * Campos anotados com {@code @CcpJsonFieldTypeNestedJson}: um que valida o json interno contra
- * {@code RulesNestedAddress} e outro que apenas proíbe json interno vazio.
+ * Fields annotated with {@code @CcpJsonFieldTypeNestedJson}: one that validates the inner JSON against
+ * {@code RulesNestedAddress} and another that only forbids an empty inner JSON.
  */
 public enum RulesFieldTypeNestedJson implements CcpJsonFieldName {
 

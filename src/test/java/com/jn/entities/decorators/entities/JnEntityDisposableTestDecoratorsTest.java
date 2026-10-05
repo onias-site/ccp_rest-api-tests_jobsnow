@@ -9,7 +9,7 @@ import com.jn.entities.JnEntityDisposableTest;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-/** jn_disposable_test: descartável por hora, sem cache — o descartável isolado dos demais decorators. */
+/** jn_disposable_test: hourly disposable, without cache: the disposable isolated from the other decorators. */
 public class JnEntityDisposableTestDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {

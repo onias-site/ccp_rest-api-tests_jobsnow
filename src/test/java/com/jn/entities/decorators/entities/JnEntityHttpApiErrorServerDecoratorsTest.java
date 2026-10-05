@@ -9,7 +9,7 @@ import com.jn.entities.JnEntityHttpApiErrorServer;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-/** jn_http_api_error_server: {@code @CcpEntityCache(3600)}, descartável por hora, transformador e validador. */
+/** jn_http_api_error_server: {@code @CcpEntityCache(3600)}, hourly disposable, transformer and validator. */
 public class JnEntityHttpApiErrorServerDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {

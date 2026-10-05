@@ -9,7 +9,7 @@ import com.jn.entities.JnEntityLoginPasswordAttempts;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-/** jn_login_password_attempts: {@code @CcpEntityCache(86400)}, descartável diário, transformador e validador. */
+/** jn_login_password_attempts: {@code @CcpEntityCache(86400)}, daily disposable, transformer and validator. */
 public class JnEntityLoginPasswordAttemptsDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {

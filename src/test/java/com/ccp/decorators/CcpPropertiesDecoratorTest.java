@@ -16,7 +16,7 @@ public class CcpPropertiesDecoratorTest {
 	// ── getContent ────────────────────────────────────────────────────────────
 
 	@Test
-	public void getContentRetornaInputStreamDecoratorTest() {
+	public void getContentReturnsInputStreamDecoratorTest() {
 		CcpPropertiesDecorator props = new CcpStringDecorator("qualquer").propertiesFrom();
 		CcpInputStreamDecorator content = props.getContent();
 		assertNotNull(content);
@@ -26,11 +26,11 @@ public class CcpPropertiesDecoratorTest {
 	// ── classLoader ───────────────────────────────────────────────────────────
 
 	@Test
-	public void classLoaderCarregaRecursoDoClasspathTest() {
+	public void classLoaderLoadsResourceFromClasspathTest() {
 		CcpPropertiesDecorator props = new CcpStringDecorator("test-recurso.properties").propertiesFrom();
-		CcpJsonRepresentation resultado = props.classLoader();
-		assertNotNull(resultado);
-		assertFalse(resultado.isEmpty());
+		CcpJsonRepresentation result = props.classLoader();
+		assertNotNull(result);
+		assertFalse(result.isEmpty());
 	}
 
 	// ── environmentVariablesOrClassLoaderOrFile ───────────────────────────────
@@ -38,22 +38,22 @@ public class CcpPropertiesDecoratorTest {
 	@Test
 	public void environmentVariablesOrClassLoaderOrFileViaClassLoaderTest() {
 		CcpPropertiesDecorator props = new CcpStringDecorator("test-recurso.properties").propertiesFrom();
-		CcpJsonRepresentation resultado = props.environmentVariablesOrClassLoaderOrFile();
-		assertNotNull(resultado);
-		assertFalse(resultado.isEmpty());
+		CcpJsonRepresentation result = props.environmentVariablesOrClassLoaderOrFile();
+		assertNotNull(result);
+		assertFalse(result.isEmpty());
 	}
 
 	// ── file ──────────────────────────────────────────────────────────────────
 
 	@Test
-	public void fileCarregaArquivoTest() {
-		String caminho = System.getProperty("java.io.tmpdir") + File.separator + "test-props.json";
-		new CcpStringDecorator(caminho).file().write("{\"chave\":\"valor\"}");
-		CcpPropertiesDecorator props = new CcpStringDecorator(caminho).propertiesFrom();
-		CcpJsonRepresentation resultado = props.file();
-		assertNotNull(resultado);
-		assertFalse(resultado.isEmpty());
-		new CcpStringDecorator(caminho).file().remove();
+	public void fileLoadsFileTest() {
+		String path = System.getProperty("java.io.tmpdir") + File.separator + "test-props.json";
+		new CcpStringDecorator(path).file().write("{\"chave\":\"valor\"}");
+		CcpPropertiesDecorator props = new CcpStringDecorator(path).propertiesFrom();
+		CcpJsonRepresentation result = props.file();
+		assertNotNull(result);
+		assertFalse(result.isEmpty());
+		new CcpStringDecorator(path).file().remove();
 	}
 
 	// ── environmentVariables ──────────────────────────────────────────────────
@@ -64,7 +64,7 @@ public class CcpPropertiesDecoratorTest {
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
-	// Nota: construtor protected e todos os métodos públicos são sem parâmetros.
+	// Note: protected constructor and every public method without parameters.
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
 

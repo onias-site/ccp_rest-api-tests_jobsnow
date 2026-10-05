@@ -38,7 +38,7 @@ public class JnServiceContactUsTest {
 		assertNotNull(JnServiceContactUs.valueOf("GetContactUsKpis"));
 	}
 
-	// ── apply returns same json (implementações são pass-through) ────────────
+	// ── apply returns the same json (the implementations are pass-through) ───
 
 	@Test
 	public void saveContactUsApplyTest() {

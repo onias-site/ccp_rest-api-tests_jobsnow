@@ -116,5 +116,5 @@ public class JnSendMessageToUserFluentTest {
 
 
 
-	// sendAllMessages() precisa de CcpCrud DI real — coberto pelos testes de integração
+	// sendAllMessages() needs the real CcpCrud DI, covered by the integration tests
 }

@@ -14,7 +14,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.json.defaultvalues.annotations.RulesDefaultValueStrings;
 
 /**
- * Verifica a engine que aplica {@code @CcpJsonFieldDefaultValue}, chamada diretamente e não pelo
+ * Verifies the engine that applies {@code @CcpJsonFieldDefaultValue}, called directly and not through
  * {@code CcpBusiness.execute}.
  */
 public class CcpJsonFieldDefaultValuesEngineTest {
@@ -24,38 +24,38 @@ public class CcpJsonFieldDefaultValuesEngineTest {
 	}
 
 	@Test
-	public void instanciaUnicaTest() {
+	public void singleInstanceTest() {
 		assertNotNull(CcpJsonFieldDefaultValuesEngine.INSTANCE);
 	}
 
 	/**
-	 * Classe sem nenhum campo anotado não tem o que preencher, então o próprio JSON recebido é
-	 * devolvido, sem cópia intermediária.
+	 * A class without any annotated field has nothing to fill, so the received JSON itself is returned, without an
+	 * intermediate copy.
 	 */
 	@Test
-	public void classeSemCamposAnotadosDevolveOMesmoJsonTest() {
+	public void classWithoutAnnotatedFieldsReturnsTheSameJsonTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON;
-		CcpJsonRepresentation retorno = CcpJsonFieldDefaultValuesEngine.INSTANCE.putDefaultValues(Object.class, json);
-		assertSame(json, retorno);
+		CcpJsonRepresentation returned = CcpJsonFieldDefaultValuesEngine.INSTANCE.putDefaultValues(Object.class, json);
+		assertSame(json, returned);
 	}
 
 	@Test
-	public void aplicaValorPadraoSemPassarPeloExecuteTest() {
+	public void appliesDefaultValueWithoutGoingThroughExecuteTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesDefaultValueStrings.name, "onias");
-		CcpJsonRepresentation retorno = CcpJsonFieldDefaultValuesEngine.INSTANCE.putDefaultValues(RulesDefaultValueStrings.class, json);
-		String valor = retorno.getAsString(RulesDefaultValueStrings.comTemplate);
-		assertEquals("ola onias", valor);
+		CcpJsonRepresentation returned = CcpJsonFieldDefaultValuesEngine.INSTANCE.putDefaultValues(RulesDefaultValueStrings.class, json);
+		String value = returned.getAsString(RulesDefaultValueStrings.comTemplate);
+		assertEquals("ola onias", value);
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void putDefaultValuesClasseNulaTest() {
+	public void putDefaultValuesNullClassTest() {
 		CcpJsonFieldDefaultValuesEngine.INSTANCE.putDefaultValues(null, CcpOtherConstants.EMPTY_JSON);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void putDefaultValuesJsonNuloTest() {
+	public void putDefaultValuesNullJsonTest() {
 		CcpJsonFieldDefaultValuesEngine.INSTANCE.putDefaultValues(Object.class, null);
 	}
 }

@@ -11,9 +11,9 @@ import com.ccp.json.validations.fields.interfaces.CcpJsonFieldType;
 import org.junit.Test;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre os enums de validação de campo
- * ({@code CcpJsonFieldError}, {@code CcpJsonFieldTypeError}, {@code TimeOptions} e
- * {@code TimeValueExtractorFromAnnotation}), incluindo os membros de visibilidade de pacote.
+ * Coverage of {@code CcpNullParameterAspect} over the field validation enums ({@code CcpJsonFieldError},
+ * {@code CcpJsonFieldTypeError}, {@code TimeOptions} and {@code TimeValueExtractorFromAnnotation}),
+ * package-private members included.
  */
 public class CcpJsonFieldValidationsAopNullTest {
 

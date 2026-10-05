@@ -4,8 +4,8 @@ import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 
 /**
- * Campos para exercitar o atributo {@code jsonProducer}: um com produtor próprio e outro com a
- * anotação sem atributo algum, que cai no produtor padrão e portanto não define valor nenhum.
+ * Fields to exercise the {@code jsonProducer} attribute: one with a producer of its own and another with the
+ * annotation without any attribute, which falls into the default producer and therefore sets no value.
  */
 public enum RulesDefaultValueJsonProducer implements CcpJsonFieldName {
 

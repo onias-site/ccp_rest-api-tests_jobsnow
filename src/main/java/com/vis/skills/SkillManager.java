@@ -17,38 +17,74 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.decorators.CcpStringDecorator;
 
+/** One-off tool that builds the skills hierarchy and synonym reports from the text files of the documentation folder. */
 public class SkillManager {
+	/** Fields of the reports. */
 	static enum JsonFields implements CcpJsonFieldName{
+		/** The {@code implicitSkills} field. */
 		implicitSkills, 
+		/** The {@code skill} field. */
 		skill, 
+		/** The {@code word} field. */
 		word, 
+		/** The {@code childrenCount} field. */
 		childrenCount, 
+		/** The {@code hasNoParent} field. */
 		hasNoParent, 
+		/** The {@code parent} field. */
 		parent, 
+		/** The {@code mirror} field. */
 		mirror, 
+		/** The {@code hasMirror} field. */
 		hasMirror, 
+		/** The {@code allParents} field. */
 		allParents, 
+		/** The {@code hasRepeatedParent} field. */
 		hasRepeatedParent, 
+		/** The {@code directParent} field. */
 		directParent, 
+		/** The {@code commonParents} field. */
 		commonParents, 
+		/** The {@code hasSkillsWithCommonParentsSize} field. */
 		hasSkillsWithCommonParentsSize, 
+		/** The {@code skillsWithCommonParents} field. */
 		skillsWithCommonParents, 
+		/** The {@code synonym} field. */
 		synonym, 
+		/** The {@code similar} field. */
 		similar, 
+		/** The {@code preRequisite} field. */
 		preRequisite, 
+		/** The {@code positionsCount} field. */
 		positionsCount, 
+		/** The {@code parentSize} field. */
 		parentSize, 
+		/** The {@code skillSize} field. */
 		skillSize, 
+		/** The {@code words} field. */
 		words, 
+		/** The {@code id} field. */
 		id, 
+		/** The {@code skillsPerParent} field. */
 		skillsPerParent, 
+		/** The {@code tipoVaga} field. */
 		tipoVaga, 
+		/** The {@code curriculo} field. */
 		curriculo, 
+		/** The {@code conteudo} field. */
 		conteudo, 
+		/** The {@code text} field. */
 		text
 	}
+	/** Unused counter. */
 	static int counter;
 	
+	/**
+	 * Returns the spelling variants of a two-word skill (joined, hyphenated, dotted and, unless the second word is a number,
+	 * reversed); a skill with another number of words is returned alone.
+	 * @param word the skill
+	 * @return the variants
+	 */
 	static Set<String> getOtherWords(String word){
 		String[] wordPieces = word.split(" ");
 		if(wordPieces.length != 2) {
@@ -80,6 +116,11 @@ public class SkillManager {
 	
 	
 	
+	/**
+	 * Returns the variants of every skill of the set.
+	 * @param otherWords the skills
+	 * @return the variants
+	 */
 	static Set<String> getOtherWords(Set<String> otherWords){
 		Set<String> response = new HashSet<>();
 		for (String word : otherWords) {
@@ -93,6 +134,7 @@ public class SkillManager {
 	}
 	
 	
+	/** Writes {@code synonyms2.txt}: the synonym lines plus every reported skill missing from them, uppercase and sorted. */
 	static void saveSynonyms() {
 		String folder = "C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\";
 		List<CcpJsonRepresentation> skillsReport = new CcpStringDecorator(folder+ "report_skills.json").file().asJsonList();
@@ -126,6 +168,12 @@ public class SkillManager {
 	}
 
 	
+	/**
+	 * Writes {@code report_skills.json}: every skill of the {@code adicionarParent=} lines with its parents, children count
+	 * and synonyms.
+	 * @throws VisErrorSkillWithoutSynonyms when a skill is in no synonym group
+	 * @throws VisErrorSkillWithManySynonymGroups when a skill is in more than one synonym group
+	 */
 	static void saveSkills() {
 		String folder = "C:\\eclipse-workspaces\\ccp\\ccp_rest-api-tests_jobsnow\\documentation\\jn\\database\\elasticsearch\\";
 		List<String> lines = new CcpStringDecorator(folder+ "ajustes_synonyms.txt").file().getLines();
@@ -240,10 +288,21 @@ public class SkillManager {
 		reportFile.append(newList.toString());
 	}
 	
+	/**
+	 * Returns the parents of the skill in the report.
+	 * @param skill the skill
+	 * @param report the report
+	 * @return the parents
+	 */
 	static List<String> getParent(String skill, List<CcpJsonRepresentation> report){
 		return report.stream().filter(x -> skill.equals(x.getAsString(JsonFields.skill))).findFirst().get()
 				.getAsStringList(JsonFields.parent);
 	}
+	/**
+	 * Builds a comparator over the fields in order: numbers descending, booleans true first, texts ascending.
+	 * @param fields the fields
+	 * @return the comparator
+	 */
 	static Comparator<? super CcpJsonRepresentation> getSorter(String... fields){
 		Comparator<? super CcpJsonRepresentation> sorter = (a, b) -> {
 			
@@ -282,6 +341,12 @@ public class SkillManager {
 		return sorter;
 	}
 
+	/**
+	 * Adds the skills that share more than one parent with this one.
+	 * @param json the skill
+	 * @param report the report
+	 * @return the skill with {@code skillsWithCommonParents}
+	 */
 	static CcpJsonRepresentation getSkillsWithCommonParentsSize(CcpJsonRepresentation json, List<CcpJsonRepresentation> report) {
 		List<String> skillsWithCommonParents = report.stream()
 		.filter(x -> false == x.getAsString(JsonFields.skill).equals(json.getAsString(JsonFields.skill)))
@@ -294,6 +359,12 @@ public class SkillManager {
 		return jsonWithCommonParents;
 	}
 	
+	/**
+	 * Returns the parents both skills have.
+	 * @param json1 a skill
+	 * @param json2 another skill
+	 * @return the common parents
+	 */
 	static List<String> getCommonParents(CcpJsonRepresentation json1, CcpJsonRepresentation json2) {
 		List<String> firstParents = json1.getAsStringList(JsonFields.parent);
 		List<String> secondParents = json2.getAsStringList(JsonFields.parent);
@@ -302,6 +373,13 @@ public class SkillManager {
 	}
 	
 	
+	/**
+	 * Collects the parents of the skill recursively, repeated ones included.
+	 * @param allParents the accumulated parents
+	 * @param report the report
+	 * @param json the skill
+	 * @return the accumulated parents
+	 */
 	static List<String> getAllParents(List<String> allParents, List<CcpJsonRepresentation> report, CcpJsonRepresentation json){
 		
 		List<String> parents = json.getAsStringList(JsonFields.parent);
@@ -319,6 +397,12 @@ public class SkillManager {
 		return allParents;
 	}
 
+	/**
+	 * Returns the single parent of the skill when that parent has exactly one child (a "mirror"), otherwise an empty text.
+	 * @param json the skill
+	 * @param report the report
+	 * @return the mirror or an empty text
+	 */
 	static String getSynonym(CcpJsonRepresentation json, List<CcpJsonRepresentation> report) {
 		List<String> parents = json.getAsStringList(JsonFields.parent);
 		if(parents.size() != 1) {

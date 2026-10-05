@@ -7,7 +7,7 @@ import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre o método protegido
+ * Coverage of {@code CcpNullParameterAspect} over the protected method
  * {@code JnServiceLogin.createParametersToSearchInAllEntities}.
  */
 public class JnServiceLoginInternalsAopNullTest {

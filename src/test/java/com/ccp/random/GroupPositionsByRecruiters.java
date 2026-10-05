@@ -14,13 +14,13 @@ class GroupPositionsByRecruiters implements java.util.function.Consumer<CcpJsonR
 
 		String recrutador = json.getAsObject(CcpRandomScripts.JsonFieldNames.mail);
 		String contato = json.getAsString(CcpRandomScripts.JsonFieldNames.contato);
-		String texto = json.getAsString(CcpRandomScripts.JsonFieldNames.vaga);
+		String text = json.getAsString(CcpRandomScripts.JsonFieldNames.vaga);
 		String contactChannel = new CcpStringDecorator(contato.trim()).email().isValid() ? "email" : "link";
 
-		CcpJsonRepresentation vaga = CcpOtherConstants.EMPTY_JSON.put(CcpRandomScripts.JsonFieldNames.channel, contato).put(CcpRandomScripts.JsonFieldNames.email, recrutador)
-				.put(CcpRandomScripts.JsonFieldNames.description, texto).put(CcpRandomScripts.JsonFieldNames.contactChannel, contactChannel);
+		CcpJsonRepresentation position = CcpOtherConstants.EMPTY_JSON.put(CcpRandomScripts.JsonFieldNames.channel, contato).put(CcpRandomScripts.JsonFieldNames.email, recrutador)
+				.put(CcpRandomScripts.JsonFieldNames.description, text).put(CcpRandomScripts.JsonFieldNames.contactChannel, contactChannel);
 
-		this.positionsGroupedByRecruiters = this.positionsGroupedByRecruiters.addToList(new CcpFieldName(recrutador), vaga);
+		this.positionsGroupedByRecruiters = this.positionsGroupedByRecruiters.addToList(new CcpFieldName(recrutador), position);
 	}
 
 }

@@ -28,7 +28,7 @@ public class CcpFileDecoratorTest {
 	private static final String ARQUIVO = BASE + "teste.txt";
 
 	@Before
-	public void criarDiretorio() {
+	public void createDirectory() {
 		new CcpStringDecorator(BASE).folder().createNewFileIfNotExists("teste.txt");
 	}
 
@@ -43,84 +43,84 @@ public class CcpFileDecoratorTest {
 	public void writeEGetStringContentTest() {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		file.write("linha de conteudo");
-		String conteudo = file.getStringContent();
-		assertTrue(conteudo.contains("linha de conteudo"));
+		String fileContent = file.getStringContent();
+		assertTrue(fileContent.contains("linha de conteudo"));
 	}
 
 	@Test
-	public void writeSobreescreveConteudoAnteriorTest() {
+	public void writeOverwritesPreviousContentTest() {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		file.write("primeiro");
 		file.write("segundo");
-		String conteudo = file.getStringContent();
-		assertFalse(conteudo.contains("primeiro"));
-		assertTrue(conteudo.contains("segundo"));
+		String fileContent = file.getStringContent();
+		assertFalse(fileContent.contains("primeiro"));
+		assertTrue(fileContent.contains("segundo"));
 	}
 
 	// ── append ────────────────────────────────────────────────────────────────
 
 	@Test
-	public void appendAdicionaLinhasTest() {
+	public void appendAddsLinesTest() {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		file.write("linha1");
 		file.append("linha2");
-		String conteudo = file.getStringContent();
-		assertTrue(conteudo.contains("linha1"));
-		assertTrue(conteudo.contains("linha2"));
+		String fileContent = file.getStringContent();
+		assertTrue(fileContent.contains("linha1"));
+		assertTrue(fileContent.contains("linha2"));
 	}
 
 	// ── reset ─────────────────────────────────────────────────────────────────
 
 	@Test
-	public void resetApagaConteudoTest() {
+	public void resetDeletesContentTest() {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		file.write("conteudo que sera apagado");
 		file.reset();
-		String conteudo = file.getStringContent();
-		assertTrue(conteudo.trim().isEmpty());
+		String fileContent = file.getStringContent();
+		assertTrue(fileContent.trim().isEmpty());
 	}
 
 	// ── getLines ─────────────────────────────────────────────────────────────
 
 	@Test
-	public void getLinesRetornaLinhasTest() {
+	public void getLinesReturnsLinesTest() {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		file.write("a");
 		file.append("b");
 		file.append("c");
-		List<String> linhas = file.getLines();
-		assertTrue(linhas.size() >= 3);
+		List<String> lines = file.getLines();
+		assertTrue(lines.size() >= 3);
 	}
 
 	// ── readLines ─────────────────────────────────────────────────────────────
 
 	@Test
-	public void readLinesIteraLinhasTest() {
+	public void readLinesIteratesLinesTest() {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		file.write("primeira");
 		file.append("segunda");
 		int[] counter = {0};
-		file.readLines((linha, numero) -> counter[0]++);
+		file.readLines((line, number) -> counter[0]++);
 		assertTrue(counter[0] >= 2);
 	}
 
 	// ── exists / isFile ───────────────────────────────────────────────────────
 
 	@Test
-	public void existsArquivoCriadoTest() {
+	public void existsCreatedFileTest() {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		file.write("x");
 		assertTrue(file.exists());
 	}
 
 	@Test
-	public void existsArquivoNaoExistenteTest() {
+	public void existsNonExistingFileTest() {
 		CcpFileDecorator file = new CcpStringDecorator(BASE + "inexistente_xyz.txt").file();
 		assertFalse(file.exists());
 	}
 
 	@Test
-	public void isFileRetornaTrueParaArquivoTest() {
+	public void isFileReturnsTrueForFileTest() {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		file.write("x");
 		assertTrue(file.isFile());
@@ -129,13 +129,13 @@ public class CcpFileDecoratorTest {
 	// ── getName / getPath ─────────────────────────────────────────────────────
 
 	@Test
-	public void getNameRetornaNomeDoArquivoTest() {
+	public void getNameReturnsFileNameTest() {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		assertEquals("teste.txt", file.getName());
 	}
 
 	@Test
-	public void getPathRetornaCaminhoAbsolutoTest() {
+	public void getPathReturnsAbsolutePathTest() {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		assertNotNull(file.getPath());
 		assertTrue(file.getPath().contains("teste.txt"));
@@ -144,7 +144,7 @@ public class CcpFileDecoratorTest {
 	// ── remove ────────────────────────────────────────────────────────────────
 
 	@Test
-	public void removeApagaArquivoTest() {
+	public void removeDeletesFileTest() {
 		String path = BASE + "para_remover.txt";
 		CcpFileDecorator file = new CcpStringDecorator(path).file();
 		file.write("remover");
@@ -156,12 +156,12 @@ public class CcpFileDecoratorTest {
 	// ── rename ────────────────────────────────────────────────────────────────
 
 	@Test
-	public void renameRenomearArquivoTest() {
+	public void renameRenamesFileTest() {
 		String original = BASE + "original.txt";
-		String novo = BASE + "renomeado.txt";
+		String newOne = BASE + "renomeado.txt";
 		CcpFileDecorator file = new CcpStringDecorator(original).file();
 		file.write("conteudo");
-		CcpFileDecorator renomeado = file.rename(novo);
+		CcpFileDecorator renomeado = file.rename(newOne);
 		assertTrue(renomeado.exists());
 		renomeado.remove();
 	}
@@ -180,7 +180,7 @@ public class CcpFileDecoratorTest {
 	// ── asFolder ──────────────────────────────────────────────────────────────
 
 	@Test
-	public void asFolderRetornaFolderDecoratorTest() {
+	public void asFolderReturnsFolderDecoratorTest() {
 		CcpFolderDecorator folder = new CcpStringDecorator(BASE).file().asFolder();
 		assertNotNull(folder);
 		assertTrue(folder.exists());
@@ -195,7 +195,7 @@ public class CcpFileDecoratorTest {
 	}
 
 	@Test
-	public void toStringRetornaNomeTest() {
+	public void toStringReturnsNameTest() {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		assertEquals("teste.txt", file.toString());
 	}
@@ -221,10 +221,10 @@ public class CcpFileDecoratorTest {
 		assertTrue(file.parent.content.contains("ccp_file_test"));
 	}
 
-	// ── isFile para diretório ─────────────────────────────────────────────────
+	// ── isFile for a directory ────────────────────────────────────────────────
 
 	@Test
-	public void isFileRetornaFalseParaDiretorioTest() {
+	public void isFileReturnsFalseForDirectoryTest() {
 		CcpFileDecorator file = new CcpStringDecorator(BASE).file();
 		assertFalse(file.isFile());
 	}
@@ -233,11 +233,11 @@ public class CcpFileDecoratorTest {
 
 	@Test
 	public void asJsonListTest() {
-		String caminho = BASE + "lista.json";
-		CcpFileDecorator file = new CcpStringDecorator(caminho).file();
+		String filePath = BASE + "lista.json";
+		CcpFileDecorator file = new CcpStringDecorator(filePath).file();
 		file.write("[{\"nome\":\"Onias\"},{\"nome\":\"Alice\"}]");
-		List<CcpJsonRepresentation> lista = file.asJsonList();
-		assertEquals(2, lista.size());
+		List<CcpJsonRepresentation> list = file.asJsonList();
+		assertEquals(2, list.size());
 		file.remove();
 	}
 

@@ -50,6 +50,15 @@ public class ElasticsearchLocal {
 		sendRequest("POST", index + "/_update/" + id + "?refresh=true", body);
 	}
 
+	/**
+	 * Makes what was written to the indices visible to the queries right away, instead of up to a second later,
+	 * which is the delay between a write and the query that should see it in a test.
+	 */
+	public static void refresh(String... indices) {
+		String joinedIndices = String.join(",", indices);
+		sendRequest("POST", joinedIndices + "/_refresh", "");
+	}
+
 	/** How many documents of the index match all the field/value pairs (exact terms). */
 	public static long count(String index, String... fieldsAndValues) {
 		sendRequest("POST", index + "/_refresh", "");

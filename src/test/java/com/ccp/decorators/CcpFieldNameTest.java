@@ -12,7 +12,7 @@ public class CcpFieldNameTest {
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorObjectNullParamTest() {
+	public void constructorObjectNullParamTest() {
 		new CcpFieldName((Object) null);
 	}
 
@@ -31,24 +31,24 @@ public class CcpFieldNameTest {
 		return d;
 	}
 
-	// name() e toString() nunca retornam null porque usam "" + this.name
-	// (mesmo quando name é null, a concatenação produz "null").
+	// name() and toString() never return null because they use "" + this.name
+	// (even when name is null, the concatenation produces "null").
 
 	@Test
-	public void nameNaoRetornaNullMesmoComCampoNullTest() throws Exception {
+	public void nameDoesNotReturnNullEvenWithNullFieldTest() throws Exception {
 		String r = withNullName().name();
-		// não deve lançar CcpNullReturnException porque "" + null == "null"
+		// must not throw CcpNullReturnException because "" + null == "null"
 		org.junit.Assert.assertEquals("null", r);
 	}
 
 	@Test
-	public void toStringNaoRetornaNullMesmoComCampoNullTest() throws Exception {
+	public void toStringDoesNotReturnNullEvenWithNullFieldTest() throws Exception {
 		String r = withNullName().toString();
 		org.junit.Assert.assertEquals("null", r);
 	}
 
-	// Placeholder para satisfazer o padrão: nenhum método de CcpFieldName pode
-	// naturalmente retornar null (ambos usam "" + name).
+	// Placeholder to satisfy the pattern: no method of CcpFieldName can
+	// naturally return null (both use "" + name).
 	@SuppressWarnings("unused")
 	private static void unusedImportGuard() {
 		Class<?> c = CcpNullReturnException.class;

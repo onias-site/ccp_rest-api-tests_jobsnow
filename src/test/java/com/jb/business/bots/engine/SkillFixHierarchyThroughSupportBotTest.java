@@ -23,12 +23,14 @@ import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
+import com.ccp.implementations.db.query.elasticsearch.CcpElasticSearchQueryExecutor;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.ccp.process.CcpProcessStatusDefault;
 import com.jb.entities.JbEntityBot;
 import com.jb.entities.JbEntityBotCommand;
 import com.jb.entities.JbEntityBotCommandStep;
@@ -41,11 +43,11 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.vis.business.skill.VisBusinessSkillFixHierarchyIgnoreUser;
 import com.vis.entities.VisEntityCommandNotAllowedToUser;
-import com.vis.entities.VisEntitySkillFixHierarchyApproved;
+import com.vis.entities.VisEntitySkill;
+import com.vis.entities.VisEntitySkillFixHierarchyFulfiled;
 import com.vis.entities.VisEntitySkillFixHierarchyItemApproved;
 import com.vis.entities.VisEntitySkillFixHierarchyItemPending;
 import com.vis.entities.VisEntitySkillFixHierarchyPending;
-import com.vis.entities.VisEntitySkillFixHierarchyRejected;
 import com.vis.json.fields.validation.VisSkillFixHierarchyTypes;
 import com.vis.json.fields.validation.VisUserRequestCommands;
 import com.vis.messages.VisMessages;
@@ -80,6 +82,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 				CcpLocalCacheInstances.mock,
 				new CcpElasticSerchDbBulk(),
 				new CcpElasticSearchCrud(),
+				new CcpElasticSearchQueryExecutor(),
 				new CcpGsonJsonHandler(),
 				new CcpApacheMimeHttp(),
 				telegram,
@@ -104,6 +107,12 @@ public class SkillFixHierarchyThroughSupportBotTest {
 	private static final String BLOCKED_USER = "usuario.bloqueado.no.comando@teste.com";
 
 	private static final String TWO_TYPES_USER = "associa.e.desassocia@teste.com";
+
+	private static final String REJECT_ALL_USER = "revisao.rejeitar.tudo@teste.com";
+
+	private static final String SKILL_PARENTS_USER = "revisao.altera.parents@teste.com";
+
+	private static final String WITHDRAWN_REQUEST_USER = "desistiu.da.solicitacao@teste.com";
 
 	/**
 	 * Saves the bot, its commands, their steps, their end messages and the message templates of the requests again so
@@ -170,9 +179,9 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		CcpJsonRepresentation request1 = this.request(ONE_BY_ONE_USER, VisSkillFixHierarchyTypes.add, "java");
 		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(request1));
-		assertTrue(VisEntitySkillFixHierarchyApproved.ENTITY.exists(request1));
+		assertTrue(VisEntitySkillFixHierarchyFulfiled.ENTITY.exists(request1));
 
-		CcpJsonRepresentation email = this.emailSentTo(ONE_BY_ONE_USER, VisMessages.VisNotifyUserAboutAprovedSkillHierarchy.class);
+		CcpJsonRepresentation email = this.emailSentTo(ONE_BY_ONE_USER, VisMessages.VisNotifyUserAboutFulfiledSkillHierarchy.class);
 		String body = email.getAsString(JnJsonCommonsFields.message);
 		assertTrue(body, body.contains("associação com o termo java"));
 		assertTrue(body, body.contains("Itens aprovados:</p><ul><li><b>spring</b>: spring é framework java</li></ul>"));
@@ -194,17 +203,116 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		assertTrue(VisEntitySkillFixHierarchyItemApproved.ENTITY.exists(django));
 		assertTrue(VisEntitySkillFixHierarchyItemApproved.ENTITY.exists(flask));
 
-		CcpJsonRepresentation email = this.emailSentTo(APPROVE_ALL_USER, VisMessages.VisNotifyUserAboutAprovedSkillHierarchy.class);
+		CcpJsonRepresentation email = this.emailSentTo(APPROVE_ALL_USER, VisMessages.VisNotifyUserAboutFulfiledSkillHierarchy.class);
 		String body = email.getAsString(JnJsonCommonsFields.message);
 		assertTrue(body, body.contains("desassociação com o termo python"));
 		assertTrue(body, body.contains("<li><b>django</b>: os dois são frameworks e não linguagem</li>"));
 		assertFalse(body, body.contains("Itens reprovados"));
-		// the transfer goes to the approved requests only: the rejected notice must not go out as well
-		assertFalse(EMAIL_INBOX.sentEmails.toString(), this.anyEmailSentTo(APPROVE_ALL_USER, VisMessages.VisNotifyUserAboutRejectedSkillHierarchy.class));
 
 		// once decided, the request is no longer pending for the operator
 		String again = this.operatorTypes("/fixSkillHierarchy python remove " + APPROVE_ALL_USER);
 		assertTrue(again, again.startsWith("Não há itens pendentes"));
+	}
+
+	/**
+	 * An approved association adds the parent to the {@code parent} array of the skill in {@link VisEntitySkill}; a
+	 * rejected one leaves the skill as it was.
+	 */
+	@Test
+	public void approvedAssociationAddsTheParentToTheSkill() {
+
+		this.saveSkill("TESTE.SKILL.ASSOCIADA", "TESTE.PAI.ANTIGO");
+		this.saveSkill("TESTE.SKILL.REJEITADA", "TESTE.PAI.ANTIGO");
+
+		try {
+			this.openRequest(SKILL_PARENTS_USER, VisSkillFixHierarchyTypes.add, "TESTE.PAI", "As duas dependem de TESTE.PAI", "TESTE.SKILL.ASSOCIADA", "TESTE.SKILL.REJEITADA");
+
+			this.operatorTypes("/fixSkillHierarchy TESTE.PAI add " + SKILL_PARENTS_USER);
+			this.operatorTypes("um a um");
+			this.operatorTypes("aprovar depende mesmo");
+			String summary = this.operatorTypes("rejeitar não depende");
+			assertTrue(summary, summary.contains("Aprovados: TESTE.SKILL.ASSOCIADA"));
+
+			assertEquals(Arrays.asList("TESTE.PAI.ANTIGO", "TESTE.PAI"), this.skillParents("TESTE.SKILL.ASSOCIADA"));
+			assertEquals(Arrays.asList("TESTE.PAI.ANTIGO"), this.skillParents("TESTE.SKILL.REJEITADA"));
+		} finally {
+			this.deleteSkill("TESTE.SKILL.ASSOCIADA");
+			this.deleteSkill("TESTE.SKILL.REJEITADA");
+		}
+	}
+
+	/**
+	 * An approved dissociation removes the parent from the {@code parent} array of the skill in
+	 * {@link VisEntitySkill}, keeping the other parents.
+	 */
+	@Test
+	public void approvedDissociationRemovesTheParentFromTheSkill() {
+
+		this.saveSkill("TESTE.SKILL.DESASSOCIADA", "TESTE.PAI", "TESTE.OUTRO.PAI");
+
+		try {
+			this.openRequest(SKILL_PARENTS_USER, VisSkillFixHierarchyTypes.remove, "TESTE.PAI", "Não depende de TESTE.PAI", "TESTE.SKILL.DESASSOCIADA");
+
+			this.operatorTypes("/fixSkillHierarchy TESTE.PAI remove " + SKILL_PARENTS_USER);
+			String summary = this.operatorTypes("aprovar não depende mesmo");
+			assertTrue(summary, summary.contains("Aprovados: TESTE.SKILL.DESASSOCIADA"));
+
+			assertEquals(Arrays.asList("TESTE.OUTRO.PAI"), this.skillParents("TESTE.SKILL.DESASSOCIADA"));
+		} finally {
+			this.deleteSkill("TESTE.SKILL.DESASSOCIADA");
+		}
+	}
+
+	private void saveSkill(String skill, String... parents) {
+		CcpJsonRepresentation skillRecord = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntitySkill.Fields.skill, skill)
+				.put(VisEntitySkill.Fields.parent, Arrays.asList(parents))
+				.put(VisEntitySkill.Fields.ranking, 999999);
+		VisEntitySkill.ENTITY.save(skillRecord);
+	}
+
+	private List<String> skillParents(String skill) {
+		CcpJsonRepresentation skillKey = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkill.Fields.skill, skill);
+		CcpJsonRepresentation skillRecord = VisEntitySkill.ENTITY.getOneById(skillKey);
+		List<String> parents = skillRecord.getAsStringList(VisEntitySkill.Fields.parent);
+		return parents;
+	}
+
+	private void deleteSkill(String skill) {
+		CcpJsonRepresentation skillKey = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkill.Fields.skill, skill);
+		VisEntitySkill.ENTITY.delete(skillKey);
+	}
+
+	/**
+	 * Rejecting everything also fulfils the request: it leaves the pending entity for the fulfiled one, the items
+	 * go to the rejected items (the twin of the pending items) and the user gets the review email.
+	 */
+	@Test
+	public void operatorRejectsEverything() {
+
+		this.openRequest(REJECT_ALL_USER, VisSkillFixHierarchyTypes.add, "kotlin", "Ktor e Exposed são de kotlin", "ktor", "exposed");
+
+		this.operatorTypes("/fixSkillHierarchy kotlin add " + REJECT_ALL_USER);
+		String summary = this.operatorTypes("rejeitar já estão associados a kotlin");
+		assertTrue(summary, summary.contains("Aprovados: -"));
+		assertTrue(summary, summary.contains("Reprovados: ktor, exposed"));
+
+		CcpEntity rejectedItems = VisEntitySkillFixHierarchyItemPending.ENTITY.getTwinEntity();
+		CcpJsonRepresentation ktor = this.item(REJECT_ALL_USER, VisSkillFixHierarchyTypes.add, "kotlin", "ktor");
+		CcpJsonRepresentation exposed = this.item(REJECT_ALL_USER, VisSkillFixHierarchyTypes.add, "kotlin", "exposed");
+		assertFalse(VisEntitySkillFixHierarchyItemPending.ENTITY.exists(ktor));
+		assertFalse(VisEntitySkillFixHierarchyItemApproved.ENTITY.exists(ktor));
+		assertTrue(rejectedItems.exists(ktor));
+		assertTrue(rejectedItems.exists(exposed));
+
+		CcpJsonRepresentation requestKey = this.request(REJECT_ALL_USER, VisSkillFixHierarchyTypes.add, "kotlin");
+		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
+		assertTrue(VisEntitySkillFixHierarchyFulfiled.ENTITY.exists(requestKey));
+
+		CcpJsonRepresentation email = this.emailSentTo(REJECT_ALL_USER, VisMessages.VisNotifyUserAboutFulfiledSkillHierarchy.class);
+		String body = email.getAsString(JnJsonCommonsFields.message);
+		assertTrue(body, body.contains("<li><b>ktor</b>: já estão associados a kotlin</li>"));
+		assertFalse(body, body.contains("Itens aprovados"));
 	}
 
 	/**
@@ -250,7 +358,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		assertTrue(VisEntitySkillFixHierarchyItemApproved.ENTITY.exists(ktor));
 		assertFalse(VisEntitySkillFixHierarchyItemPending.ENTITY.exists(ktor));
 
-		CcpJsonRepresentation email = this.emailSentTo(DECIDED_BEFORE_USER, VisMessages.VisNotifyUserAboutAprovedSkillHierarchy.class);
+		CcpJsonRepresentation email = this.emailSentTo(DECIDED_BEFORE_USER, VisMessages.VisNotifyUserAboutFulfiledSkillHierarchy.class);
 		String body = email.getAsString(JnJsonCommonsFields.message);
 		assertTrue(body, body.contains("<li><b>spring</b>: item já aprovado em revisão anterior</li>"));
 		assertTrue(body, body.contains("<li><b>ktor</b>: ktor é framework kotlin</li>"));
@@ -333,8 +441,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		CcpJsonRepresentation pendingRequest = this.request(IGNORED_USER, VisSkillFixHierarchyTypes.add, "rust");
 		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(pendingRequest));
-		assertFalse(VisEntitySkillFixHierarchyApproved.ENTITY.exists(pendingRequest));
-		assertFalse(VisEntitySkillFixHierarchyRejected.ENTITY.exists(pendingRequest));
+		assertFalse(VisEntitySkillFixHierarchyFulfiled.ENTITY.exists(pendingRequest));
 
 		CcpEntity rejectedItems = VisEntitySkillFixHierarchyItemPending.ENTITY.getTwinEntity();
 		for (String skill : Arrays.asList("blablabla", "blebleble")) {
@@ -451,6 +558,90 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		throw new AssertionError("The request of the ignored user was accepted: " + request);
 	}
 
+	/**
+	 * The candidate withdraws a request that is still pending: the request leaves the pending entity.
+	 */
+	@Test
+	public void candidateWithdrawsAPendingRequest() {
+
+		this.openRequest(WITHDRAWN_REQUEST_USER, VisSkillFixHierarchyTypes.add, "rust", "Tokio é runtime assíncrono de rust", "tokio");
+
+		CcpJsonRepresentation requestKey = this.request(WITHDRAWN_REQUEST_USER, VisSkillFixHierarchyTypes.add, "rust");
+		assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
+
+		VisServiceSkillFixHierarchy.DeleteSkillFixHierarchy.execute(requestKey);
+
+		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
+	}
+
+	/**
+	 * Withdrawing a request that is not pending interrupts the flow with {@code NOT_FOUND} (404).
+	 */
+	@Test
+	public void candidateWithdrawsARequestThatDoesNotExist() {
+
+		CcpJsonRepresentation requestKey = this.request("ninguem@teste.com", VisSkillFixHierarchyTypes.add, "termoinexistente");
+
+		try {
+			VisServiceSkillFixHierarchy.DeleteSkillFixHierarchy.execute(requestKey);
+		} catch (CcpErrorFlowDisturb notFound) {
+			assertEquals(CcpProcessStatusDefault.NOT_FOUND, notFound.status);
+			return;
+		}
+		throw new AssertionError("The withdrawal of a request that does not exist was accepted: " + requestKey);
+	}
+
+	private static final String CONSULTING_USER = "consulta.da.solicitacao@teste.com";
+
+	private CcpJsonRepresentation consult(String email, VisSkillFixHierarchyTypes type, String parent) {
+		CcpJsonRepresentation requestKey = this.request(email, type, parent);
+		CcpJsonRepresentation suggestion = VisServiceSkillFixHierarchy.GetSkillFixHierarchy.execute(requestKey);
+		return suggestion;
+	}
+
+	/**
+	 * The candidate sees the pending request, with {@code status} {@code pending}; once the operator reviews it, the
+	 * same consultation answers {@code fulfiled}; without a request the answer is empty.
+	 */
+	@Test
+	public void candidateConsultsTheRequestThroughItsLife() {
+
+		this.openRequest(CONSULTING_USER, VisSkillFixHierarchyTypes.add, "kotlin", "Ktor é framework de kotlin", "ktor");
+
+		CcpJsonRepresentation pending = this.consult(CONSULTING_USER, VisSkillFixHierarchyTypes.add, "kotlin");
+		assertEquals(pending.toString(), "pending", pending.getAsString(new com.ccp.decorators.CcpFieldName("status")));
+		assertEquals(Arrays.asList("ktor"), pending.getAsStringList(VisEntitySkillFixHierarchyPending.Fields.skill));
+
+		this.operatorTypes("/fixSkillHierarchy kotlin add " + CONSULTING_USER);
+		this.operatorTypes("aprovar ktor roda sobre kotlin");
+
+		CcpJsonRepresentation fulfiled = this.consult(CONSULTING_USER, VisSkillFixHierarchyTypes.add, "kotlin");
+		assertEquals(fulfiled.toString(), "fulfiled", fulfiled.getAsString(new com.ccp.decorators.CcpFieldName("status")));
+
+		CcpJsonRepresentation nothing = this.consult(CONSULTING_USER, VisSkillFixHierarchyTypes.remove, "kotlin");
+		assertTrue(nothing.toString(), nothing.isEmpty());
+	}
+
+	/**
+	 * A second request for the same e-mail, parent and type while the first one is pending is refused with
+	 * {@code CONFLICT} (409).
+	 */
+	@Test
+	public void aSecondPendingRequestIsAConflict() {
+
+		this.openRequest(CONSULTING_USER, VisSkillFixHierarchyTypes.remove, "scala", "Akka não é scala", "akka");
+
+		CcpJsonRepresentation requestKey = this.request(CONSULTING_USER, VisSkillFixHierarchyTypes.remove, "scala");
+		CcpJsonRepresentation sameRequest = this.newRequest(requestKey, "Akka não é scala", "akka");
+		try {
+			VisServiceSkillFixHierarchy.FixSkillHierarchy.execute(sameRequest);
+		} catch (CcpErrorFlowDisturb conflict) {
+			assertEquals(CcpProcessStatusDefault.CONFLICT, conflict.status);
+			return;
+		}
+		throw new AssertionError("The second pending request was accepted: " + sameRequest);
+	}
+
 	@Test
 	public void requestThatDoesNotExist() {
 		String answer = this.operatorTypes("/fixSkillHierarchy termoinexistente add ninguem@teste.com");
@@ -488,7 +679,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		CcpJsonRepresentation removeRequestKey = this.request(TWO_TYPES_USER, VisSkillFixHierarchyTypes.remove, "php");
 		CcpJsonRepresentation addRequestKey = this.request(TWO_TYPES_USER, VisSkillFixHierarchyTypes.add, "php");
-		assertTrue(VisEntitySkillFixHierarchyApproved.ENTITY.exists(removeRequestKey));
+		assertTrue(VisEntitySkillFixHierarchyFulfiled.ENTITY.exists(removeRequestKey));
 		assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(addRequestKey));
 
 		String addRequest = this.operatorTypes("/fixSkillHierarchy php add " + TWO_TYPES_USER);
@@ -546,13 +737,11 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		// the pending entity writes through the messaging, which validates the whole record, even to delete it
 		VisEntitySkillFixHierarchyPending.ENTITY.delete(newRequest);
-		VisEntitySkillFixHierarchyApproved.ENTITY.delete(request);
-		VisEntitySkillFixHierarchyRejected.ENTITY.delete(request);
+		VisEntitySkillFixHierarchyFulfiled.ENTITY.delete(request);
 
 		List<Class<?>> templates = Arrays.asList(
 				VisMessages.VisNotifySupportAndUserAboutPendingSkillHierarchyRequest.class,
-				VisMessages.VisNotifyUserAboutAprovedSkillHierarchy.class,
-				VisMessages.VisNotifyUserAboutRejectedSkillHierarchy.class,
+				VisMessages.VisNotifyUserAboutFulfiledSkillHierarchy.class,
 				VisMessages.VisNotifyUserAboutAlreadyReviewedSkillHierarchy.class);
 
 		for (Class<?> template : templates) {

@@ -26,6 +26,15 @@ public class CcpTransformersTest {
 	}
 
 	@Test
+	public void addRequiredAtLeastOneSetsTheFieldOnlyWhenNoneOfTheOthersIsPresent() {
+		CcpJsonRepresentation without = new Impl().addRequiredAtLeastOne(CcpOtherConstants.EMPTY_JSON, "clt", 1000, "clt", "pj");
+		assertEquals(Integer.valueOf(1000), without.getAsIntegerNumber(new CcpFieldName("clt")));
+
+		CcpJsonRepresentation withOne = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("pj"), 5);
+		assertEquals(withOne, new Impl().addRequiredAtLeastOne(withOne, "clt", 1000, "clt", "pj"));
+	}
+
+	@Test
 	public void putMinValueTest() {
 		CcpJsonRepresentation j = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("k"), 1);
 		CcpJsonRepresentation r = new Impl().putMinValue(j, "k", 5);

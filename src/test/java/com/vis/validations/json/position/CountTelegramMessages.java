@@ -30,47 +30,47 @@ public class CountTelegramMessages {
 		return s;
 	}
 
-	static int totalDeAceitos = 0;
+	static int totalAccepted = 0;
 	static int totalGeral = 0;
 	
 	public static void main(String[] args)  {
-		File pasta = new File("C:\\jn\\chats");
-		CcpFileDecorator arquivoDeSaida = new CcpStringDecorator("C:\\jn\\saida.html").file().reset();
+		File folder = new File("C:\\jn\\chats");
+		CcpFileDecorator outputFile = new CcpStringDecorator("C:\\jn\\saida.html").file().reset();
 		Set<String> hashes = new HashSet<>();
-		File[] listFiles = pasta.listFiles();
-		for (File arquivo : listFiles) {
-			String absolutePath = arquivo.getAbsolutePath();
+		File[] listFiles = folder.listFiles();
+		for (File fileUnderTest : listFiles) {
+			String absolutePath = fileUnderTest.getAbsolutePath();
 			List<String> lines1 = new CcpStringDecorator(absolutePath).file().getLines().stream()
-					.map(line -> sanitizarLinha(line))
+					.map(line -> sanitizeLine(line))
 					.filter(x -> x.length() > 135)
 					.collect(Collectors.toList());
 			
 			List<String> lines2 = lines1.stream().filter(x -> hashes.add(getHash(x))).collect(Collectors.toList());
 			
-			String nomeDoArquivo = arquivo.getName();
+			String fileName = fileUnderTest.getName();
 			double size1 = lines1.size();
 			double size2 = lines2.size();
-			int porcentagemDeRecusa = (int)(((size1 - size2)/size1) * 100);
-			totalDeAceitos += size2;
+			int refusalPercentage = (int)(((size1 - size2)/size1) * 100);
+			totalAccepted += size2;
 			totalGeral += size1;
 			String format = String.format("Arquivo: %s, linhas: %s, filtradas: %s, porcentagem de recusa: %s, total geral: %s", 
-					nomeDoArquivo 
+					fileName 
 					,size1
 					,size2
-					,porcentagemDeRecusa
+					,refusalPercentage
 					,hashes.size()
 					);
 			for (String line : lines2) {
-				arquivoDeSaida.append(line);
+				outputFile.append(line);
 			}
 //			CcpTimeDecorator.appendLog(format);
 			System.out.println(format);
 		}
 //		CcpTimeDecorator.appendLog("Total geral: " + totalGeral + ". Total de aceitos: " + totalDeAceitos);
 	}
-	private static String sanitizarLinha(String line) {
+	private static String sanitizeLine(String line) {
 		
-		String trim = removerSujeiraGrossa(line);
+		String trim = removeCoarseDirt(line);
 		
 		String cleaned = 
 		new CcpStringDecorator(trim)
@@ -82,15 +82,15 @@ public class CountTelegramMessages {
 		.trim()
 		;
 		
-		boolean ehVagaDoJobsNow = ehVagaDoJobsNow(cleaned);
+		boolean isJobsNowPosition = isJobsNowPosition(cleaned);
 		
 		String str = "#jnVaga";
 		if(cleaned.contains(str)) {
-			int jnVagaIndex = cleaned.indexOf(str);
-			cleaned = cleaned.substring(jnVagaIndex+ str.length());
+			int jnPositionIndex = cleaned.indexOf(str);
+			cleaned = cleaned.substring(jnPositionIndex+ str.length());
 		}
 
-		if(ehVagaDoJobsNow) {
+		if(isJobsNowPosition) {
 			int indexOf = cleaned.indexOf("Esta vaga expira em");
 			cleaned = cleaned.substring(0, indexOf);
 		}
@@ -105,29 +105,29 @@ public class CountTelegramMessages {
 			return cleaned;
 		}
 	}
-	private static boolean ehVagaDoJobsNow(String cleaned) {
+	private static boolean isJobsNowPosition(String cleaned) {
 		String stripAccents = new CcpStringDecorator(cleaned).text().stripAccents().content;
 		
-		boolean naoTemPropaganda = false == stripAccents.toLowerCase().contains("propaganda numero");
+		boolean hasNoAdvertising = false == stripAccents.toLowerCase().contains("propaganda numero");
 		
-		if(naoTemPropaganda) {
+		if(hasNoAdvertising) {
 			return false;
 		}
 		
-		boolean naoTemDataDeExpiracao = false == stripAccents.toLowerCase().contains("esta vaga expira em");
+		boolean hasNoExpirationDate = false == stripAccents.toLowerCase().contains("esta vaga expira em");
 		
-		if(naoTemDataDeExpiracao) {
+		if(hasNoExpirationDate) {
 			return false;
 		}
 
 		return true;
 	}
-	private static String removerSujeiraGrossa(String line) {
-		String regexDasTagsHtml = "(<([a-z]+)(?![^>]*\\/>)[^>]*>)|(</([a-z]+)(?![^>]*\\/>)[^>]*>)";
-		String regexDosEmojis = "[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{Z}\\p{Cf}\\p{Cs}\\s]";
+	private static String removeCoarseDirt(String line) {
+		String htmlTagsRegex = "(<([a-z]+)(?![^>]*\\/>)[^>]*>)|(</([a-z]+)(?![^>]*\\/>)[^>]*>)";
+		String emojisRegex = "[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{Z}\\p{Cf}\\p{Cs}\\s]";
 		String trim = line
-				.replaceAll(regexDasTagsHtml, " ")
-				.replaceAll(regexDosEmojis, " ")
+				.replaceAll(htmlTagsRegex, " ")
+				.replaceAll(emojisRegex, " ")
 				.trim()
 				.replace("•", " ")
 				.replace("__", " ")
@@ -139,8 +139,8 @@ public class CountTelegramMessages {
 		return trim;
 	}
 	private static String getHash(String line) {
-		String delimitadores = "\\/|\\s|\n|\\:|\\,|\\;|\\!|\\?|\\[|\\]|\\{|\\}|\\<|\\>|\\=|\\(|\\)\\ |\\'|\\\"|\\`";
-		String[] split = line.split(delimitadores);
+		String delimiters = "\\/|\\s|\n|\\:|\\,|\\;|\\!|\\?|\\[|\\]|\\{|\\}|\\<|\\>|\\=|\\(|\\)\\ |\\'|\\\"|\\`";
+		String[] split = line.split(delimiters);
 		List<String> asList = Arrays.asList(split).stream().map(x -> transform(x)).filter(x -> x.length() > 2)
 				.collect(Collectors.toList());
 		TreeSet<String> treeSet = new TreeSet<String>(asList);

@@ -4,8 +4,8 @@ import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeNumber;
 
 /**
- * Campos anotados com {@code @CcpJsonFieldTypeNumber} (double), um para cada restrição: valor
- * mínimo, máximo, exato e lista de valores permitidos.
+ * Fields annotated with {@code @CcpJsonFieldTypeNumber} (double), one for each restriction: minimum, maximum and
+ * exact values and list of allowed values.
  */
 public enum RulesFieldTypeNumber implements CcpJsonFieldName {
 

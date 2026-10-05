@@ -13,8 +13,8 @@ import com.ccp.json.validations.fields.enums.CcpJsonFieldsValidationContext;
 import org.junit.Test;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre os métodos default de
- * {@code CcpJsonFieldType} e {@code CcpJsonFieldValidatorInterface}.
+ * Coverage of {@code CcpNullParameterAspect} over the default methods of {@code CcpJsonFieldType} and
+ * {@code CcpJsonFieldValidatorInterface}.
  */
 public class CcpJsonFieldInterfacesAopNullTest {
 

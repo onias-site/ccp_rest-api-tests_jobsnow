@@ -61,10 +61,10 @@ public class CcpNumberDecoratorTest {
 	@Test
 	public void belongsToRestrictedValuesCollectionTest() {
 		CcpNumberDecorator n = new CcpNumberDecorator("99");
-		List<Double> lista = Arrays.asList(99d, 100d, 101d);
-		assertTrue(n.belongsToRestrictedValues(lista));
-		List<Double> semOValor = Arrays.asList(1d, 2d, 3d);
-		assertFalse(n.belongsToRestrictedValues(semOValor));
+		List<Double> list = Arrays.asList(99d, 100d, 101d);
+		assertTrue(n.belongsToRestrictedValues(list));
+		List<Double> withoutTheValue = Arrays.asList(1d, 2d, 3d);
+		assertFalse(n.belongsToRestrictedValues(withoutTheValue));
 	}
 
 	@Test
@@ -122,6 +122,6 @@ public class CcpNumberDecoratorTest {
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
-	// Nota: getContent() e toString() nunca podem retornar null (content é primitivo double).
-	// Todos os outros métodos públicos retornam boolean primitivo, não sujeito ao aspecto.
+	// Note: getContent() and toString() can never return null (content is a primitive double).
+	// Every other public method returns a primitive boolean, not subject to the aspect.
 }

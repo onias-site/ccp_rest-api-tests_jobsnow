@@ -23,22 +23,22 @@ public class CcpFolderDecoratorTest {
 	private static final String BASE = System.getProperty("java.io.tmpdir") + File.separator + "ccp_folder_test";
 
 	@Before
-	public void criarPasta() {
+	public void createFolder() {
 		new File(BASE).mkdirs();
 	}
 
 	@After
 	public void clear() {
-		limparDiretorio(BASE);
+		clearDirectory(BASE);
 	}
 
-	private void limparDiretorio(String path) {
+	private void clearDirectory(String path) {
 		java.io.File dir = new java.io.File(path);
 		if (!dir.exists()) return;
-		java.io.File[] arquivos = dir.listFiles();
-		if (arquivos != null) {
-			for (java.io.File f : arquivos) {
-				if (f.isDirectory()) limparDiretorio(f.getAbsolutePath());
+		java.io.File[] files = dir.listFiles();
+		if (files != null) {
+			for (java.io.File f : files) {
+				if (f.isDirectory()) clearDirectory(f.getAbsolutePath());
 				f.delete();
 			}
 		}
@@ -48,13 +48,13 @@ public class CcpFolderDecoratorTest {
 	// ── exists ────────────────────────────────────────────────────────────────
 
 	@Test
-	public void existsPastaExistenteTest() {
+	public void existsExistingFolderTest() {
 		CcpFolderDecorator folder = new CcpStringDecorator(BASE).folder();
 		assertTrue(folder.exists());
 	}
 
 	@Test
-	public void existsPastaInexistenteTest() {
+	public void existsMissingFolderTest() {
 		CcpFolderDecorator folder = new CcpStringDecorator(BASE + File.separator + "nao_existe_xyz").folder();
 		assertFalse(folder.exists());
 	}
@@ -62,7 +62,7 @@ public class CcpFolderDecoratorTest {
 	// ── getName ───────────────────────────────────────────────────────────────
 
 	@Test
-	public void getNomeRetornaNomeDaPastaTest() {
+	public void getNameReturnsFolderNameTest() {
 		CcpFolderDecorator folder = new CcpStringDecorator(BASE).folder();
 		assertEquals("ccp_folder_test", folder.getName());
 	}
@@ -70,14 +70,14 @@ public class CcpFolderDecoratorTest {
 	// ── createNewFolderIfNotExists ────────────────────────────────────────────
 
 	@Test
-	public void createNewFolderCriaPastaTest() {
+	public void createNewFolderCreatesFolderTest() {
 		CcpFolderDecorator base = new CcpStringDecorator(BASE).folder();
-		CcpFolderDecorator nova = base.createNewFolderIfNotExists("sub_pasta");
-		assertTrue(nova.exists());
+		CcpFolderDecorator newOne = base.createNewFolderIfNotExists("sub_pasta");
+		assertTrue(newOne.exists());
 	}
 
 	@Test
-	public void createNewFolderNaoFalhaSeJaExistirTest() {
+	public void createNewFolderDoesNotFailWhenItAlreadyExistsTest() {
 		CcpFolderDecorator base = new CcpStringDecorator(BASE).folder();
 		base.createNewFolderIfNotExists("sub_pasta");
 		CcpFolderDecorator novamente = base.createNewFolderIfNotExists("sub_pasta");
@@ -87,32 +87,32 @@ public class CcpFolderDecoratorTest {
 	// ── createNewFileIfNotExists ──────────────────────────────────────────────
 
 	@Test
-	public void createNewFileCriaArquivoTest() {
+	public void createNewFileCreatesFileTest() {
 		CcpFolderDecorator base = new CcpStringDecorator(BASE).folder();
-		CcpFileDecorator arquivo = base.createNewFileIfNotExists("novo.txt");
-		assertTrue(arquivo.exists());
+		CcpFileDecorator fileUnderTest = base.createNewFileIfNotExists("novo.txt");
+		assertTrue(fileUnderTest.exists());
 	}
 
 	// ── writeInTheFile ────────────────────────────────────────────────────────
 
 	@Test
-	public void writeInTheFileEscreverConteudoTest() {
+	public void writeInTheFileWritesContentTest() {
 		CcpFolderDecorator base = new CcpStringDecorator(BASE).folder();
-		CcpFileDecorator arquivo = base.writeInTheFile("escrito.txt", "conteudo escrito");
-		assertTrue(arquivo.getStringContent().contains("conteudo escrito"));
+		CcpFileDecorator fileUnderTest = base.writeInTheFile("escrito.txt", "conteudo escrito");
+		assertTrue(fileUnderTest.getStringContent().contains("conteudo escrito"));
 	}
 
 	@Test(expected = CcpErrorFolderParentIsMissing.class)
 	public void getStringContentFailTest() {
 		String path = BASE + File.separator + "nada";
-		CcpFileDecorator arquivo = new CcpStringDecorator(path).file();
-		arquivo.getStringContent();
+		CcpFileDecorator fileUnderTest = new CcpStringDecorator(path).file();
+		fileUnderTest.getStringContent();
 	}
 
 	// ── readFiles ─────────────────────────────────────────────────────────────
 
 	@Test
-	public void readFilesIteraArquivosTest() {
+	public void readFilesIteratesFilesTest() {
 		CcpFolderDecorator base = new CcpStringDecorator(BASE).folder();
 		base.createNewFileIfNotExists("a.txt");
 		base.createNewFileIfNotExists("b.txt");
@@ -124,7 +124,7 @@ public class CcpFolderDecoratorTest {
 	// ── readFolders ───────────────────────────────────────────────────────────
 
 	@Test
-	public void readFoldersIteraSubpastasTest() {
+	public void readFoldersIteratesSubfoldersTest() {
 		CcpFolderDecorator base = new CcpStringDecorator(BASE).folder();
 		base.createNewFolderIfNotExists("sub1");
 		base.createNewFolderIfNotExists("sub2");
@@ -134,10 +134,10 @@ public class CcpFolderDecoratorTest {
 	}
 
 	@Test
-	public void readFoldersPastaVaziaRetornaSemErroTest() {
-		String pastaVazia = BASE + File.separator + "pasta_vazia_test";
-		new java.io.File(pastaVazia).mkdir();
-		CcpFolderDecorator folder = new CcpStringDecorator(pastaVazia).folder();
+	public void readFoldersEmptyFolderReturnsWithoutErrorTest() {
+		String emptyFolder = BASE + File.separator + "pasta_vazia_test";
+		new java.io.File(emptyFolder).mkdir();
+		CcpFolderDecorator folder = new CcpStringDecorator(emptyFolder).folder();
 		List<String> nomes = new ArrayList<>();
 		folder.readFolders(f -> nomes.add(f.getName()));
 		assertTrue(nomes.isEmpty());
@@ -146,7 +146,7 @@ public class CcpFolderDecoratorTest {
 	// ── asFile ────────────────────────────────────────────────────────────────
 
 	@Test
-	public void asFileRetornaFileDecoratorTest() {
+	public void asFileReturnsFileDecoratorTest() {
 		CcpFileDecorator file = new CcpStringDecorator(BASE).folder().asFile();
 		assertNotNull(file);
 		assertEquals(BASE, file.getContent());
@@ -155,13 +155,13 @@ public class CcpFolderDecoratorTest {
 	// ── toString / getContent ────────────────────────────────────────────────
 
 	@Test
-	public void toStringRetornaNomeDaPastaTest() {
+	public void toStringReturnsFolderNameTest() {
 		CcpFolderDecorator folder = new CcpStringDecorator(BASE).folder();
 		assertEquals("ccp_folder_test", folder.toString());
 	}
 
 	@Test
-	public void getContentRetornaCaminhoTest() {
+	public void getContentReturnsPathTest() {
 		CcpFolderDecorator folder = new CcpStringDecorator(BASE).folder();
 		assertEquals(BASE, folder.getContent());
 	}
@@ -189,22 +189,22 @@ public class CcpFolderDecoratorTest {
 	// ── remove ────────────────────────────────────────────────────────────────
 
 	@Test
-	public void removeApagaPastaTest() {
-		String caminho = BASE + File.separator + "pasta_para_remover";
-		CcpFolderDecorator pasta = new CcpStringDecorator(caminho).folder();
-		pasta.createNewFileIfNotExists("dummy.txt"); 
-		assertTrue(pasta.exists());
-		pasta.remove();
-		assertFalse(pasta.exists());
+	public void removeDeletesFolderTest() {
+		String filePath = BASE + File.separator + "pasta_para_remover";
+		CcpFolderDecorator folderUnderTest = new CcpStringDecorator(filePath).folder();
+		folderUnderTest.createNewFileIfNotExists("dummy.txt"); 
+		assertTrue(folderUnderTest.exists());
+		folderUnderTest.remove();
+		assertFalse(folderUnderTest.exists());
 	}
 
 	// ── readFiles em pasta vazia ──────────────────────────────────────────────
 
 	@Test
 	public void readFilesEmptyFolderTest() {
-		String caminho = BASE + File.separator + "pasta_vazia_files";
-		new java.io.File(caminho).mkdir();
-		CcpFolderDecorator folder = new CcpStringDecorator(caminho).folder();
+		String filePath = BASE + File.separator + "pasta_vazia_files";
+		new java.io.File(filePath).mkdir();
+		CcpFolderDecorator folder = new CcpStringDecorator(filePath).folder();
 		List<String> nomes = new ArrayList<>();
 		folder.readFiles(f -> nomes.add(f.getName()));
 		assertTrue(nomes.isEmpty());

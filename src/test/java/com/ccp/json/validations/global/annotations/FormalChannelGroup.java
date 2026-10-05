@@ -1,8 +1,8 @@
 package com.ccp.json.validations.global.annotations;
 
 /**
- * Metade formal dos canais de contato. Complementa {@code InformalChannelGroup} no teste de
- * {@code @CcpJsonValidationFieldList} com várias classes.
+ * Formal half of the contact channels. Complements {@code InformalChannelGroup} in the test of
+ * {@code @CcpJsonValidationFieldList} with several classes.
  */
 public enum FormalChannelGroup {
 

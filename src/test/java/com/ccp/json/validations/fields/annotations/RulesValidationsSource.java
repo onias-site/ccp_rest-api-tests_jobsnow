@@ -4,8 +4,8 @@ import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 
 /**
- * Classe de origem das validações copiadas por {@code @CcpJsonCopyFieldValidationsFrom}. É aqui
- * que as regras de fato moram; a classe de destino só aponta para cá.
+ * Source class of the validations copied by {@code @CcpJsonCopyFieldValidationsFrom}. This is where the rules
+ * actually live; the target class only points here.
  */
 public enum RulesValidationsSource implements CcpJsonFieldName {
 

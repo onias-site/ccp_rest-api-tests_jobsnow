@@ -14,8 +14,8 @@ public class ValidationsEndpointsUpdateResume  extends VisTestTemplate{
 		
 		String uri = ENDPOINT_URL + "/resume/{email}";
 		CcpJsonRepresentation headers = super.getHeaders();
-		CcpJsonRepresentation jsonDeRetornoDoTeste = super.getJsonResponseFromEndpoint(CcpProcessStatusDefault.UPDATED, scenarioName, headers, uri);
-		System.out.println(jsonDeRetornoDoTeste);
+		CcpJsonRepresentation jsonReturnedByTheTest = super.getJsonResponseFromEndpoint(CcpProcessStatusDefault.UPDATED, scenarioName, headers, uri);
+		System.out.println(jsonReturnedByTheTest);
 	}
 
 	protected CcpHttpMethods getMethod() {

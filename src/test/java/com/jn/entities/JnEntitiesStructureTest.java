@@ -8,9 +8,8 @@ import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
 /**
- * Testes de estrutura para todas as entidades JnEntityXxx:
- * verifica que o campo ENTITY estático inicializa sem erro e que
- * o enum Fields responde a values()/valueOf() de forma consistente.
+ * Structure tests for every JnEntityXxx entity: checks that the static ENTITY field initializes without error
+ * and that the Fields enum answers values()/valueOf() consistently.
  */
 public class JnEntitiesStructureTest {
 
@@ -18,7 +17,7 @@ public class JnEntitiesStructureTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	// ── ENTITY não null (garante que CcpEntityFactory inicializou cada entidade) ──
+	// ── ENTITY not null (ensures CcpEntityFactory initialized each entity) ────────
 
 	@Test public void asyncTaskEntityTest() { assertNotNull(JnEntityAsyncTask.ENTITY); }
 	@Test public void contactUsEntityTest() { assertNotNull(JnEntityContactUs.ENTITY); }
@@ -56,7 +55,7 @@ public class JnEntitiesStructureTest {
 	@Test public void systemMessageEntityTest() { assertNotNull(JnEntitySystemMessage.ENTITY); }
 	@Test public void versionableEntityTest() { assertNotNull(JnEntityVersionable.ENTITY); }
 
-	// ── Fields.values() não null ─────────────────────────────────────────────
+	// ── Fields.values() not null ─────────────────────────────────────────────
 
 	@Test public void asyncTaskFieldsTest() { assertNotNull(JnEntityAsyncTask.Fields.values()); }
 	@Test public void contactUsFieldsTest() { assertNotNull(JnEntityContactUs.Fields.values()); }
@@ -85,7 +84,7 @@ public class JnEntitiesStructureTest {
 	@Test public void recordToReprocessFieldsTest() { assertNotNull(JnEntityRecordToReprocess.Fields.values()); }
 	@Test public void versionableFieldsTest() { assertNotNull(JnEntityVersionable.Fields.values()); }
 
-	// ── Construtores configurator não null ───────────────────────────────────
+	// ── configurator constructors not null ───────────────────────────────────
 
 	@Test public void asyncTaskCtorTest() { assertNotNull(new JnEntityAsyncTask()); }
 	@Test public void contactUsCtorTest() { assertNotNull(new JnEntityContactUs()); }

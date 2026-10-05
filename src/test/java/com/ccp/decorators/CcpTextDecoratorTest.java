@@ -30,13 +30,13 @@ public class CcpTextDecoratorTest {
 	// ── completeLeft ──────────────────────────────────────────────────────────
 
 	@Test
-	public void completeLeftAdicionaZerosTest() {
+	public void completeLeftAddsZerosTest() {
 		CcpTextDecorator t = new CcpStringDecorator("7").text();
 		assertEquals("007", t.completeLeft('0', 3).content);
 	}
 
 	@Test
-	public void completeLeftConteudoJaSuficientementeGrandeTest() {
+	public void completeLeftContentAlreadyLongEnoughTest() {
 		CcpTextDecorator t = new CcpStringDecorator("abcde").text();
 		assertEquals("abcde", t.completeLeft('0', 3).content);
 	}
@@ -44,15 +44,15 @@ public class CcpTextDecoratorTest {
 	// ── stripAccents ──────────────────────────────────────────────────────────
 
 	@Test
-	public void stripAccentsRemoveAcentosTest() {
+	public void stripAccentsRemovesAccentsTest() {
 		CcpTextDecorator t = new CcpStringDecorator("ação café").text();
-		String resultado = t.stripAccents().content;
-		assertFalse(resultado.contains("ã"));
-		assertFalse(resultado.contains("é"));
+		String result = t.stripAccents().content;
+		assertFalse(result.contains("ã"));
+		assertFalse(result.contains("é"));
 	}
 
 	@Test
-	public void stripAccentsMantemHashTest() {
+	public void stripAccentsKeepsHashTest() {
 		CcpTextDecorator t = new CcpStringDecorator("senha#123").text();
 		assertTrue(t.stripAccents().content.contains("#"));
 	}
@@ -60,7 +60,7 @@ public class CcpTextDecoratorTest {
 	// ── getPieces ─────────────────────────────────────────────────────────────
 
 	@Test
-	public void getPiecesComDelimitadoresTest() {
+	public void getPiecesWithDelimitersTest() {
 		CcpTextDecorator t = new CcpStringDecorator("ola [mundo] e [java]").text();
 		List<String> pieces = t.getPieces("[", "]");
 		assertEquals(2, pieces.size());
@@ -69,7 +69,7 @@ public class CcpTextDecoratorTest {
 	}
 
 	@Test
-	public void getPiecesComPredicadoTest() {
+	public void getPiecesWithPredicateTest() {
 		CcpTextDecorator t = new CcpStringDecorator("um dois tres quatro").text();
 		List<String> pieces = t.getPieces(s -> s.length() > 3, " ");
 		assertTrue(pieces.contains("quatro"));
@@ -87,48 +87,48 @@ public class CcpTextDecoratorTest {
 	// ── removePieces ──────────────────────────────────────────────────────────
 
 	@Test
-	public void removePiecesComDelimitadoresTest() {
+	public void removePiecesWithDelimitersTest() {
 		CcpTextDecorator t = new CcpStringDecorator("texto [remover] aqui").text();
-		String resultado = t.removePieces("[", "]").content;
-		assertFalse(resultado.contains("[remover]"));
+		String result = t.removePieces("[", "]").content;
+		assertFalse(result.contains("[remover]"));
 	}
 
 	// ── generateToken ─────────────────────────────────────────────────────────
 
 	@Test
-	public void generateTokenTamanhoCorretoTest() {
+	public void generateTokenCorrectLengthTest() {
 		CcpTextDecorator t = new CcpStringDecorator("abcdefghijklmnopqrstuvwxyz").text();
 		CcpTextDecorator token = t.generateToken(10);
 		assertEquals(10, token.content.length());
 	}
 
 	@Test
-	public void generateTokenUsaApenasCaracteresDoAlfabetoTest() {
-		String alfabeto = "abcdef";
-		CcpTextDecorator token = new CcpStringDecorator(alfabeto).text().generateToken(20);
+	public void generateTokenUsesOnlyCharactersOfTheAlphabetTest() {
+		String alphabet = "abcdef";
+		CcpTextDecorator token = new CcpStringDecorator(alphabet).text().generateToken(20);
 		for (char c : token.content.toCharArray()) {
-			assertTrue(alfabeto.indexOf(c) >= 0);
+			assertTrue(alphabet.indexOf(c) >= 0);
 		}
 	}
 
 	// ── resolveTemplate ───────────────────────────────────────────────────────
 
 	@Test
-	public void resolveTemplateSubstituiCamposTest() {
+	public void resolveTemplateReplacesFieldsTest() {
 		CcpJsonRepresentation params = CcpOtherConstants.EMPTY_JSON.put(name, "Onias");
 		CcpTextDecorator template = new CcpStringDecorator("Olá, {name}!").text();
-		String resultado = template.resolveTemplate(params).content;
-		assertEquals("Olá, Onias!", resultado);
+		String result = template.resolveTemplate(params).content;
+		assertEquals("Olá, Onias!", result);
 	}
 
 	@Test
-	public void resolveTemplateMultiplosCamposTest() {
+	public void resolveTemplateMultipleFieldsTest() {
 		CcpJsonRepresentation params = CcpOtherConstants.EMPTY_JSON
 				.put(name, "João")
 				.put(cidade, "Santos");
 		CcpTextDecorator template = new CcpStringDecorator("{name} mora em {cidade}").text();
-		String resultado = template.resolveTemplate(params).content;
-		assertEquals("João mora em Santos", resultado);
+		String result = template.resolveTemplate(params).content;
+		assertEquals("João mora em Santos", result);
 	}
 
 	// ── removeStartingCharacters / removeEndingCharacters ─────────────────────
@@ -146,7 +146,7 @@ public class CcpTextDecoratorTest {
 	}
 
 	@Test
-	public void removeStartingCharactersSemPrefixoNaoMudaTest() {
+	public void removeStartingCharactersWithoutPrefixDoesNotChangeTest() {
 		CcpTextDecorator t = new CcpStringDecorator("caminho").text();
 		assertEquals("caminho", t.removeStartingCharacters('/').content);
 	}
@@ -181,7 +181,7 @@ public class CcpTextDecoratorTest {
 	}
 
 	@Test
-	public void capitalizeStringVaziaTest() {
+	public void capitalizeEmptyStringTest() {
 		assertEquals("", new CcpStringDecorator("").text().capitalize().content);
 	}
 
@@ -194,8 +194,8 @@ public class CcpTextDecoratorTest {
 
 	@Test
 	public void toSnakeCaseTest() {
-		String resultado = new CcpStringDecorator("NomeDoCampo").text().toSnakeCase().content;
-		assertEquals("nome_do_campo", resultado);
+		String result = new CcpStringDecorator("NomeDoCampo").text().toSnakeCase().content;
+		assertEquals("nome_do_campo", result);
 	}
 
 	// ── lenght ────────────────────────────────────────────────────────────────
@@ -247,32 +247,32 @@ public class CcpTextDecoratorTest {
 	// ── sanitize ──────────────────────────────────────────────────────────────
 
 	@Test
-	public void sanitizeRemoveAcentosEMaiusculizaTest() {
-		CcpTextDecorator resultado = new CcpStringDecorator("Olá João").text().sanitize();
-		assertFalse(resultado.content.contains("á"));
-		assertFalse(resultado.content.contains("ã"));
-		assertEquals(resultado.content, resultado.content.toUpperCase());
+	public void sanitizeRemovesAccentsAndCapitalizesTest() {
+		CcpTextDecorator result = new CcpStringDecorator("Olá João").text().sanitize();
+		assertFalse(result.content.contains("á"));
+		assertFalse(result.content.contains("ã"));
+		assertEquals(result.content, result.content.toUpperCase());
 	}
 
 	@Test
-	public void sanitizeComDelimitadoresCustomTest() {
+	public void sanitizeWithCustomDelimitersTest() {
 		String[] delimiters = {",", ";"};
-		CcpTextDecorator resultado = new CcpStringDecorator("java,python;ruby").text().sanitize(delimiters);
-		assertFalse(resultado.content.contains(","));
-		assertFalse(resultado.content.contains(";"));
-		assertTrue(resultado.content.contains("PYTHON"));
+		CcpTextDecorator result = new CcpStringDecorator("java,python;ruby").text().sanitize(delimiters);
+		assertFalse(result.content.contains(","));
+		assertFalse(result.content.contains(";"));
+		assertTrue(result.content.contains("PYTHON"));
 	}
 
 	// ── contains(String[], String) ────────────────────────────────────────────
 
 	@Test
-	public void containsComDelimitadoresCustomTrueTest() {
+	public void containsWithCustomDelimitersTrueTest() {
 		String[] delimiters = {","};
 		assertTrue(new CcpStringDecorator("java,python,ruby").text().contains(delimiters, "python"));
 	}
 
 	@Test
-	public void containsComDelimitadoresCustomFalseTest() {
+	public void containsWithCustomDelimitersFalseTest() {
 		String[] delimiters = {","};
 		assertFalse(new CcpStringDecorator("java,python,ruby").text().contains(delimiters, "go"));
 	}
@@ -280,12 +280,12 @@ public class CcpTextDecoratorTest {
 	// ── removePieces(Predicate, String) ──────────────────────────────────────
 
 	@Test
-	public void removePiecesComPredicadoTest() {
-		CcpTextDecorator resultado = new CcpStringDecorator("um dois tres quatro").text()
+	public void removePiecesWithPredicateTest() {
+		CcpTextDecorator result = new CcpStringDecorator("um dois tres quatro").text()
 				.removePieces(s -> s.length() > 3, " ");
-		assertFalse(resultado.content.contains("quatro"));
-		assertFalse(resultado.content.contains("tres"));
-		assertFalse(resultado.content.contains("dois"));
+		assertFalse(result.content.contains("quatro"));
+		assertFalse(result.content.contains("tres"));
+		assertFalse(result.content.contains("dois"));
 	}
 
 	// ── getByteArrayInputStream ───────────────────────────────────────────────
@@ -312,25 +312,25 @@ public class CcpTextDecoratorTest {
 		assertEquals(original, new String(bytes));
 	}
 
-	// ── resolveTemplate com CcpTemplateFunctions ──────────────────────────────
+	// ── resolveTemplate with CcpTemplateFunctions ─────────────────────────────
 
 	@Test
 	public void resolveTemplateComCurrentTimeMillisTest() {
 		CcpTextDecorator template = new CcpStringDecorator("ts={currentTimeMillis()}").text();
-		String resultado = template.resolveTemplate(CcpOtherConstants.EMPTY_JSON).content;
-		assertFalse(resultado.contains("{currentTimeMillis()}"));
-		assertTrue(resultado.matches("ts=\\d+"));
+		String result = template.resolveTemplate(CcpOtherConstants.EMPTY_JSON).content;
+		assertFalse(result.contains("{currentTimeMillis()}"));
+		assertTrue(result.matches("ts=\\d+"));
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void getPiecesDelimitadoresBeginNullTest() {
+	public void getPiecesDelimitersBeginNullTest() {
 		new CcpStringDecorator("x").text().getPieces((String) null, "]");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void getPiecesDelimitadoresEndNullTest() {
+	public void getPiecesDelimitersEndNullTest() {
 		new CcpStringDecorator("x").text().getPieces("[", (String) null);
 	}
 
@@ -350,7 +350,7 @@ public class CcpTextDecoratorTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void removePiecesDelimitadoresBeginNullTest() {
+	public void removePiecesDelimitersBeginNullTest() {
 		new CcpStringDecorator("x").text().removePieces((String) null, "]");
 	}
 

@@ -6,8 +6,8 @@ import com.ccp.json.validations.fields.annotations.CcpJsonFieldValidatorRequired
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 
 /**
- * Campo obrigatório que não declara valor padrão próprio: herda o de
- * {@code RulesDefaultValueSource} através de {@code @CcpJsonCopyFieldValidationsFrom}.
+ * A required field that declares no default value of its own: it inherits the one of
+ * {@code RulesDefaultValueSource} through {@code @CcpJsonCopyFieldValidationsFrom}.
  */
 public enum RulesCopiedDefaultValue implements CcpJsonFieldName {
 

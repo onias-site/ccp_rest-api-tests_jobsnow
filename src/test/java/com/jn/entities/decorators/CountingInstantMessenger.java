@@ -10,10 +10,9 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
 
 /**
- * Dublê de Telegram que não envia nada, mas guarda o texto de cada mensagem. É com ele que os testes
- * dos decorators de envio ao usuário provam que a mensagem saiu — ou que não saiu — em cada operação.
- *
- * <p>A lista é estática porque a injeção de dependência instancia o dublê por conta própria.
+ * Telegram double that sends nothing, but keeps the text of each message. It is with it that the tests of the
+ * send-to-user decorators prove that the message went out, or that it did not, in each operation. <p>The list is
+ * static because the dependency injection instantiates the double by itself.
  */
 public class CountingInstantMessenger implements CcpInstantMessenger {
 
@@ -29,11 +28,11 @@ public class CountingInstantMessenger implements CcpInstantMessenger {
 		return CcpOtherConstants.EMPTY_JSON;
 	}
 
-	/** Quantas mensagens já enviadas mencionam o texto informado. */
-	public static long quantasMencionam(String texto) {
+	/** How many messages already sent mention the given text. */
+	public static long howManyMention(String text) {
 		synchronized (sentMessages) {
-			long quantas = sentMessages.stream().filter(x -> x != null && x.contains(texto)).count();
-			return quantas;
+			long howMany = sentMessages.stream().filter(x -> x != null && x.contains(text)).count();
+			return howMany;
 		}
 	}
 

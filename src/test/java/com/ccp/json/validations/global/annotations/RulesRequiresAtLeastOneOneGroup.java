@@ -3,8 +3,8 @@ package com.ccp.json.validations.global.annotations;
 import com.ccp.decorators.CcpJsonFieldName;
 
 /**
- * Um único grupo em {@code requiresAtLeastOne}, no mesmo formato usado por {@code VisEntityResume.Fields}:
- * o json precisa trazer {@code maxClt} ou {@code maxPj}.
+ * A single group in {@code requiresAtLeastOne}, in the same format used by {@code VisEntityResume.Fields}: the
+ * JSON must bring {@code maxClt} or {@code maxPj}.
  */
 @CcpJsonGlobalValidations(requiresAtLeastOne = {
 		@CcpJsonValidationFieldList(MaxSalaryGroup.class)

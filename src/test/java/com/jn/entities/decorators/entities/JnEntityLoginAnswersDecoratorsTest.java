@@ -8,7 +8,7 @@ import com.jn.entities.JnEntityLoginAnswers;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-/** jn_login_answers: {@code @CcpEntityCache(3600)}, versionável, transformador e validador. */
+/** jn_login_answers: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
 public class JnEntityLoginAnswersDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {

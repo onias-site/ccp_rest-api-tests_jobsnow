@@ -11,7 +11,7 @@ import com.jb.entities.JbEntityBotCommandStep;
 import com.jb.entities.subfields.JbNextStepFields;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 
-/** jb_bot_command_step: {@code @CcpEntityCache(3600)}, versionável, transformador e validador. */
+/** jb_bot_command_step: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
 public class JbEntityBotCommandStepDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {

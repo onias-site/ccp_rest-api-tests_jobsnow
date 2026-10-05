@@ -1,8 +1,8 @@
 package com.ccp.json.validations.global.annotations;
 
 /**
- * Grupo com as duas pontas da faixa salarial CLT, espelhando {@code CltSalaryRange} da entidade de vaga:
- * quem informa uma ponta precisa informar a outra.
+ * Group with both ends of the CLT salary range, mirroring {@code CltSalaryRange} of the position entity: whoever
+ * gives one end must give the other.
  */
 public enum CltRangeGroup {
 

@@ -18,8 +18,8 @@ class FakeCrud implements CcpCrud {
 	private static final Map<String, CcpJsonRepresentation> records = new HashMap<>();
 
 	/**
-	 * Esvazia o banco. O mapa é estático, então sobrevive à troca de instância e faz um teste enxergar o
-	 * que o anterior gravou — quem usa este dublê precisa limpá-lo entre um teste e outro.
+	 * Empties the database. The map is static, so it survives the change of instance and makes a test see what the
+	 * previous one saved: whoever uses this double must clear it between one test and another.
 	 */
 	static void clear() {
 		records.clear();
@@ -29,14 +29,14 @@ class FakeCrud implements CcpCrud {
 
 		String key = this.getKey(entityName, id);
 
-		boolean registroNaoEncontrado = false == records.containsKey(key);
+		boolean recordNotFound = false == records.containsKey(key);
 
-		if (registroNaoEncontrado) {
+		if (recordNotFound) {
 			throw new CcpErrorBulkEntityRecordNotFound(entityName, id);
 		}
 
-		CcpJsonRepresentation registro = records.get(key);
-		return registro;
+		CcpJsonRepresentation record = records.get(key);
+		return record;
 	}
 
 	public CcpJsonRepresentation save(String entityName, CcpJsonRepresentation json, String id) {

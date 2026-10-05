@@ -6,9 +6,9 @@ import com.ccp.json.validations.fields.annotations.CcpJsonFieldValidatorRequired
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 
 /**
- * Campos em que o valor padrão convive com as duas formas de obrigatoriedade: a anotação
- * {@code @CcpJsonFieldValidatorRequired} e a chave primária de entidade. Em ambos os casos a
- * obrigatoriedade deve ficar desligada, porque quem preenche o campo ausente é o valor padrão.
+ * Fields in which the default value coexists with both forms of requirement: the
+ * {@code @CcpJsonFieldValidatorRequired} annotation and the primary key of an entity. In both cases the
+ * requirement must be turned off, because the default value is what fills the absent field.
  */
 public enum RulesDefaultValueWithRequired implements CcpJsonFieldName {
 

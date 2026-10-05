@@ -435,9 +435,8 @@
   VERP     = VisEntityResumePerception
   VERVF    = VisEntityResumeViewFailed
   VES      = VisEntitySkill
-  VESFHA   = VisEntitySkillFixHierarchyApproved
+  VESFHF   = VisEntitySkillFixHierarchyFulfiled
   VESFHP   = VisEntitySkillFixHierarchyPending
-  VESFHR   = VisEntitySkillFixHierarchyRejected
   VESP     = VisEntitySkillPending
   VESR     = VisEntitySkillRejected
   VESSRF   = VisEntityScheduleSendingResumeFees

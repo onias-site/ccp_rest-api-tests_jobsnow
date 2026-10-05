@@ -22,7 +22,7 @@ public class JnBusinessSendHttpRequestTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorProcessNullTest() {
+	public void constructorProcessNullTest() {
 		new JnBusinessSendHttpRequest(null, null);
 	}
 

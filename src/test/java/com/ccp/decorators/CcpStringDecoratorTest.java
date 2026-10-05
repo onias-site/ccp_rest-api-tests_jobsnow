@@ -26,20 +26,20 @@ public class CcpStringDecoratorTest {
 	// ── construtores ──────────────────────────────────────────────────────────
 
 	@Test
-	public void construtorStringTest() {
+	public void constructorStringTest() {
 		CcpStringDecorator d = new CcpStringDecorator("hello");
 		assertEquals("hello", d.content);
 	}
 
 	@Test
-	public void construtorByteArrayTest() {
+	public void constructorByteArrayTest() {
 		byte[] bytes = "mundo".getBytes();
 		CcpStringDecorator d = new CcpStringDecorator(bytes);
 		assertEquals("mundo", d.content);
 	}
 
 	@Test
-	public void construtorByteArrayWrapperTest() {
+	public void constructorByteArrayWrapperTest() {
 		byte[] primitivos = "java".getBytes();
 		Byte[] wrappers = new Byte[primitivos.length];
 		for (int i = 0; i < primitivos.length; i++) wrappers[i] = primitivos[i];
@@ -48,7 +48,7 @@ public class CcpStringDecoratorTest {
 	}
 
 	@Test
-	public void construtorInputStreamTest() {
+	public void constructorInputStreamTest() {
 		InputStream is = new ByteArrayInputStream("stream".getBytes());
 		CcpStringDecorator d = new CcpStringDecorator(is);
 		assertEquals("stream", d.content);
@@ -104,7 +104,7 @@ public class CcpStringDecoratorTest {
 		assertFalse(json.isEmpty());
 	}
 
-	// ── verificações de tipo ──────────────────────────────────────────────────
+	// ── type checks ───────────────────────────────────────────────────────────
 
 	@Test
 	public void isInnerJsonTrueTest() {
@@ -177,7 +177,7 @@ public class CcpStringDecoratorTest {
 		assertEquals(3, bytes.length);
 	}
 
-	// ── factories não cobertas ────────────────────────────────────────────────
+	// ── factories not covered ─────────────────────────────────────────────────
 
 	@Test
 	public void fileFactoryTest() {
@@ -211,7 +211,7 @@ public class CcpStringDecoratorTest {
 	// ── construtor (CcpJsonRepresentation, String) ────────────────────────────
 
 	@Test
-	public void construtorJsonRepresentationTest() {
+	public void constructorJsonRepresentationTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("chave"), "valor");
 		CcpStringDecorator d = new CcpStringDecorator(json, "chave");
 		assertEquals("valor", d.content);
@@ -220,7 +220,7 @@ public class CcpStringDecoratorTest {
 	// ── propertiesFrom ────────────────────────────────────────────────────────
 
 	@Test
-	public void propertiesFromRetornaPropertiesDecoratorTest() {
+	public void propertiesFromReturnsPropertiesDecoratorTest() {
 		CcpPropertiesDecorator props = new CcpStringDecorator("qualquer").propertiesFrom();
 		assertNotNull(props);
 	}
@@ -228,19 +228,19 @@ public class CcpStringDecoratorTest {
 	// ── reflection ────────────────────────────────────────────────────────────
 
 	@Test
-	public void reflectionClasseExistenteTest() {
+	public void reflectionExistingClassTest() {
 		CcpReflectionConstructorDecorator refl = new CcpStringDecorator("java.util.ArrayList").reflection();
 		assertTrue(refl.thisClassExists());
 		assertEquals("java.util.ArrayList", refl.getContent());
 	}
 
 	@Test
-	public void reflectionClasseInexistenteTest() {
+	public void reflectionMissingClassTest() {
 		assertFalse(new CcpStringDecorator("com.nao.existe.Classe").reflection().thisClassExists());
 	}
 
 	@Test
-	public void reflectionNewInstanceCriaObjetoTest() {
+	public void reflectionNewInstanceCreatesObjectTest() {
 		Object instance = new CcpStringDecorator("java.util.ArrayList").reflection().newInstance();
 		assertNotNull(instance);
 		assertTrue(instance instanceof java.util.ArrayList);
@@ -258,9 +258,9 @@ public class CcpStringDecoratorTest {
 		new CcpStringDecorator((InputStream) null);
 	}
 
-	// Nota: construtores (byte[]) e (Byte[]) delegam via this(new String(...)) —
-	// a avaliação do argumento acontece antes do aspecto conseguir interceptar o
-	// próprio construtor, então NullPointerException nativa vence CcpNullParameterException.
+	// Note: the (byte[]) and (Byte[]) constructors delegate through this(new String(...)):
+	// the argument is evaluated before the aspect can intercept the
+	// constructor itself, so the native NullPointerException wins over CcpNullParameterException.
 
 	@Test(expected = CcpNullParameterException.class)
 	public void constructorJsonNullParamJsonTest() {

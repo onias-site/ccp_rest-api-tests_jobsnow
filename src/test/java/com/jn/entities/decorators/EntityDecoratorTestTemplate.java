@@ -148,7 +148,7 @@ public abstract class EntityDecoratorTestTemplate {
 
 	/** The document as it ended up in the main index, read from outside the chain. */
 	protected CcpJsonRepresentation asStored(CcpJsonRepresentation record) {
-		String id = this.idNoBanco(record);
+		String id = this.idInTheDatabase(record);
 		CcpJsonRepresentation document = ElasticsearchLocal.document(this.name(), id);
 		return document;
 	}
@@ -217,19 +217,19 @@ public abstract class EntityDecoratorTestTemplate {
 		entityUnderTest.save(record);
 		assertTrue("did not save in " + this.name(), entityUnderTest.exists(record));
 
-		String cacheKey = this.chaveDoCache(record);
+		String cacheKey = this.cacheKey(record);
 		assertTrue("exists did not leave the record in the cache of " + this.name() + " (key " + cacheKey + ")", cache.isPresent(cacheKey));
 
-		String id = this.idNoBanco(record);
+		String id = this.idInTheDatabase(record);
 		CcpJsonRepresentation document = ElasticsearchLocal.document(this.name(), id);
-		String disposableCopyId = this.ehDescartavel() ? this.idDaCopiaDescartavel(record) : "";
-		CcpJsonRepresentation disposableCopy = this.ehDescartavel() ? ElasticsearchLocal.document("jn_disposable_record", disposableCopyId) : CcpOtherConstants.EMPTY_JSON;
+		String disposableCopyId = this.isDisposable() ? this.disposableCopyId(record) : "";
+		CcpJsonRepresentation disposableCopy = this.isDisposable() ? ElasticsearchLocal.document("jn_disposable_record", disposableCopyId) : CcpOtherConstants.EMPTY_JSON;
 
-		this.apagarPorForaDaEntidade(record);
+		this.deleteOutsideTheEntity(record);
 		assertTrue("exists was not answered by the cache in " + this.name(), entityUnderTest.exists(record));
 
 		ElasticsearchLocal.save(this.name(), id, document);
-		if(this.ehDescartavel()) {
+		if(this.isDisposable()) {
 			ElasticsearchLocal.save("jn_disposable_record", disposableCopyId, disposableCopy);
 		}
 		entityUnderTest.delete(record);
@@ -237,15 +237,15 @@ public abstract class EntityDecoratorTestTemplate {
 		assertFalse("deleted record still exists in " + this.name(), entityUnderTest.exists(record));
 	}
 
-	protected String chaveDoCache(CcpJsonRepresentation record) {
-		String id = this.idNoBanco(record);
+	protected String cacheKey(CcpJsonRepresentation record) {
+		String id = this.idInTheDatabase(record);
 		String cacheKey = "records.entity." + this.name() + ".id." + id;
 		return cacheKey;
 	}
 
-	protected void limparCache(CcpJsonRepresentation record) {
+	protected void clearCache(CcpJsonRepresentation record) {
 		CcpCache cache = CcpDependencyInjection.getDependency(CcpCache.class);
-		String cacheKey = this.chaveDoCache(record);
+		String cacheKey = this.cacheKey(record);
 		cache.delete(cacheKey);
 	}
 
@@ -333,7 +333,7 @@ public abstract class EntityDecoratorTestTemplate {
 	protected void shouldRecordHistoryOnEachWrite() {
 		CcpEntity entityUnderTest = this.entityUnderTest();
 		CcpJsonRepresentation record = this.validRecord();
-		String primaryKey = this.chavePrimariaSerializada(record);
+		String primaryKey = this.serializedPrimaryKey(record);
 
 		long before = this.historyLines(primaryKey);
 
@@ -370,7 +370,7 @@ public abstract class EntityDecoratorTestTemplate {
 	protected void shouldPurgeHistoryOnDeleteAnyWhere() {
 		CcpEntity entityUnderTest = this.entityUnderTest();
 		CcpJsonRepresentation record = this.validRecord();
-		String primaryKey = this.chavePrimariaSerializada(record);
+		String primaryKey = this.serializedPrimaryKey(record);
 		boolean isTwin = entityUnderTest.getEntityMetaData().configurationClass.isAnnotationPresent(CcpEntityTwin.class);
 
 		entityUnderTest.save(record);
@@ -409,27 +409,27 @@ public abstract class EntityDecoratorTestTemplate {
 		long beforeSave = System.currentTimeMillis();
 		entityUnderTest.save(record);
 
-		String disposableCopyId = this.idDaCopiaDescartavel(record);
+		String disposableCopyId = this.disposableCopyId(record);
 		CcpJsonRepresentation disposableCopy = ElasticsearchLocal.document("jn_disposable_record", disposableCopyId);
 		assertFalse("save did not write a disposable copy of " + this.name(), disposableCopy.isEmpty());
 		assertEquals("deadline format of the copy of " + this.name(), deadline.format, disposableCopy.getAsString(JnEntityDisposableRecord.Fields.format));
 		Long expiration = disposableCopy.getAsLongNumber(JnJsonCommonsFields.timestamp);
 		assertTrue("copy of " + this.name() + " was already expired when created", expiration > beforeSave);
 
-		ElasticsearchLocal.delete(this.name(), this.idNoBanco(record));
-		this.limparCache(record);
+		ElasticsearchLocal.delete(this.name(), this.idInTheDatabase(record));
+		this.clearCache(record);
 		assertTrue("valid copy did not sustain the existence of " + this.name(), entityUnderTest.exists(record));
 
 		CcpJsonRepresentation expiredTimestamp = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.timestamp, beforeSave - 1000);
 		ElasticsearchLocal.update("jn_disposable_record", disposableCopyId, expiredTimestamp);
-		this.limparCache(record);
+		this.clearCache(record);
 		assertFalse("expired copy still sustains the existence of " + this.name(), entityUnderTest.exists(record));
 	}
 
-	protected String idDaCopiaDescartavel(CcpJsonRepresentation record) {
+	protected String disposableCopyId(CcpJsonRepresentation record) {
 		CcpJsonRepresentation disposableKey = CcpOtherConstants.EMPTY_JSON
 				.put(JnJsonCommonsFields.entity, this.name())
-				.put(JnJsonCommonsFields.id, this.chavePrimariaSerializada(record));
+				.put(JnJsonCommonsFields.id, this.serializedPrimaryKey(record));
 		String id = JnEntityDisposableRecord.ENTITY.calculateId(disposableKey);
 		return id;
 	}
@@ -475,13 +475,13 @@ public abstract class EntityDecoratorTestTemplate {
 	 * entity and saves again — it is another insert, with the same notice, within the same window.
 	 * Returns what the second save threw, or empty if it went through.
 	 */
-	protected Optional<RuntimeException> repetirAvisoDeInclusao() {
+	protected Optional<RuntimeException> repeatInsertNotice() {
 		CcpEntity entityUnderTest = this.entityUnderTest();
 		CcpJsonRepresentation record = this.validRecord();
 
 		entityUnderTest.save(record);
-		this.apagarPorForaDaEntidade(record);
-		this.limparCache(record);
+		this.deleteOutsideTheEntity(record);
+		this.clearCache(record);
 
 		try {
 			entityUnderTest.save(record);
@@ -493,7 +493,7 @@ public abstract class EntityDecoratorTestTemplate {
 
 	/** Handler {@code SaveAWarning}/{@code LogTheError}: refusing the notice does not bring down the save. */
 	protected void shouldKeepSavingWhenNoticeIsRefused() {
-		Optional<RuntimeException> thrown = this.repetirAvisoDeInclusao();
+		Optional<RuntimeException> thrown = this.repeatInsertNotice();
 		if(thrown.isPresent()) {
 			throw new AssertionError("refusing the notice brought down the save of " + this.name(), thrown.get());
 		}
@@ -502,7 +502,7 @@ public abstract class EntityDecoratorTestTemplate {
 
 	/** Handler {@code ThrowAnError}: refusing the notice brings down the save. */
 	protected void shouldFailWhenNoticeIsRefused() {
-		Optional<RuntimeException> thrown = this.repetirAvisoDeInclusao();
+		Optional<RuntimeException> thrown = this.repeatInsertNotice();
 		assertTrue("refusing the notice should bring down the save of " + this.name(), thrown.isPresent());
 	}
 
@@ -541,7 +541,7 @@ public abstract class EntityDecoratorTestTemplate {
 	}
 
 	/** The document's {@code _id} in the main index: the primary key after the transformations. */
-	protected String idNoBanco(CcpJsonRepresentation record) {
+	protected String idInTheDatabase(CcpJsonRepresentation record) {
 		CcpEntity entityUnderTest = this.entityUnderTest();
 		CcpJsonRepresentation transformedRecord = entityUnderTest.getHandledJson(record);
 		String id = entityUnderTest.calculateId(transformedRecord);
@@ -549,7 +549,7 @@ public abstract class EntityDecoratorTestTemplate {
 	}
 
 	/** The serialized primary key, which is how jn_versionable and jn_disposable_record point to the record. */
-	protected String chavePrimariaSerializada(CcpJsonRepresentation record) {
+	protected String serializedPrimaryKey(CcpJsonRepresentation record) {
 		CcpEntity entityUnderTest = this.entityUnderTest();
 		CcpJsonRepresentation transformedRecord = entityUnderTest.getHandledJson(record);
 		CcpEntityMetaData metaData = entityUnderTest.getEntityMetaData();
@@ -558,16 +558,16 @@ public abstract class EntityDecoratorTestTemplate {
 		return serializedPrimaryKey;
 	}
 
-	protected boolean ehDescartavel() {
+	protected boolean isDisposable() {
 		boolean disposable = this.entityUnderTest().getEntityMetaData().configurationClass.isAnnotationPresent(JnEntityDisposable.class);
 		return disposable;
 	}
 
 	/** Removes the record from the main index and from the disposable copy, without notifying any decorator. */
-	protected void apagarPorForaDaEntidade(CcpJsonRepresentation record) {
-		ElasticsearchLocal.delete(this.name(), this.idNoBanco(record));
-		if(this.ehDescartavel()) {
-			ElasticsearchLocal.delete("jn_disposable_record", this.idDaCopiaDescartavel(record));
+	protected void deleteOutsideTheEntity(CcpJsonRepresentation record) {
+		ElasticsearchLocal.delete(this.name(), this.idInTheDatabase(record));
+		if(this.isDisposable()) {
+			ElasticsearchLocal.delete("jn_disposable_record", this.disposableCopyId(record));
 		}
 	}
 

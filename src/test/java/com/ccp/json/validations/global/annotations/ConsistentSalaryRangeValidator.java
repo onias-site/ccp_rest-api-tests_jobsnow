@@ -4,9 +4,9 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.json.validations.global.interfaces.CcpJsonValidator;
 
 /**
- * Validador global customizado: quando as duas pontas da faixa CLT vêm no json, o piso não pode ser
- * maior que o teto. É o tipo de regra que depende de mais de um campo ao mesmo tempo e por isso não
- * caberia numa anotação de campo.
+ * Custom global validator: when both ends of the CLT range are in the JSON, the floor cannot be greater than the
+ * ceiling. It is the kind of rule that depends on more than one field at the same time, and so would not fit in
+ * a field annotation.
  */
 public class ConsistentSalaryRangeValidator implements CcpJsonValidator {
 
@@ -16,17 +16,17 @@ public class ConsistentSalaryRangeValidator implements CcpJsonValidator {
 
 		boolean containsAllFields = json.containsAllFields(GlobalValidatorFields.minClt, GlobalValidatorFields.maxClt);
 
-		boolean naoDaParaComparar = false == containsAllFields;
+		boolean cannotCompare = false == containsAllFields;
 
-		if(naoDaParaComparar) {
+		if(cannotCompare) {
 			return false;
 		}
 
-		Double piso = json.getAsDoubleNumber(GlobalValidatorFields.minClt);
-		Double teto = json.getAsDoubleNumber(GlobalValidatorFields.maxClt);
+		Double floor = json.getAsDoubleNumber(GlobalValidatorFields.minClt);
+		Double ceiling = json.getAsDoubleNumber(GlobalValidatorFields.maxClt);
 
-		boolean pisoMaiorQueTeto = piso > teto;
-		return pisoMaiorQueTeto;
+		boolean floorAboveCeiling = floor > ceiling;
+		return floorAboveCeiling;
 	}
 
 	public Object getErrorMessage(CcpJsonRepresentation json, Class<?> clazz) {

@@ -4,14 +4,13 @@ import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
-import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.jb.entities.JbEntityBotCommandStepSession;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
- * jb_bot_command_step_session: {@code @CcpEntityCache(3600)}, descartável diário (prioridade 1),
- * transformador e validador. A sessão do passo do bot vale até o fim do dia.
+ * jb_bot_command_step_session: {@code @CcpEntityCache(3600)}, transformer and validator. It stopped being
+ * disposable on 2026-10-04: the session lasts until the command ends, even after the day turns.
  */
 public class JbEntityBotCommandStepSessionDecoratorsTest extends EntityDecoratorTestTemplate {
 
@@ -30,7 +29,7 @@ public class JbEntityBotCommandStepSessionDecoratorsTest extends EntityDecorator
 
 	@Test
 	public void chain() {
-		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "DecoratorCacheEntity", "JnDisposableEntity", "DefaultImplementationEntity");
+		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "DecoratorCacheEntity", "DefaultImplementationEntity");
 	}
 
 	@Test
@@ -46,10 +45,5 @@ public class JbEntityBotCommandStepSessionDecoratorsTest extends EntityDecorator
 	@Test
 	public void cache() {
 		this.shouldServeReadFromCacheAndInvalidateOnWrite();
-	}
-
-	@Test
-	public void disposable() {
-		this.shouldKeepDisposableCopyUntilDeadline(CcpEntityExpurgableOptions.daily);
 	}
 }

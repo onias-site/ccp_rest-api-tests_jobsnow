@@ -9,18 +9,17 @@ import com.ccp.json.validations.fields.interfaces.CcpJsonFieldType;
 import com.ccp.json.validations.fields.interfaces.CcpJsonFieldValidatorInterface;
 
 /**
- * Tipo de campo customizado, apontado por {@code @CcpJsonFieldTypeCustom}: só considera compatível
- * o valor formado exclusivamente por vogais. Serve para provar que o engine instancia e consulta a
- * classe indicada na anotação.
+ * Custom field type, pointed to by {@code @CcpJsonFieldTypeCustom}: only a value made exclusively of vowels is
+ * compatible. It proves that the engine instantiates and consults the class given in the annotation.
  */
 public class VowelsOnlyFieldType implements CcpJsonFieldType {
 
 	public Predicate<CcpJsonRepresentation> evaluateCompatibleType(String fieldName) {
 		return json -> {
 			CcpFieldName ccpFieldName = new CcpFieldName(fieldName);
-			String valor = json.getAsString(ccpFieldName);
-			boolean apenasVogais = valor.matches("^[aeiouAEIOU]+$");
-			return apenasVogais;
+			String value = json.getAsString(ccpFieldName);
+			boolean onlyVowels = value.matches("^[aeiouAEIOU]+$");
+			return onlyVowels;
 		};
 	}
 

@@ -8,7 +8,7 @@ import com.jn.entities.JnEntityVersionable;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-/** jn_versionable: o histórico, {@code @CcpEntityOlyReadable} — só o decorator versionável escreve nela. */
+/** jn_versionable: the history, {@code @CcpEntityOlyReadable}: only the versionable decorator writes to it. */
 public class JnEntityVersionableDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {

@@ -11,10 +11,10 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 
 /**
- * jn_login_token_request_unlock: pedido de desbloqueio de token. Escrita assíncrona pela fila, aviso
- * ao suporte na inclusão (pedido pendente) e na exclusão (pedido atendido), gêmea de
- * jn_login_token_fulfilled_unlock, {@code @CcpEntityCache(3600)}, descartável diário, e-mail em claro
- * e validador.
+ * jn_login_token_request_unlock: request to unlock the token. Asynchronous writing through the queue, notice to
+ * the support on insert (pending request) and on delete (fulfilled request), twin of
+ * jn_login_token_fulfilled_unlock, {@code @CcpEntityCache(3600)}, daily disposable, e-mail in plain text and
+ * validator.
  */
 public class JnEntityLoginTokenRequestUnlockDecoratorsTest extends EntityDecoratorTestTemplate {
 

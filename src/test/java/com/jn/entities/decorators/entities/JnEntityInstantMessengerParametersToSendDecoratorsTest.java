@@ -7,7 +7,10 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.jn.entities.JnEntityInstantMessengerParametersToSend;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 
-/** jn_instant_messenger_parameters_to_send: {@code @CcpEntityCache(3600)}, versionável, transformador e validador. */
+/**
+ * jn_instant_messenger_parameters_to_send: {@code @CcpEntityCache(3600)}, versionable, transformer and
+ * validator.
+ */
 public class JnEntityInstantMessengerParametersToSendDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {

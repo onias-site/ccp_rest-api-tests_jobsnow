@@ -3,8 +3,8 @@ package com.ccp.json.validations.global.annotations;
 import com.ccp.decorators.CcpJsonFieldName;
 
 /**
- * Os três atributos da anotação em uso ao mesmo tempo, espelhando {@code VisEntityPosition.Fields} e
- * acrescentando um validador customizado: as regras são independentes e somam seus erros.
+ * The three attributes of the annotation in use at the same time, mirroring {@code VisEntityPosition.Fields} and
+ * adding a custom validator: the rules are independent and add up their errors.
  */
 @CcpJsonGlobalValidations(
 		requiresAtLeastOne = {

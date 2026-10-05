@@ -10,8 +10,8 @@ import com.ccp.json.validations.fields.enums.CcpJsonFieldError;
 import com.ccp.json.validations.fields.enums.CcpJsonFieldTypeError;
 
 /**
- * Verifica se {@code @CcpJsonFieldTypeNumber} respeita valor mínimo, máximo, exato e a lista de
- * valores permitidos, e se recusa o que não é número.
+ * Verifies that {@code @CcpJsonFieldTypeNumber} honors the minimum, maximum and exact values and the list of
+ * allowed values, and refuses what is not a number.
  */
 public class CcpJsonFieldTypeNumberTest {
 
@@ -21,8 +21,8 @@ public class CcpJsonFieldTypeNumberTest {
 
 	private final BusinessFieldTypeNumber business = new BusinessFieldTypeNumber();
 
-	private CcpJsonRepresentation json(RulesFieldTypeNumber field, Object valor) {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(field, valor);
+	private CcpJsonRepresentation json(RulesFieldTypeNumber field, Object value) {
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(field, value);
 		return json;
 	}
 
@@ -75,7 +75,7 @@ public class CcpJsonFieldTypeNumberTest {
 	}
 
 	@Test
-	public void semRestricaoAceitaTest() {
+	public void withoutRestrictionAcceptedTest() {
 		CcpJsonRepresentation json = this.json(RulesFieldTypeNumber.semRestricao, 123.456);
 		FieldValidation.accepts(this.business, json);
 	}

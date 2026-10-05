@@ -4,9 +4,9 @@ import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 
 /**
- * Campos anotados com {@code @CcpJsonFieldValidatorArray}, um para cada restrição de coleção:
- * tamanho mínimo, máximo, exato e repetição de itens. Todos carregam também uma anotação de tipo,
- * porque o engine descarta o campo que não tem tipo declarado antes mesmo de validar a coleção.
+ * Fields annotated with {@code @CcpJsonFieldValidatorArray}, one for each collection restriction: minimum,
+ * maximum and exact size and repetition of items. All of them also carry a type annotation, because the engine
+ * discards a field without a declared type before even validating the collection.
  */
 public enum RulesValidatorArray implements CcpJsonFieldName {
 
@@ -33,5 +33,8 @@ public enum RulesValidatorArray implements CcpJsonFieldName {
 	@CcpJsonFieldValidatorArray(minSize = 1)
 	@CcpJsonFieldTypeString(allowedValuesEnum = RulesFieldTypeString.AllowedValues.class)
 	colecaoDeEnums,
+
+	@CcpJsonFieldTypeString
+	singleValue,
 	;
 }

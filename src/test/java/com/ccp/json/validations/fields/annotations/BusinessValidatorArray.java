@@ -3,9 +3,7 @@ package com.ccp.json.validations.fields.annotations;
 import com.ccp.business.CcpBusiness;
 import com.ccp.decorators.CcpJsonRepresentation;
 
-/**
- * Negócio cujas regras de validação moram em {@code RulesValidatorArray}.
- */
+/** Business whose validation rules live in {@code RulesValidatorArray}. */
 public class BusinessValidatorArray implements CcpBusiness {
 
 	public Class<?> getJsonValidationClass() {

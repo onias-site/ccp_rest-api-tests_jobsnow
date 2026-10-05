@@ -4,10 +4,10 @@ import com.ccp.business.CcpBusiness;
 import com.ccp.decorators.CcpJsonRepresentation;
 
 /**
- * Negócio que apenas devolve o JSON recebido, servindo de veículo para exercitar o {@code execute}
- * sobre uma classe de regras qualquer. Diferente dos negócios das anotações de validação, este é
- * reaproveitado por todos os cenários: a classe de regras vem pelo construtor, porque o que muda de
- * um cenário para o outro é só ela.
+ * A business that only returns the JSON it receives, serving as the vehicle to exercise {@code execute} over any
+ * rules class. Unlike the businesses of the validation annotations, this one is reused by every scenario: the
+ * rules class comes through the constructor, because it is the only thing that changes from one scenario to
+ * another.
  */
 public class DefaultValueBusiness implements CcpBusiness {
 

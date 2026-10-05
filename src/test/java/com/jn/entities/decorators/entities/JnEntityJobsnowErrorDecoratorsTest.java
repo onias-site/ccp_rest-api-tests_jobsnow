@@ -12,9 +12,9 @@ import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
- * jn_jobsnow_error: escrita assíncrona pela fila (prioridade 8), aviso ao suporte pelo Telegram só na
- * inclusão ({@code afterInsert}), {@code @CcpEntityCache(3600)}, descartável por hora, transformador e
- * validador.
+ * jn_jobsnow_error: asynchronous writing through the queue (priority 8), notice to the support through Telegram
+ * only on insert ({@code afterInsert}), {@code @CcpEntityCache(3600)}, hourly disposable, transformer and
+ * validator.
  */
 public class JnEntityJobsnowErrorDecoratorsTest extends EntityDecoratorTestTemplate {
 
@@ -45,12 +45,12 @@ public class JnEntityJobsnowErrorDecoratorsTest extends EntityDecoratorTestTempl
 	}
 
 	/**
-	 * Até 2026-09-27 copiava a regra de JnJsonCommonsFields, que não declarava type, e aceitava texto
-	 * vazio. (O tipo string do framework aceita qualquer valor por desenho; a regra que passou a valer é
-	 * a de texto não vazio.)
+	 * Until 2026-09-27 it copied the rule of JnJsonCommonsFields, which did not declare type, and accepted empty
+	 * text. (The string type of the framework accepts any value by design; the rule now in force is the one of
+	 * non-empty text.)
 	 */
 	@Test
-	public void validadorDoType() {
+	public void typeValidator() {
 		this.shouldRefuseInvalidRecord(this.validRecord().put(JnEntityJobsnowError.Fields.type, ""));
 	}
 
@@ -64,9 +64,9 @@ public class JnEntityJobsnowErrorDecoratorsTest extends EntityDecoratorTestTempl
 		this.shouldNotifyByTelegramOnlyOnInsert();
 	}
 
-	/** O aviso é {@code SaveAWarning}: recusado por repetição, vira warning e a gravação segue. */
+	/** The notice is {@code SaveAWarning}: refused for repetition, it becomes a warning and the save goes on. */
 	@Test
-	public void avisoRecusadoNaoDerrubaAGravacao() {
+	public void refusedNoticeDoesNotBreakTheSave() {
 		this.shouldKeepSavingWhenNoticeIsRefused();
 	}
 

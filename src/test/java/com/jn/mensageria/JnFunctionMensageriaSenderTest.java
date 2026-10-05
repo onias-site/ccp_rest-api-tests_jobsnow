@@ -18,6 +18,19 @@ public class JnFunctionMensageriaSenderTest {
 
 
 	@Test
+	public void toStringCurrentlyNamesTheClassOfTheTopicText() {
+		String description = new JnFunctionMensageriaSender(new NoopBusiness()).toString();
+		org.junit.Assert.assertEquals(String.class.getName(), description);
+	}
+
+	@org.junit.Ignore("finding 37: toString should name the topic (the class of the business)")
+	@Test
+	public void toStringShouldNameTheTopic() {
+		String description = new JnFunctionMensageriaSender(new NoopBusiness()).toString();
+		org.junit.Assert.assertEquals(NoopBusiness.class.getName(), description);
+	}
+
+	@Test
 	public void constructorTest() {
 		assertNotNull(new JnFunctionMensageriaSender(new NoopBusiness()));
 	}

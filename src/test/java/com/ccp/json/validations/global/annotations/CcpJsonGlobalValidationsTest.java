@@ -10,15 +10,12 @@ import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
 /**
- * Verifica os três atributos de {@code @CcpJsonGlobalValidations}, cada um com o comportamento que o
- * próprio nome anuncia:
- * <ul>
- * <li>{@code requiresAtLeastOne} — de cada grupo, ao menos um campo precisa estar no json;</li>
- * <li>{@code requiresAllOrNone} — de cada grupo, ou todos os campos estão no json, ou nenhum;</li>
- * <li>{@code customJsonValidators} — validadores de classe adicionais rodam junto com os dois de cima.</li>
- * </ul>
- * Os cenários espelham os usos reais em {@code VisEntityPosition.Fields} (os dois primeiros atributos
- * combinados) e em {@code VisEntityResume.Fields} (um único grupo de {@code requiresAtLeastOne}).
+ * Verifies the three attributes of {@code @CcpJsonGlobalValidations}, each one with the behavior its own name
+ * announces: <ul> <li>{@code requiresAtLeastOne}: of each group, at least one field must be in the JSON;</li>
+ * <li>{@code requiresAllOrNone}: of each group, either all fields are in the JSON, or none;</li>
+ * <li>{@code customJsonValidators}: additional class validators run together with the two above.</li> </ul> The
+ * scenarios mirror the real uses in {@code VisEntityPosition.Fields} (the first two attributes combined) and in
+ * {@code VisEntityResume.Fields} (a single group of {@code requiresAtLeastOne}).
  */
 public class CcpJsonGlobalValidationsTest {
 
@@ -31,21 +28,21 @@ public class CcpJsonGlobalValidationsTest {
 	// ------------------------------------------------------------------
 
 	@Test
-	public void requiresAtLeastOneComUmDosCamposDoGrupoTest() {
+	public void requiresAtLeastOneWithOneOfTheFieldsOfTheGroupTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAtLeastOneOneGroup.maxClt, 9_000);
 		GlobalValidation.accepts(RulesRequiresAtLeastOneOneGroup.class, json);
 	}
 
 	@Test
-	public void requiresAtLeastOneComOOutroCampoDoGrupoTest() {
+	public void requiresAtLeastOneWithTheOtherFieldOfTheGroupTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAtLeastOneOneGroup.maxPj, 12_000);
 		GlobalValidation.accepts(RulesRequiresAtLeastOneOneGroup.class, json);
 	}
 
 	@Test
-	public void requiresAtLeastOneComTodosOsCamposDoGrupoTest() {
+	public void requiresAtLeastOneWithAllFieldsOfTheGroupTest() {
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAtLeastOneOneGroup.maxClt, 9_000);
 		CcpJsonRepresentation json = put
@@ -54,22 +51,22 @@ public class CcpJsonGlobalValidationsTest {
 	}
 
 	@Test
-	public void requiresAtLeastOneSemNenhumCampoDoGrupoTest() {
+	public void requiresAtLeastOneWithoutAnyFieldOfTheGroupTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAtLeastOneOneGroup.titulo, "Desenvolvedor");
-		List<String> mensagens = GlobalValidation.refuses(RulesRequiresAtLeastOneOneGroup.class, json);
-		GlobalValidation.containsMessage(mensagens, "maxClt");
-		GlobalValidation.containsMessage(mensagens, "maxPj");
+		List<String> messages = GlobalValidation.refuses(RulesRequiresAtLeastOneOneGroup.class, json);
+		GlobalValidation.containsMessage(messages, "maxClt");
+		GlobalValidation.containsMessage(messages, "maxPj");
 	}
 
 	@Test
-	public void requiresAtLeastOneComJsonVazioTest() {
+	public void requiresAtLeastOneWithEmptyJsonTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON;
 		GlobalValidation.refuses(RulesRequiresAtLeastOneOneGroup.class, json);
 	}
 
 	@Test
-	public void requiresAtLeastOneComDoisGruposAmbosSatisfeitosTest() {
+	public void requiresAtLeastOneWithTwoGroupsBothSatisfiedTest() {
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAtLeastOneTwoGroups.maxClt, 9_000);
 		CcpJsonRepresentation json = put
@@ -78,40 +75,40 @@ public class CcpJsonGlobalValidationsTest {
 	}
 
 	@Test
-	public void requiresAtLeastOneComDoisGruposSatisfazendoApenasOPrimeiroTest() {
+	public void requiresAtLeastOneWithTwoGroupsSatisfyingOnlyTheFirstTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAtLeastOneTwoGroups.maxClt, 9_000);
-		List<String> mensagens = this.recusaDoisGrupos(json);
-		GlobalValidation.containsMessage(mensagens, "minClt");
+		List<String> messages = this.refusesTwoGroups(json);
+		GlobalValidation.containsMessage(messages, "minClt");
 	}
 
-	private List<String> recusaDoisGrupos(CcpJsonRepresentation json) {
-		List<String> mensagens = GlobalValidation.refuses(RulesRequiresAtLeastOneTwoGroups.class, json);
-		return mensagens;
+	private List<String> refusesTwoGroups(CcpJsonRepresentation json) {
+		List<String> messages = GlobalValidation.refuses(RulesRequiresAtLeastOneTwoGroups.class, json);
+		return messages;
 	}
 
 	@Test
-	public void requiresAtLeastOneComDoisGruposSatisfazendoApenasOSegundoTest() {
+	public void requiresAtLeastOneWithTwoGroupsSatisfyingOnlyTheSecondTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAtLeastOneTwoGroups.minPj, 5_000);
-		List<String> mensagens = this.recusaDoisGrupos(json);
-		GlobalValidation.containsMessage(mensagens, "maxClt");
+		List<String> messages = this.refusesTwoGroups(json);
+		GlobalValidation.containsMessage(messages, "maxClt");
 	}
 
 	@Test
-	public void requiresAtLeastOneComGrupoMontadoPorDuasClassesTest() {
+	public void requiresAtLeastOneWithGroupBuiltByTwoClassesTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAtLeastOneUnionOfClasses.sms, "11999999999");
 		GlobalValidation.accepts(RulesRequiresAtLeastOneUnionOfClasses.class, json);
 	}
 
 	@Test
-	public void requiresAtLeastOneComGrupoMontadoPorDuasClassesSemNenhumCampoTest() {
+	public void requiresAtLeastOneWithGroupBuiltByTwoClassesWithoutAnyFieldTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAtLeastOneUnionOfClasses.titulo, "Desenvolvedor");
-		List<String> mensagens = GlobalValidation.refuses(RulesRequiresAtLeastOneUnionOfClasses.class, json);
-		GlobalValidation.containsMessage(mensagens, "telegram");
-		GlobalValidation.containsMessage(mensagens, "sms");
+		List<String> messages = GlobalValidation.refuses(RulesRequiresAtLeastOneUnionOfClasses.class, json);
+		GlobalValidation.containsMessage(messages, "telegram");
+		GlobalValidation.containsMessage(messages, "sms");
 	}
 
 	// ------------------------------------------------------------------
@@ -119,14 +116,14 @@ public class CcpJsonGlobalValidationsTest {
 	// ------------------------------------------------------------------
 
 	@Test
-	public void requiresAllOrNoneSemNenhumCampoDoGrupoTest() {
+	public void requiresAllOrNoneWithoutAnyFieldOfTheGroupTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAllOrNoneOneGroup.titulo, "Desenvolvedor");
 		GlobalValidation.accepts(RulesRequiresAllOrNoneOneGroup.class, json);
 	}
 
 	@Test
-	public void requiresAllOrNoneComTodosOsCamposDoGrupoTest() {
+	public void requiresAllOrNoneWithAllFieldsOfTheGroupTest() {
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAllOrNoneOneGroup.minClt, 5_000);
 		CcpJsonRepresentation json = put
@@ -135,23 +132,23 @@ public class CcpJsonGlobalValidationsTest {
 	}
 
 	@Test
-	public void requiresAllOrNoneComApenasOPrimeiroCampoDoGrupoTest() {
+	public void requiresAllOrNoneWithOnlyTheFirstFieldOfTheGroupTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAllOrNoneOneGroup.minClt, 5_000);
-		List<String> mensagens = GlobalValidation.refuses(RulesRequiresAllOrNoneOneGroup.class, json);
-		GlobalValidation.containsMessage(mensagens, "maxClt");
+		List<String> messages = GlobalValidation.refuses(RulesRequiresAllOrNoneOneGroup.class, json);
+		GlobalValidation.containsMessage(messages, "maxClt");
 	}
 
 	@Test
-	public void requiresAllOrNoneComApenasOSegundoCampoDoGrupoTest() {
+	public void requiresAllOrNoneWithOnlyTheSecondFieldOfTheGroupTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAllOrNoneOneGroup.maxClt, 9_000);
-		List<String> mensagens = GlobalValidation.refuses(RulesRequiresAllOrNoneOneGroup.class, json);
-		GlobalValidation.containsMessage(mensagens, "minClt");
+		List<String> messages = GlobalValidation.refuses(RulesRequiresAllOrNoneOneGroup.class, json);
+		GlobalValidation.containsMessage(messages, "minClt");
 	}
 
 	@Test
-	public void requiresAllOrNoneComDoisGruposUmCompletoEOutroIntocadoTest() {
+	public void requiresAllOrNoneWithTwoGroupsOneCompleteAndTheOtherUntouchedTest() {
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAllOrNoneTwoGroups.minClt, 5_000);
 		CcpJsonRepresentation json = put
@@ -160,7 +157,7 @@ public class CcpJsonGlobalValidationsTest {
 	}
 
 	@Test
-	public void requiresAllOrNoneComDoisGruposAmbosCompletosTest() {
+	public void requiresAllOrNoneWithTwoGroupsBothCompleteTest() {
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAllOrNoneTwoGroups.minClt, 5_000);
 		CcpJsonRepresentation put2 = put
@@ -173,35 +170,35 @@ public class CcpJsonGlobalValidationsTest {
 	}
 
 	@Test
-	public void requiresAllOrNoneComDoisGruposUmCompletoEOutroPelaMetadeTest() {
+	public void requiresAllOrNoneWithTwoGroupsOneCompleteAndTheOtherHalfFilledTest() {
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAllOrNoneTwoGroups.minClt, 5_000);
 		CcpJsonRepresentation put2 = put
 				.put(RulesRequiresAllOrNoneTwoGroups.maxClt, 9_000);
 		CcpJsonRepresentation json = put2
 				.put(RulesRequiresAllOrNoneTwoGroups.minPj, 7_000);
-		List<String> mensagens = GlobalValidation.refuses(RulesRequiresAllOrNoneTwoGroups.class, json);
-		GlobalValidation.containsMessage(mensagens, "maxPj");
+		List<String> messages = GlobalValidation.refuses(RulesRequiresAllOrNoneTwoGroups.class, json);
+		GlobalValidation.containsMessage(messages, "maxPj");
 	}
 
 	@Test
-	public void requiresAllOrNoneComDoisGruposAmbosPelaMetadeTest() {
+	public void requiresAllOrNoneWithTwoGroupsBothHalfFilledTest() {
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAllOrNoneTwoGroups.minClt, 5_000);
 		CcpJsonRepresentation json = put
 				.put(RulesRequiresAllOrNoneTwoGroups.minPj, 7_000);
-		List<String> mensagens = GlobalValidation.refuses(RulesRequiresAllOrNoneTwoGroups.class, json);
-		GlobalValidation.containsMessage(mensagens, "maxClt");
-		GlobalValidation.containsMessage(mensagens, "maxPj");
+		List<String> messages = GlobalValidation.refuses(RulesRequiresAllOrNoneTwoGroups.class, json);
+		GlobalValidation.containsMessage(messages, "maxClt");
+		GlobalValidation.containsMessage(messages, "maxPj");
 	}
 
 	@Test
-	public void requiresAllOrNoneApontaOsCamposPresentesEOsFaltantesTest() {
+	public void requiresAllOrNonePointsThePresentAndTheMissingFieldsTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesRequiresAllOrNoneOneGroup.minClt, 5_000);
-		List<String> mensagens = GlobalValidation.refuses(RulesRequiresAllOrNoneOneGroup.class, json);
-		GlobalValidation.containsMessage(mensagens, "contains the following fields");
-		GlobalValidation.containsMessage(mensagens, "not contains the following fields");
+		List<String> messages = GlobalValidation.refuses(RulesRequiresAllOrNoneOneGroup.class, json);
+		GlobalValidation.containsMessage(messages, "contains the following fields");
+		GlobalValidation.containsMessage(messages, "not contains the following fields");
 	}
 
 	// ------------------------------------------------------------------
@@ -209,7 +206,7 @@ public class CcpJsonGlobalValidationsTest {
 	// ------------------------------------------------------------------
 
 	@Test
-	public void customJsonValidatorsSemErroTest() {
+	public void customJsonValidatorsWithoutErrorTest() {
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
 				.put(RulesCustomJsonValidator.minClt, 5_000);
 		CcpJsonRepresentation json = put
@@ -218,35 +215,35 @@ public class CcpJsonGlobalValidationsTest {
 	}
 
 	@Test
-	public void customJsonValidatorsComErroTest() {
+	public void customJsonValidatorsWithErrorTest() {
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
 				.put(RulesCustomJsonValidator.minClt, 9_000);
 		CcpJsonRepresentation json = put
 				.put(RulesCustomJsonValidator.maxClt, 5_000);
-		List<String> mensagens = GlobalValidation.refuses(RulesCustomJsonValidator.class, json);
-		GlobalValidation.containsMessage(mensagens, ConsistentSalaryRangeValidator.MESSAGE);
+		List<String> messages = GlobalValidation.refuses(RulesCustomJsonValidator.class, json);
+		GlobalValidation.containsMessage(messages, ConsistentSalaryRangeValidator.MESSAGE);
 	}
 
 	@Test
-	public void customJsonValidatorsNaoEhChamadoQuandoNaoTemComoAvaliarTest() {
+	public void customJsonValidatorsIsNotCalledWhenItCannotEvaluateTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesCustomJsonValidator.minClt, 9_000);
 		GlobalValidation.accepts(RulesCustomJsonValidator.class, json);
 	}
 
 	@Test
-	public void customJsonValidatorsEmSerieAcumulamOsErrosTest() {
+	public void customJsonValidatorsInSeriesAccumulateTheErrorsTest() {
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
 				.put(RulesChainedCustomJsonValidators.minClt, 9_000);
 		CcpJsonRepresentation json = put
 				.put(RulesChainedCustomJsonValidators.maxClt, 5_000);
-		List<String> mensagens = GlobalValidation.refuses(RulesChainedCustomJsonValidators.class, json);
-		GlobalValidation.containsMessage(mensagens, ConsistentSalaryRangeValidator.MESSAGE);
-		GlobalValidation.containsMessage(mensagens, RequiredTitleValidator.MESSAGE);
+		List<String> messages = GlobalValidation.refuses(RulesChainedCustomJsonValidators.class, json);
+		GlobalValidation.containsMessage(messages, ConsistentSalaryRangeValidator.MESSAGE);
+		GlobalValidation.containsMessage(messages, RequiredTitleValidator.MESSAGE);
 	}
 
 	@Test
-	public void customJsonValidatorsEmSerieComApenasUmDelesAcusandoErroTest() {
+	public void customJsonValidatorsInSeriesWithOnlyOneReportingErrorTest() {
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
 				.put(RulesChainedCustomJsonValidators.minClt, 5_000);
 		CcpJsonRepresentation put2 = put
@@ -257,27 +254,27 @@ public class CcpJsonGlobalValidationsTest {
 	}
 
 	@Test
-	public void customJsonValidatorsCriticoInterrompeOsSeguintesTest() {
+	public void customJsonValidatorsCriticalInterruptsTheFollowingTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON;
-		List<String> mensagens = GlobalValidation.refuses(RulesCriticalCustomJsonValidator.class, json);
-		GlobalValidation.containsMessage(mensagens, CriticalContractValidator.MESSAGE);
-		GlobalValidation.doesNotContainMessage(mensagens, RequiredTitleValidator.MESSAGE);
+		List<String> messages = GlobalValidation.refuses(RulesCriticalCustomJsonValidator.class, json);
+		GlobalValidation.containsMessage(messages, CriticalContractValidator.MESSAGE);
+		GlobalValidation.doesNotContainMessage(messages, RequiredTitleValidator.MESSAGE);
 	}
 
 	@Test
-	public void customJsonValidatorsCriticoSemErroDeixaOsSeguintesRodaremTest() {
+	public void customJsonValidatorsCriticalWithoutErrorLetsTheFollowingRunTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesCriticalCustomJsonValidator.contrato, "clt");
-		List<String> mensagens = GlobalValidation.refuses(RulesCriticalCustomJsonValidator.class, json);
-		GlobalValidation.containsMessage(mensagens, RequiredTitleValidator.MESSAGE);
+		List<String> messages = GlobalValidation.refuses(RulesCriticalCustomJsonValidator.class, json);
+		GlobalValidation.containsMessage(messages, RequiredTitleValidator.MESSAGE);
 	}
 
 	// ------------------------------------------------------------------
-	// atributos combinados e casos de borda da anotação
+	// combined attributes and edge cases of the annotation
 	// ------------------------------------------------------------------
 
 	@Test
-	public void atributosCombinadosComJsonValidoTest() {
+	public void combinedAttributesWithValidJsonTest() {
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
 				.put(RulesCombinedGlobalValidations.minClt, 5_000);
 		CcpJsonRepresentation json = put
@@ -286,43 +283,43 @@ public class CcpJsonGlobalValidationsTest {
 	}
 
 	@Test
-	public void atributosCombinadosAcusamOsErrosDeTodosOsAtributosTest() {
+	public void combinedAttributesReportTheErrorsOfAllAttributesTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesCombinedGlobalValidations.minPj, 7_000);
-		List<String> mensagens = GlobalValidation.refuses(RulesCombinedGlobalValidations.class, json);
-		GlobalValidation.containsMessage(mensagens, "It is missing one of them fields");
-		GlobalValidation.containsMessage(mensagens, "maxPj");
+		List<String> messages = GlobalValidation.refuses(RulesCombinedGlobalValidations.class, json);
+		GlobalValidation.containsMessage(messages, "It is missing one of them fields");
+		GlobalValidation.containsMessage(messages, "maxPj");
 	}
 
 	@Test
-	public void atributosCombinadosAcusamErroDoValidadorCustomizadoTest() {
+	public void combinedAttributesReportTheCustomValidatorErrorTest() {
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON
 				.put(RulesCombinedGlobalValidations.minClt, 9_000);
 		CcpJsonRepresentation json = put
 				.put(RulesCombinedGlobalValidations.maxClt, 5_000);
-		List<String> mensagens = GlobalValidation.refuses(RulesCombinedGlobalValidations.class, json);
-		GlobalValidation.containsMessage(mensagens, ConsistentSalaryRangeValidator.MESSAGE);
+		List<String> messages = GlobalValidation.refuses(RulesCombinedGlobalValidations.class, json);
+		GlobalValidation.containsMessage(messages, ConsistentSalaryRangeValidator.MESSAGE);
 	}
 
 	@Test
-	public void anotacaoSemAtributosNaoCobraNadaTest() {
+	public void annotationWithoutAttributesRequiresNothingTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesGlobalValidationsWithoutAttributes.minClt, 5_000);
 		GlobalValidation.accepts(RulesGlobalValidationsWithoutAttributes.class, json);
 	}
 
 	@Test
-	public void anotacaoSemAtributosAceitaAteJsonVazioTest() {
+	public void annotationWithoutAttributesAcceptsEvenEmptyJsonTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON;
 		GlobalValidation.accepts(RulesGlobalValidationsWithoutAttributes.class, json);
 	}
 
 	// ------------------------------------------------------------------
-	// explicacao das regras de cada atributo
+	// explanation of the rules of each attribute
 	// ------------------------------------------------------------------
 
 	@Test
-	public void requiresAtLeastOneExplicaASuaRegraTest() {
+	public void requiresAtLeastOneExplainsItsRuleTest() {
 		List<String> explicacoes = GlobalValidation.rulesExplanations(RulesRequiresAtLeastOneOneGroup.class);
 		GlobalValidation.containsMessage(explicacoes, "one of this following fields");
 		GlobalValidation.containsMessage(explicacoes, "maxClt");
@@ -330,7 +327,7 @@ public class CcpJsonGlobalValidationsTest {
 	}
 
 	@Test
-	public void requiresAllOrNoneExplicaASuaRegraTest() {
+	public void requiresAllOrNoneExplainsItsRuleTest() {
 		List<String> explicacoes = GlobalValidation.rulesExplanations(RulesRequiresAllOrNoneOneGroup.class);
 		GlobalValidation.containsMessage(explicacoes, "all (or none)");
 		GlobalValidation.containsMessage(explicacoes, "minClt");
@@ -338,20 +335,20 @@ public class CcpJsonGlobalValidationsTest {
 	}
 
 	@Test
-	public void requiresAllOrNoneNaoExplicaOsGruposDoRequiresAtLeastOneTest() {
+	public void requiresAllOrNoneDoesNotExplainTheGroupsOfRequiresAtLeastOneTest() {
 		List<String> explicacoes = GlobalValidation.rulesExplanations(RulesRequiresAtLeastOneOneGroup.class);
 		GlobalValidation.doesNotContainMessage(explicacoes, "all (or none)");
 	}
 
 	@Test
-	public void customJsonValidatorsExplicamSuasRegrasTest() {
+	public void customJsonValidatorsExplainTheirRulesTest() {
 		List<String> explicacoes = GlobalValidation.rulesExplanations(RulesChainedCustomJsonValidators.class);
 		GlobalValidation.containsMessage(explicacoes, ConsistentSalaryRangeValidator.MESSAGE);
 		GlobalValidation.containsMessage(explicacoes, RequiredTitleValidator.MESSAGE);
 	}
 
 	@Test
-	public void classeSemAnotacaoNaoCobraNadaTest() {
+	public void classWithoutAnnotationRequiresNothingTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(RulesWithoutGlobalValidations.minClt, 5_000);
 		GlobalValidation.accepts(RulesWithoutGlobalValidations.class, json);

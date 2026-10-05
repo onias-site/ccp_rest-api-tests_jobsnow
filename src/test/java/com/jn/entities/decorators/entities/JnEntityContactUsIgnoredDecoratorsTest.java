@@ -10,8 +10,8 @@ import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
- * jn_contact_us_ignored: gêmea de jn_contact_us_reread, {@code @CcpEntityCache(86400)}, descartável
- * diário, transformador e validador.
+ * jn_contact_us_ignored: twin of jn_contact_us_reread, {@code @CcpEntityCache(86400)}, daily disposable,
+ * transformer and validator.
  */
 public class JnEntityContactUsIgnoredDecoratorsTest extends EntityDecoratorTestTemplate {
 

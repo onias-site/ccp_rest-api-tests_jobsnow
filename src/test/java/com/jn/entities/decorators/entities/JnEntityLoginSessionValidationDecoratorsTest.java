@@ -10,9 +10,9 @@ import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
- * jn_login_session_validation: gêmea de jn_login_session_terminated (sessão encerrada),
- * {@code @CcpEntityCache(3600)}, descartável por hora, transformador (hash do token, que é chave
- * primária) e validador.
+ * jn_login_session_validation: twin of jn_login_session_terminated (ended session),
+ * {@code @CcpEntityCache(3600)}, hourly disposable, transformer (hash of the token, which is the primary key)
+ * and validator.
  */
 public class JnEntityLoginSessionValidationDecoratorsTest extends EntityDecoratorTestTemplate {
 

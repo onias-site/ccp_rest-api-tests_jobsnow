@@ -46,7 +46,7 @@ public class JnJsonTransformersFieldsEntityDefaultTest {
 		JnJsonTransformersFieldsEntityDefault.tokenHash.canBePrimaryKey();
 	}
 
-	// ── getOriginalToken (static utility, sem parâmetros) ────────────────────
+	// ── getOriginalToken (static utility, without parameters) ────────────────
 
 	@Test
 	public void getOriginalTokenTest() {

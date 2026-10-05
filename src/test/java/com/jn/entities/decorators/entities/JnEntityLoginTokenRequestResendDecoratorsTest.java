@@ -11,10 +11,10 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 
 /**
- * jn_login_token_request_resend: pedido de reenvio de token. Escrita assíncrona pela fila, aviso ao
- * suporte na inclusão (pedido pendente) e na exclusão (pedido atendido), gêmea de
- * jn_login_token_fulfilled_resend, {@code @CcpEntityCache(3600)}, descartável diário, e-mail em claro
- * ({@code JnJsonTransformersFieldsEntityDoNothing}) e validador.
+ * jn_login_token_request_resend: request to resend the token. Asynchronous writing through the queue, notice to
+ * the support on insert (pending request) and on delete (fulfilled request), twin of
+ * jn_login_token_fulfilled_resend, {@code @CcpEntityCache(3600)}, daily disposable, e-mail in plain text
+ * ({@code JnJsonTransformersFieldsEntityDoNothing}) and validator.
  */
 public class JnEntityLoginTokenRequestResendDecoratorsTest extends EntityDecoratorTestTemplate {
 
@@ -57,9 +57,9 @@ public class JnEntityLoginTokenRequestResendDecoratorsTest extends EntityDecorat
 		this.shouldNotifyByTelegramOnDelete();
 	}
 
-	/** O aviso é {@code ThrowAnError}: recusado por repetição, derruba a gravação. */
+	/** The notice is {@code ThrowAnError}: refused for repetition, it breaks the save. */
 	@Test
-	public void avisoRecusadoDerrubaAGravacao() {
+	public void refusedNoticeBreaksTheSave() {
 		this.shouldFailWhenNoticeIsRefused();
 	}
 

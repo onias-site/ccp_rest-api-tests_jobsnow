@@ -25,10 +25,10 @@ import com.ccp.json.validations.fields.interfaces.CcpJsonFieldValidatorInterface
 import com.ccp.json.validations.global.engine.CcpJsonValidationRulesEngine;
 
 /**
- * Verifica {@code @CcpJsonFieldDefaultValue}: o preenchimento do campo ausente pelo
- * {@code defaultStrings} (um item vira String, vários viram lista, e todos passam por
- * {@code resolveTemplate}), o acionamento do {@code jsonProducer} quando {@code defaultStrings} está
- * vazio, a preservação do valor que já veio no JSON e o desligamento da obrigatoriedade do campo.
+ * Verifies {@code @CcpJsonFieldDefaultValue}: the absent field is filled by {@code defaultStrings} (one item
+ * becomes a String, several become a list, and all go through {@code resolveTemplate}), {@code jsonProducer} is
+ * triggered when {@code defaultStrings} is empty, a value already in the JSON is kept, and the field stops being
+ * required.
  */
 public class CcpJsonFieldDefaultValueTest {
 
@@ -44,220 +44,220 @@ public class CcpJsonFieldDefaultValueTest {
 	// ── defaultStrings ────────────────────────────────────────────────────────
 
 	@Test
-	public void umItemSoViraStringTest() {
+	public void oneItemOnlyBecomesStringTest() {
 		CcpJsonRepresentation json = this.withName();
-		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
-		String valor = resultado.getAsString(RulesDefaultValueStrings.umItemSo);
-		assertEquals("valor unico", valor);
+		CcpJsonRepresentation result = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		String value = result.getAsString(RulesDefaultValueStrings.umItemSo);
+		assertEquals("valor unico", value);
 	}
 
 	@Test
-	public void umItemSoEhGravadoComoStringENaoComoListaTest() {
+	public void oneItemOnlyIsStoredAsStringAndNotAsListTest() {
 		CcpJsonRepresentation json = this.withName();
-		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
-		Object valor = resultado.get(RulesDefaultValueStrings.umItemSo);
-		boolean ehString = valor instanceof String;
-		assertTrue("Um unico defaultString deve ser gravado como String, mas veio " + valor.getClass(), ehString);
+		CcpJsonRepresentation result = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		Object value = result.get(RulesDefaultValueStrings.umItemSo);
+		boolean isString = value instanceof String;
+		assertTrue("A single defaultString must be stored as a String, but it came as " + value.getClass(), isString);
 	}
 
 	@Test
-	public void variosItensViramListaDeStringsTest() {
+	public void severalItemsBecomeListOfStringsTest() {
 		CcpJsonRepresentation json = this.withName();
-		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
-		List<Object> valor = resultado.getAsObjectList(RulesDefaultValueStrings.variosItens);
-		List<String> esperado = Arrays.asList("primeiro", "segundo", "terceiro");
-		assertEquals(esperado, valor);
+		CcpJsonRepresentation result = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		List<Object> value = result.getAsObjectList(RulesDefaultValueStrings.variosItens);
+		List<String> expected = Arrays.asList("primeiro", "segundo", "terceiro");
+		assertEquals(expected, value);
 	}
 
 	@Test
-	public void variosItensSaoGravadosComoColecaoENaoComoStringTest() {
+	public void severalItemsAreStoredAsCollectionAndNotAsStringTest() {
 		CcpJsonRepresentation json = this.withName();
-		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
-		Object valor = resultado.get(RulesDefaultValueStrings.variosItens);
-		boolean ehColecao = valor instanceof List;
-		assertTrue("Varios defaultStrings devem virar lista, mas veio " + valor.getClass(), ehColecao);
+		CcpJsonRepresentation result = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		Object value = result.get(RulesDefaultValueStrings.variosItens);
+		boolean isCollection = value instanceof List;
+		assertTrue("Several defaultStrings must become a list, but it came as " + value.getClass(), isCollection);
 	}
 
 	@Test
-	public void templateEhResolvidoComOsValoresDoJsonTest() {
+	public void templateIsResolvedWithTheValuesOfTheJsonTest() {
 		CcpJsonRepresentation json = this.withName();
-		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
-		String valor = resultado.getAsString(RulesDefaultValueStrings.comTemplate);
-		assertEquals("ola onias", valor);
+		CcpJsonRepresentation result = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		String value = result.getAsString(RulesDefaultValueStrings.comTemplate);
+		assertEquals("ola onias", value);
 	}
 
 	/**
-	 * Placeholder que aponta para campo ausente não tem o que substituir e permanece literal. É a
-	 * armadilha da auto-referência: um campo cujo valor padrão aponte para ele mesmo nunca resolve,
-	 * porque o valor padrão só roda quando o campo está ausente.
+	 * A placeholder that points to an absent field has nothing to replace and stays literal. This is the
+	 * self-reference trap: a field whose default value points to itself never resolves, because the default value
+	 * only runs when the field is absent.
 	 */
 	@Test
-	public void templateSemOrigemPermaneceLiteralTest() {
+	public void templateWithoutSourceStaysLiteralTest() {
 		CcpJsonRepresentation json = this.withName();
-		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
-		String valor = resultado.getAsString(RulesDefaultValueStrings.comTemplateSemOrigem);
-		assertEquals("[{inexistente}]", valor);
+		CcpJsonRepresentation result = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		String value = result.getAsString(RulesDefaultValueStrings.comTemplateSemOrigem);
+		assertEquals("[{inexistente}]", value);
 	}
 
 	@Test
-	public void campoJaInformadoNaoEhSobrescritoTest() {
+	public void fieldAlreadyGivenIsNotOverwrittenTest() {
 		CcpJsonRepresentation withName = this.withName();
 		CcpJsonRepresentation json = withName.put(RulesDefaultValueStrings.umItemSo, "valor que veio de fora");
-		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
-		String valor = resultado.getAsString(RulesDefaultValueStrings.umItemSo);
-		assertEquals("valor que veio de fora", valor);
+		CcpJsonRepresentation result = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		String value = result.getAsString(RulesDefaultValueStrings.umItemSo);
+		assertEquals("valor que veio de fora", value);
 	}
 
 	@Test
-	public void campoSemAnotacaoContinuaAusenteTest() {
+	public void fieldWithoutAnnotationStaysAbsentTest() {
 		CcpJsonRepresentation json = this.withName();
-		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
-		boolean contem = resultado.containsField(RulesDefaultValueStrings.semValorPadrao);
-		assertFalse("Campo sem a anotacao nao pode ganhar valor padrao", contem);
+		CcpJsonRepresentation result = FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
+		boolean present = result.containsField(RulesDefaultValueStrings.semValorPadrao);
+		assertFalse("A field without the annotation cannot get a default value", present);
 	}
 
 	@Test
-	public void jsonDeEntradaNaoEhAlteradoTest() {
+	public void inputJsonIsNotChangedTest() {
 		CcpJsonRepresentation json = this.withName();
 		FieldDefaultValue.applyDefaultValues(RulesDefaultValueStrings.class, json);
-		boolean contem = json.containsField(RulesDefaultValueStrings.umItemSo);
-		assertFalse("O json de entrada deve permanecer intacto", contem);
+		boolean present = json.containsField(RulesDefaultValueStrings.umItemSo);
+		assertFalse("The input JSON must stay untouched", present);
 	}
 
 	// ── jsonProducer ──────────────────────────────────────────────────────────
 
 	@Test
-	public void jsonProducerEhAcionadoQuandoDefaultStringsEstaVazioTest() {
+	public void jsonProducerIsTriggeredWhenDefaultStringsIsEmptyTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesDefaultValueJsonProducer.name, "onias");
-		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueJsonProducer.class, json);
-		String valor = resultado.getAsString(RulesDefaultValueJsonProducer.produzido);
-		assertEquals("produzido para onias", valor);
+		CcpJsonRepresentation result = FieldDefaultValue.applyDefaultValues(RulesDefaultValueJsonProducer.class, json);
+		String value = result.getAsString(RulesDefaultValueJsonProducer.produzido);
+		assertEquals("produzido para onias", value);
 	}
 
 	@Test
-	public void jsonProducerNaoEhAcionadoQuandoOCampoJaVeioTest() {
+	public void jsonProducerIsNotTriggeredWhenTheFieldIsAlreadyThereTest() {
 		CcpJsonRepresentation withName = CcpOtherConstants.EMPTY_JSON.put(RulesDefaultValueJsonProducer.name, "onias");
 		CcpJsonRepresentation json = withName.put(RulesDefaultValueJsonProducer.produzido, "valor que veio de fora");
-		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueJsonProducer.class, json);
-		String valor = resultado.getAsString(RulesDefaultValueJsonProducer.produzido);
-		assertEquals("valor que veio de fora", valor);
+		CcpJsonRepresentation result = FieldDefaultValue.applyDefaultValues(RulesDefaultValueJsonProducer.class, json);
+		String value = result.getAsString(RulesDefaultValueJsonProducer.produzido);
+		assertEquals("valor que veio de fora", value);
 	}
 
 	@Test
-	public void jsonProducerPadraoNaoDefineValorNenhumTest() {
+	public void jsonProducerDefaultSetsNoValueTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesDefaultValueJsonProducer.name, "onias");
-		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueJsonProducer.class, json);
-		boolean contem = resultado.containsField(RulesDefaultValueJsonProducer.inerte);
-		assertFalse("A anotacao sem atributos cai no produtor padrao, que nao define valor algum", contem);
+		CcpJsonRepresentation result = FieldDefaultValue.applyDefaultValues(RulesDefaultValueJsonProducer.class, json);
+		boolean present = result.containsField(RulesDefaultValueJsonProducer.inerte);
+		assertFalse("The annotation without attributes falls into the default producer, which sets no value", present);
 	}
 
 	@Test
-	public void produtorPadraoDevolveOMesmoJsonTest() {
+	public void defaultProducerReturnsTheSameJsonTest() {
 		CcpBusiness doNothing = new CcpJsonFieldDefaultValueDoNothing();
 		CcpJsonRepresentation json = this.withName();
-		CcpJsonRepresentation retorno = doNothing.execute(json);
-		assertSame(json, retorno);
+		CcpJsonRepresentation returned = doNothing.execute(json);
+		assertSame(json, returned);
 	}
 
-	// ── atributos e valores padrão da própria anotação ────────────────────────
+	// ── attributes and default values of the annotation itself ────────────────
 
 	@Test
-	public void defaultStringsPadraoEhArrayVazioTest() throws Exception {
-		CcpJsonFieldDefaultValue anotacao = this.anotacaoDe(RulesDefaultValueJsonProducer.class, "inerte");
-		String[] defaultStrings = anotacao.defaultStrings();
+	public void defaultStringsDefaultIsEmptyArrayTest() throws Exception {
+		CcpJsonFieldDefaultValue annotation = this.annotationOf(RulesDefaultValueJsonProducer.class, "inerte");
+		String[] defaultStrings = annotation.defaultStrings();
 		assertEquals(0, defaultStrings.length);
 	}
 
 	@Test
-	public void jsonProducerPadraoEhODoNothingTest() throws Exception {
-		CcpJsonFieldDefaultValue anotacao = this.anotacaoDe(RulesDefaultValueJsonProducer.class, "inerte");
-		Class<? extends CcpBusiness> jsonProducer = anotacao.jsonProducer();
+	public void jsonProducerDefaultIsDoNothingTest() throws Exception {
+		CcpJsonFieldDefaultValue annotation = this.annotationOf(RulesDefaultValueJsonProducer.class, "inerte");
+		Class<? extends CcpBusiness> jsonProducer = annotation.jsonProducer();
 		assertEquals(CcpJsonFieldDefaultValueDoNothing.class, jsonProducer);
 	}
 
-	private CcpJsonFieldDefaultValue anotacaoDe(Class<?> rulesClass, String nomeDoCampo) throws Exception {
-		Field field = rulesClass.getDeclaredField(nomeDoCampo);
-		CcpJsonFieldDefaultValue anotacao = field.getAnnotation(CcpJsonFieldDefaultValue.class);
-		return anotacao;
+	private CcpJsonFieldDefaultValue annotationOf(Class<?> rulesClass, String fieldName) throws Exception {
+		Field field = rulesClass.getDeclaredField(fieldName);
+		CcpJsonFieldDefaultValue annotation = field.getAnnotation(CcpJsonFieldDefaultValue.class);
+		return annotation;
 	}
 
 	// ── desligamento da obrigatoriedade ───────────────────────────────────────
 
 	@Test
-	public void campoObrigatorioComValorPadraoNaoEhMaisExigidoTest() {
-		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueWithRequired.class, CcpOtherConstants.EMPTY_JSON);
-		String valor = resultado.getAsString(RulesDefaultValueWithRequired.obrigatorioComValorPadrao);
-		assertEquals("preenchido pelo valor padrao", valor);
+	public void requiredFieldWithDefaultValueIsNoLongerDemandedTest() {
+		CcpJsonRepresentation result = FieldDefaultValue.applyDefaultValues(RulesDefaultValueWithRequired.class, CcpOtherConstants.EMPTY_JSON);
+		String value = result.getAsString(RulesDefaultValueWithRequired.obrigatorioComValorPadrao);
+		assertEquals("preenchido pelo valor padrao", value);
 	}
 
 	@Test
-	public void chavePrimariaComValorPadraoNaoEhMaisExigidaTest() {
-		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesDefaultValueWithRequired.class, CcpOtherConstants.EMPTY_JSON);
-		String valor = resultado.getAsString(RulesDefaultValueWithRequired.chavePrimariaComValorPadrao);
-		assertEquals("chave gerada", valor);
+	public void primaryKeyWithDefaultValueIsNoLongerDemandedTest() {
+		CcpJsonRepresentation result = FieldDefaultValue.applyDefaultValues(RulesDefaultValueWithRequired.class, CcpOtherConstants.EMPTY_JSON);
+		String value = result.getAsString(RulesDefaultValueWithRequired.chavePrimariaComValorPadrao);
+		assertEquals("chave gerada", value);
 	}
 
 	@Test
-	public void campoObrigatorioSemValorPadraoContinuaSendoExigidoTest() {
+	public void requiredFieldWithoutDefaultValueIsStillDemandedTest() {
 		DefaultValueBusiness business = new DefaultValueBusiness(RulesRequiredWithoutDefaultValue.class);
 		FieldValidation.refuses(business, CcpOtherConstants.EMPTY_JSON, RulesRequiredWithoutDefaultValue.obrigatorioSemValorPadrao, CcpJsonFieldError.requiredFieldIsMissing);
 	}
 
 	/**
-	 * O desligamento vale também para a explicação de regras: não faz sentido documentar como
-	 * obrigatório um campo que o framework preenche sozinho.
+	 * Turning the requirement off also applies to the explanation of the rules: it makes no sense to document as
+	 * required a field that the framework fills by itself.
 	 */
 	@Test
-	public void regraDeObrigatoriedadeSomeDaExplicacaoTest() {
-		List<String> regras = this.regrasDoCampo(RulesDefaultValueWithRequired.class, RulesDefaultValueWithRequired.obrigatorioComValorPadrao);
-		String nomeDaRegra = CcpJsonFieldError.requiredFieldIsMissing.getValue();
-		boolean contem = regras.contains(nomeDaRegra);
-		assertFalse("A regra de obrigatoriedade nao deveria aparecer, mas as regras foram: " + regras, contem);
+	public void requiredRuleDisappearsFromTheExplanationTest() {
+		List<String> rules = this.rulesOfTheField(RulesDefaultValueWithRequired.class, RulesDefaultValueWithRequired.obrigatorioComValorPadrao);
+		String nameOfTheRule = CcpJsonFieldError.requiredFieldIsMissing.getValue();
+		boolean present = rules.contains(nameOfTheRule);
+		assertFalse("The required rule should not appear, but the rules were: " + rules, present);
 	}
 
 	@Test
-	public void regraDeObrigatoriedadeContinuaSemValorPadraoTest() {
-		List<String> regras = this.regrasDoCampo(RulesRequiredWithoutDefaultValue.class, RulesRequiredWithoutDefaultValue.obrigatorioSemValorPadrao);
-		String nomeDaRegra = CcpJsonFieldError.requiredFieldIsMissing.getValue();
-		boolean contem = regras.contains(nomeDaRegra);
-		assertTrue("A regra de obrigatoriedade deveria aparecer, mas as regras foram: " + regras, contem);
+	public void requiredRuleStaysWithoutDefaultValueTest() {
+		List<String> rules = this.rulesOfTheField(RulesRequiredWithoutDefaultValue.class, RulesRequiredWithoutDefaultValue.obrigatorioSemValorPadrao);
+		String nameOfTheRule = CcpJsonFieldError.requiredFieldIsMissing.getValue();
+		boolean present = rules.contains(nameOfTheRule);
+		assertTrue("The required rule should appear, but the rules were: " + rules, present);
 	}
 
-	private List<String> regrasDoCampo(Class<?> rulesClass, CcpJsonFieldName field) {
+	private List<String> rulesOfTheField(Class<?> rulesClass, CcpJsonFieldName field) {
 
-		CcpJsonRepresentation explicacao = CcpJsonValidationRulesEngine.INSTANCE.getRulesExplanation(rulesClass);
-		List<CcpJsonRepresentation> regrasDoCampo = explicacao.getAsJsonList(field);
+		CcpJsonRepresentation explanation = CcpJsonValidationRulesEngine.INSTANCE.getRulesExplanation(rulesClass);
+		List<CcpJsonRepresentation> rulesOfTheField = explanation.getAsJsonList(field);
 		List<String> nomes = new ArrayList<>();
 
-		for (CcpJsonRepresentation regra : regrasDoCampo) {
-			String ruleName = regra.getAsString(RuleFields.ruleName);
+		for (CcpJsonRepresentation rule : rulesOfTheField) {
+			String ruleName = rule.getAsString(RuleFields.ruleName);
 			nomes.add(ruleName);
 		}
 
 		return nomes;
 	}
 
-	// ── valor padrão herdado por CcpJsonCopyFieldValidationsFrom ───────────────
+	// ── default value inherited through CcpJsonCopyFieldValidationsFrom ────────
 
 	/**
-	 * Forma real do {@code fileName}: o {@code required} fica no campo local e o valor padrão na
-	 * classe de origem. Se a anotação fosse procurada só no campo local, a obrigatoriedade não seria
-	 * desligada e nenhum valor padrão seria aplicado.
+	 * The real shape of {@code fileName}: {@code required} stays on the local field and the default value on the
+	 * source class. If the annotation were looked up only on the local field, the requirement would not be turned
+	 * off and no default value would be applied.
 	 */
 	@Test
-	public void valorPadraoHerdadoDaClasseDeOrigemTest() {
+	public void defaultValueInheritedFromTheSourceClassTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesCopiedDefaultValue.origem, "curriculo");
-		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesCopiedDefaultValue.class, json);
-		String valor = resultado.getAsString(RulesCopiedDefaultValue.copiado);
-		assertEquals("derivado de curriculo", valor);
+		CcpJsonRepresentation result = FieldDefaultValue.applyDefaultValues(RulesCopiedDefaultValue.class, json);
+		String value = result.getAsString(RulesCopiedDefaultValue.copiado);
+		assertEquals("derivado de curriculo", value);
 	}
 
 	@Test
-	public void campoHerdadoJaInformadoNaoEhSobrescritoTest() {
-		CcpJsonRepresentation comOrigem = CcpOtherConstants.EMPTY_JSON.put(RulesCopiedDefaultValue.origem, "curriculo");
-		CcpJsonRepresentation json = comOrigem.put(RulesCopiedDefaultValue.copiado, "valor que veio de fora");
-		CcpJsonRepresentation resultado = FieldDefaultValue.applyDefaultValues(RulesCopiedDefaultValue.class, json);
-		String valor = resultado.getAsString(RulesCopiedDefaultValue.copiado);
-		assertEquals("valor que veio de fora", valor);
+	public void inheritedFieldAlreadyGivenIsNotOverwrittenTest() {
+		CcpJsonRepresentation withSource = CcpOtherConstants.EMPTY_JSON.put(RulesCopiedDefaultValue.origem, "curriculo");
+		CcpJsonRepresentation json = withSource.put(RulesCopiedDefaultValue.copiado, "valor que veio de fora");
+		CcpJsonRepresentation result = FieldDefaultValue.applyDefaultValues(RulesCopiedDefaultValue.class, json);
+		String value = result.getAsString(RulesCopiedDefaultValue.copiado);
+		assertEquals("valor que veio de fora", value);
 	}
 }

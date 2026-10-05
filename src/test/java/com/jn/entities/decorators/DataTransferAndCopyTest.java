@@ -73,6 +73,24 @@ public class DataTransferAndCopyTest extends EntityDecoratorTestTemplate {
 	}
 
 	@Test
+	public void readingADisposableAnyWhereFindsTheRecordInItsOwnEntity() {
+		CcpEntity disposable = JnEntityDisposableTest.ENTITY;
+		CcpJsonRepresentation record = this.validRecord();
+		disposable.save(record);
+
+		CcpJsonRepresentation everywhere = disposable.getOneByIdAnyWhere(record);
+
+		String entityName = disposable.getEntityMetaData().entityName;
+		assertTrue(everywhere.toString(), everywhere.containsAllFields(new com.ccp.decorators.CcpFieldName(entityName)));
+		disposable.delete(record);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public void aVersionableEntityDoesNotReadAnyWhere() {
+		com.jn.entities.JnEntityEmailParametersToSend.ENTITY.getOneByIdAnyWhere(this.validRecord());
+	}
+
+	@Test
 	public void missingSourceCreatesNothingInTarget() {
 		CcpEntity source = JnEntityLoginEmail.ENTITY;
 		CcpEntity target = JnEntityLoginSessionConflict.ENTITY;

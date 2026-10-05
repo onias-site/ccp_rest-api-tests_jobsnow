@@ -12,8 +12,8 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.json.validations.fields.enums.CcpJsonFieldTypeError;
 
 /**
- * Verifica se {@code @CcpJsonCopyFieldValidationsFrom} realmente faz o campo herdar as regras do
- * campo homônimo da classe de origem, mesmo não tendo nenhuma anotação de validação própria.
+ * Verifies that {@code @CcpJsonCopyFieldValidationsFrom} really makes the field inherit the rules of the field
+ * with the same name in the source class, even without any validation annotation of its own.
  */
 public class CcpJsonCopyFieldValidationsFromTest {
 
@@ -23,44 +23,44 @@ public class CcpJsonCopyFieldValidationsFromTest {
 
 	private final BusinessCopyFieldValidationsFrom business = new BusinessCopyFieldValidationsFrom();
 
-	private CcpJsonRepresentation json(Object valor) {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesCopyFieldValidationsFrom.apelido, valor);
+	private CcpJsonRepresentation json(Object value) {
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesCopyFieldValidationsFrom.apelido, value);
 		return json;
 	}
 
 	@Test
-	public void valorDentroDasRegrasCopiadasTest() {
+	public void valueWithinTheCopiedRulesTest() {
 		CcpJsonRepresentation json = this.json("joao");
 		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
-	public void comprimentoMinimoCopiadoTest() {
+	public void minLengthCopiedTest() {
 		CcpJsonRepresentation json = this.json("ab");
 		FieldValidation.refuses(this.business, json, RulesCopyFieldValidationsFrom.apelido, CcpJsonFieldTypeError.stringMinLength);
 	}
 
 	@Test
-	public void comprimentoMaximoCopiadoTest() {
+	public void maxLengthCopiedTest() {
 		CcpJsonRepresentation json = this.json("abcdefghij");
 		FieldValidation.refuses(this.business, json, RulesCopyFieldValidationsFrom.apelido, CcpJsonFieldTypeError.stringMaxLength);
 	}
 
 	/**
-	 * Mesma forma de {@code JnEntityJobsnowError.Fields.cause}: o {@code nonRepeatedItems = false} mora
-	 * no campo de destino enquanto o tipo vem da classe de origem.
+	 * Same shape as {@code JnEntityJobsnowError.Fields.cause}: {@code nonRepeatedItems = false} lives on the target
+	 * field while the type comes from the source class.
 	 */
 	@Test
-	public void nonRepeatedItemsFalseConviveComValidacoesCopiadasTest() {
-		List<String> valor = Arrays.asList("a", "a");
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesCopyFieldValidationsFrom.causaComRepetidos, valor);
+	public void nonRepeatedItemsFalseCoexistsWithCopiedValidationsTest() {
+		List<String> value = Arrays.asList("a", "a");
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesCopyFieldValidationsFrom.causaComRepetidos, value);
 		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
-	public void nonRepeatedItemsPadraoConviveComValidacoesCopiadasTest() {
-		List<String> valor = Arrays.asList("a", "a");
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesCopyFieldValidationsFrom.causaSemRepetidos, valor);
+	public void nonRepeatedItemsDefaultCoexistsWithCopiedValidationsTest() {
+		List<String> value = Arrays.asList("a", "a");
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesCopyFieldValidationsFrom.causaSemRepetidos, value);
 		FieldValidation.refuses(this.business, json, RulesCopyFieldValidationsFrom.causaSemRepetidos, CcpJsonFieldTypeError.arrayNonReapeted);
 	}
 }

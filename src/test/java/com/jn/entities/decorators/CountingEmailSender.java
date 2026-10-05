@@ -11,8 +11,8 @@ import com.ccp.especifications.email.CcpEmailSender;
 import com.ccp.especifications.http.CcpHttpContentType;
 
 /**
- * Dublê de provedor de e-mail que não envia nada, mas guarda os destinatários de cada envio. Serve
- * para provar que o decorator de envio ao usuário mandou (ou deixou de mandar) o e-mail.
+ * E-mail provider double that sends nothing, but keeps the recipients of each sending. It proves that the
+ * decorator that sends to the user did (or did not) send the e-mail.
  */
 public class CountingEmailSender implements CcpEmailSender {
 
@@ -24,11 +24,11 @@ public class CountingEmailSender implements CcpEmailSender {
 		return CcpOtherConstants.EMPTY_JSON;
 	}
 
-	/** Quantos e-mails já foram endereçados ao destinatário informado. */
-	public static long howManyFor(String destinatario) {
+	/** How many e-mails have already been addressed to the given recipient. */
+	public static long howManyFor(String recipient) {
 		synchronized (sentRecipients) {
-			long quantos = sentRecipients.stream().filter(x -> destinatario.equalsIgnoreCase(x)).count();
-			return quantos;
+			long howMany = sentRecipients.stream().filter(x -> recipient.equalsIgnoreCase(x)).count();
+			return howMany;
 		}
 	}
 }

@@ -10,8 +10,8 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 
 /**
- * jn_contact_us: gêmea de jn_contact_us_solved (pendente na principal, resolvido na gêmea),
- * {@code @CcpEntityCache(3600)}, transformador e validador.
+ * jn_contact_us: twin of jn_contact_us_solved (pending on the main entity, solved on the twin),
+ * {@code @CcpEntityCache(3600)}, transformer and validator.
  */
 public class JnEntityContactUsDecoratorsTest extends EntityDecoratorTestTemplate {
 
@@ -42,9 +42,12 @@ public class JnEntityContactUsDecoratorsTest extends EntityDecoratorTestTemplate
 		this.shouldRefuseInvalidRecord(this.validRecord().removeFields(JnJsonCommonsFields.subject));
 	}
 
-	/** Até 2026-09-27 copiava a regra de JnJsonCommonsFields, que não declara chatId: aceitava qualquer coisa. */
+	/**
+	 * Until 2026-09-27 it copied the rule of JnJsonCommonsFields, which does not declare chatId: it accepted
+	 * anything.
+	 */
 	@Test
-	public void validadorDoChatId() {
+	public void chatIdValidator() {
 		this.shouldRefuseInvalidRecord(this.validRecord().put(JnJsonInstantMessengerFields.chatId, "nao-e-numero"));
 	}
 

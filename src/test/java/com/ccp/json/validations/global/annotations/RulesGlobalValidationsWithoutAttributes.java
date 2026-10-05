@@ -3,8 +3,8 @@ package com.ccp.json.validations.global.annotations;
 import com.ccp.decorators.CcpJsonFieldName;
 
 /**
- * Anotação presente porém com todos os atributos no valor padrão (listas vazias): nenhuma validação
- * global deve ser cobrada, qualquer json passa.
+ * The annotation is present but with every attribute at its default value (empty lists): no global validation
+ * must be demanded, any JSON passes.
  */
 @CcpJsonGlobalValidations
 public enum RulesGlobalValidationsWithoutAttributes implements CcpJsonFieldName {

@@ -10,8 +10,8 @@ import com.ccp.json.validations.fields.enums.CcpJsonFieldError;
 import com.ccp.json.validations.fields.enums.CcpJsonFieldTypeError;
 
 /**
- * Verifica se {@code @CcpJsonFieldTypeNumberInteger} respeita valor mínimo, máximo, exato e a
- * lista de valores permitidos, e se recusa o que não é inteiro.
+ * Verifies that {@code @CcpJsonFieldTypeNumberInteger} honors the minimum, maximum and exact values and the list
+ * of allowed values, and refuses what is not an integer.
  */
 public class CcpJsonFieldTypeNumberIntegerTest {
 
@@ -21,8 +21,8 @@ public class CcpJsonFieldTypeNumberIntegerTest {
 
 	private final BusinessFieldTypeNumberInteger business = new BusinessFieldTypeNumberInteger();
 
-	private CcpJsonRepresentation json(RulesFieldTypeNumberInteger field, Object valor) {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(field, valor);
+	private CcpJsonRepresentation json(RulesFieldTypeNumberInteger field, Object value) {
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(field, value);
 		return json;
 	}
 
@@ -75,7 +75,7 @@ public class CcpJsonFieldTypeNumberIntegerTest {
 	}
 
 	@Test
-	public void numeroNegativoAceitaTest() {
+	public void negativeNumberAcceptedTest() {
 		CcpJsonRepresentation json = this.json(RulesFieldTypeNumberInteger.semRestricao, -42);
 		FieldValidation.accepts(this.business, json);
 	}

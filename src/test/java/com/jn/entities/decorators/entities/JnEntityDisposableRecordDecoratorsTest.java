@@ -8,7 +8,10 @@ import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-/** jn_disposable_record: cópias com prazo, {@code @CcpEntityOlyReadable} — só o decorator descartável escreve nela. */
+/**
+ * jn_disposable_record: copies with a deadline, {@code @CcpEntityOlyReadable}: only the disposable decorator
+ * writes to it.
+ */
 public class JnEntityDisposableRecordDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {

@@ -3,8 +3,8 @@ package com.ccp.json.validations.global.annotations;
 import com.ccp.decorators.CcpJsonFieldName;
 
 /**
- * Um único grupo de {@code requiresAtLeastOne} montado a partir de duas classes: os campos das duas
- * são unidos num só grupo, então qualquer um dos quatro canais satisfaz a regra.
+ * A single group of {@code requiresAtLeastOne} built from two classes: the fields of both are joined in one
+ * group, so any of the four channels satisfies the rule.
  */
 @CcpJsonGlobalValidations(requiresAtLeastOne = {
 		@CcpJsonValidationFieldList({InformalChannelGroup.class, FormalChannelGroup.class})

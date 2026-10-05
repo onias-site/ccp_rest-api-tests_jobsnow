@@ -30,7 +30,7 @@ public class JnJsonCommonsFieldsTest {
 		assertNotNull(JnJsonCommonsFields.valueOf("email"));
 	}
 
-	// ── constantes explícitas ────────────────────────────────────────────────
+	// ── explicit constants ───────────────────────────────────────────────────
 
 	@Test
 	public void allConstantsAccessibleTest() {
@@ -83,7 +83,7 @@ public class JnJsonCommonsFieldsTest {
 		assertEquals(0, JnJsonCommonsFields.request.ordinal());
 	}
 
-	// ── @CcpJsonFieldTypeString presente via reflexão ────────────────────────
+	// ── @CcpJsonFieldTypeString present through reflection ───────────────────
 
 	@Test
 	public void emailFieldHasTypeStringAnnotationTest() throws Exception {

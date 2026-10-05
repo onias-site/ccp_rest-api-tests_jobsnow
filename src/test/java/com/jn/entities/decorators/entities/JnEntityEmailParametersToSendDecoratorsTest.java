@@ -9,10 +9,10 @@ import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
- * jn_email_parameters_to_send: {@code @CcpEntityCache(3600)}, versionável, transformador e validador.
- * O {@code templateId} tem que ser nome de classe Java existente; usa-se o desta própria classe de
- * teste para não sobrescrever parâmetros reais de envio no banco local. O e-mail declara
- * {@code JnJsonTransformersFieldsEntityDoNothing}: fica em claro.
+ * jn_email_parameters_to_send: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. The
+ * {@code templateId} must be the name of an existing Java class; the one of this very test class is used so that
+ * real sending parameters in the local database are not overwritten. The e-mail declares
+ * {@code JnJsonTransformersFieldsEntityDoNothing}: it stays in plain text.
  */
 public class JnEntityEmailParametersToSendDecoratorsTest extends EntityDecoratorTestTemplate {
 

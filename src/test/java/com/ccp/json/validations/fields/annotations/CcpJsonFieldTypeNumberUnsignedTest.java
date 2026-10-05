@@ -10,8 +10,8 @@ import com.ccp.json.validations.fields.enums.CcpJsonFieldError;
 import com.ccp.json.validations.fields.enums.CcpJsonFieldTypeError;
 
 /**
- * Verifica se {@code @CcpJsonFieldTypeNumberUnsigned} respeita as restrições numéricas e, o que é
- * próprio deste tipo, recusa valores negativos.
+ * Verifies that {@code @CcpJsonFieldTypeNumberUnsigned} honors the numeric restrictions and, what is particular
+ * to this type, refuses negative values.
  */
 public class CcpJsonFieldTypeNumberUnsignedTest {
 
@@ -21,8 +21,8 @@ public class CcpJsonFieldTypeNumberUnsignedTest {
 
 	private final BusinessFieldTypeNumberUnsigned business = new BusinessFieldTypeNumberUnsigned();
 
-	private CcpJsonRepresentation json(RulesFieldTypeNumberUnsigned field, Object valor) {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(field, valor);
+	private CcpJsonRepresentation json(RulesFieldTypeNumberUnsigned field, Object value) {
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(field, value);
 		return json;
 	}
 
@@ -75,13 +75,13 @@ public class CcpJsonFieldTypeNumberUnsignedTest {
 	}
 
 	@Test
-	public void zeroAceitaTest() {
+	public void zeroAcceptedTest() {
 		CcpJsonRepresentation json = this.json(RulesFieldTypeNumberUnsigned.semRestricao, 0);
 		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
-	public void numeroNegativoRecusaTest() {
+	public void negativeNumberRefusedTest() {
 		CcpJsonRepresentation json = this.json(RulesFieldTypeNumberUnsigned.semRestricao, -1);
 		FieldValidation.refuses(this.business, json, RulesFieldTypeNumberUnsigned.semRestricao, CcpJsonFieldError.incompatibleType);
 	}

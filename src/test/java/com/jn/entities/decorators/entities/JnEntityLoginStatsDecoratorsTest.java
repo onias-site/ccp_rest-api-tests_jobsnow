@@ -9,8 +9,8 @@ import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
- * jn_login_stats: {@code @CcpEntityCache(3600)}, transformador e validador. O e-mail tem regra
- * própria de tamanho (35 a 50), mais restrita que a comum, e é verificada antes do hash.
+ * jn_login_stats: {@code @CcpEntityCache(3600)}, transformer and validator. The e-mail has a length rule of its
+ * own (35 to 50), stricter than the common one, and checked before the hash.
  */
 public class JnEntityLoginStatsDecoratorsTest extends EntityDecoratorTestTemplate {
 
@@ -21,10 +21,10 @@ public class JnEntityLoginStatsDecoratorsTest extends EntityDecoratorTestTemplat
 	}
 
 	protected CcpJsonRepresentation validRecord() {
-		long ontem = System.currentTimeMillis() - 24L * 60L * 60L * 1000L;
+		long yesterday = System.currentTimeMillis() - 24L * 60L * 60L * 1000L;
 		return this.com(JnJsonCommonsFields.email, this.emailLongo)
 				.put(JnEntityLoginStats.Fields.balance, 0)
-				.put(JnEntityLoginStats.Fields.lastAccess, String.valueOf(ontem))
+				.put(JnEntityLoginStats.Fields.lastAccess, String.valueOf(yesterday))
 				.put(JnEntityLoginStats.Fields.countAccess, 1)
 				.put(JnEntityLoginStats.Fields.openedTickets, 0)
 				.put(JnEntityLoginStats.Fields.closedTickets, 0)

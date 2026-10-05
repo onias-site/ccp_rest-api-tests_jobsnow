@@ -27,7 +27,7 @@ public class JnSendMessageToUserTest {
 		assertNotNull(new JnSendMessageToUser().createStep());
 	}
 
-	// ── subclasses públicas ──────────────────────────────────────────────────
+	// ── public subclasses ────────────────────────────────────────────────────
 
 
 	// ── null-parameter tests — JnCreateStep ──────────────────────────────────
@@ -37,15 +37,15 @@ public class JnSendMessageToUserTest {
 		new JnSendMessageToUser().createStep().withTheProcess(null);
 	}
 
-	// ── null-parameter tests — JnWithTheProcess (construtor público) ─────────
+	// ── null-parameter tests: JnWithTheProcess (public constructor) ──────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorWithTheProcessCreateStepNullTest() {
+	public void constructorWithTheProcessCreateStepNullTest() {
 		new JnWithTheProcess(null, new JnSendMessageToUserTestNoopBusiness());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorWithTheProcessBusinessNullTest() {
+	public void constructorWithTheProcessBusinessNullTest() {
 		JnCreateStep step = new JnSendMessageToUser().createStep();
 		new JnWithTheProcess(step, null);
 	}

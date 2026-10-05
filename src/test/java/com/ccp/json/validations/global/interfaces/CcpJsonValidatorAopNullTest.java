@@ -10,7 +10,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.json.validations.global.enums.CcpJsonValidatorDefaults;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre o método default {@code getErrors} de
+ * Coverage of {@code CcpNullParameterAspect} over the default method {@code getErrors} of
  * {@code CcpJsonValidator}.
  */
 public class CcpJsonValidatorAopNullTest {

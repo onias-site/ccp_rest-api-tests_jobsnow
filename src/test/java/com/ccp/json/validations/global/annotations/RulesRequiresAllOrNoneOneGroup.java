@@ -3,8 +3,8 @@ package com.ccp.json.validations.global.annotations;
 import com.ccp.decorators.CcpJsonFieldName;
 
 /**
- * Um único grupo em {@code requiresAllOrNone}: ou o json traz as duas pontas da faixa CLT, ou não traz
- * nenhuma delas. Informar só uma ponta é erro.
+ * A single group in {@code requiresAllOrNone}: either the JSON brings both ends of the CLT range, or none of
+ * them. Giving only one end is an error.
  */
 @CcpJsonGlobalValidations(requiresAllOrNone = {
 		@CcpJsonValidationFieldList(CltRangeGroup.class)

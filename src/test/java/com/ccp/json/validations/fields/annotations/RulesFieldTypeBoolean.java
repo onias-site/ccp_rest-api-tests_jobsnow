@@ -4,8 +4,8 @@ import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeBoolean;
 
 /**
- * Campo anotado com {@code @CcpJsonFieldTypeBoolean}, que não tem parâmetros: a única regra é a
- * compatibilidade de tipo.
+ * Field annotated with {@code @CcpJsonFieldTypeBoolean}, which has no parameters: the only rule is the type
+ * compatibility.
  */
 public enum RulesFieldTypeBoolean implements CcpJsonFieldName {
 

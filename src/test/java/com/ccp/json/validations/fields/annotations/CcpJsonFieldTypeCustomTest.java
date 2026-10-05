@@ -9,8 +9,8 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.json.validations.fields.enums.CcpJsonFieldError;
 
 /**
- * Verifica se {@code @CcpJsonFieldTypeCustom} instancia a classe indicada e aplica a regra de
- * compatibilidade que ela define.
+ * Verifies that {@code @CcpJsonFieldTypeCustom} instantiates the given class and applies the compatibility rule
+ * it defines.
  */
 public class CcpJsonFieldTypeCustomTest {
 
@@ -20,19 +20,19 @@ public class CcpJsonFieldTypeCustomTest {
 
 	private final BusinessFieldTypeCustom business = new BusinessFieldTypeCustom();
 
-	private CcpJsonRepresentation json(Object valor) {
-		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesFieldTypeCustom.apenasVogais, valor);
+	private CcpJsonRepresentation json(Object value) {
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesFieldTypeCustom.apenasVogais, value);
 		return json;
 	}
 
 	@Test
-	public void apenasVogaisAceitaTest() {
+	public void onlyVowelsAcceptedTest() {
 		CcpJsonRepresentation json = this.json("aeiou");
 		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
-	public void comConsoanteRecusaTest() {
+	public void withConsonantRefusedTest() {
 		CcpJsonRepresentation json = this.json("aeixou");
 		FieldValidation.refuses(this.business, json, RulesFieldTypeCustom.apenasVogais, CcpJsonFieldError.incompatibleType);
 	}

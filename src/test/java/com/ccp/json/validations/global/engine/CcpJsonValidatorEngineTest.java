@@ -18,7 +18,7 @@ public class CcpJsonValidatorEngineTest {
 	}
 
 	@Test
-	public void validateJsonSemErrosTest() {
+	public void validateJsonWithoutErrorsTest() {
 		CcpJsonRepresentation r = CcpJsonValidatorEngine.INSTANCE.validateJson(Object.class, CcpOtherConstants.EMPTY_JSON, "f");
 		assertNotNull(r);
 	}

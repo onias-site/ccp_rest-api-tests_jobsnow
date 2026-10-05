@@ -9,7 +9,7 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.jb.entities.JbEntityBotCommand;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 
-/** jb_bot_command: {@code @CcpEntityCache(3600)}, versionável (prioridade 2), transformador e validador. */
+/** jb_bot_command: {@code @CcpEntityCache(3600)}, versionable (priority 2), transformer and validator. */
 public class JbEntityBotCommandDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {

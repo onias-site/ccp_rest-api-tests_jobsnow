@@ -7,30 +7,29 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 
 /**
- * Apoio para os testes de {@code @CcpJsonFieldDefaultValue}. Executa o negócio pelo {@code execute}
- * e devolve o JSON já com os valores padrão aplicados.
- *
- * Não dá para reaproveitar o {@code FieldValidation.accepts}: ele exige que a saída seja igual à
- * entrada, e o objetivo aqui é justamente que a saída traga campos que a entrada não tinha.
+ * Support for the tests of {@code @CcpJsonFieldDefaultValue}. Runs the business through {@code execute} and
+ * returns the JSON with the default values already applied. {@code FieldValidation.accepts} cannot be reused: it
+ * requires the output to equal the input, and the goal here is precisely an output carrying fields the input did
+ * not have.
  */
 public class FieldDefaultValue {
 
 	private FieldDefaultValue() {}
 
 	/**
-	 * Executa o negócio sobre a classe de regras informada e devolve o JSON resultante, falhando o
-	 * teste caso a validação recuse a entrada.
+	 * Runs the business over the given rules class and returns the resulting JSON, failing the test when the
+	 * validation refuses the input.
 	 */
 	public static CcpJsonRepresentation applyDefaultValues(Class<?> rulesClass, CcpJsonRepresentation json) {
 
 		DefaultValueBusiness business = new DefaultValueBusiness(rulesClass);
 
 		try {
-			CcpJsonRepresentation retorno = business.execute(json);
-			return retorno;
+			CcpJsonRepresentation returned = business.execute(json);
+			return returned;
 		} catch (CcpJsonValidationError e) {
 			String message = e.getExplanedMessage();
-			fail("O json deveria ter passado na validacao, mas foi recusado com: " + message);
+			fail("The JSON should have passed the validation, but it was refused with: " + message);
 			return CcpOtherConstants.EMPTY_JSON;
 		}
 	}

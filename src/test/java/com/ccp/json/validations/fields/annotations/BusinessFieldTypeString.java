@@ -4,8 +4,8 @@ import com.ccp.business.CcpBusiness;
 import com.ccp.decorators.CcpJsonRepresentation;
 
 /**
- * Negócio cujas regras de validação moram em {@code RulesFieldTypeString}. O {@code apply} é um
- * pass-through de propósito: o que está sob teste é a validação disparada pelo {@code execute}.
+ * Business whose validation rules live in {@code RulesFieldTypeString}. The {@code apply} is a pass-through on
+ * purpose: what is under test is the validation triggered by {@code execute}.
  */
 public class BusinessFieldTypeString implements CcpBusiness {
 

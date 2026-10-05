@@ -25,8 +25,16 @@ import com.vis.entities.VisEntityResume;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
 
+/** Transformations used by {@link ImportResumeFromOldJobsNow} to fill and normalize the fields of a migrated resume. */
 public enum ResumeTransformations implements CcpTransformers{
+	/** The {@code AddDddsInResume} field. */
 	AddDddsInResume {
+		/**
+		 * Sets {@code ddd}: every area code when the candidate accepts relocation; "10" for home office; every area code when
+		 * it is 0; otherwise the numeric area code given.
+		 * @param json the resume
+		 * @return the resume with {@code ddd}
+		 */
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			
 			List<String> ddds = Arrays.asList("10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22",
@@ -69,7 +77,13 @@ public enum ResumeTransformations implements CcpTransformers{
 			return jsonWithNumericDdds;
 		}
 	},
+	/** The {@code AddExperience} field. */
 	AddExperience {
+		/**
+		 * Sets {@code experience} to the year of {@code dataDeInclusao} when absent.
+		 * @param json the resume
+		 * @return the resume with {@code experience}
+		 */
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			
 			boolean containsAllFields = json.containsAllFields(VisJsonCommonsFields.experience);
@@ -90,13 +104,26 @@ public enum ResumeTransformations implements CcpTransformers{
 			return jsonWithExperience;
 		}
 	},
+	/** The {@code AddDisponibility} field. */
 	AddDisponibility {
+		/**
+		 * Sets {@code disponibility} to 0 when it is not an integer.
+		 * @param json the resume
+		 * @return the resume with {@code disponibility}
+		 */
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			CcpJsonRepresentation transformedJson = this.addLongValue(json, VisJsonCommonsFields.disponibility.name(), 0L);
 			return transformedJson;
 		}
 	},
+	/** The {@code CreateLoginAndSession} field. */
 	CreateLoginAndSession {
+		/**
+		 * Creates the login of the candidate and logs in through the local API, merging the session into the resume; a failed
+		 * login marks the e-mail in {@code c:\logs\resumes\wrongEmails}.
+		 * @param json the resume
+		 * @return the resume with the login (and the session when the login worked)
+		 */
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			String email = json.getAsString(JsonFieldNames.id);
 			
@@ -114,6 +141,11 @@ public enum ResumeTransformations implements CcpTransformers{
 			}
 		}
 		
+		/**
+		 * Logs in through {@code POST http://localhost:8080/login/<email>} with the default password.
+		 * @param email the e-mail
+		 * @return the login response
+		 */
 		private CcpJsonRepresentation executeLogin(String email) {
 			
 			String path = "http://localhost:8080/login/{email}".replace("{email}", email);
@@ -128,6 +160,11 @@ public enum ResumeTransformations implements CcpTransformers{
 			return loginResponse;
 		}
 		
+		/**
+		 * Creates password, answers, token and e-mail records of the login and removes its pending session validation.
+		 * @param email the e-mail
+		 * @return the login data
+		 */
 		private CcpJsonRepresentation createLogin(String email) {
 			
 			String originalToken = JnJsonTransformersFieldsEntityDefault.getOriginalToken();
@@ -160,7 +197,13 @@ public enum ResumeTransformations implements CcpTransformers{
 		}
 
 	},
+	/** The {@code AddCltValue} field. */
 	AddCltValue {
+		/**
+		 * Sets {@code clt} to 1000 when neither {@code clt} nor {@code pj} is present.
+		 * @param json the resume
+		 * @return the resume
+		 */
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			CcpJsonRepresentation transformedJson = this.addRequiredAtLeastOne(json, VisJsonCommonsFields.clt.name(), 1000, 
 					VisJsonCommonsFields.clt.name(),
@@ -169,46 +212,99 @@ public enum ResumeTransformations implements CcpTransformers{
 			return transformedJson;
 		}
 	},
+	/** The {@code AddBtcValue} field. */
 	AddBtcValue {
+		/**
+		 * Raises {@code btc} to at least 1000.
+		 * @param json the resume
+		 * @return the resume
+		 */
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			CcpJsonRepresentation transformedJson = this.putMinValue(json, VisJsonCommonsFields.btc.name(), 1000);
 			return transformedJson;
 		}
 	},
+	/** The {@code AddMinCltValue} field. */
 	AddMinCltValue {
+		/**
+		 * Raises {@code clt} to at least 1000.
+		 * @param json the resume
+		 * @return the resume
+		 */
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			CcpJsonRepresentation transformedJson = this.putMinValue(json, VisJsonCommonsFields.clt.name(), 1000);
 			return transformedJson;
 		}
 	},
+	/** The {@code AddMinPjValue} field. */
 	AddMinPjValue {
+		/**
+		 * Meant to raise {@code pj} to at least 1000, but it raises {@code clt}.
+		 * @param json the resume
+		 * @return the resume
+		 */
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			CcpJsonRepresentation transformedJson = this.putMinValue(json, VisJsonCommonsFields.clt.name(), 1000);
 			return transformedJson;
 		}
 	},
+	/** The {@code AddDesiredJob} field. */
 	AddDesiredJob {
+		/**
+		 * Truncates {@code desiredJob} to 100 characters.
+		 * @param json the resume
+		 * @return the resume
+		 */
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			CcpJsonRepresentation transformedJson = this.substring(json, VisEntityResume.Fields.desiredJob.name(), 100);
 			return transformedJson;
 		}
 	},
+	/** The {@code AddLastJob} field. */
 	AddLastJob {
+		/**
+		 * Truncates {@code lastJob} to 100 characters.
+		 * @param json the resume
+		 * @return the resume
+		 */
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			CcpJsonRepresentation transformedJson = this.substring(json, VisEntityResume.Fields.lastJob.name(), 100);
 			return transformedJson;
 		}
 	},
+	/** The {@code AddObservations} field. */
 	AddObservations {
+		/**
+		 * Truncates {@code observations} to 500 characters.
+		 * @param json the resume
+		 * @return the resume
+		 */
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			CcpJsonRepresentation transformedJson = this.substring(json, "observations", 500);
 			return transformedJson;
 		}
 	},
 	;
+	/**
+	 * Applies the transformation.
+	 * @param json the resume
+	 * @return the transformed resume
+	 */
 	abstract public CcpJsonRepresentation apply(CcpJsonRepresentation json);
+	/** Fields of the old candidate. */
 	enum JsonFieldNames implements CcpJsonFieldName{
-		mudanca, homeoffice, dataDeInclusao, id, originalEmail, email
+		/** The {@code mudanca} field. */
+		mudanca,
+		/** The {@code homeoffice} field. */
+		homeoffice,
+		/** The {@code dataDeInclusao} field. */
+		dataDeInclusao,
+		/** The {@code id} field. */
+		id,
+		/** The {@code originalEmail} field. */
+		originalEmail,
+		/** The {@code email} field. */
+		email
 	}
 
 }

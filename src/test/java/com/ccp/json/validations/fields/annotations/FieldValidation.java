@@ -15,79 +15,79 @@ import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError.CcpValidationErrorFields;
 
 /**
- * Apoio para os testes das anotações de validação de campo. Executa o {@code CcpBusiness} pelo
- * método {@code execute} (que dispara {@code CcpJsonValidatorEngine} sobre a classe devolvida por
- * {@code getJsonValidationClass}) e confere quais validadores acusaram erro.
+ * Support for the tests of the field validation annotations. Runs the {@code CcpBusiness} through
+ * {@code execute} (which triggers {@code CcpJsonValidatorEngine} over the class returned by
+ * {@code getJsonValidationClass}) and checks which validators reported an error.
  */
 public class FieldValidation {
 
 	private FieldValidation() {}
 
 	/**
-	 * Confere que o JSON passa pela validação: o {@code execute} não pode lançar
-	 * {@code CcpJsonValidationError} e precisa devolver o JSON produzido pelo {@code apply}.
+	 * Checks that the JSON passes the validation: {@code execute} must not throw {@code CcpJsonValidationError} and
+	 * must return the JSON produced by {@code apply}.
 	 */
 	public static void accepts(CcpBusiness business, CcpJsonRepresentation json) {
 		try {
-			CcpJsonRepresentation retorno = business.execute(json);
-			assertEquals(json, retorno);
+			CcpJsonRepresentation returned = business.execute(json);
+			assertEquals(json, returned);
 		} catch (CcpJsonValidationError e) {
 			String message = e.getExplanedMessage();
-			fail("O json deveria ter passado na validacao, mas foi recusado com: " + message);
+			fail("The JSON should have passed the validation, but it was refused with: " + message);
 		}
 	}
 
 	/**
-	 * Confere que o JSON é recusado e que o validador {@code validadorEsperado} acusou erro no campo
-	 * {@code field}. Devolve a descrição do erro para asserções adicionais.
+	 * Checks that the JSON is refused and that the validator {@code expectedValidator} reported an error on the
+	 * field {@code field}. Returns the description of the error for further assertions.
 	 */
-	public static String refuses(CcpBusiness business, CcpJsonRepresentation json, CcpJsonFieldName field, CcpJsonFieldName validadorEsperado) {
+	public static String refuses(CcpBusiness business, CcpJsonRepresentation json, CcpJsonFieldName field, CcpJsonFieldName expectedValidator) {
 
 		try {
 			business.execute(json);
 		} catch (CcpJsonValidationError e) {
-			return extraiDescricao(e, field, validadorEsperado);
+			return extractDescription(e, field, expectedValidator);
 		}
 
-		String nomeDoCampo = field.getValue();
-		String nomeDoValidador = validadorEsperado.getValue();
-		fail("O json deveria ter sido recusado pelo validador '" + nomeDoValidador + "' no campo '" + nomeDoCampo + "', mas passou na validacao");
+		String fieldName = field.getValue();
+		String validatorName = expectedValidator.getValue();
+		fail("The JSON should have been refused by the validator '" + validatorName + "' on the field '" + fieldName + "', but it passed the validation");
 		return "";
 	}
 
-	private static String extraiDescricao(CcpJsonValidationError e, CcpJsonFieldName field, CcpJsonFieldName validadorEsperado) {
+	private static String extractDescription(CcpJsonValidationError e, CcpJsonFieldName field, CcpJsonFieldName expectedValidator) {
 
 		CcpJsonRepresentation errors = e.json.getInnerJson(CcpValidationErrorFields.errors);
-		String nomeDoCampo = field.getValue();
+		String fieldName = field.getValue();
 		boolean containsAllFields = errors.containsAllFields(field);
 
-		boolean campoSemErros = false == containsAllFields;
+		boolean fieldWithoutErrors = false == containsAllFields;
 
-		if(campoSemErros) {
-			fail("Era esperado erro no campo '" + nomeDoCampo + "', mas os erros vieram em: " + errors.fieldSet());
+		if(fieldWithoutErrors) {
+			fail("An error was expected on the field '" + fieldName + "', but the errors came on: " + errors.fieldSet());
 		}
 
-		List<CcpJsonRepresentation> errosDoCampo = errors.getAsJsonList(field);
-		String nomeDoValidador = validadorEsperado.getValue();
-		List<String> validadoresEncontrados = new ArrayList<>();
+		List<CcpJsonRepresentation> errorsOfTheField = errors.getAsJsonList(field);
+		String validatorName = expectedValidator.getValue();
+		List<String> validatorsFound = new ArrayList<>();
 
-		for (CcpJsonRepresentation erro : errosDoCampo) {
-			String errorName = erro.getAsString(CcpErrorFields.errorName);
-			validadoresEncontrados.add(errorName);
-			boolean errorNameEquals = errorName.equals(nomeDoValidador);
+		for (CcpJsonRepresentation error : errorsOfTheField) {
+			String errorName = error.getAsString(CcpErrorFields.errorName);
+			validatorsFound.add(errorName);
+			boolean errorNameEquals = errorName.equals(validatorName);
 
-			boolean naoEhOValidadorEsperado = false == errorNameEquals;
+			boolean isNotTheExpectedValidator = false == errorNameEquals;
 
-			if(naoEhOValidadorEsperado) {
+			if(isNotTheExpectedValidator) {
 				continue;
 			}
-			String errorDescription = erro.getAsString(CcpErrorFields.errorDescription);
-			boolean descricaoVazia = errorDescription.trim().isEmpty();
-			assertTrue("O validador '" + nomeDoValidador + "' acusou erro sem descrever o motivo", false == descricaoVazia);
+			String errorDescription = error.getAsString(CcpErrorFields.errorDescription);
+			boolean emptyDescription = errorDescription.trim().isEmpty();
+			assertTrue("O validador '" + validatorName + "' acusou erro sem descrever o motivo", false == emptyDescription);
 			return errorDescription;
 		}
 
-		fail("Era esperado o validador '" + nomeDoValidador + "' no campo '" + nomeDoCampo + "', mas os validadores que acusaram erro foram: " + validadoresEncontrados);
+		fail("The validator '" + validatorName + "' on the field '" + fieldName + "' was expected, but the validators that reported an error were: " + validatorsFound);
 		return "";
 	}
 }

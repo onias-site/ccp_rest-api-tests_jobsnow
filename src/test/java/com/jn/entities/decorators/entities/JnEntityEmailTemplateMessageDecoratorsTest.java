@@ -9,8 +9,8 @@ import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
- * jn_email_template_message: {@code @CcpEntityCache(3600)}, versionável, transformador e validador.
- * O {@code templateId} é o nome desta classe de teste, para não tocar nos templates reais.
+ * jn_email_template_message: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. The
+ * {@code templateId} is the name of this test class, so the real templates are not touched.
  */
 public class JnEntityEmailTemplateMessageDecoratorsTest extends EntityDecoratorTestTemplate {
 

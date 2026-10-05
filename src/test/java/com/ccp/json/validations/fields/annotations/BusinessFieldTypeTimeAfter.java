@@ -3,9 +3,7 @@ package com.ccp.json.validations.fields.annotations;
 import com.ccp.business.CcpBusiness;
 import com.ccp.decorators.CcpJsonRepresentation;
 
-/**
- * Negócio cujas regras de validação moram em {@code RulesFieldTypeTimeAfter}.
- */
+/** Business whose validation rules live in {@code RulesFieldTypeTimeAfter}. */
 public class BusinessFieldTypeTimeAfter implements CcpBusiness {
 
 	public Class<?> getJsonValidationClass() {

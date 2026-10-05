@@ -1,8 +1,8 @@
 package com.ccp.json.validations.global.annotations;
 
 /**
- * Grupo com as duas pontas da faixa salarial PJ, espelhando {@code PjSalaryRange} da entidade de vaga:
- * quem informa uma ponta precisa informar a outra.
+ * Group with both ends of the PJ salary range, mirroring {@code PjSalaryRange} of the position entity: whoever
+ * gives one end must give the other.
  */
 public enum PjRangeGroup {
 

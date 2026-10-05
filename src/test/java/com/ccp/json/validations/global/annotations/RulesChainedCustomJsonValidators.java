@@ -2,10 +2,7 @@ package com.ccp.json.validations.global.annotations;
 
 import com.ccp.decorators.CcpJsonFieldName;
 
-/**
- * Dois validadores customizados não críticos: os dois devem ser executados e os dois erros devem
- * aparecer juntos no resultado.
- */
+/** Two non-critical custom validators: both must run and both errors must appear together in the result. */
 @CcpJsonGlobalValidations(customJsonValidators = {
 		ConsistentSalaryRangeValidator.class,
 		RequiredTitleValidator.class

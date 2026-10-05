@@ -13,66 +13,66 @@ import com.ccp.aop.CcpNullReturnException;
 public class CcpPasswordDecoratorTest {
 
 	@Test
-	public void senhaForteTodosOsRequisitosTest() {
-		// maiúscula + minúscula + número + especial + 8-20 chars
+	public void strongPasswordAllRequirementsTest() {
+		// uppercase + lowercase + number + special + 8-20 chars
 		CcpPasswordDecorator p = new CcpStringDecorator("Abc@1234").password();
 		assertTrue(p.isStrong());
 	}
 
 	@Test
-	public void semNumeroNaoEhForteTest() {
+	public void withoutNumberIsNotStrongTest() {
 		CcpPasswordDecorator p = new CcpStringDecorator("Abcdefg@").password();
 		assertFalse(p.isStrong());
 	}
 
 	@Test
-	public void semMaiusculaNaoEhForteTest() {
+	public void withoutUppercaseIsNotStrongTest() {
 		CcpPasswordDecorator p = new CcpStringDecorator("abc@1234").password();
 		assertFalse(p.isStrong());
 	}
 
 	@Test
-	public void semMinusculaNaoEhForteTest() {
+	public void withoutLowercaseIsNotStrongTest() {
 		CcpPasswordDecorator p = new CcpStringDecorator("ABC@1234").password();
 		assertFalse(p.isStrong());
 	}
 
 	@Test
-	public void semCaractereEspecialNaoEhForteTest() {
+	public void withoutSpecialCharacterIsNotStrongTest() {
 		CcpPasswordDecorator p = new CcpStringDecorator("Abcd1234").password();
 		assertFalse(p.isStrong());
 	}
 
 	@Test
-	public void muitoCurtaNaoEhForteTest() {
-		// menos de 8 caracteres
+	public void tooShortIsNotStrongTest() {
+		// fewer than 8 characters
 		CcpPasswordDecorator p = new CcpStringDecorator("Ab@1").password();
 		assertFalse(p.isStrong());
 	}
 
 	@Test
-	public void muitoLongaNaoEhForteTest() {
-		// mais de 20 caracteres
+	public void tooLongIsNotStrongTest() {
+		// more than 20 characters
 		CcpPasswordDecorator p = new CcpStringDecorator("Abc@1234567890123456789").password();
 		assertFalse(p.isStrong());
 	}
 
 	@Test
 	public void toStringTest() {
-		String senha = "Abc@1234";
-		CcpPasswordDecorator p = new CcpStringDecorator(senha).password();
-		assertEquals(p.toString(), senha);
+		String passwordText = "Abc@1234";
+		CcpPasswordDecorator p = new CcpStringDecorator(passwordText).password();
+		assertEquals(p.toString(), passwordText);
 	}
 
 	@Test
 	public void getContentTest() {
-		String senha = "Xyz@9876";
-		CcpPasswordDecorator p = new CcpStringDecorator(senha).password();
-		assertEquals(p.getContent(), senha);
+		String passwordText = "Xyz@9876";
+		CcpPasswordDecorator p = new CcpStringDecorator(passwordText).password();
+		assertEquals(p.getContent(), passwordText);
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
-	// Nota: construtor protected e todos os métodos públicos são sem parâmetros ou primitivos.
+	// Note: protected constructor and every public method without parameters or with primitives.
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
 

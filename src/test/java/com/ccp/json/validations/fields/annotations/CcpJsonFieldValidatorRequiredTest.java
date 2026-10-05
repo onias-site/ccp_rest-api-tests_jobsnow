@@ -9,8 +9,8 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.json.validations.fields.enums.CcpJsonFieldError;
 
 /**
- * Verifica se {@code @CcpJsonFieldValidatorRequired} realmente exige a presença do campo e se a
- * ausência de um campo não anotado continua sendo aceita.
+ * Verifies that {@code @CcpJsonFieldValidatorRequired} really demands the presence of the field and that the
+ * absence of a field without the annotation is still accepted.
  */
 public class CcpJsonFieldValidatorRequiredTest {
 
@@ -20,40 +20,40 @@ public class CcpJsonFieldValidatorRequiredTest {
 
 	private final BusinessValidatorRequired business = new BusinessValidatorRequired();
 
-	private CcpJsonRepresentation jsonCompleto() {
-		CcpJsonRepresentation comObrigatorio = CcpOtherConstants.EMPTY_JSON.put(RulesValidatorRequired.obrigatorio, "valor");
-		CcpJsonRepresentation completo = comObrigatorio.put(RulesValidatorRequired.chavePrimaria, "chave");
-		return completo;
+	private CcpJsonRepresentation completeJson() {
+		CcpJsonRepresentation withRequired = CcpOtherConstants.EMPTY_JSON.put(RulesValidatorRequired.obrigatorio, "valor");
+		CcpJsonRepresentation complete = withRequired.put(RulesValidatorRequired.chavePrimaria, "chave");
+		return complete;
 	}
 
 	@Test
-	public void campoObrigatorioPresenteTest() {
-		CcpJsonRepresentation json = this.jsonCompleto();
+	public void requiredFieldPresentTest() {
+		CcpJsonRepresentation json = this.completeJson();
 		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
-	public void campoObrigatorioAusenteTest() {
+	public void requiredFieldAbsentTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesValidatorRequired.chavePrimaria, "chave");
 		FieldValidation.refuses(this.business, json, RulesValidatorRequired.obrigatorio, CcpJsonFieldError.requiredFieldIsMissing);
 	}
 
 	@Test
-	public void chavePrimariaAusenteTest() {
+	public void primaryKeyAbsentTest() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesValidatorRequired.obrigatorio, "valor");
 		FieldValidation.refuses(this.business, json, RulesValidatorRequired.chavePrimaria, CcpJsonFieldError.requiredFieldIsMissing);
 	}
 
 	@Test
-	public void campoOpcionalAusenteTest() {
-		CcpJsonRepresentation json = this.jsonCompleto();
+	public void optionalFieldAbsentTest() {
+		CcpJsonRepresentation json = this.completeJson();
 		FieldValidation.accepts(this.business, json);
 	}
 
 	@Test
-	public void campoOpcionalPresenteTest() {
-		CcpJsonRepresentation jsonCompleto = this.jsonCompleto();
-		CcpJsonRepresentation json = jsonCompleto.put(RulesValidatorRequired.opcional, "outro");
+	public void optionalFieldPresentTest() {
+		CcpJsonRepresentation completeJson = this.completeJson();
+		CcpJsonRepresentation json = completeJson.put(RulesValidatorRequired.opcional, "outro");
 		FieldValidation.accepts(this.business, json);
 	}
 }

@@ -11,9 +11,9 @@ import com.ccp.especifications.http.CcpHttpContentType;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
- * Guarda os emails que sairiam pelo provedor em vez de entregá-los. O dublê local que os outros testes
- * usam grava o corpo num arquivo, o que serviria para conferir à mão mas não para o teste ler de volta
- * o token que foi enviado ao usuário.
+ * Keeps the e-mails that would go out through the provider instead of delivering them. The local double that the
+ * other tests use writes the body to a file, which would serve to check by hand but not for the test to read
+ * back the token sent to the user.
  */
 class FakeEmailSender implements CcpEmailSender {
 

@@ -5,8 +5,8 @@ import com.ccp.json.validations.fields.annotations.CcpJsonFieldValidatorRequired
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 
 /**
- * Contraprova dos cenários de {@code RulesDefaultValueWithRequired}: sem a anotação de valor padrão,
- * o campo obrigatório continua sendo exigido.
+ * Counterproof of the scenarios of {@code RulesDefaultValueWithRequired}: without the default value annotation,
+ * the required field is still demanded.
  */
 public enum RulesRequiredWithoutDefaultValue implements CcpJsonFieldName {
 

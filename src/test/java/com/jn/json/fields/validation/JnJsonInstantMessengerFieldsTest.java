@@ -26,7 +26,7 @@ public class JnJsonInstantMessengerFieldsTest {
 		assertNotNull(JnJsonInstantMessengerFields.valueOf("chatId"));
 	}
 
-	// ── constantes explícitas ────────────────────────────────────────────────
+	// ── explicit constants ───────────────────────────────────────────────────
 
 	@Test
 	public void allConstantsAccessibleTest() {
@@ -51,7 +51,7 @@ public class JnJsonInstantMessengerFieldsTest {
 		assertEquals("chatId", JnJsonInstantMessengerFields.chatId.name());
 	}
 
-	// ── validação de anotações via reflexão ──────────────────────────────────
+	// ── validation of annotations through reflection ─────────────────────────
 
 	@Test
 	public void messageFieldHasTypeStringAnnotationTest() throws Exception {

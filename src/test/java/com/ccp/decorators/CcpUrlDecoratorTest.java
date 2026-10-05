@@ -37,7 +37,7 @@ public class CcpUrlDecoratorTest {
 	}
 
 	@Test
-	public void encodeCaracteresEspeciaisTest() {
+	public void encodeSpecialCharactersTest() {
 		String original = "a=1&b=2";
 		CcpUrlDecorator url = new CcpStringDecorator(original).url();
 		String encoded = url.asEnconded();
@@ -46,7 +46,7 @@ public class CcpUrlDecoratorTest {
 	}
 
 	@Test
-	public void semCaracteresEspeciaisNaoMudaTest() {
+	public void withoutSpecialCharactersDoesNotChangeTest() {
 		String original = "simplesTexto";
 		CcpUrlDecorator url = new CcpStringDecorator(original).url();
 		assertEquals(original, url.asEnconded());
@@ -55,20 +55,20 @@ public class CcpUrlDecoratorTest {
 
 	@Test
 	public void toStringTest() {
-		String conteudo = "texto";
-		CcpUrlDecorator url = new CcpStringDecorator(conteudo).url();
-		assertEquals(conteudo, url.toString());
+		String content = "texto";
+		CcpUrlDecorator url = new CcpStringDecorator(content).url();
+		assertEquals(content, url.toString());
 	}
 
 	@Test
 	public void getContentTest() {
-		String conteudo = "valor";
-		CcpUrlDecorator url = new CcpStringDecorator(conteudo).url();
-		assertEquals(conteudo, url.getContent());
+		String content = "valor";
+		CcpUrlDecorator url = new CcpStringDecorator(content).url();
+		assertEquals(content, url.getContent());
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
-	// Nota: construtor protected e todos os métodos públicos são sem parâmetros.
+	// Note: protected constructor and every public method without parameters.
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
 

@@ -82,7 +82,7 @@ public class CcpHttpAopNullTest {
 		handler().executeHttpSimplifiedGet("trace", null);
 	}
 
-	// ── executeHttpRequest (body como CcpJsonRepresentation) ──────────────────
+	// ── executeHttpRequest (body as CcpJsonRepresentation) ────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeHttpRequestJsonBodyTraceNullTest() {
@@ -110,7 +110,7 @@ public class CcpHttpAopNullTest {
 		handler().executeHttpRequest("trace", CcpHttpMethods.GET, JSON, JSON, null);
 	}
 
-	// ── executeHttpRequest (body como String) ─────────────────────────────────
+	// ── executeHttpRequest (body as String) ───────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeHttpRequestStringBodyTraceNullTest() {
@@ -176,7 +176,7 @@ public class CcpHttpAopNullTest {
 				new ArrayList<CcpHttpBodyBinary>(), null);
 	}
 
-	// ── executeHttpRequest com CcpHttpResponse ────────────────────────────────
+	// ── executeHttpRequest with CcpHttpResponse ───────────────────────────────
 
 	private static CcpHttpResponse response() {
 		return new CcpHttpResponse("{}", 200, "curl http://localhost:9200");

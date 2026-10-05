@@ -9,8 +9,8 @@ import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
- * jn_login_password: gêmea de jn_login_password_locked (senha bloqueada), {@code @CcpEntityCache(3600)},
- * versionável, transformador (hash do e-mail e BCrypt da senha) e validador (força da senha).
+ * jn_login_password: twin of jn_login_password_locked (locked password), {@code @CcpEntityCache(3600)},
+ * versionable, transformer (hash of the e-mail and BCrypt of the password) and validator (password strength).
  */
 public class JnEntityLoginPasswordDecoratorsTest extends EntityDecoratorTestTemplate {
 
@@ -46,7 +46,7 @@ public class JnEntityLoginPasswordDecoratorsTest extends EntityDecoratorTestTemp
 	}
 
 	@Test
-	public void transformadorDaSenha() {
+	public void passwordTransformer() {
 		this.shouldStoreTransformed(JnJsonCommonsFields.password, SENHA);
 	}
 

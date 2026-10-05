@@ -3,8 +3,8 @@ package com.ccp.json.validations.global.annotations;
 import com.ccp.decorators.CcpJsonFieldName;
 
 /**
- * Classe de regras sem a anotação {@code @CcpJsonGlobalValidations}: serve de contraprova de que as
- * validações globais só existem por causa da anotação.
+ * Rules class without the {@code @CcpJsonGlobalValidations} annotation: a counterproof that the global
+ * validations exist only because of the annotation.
  */
 public enum RulesWithoutGlobalValidations implements CcpJsonFieldName {
 

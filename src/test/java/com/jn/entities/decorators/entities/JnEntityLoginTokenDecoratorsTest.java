@@ -12,10 +12,10 @@ import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
- * jn_login_token: a entidade mais decorada do jn. Escrita assíncrona pela fila, operação
- * {@code beforeSave} ({@code JnBusinessPrepareLoginTokenBeforeSave}), e-mail com o token ao usuário só
- * na inclusão, gêmea de jn_login_token_locked (token bloqueado), {@code @CcpEntityCache(86400)},
- * descartável mensal, transformador (hash do e-mail, token gerado e guardado em BCrypt) e validador.
+ * jn_login_token: the most decorated entity of jn. Asynchronous writing through the queue, {@code beforeSave}
+ * operation ({@code JnBusinessPrepareLoginTokenBeforeSave}), e-mail with the token to the user only on insert,
+ * twin of jn_login_token_locked (locked token), {@code @CcpEntityCache(86400)}, monthly disposable, transformer
+ * (hash of the e-mail, token generated and kept as BCrypt) and validator.
  */
 public class JnEntityLoginTokenDecoratorsTest extends EntityDecoratorTestTemplate {
 
@@ -48,7 +48,7 @@ public class JnEntityLoginTokenDecoratorsTest extends EntityDecoratorTestTemplat
 	}
 
 	@Test
-	public void emailComTokenSoNaInclusao() {
+	public void emailWithTokenOnlyOnInsert() {
 		this.shouldSendEmailOnlyOnInsert();
 	}
 
@@ -57,14 +57,14 @@ public class JnEntityLoginTokenDecoratorsTest extends EntityDecoratorTestTemplat
 		this.shouldStoreEmailAsHash();
 	}
 
-	/** O token é gerado na gravação e só chega ao banco como BCrypt. */
+	/** The token is generated on the save and only reaches the database as BCrypt. */
 	@Test
 	public void tokenTransformer() {
-		CcpJsonRepresentation registro = this.validRecord();
-		this.entityUnderTest().save(registro);
-		CcpJsonRepresentation gravado = this.asStored(registro);
-		String token = gravado.getAsString(JnEntityLoginToken.Fields.token);
-		assertTrue("token de jn_login_token nao foi gravado como BCrypt: " + token, token.startsWith("$2"));
+		CcpJsonRepresentation record = this.validRecord();
+		this.entityUnderTest().save(record);
+		CcpJsonRepresentation stored = this.asStored(record);
+		String token = stored.getAsString(JnEntityLoginToken.Fields.token);
+		assertTrue("the token of jn_login_token was not stored as BCrypt: " + token, token.startsWith("$2"));
 	}
 
 	@Test

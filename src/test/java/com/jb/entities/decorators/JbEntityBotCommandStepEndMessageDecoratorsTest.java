@@ -7,7 +7,7 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.jb.entities.JbEntityBotCommandStepEndMessage;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 
-/** jb_bot_command_step_end_message: {@code @CcpEntityCache(3600)}, versionável, transformador e validador. */
+/** jb_bot_command_step_end_message: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
 public class JbEntityBotCommandStepEndMessageDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {

@@ -14,12 +14,12 @@ public class JnServiceTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	// Implementação como enum já que JnService requer name() (herda de CcpService/CcpJsonFieldName)
+	// Implemented as an enum since JnService requires name() (inherited from CcpService/CcpJsonFieldName)
 
 
 	@Test
 	public void getJsonValidationClassTest() {
-		// Sem uma inner class homônima ao name(), dispara JnErrorServiceValidationClassNotFound
+		// Without an inner class with the same name as name(), it triggers JnErrorServiceValidationClassNotFound
 		try {
 			NoopJnService.INSTANCE.getJsonValidationClass();
 		} catch (JnErrorServiceValidationClassNotFound e) {

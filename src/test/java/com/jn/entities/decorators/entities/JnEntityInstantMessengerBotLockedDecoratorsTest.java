@@ -35,9 +35,9 @@ public class JnEntityInstantMessengerBotLockedDecoratorsTest extends EntityDecor
 		this.shouldRefuseInvalidRecord(this.validRecord().removeFields(JnEntityInstantMessengerBotLocked.Fields.subjectType));
 	}
 
-	/** Até 2026-09-27 copiava a regra de JnJsonInstantMessengerFields, que não declara subjectType. */
+	/** Until 2026-09-27 it copied the rule of JnJsonInstantMessengerFields, which does not declare subjectType. */
 	@Test
-	public void validadorDoSubjectType() {
+	public void subjectTypeValidator() {
 		String longoDemais = "x".repeat(101);
 		this.shouldRefuseInvalidRecord(this.validRecord().put(JnEntityInstantMessengerBotLocked.Fields.subjectType, longoDemais));
 	}

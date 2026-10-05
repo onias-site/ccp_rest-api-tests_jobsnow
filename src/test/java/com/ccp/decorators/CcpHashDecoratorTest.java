@@ -18,77 +18,77 @@ import com.ccp.hash.CcpErrorHashAlgorithmNotFound;
 public class CcpHashDecoratorTest {
 
 	@Test
-	public void md5DeterministicoTest() {
-		String entrada = "teste";
-		CcpHashDecorator hash1 = new CcpStringDecorator(entrada).hash();
-		CcpHashDecorator hash2 = new CcpStringDecorator(entrada).hash();
+	public void md5DeterministicTest() {
+		String input = "teste";
+		CcpHashDecorator hash1 = new CcpStringDecorator(input).hash();
+		CcpHashDecorator hash2 = new CcpStringDecorator(input).hash();
 		assertEquals(hash1.asString(CcpHashAlgorithm.MD5), hash2.asString(CcpHashAlgorithm.MD5));
 	}
 
 	@Test
-	public void sha256DeterministicoTest() {
-		String entrada = "jobsnow";
-		String resultado1 = new CcpStringDecorator(entrada).hash().asString(CcpHashAlgorithm.SHA256);
-		String resultado2 = new CcpStringDecorator(entrada).hash().asString(CcpHashAlgorithm.SHA256);
+	public void sha256DeterministicTest() {
+		String input = "jobsnow";
+		String resultado1 = new CcpStringDecorator(input).hash().asString(CcpHashAlgorithm.SHA256);
+		String resultado2 = new CcpStringDecorator(input).hash().asString(CcpHashAlgorithm.SHA256);
 		assertEquals(resultado1, resultado2);
 	}
 
 	@Test
-	public void sha512DeterministicoTest() {
-		String entrada = "senha123";
-		String resultado = new CcpStringDecorator(entrada).hash().asString(CcpHashAlgorithm.SHA512);
-		assertNotNull(resultado);
-		assertFalse(resultado.isEmpty());
+	public void sha512DeterministicTest() {
+		String input = "senha123";
+		String result = new CcpStringDecorator(input).hash().asString(CcpHashAlgorithm.SHA512);
+		assertNotNull(result);
+		assertFalse(result.isEmpty());
 	}
 
 	@Test
-	public void sha1DeterministicoTest() {
-		String entrada = "texto qualquer";
-		String resultado = new CcpStringDecorator(entrada).hash().asString(CcpHashAlgorithm.SHA1);
-		assertNotNull(resultado);
-		assertFalse(resultado.isEmpty());
+	public void sha1DeterministicTest() {
+		String input = "texto qualquer";
+		String result = new CcpStringDecorator(input).hash().asString(CcpHashAlgorithm.SHA1);
+		assertNotNull(result);
+		assertFalse(result.isEmpty());
 	}
 
 	@Test
-	public void entradaDiferenteGeraHashDiferenteTest() {
+	public void differentInputGeneratesDifferentHashTest() {
 		String a = new CcpStringDecorator("abc").hash().asString(CcpHashAlgorithm.MD5);
 		String b = new CcpStringDecorator("xyz").hash().asString(CcpHashAlgorithm.MD5);
 		assertFalse(a.equals(b));
 	}
 
 	@Test
-	public void algoritmosGeramsHashsDiferentesTest() {
-		String entrada = "comparar";
-		CcpHashDecorator hash = new CcpStringDecorator(entrada).hash();
+	public void algorithmsGenerateDifferentHashesTest() {
+		String input = "comparar";
+		CcpHashDecorator hash = new CcpStringDecorator(input).hash();
 		String md5    = hash.asString(CcpHashAlgorithm.MD5);
 		String sha256 = hash.asString(CcpHashAlgorithm.SHA256);
 		assertFalse(md5.equals(sha256));
 	}
 
 	@Test
-	public void asBigIntegerNaoNuloTest() {
+	public void asBigIntegerNotNullTest() {
 		BigInteger bi = new CcpStringDecorator("big").hash().asBigInteger(CcpHashAlgorithm.MD5);
 		assertNotNull(bi);
 	}
 
 	@Test
-	public void toStringRetornaConteudoTest() {
-		String entrada = "hash-test";
-		CcpHashDecorator hash = new CcpStringDecorator(entrada).hash();
-		assertEquals(entrada, hash.toString());
+	public void toStringReturnsContentTest() {
+		String input = "hash-test";
+		CcpHashDecorator hash = new CcpStringDecorator(input).hash();
+		assertEquals(input, hash.toString());
 	}
 
 	@Test
-	public void getContentRetornaConteudoTest() {
-		String entrada = "content";
-		CcpHashDecorator hash = new CcpStringDecorator(entrada).hash();
-		assertEquals(entrada, hash.getContent());
+	public void getContentReturnsContentTest() {
+		String input = "content";
+		CcpHashDecorator hash = new CcpStringDecorator(input).hash();
+		assertEquals(input, hash.getContent());
 	}
 
 	@Test
-	public void hashResultadoHexadecimalTest() {
-		String resultado = new CcpStringDecorator("hex").hash().asString(CcpHashAlgorithm.MD5);
-		assertTrue(resultado.matches("[0-9a-f-]+"));
+	public void hashResultIsHexadecimalTest() {
+		String result = new CcpStringDecorator("hex").hash().asString(CcpHashAlgorithm.MD5);
+		assertTrue(result.matches("[0-9a-f-]+"));
 	}
 	
 	

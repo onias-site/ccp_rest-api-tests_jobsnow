@@ -33,14 +33,14 @@ public class CcpReflectionConstructorDecoratorTest {
 	// ── forName ───────────────────────────────────────────────────────────────
 
 	@Test
-	public void forNameRetornaClassTest() {
+	public void forNameReturnsClassTest() {
 		CcpReflectionConstructorDecorator refl = new CcpReflectionConstructorDecorator("java.util.ArrayList");
 		Class<?> clazz = refl.forName();
 		assertEquals(ArrayList.class, clazz);
 	}
 
 	@Test(expected = RuntimeException.class)
-	public void forNameClasseInexistenteLancaExcecaoTest() {
+	public void forNameMissingClassThrowsExceptionTest() {
 		new CcpReflectionConstructorDecorator("com.nao.existe.Classe").forName();
 	}
 
@@ -53,7 +53,7 @@ public class CcpReflectionConstructorDecoratorTest {
 	// ── newInstance ───────────────────────────────────────────────────────────
 
 	@Test
-	public void newInstanceCriaInstanciaTest() {
+	public void newInstanceCreatesInstanceTest() {
 		CcpReflectionConstructorDecorator refl = new CcpReflectionConstructorDecorator("java.util.ArrayList");
 		Object instance = refl.newInstance();
 		assertNotNull(instance);
@@ -61,28 +61,28 @@ public class CcpReflectionConstructorDecoratorTest {
 	}
 
 	@Test(expected = RuntimeException.class)
-	public void newInstanceClasseInexistenteLancaExcecaoTest() {
+	public void newInstanceMissingClassThrowsExceptionTest() {
 		new CcpReflectionConstructorDecorator("com.nao.existe.Classe").newInstance();
 	}
 
 	// ── getContent / toString ──────────────────────────────────────────────────
 
 	@Test
-	public void getContentRetornaNomeClasseTest() {
+	public void getContentReturnsClassNameTest() {
 		CcpReflectionConstructorDecorator refl = new CcpReflectionConstructorDecorator("java.util.ArrayList");
 		assertEquals("java.util.ArrayList", refl.getContent());
 	}
 
 	@Test
-	public void toStringRetornaNomeClasseTest() {
+	public void toStringReturnsClassNameTest() {
 		CcpReflectionConstructorDecorator refl = new CcpReflectionConstructorDecorator("java.util.ArrayList");
 		assertEquals("java.util.ArrayList", refl.toString());
 	}
 
-	// ── construtor com Class<?> ────────────────────────────────────────────────
+	// ── constructor with Class<?> ──────────────────────────────────────────────
 
 	@Test
-	public void construtorComClassTest() {
+	public void constructorWithClassTest() {
 		CcpReflectionConstructorDecorator refl = new CcpReflectionConstructorDecorator(ArrayList.class);
 		assertEquals("java.util.ArrayList", refl.getContent());
 		assertTrue(refl.thisClassExists());
@@ -91,23 +91,23 @@ public class CcpReflectionConstructorDecoratorTest {
 	// ── fromNewInstance / fromStaticContext / fromInstance ────────────────────
 
 	@Test
-	public void fromNewInstanceRetornaDecoratorTest() {
+	public void fromNewInstanceReturnsDecoratorTest() {
 		CcpReflectionOptionsDecorator opt = new CcpReflectionConstructorDecorator("java.util.ArrayList").fromNewInstance();
 		assertNotNull(opt);
 		assertEquals(ArrayList.class, opt.getContent());
 	}
 
 	@Test
-	public void fromStaticContextRetornaDecoratorTest() {
+	public void fromStaticContextReturnsDecoratorTest() {
 		CcpReflectionOptionsDecorator opt = new CcpReflectionConstructorDecorator("java.util.ArrayList").fromStaticContext();
 		assertNotNull(opt);
 		assertEquals(ArrayList.class, opt.getContent());
 	}
 
 	@Test
-	public void fromInstanceRetornaDecoratorTest() {
-		ArrayList<Object> lista = new ArrayList<>();
-		CcpReflectionOptionsDecorator opt = new CcpReflectionConstructorDecorator("java.util.ArrayList").fromInstance(lista);
+	public void fromInstanceReturnsDecoratorTest() {
+		ArrayList<Object> list = new ArrayList<>();
+		CcpReflectionOptionsDecorator opt = new CcpReflectionConstructorDecorator("java.util.ArrayList").fromInstance(list);
 		assertNotNull(opt);
 		assertEquals(ArrayList.class, opt.getContent());
 	}
@@ -120,12 +120,12 @@ public class CcpReflectionConstructorDecoratorTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorJsonNullParamFieldTest() {
+	public void constructorJsonNullParamFieldTest() {
 		new CcpReflectionConstructorDecorator(CcpOtherConstants.EMPTY_JSON, (String) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorClassNullParamTest() {
+	public void constructorClassNullParamTest() {
 		new CcpReflectionConstructorDecorator((Class<?>) null);
 	}
 

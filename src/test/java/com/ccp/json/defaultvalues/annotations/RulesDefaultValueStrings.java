@@ -4,8 +4,8 @@ import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 
 /**
- * Campos para exercitar o atributo {@code defaultStrings}: um item só, vários itens, um item com
- * template a resolver, um template que aponta para campo ausente e um campo sem valor padrão.
+ * Fields to exercise the {@code defaultStrings} attribute: a single item, several items, an item with a template
+ * to resolve, a template that points to an absent field and a field without default value.
  */
 public enum RulesDefaultValueStrings implements CcpJsonFieldName {
 

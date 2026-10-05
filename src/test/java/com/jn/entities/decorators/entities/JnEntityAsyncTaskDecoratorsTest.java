@@ -8,7 +8,7 @@ import com.jn.entities.JnEntityAsyncTask;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-/** jn_async_task: só transformador e validador — o rastro de cada mensagem publicada na fila. */
+/** jn_async_task: only transformer and validator, the trace of each message published to the queue. */
 public class JnEntityAsyncTaskDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {

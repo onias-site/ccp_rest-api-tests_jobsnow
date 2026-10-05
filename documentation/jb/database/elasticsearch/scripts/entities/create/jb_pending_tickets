@@ -1,0 +1,19 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"chatId": {
+				"type": "long"
+			},
+			"botName": {
+				"type": "keyword"
+			},
+			"ticket": {
+				"type": "keyword"
+			},
+			"timestamp": {
+				"type": "long"
+			}
+		}
+	}
+}

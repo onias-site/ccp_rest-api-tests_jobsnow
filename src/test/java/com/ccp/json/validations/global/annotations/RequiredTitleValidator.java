@@ -4,8 +4,8 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.json.validations.global.interfaces.CcpJsonValidator;
 
 /**
- * Segundo validador global customizado, usado para provar que {@code customJsonValidators} roda todos
- * os validadores da lista e acumula os erros de cada um.
+ * Second custom global validator, used to prove that {@code customJsonValidators} runs every validator of the
+ * list and accumulates the errors of each one.
  */
 public class RequiredTitleValidator implements CcpJsonValidator {
 
@@ -14,8 +14,8 @@ public class RequiredTitleValidator implements CcpJsonValidator {
 	public boolean hasError(CcpJsonRepresentation json, Class<?> clazz) {
 		boolean containsAllFields = json.containsAllFields(GlobalValidatorFields.titulo);
 
-		boolean tituloAusente = false == containsAllFields;
-		return tituloAusente;
+		boolean titleAbsent = false == containsAllFields;
+		return titleAbsent;
 	}
 
 	public Object getErrorMessage(CcpJsonRepresentation json, Class<?> clazz) {

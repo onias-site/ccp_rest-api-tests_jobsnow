@@ -5,8 +5,8 @@ import com.ccp.especifications.db.utils.entity.fields.annotations.CcpEntityField
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 
 /**
- * Campos para exercitar {@code @CcpJsonFieldValidatorRequired}: um obrigatório, um opcional e um
- * que é obrigatório por ser chave primária da entidade.
+ * Fields to exercise {@code @CcpJsonFieldValidatorRequired}: a required one, an optional one and one that is
+ * required for being the primary key of the entity.
  */
 public enum RulesValidatorRequired implements CcpJsonFieldName {
 

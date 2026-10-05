@@ -4,8 +4,8 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.json.validations.global.interfaces.CcpJsonValidator;
 
 /**
- * Validador global customizado marcado como crítico: sem o tipo de contrato não faz sentido continuar
- * avaliando o resto, então ao acusar erro ele interrompe as demais validações de classe.
+ * Custom global validator marked as critical: without the contract type it makes no sense to keep evaluating the
+ * rest, so when it reports an error it interrupts the other class validations.
  */
 public class CriticalContractValidator implements CcpJsonValidator {
 
@@ -14,8 +14,8 @@ public class CriticalContractValidator implements CcpJsonValidator {
 	public boolean hasError(CcpJsonRepresentation json, Class<?> clazz) {
 		boolean containsAllFields = json.containsAllFields(GlobalValidatorFields.contrato);
 
-		boolean contratoAusente = false == containsAllFields;
-		return contratoAusente;
+		boolean contractAbsent = false == containsAllFields;
+		return contractAbsent;
 	}
 
 	public Object getErrorMessage(CcpJsonRepresentation json, Class<?> clazz) {

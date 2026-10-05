@@ -9,8 +9,8 @@ import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
- * jn_jobsnow_pendding_error: gêmea de jn_jobsnow_solved_error, {@code @CcpEntityCache(3600)},
- * versionável, transformador (carimba {@code timestamp}/{@code date}) e validador.
+ * jn_jobsnow_pendding_error: twin of jn_jobsnow_solved_error, {@code @CcpEntityCache(3600)}, versionable,
+ * transformer (stamps {@code timestamp}/{@code date}) and validator.
  */
 public class JnEntityJobsnowPenddingErrorDecoratorsTest extends EntityDecoratorTestTemplate {
 

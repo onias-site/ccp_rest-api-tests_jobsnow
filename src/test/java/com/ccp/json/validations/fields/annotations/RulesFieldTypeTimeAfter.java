@@ -5,8 +5,8 @@ import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurga
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeTimeAfter;
 
 /**
- * Campos anotados com {@code @CcpJsonFieldTypeTimeAfter}: o timestamp informado tem que estar
- * dentro do intervalo configurado, contado para frente a partir do momento atual.
+ * Fields annotated with {@code @CcpJsonFieldTypeTimeAfter}: the given timestamp must be within the configured
+ * interval, counted forward from the current moment.
  */
 public enum RulesFieldTypeTimeAfter implements CcpJsonFieldName {
 
@@ -15,5 +15,8 @@ public enum RulesFieldTypeTimeAfter implements CcpJsonFieldName {
 
 	@CcpJsonFieldTypeTimeAfter(intervalType = CcpEntityExpurgableOptions.daily, minValue = 2)
 	noMinimoDoisDiasAFrente,
+
+	@CcpJsonFieldTypeTimeAfter(intervalType = CcpEntityExpurgableOptions.daily, exactValue = 3)
+	exactlyThreeDaysAhead,
 	;
 }

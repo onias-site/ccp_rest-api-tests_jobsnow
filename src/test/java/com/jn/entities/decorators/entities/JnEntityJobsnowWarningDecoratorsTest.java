@@ -10,8 +10,8 @@ import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
- * jn_jobsnow_warning: escrita assíncrona pela fila, aviso ao suporte pelo Telegram só na inclusão,
- * {@code @CcpEntityCache(3600)}, descartável por hora, transformador e validador.
+ * jn_jobsnow_warning: asynchronous writing through the queue, notice to the support through Telegram only on
+ * insert, {@code @CcpEntityCache(3600)}, hourly disposable, transformer and validator.
  */
 public class JnEntityJobsnowWarningDecoratorsTest extends EntityDecoratorTestTemplate {
 

@@ -9,7 +9,7 @@ import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-/** jn_login_session_conflict: {@code @CcpEntityCache(3600)}, descartável por hora, transformador e validador. */
+/** jn_login_session_conflict: {@code @CcpEntityCache(3600)}, hourly disposable, transformer and validator. */
 public class JnEntityLoginSessionConflictDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {

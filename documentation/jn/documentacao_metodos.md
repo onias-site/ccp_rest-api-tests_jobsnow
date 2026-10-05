@@ -4198,8 +4198,7 @@ Todos os métodos delegam para `this.entity`:
 **Propósito:** Agrupa as classes de envio de mensagens relacionadas ao ciclo de vida de habilidades (skills) no sistema — aprovação, rejeição e estado pendente, tanto para a habilidade em si quanto para sua hierarquia. Cada inner class herda de `JnBusinessSendMessage` e associa a entidade-destino correspondente. Todos os templates de mensagem estão marcados como FIXME (faltando template).
 
 ### Classes internas:
-- **RejectedSkillHierarchy**: Envia mensagem utilizando a entidade `VisEntitySkillFixHierarchyRejected` — notifica rejeição de correção de hierarquia de skill.
-- **AprovedSkillHierarchy**: Envia mensagem utilizando a entidade `VisEntitySkillFixHierarchyApproved` — notifica aprovação de correção de hierarquia de skill.
+- **FulfiledSkillHierarchy**: Envia mensagem utilizando a entidade `VisEntitySkillFixHierarchyFulfiled` — notifica que a correção de hierarquia de skill foi avaliada (itens aprovados e reprovados, com as justificativas).
 - **PendingSkillHierarchy**: Envia mensagem utilizando a entidade `VisEntitySkillFixHierarchyPending` — notifica que uma correção de hierarquia de skill está pendente de análise.
 - **RejectedSkill**: Envia mensagem utilizando a entidade `VisEntitySkillRejected` — notifica rejeição de uma nova skill sugerida.
 - **PendingSkill**: Envia mensagem utilizando a entidade `VisEntitySkillPending` — notifica que uma nova skill está aguardando aprovação.
@@ -4638,44 +4637,31 @@ Todos os métodos delegam para `this.entity`:
 
 ---
 
-## Classe: VisEntitySkillFixHierarchyApproved
+## Classe: VisEntitySkillFixHierarchyFulfiled
 **Pacote:** `com.vis.entities`
 **Tipo:** classe (configurador de entidade Elasticsearch)
-**Propósito:** Registra solicitações de correção de hierarquia de skill que foram aprovadas, armazenando o e-mail do solicitante, a explicação da aprovação e a descrição da correção. Possui cache de 1 hora.
+**Propósito:** Registra solicitações de correção de hierarquia de skill já avaliadas pelo operador do suporte, qualquer que tenha sido a decisão (aprovar todos, rejeitar todos ou um a um). A decisão de cada skill fica nas entidades de item (`VisEntitySkillFixHierarchyItemApproved` e a gêmea de rejeitados de `VisEntitySkillFixHierarchyItemPending`). Versionável, com cache de 1 hora.
 
 ### Campos (enum `Fields`):
-- **date**: Data da aprovação.
 - **email**: E-mail do usuário que solicitou a correção (obrigatório).
-- **explanation**: Explicação fornecida pelo aprovador (obrigatório).
+- **parent**: Conhecimento implícito da solicitação.
+- **skill**: Skills da solicitação (obrigatório).
+- **type**: Tipo da correção, `add` ou `remove` (obrigatório).
+- **explanation**: Justificativas do operador, uma linha por skill (obrigatório).
 - **description**: Descrição da correção de hierarquia proposta (obrigatório).
-- **timestamp**: Timestamp da aprovação.
 
 ---
 
 ## Classe: VisEntitySkillFixHierarchyPending
 **Pacote:** `com.vis.entities`
 **Tipo:** classe (configurador de entidade Elasticsearch)
-**Propósito:** Representa solicitações pendentes de correção de hierarquia de skill aguardando análise. Ao salvar um registro, dispara transferência de dados para `VisEntitySkillFixHierarchyRejected` ou `VisEntitySkillFixHierarchyApproved` conforme a decisão, enviando mensagens de notificação correspondentes. Possui escrita assíncrona e cache de 1 hora.
+**Propósito:** Representa solicitações pendentes de correção de hierarquia de skill aguardando análise. Ao ser avaliada pelo operador do suporte, a solicitação é transferida para `VisEntitySkillFixHierarchyFulfiled`, qualquer que seja a decisão, e o usuário recebe por e-mail os itens aprovados e reprovados. Possui escrita assíncrona e cache de 1 hora.
 
 ### Campos (enum `Fields`):
 - **date**: Data da solicitação.
 - **email**: E-mail do solicitante (obrigatório).
 - **description**: Descrição da correção hierárquica proposta (obrigatório).
 - **timestamp**: Timestamp da solicitação.
-
----
-
-## Classe: VisEntitySkillFixHierarchyRejected
-**Pacote:** `com.vis.entities`
-**Tipo:** classe (configurador de entidade Elasticsearch)
-**Propósito:** Registra solicitações de correção de hierarquia de skill que foram rejeitadas, armazenando o e-mail do solicitante, a explicação da rejeição e a descrição da correção proposta. Possui cache de 1 hora.
-
-### Campos (enum `Fields`):
-- **date**: Data da rejeição.
-- **email**: E-mail do solicitante (obrigatório).
-- **explanation**: Explicação fornecida pelo revisor para a rejeição (obrigatório).
-- **description**: Descrição da correção proposta que foi rejeitada (obrigatório).
-- **timestamp**: Timestamp da rejeição.
 
 ---
 

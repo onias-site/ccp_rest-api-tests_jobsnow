@@ -4,9 +4,9 @@ import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 
 /**
- * Campos anotados com {@code @CcpJsonFieldTypeString}, um para cada restrição que a anotação
- * oferece: comprimento mínimo, máximo, exato, string vazia, regex, valores vindos de enum e nome
- * de classe java existente no class loader.
+ * Fields annotated with {@code @CcpJsonFieldTypeString}, one for each restriction the annotation offers:
+ * minimum, maximum and exact length, empty string, regex, values coming from an enum and name of a Java class
+ * existing in the class loader.
  */
 public enum RulesFieldTypeString implements CcpJsonFieldName {
 

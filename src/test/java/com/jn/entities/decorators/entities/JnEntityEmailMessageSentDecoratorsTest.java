@@ -9,7 +9,7 @@ import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-/** jn_email_message_sent: {@code @CcpEntityCache(3600)}, descartável diário, transformador e validador. */
+/** jn_email_message_sent: {@code @CcpEntityCache(3600)}, daily disposable, transformer and validator. */
 public class JnEntityEmailMessageSentDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {

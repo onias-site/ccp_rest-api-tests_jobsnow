@@ -4,8 +4,8 @@ import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeNumberUnsigned;
 
 /**
- * Campos anotados com {@code @CcpJsonFieldTypeNumberUnsigned} (long não-negativo), um para cada
- * restrição: valor mínimo, máximo, exato e lista de valores permitidos.
+ * Fields annotated with {@code @CcpJsonFieldTypeNumberUnsigned} (non-negative long), one for each restriction:
+ * minimum, maximum and exact values and list of allowed values.
  */
 public enum RulesFieldTypeNumberUnsigned implements CcpJsonFieldName {
 
@@ -15,8 +15,8 @@ public enum RulesFieldTypeNumberUnsigned implements CcpJsonFieldName {
 	@CcpJsonFieldTypeNumberUnsigned(maxValue = 20)
 	valorMaximo,
 
-	// 1500 fica fora do cache de Long (-128..127) de proposito: se a comparacao do validador for
-	// feita por referencia em vez de por valor, o defeito aparece aqui e some com numeros pequenos.
+	// 1500 is outside the Long cache (-128..127) on purpose: if the comparison of the validator were
+	// made by reference instead of by value, the defect shows up here and vanishes with small numbers.
 	@CcpJsonFieldTypeNumberUnsigned(exactValue = 1500)
 	valorExato,
 

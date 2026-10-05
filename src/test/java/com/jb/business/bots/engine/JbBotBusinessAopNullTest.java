@@ -12,15 +12,11 @@ import com.jn.entities.JnEntityJobsnowError;
 import org.junit.Test;
 
 /**
- * Cobertura do {@code CcpNullParameterAspect} sobre os métodos default de
- * {@code JbBotEngine.JbBotBusiness}.
- *
- * <p>
- * As implementações {@code Bot}, {@code BotCommand}, {@code BotCommandStep} e
- * {@code CommonsBotCommandStep} são {@code private static} dentro de {@code JbBotEngine} — não são
- * referenciáveis fora da classe que as declara, portanto seus overrides não são alcançáveis por
- * teste. Aqui os join points cobertos são os das implementações default da interface pública.
- * </p>
+ * Coverage of {@code CcpNullParameterAspect} over the default methods of {@code JbBotEngine.JbBotBusiness}. <p>
+ * The implementations {@code Bot}, {@code BotCommand}, {@code BotCommandStep} and {@code CommonsBotCommandStep}
+ * are {@code private static} inside {@code JbBotEngine}: they cannot be referenced outside the class that
+ * declares them, so their overrides are not reachable by a test. The join points covered here are the ones of
+ * the default implementations of the public interface. </p>
  */
 public class JbBotBusinessAopNullTest {
 

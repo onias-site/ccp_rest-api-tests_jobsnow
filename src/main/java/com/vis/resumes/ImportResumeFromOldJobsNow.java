@@ -15,15 +15,63 @@ import com.vis.entities.VisEntityResume;
 import com.vis.services.VisServiceResume;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
 
+/**
+ * One-off migration tool: converts each candidate of the old JobsNow (Portuguese field names) into a resume of the
+ * visualization module, creating login and session for it, and saves it through {@code VisServiceResume.Save}.
+ */
 public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentation>{
+	/** Fields of the old candidate and of the converted resume. */
 	enum JsonFieldNames implements CcpJsonFieldName{
-		id, curriculo, conteudo, resumeBase64, arquivo, fileName, disponibilidade, profissaoDesejada, empresas, ultimaProfissao, experiencia, pretensaoClt, pretensaoPj, bitcoin, observacao, observations, name, originalEmail, status, language
+		/** The {@code id} field. */
+		id,
+		/** The {@code curriculo} field. */
+		curriculo,
+		/** The {@code conteudo} field. */
+		conteudo,
+		/** The {@code resumeBase64} field. */
+		resumeBase64,
+		/** The {@code arquivo} field. */
+		arquivo,
+		/** The {@code fileName} field. */
+		fileName,
+		/** The {@code disponibilidade} field. */
+		disponibilidade,
+		/** The {@code profissaoDesejada} field. */
+		profissaoDesejada,
+		/** The {@code empresas} field. */
+		empresas,
+		/** The {@code ultimaProfissao} field. */
+		ultimaProfissao,
+		/** The {@code experiencia} field. */
+		experiencia,
+		/** The {@code pretensaoClt} field. */
+		pretensaoClt,
+		/** The {@code pretensaoPj} field. */
+		pretensaoPj,
+		/** The {@code bitcoin} field. */
+		bitcoin,
+		/** The {@code observacao} field. */
+		observacao,
+		/** The {@code observations} field. */
+		observations,
+		/** The {@code name} field. */
+		name,
+		/** The {@code originalEmail} field. */
+		originalEmail,
+		/** The {@code status} field. */
+		status,
+		/** The {@code language} field. */
+		language
 	}
 
+	/** The single instance. */
 	public static final ImportResumeFromOldJobsNow INSTANCE = new ImportResumeFromOldJobsNow();
+	/** Ids of the resumes already present when the tool started. */
 	private Set<String> ids;			
+	/** How many candidates were handled. */
 	int counter;
 
+	/** Loads the ids of the resumes already present. */
 	private ImportResumeFromOldJobsNow() {
 		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
 		CcpQueryOptions query = 
@@ -35,6 +83,10 @@ public class ImportResumeFromOldJobsNow implements Consumer<CcpJsonRepresentatio
 		this.ids = queryExecutor.getResultAsList(query, resourcesNames, "email").stream().map(x -> x.getAsString(JsonFieldNames.id)).collect(Collectors.toSet());
 	}
 	
+	/**
+	 * Converts and saves one candidate (the check of already imported candidates is disabled).
+	 * @param candidate the old candidate
+	 */
 	public void accept(CcpJsonRepresentation candidate) {
 		
 		boolean alreadyInserted = this.counter++ < this.ids.size();

@@ -8,10 +8,10 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.jn.business.messages.JnMessageType;
 
 /**
- * Bot substituto para os testes de leitura de mensagens. O {@code readNewMessages} descobre qual bot
- * está sendo lido através do {@code name()} do {@code CcpBusiness} recebido, por isso este dublê
- * devolve o nome do {@link JnBotType} informado ao invés do nome da classe. Cada mensagem entregue
- * pelo leitor fica guardada em {@link #received}, permitindo verificar o que foi lido em cada chamada.
+ * Stand-in bot for the message reading tests. {@code readNewMessages} finds out which bot is being read through
+ * the {@code name()} of the received {@code CcpBusiness}, which is why this double returns the name of the given
+ * {@link JnBotType} instead of the class name. Each message delivered by the reader is kept in
+ * {@link #received}, so what was read in each call can be checked.
  */
 class FakeBot implements CcpBusiness {
 

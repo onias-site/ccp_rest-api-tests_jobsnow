@@ -11,25 +11,25 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 
 /**
- * Guarda as mensagens que sairiam para o Telegram em vez de entregá-las ao bot de verdade. O token do
- * bot de suporte que está nas propriedades do ambiente é real, então sem este dublê o teste mandaria
- * mensagem para o celular de quem atende o suporte a cada execução.
+ * Keeps the messages that would go out to Telegram instead of delivering them to the real bot. The token of the
+ * support bot in the environment properties is real, so without this double the test would send a message to the
+ * phone of whoever handles the support on every run.
  */
 class FakeInstantMessenger implements CcpInstantMessenger {
 
 	final List<CcpJsonRepresentation> sentMessages = new ArrayList<>();
 
 	public CcpJsonRepresentation sendTextMessage(CcpJsonFieldName botType, String botToken, Long chatId, Long replyTo, String message) {
-		this.guardar(botType, chatId, message);
+		this.store(botType, chatId, message);
 		return CcpOtherConstants.EMPTY_JSON;
 	}
 
 	public CcpJsonRepresentation sendFile(CcpJsonFieldName botType, String botToken, Long chatId, Long replyTo, String fileName, String caption, Byte[] fileContent) {
-		this.guardar(botType, chatId, caption);
+		this.store(botType, chatId, caption);
 		return CcpOtherConstants.EMPTY_JSON;
 	}
 
-	private void guardar(CcpJsonFieldName botType, Long chatId, String message) {
+	private void store(CcpJsonFieldName botType, Long chatId, String message) {
 		String botName = botType.name();
 		CcpJsonRepresentation enviada = CcpOtherConstants.EMPTY_JSON
 				.put(JnJsonInstantMessengerFields.botName, botName)
@@ -39,16 +39,16 @@ class FakeInstantMessenger implements CcpInstantMessenger {
 	}
 
 	/**
-	 * Devolve a última mensagem enviada ao chat informado. O fluxo manda mais de uma mensagem ao suporte
-	 * (a do ticket pendente, na montagem do cenário, e a do ticket atendido), por isso o teste pergunta
-	 * pela última e não pela única.
+	 * Returns the last message sent to the given chat. The flow sends more than one message to the support (the one
+	 * of the pending ticket, while setting up the scenario, and the one of the handled ticket), so the test asks for
+	 * the last one and not for the only one.
 	 */
 	CcpJsonRepresentation lastMessageFor(Long chatId) {
 		for (int indice = this.sentMessages.size() - 1; indice >= 0; indice--) {
 			CcpJsonRepresentation enviada = this.sentMessages.get(indice);
-			Long destinatario = enviada.getAsLongNumber(JnJsonInstantMessengerFields.chatId);
-			boolean ehOutroChat = false == destinatario.equals(chatId);
-			if (ehOutroChat) {
+			Long recipient = enviada.getAsLongNumber(JnJsonInstantMessengerFields.chatId);
+			boolean isAnotherChat = false == recipient.equals(chatId);
+			if (isAnotherChat) {
 				continue;
 			}
 			return enviada;

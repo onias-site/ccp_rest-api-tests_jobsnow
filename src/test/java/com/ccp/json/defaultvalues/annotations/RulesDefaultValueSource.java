@@ -4,9 +4,9 @@ import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 
 /**
- * Classe de origem das validações copiadas. É aqui que mora a anotação de valor padrão, enquanto o
- * {@code @CcpJsonFieldValidatorRequired} fica no campo de destino — exatamente a forma do
- * {@code fileName}, cujo valor padrão mora em {@code JnJsonInstantMessengerFields}.
+ * Source class of the copied validations. The default value annotation lives here, while
+ * {@code @CcpJsonFieldValidatorRequired} stays on the target field, exactly the shape of {@code fileName}, whose
+ * default value lives in {@code JnJsonInstantMessengerFields}.
  */
 public enum RulesDefaultValueSource implements CcpJsonFieldName {
 

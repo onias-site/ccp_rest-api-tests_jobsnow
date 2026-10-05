@@ -310,15 +310,15 @@ public class CcpRandomScripts {
 		type, cause, stackTrace, email, mappings, properties, name, ddd, _id, docs, _source, id, mail, contato, vaga, channel, description, contactChannel, candidate, candidato
 	}
 
-	static Map<String, Object> getJson(CcpFileDecorator arquivo){
-		boolean file = arquivo.isFile(); 
+	static Map<String, Object> getJson(CcpFileDecorator fileUnderTest){
+		boolean file = fileUnderTest.isFile(); 
 		Map<String, Object> json = new LinkedHashMap<>();
 		
 		if(file) {
-			CcpJsonRepresentation asSingleJson = arquivo.asSingleJson();
+			CcpJsonRepresentation asSingleJson = fileUnderTest.asSingleJson();
 			return asSingleJson.content;
 		}
-		CcpFolderDecorator asFolder = arquivo.asFolder();
+		CcpFolderDecorator asFolder = fileUnderTest.asFolder();
 		asFolder.readFiles(subFile -> {
 			Map<String, Object> subJson = getJson(subFile);
 			json.put(subFile.getName().replace(".json", ""), subJson);
@@ -452,11 +452,11 @@ public class CcpRandomScripts {
 	static void createPositionsFile() {
 		CcpQueryOptions queryMatchAll = CcpQueryOptions.INSTANCE.matchAll();
 		queryMatchAll.startAggregations().startBucket("x", null, 1).startAggregations().addAvgAggregation(null, null);
-		Set<Object> emailsDasVisualizacoes = getEmails(queryMatchAll, "visualizacao_de_curriculo", "email");
-		Set<Object> emailsDasVagas = getEmails(queryMatchAll, "vagas", "email", "mail");
+		Set<Object> emailsOfTheViews = getEmails(queryMatchAll, "visualizacao_de_curriculo", "email");
+		Set<Object> emailsOfThePositions = getEmails(queryMatchAll, "vagas", "email", "mail");
 
-		List<Object> intersectList = new CcpCollectionDecorator(emailsDasVisualizacoes)
-				.getIntersectList(emailsDasVagas);
+		List<Object> intersectList = new CcpCollectionDecorator(emailsOfTheViews)
+				.getIntersectList(emailsOfThePositions);
 
 		CcpJsonRepresentation mgetJson = CcpOtherConstants.EMPTY_JSON;
 		CcpEntityField idField = new CcpEntityField("email", false, true, CcpOtherConstants.DO_NOTHING);
@@ -489,26 +489,26 @@ public class CcpRandomScripts {
 
 		CcpJsonRepresentation resumes = CcpOtherConstants.EMPTY_JSON;
 
-		for (CcpJsonRepresentation curriculo : collect) {
-			String id = curriculo.getAsString(JsonFieldNames.id);
-			resumes = resumes.put(new CcpFieldName(id), curriculo);
+		for (CcpJsonRepresentation resume : collect) {
+			String id = resume.getAsString(JsonFieldNames.id);
+			resumes = resumes.put(new CcpFieldName(id), resume);
 		}
 
 		CcpJsonRepresentation candidatesGroupedByRecruiters = getCandidatesGroupedByRecruiters(queryMatchAll);
-		CcpJsonRepresentation vagasAgrupadosPorRecrutadores = getPositionsGroupedByRecruiters(intersectList);
-		Set<String> recrutadores = vagasAgrupadosPorRecrutadores.fieldSet();
+		CcpJsonRepresentation positionsGroupedByRecruiter = getPositionsGroupedByRecruiters(intersectList);
+		Set<String> recrutadores = positionsGroupedByRecruiter.fieldSet();
 		List<CcpJsonRepresentation> todasAsVagas = new ArrayList<>();
 		CcpJsonRepresentation res = new CcpJsonRepresentation(resumes.content);
 		for (String recrutador : recrutadores) {
 			List<CcpJsonRepresentation> curriculos = candidatesGroupedByRecruiters.getAsStringList(new CcpFieldName(recrutador))
 					.stream().map(x -> res.getInnerJson(new CcpFieldName(x))).collect(Collectors.toList());
 
-			List<CcpJsonRepresentation> vagas = vagasAgrupadosPorRecrutadores.getAsJsonList(new CcpFieldName(recrutador));
+			List<CcpJsonRepresentation> vagas = positionsGroupedByRecruiter.getAsJsonList(new CcpFieldName(recrutador));
 
 			int k = 0;
-			for (CcpJsonRepresentation curriculo : curriculos) {
+			for (CcpJsonRepresentation resume : curriculos) {
 				CcpJsonRepresentation vaga = vagas.get(k++ % vagas.size());
-				CcpJsonRepresentation putAll = vaga.mergeWithAnotherJson(curriculo);
+				CcpJsonRepresentation putAll = vaga.mergeWithAnotherJson(resume);
 				todasAsVagas.add(putAll);
 			}
 		}
@@ -606,9 +606,9 @@ public class CcpRandomScripts {
 		CcpFileDecorator file = new CcpStringDecorator("vagas.txt").file();
 		String[] resourcesNames = new String[] { "vagas" };
 		queryExecutor.consumeQueryResult(queryToSearchLastUpdatedResumes, resourcesNames, "10s", 10000, vaga -> {
-			String texto = vaga.getAsString(JsonFieldNames.vaga).replace("\n", "").trim();
+			String textValue = vaga.getAsString(JsonFieldNames.vaga).replace("\n", "").trim();
 			String completeLeft = new CcpStringDecorator("" + ++counter).text().completeLeft('0', 6).content;
-			file.append(completeLeft + ": " + texto);
+			file.append(completeLeft + ": " + textValue);
 //					CcpTimeDecorator.appendLog(counter);
 		}, "vaga");
 	}

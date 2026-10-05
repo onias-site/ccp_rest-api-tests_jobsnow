@@ -3,8 +3,8 @@ package com.ccp.json.validations.global.annotations;
 import com.ccp.decorators.CcpJsonFieldName;
 
 /**
- * Validador crítico seguido de um validador comum: quando o crítico acusa erro, o que vem depois dele
- * não chega a ser executado.
+ * A critical validator followed by a common one: when the critical one reports an error, the one after it is not
+ * even run.
  */
 @CcpJsonGlobalValidations(customJsonValidators = {
 		CriticalContractValidator.class,

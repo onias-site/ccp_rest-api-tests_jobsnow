@@ -3,8 +3,8 @@ package com.ccp.json.validations.global.annotations;
 import com.ccp.decorators.CcpJsonFieldName;
 
 /**
- * Dois grupos independentes em {@code requiresAtLeastOne}, como em {@code VisEntityPosition.Fields}:
- * cada grupo precisa ser satisfeito por conta própria, então satisfazer só um deles não basta.
+ * Two independent groups in {@code requiresAtLeastOne}, as in {@code VisEntityPosition.Fields}: each group must
+ * be satisfied on its own, so satisfying only one of them is not enough.
  */
 @CcpJsonGlobalValidations(requiresAtLeastOne = {
 		@CcpJsonValidationFieldList(MaxSalaryGroup.class),

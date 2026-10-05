@@ -16,37 +16,37 @@ import com.ccp.aop.CcpNullReturnException;
 public class CcpTimeDecoratorTest {
 
 	@Test
-	public void construtorSemArgumentoUsaTempoAtualTest() {
-		long antes = System.currentTimeMillis();
+	public void constructorWithoutArgumentUsesCurrentTimeTest() {
+		long before = System.currentTimeMillis();
 		CcpTimeDecorator t = new CcpTimeDecorator();
-		long depois = System.currentTimeMillis();
-		assertTrue(t.content >= antes);
-		assertTrue(t.content <= depois);
+		long after = System.currentTimeMillis();
+		assertTrue(t.content >= before);
+		assertTrue(t.content <= after);
 	}
 
 	@Test
-	public void construtorComLongTest() {
-		long tempo = 1_000_000L;
-		CcpTimeDecorator t = new CcpTimeDecorator(tempo);
-		assertEquals(tempo, (long) t.content);
+	public void constructorWithLongTest() {
+		long time = 1_000_000L;
+		CcpTimeDecorator t = new CcpTimeDecorator(time);
+		assertEquals(time, (long) t.content);
 	}
 
 	@Test
 	public void getContentTest() {
-		long tempo = System.currentTimeMillis();
-		CcpTimeDecorator t = new CcpTimeDecorator(tempo);
-		assertEquals(tempo, (long) t.getContent());
+		long time = System.currentTimeMillis();
+		CcpTimeDecorator t = new CcpTimeDecorator(time);
+		assertEquals(time, (long) t.getContent());
 	}
 
 	@Test
-	public void getMidnightMenorQueAgoreTest() {
+	public void getMidnightIsBeforeNowTest() {
 		CcpTimeDecorator t = new CcpTimeDecorator();
 		long midnight = t.getMidnight();
 		assertTrue(midnight <= t.content);
 	}
 
 	@Test
-	public void getMidnightEhMeiaNoiteTest() {
+	public void getMidnightIsMidnightTest() {
 		CcpTimeDecorator t = new CcpTimeDecorator();
 		long midnight = t.getMidnight();
 		Calendar cal = t.getBrazilianCalendar();
@@ -66,29 +66,29 @@ public class CcpTimeDecoratorTest {
 	}
 
 	@Test
-	public void getYearRetornaAnoAtualTest() {
-		int anoEsperado = Calendar.getInstance().get(Calendar.YEAR);
+	public void getYearReturnsCurrentYearTest() {
+		int expectedYear = Calendar.getInstance().get(Calendar.YEAR);
 		CcpTimeDecorator t = new CcpTimeDecorator();
-		assertEquals(anoEsperado, t.getYear());
+		assertEquals(expectedYear, t.getYear());
 	}
 
 	@Test
 	public void getFormattedDateTimeTest() {
 		CcpTimeDecorator t = new CcpTimeDecorator();
 		String formatado = t.getFormattedDateTime("yyyy");
-		String anoAtual = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
-		assertEquals(anoAtual, formatado);
+		String currentYear = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+		assertEquals(currentYear, formatado);
 	}
 
 	@Test
-	public void getFormattedDateTimeFormatoDiaMesAnoTest() {
+	public void getFormattedDateTimeDayMonthYearFormatTest() {
 		CcpTimeDecorator t = new CcpTimeDecorator();
 		String formatado = t.getFormattedDateTime("dd/MM/yyyy");
 		assertTrue(formatado.matches("\\d{2}/\\d{2}/\\d{4}"));
 	}
 
 	@Test
-	public void getBrazilianCalendarNaoNuloTest() {
+	public void getBrazilianCalendarNotNullTest() {
 		CcpTimeDecorator t = new CcpTimeDecorator();
 		Calendar cal = t.getBrazilianCalendar();
 		assertNotNull(cal);
@@ -96,30 +96,30 @@ public class CcpTimeDecoratorTest {
 	}
 
 	@Test
-	public void sleepPositivoRetornaTrueTest() {
+	public void sleepPositiveReturnsTrueTest() {
 		CcpTimeDecorator t = new CcpTimeDecorator();
-		boolean resultado = t.sleep(1);
-		assertTrue(resultado);
+		boolean result = t.sleep(1);
+		assertTrue(result);
 	}
 
 	@Test
-	public void sleepZeroRetornaFalseTest() {
+	public void sleepZeroReturnsFalseTest() {
 		CcpTimeDecorator t = new CcpTimeDecorator();
-		boolean resultado = t.sleep(0);
-		assertFalse(resultado);
+		boolean result = t.sleep(0);
+		assertFalse(result);
 	}
 
 	@Test
-	public void sleepNegativoRetornaFalseTest() {
+	public void sleepNegativeReturnsFalseTest() {
 		CcpTimeDecorator t = new CcpTimeDecorator();
-		boolean resultado = t.sleep(-100);
-		assertFalse(resultado);
+		boolean result = t.sleep(-100);
+		assertFalse(result);
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void construtorLongNullParamTest() {
+	public void constructorLongNullParamTest() {
 		new CcpTimeDecorator((Long) null);
 	}
 

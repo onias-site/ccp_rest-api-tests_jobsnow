@@ -9,9 +9,9 @@ import com.jn.entities.JnEntityInstantMessengerMessageSent;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 
 /**
- * jn_instant_messenger_message_sent: {@code @CcpEntityCache(3600)}, descartável por hora, transformador
- * (hash da mensagem, que faz parte da chave primária) e validador. É o que impede repetir a mesma
- * mensagem no mesmo chat dentro da hora.
+ * jn_instant_messenger_message_sent: {@code @CcpEntityCache(3600)}, hourly disposable, transformer (hash of the
+ * message, which is part of the primary key) and validator. It is what prevents repeating the same message in
+ * the same chat within the hour.
  */
 public class JnEntityInstantMessengerMessageSentDecoratorsTest extends EntityDecoratorTestTemplate {
 

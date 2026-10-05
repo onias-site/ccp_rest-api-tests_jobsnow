@@ -1,38 +1,25 @@
-A) Skill hierarchy
+A) Solucionar bugs
 B) New Skill
 C) Agrupamento de entidades
-D) Entidade de notificação
-E) Revisitar cache e bulk
-F) Endpoints genéricos
-G) Lógica do agrupador
-H) Pendding warnings
-
-F) Tradução do codigo
+D) Revisitar cache e bulk
+E) Endpoints genéricos
+F) Lógica do agrupador
 G) Melhoria dos synonyms
 H) Estatisticas das skills 
 I) Recriação das entidades do VIS. 
-J) E-mail
+J) E-mail com curriculos
 K) Cadastro de vagas
 L) Responsividade de todo o front end
 M) Deploy
 N) Teste de invasão 
-O) Traduzir todo o sistema.
+O) Tornar o sistema multi idioma.
 P) Versão Mobile
 
-Corrigir explicação de dentro do e-mail, a descrição da mensagem deve ser geral.
-No e-mail, nao mostrar (re)aprovados anteriormente, no caso dos aprovados, consultar as skills
-Novas solicitações no mesmo parent fazem update nas antigas já aprovadas ou reprovadas?
-DeleteSkillFixHierarchy tem que ser flow tal como FixSkillHierarchy
-Trava para impedir a alteração de solicitação já existente?
-De fato integrar alterações nas skills
-Registrar comando pendente
-Desperdicios de e-mail
-No bot trocar palavras por numeros
-String hard coded no codigo
-Arrancar strings literais dos bots
+Solucionar bugs encontrados
 Desacoplar vis e jb
+
 
 extração de variaveis
 traduçao do codigo
+strings soltas
 centralização dos enums
-aumento dos testes

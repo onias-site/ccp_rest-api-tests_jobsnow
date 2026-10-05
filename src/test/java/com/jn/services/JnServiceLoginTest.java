@@ -48,7 +48,7 @@ public class JnServiceLoginTest {
 		assertNotNull(JnServiceLogin.UnlockLoginToken);
 	}
 
-	// ── null-parameter tests (AOP) — cada valor.apply(null) ──────────────────
+	// ── null-parameter tests (AOP): each value.apply(null) ───────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeLoginApplyNullTest() {
@@ -114,7 +114,7 @@ public class JnServiceLoginTest {
 
 	/** sessionToken saiu do enum local e passou a viver no centralizador do centro de custo ccp. */
 	@Test
-	public void sessionTokenCentralizadoTest() {
+	public void sessionTokenCentralizedTest() {
 		assertNotNull(CcpJsonCommonsFields.valueOf("sessionToken"));
 	}
 }

@@ -16,9 +16,9 @@ import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError.CcpValidationErrorFields;
 
 /**
- * Apoio para os testes de {@code @CcpJsonGlobalValidations}. Ao contrário das validações de campo, as
- * validações globais registram os erros sob a chave do nome da classe portadora das regras, e a
- * mensagem é texto livre devolvido por {@code getErrorMessage} — por isso a extração é feita aqui.
+ * Support for the tests of {@code @CcpJsonGlobalValidations}. Unlike the field validations, the global
+ * validations record the errors under the key of the name of the class holding the rules, and the message is
+ * free text returned by {@code getErrorMessage}, which is why the extraction is done here.
  */
 public class GlobalValidation {
 
@@ -26,91 +26,91 @@ public class GlobalValidation {
 
 	private static final String NOME_DA_FUNCIONALIDADE = "teste de validacoes globais";
 
-	/** Confere que o json passa pelas validações globais da classe de regras informada. */
-	public static void accepts(Class<?> regras, CcpJsonRepresentation json) {
+	/** Checks that the JSON passes the global validations of the given rules class. */
+	public static void accepts(Class<?> rules, CcpJsonRepresentation json) {
 		try {
-			CcpJsonRepresentation retorno = CcpJsonValidatorEngine.INSTANCE.validateJson(regras, json, NOME_DA_FUNCIONALIDADE);
-			assertEquals(json, retorno);
+			CcpJsonRepresentation returned = CcpJsonValidatorEngine.INSTANCE.validateJson(rules, json, NOME_DA_FUNCIONALIDADE);
+			assertEquals(json, returned);
 		} catch (CcpJsonValidationError e) {
-			List<String> mensagens = extraiMensagens(e, regras);
-			fail("O json deveria ter passado na validacao global, mas foi recusado com: " + mensagens);
+			List<String> messages = extractMessages(e, rules);
+			fail("The JSON should have passed the global validation, but it was refused with: " + messages);
 		}
 	}
 
 	/**
-	 * Confere que o json é recusado pelas validações globais da classe de regras e devolve as mensagens
-	 * de erro registradas sob a chave dessa classe.
+	 * Checks that the JSON is refused by the global validations of the rules class and returns the error messages
+	 * recorded under the key of that class.
 	 */
-	public static List<String> refuses(Class<?> regras, CcpJsonRepresentation json) {
+	public static List<String> refuses(Class<?> rules, CcpJsonRepresentation json) {
 		try {
-			CcpJsonValidatorEngine.INSTANCE.validateJson(regras, json, NOME_DA_FUNCIONALIDADE);
+			CcpJsonValidatorEngine.INSTANCE.validateJson(rules, json, NOME_DA_FUNCIONALIDADE);
 		} catch (CcpJsonValidationError e) {
-			List<String> mensagens = extraiMensagens(e, regras);
-			boolean semMensagens = mensagens.isEmpty();
-			assertTrue("O json foi recusado, mas nenhum erro foi registrado para a classe de regras", false == semMensagens);
-			return mensagens;
+			List<String> messages = extractMessages(e, rules);
+			boolean withoutMessages = messages.isEmpty();
+			assertTrue("The JSON was refused, but no error was recorded for the rules class", false == withoutMessages);
+			return messages;
 		}
 
-		String nomeDasRegras = regras.getName();
-		fail("O json deveria ter sido recusado pelas validacoes globais de '" + nomeDasRegras + "', mas passou na validacao");
+		String ruleNames = rules.getName();
+		fail("The JSON should have been refused by the global validations of '" + ruleNames + "', but it passed the validation");
 		return new ArrayList<>();
 	}
 
-	/** Confere que ao menos uma das mensagens de erro contém o trecho informado. */
-	public static void containsMessage(List<String> mensagens, String trecho) {
-		for (String message : mensagens) {
+	/** Checks that at least one of the error messages contains the given excerpt. */
+	public static void containsMessage(List<String> messages, String trecho) {
+		for (String message : messages) {
 			boolean contem = message.contains(trecho);
 			if(contem) {
 				return;
 			}
 		}
-		fail("Era esperada uma mensagem contendo '" + trecho + "', mas as mensagens foram: " + mensagens);
+		fail("Era esperada uma mensagem contendo '" + trecho + "', mas as mensagens foram: " + messages);
 	}
 
-	/** Confere que nenhuma das mensagens de erro contém o trecho informado. */
-	public static void doesNotContainMessage(List<String> mensagens, String trecho) {
-		for (String message : mensagens) {
+	/** Checks that none of the error messages contains the given excerpt. */
+	public static void doesNotContainMessage(List<String> messages, String trecho) {
+		for (String message : messages) {
 			boolean contem = message.contains(trecho);
 			if(contem) {
-				fail("Nao era esperada uma mensagem contendo '" + trecho + "', mas as mensagens foram: " + mensagens);
+				fail("Nao era esperada uma mensagem contendo '" + trecho + "', mas as mensagens foram: " + messages);
 			}
 		}
 	}
 
 	/**
-	 * Devolve as explicações das regras globais da classe informada — o texto que acompanha o erro para
-	 * dizer ao chamador o que a anotação exige.
+	 * Returns the explanations of the global rules of the given class, the text that goes with the error to tell the
+	 * caller what the annotation demands.
 	 */
-	public static List<String> rulesExplanations(Class<?> regras) {
-		CcpJsonRepresentation rulesExplanation = CcpJsonValidationRulesEngine.INSTANCE.getRulesExplanation(regras);
-		String nomeDasRegras = regras.getName();
-		CcpFieldName chave = new CcpFieldName(nomeDasRegras);
-		List<Object> explicacoes = rulesExplanation.getAsObjectList(chave);
-		List<String> mensagens = new ArrayList<>();
-		achata(explicacoes, mensagens);
-		return mensagens;
+	public static List<String> rulesExplanations(Class<?> rules) {
+		CcpJsonRepresentation rulesExplanation = CcpJsonValidationRulesEngine.INSTANCE.getRulesExplanation(rules);
+		String ruleNames = rules.getName();
+		CcpFieldName key = new CcpFieldName(ruleNames);
+		List<Object> explicacoes = rulesExplanation.getAsObjectList(key);
+		List<String> messages = new ArrayList<>();
+		flatten(explicacoes, messages);
+		return messages;
 	}
 
-	private static List<String> extraiMensagens(CcpJsonValidationError e, Class<?> regras) {
+	private static List<String> extractMessages(CcpJsonValidationError e, Class<?> rules) {
 		CcpJsonRepresentation errors = e.json.getInnerJson(CcpValidationErrorFields.errors);
-		String nomeDasRegras = regras.getName();
-		CcpFieldName chave = new CcpFieldName(nomeDasRegras);
-		List<Object> erros = errors.getAsObjectList(chave);
-		List<String> mensagens = new ArrayList<>();
-		achata(erros, mensagens);
-		return mensagens;
+		String ruleNames = rules.getName();
+		CcpFieldName key = new CcpFieldName(ruleNames);
+		List<Object> errorList = errors.getAsObjectList(key);
+		List<String> messages = new ArrayList<>();
+		flatten(errorList, messages);
+		return messages;
 	}
 
-	private static void achata(Collection<?> valores, List<String> mensagens) {
-		for (Object valor : valores) {
-			boolean ehColecao = valor instanceof Collection;
-			if(ehColecao) {
-				Collection<?> colecao = (Collection<?>) valor;
-				achata(colecao, mensagens);
+	private static void flatten(Collection<?> values, List<String> messages) {
+		for (Object value : values) {
+			boolean isCollection = value instanceof Collection;
+			if(isCollection) {
+				Collection<?> collection = (Collection<?>) value;
+				flatten(collection, messages);
 				continue;
 			}
-			String message = "" + valor;
-			mensagens.add(message);
+			String message = "" + value;
+			messages.add(message);
 		}
 	}
 }
