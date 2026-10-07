@@ -8,7 +8,6 @@ import static org.junit.Assert.fail;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ccp.constants.CcpOtherConstants;
@@ -16,8 +15,6 @@ import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
-import com.ccp.json.validations.global.engine.CcpJsonValidationError;
-import com.ccp.json.validations.global.engine.CcpJsonValidationError.CcpValidationErrorFields;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.http.CcpErrorHttpClient;
 import com.ccp.especifications.http.CcpErrorHttpServer;
@@ -30,6 +27,8 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.jn.entities.JnEntityHttpApiErrorClient;
+import com.jn.entities.JnEntityHttpApiErrorServer;
 import com.jn.entities.JnEntityHttpApiRetrySendRequest;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
@@ -68,6 +67,16 @@ public class HttpFailuresTest {
 				.put(new CcpFieldName("expectedStatusList"), Arrays.asList(200));
 	}
 
+	/** The primary key of the record of the failure: the call, the api and the whole error as details. */
+	private CcpJsonRepresentation errorKey(CcpJsonRepresentation errorEntity) {
+		return CcpOtherConstants.EMPTY_JSON
+				.put(JnJsonCommonsFields.url, this.url)
+				.put(JnJsonCommonsFields.method, "POST")
+				.put(JnJsonCommonsFields.headers, CcpOtherConstants.EMPTY_JSON.content)
+				.put(JnJsonCommonsFields.apiName, "testApi")
+				.put(JnJsonCommonsFields.details, errorEntity.asUgglyJson());
+	}
+
 	/** An executor that always fails with the given error and counts its attempts. */
 	class FailingExecutor implements CcpHttpApiExecutor {
 		final AtomicInteger attempts = new AtomicInteger();
@@ -93,22 +102,6 @@ public class HttpFailuresTest {
 	}
 
 	@Test
-	public void todayEveryHttpErrorEndsInTheValidationOfItsRecordBeforeAnyRetry() {
-		for (RuntimeException error : Arrays.<RuntimeException>asList(new CcpErrorHttpServer(this.errorEntity(503)), new CcpErrorHttpClient(this.errorEntity(404)))) {
-			FailingExecutor executor = new FailingExecutor(error);
-			JnBusinessSendHttpRequest business = new JnBusinessSendHttpRequest(executor, e -> CcpOtherConstants.EMPTY_JSON);
-			try {
-				business.execute(this.request);
-				fail("finding 58: the record of the failure lacks the required timestamp");
-			} catch (CcpJsonValidationError e) {
-				assertTrue(e.getMessage(), e.json.getInnerJson(CcpValidationErrorFields.errors).containsAllFields(JnJsonCommonsFields.timestamp));
-			}
-			assertEquals(1, executor.attempts.get());
-		}
-	}
-
-	@Ignore("finding 58: the retry and error records require timestamp/date (and httpStatus) that nobody fills")
-	@Test
 	public void aServerErrorIsRetriedUntilTheMaximumAndThenRethrown() {
 		CcpErrorHttpServer error = new CcpErrorHttpServer(this.errorEntity(503));
 		FailingExecutor executor = new FailingExecutor(error);
@@ -122,9 +115,9 @@ public class HttpFailuresTest {
 		}
 
 		assertEquals("the first call plus one per registered attempt", 3, executor.attempts.get());
+		assertTrue("the error was recorded after the last attempt", JnEntityHttpApiErrorServer.ENTITY.exists(this.errorKey(error.entity)));
 	}
 
-	@Ignore("finding 58: the error record requires timestamp that nobody fills")
 	@Test
 	public void aClientErrorIsRethrownAtOnce() {
 		CcpErrorHttpClient error = new CcpErrorHttpClient(this.errorEntity(404));
@@ -139,6 +132,7 @@ public class HttpFailuresTest {
 		}
 
 		assertEquals(1, executor.attempts.get());
+		assertTrue("the error was recorded", JnEntityHttpApiErrorClient.ENTITY.exists(this.errorKey(error.entity)));
 	}
 
 	@Test

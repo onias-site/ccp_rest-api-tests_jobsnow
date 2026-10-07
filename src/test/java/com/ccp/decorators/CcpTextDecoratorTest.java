@@ -111,6 +111,41 @@ public class CcpTextDecoratorTest {
 		}
 	}
 
+	/**
+	 * The tokens guard the login and the password creation, so their characters must come from a cryptographically secure
+	 * source; until 2026-10-06 they came from {@code java.util.Random}, whose next values can be predicted.
+	 */
+	@Test
+	public void generateTokenUsesASecureRandomSourceTest() throws Exception {
+		Field source = CcpTextDecorator.class.getDeclaredField("TOKEN_RANDOM");
+		source.setAccessible(true);
+
+		assertTrue(source.get(null) instanceof java.security.SecureRandom);
+		assertTrue(java.lang.reflect.Modifier.isStatic(source.getModifiers()));
+	}
+
+	@Test
+	public void generateTokenDoesNotRepeatTokensTest() {
+		CcpTextDecorator alphabet = CcpOtherConstants.LETTERS_AND_NUMBERS.text();
+		java.util.Set<String> tokens = new java.util.HashSet<>();
+
+		for (int k = 0; k < 1000; k++) {
+			tokens.add(alphabet.generateToken(8).content);
+		}
+
+		assertEquals(1000, tokens.size());
+	}
+
+	@Test
+	public void generateTokenReachesEveryCharacterOfTheAlphabetTest() {
+		String alphabet = CcpOtherConstants.LETTERS_AND_NUMBERS.content;
+		String manyCharacters = CcpOtherConstants.LETTERS_AND_NUMBERS.text().generateToken(20000).content;
+
+		for (char c : alphabet.toCharArray()) {
+			assertTrue("never drawn: " + c, manyCharacters.indexOf(c) >= 0);
+		}
+	}
+
 	// ── resolveTemplate ───────────────────────────────────────────────────────
 
 	@Test
@@ -171,6 +206,30 @@ public class CcpTextDecoratorTest {
 		String base64 = new CcpStringDecorator(original).text().asBase64().content;
 		byte[] decoded = new CcpStringDecorator(base64).text().getByteArrayFromBase64String();
 		assertEquals(original, new String(decoded));
+	}
+
+	@Test
+	public void fromBase64UndoesAsBase64Test() {
+		String original = "{\"topic\":\"jobsnow\",\"attempt\":1}";
+		String base64 = new CcpStringDecorator(original).text().asBase64().content;
+
+		String decoded = new CcpStringDecorator(base64).text().fromBase64().content;
+
+		assertEquals(original, decoded);
+	}
+
+	/**
+	 * Pub/Sub delivers to the push endpoint the bytes the publisher sent, in Base64; a JSON with accents comes back intact
+	 * only when decoded as UTF-8.
+	 */
+	@Test
+	public void fromBase64ReadsTheBytesAsUtf8Test() {
+		String original = "{\"message\":\"configuração\"}";
+		String base64 = java.util.Base64.getEncoder().encodeToString(original.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+
+		String decoded = new CcpStringDecorator(base64).text().fromBase64().content;
+
+		assertEquals(original, decoded);
 	}
 
 	// ── capitalize ────────────────────────────────────────────────────────────

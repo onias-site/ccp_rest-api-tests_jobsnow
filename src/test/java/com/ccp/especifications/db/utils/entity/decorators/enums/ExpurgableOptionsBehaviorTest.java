@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.GregorianCalendar;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -54,14 +53,6 @@ public class ExpurgableOptionsBehaviorTest {
 		assertTrue(CcpEntityExpurgableOptions.daily.getNextDate().matches("\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}"));
 	}
 
-	@Test
-	public void theNextPeriodAfterAMomentCurrentlyIgnoresTheMoment() {
-		long next = CcpEntityExpurgableOptions.daily.getNextTimeStamp(this.leapFebruary);
-
-		assertTrue("finding 19: computed from now, not from the given moment", next > System.currentTimeMillis());
-	}
-
-	@Ignore("finding 19: getNextTimeStamp(Long) and getNextDate(Long) must start from the given moment")
 	@Test
 	public void theNextPeriodAfterAMomentStartsFromTheMoment() {
 		assertEquals(this.leapFebruary + ONE_DAY, (long) CcpEntityExpurgableOptions.daily.getNextTimeStamp(this.leapFebruary));

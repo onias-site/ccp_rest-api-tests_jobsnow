@@ -46,12 +46,10 @@ public class BooleanConditionsTest {
 	public void aRangeGoesBackToTheClauseThatStartedIt() {
 		CcpQueryOptions request = CcpQueryOptions.INSTANCE.startQuery().startBool()
 				.startShould(1).startRange().startFieldRange("age").greaterThan(18).endFieldRangeAndBackToRange().endRangeAndBackToShould().endShouldAndBackToBool()
-				.startShouldNot().startRange().startFieldRange("age").lessThan(10).endFieldRangeAndBackToRange().endRangeAndBackToShouldNot().endShouldNotAndBackToBool()
 				.startMustNot().startRange().startFieldRange("age").greaterThanEquals(90).endFieldRangeAndBackToRange().endRangeAndBackToMustNot().endMustNotAndBackToBool()
 				.endBoolAndBackToQuery().endQueryAndBackToRequest();
 
 		assertEquals(18, this.path(this.clause(request, "should").get(0), "range", "age").getAsIntegerNumber(new CcpFieldName("gt")).intValue());
-		assertEquals(10, this.path(this.clause(request, "should_not").get(0), "range", "age").getAsIntegerNumber(new CcpFieldName("lt")).intValue());
 		assertEquals(90, this.path(this.clause(request, "must_not").get(0), "range", "age").getAsIntegerNumber(new CcpFieldName("gte")).intValue());
 	}
 

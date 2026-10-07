@@ -93,4 +93,58 @@ public class CachedReadThroughTest {
 		assertFalse("the output carries the hash used as key", String.valueOf(first.get("cacheHash")).isEmpty());
 		assertFalse(first.get("cacheHash").equals(third.get("cacheHash")));
 	}
+
+	/** A service that answers its own name, so a result taken from another service's cache shows up. */
+	static class NamingService implements CcpService {
+		final String name;
+
+		NamingService(String name) {
+			this.name = name;
+		}
+
+		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
+			return json.put(new CcpFieldName("answeredBy"), this.name);
+		}
+
+		public Class<?> getJsonValidationClass() {
+			return NamingService.class;
+		}
+
+		public String name() {
+			return this.name;
+		}
+	}
+
+	/** Until 2026-10-06 the key was only the hash of the value, and the second service got the first one's result. */
+	@Test
+	public void twoCachedServicesWithTheSameValueDoNotShareTheResult() {
+		CcpCachedService login = new CcpCachedService(this.word, new NamingService("login"), 60);
+		CcpCachedService profile = new CcpCachedService(this.word, new NamingService("profile"), 60);
+		Map<String, Object> input = new HashMap<>();
+		input.put("word", "same@value." + System.nanoTime());
+
+		Map<String, Object> fromLogin = login.execute(input);
+		Map<String, Object> fromProfile = profile.execute(input);
+
+		assertEquals("login", fromLogin.get("answeredBy"));
+		assertEquals("profile", fromProfile.get("answeredBy"));
+		assertFalse(fromLogin.get("cacheHash").equals(fromProfile.get("cacheHash")));
+	}
+
+	@Test
+	public void theSameServiceCachedByTwoFieldsWithTheSameValueKeepsTwoEntries() {
+		CcpFieldName otherField = new CcpFieldName("otherWord");
+		CountingService counting = new CountingService();
+		CcpCachedService byWord = new CcpCachedService(this.word, counting, 60);
+		CcpCachedService byOtherWord = new CcpCachedService(otherField, counting, 60);
+		String sameValue = "same" + System.nanoTime();
+		Map<String, Object> input = new HashMap<>();
+		input.put("word", sameValue);
+		input.put("otherWord", sameValue);
+
+		byWord.execute(input);
+		byOtherWord.execute(input);
+
+		assertEquals("each field has its own entry, so the service ran twice", 2, this.computations);
+	}
 }

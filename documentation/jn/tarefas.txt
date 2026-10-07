@@ -8,9 +8,9 @@ G) Melhoria dos synonyms
 H) Estatisticas das skills 
 I) Recriação das entidades do VIS. 
 J) E-mail com curriculos
-K) Cadastro de vagas
-L) Responsividade de todo o front end
-M) Deploy
+K) Responsividade de todo o front end
+L) Deploy
+M) Cadastro de vagas
 N) Teste de invasão 
 O) Tornar o sistema multi idioma.
 P) Versão Mobile
@@ -20,6 +20,5 @@ Desacoplar vis e jb
 
 
 extração de variaveis
-traduçao do codigo
 strings soltas
 centralização dos enums

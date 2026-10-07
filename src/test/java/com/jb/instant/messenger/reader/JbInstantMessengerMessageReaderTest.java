@@ -66,7 +66,17 @@ public class JbInstantMessengerMessageReaderTest {
 			+ "{\"update_id\":102,\"message\":{\"message_id\":12,\"date\":1700000060,\"from\":{\"id\":66,\"username\":\"maria\"},\"chat\":{\"id\":66},\"text\":\"good morning\"}}"
 			+ "]}";
 
-	private static final String NO_MESSAGES = "{\"ok\":true,\"result\":[]}";
+	private static final String ONLY_EDITS = "{\"ok\":true,\"result\":["
+			+ "{\"update_id\":200,\"edited_message\":{\"message_id\":11,\"chat\":{\"id\":55},\"text\":\"edited once\"}},"
+			+ "{\"update_id\":201,\"callback_query\":{\"id\":\"9\",\"data\":\"x\"}}"
+			+ "]}";
+
+	private static final String MESSAGE_THEN_EDIT = "{\"ok\":true,\"result\":["
+			+ "{\"update_id\":300,\"message\":{\"message_id\":21,\"date\":1700000000,\"from\":{\"id\":55,\"username\":\"onias\"},\"chat\":{\"id\":55},\"text\":\"hello\"}},"
+			+ "{\"update_id\":301,\"edited_message\":{\"message_id\":21,\"chat\":{\"id\":55},\"text\":\"hello!\"}}"
+			+ "]}";
+
+	private static final String NO_MESSAGES ="{\"ok\":true,\"result\":[]}";
 
 	private static final String NOT_OK_RESPONSE = "{\"ok\":false,\"error_code\":401,\"description\":\"Unauthorized\"}";
 
@@ -169,6 +179,42 @@ public class JbInstantMessengerMessageReaderTest {
 		Long offset = JbInstantMessengerMessageReader.INSTANCE.getOffset(SUPPORT);
 
 		assertEquals(103L, offset.longValue());
+	}
+
+	/**
+	 * A batch made only of updates without {@code message} (edits, callbacks) still advances the offset: before
+	 * 2026-10-06 it did not, the same batch came back forever and, with 100 of them piled up, new messages were no longer
+	 * read.
+	 */
+	@Test
+	public void offsetAdvancesOverUpdatesWithoutMessageTest() {
+
+		FakeHttpRequester telegram = this.telegramResponding(200, ONLY_EDITS, NO_MESSAGES);
+
+		this.saveOffset(SUPPORT, 0L);
+
+		FakeBot firstRead = this.readNewMessages(JnBotType.support);
+
+		this.readNewMessages(JnBotType.support);
+
+		CcpJsonRepresentation secondRequest = new CcpStringDecorator(telegram.lastRequest).json();
+
+		assertTrue(firstRead.received.isEmpty());
+		assertEquals(202L, JbInstantMessengerMessageReader.INSTANCE.getOffset(SUPPORT).longValue());
+		assertEquals(202L, secondRequest.getAsLongNumber(JsonFieldNames.offset).longValue());
+	}
+
+	@Test
+	public void offsetAdvancesPastAnUpdateWithoutMessageAtTheEndOfTheBatchTest() {
+
+		this.telegramResponding(200, MESSAGE_THEN_EDIT);
+
+		this.saveOffset(SUPPORT, 0L);
+
+		FakeBot read = this.readNewMessages(JnBotType.support);
+
+		assertEquals(1, read.received.size());
+		assertEquals(302L, JbInstantMessengerMessageReader.INSTANCE.getOffset(SUPPORT).longValue());
 	}
 
 	@Test

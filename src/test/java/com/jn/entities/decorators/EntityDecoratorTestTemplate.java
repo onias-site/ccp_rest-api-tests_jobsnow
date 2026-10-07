@@ -260,6 +260,21 @@ public abstract class EntityDecoratorTestTemplate {
 		assertTrue("save wrote in read-only entity " + this.name(), this.asStored(record).isEmpty());
 		assertFalse("delete returned true in read-only entity " + this.name(), entityUnderTest.delete(record));
 		assertFalse("deleteAnyWhere returned true in read-only entity " + this.name(), entityUnderTest.deleteAnyWhere(record));
+
+		// a write through the API, outside the flow of the decorators that own the entity, is refused (since 2026-10-06)
+		for (com.ccp.especifications.db.bulk.CcpBulkEntityOperationType write : java.util.Arrays.asList(
+				com.ccp.especifications.db.bulk.CcpBulkEntityOperationType.create,
+				com.ccp.especifications.db.bulk.CcpBulkEntityOperationType.update,
+				com.ccp.especifications.db.bulk.CcpBulkEntityOperationType.delete)) {
+			try {
+				entityUnderTest.toBulkItems(record, write);
+				org.junit.Assert.fail("toBulkItems " + write + " was accepted in read-only entity " + this.name());
+			} catch (com.ccp.especifications.db.utils.entity.decorators.engine.CcpErrorEntityReadOnly e) {
+				// expected
+			}
+		}
+		// reading through the bulk goes on
+		entityUnderTest.toBulkItems(record, com.ccp.especifications.db.bulk.CcpBulkEntityOperationType.noop);
 	}
 
 	// ── @CcpEntityTwin ───────────────────────────────────────────────────────

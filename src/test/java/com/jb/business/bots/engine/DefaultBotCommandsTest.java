@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ccp.constants.CcpOtherConstants;
@@ -22,7 +21,9 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.jb.entities.JbEntityBotCommandStepSession;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
+import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.jn.utils.JnLanguage;
 
 /**
@@ -83,21 +84,29 @@ public class DefaultBotCommandsTest {
 	}
 
 	@Test
-	public void showAllCommandsCurrentlyListsTheCanonicalNames() {
-		String answer = this.answerTo("/showAllCommands");
-
-		assertTrue(answer, answer.startsWith("/solveLoginTokenTicket,  /fixSkillHierarchy,  /allowCommandToUser,  /pendingTickets"));
-		assertTrue(answer, answer.contains("/chatId"));
-	}
-
-	@Ignore("finding 48: getIdentifier must use the name of the command in the language (field message), the list must be separated by ', ' and must not show removeSession")
-	@Test
 	public void showAllCommandsListsTheVisibleCommandsByTheirNameInTheLanguage() {
 		String answer = this.answerTo("/showAllCommands");
 
 		assertTrue(answer, answer.contains("/solucionarTicketsDeTokenDeLogin"));
 		assertTrue(answer, answer.contains(", /pendingTickets"));
+		assertTrue(answer, answer.contains("/chatId"));
+		assertTrue("one space between the commands: " + answer, false == answer.contains(",  "));
 		assertTrue(answer, false == answer.contains("/removeSession"));
+	}
+
+	/** The notices to the operators carry the canonical name; /showAllCommands lists the name of the language: both work. */
+	@Test
+	public void aCommandIsRecognizedByItsCanonicalNameAndByItsNameInTheLanguage() {
+		BotCommand command = JbBotEngine.INSTANCE.allCommands.get("solveLoginTokenTicket");
+		CcpJsonRepresentation session = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.language, JnLanguage.portuguese.name());
+
+		boolean canonicalDoesNotMatch = command.commandNameDoesNotMatch(session.put(JnJsonCommonsFields.typedValue, "/solveLoginTokenTicket a@b.com"));
+		boolean translatedDoesNotMatch = command.commandNameDoesNotMatch(session.put(JnJsonCommonsFields.typedValue, "/solucionarTicketsDeTokenDeLogin a@b.com"));
+		boolean otherDoesNotMatch = command.commandNameDoesNotMatch(session.put(JnJsonCommonsFields.typedValue, "/pendingTickets"));
+
+		assertTrue(false == canonicalDoesNotMatch);
+		assertTrue(false == translatedDoesNotMatch);
+		assertTrue(otherDoesNotMatch);
 	}
 
 	@Test
@@ -107,11 +116,38 @@ public class DefaultBotCommandsTest {
 		assertTrue(answer, answer.startsWith("Bot de rotinas administrativas"));
 	}
 
+	/** The session of the support chat, as the engine saves it in the middle of a command. */
+	private CcpJsonRepresentation sessionInTheMiddleOf(String commandName) {
+		return CcpOtherConstants.EMPTY_JSON
+				.put(JnJsonInstantMessengerFields.botName, JbBotType.support.name())
+				.put(JnJsonInstantMessengerFields.chatId, SUPPORT_CHAT)
+				.put(JnJsonInstantMessengerFields.commandName, commandName)
+				.put(JnJsonInstantMessengerFields.stepName, commandName)
+				.put(JnJsonCommonsFields.json, CcpOtherConstants.EMPTY_JSON.content)
+				.put(JnJsonCommonsFields.language, JnLanguage.portuguese.name());
+	}
+
 	@Test
-	public void explainThisCommandIsCurrentlyUnreachableAndShowsTheCommands() {
+	public void withoutACommandInProgressExplainThisCommandShowsTheCommands() {
+		JbEntityBotCommandStepSession.ENTITY.delete(this.sessionInTheMiddleOf("solveLoginTokenTicket"));
+
 		String answer = this.answerTo("/explainThisCommand");
 
-		assertTrue("finding 48: the command is invisible without a current command, so the bot shows all commands: " + answer, answer.startsWith("/solveLoginTokenTicket"));
+		assertTrue("nothing to explain, so the bot shows all commands: " + answer, answer.startsWith("/solucionarTicketsDeTokenDeLogin"));
+	}
+
+	/** Until 2026-10-06 it could never run: it was invisible without a command in the message, and then explained itself. */
+	@Test
+	public void explainThisCommandExplainsTheCommandInProgress() {
+		CcpJsonRepresentation session = this.sessionInTheMiddleOf("solveLoginTokenTicket");
+		JbEntityBotCommandStepSession.ENTITY.save(session);
+		try {
+			String answer = this.answerTo("/explainThisCommand");
+
+			assertTrue(answer, answer.startsWith("Quando o usu"));
+		} finally {
+			JbEntityBotCommandStepSession.ENTITY.delete(session);
+		}
 	}
 
 	private String explanationOfTheTokenTicketCommand() {
@@ -121,12 +157,6 @@ public class DefaultBotCommandsTest {
 		return explanation;
 	}
 
-	@Test
-	public void theExplanationOfACommandIsCurrentlyTheNameOfTheLanguage() {
-		assertEquals("portuguese", this.explanationOfTheTokenTicketCommand());
-	}
-
-	@Ignore("finding 48: BotCommand.getExplanation must return the text of the explanation, not its language")
 	@Test
 	public void theExplanationOfACommandIsItsText() {
 		assertTrue(this.explanationOfTheTokenTicketCommand().startsWith("Quando o usu"));

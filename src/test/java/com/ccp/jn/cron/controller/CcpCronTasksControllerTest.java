@@ -23,17 +23,12 @@ public class CcpCronTasksControllerTest {
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void mainNotifyErrorNullTest() throws Exception {
-		CcpCronTasksController.main(null, "topic", "{}");
-	}
-
-	@Test(expected = CcpNullParameterException.class)
 	public void mainTopicNullTest() throws Exception {
-		CcpCronTasksController.main(new NoopBusiness(), null, "{}");
+		CcpCronTasksController.main(null, "{}");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void mainParametersNullTest() throws Exception {
-		CcpCronTasksController.main(new NoopBusiness(), "topic", null);
+		CcpCronTasksController.main("topic", null);
 	}
 }

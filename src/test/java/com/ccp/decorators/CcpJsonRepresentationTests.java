@@ -1960,8 +1960,12 @@ public class CcpJsonRepresentationTests {
 	// null-return tests (AOP)
 	// ══════════════════════════════════════════════════════════════════════════
 
+	/**
+	 * A JSON of its own with the content forced to null. Until 2026-10-06 this was done on the global
+	 * {@code EMPTY_JSON}, and the "restore" left it with a mutable map for every test that ran afterwards.
+	 */
 	private static CcpJsonRepresentation withNullContent() throws Exception {
-		CcpJsonRepresentation d = CcpOtherConstants.EMPTY_JSON;
+		CcpJsonRepresentation d = CcpJsonRepresentation.getEmptyJson();
 		Field f = CcpJsonRepresentation.class.getDeclaredField("content");
 		f.setAccessible(true);
 		f.set(d, null);
@@ -1971,7 +1975,7 @@ public class CcpJsonRepresentationTests {
 	private static void restoreContent(CcpJsonRepresentation d) throws Exception {
 		Field f = CcpJsonRepresentation.class.getDeclaredField("content");
 		f.setAccessible(true);
-		f.set(d, new HashMap<>());
+		f.set(d, java.util.Collections.unmodifiableMap(new java.util.LinkedHashMap<>()));
 	}
 
 	@Test(expected = CcpNullReturnException.class)

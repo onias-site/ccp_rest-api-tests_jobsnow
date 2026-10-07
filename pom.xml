@@ -194,6 +194,7 @@
 					<target>17</target>
 					<aspectjVersion>1.9.21</aspectjVersion>
 					<XhasMember>true</XhasMember>
+					<forceAjcCompile>true</forceAjcCompile>
 					<aspectLibraries>
 						<aspectLibrary>
 							<groupId>com.ccp</groupId>

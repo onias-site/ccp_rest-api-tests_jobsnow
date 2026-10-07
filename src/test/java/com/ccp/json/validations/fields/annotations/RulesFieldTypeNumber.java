@@ -23,5 +23,14 @@ public enum RulesFieldTypeNumber implements CcpJsonFieldName {
 
 	@CcpJsonFieldTypeNumber
 	semRestricao,
+
+	@CcpJsonFieldTypeNumber(minValue = 0)
+	minimoZero,
+
+	@CcpJsonFieldTypeNumber(minValue = -10)
+	minimoNegativo,
+
+	@CcpJsonFieldTypeNumber(exactValue = 0)
+	exatoZero,
 	;
 }

@@ -326,6 +326,18 @@ public class CcpJsonGlobalValidationsTest {
 		GlobalValidation.containsMessage(explicacoes, "maxPj");
 	}
 
+	/**
+	 * The copied global rules are explained under the name of the class that copies them. Until 2026-10-06 the
+	 * explanation did not follow {@code @CcpJsonCopyGlobalValidationsFrom}, although the validation did.
+	 */
+	@Test
+	public void copiedGlobalValidationsAreExplainedTest() {
+		List<String> explicacoes = GlobalValidation.rulesExplanations(RulesCopyingGlobalValidations.class);
+		GlobalValidation.containsMessage(explicacoes, "one of this following fields");
+		GlobalValidation.containsMessage(explicacoes, "maxClt");
+		GlobalValidation.containsMessage(explicacoes, "maxPj");
+	}
+
 	@Test
 	public void requiresAllOrNoneExplainsItsRuleTest() {
 		List<String> explicacoes = GlobalValidation.rulesExplanations(RulesRequiresAllOrNoneOneGroup.class);

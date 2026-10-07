@@ -46,6 +46,21 @@ public class CreateLoginToken extends JnServiceLoginTestTemplate {
 		this.execute(jsonWithLanguage, JnProcessStatusCreateLoginToken.expectedStatus);
 	}
 
+	/**
+	 * Asking for the token again right after it was sent answers the token creation's own status (429); until 2026-10-06
+	 * it answered {@code JnProcessStatusUpdatePassword.tokenAlreadySent} (409), the status of another service.
+	 */
+	@Test
+	public void tokenAlreadySent() {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		CcpJsonRepresentation jsonWithLanguage = this.withLanguage(testVariables);
+		this.execute(jsonWithLanguage, JnProcessStatusCreateLoginToken.expectedStatus);
+
+		this.execute(jsonWithLanguage, JnProcessStatusCreateLoginToken.statusAlreadySentToken);
+	}
+
 	private com.ccp.decorators.CcpJsonRepresentation withLanguage(TestVariables testVariables) {
 		return testVariables.REQUEST_TO_LOGIN.put(new CcpFieldName("language"), JnLanguage.portuguese.name());
 	}

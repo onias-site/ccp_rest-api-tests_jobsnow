@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.UUID;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ccp.business.CcpBusiness;
@@ -73,7 +72,6 @@ public class ReceiverOutcomeTest {
 		return recorded;
 	}
 
-	@Ignore("finding 55: response is saved as a JSON object in a text field of jn_async_task, so no outcome is recorded")
 	@Test
 	public void aSuccessfulTaskIsRecordedWithItsResponseAndTimes() {
 		long started = System.currentTimeMillis() - 1_000;
@@ -83,30 +81,18 @@ public class ReceiverOutcomeTest {
 		assertTrue(recorded.getAsBoolean(JnEntityAsyncTask.Fields.success));
 		assertTrue(recorded.getAsLongNumber(JnEntityAsyncTask.Fields.finished) >= started);
 		assertTrue(recorded.getAsLongNumber(JnEntityAsyncTask.Fields.enlapsedTime) >= 1_000);
-		assertEquals("done", recorded.getInnerJson(JnJsonCommonsFields.response).getAsString(JnJsonCommonsFields.message));
+		String response = recorded.getAsString(JnJsonCommonsFields.response);
+		assertEquals("done", new CcpJsonRepresentation(response).getAsString(JnJsonCommonsFields.message));
 	}
 
-	@Ignore("finding 55: response is saved as a JSON object in a text field of jn_async_task, so no outcome is recorded")
 	@Test
 	public void aFailedTaskIsRecordedAndNotRethrown() {
 		CcpJsonRepresentation recorded = this.run(FailingTask.class, System.currentTimeMillis());
 
 		assertFalse(recorded.getAsBoolean(JnEntityAsyncTask.Fields.success));
-		assertTrue(recorded.toString(), recorded.toString().contains("the task failed"));
+		assertTrue(recorded.toString(), recorded.getAsString(JnJsonCommonsFields.response).contains("the task failed"));
 	}
 
-	@Test
-	public void recordingTheOutcomeCurrentlyFailsAndTheErrorEscapes() {
-		try {
-			this.run(EchoTask.class, System.currentTimeMillis());
-			org.junit.Assert.fail("the outcome was recorded");
-		} catch (RuntimeException e) {
-			// finding 55: Elasticsearch refuses the object in the text field response, and then the error itself
-			// is longer than the 500 characters allowed in response
-		}
-	}
-
-	@Ignore("finding 39: started read back from a JSON message is a double, and saveResult casts it to Long")
 	@Test
 	public void aStartTimeThatCameThroughJsonIsAccepted() {
 		CcpJsonRepresentation recorded = this.run(EchoTask.class, (double) System.currentTimeMillis());

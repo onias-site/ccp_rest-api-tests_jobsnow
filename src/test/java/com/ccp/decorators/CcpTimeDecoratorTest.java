@@ -96,6 +96,23 @@ public class CcpTimeDecoratorTest {
 	}
 
 	@Test
+	public void theBrazilianCalendarStartsFromTheWrappedTimestampTest() {
+		long aMomentInThePast = 1_000_000_000_000L;
+		CcpTimeDecorator t = new CcpTimeDecorator(aMomentInThePast);
+		Calendar cal = t.getBrazilianCalendar();
+		assertEquals(aMomentInThePast, cal.getTimeInMillis());
+	}
+
+	@Test
+	public void theMidnightIsTheOneOfTheWrappedDayTest() {
+		long aMomentInThePast = 1_000_000_000_000L;
+		CcpTimeDecorator t = new CcpTimeDecorator(aMomentInThePast);
+		long midnight = t.getMidnight();
+		assertTrue(midnight <= aMomentInThePast);
+		assertTrue(aMomentInThePast - midnight < 24L * 60 * 60 * 1000);
+	}
+
+	@Test
 	public void sleepPositiveReturnsTrueTest() {
 		CcpTimeDecorator t = new CcpTimeDecorator();
 		boolean result = t.sleep(1);

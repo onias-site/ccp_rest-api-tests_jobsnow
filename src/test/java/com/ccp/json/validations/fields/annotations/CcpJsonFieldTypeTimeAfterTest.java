@@ -41,6 +41,23 @@ public class CcpJsonFieldTypeTimeAfterTest {
 		FieldValidation.refuses(this.business, json, RulesFieldTypeTimeAfter.noMaximoSeteDiasAFrente, CcpJsonFieldTypeError.timeMaxValueAfterCurrentTime);
 	}
 
+	/**
+	 * The message shows the date that was given (a future one) and the direction as a word. Until 2026-10-06 it rebuilt the
+	 * date as "now minus the distance", which put a future date in the past, and showed "_after".
+	 */
+	@Test
+	public void theErrorMessageShowsTheGivenFutureDateTest() {
+		long timestamp = System.currentTimeMillis() + 30 * ONE_DAY;
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesFieldTypeTimeAfter.noMaximoSeteDiasAFrente, timestamp);
+		String expectedDate = new com.ccp.decorators.CcpTimeDecorator(timestamp).getFormattedDateTime(com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions.daily.format);
+
+		String message = FieldValidation.refuses(this.business, json, RulesFieldTypeTimeAfter.noMaximoSeteDiasAFrente, CcpJsonFieldTypeError.timeMaxValueAfterCurrentTime);
+
+		org.junit.Assert.assertTrue(message, message.contains("has a value " + expectedDate));
+		org.junit.Assert.assertTrue(message, message.contains(" after this current time"));
+		org.junit.Assert.assertTrue(message, false == message.contains("_after"));
+	}
+
 	@Test
 	public void withinMinLimitTest() {
 		CcpJsonRepresentation json = this.jsonWithDaysAhead(RulesFieldTypeTimeAfter.noMinimoDoisDiasAFrente, 5);

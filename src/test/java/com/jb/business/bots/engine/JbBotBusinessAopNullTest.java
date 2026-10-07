@@ -66,38 +66,22 @@ public class JbBotBusinessAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void loadLabelsWithLanguagesFilterValueNullTest() {
-		bot().loadLabelsWithLanguages(null, unionAll(), ENTITY, SampleFieldName.sample, SampleFieldName.sample,
-				SampleFieldName.sample);
+		bot().loadLabelsWithLanguages(null, unionAll(), ENTITY, SampleFieldName.sample);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void loadLabelsWithLanguagesResultNullTest() {
-		bot().loadLabelsWithLanguages("filtro", null, ENTITY, SampleFieldName.sample, SampleFieldName.sample,
-				SampleFieldName.sample);
+		bot().loadLabelsWithLanguages("filtro", null, ENTITY, SampleFieldName.sample);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void loadLabelsWithLanguagesEntityNullTest() {
-		bot().loadLabelsWithLanguages("filtro", unionAll(), null, SampleFieldName.sample, SampleFieldName.sample,
-				SampleFieldName.sample);
+		bot().loadLabelsWithLanguages("filtro", unionAll(), null, SampleFieldName.sample);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void loadLabelsWithLanguagesFilterFieldNullTest() {
-		bot().loadLabelsWithLanguages("filtro", unionAll(), ENTITY, null, SampleFieldName.sample,
-				SampleFieldName.sample);
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void loadLabelsWithLanguagesLanguageFieldNullTest() {
-		bot().loadLabelsWithLanguages("filtro", unionAll(), ENTITY, SampleFieldName.sample, null,
-				SampleFieldName.sample);
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void loadLabelsWithLanguagesMessageFieldNullTest() {
-		bot().loadLabelsWithLanguages("filtro", unionAll(), ENTITY, SampleFieldName.sample, SampleFieldName.sample,
-				null);
+		bot().loadLabelsWithLanguages("filtro", unionAll(), ENTITY, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

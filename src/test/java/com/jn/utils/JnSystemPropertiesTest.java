@@ -34,4 +34,19 @@ public class JnSystemPropertiesTest {
 	public void getSystemInnerJsonNullTest() {
 		JnSystemProperties.INSTANCE.getSystemInnerJson((String[]) null);
 	}
+
+	// ── maxAttempts ───────────────────────────────────────────────────────────
+
+	@Test
+	public void maxAttemptsIsThreeWhenNotConfiguredTest() {
+		org.junit.Assert.assertEquals(3, JnSystemProperties.maxAttempts(com.ccp.constants.CcpOtherConstants.EMPTY_JSON));
+	}
+
+	/** A property comes as text; until 2026-10-06 it was cast to Integer and a configured value broke the login. */
+	@Test
+	public void maxAttemptsConfiguredAsTextIsReadAsNumberTest() {
+		com.ccp.decorators.CcpJsonRepresentation properties = com.ccp.constants.CcpOtherConstants.EMPTY_JSON.put(Fields.maxAttempts, "5");
+
+		org.junit.Assert.assertEquals(5, JnSystemProperties.maxAttempts(properties));
+	}
 }

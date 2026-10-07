@@ -152,6 +152,31 @@ public class QueryExecutorAgainstElasticsearchTest {
 	}
 
 	@Test
+	public void aScrollBringsOnlyTheRequestedFieldsInEveryPage() {
+		List<CcpJsonRepresentation> documents = new ArrayList<>();
+
+		this.executor.consumeQueryResult(this.allDocuments(), this.index, "10s", 2L, documents::addAll, "name");
+
+		assertEquals(3, documents.size());
+		for (CcpJsonRepresentation document : documents) {
+			assertTrue(document.toString(), document.containsField(new CcpFieldName("name")));
+			assertTrue(document.toString(), false == document.containsField(new CcpFieldName("value")));
+		}
+	}
+
+	@Test
+	public void aScrollWithoutFieldsBringsTheWholeSource() {
+		List<CcpJsonRepresentation> documents = new ArrayList<>();
+
+		this.executor.consumeQueryResult(this.allDocuments(), this.index, "10s", 2L, documents::addAll);
+
+		assertEquals(3, documents.size());
+		for (CcpJsonRepresentation document : documents) {
+			assertTrue(document.toString(), document.containsField(new CcpFieldName("value")));
+		}
+	}
+
+	@Test
 	public void theListBringsTheRequestedFields() {
 		List<CcpJsonRepresentation> list = this.executor.getResultAsList(this.allDocuments(), this.index, "name");
 
@@ -200,7 +225,6 @@ public class QueryExecutorAgainstElasticsearchTest {
 		assertEquals(3, byId.fieldSet().size());
 	}
 
-	@Ignore("finding 27: update by query ignores the new values (it sends no script)")
 	@Test
 	public void anUpdateByQueryChangesTheDocuments() throws Exception {
 		CcpJsonRepresentation newValues = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("value"), 99);
@@ -208,7 +232,7 @@ public class QueryExecutorAgainstElasticsearchTest {
 		this.executor.update(this.allDocuments(), this.index, newValues);
 		call("POST", INDEX + "/_refresh", "");
 
-		assertTrue(call("GET", INDEX + "/_doc/1", null).contains("\"value\":99"));
+		assertTrue(call("GET", INDEX + "/_doc/1", "").contains("\"value\":99"));
 	}
 
 	@Test

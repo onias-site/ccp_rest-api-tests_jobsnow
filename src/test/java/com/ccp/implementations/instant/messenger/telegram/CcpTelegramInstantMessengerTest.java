@@ -1,13 +1,19 @@
 package com.ccp.implementations.instant.messenger.telegram;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.dependency.injection.CcpDependencyInjection;
+import com.ccp.dependency.injection.CcpInstanceProvider;
+import com.ccp.especifications.http.CcpHttpRequester;
 import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
+import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
 public class CcpTelegramInstantMessengerTest {
@@ -99,5 +105,38 @@ public class CcpTelegramInstantMessengerTest {
 	@Test(expected = CcpNullParameterException.class)
 	public void sendFileFileContentNullTest() {
 		getMessenger().sendFile(FakeBot.BOT_A, "tok", 1L, 1L, "file", "cap", null);
+	}
+
+	// ── sendFile against a replaced Telegram ──────────────────────────────────
+
+	private static CapturingHttpRequester telegramReplaced() {
+		CapturingHttpRequester telegram = new CapturingHttpRequester();
+		CcpInstanceProvider<CcpHttpRequester> provider = () -> telegram;
+		CcpDependencyInjection.loadAllDependencies(provider);
+		return telegram;
+	}
+
+	@AfterClass
+	public static void restoreTheRealHttpRequester() {
+		CcpDependencyInjection.loadAllDependencies(new CcpApacheMimeHttp());
+	}
+
+	@Test
+	public void aFileSentAsAnAnswerCarriesTheMessageItAnswers() {
+		CapturingHttpRequester telegram = telegramReplaced();
+
+		getMessenger().sendFile(FakeBot.BOT_A, "tok", 1L, 7L, "file", "cap", new Byte[] { 0 });
+
+		assertEquals("7", telegram.getText("reply_to_message_id"));
+	}
+
+	@Test
+	public void aFileSentWithoutAnswerCarriesNoMessageToAnswer() {
+		CapturingHttpRequester telegram = telegramReplaced();
+
+		getMessenger().sendFile(FakeBot.BOT_A, "tok", 1L, 0L, "file", "cap", new Byte[] { 0 });
+
+		assertNull(telegram.getText("reply_to_message_id"));
+		assertEquals("1", telegram.getText("chat_id"));
 	}
 }

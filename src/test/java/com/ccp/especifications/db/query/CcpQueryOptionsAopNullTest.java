@@ -61,10 +61,6 @@ public class CcpQueryOptionsAopNullTest {
 		return bool().startShould(1);
 	}
 
-	private static CcpQueryShouldNot shouldNot() {
-		return bool().startShouldNot();
-	}
-
 	private static CcpQuerySimplifiedQuery simplified() {
 		return options().startSimplifiedQuery();
 	}
@@ -223,12 +219,12 @@ public class CcpQueryOptionsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void operatorAddConditionFieldNullTest() {
-		operator().addCondition(null, "value", "term");
+		operator().addCondition(null, "value", CcpQueryConditionType.term);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void operatorAddConditionValueNullTest() {
-		operator().addCondition("field", null, "term");
+		operator().addCondition("field", null, CcpQueryConditionType.term);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -238,12 +234,12 @@ public class CcpQueryOptionsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void operatorAddConditionBoostFieldNullTest() {
-		operator().addCondition(null, "value", "match", 1d, "and");
+		operator().addCondition(null, "value", CcpQueryConditionType.match, 1d, "and");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void operatorAddConditionBoostValueNullTest() {
-		operator().addCondition("field", null, "match", 1d, "and");
+		operator().addCondition("field", null, CcpQueryConditionType.match, 1d, "and");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -253,7 +249,7 @@ public class CcpQueryOptionsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void operatorAddConditionBoostOperatorNullTest() {
-		operator().addCondition("field", "value", "match", 1d, null);
+		operator().addCondition("field", "value", CcpQueryConditionType.match, 1d, null);
 	}
 
 	// ── CcpQueryMust ──────────────────────────────────────────────────────────
@@ -422,43 +418,6 @@ public class CcpQueryOptionsAopNullTest {
 		should().exists(null);
 	}
 
-	// ── CcpQueryShouldNot ─────────────────────────────────────────────────────
-
-	@Test(expected = CcpNullParameterException.class)
-	public void shouldNotPrefixFieldNullTest() {
-		shouldNot().prefix((CcpEntityField) null, "value");
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void shouldNotPrefixValueNullTest() {
-		shouldNot().prefix(FIELD, null);
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void shouldNotMatchPhraseFieldNullTest() {
-		shouldNot().matchPhrase((CcpEntityField) null, "value");
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void shouldNotMatchPhraseValueNullTest() {
-		shouldNot().matchPhrase(FIELD, null);
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void shouldNotTermFieldNullTest() {
-		shouldNot().term((CcpEntityField) null, "value");
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void shouldNotTermValueNullTest() {
-		shouldNot().term(FIELD, null);
-	}
-
-	@Test(expected = CcpNullParameterException.class)
-	public void shouldNotExistsNullTest() {
-		shouldNot().exists(null);
-	}
-
 	// ── CcpQuerySimplifiedQuery ───────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
@@ -518,12 +477,12 @@ public class CcpQueryOptionsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void simplifiedAddConditionFieldNullTest() {
-		simplified().addCondition(null, "value", "term");
+		simplified().addCondition(null, "value", CcpQueryConditionType.term);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void simplifiedAddConditionValueNullTest() {
-		simplified().addCondition("field", null, "term");
+		simplified().addCondition("field", null, CcpQueryConditionType.term);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

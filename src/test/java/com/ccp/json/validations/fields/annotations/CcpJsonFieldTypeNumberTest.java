@@ -80,6 +80,36 @@ public class CcpJsonFieldTypeNumberTest {
 		FieldValidation.accepts(this.business, json);
 	}
 
+	/**
+	 * Without a configured minimum, zero and negatives are numbers like any other. Until 2026-10-06 the unconfigured
+	 * minimum ran in this path and compared the value with {@code Double.MIN_VALUE}, the smallest positive double.
+	 */
+	@Test
+	public void withoutRestrictionAcceptsZeroAndNegativesTest() {
+		FieldValidation.accepts(this.business, this.json(RulesFieldTypeNumber.semRestricao, 0));
+		FieldValidation.accepts(this.business, this.json(RulesFieldTypeNumber.semRestricao, -5.5));
+	}
+
+	/** A minimum of zero used to be taken as "not configured" (it is not greater than {@code Double.MIN_VALUE}). */
+	@Test
+	public void minValueOfZeroIsHonoredTest() {
+		FieldValidation.accepts(this.business, this.json(RulesFieldTypeNumber.minimoZero, 0));
+		FieldValidation.refuses(this.business, this.json(RulesFieldTypeNumber.minimoZero, -0.1), RulesFieldTypeNumber.minimoZero, CcpJsonFieldTypeError.doubleNumberMinValue);
+	}
+
+	@Test
+	public void negativeMinValueIsHonoredTest() {
+		FieldValidation.accepts(this.business, this.json(RulesFieldTypeNumber.minimoNegativo, -10));
+		FieldValidation.refuses(this.business, this.json(RulesFieldTypeNumber.minimoNegativo, -10.5), RulesFieldTypeNumber.minimoNegativo, CcpJsonFieldTypeError.doubleNumberMinValue);
+	}
+
+	/** An exact value of zero used to be taken as "not configured" too. */
+	@Test
+	public void exactValueOfZeroIsHonoredTest() {
+		FieldValidation.accepts(this.business, this.json(RulesFieldTypeNumber.exatoZero, 0));
+		FieldValidation.refuses(this.business, this.json(RulesFieldTypeNumber.exatoZero, 1), RulesFieldTypeNumber.exatoZero, CcpJsonFieldTypeError.doubleNumberExactValue);
+	}
+
 	@Test
 	public void nonNumericTextTest() {
 		CcpJsonRepresentation json = this.json(RulesFieldTypeNumber.semRestricao, "abc");
