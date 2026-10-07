@@ -5,6 +5,7 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.annotations.CcpEntityFieldsValidator;
 import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityFactory;
 import com.ccp.especifications.db.utils.entity.decorators.interfaces.CcpEntityConfigurator;
+import com.ccp.especifications.db.utils.entity.fields.annotations.CcpEntityFieldPrimaryKey;
 import com.ccp.json.validations.fields.annotations.CcpJsonCopyFieldValidationsFrom;
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
@@ -34,6 +35,8 @@ public class FakeEntityCopyFieldValidations implements CcpEntityConfigurator {
 
 	public static enum Fields implements CcpJsonFieldName {
 
+		/** The key of the entity: since 2026-10-07 an entity without primary key is refused when it is built. */
+		@CcpEntityFieldPrimaryKey
 		@CcpJsonFieldTypeString(minLength = 10, maxLength = 500)
 		email,
 

@@ -17,17 +17,22 @@ public class JnFunctionMensageriaSenderTest {
 
 
 
-	@Test
-	public void toStringCurrentlyNamesTheClassOfTheTopicText() {
-		String description = new JnFunctionMensageriaSender(new NoopBusiness()).toString();
-		org.junit.Assert.assertEquals(String.class.getName(), description);
-	}
-
-	@org.junit.Ignore("finding 37: toString should name the topic (the class of the business)")
+	/** Finding 37: until 2026-10-07 every sender described itself as java.lang.String. */
 	@Test
 	public void toStringShouldNameTheTopic() {
 		String description = new JnFunctionMensageriaSender(new NoopBusiness()).toString();
 		org.junit.Assert.assertEquals(NoopBusiness.class.getName(), description);
+	}
+
+	@Test
+	public void toStringOfAnEntityOperationNamesTheOperationAndTheEntity() {
+		com.ccp.especifications.db.utils.entity.CcpEntity entity = com.jn.entities.JnEntityAsyncTask.ENTITY;
+		com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityMetaData metaData = entity.getEntityMetaData();
+
+		String description = new JnFunctionMensageriaSender(entity, com.ccp.especifications.db.utils.entity.CcpEntityOperationType.save).toString();
+
+		String expected = metaData.configurationClass.getName() + " (save, " + metaData.entityName + ")";
+		org.junit.Assert.assertEquals(expected, description);
 	}
 
 	@Test

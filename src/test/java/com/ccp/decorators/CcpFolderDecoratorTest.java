@@ -102,7 +102,7 @@ public class CcpFolderDecoratorTest {
 		assertTrue(fileUnderTest.getStringContent().contains("conteudo escrito"));
 	}
 
-	@Test(expected = CcpErrorFolderParentIsMissing.class)
+	@Test(expected = CcpErrorFileIsMissing.class)
 	public void getStringContentFailTest() {
 		String path = BASE + File.separator + "nada";
 		CcpFileDecorator fileUnderTest = new CcpStringDecorator(path).file();
@@ -173,7 +173,7 @@ public class CcpFolderDecoratorTest {
 		CcpFolderDecorator base = new CcpStringDecorator(BASE).folder();
 		base.createNewFileIfNotExists("a.txt");
 		base.zip();
-		File zipFile = new File(base.getName() + ".zip");
+		File zipFile = new File(new File(BASE).getAbsoluteFile().getParentFile(), base.getName() + ".zip");
 		assertTrue(zipFile.exists());
 		zipFile.delete();
 	}

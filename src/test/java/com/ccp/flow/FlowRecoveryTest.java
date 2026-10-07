@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import com.ccp.business.CcpBusiness;
 import com.ccp.constants.CcpOtherConstants;
-import com.ccp.decorators.CcpErrorJsonFieldNotFound;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
@@ -22,7 +21,8 @@ import com.ccp.process.CcpProcessStatusDefault;
 /**
  * Proves how {@link CcpTreeFlow} recovers from a {@link CcpErrorFlowDisturb}: the handlers of the thrown status run in
  * order, a handler that itself disturbs the flow has its JSON merged, the main process runs again with the fixed JSON,
- * and a status without handler (or already handled) ends in {@link CcpErrorJsonFieldNotFound}.
+ * and a status without handler (or already handled) goes up as the original {@link CcpErrorFlowDisturb} (finding 8:
+ * until 2026-10-07 it became a {@code CcpErrorJsonFieldNotFound} about the flow, losing the status and the message).
  */
 public class FlowRecoveryTest {
 
@@ -78,7 +78,7 @@ public class FlowRecoveryTest {
 	}
 
 	@Test
-	public void aStatusWithoutHandlerEndsInMissingField() {
+	public void aStatusWithoutHandlerGoesUpAsTheOriginalDisturbance() {
 		try {
 			CcpTreeFlow.beginThisStatement()
 					.tryToExecuteTheGivenFinalTargetProcess(mainProcess)
@@ -87,7 +87,8 @@ public class FlowRecoveryTest {
 					.thenExecuteTheGivenProcesses(fixer)
 					.and().endThisStatement();
 			fail("NOT_FOUND has no handler");
-		} catch (CcpErrorJsonFieldNotFound e) {
+		} catch (CcpErrorFlowDisturb e) {
+			assertEquals(CcpProcessStatusDefault.NOT_FOUND, e.status);
 			assertEquals("[main]", calls.toString());
 		}
 	}
@@ -106,7 +107,8 @@ public class FlowRecoveryTest {
 					.thenExecuteTheGivenProcesses(doesNotFix)
 					.and().endThisStatement();
 			fail("the second NOT_FOUND finds its handler already used");
-		} catch (CcpErrorJsonFieldNotFound e) {
+		} catch (CcpErrorFlowDisturb e) {
+			assertEquals(CcpProcessStatusDefault.NOT_FOUND, e.status);
 			assertEquals("[main, doesNotFix, main]", calls.toString());
 		}
 	}

@@ -207,7 +207,7 @@ public class CcpFileDecoratorTest {
 		CcpFileDecorator file = new CcpStringDecorator(ARQUIVO).file();
 		file.write("conteudo para zipar");
 		file.zip();
-		File zipFile = new File(file.getName() + ".zip");
+		File zipFile = new File(new File(ARQUIVO).getAbsoluteFile().getParentFile(), file.getName() + ".zip");
 		assertTrue(zipFile.exists());
 		zipFile.delete();
 	}

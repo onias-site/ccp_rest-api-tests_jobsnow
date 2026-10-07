@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ccp.business.CcpBusiness;
@@ -25,7 +24,7 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 /**
  * Proves the sending of several messages of a task ({@link JnFunctionMensageriaSender#sendToMensageria}) through the
  * synchronous messaging of the tests: each message runs the task once, and a task that declines being recorded as an
- * asynchronous task is, today, not run either.
+ * asynchronous task still runs, as in the single sending (finding 56).
  */
 public class BatchSendingTest {
 
@@ -69,17 +68,6 @@ public class BatchSendingTest {
 	}
 
 	@Test
-	public void aBatchIsCurrentlyPublishedWithoutTheReceiver() {
-		try {
-			new JnFunctionMensageriaSender(new RecordedTask()).sendToMensageria(Arrays.asList(this.message(1), this.message(2)));
-			org.junit.Assert.fail("the batch messages carry no mensageriaReceiver");
-		} catch (RuntimeException expected) {
-			// finding 56: only apply puts mensageriaReceiver and entityName in the message
-		}
-	}
-
-	@Ignore("finding 56: the batch messages must carry mensageriaReceiver and entityName, as the single sending does")
-	@Test
 	public void eachMessageOfTheBatchRunsTheTaskOnce() {
 		RECORDED_RUNS.set(0);
 
@@ -89,16 +77,6 @@ public class BatchSendingTest {
 		assertEquals(3, RECORDED_RUNS.get());
 	}
 
-	@Test
-	public void aTaskThatDeclinesBeingRecordedIsCurrentlyNotRunInABatch() {
-		UNRECORDED_RUNS.set(0);
-
-		new JnFunctionMensageriaSender(new UnrecordedTask()).sendToMensageria(this.message(1), this.message(2));
-
-		assertEquals(0, UNRECORDED_RUNS.get());
-	}
-
-	@Ignore("finding 56: declining the record of the async task must not prevent the task from being published and run")
 	@Test
 	public void aTaskThatDeclinesBeingRecordedStillRunsInABatch() {
 		UNRECORDED_RUNS.set(0);

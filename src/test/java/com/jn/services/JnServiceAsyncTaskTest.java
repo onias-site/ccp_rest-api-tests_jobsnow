@@ -27,11 +27,10 @@ public class JnServiceAsyncTaskTest {
 		assertNotNull(JnServiceAsyncTask.valueOf("GetAsyncTaskStatusById"));
 	}
 
-	@Test
-	public void getAsyncTaskStatusByIdReturnsSameJsonTest() {
-		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON;
-		CcpJsonRepresentation r = JnServiceAsyncTask.GetAsyncTaskStatusById.execute(input);
-		assertSame(input, r);
+	/** Finding 41: until 2026-10-07 the service was a stub that answered the request itself. */
+	@Test(expected = com.ccp.json.validations.global.engine.CcpJsonValidationError.class)
+	public void getAsyncTaskStatusByIdRequiresTheIdTest() {
+		JnServiceAsyncTask.GetAsyncTaskStatusById.execute(CcpOtherConstants.EMPTY_JSON);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -19,8 +20,12 @@ import org.junit.Test;
  */
 public class ZipBase64AndSnakeCaseTest {
 
+	/**
+	 * Finding 54: the zip goes next to the folder, with the entries named relative to it. Until 2026-10-07 it went to the
+	 * working directory of the process, with the entries named by the full path.
+	 */
 	@Test
-	public void aFolderIsZippedWithItsFilesNamedByTheirPaths() throws Exception {
+	public void aFolderIsZippedNextToItWithItsFilesNamedRelativeToIt() throws Exception {
 		String folderName = "zip_test_" + System.nanoTime();
 		File folder = Files.createTempDirectory(folderName).toFile();
 		Files.writeString(new File(folder, "a.txt").toPath(), "content of a");
@@ -28,17 +33,16 @@ public class ZipBase64AndSnakeCaseTest {
 
 		new CcpFileDecorator(folderPath).zip();
 
-		File zip = new File(System.getProperty("user.dir"), folder.getName() + ".zip");
+		File zip = new File(folder.getParentFile(), folder.getName() + ".zip");
 		try {
-			assertTrue("the zip goes to the working directory: " + zip, zip.exists());
+			assertTrue("the zip goes next to the folder: " + zip, zip.exists());
 			List<String> entries = new ArrayList<>();
 			try (ZipFile zipFile = new ZipFile(zip)) {
 				for (ZipEntry entry : Collections.list(zipFile.entries())) {
 					entries.add(entry.getName());
 				}
 			}
-			assertTrue(entries.toString(), entries.contains(folderPath + "/"));
-			assertTrue(entries.toString(), entries.contains(folderPath + "/a.txt"));
+			assertEquals(Arrays.asList(folder.getName() + "/", folder.getName() + "/a.txt"), entries);
 		} finally {
 			zip.delete();
 			new File(folder, "a.txt").delete();

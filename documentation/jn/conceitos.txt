@@ -1,25 +1,23 @@
-#Novos
-Automatic Entity Id (AEI)
-Complex Query Dsl (CQD)
-Disposable Entity
-Versionable Entity
-Twin Entity
-Read Only Entity
-Cache Entity
-Async Entity
-LGPD Fields Entity 
-Flow Status Entity Dsl (FSED)
-Flow Batch Operation Entity (FBOE)
-Online Query Less (OQL)
-Multi Get Id Entity (MGIE)
-Mitigate If And Else Less (MIAEL)
-Null less
-Dto Less
-Dto Less Validation (DLV)
-Entity Decorators
-#Fortalecidos
-Decorator Everywhere
-Separated Business Type
-Abstraction Tecnology Provider
-Imutable Object
-Introspecção de operaçoes em entidade (Triggers)
+Automatic Entity Id (AEI) => Toda entidade de dados deste sistema deverá ter seu id calculado por fields decorados com @CcpEntityFieldPrimaryKey
+Complex Query Dsl (CQD) => Para buscas requerem queries complexas, deve-se fazer uso da fluent interface provida pela classe CcpQueryOptions
+Disposable Entity => Registros que forem descartáveis depois de certo tempo, deverão ser representados por uma entidade decorada com @CcpEntityCustomDecorator(value = JnEntityDisposableBuilder.class, priority = 1) e @JnEntityDisposable(value = JnDisposableEntity.class, timeOption = ${timeOption})
+Versionable Entity => Registros que forem versionáveis, deverão ser representados por uma entidade decorada com @CcpEntityCustomDecorator(value = JnEntityVersionableBuilder.class, priority = 2) e @JnEntityVersionable(JnVersionableEntity.class)
+Twin Entity => Registros que forem tiverem tabela espelho (tabela de destino dos dados que foram excluídos de uma tabela original), deverão ser representados por uma entidade decorada com @CcpEntityTwin(twinEntityName = ${nomeDaTabelaGemea}, bulkExecutorClass = JnExecuteBulkOperation.class, functionToDeleteKeysInTheCacheClass =  JnDeleteKeysFromCache.class)
+Read Only Entity => Registros que forem somente leitura, deverão ser representados por uma entidade decorada com @CcpEntityOlyReadable e poderão somente ser alterados em operações de bulk
+Cache Entity => Registros que forem cacheáveis (tiverem cache com determinado TTL), deverão ser representados por uma entidade decorada com @CcpEntityCache(${ttlEmSegundos})
+Async Entity => Registros que cujo as operações de escrita tenham que rodar assíncronamente, deverão ser representados por uma entidade decorada com @CcpEntityCustomDecorator(value = JnEntityAsyncWriterBuilder.class, priority = 8), e @JnEntityAsyncWriter(JnAsyncWriterEntity.class)
+LGPD Fields Entity => Registros que gravarem dados sensíveis (exemplos: email, senha) deverão ser representados por uma entidade decorada com @CcpEntityFieldsTransformer(classReferenceWithTheFields = ${catalogoDeTransformers}) ou os fields em questão, deverão ser decorados com @CcpEntityFieldTransformer(${algumaClasseFilhaDeCcpJsonTransformersDefaultEntityField})  
+Flow Batch Operation Entity (FBOE) => Registros em lote que dinâmicamente precisarem escolher sua entidade de dados de destino, deverão ser gravados pelo método "executeSelectUnionAllThenExecuteBulkOperation" da classe "JnExecuteBulkOperation"
+Flow Status Entity Dsl (FSED) => Para situações em que decisões como lançamentos de exceção (CcpErrorFlowDisturb) ou execuções de ações (derivadas de CcpBusiness) dependam de onde (qual entidade de dados) o registro está ou não está presente, deve-se usar a classe CcpGetEntityId e toda a sua interface fluente encadeada a ela.
+Online Query Less (OQL) => Requisições online (geralmente que entram via camada de controller MVC), jamais poderão gerar queries complexas. Se o solicitante dos dados necessitar de dados buscados em mais de uma entidade de dados e query complexa, isso deverá ser gerado em processo schedulle e dentro deste shedulle se processará um "Complex Query Dsl (CQD)" cujo o resultado será associado a um determinado id, esse id, por fim, é o que o solicitante deverá, direta ou indiretamente possuir para então ter acesso a esses dados.
+Multi Get Id Entity (MGIE) => Situações que requeiram busca de dados em multiplas entidades de dados, porem sem queries complexas, apenas formação de id, deve-se usar o método "unionAll" da classe "CcpCrud"
+Mitigate If And Else Less (MIAEL) => Instruções "if" devem ser reduzidas e sempre com return ao seu final ou throw quando em contexto de método, quando em escopo de loop, além das opções do escopo de método, deve-se avaliar opções como continue e break, assim evitando a instrução "else" cujo o uso é proibido, por causa das opções apresentadas a pouco. Além disso, a instrução "if" deverá sempre ter o menor número possível de linhas dentro de seu escopo, caso ela se tornar maior que o escopo externo a ela, o teste da instrução if deverá ser invertido (uma negação de uma condição, por exemplo) para que o bloco da instrução if possua o menor número possível de linhas, o excelente seria uma unica linha (throw, return, continue, break). 
+Null less => Neste sistema e em todos os seus módulos é proibido passar valores nulos como argumentos de construtores e métodos, e é proibido retornar nulo de método. Há aspectos construídos que tecem o bytecode das classes java e garantem essa regra lançando exceção caso a regra for violada. Em caso de retorno de nulos de bibliotecas alheias, deve-se tratar quando necessário com programação defensiva, para evitar NullPointerException.
+Dto Less => Neste sistema, está proibida a construção de classes que representem dados (VOs, DTOs, Beans, Records, Models ou qualquer nome que represente uma entidade de dados), no lugar disso, usa-se a classe CcpJsonRepresentation que encapsula um map e que por meio da classe CcpJsonHandler faz parse natural para json
+Dto Less Validation (DLV) => Por este sistema e seus modulos serem Dto Less (não possuir representações DTO), as validações são feitas no método "execute" da classe CcpBusiness que por sua vez, aciona o metodo "validateJson" da classe "CcpJsonValidatorEngine".   
+Entity Decorators => Para alteraçoes de comportamento de entidades de dados durante criação, leitura, alteração, transferência, cópia e exclusão de dados, devem ser criados decorators, eles devem ser mencionados na anotação @CcpEntityCustomDecorators 
+Decorator Everywhere => Apis que lidam com arquivos, inputstream,  collection, email, json, pastas, hashes, números, senhas, arquivos de propriedade, reflection (meta programação java), string, texto, tempo, url ou qualquer outra coisa que demandar muitas operações, deverá ter um decorator em sua frente, este decorator, deverá ser gravado no pacote com.ccp.decorators  
+Separated Business Type => Toda a ação dentro deste sistema e seus módulos, deverá ser reprentada por uma classe java ou item de enum que herde direta ou indiretamente a interface CcpBusiness  
+Abstraction Tecnology Provider => Está terminantemente proibido a qualquer módulo business depender de outra biblioteca que não seja ccp_commons_jobsnow ou aspectjtools ou outro módulo business 
+Imutable Object => Classes java deste sistema e seus módulos que encapsulem dados, devem ser necessariamente imutáveis. 
+Enum as decisor => Neste sistema e seus módulos, situações onde hajam decisões tomadas de acordo com enums, se possível o enum deverá incorporar um método abstrato que represente essa deisão e seus itens deverão implementar tal método abstrato de acordo com o seu contexto

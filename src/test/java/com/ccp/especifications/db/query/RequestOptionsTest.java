@@ -41,15 +41,19 @@ public class RequestOptionsTest {
 		assertEquals("{\"query\":{\"bool\":{\"must\":[{\"range\":{\"timestamp\":{\"gte\":1.0,\"lt\":2.0}}}]}}}", request.json.asUgglyJson());
 	}
 
+	/**
+	 * A simplified query holds a single clause. Until 2026-10-07 this test locked that a second clause replaced the first;
+	 * since finding 16 the second clause is refused (see SimplifiedQuerySingleClauseTest).
+	 */
 	@Test
-	public void theSimplifiedQueryKeepsOnlyTheLastCondition() {
+	public void theSimplifiedQueryHoldsItsSingleCondition() {
 		CcpQuerySimplifiedQuery query = CcpQueryOptions.INSTANCE.startSimplifiedQuery();
 		assertFalse(query.hasChildreen());
 
-		CcpQuerySimplifiedQuery withConditions = query.term(TITLE, "a").match(TITLE, "b");
+		CcpQuerySimplifiedQuery withCondition = query.match(TITLE, "b");
 
-		assertTrue(withConditions.hasChildreen());
-		assertEquals("{\"query\":{\"match\":{\"title\":\"b\"}}}", withConditions.endSimplifiedQueryAndBackToRequest().json.asUgglyJson());
+		assertTrue(withCondition.hasChildreen());
+		assertEquals("{\"query\":{\"match\":{\"title\":\"b\"}}}", withCondition.endSimplifiedQueryAndBackToRequest().json.asUgglyJson());
 	}
 
 	@Test

@@ -4,8 +4,10 @@
 			"properties": {
                 "email": {
                     "type": "keyword"
+                },
+                "language": {
+                    "type": "keyword"
                 }
-                
             }
         }
 }

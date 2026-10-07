@@ -14,7 +14,6 @@ import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ccp.constants.CcpOtherConstants;
@@ -94,9 +93,9 @@ public class QueryExecutorAgainstElasticsearchTest {
 		all.consumeQueryResult("10s", 2, scrolled::add, "name");
 		assertEquals(3, scrolled.size());
 		assertEquals(2, (int) terms.getAggregations().getInnerJson(new CcpFieldName("byName")).getAsIntegerNumber(new CcpFieldName("a")));
-		assertTrue(terms.getTermsStatis("byName").isEmpty());
-		assertTrue(terms.getMap("byName").isEmpty());
-		assertEquals(1, all.getResultAsMap("name").fieldSet().size());
+		assertEquals(2L, (long) terms.getTermsStatis("byName").getAsLongNumber(new CcpFieldName("a")));
+		assertEquals(1, (int) terms.getMap("byName").getAsIntegerNumber(new CcpFieldName("b")));
+		assertEquals(3, all.getResultAsMap("name").fieldSet().size());
 		CcpJsonRepresentation searchPackage = all.getResultAsPackage("/_search", com.ccp.especifications.http.CcpHttpMethods.POST, 200, "name");
 		assertTrue(searchPackage.toString(), searchPackage.containsField(new CcpFieldName("hits")));
 	}
@@ -195,34 +194,68 @@ public class QueryExecutorAgainstElasticsearchTest {
 		assertEquals(1, (int) byName.getAsIntegerNumber(new CcpFieldName("b")));
 	}
 
-	@Test
-	public void theTermsStatisticsAreCurrentlyEmpty() {
-		assertTrue(this.executor.getTermsStatis(this.termsOfName(), this.index, "byName").isEmpty());
-		assertTrue(this.executor.getMap(this.termsOfName(), this.index, "byName").isEmpty());
-	}
-
-	@Ignore("finding 28: getTermsStatis and getMap read the aggregation as a list, but getAggregations returns a map from key to count")
+	/** Finding 28: until 2026-10-07 getTermsStatis read the aggregation as a list and always answered empty. */
 	@Test
 	public void theTermsStatisticsCountTheDocumentsOfEachKey() {
 		CcpJsonRepresentation statistics = this.executor.getTermsStatis(this.termsOfName(), this.index, "byName");
 
+		assertEquals(statistics.toString(), 2, statistics.fieldSet().size());
 		assertEquals(2L, (long) statistics.getAsLongNumber(new CcpFieldName("a")));
+		assertEquals(1L, (long) statistics.getAsLongNumber(new CcpFieldName("b")));
+	}
+
+	/** Finding 28: until 2026-10-07 getMap read the aggregation as a list and always answered empty. */
+	@Test
+	public void theMapOfAnAggregationCountsTheDocumentsOfEachKey() {
+		CcpJsonRepresentation countByKey = this.executor.getMap(this.termsOfName(), this.index, "byName");
+
+		assertEquals(2, (int) countByKey.getAsIntegerNumber(new CcpFieldName("a")));
+		assertEquals(1, (int) countByKey.getAsIntegerNumber(new CcpFieldName("b")));
 	}
 
 	@Test
-	public void theMapByIdCurrentlyPutsEveryRecordUnderTheSameEmptyKey() {
-		CcpJsonRepresentation byId = this.executor.getResultAsMap(this.allDocuments(), this.index, "name");
-
-		assertEquals(byId.toString(), 1, byId.fieldSet().size());
-		assertTrue(byId.toString(), byId.containsField(new CcpFieldName("")));
+	public void anAggregationThatTheQueryDoesNotDeclareGivesAnEmptyMap() {
+		assertTrue(this.executor.getMap(this.termsOfName(), this.index, "undeclared").isEmpty());
+		assertTrue(this.executor.getTermsStatis(this.termsOfName(), this.index, "undeclared").isEmpty());
 	}
 
-	@Ignore("finding 28: getResultAsMap reads _id, but the records carry the id in the field id")
+	/** Finding 28: until 2026-10-07 getResultAsMap read _id, which the records do not carry, and kept one entry. */
 	@Test
 	public void theMapByIdHasOneEntryPerRecord() {
 		CcpJsonRepresentation byId = this.executor.getResultAsMap(this.allDocuments(), this.index, "name");
 
-		assertEquals(3, byId.fieldSet().size());
+		assertEquals(byId.toString(), 3, byId.fieldSet().size());
+		assertEquals("a", byId.getAsString(new CcpFieldName("1")));
+		assertEquals("b", byId.getAsString(new CcpFieldName("3")));
+	}
+
+	/**
+	 * Finding 54: an aggregation built by the builder of the request is accepted by Elasticsearch. Until 2026-10-07 the
+	 * builder wrote the serialized CcpEntityField in {@code field} and the search was refused.
+	 */
+	@Test
+	public void anAggregationBuiltByTheBuilderIsAcceptedByElasticsearch() {
+		com.ccp.especifications.db.utils.entity.fields.CcpEntityField name = new com.ccp.especifications.db.utils.entity.fields.CcpEntityField("name", false, true, json -> json);
+		com.ccp.especifications.db.utils.entity.fields.CcpEntityField value = new com.ccp.especifications.db.utils.entity.fields.CcpEntityField("value", false, true, json -> json);
+		CcpQueryOptions query = this.allDocuments().zeroResults().startAggregations()
+				.startBucket("byName", name, 10).endTermsBuckedAndBackToAggregations()
+				.addSumAggregation("sumOfValues", value)
+				.endAggregationsAndBackToRequest();
+
+		CcpJsonRepresentation aggregations = this.executor.getAggregations(query, this.index);
+
+		CcpJsonRepresentation byName = aggregations.getInnerJson(new CcpFieldName("byName"));
+		assertEquals(2, (int) byName.getAsIntegerNumber(new CcpFieldName("a")));
+		assertEquals(1, (int) byName.getAsIntegerNumber(new CcpFieldName("b")));
+		assertEquals(6, (int) aggregations.getAsIntegerNumber(new CcpFieldName("sumOfValues")));
+	}
+
+	/** Finding 28: until 2026-10-07 the total was looked for at the root of the response, not in hits.total. */
+	@Test
+	public void theAggregationsBringTheTotalOfHits() {
+		CcpJsonRepresentation aggregations = this.executor.getAggregations(this.termsOfName(), this.index);
+
+		assertEquals(3, (int) aggregations.getAsIntegerNumber(new CcpFieldName("total")));
 	}
 
 	@Test

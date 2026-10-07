@@ -35,7 +35,7 @@ public class AggregationsTest {
 		return field;
 	}
 
-	@org.junit.Ignore("finding 54: the field of an aggregation must be the field name, not the serialized CcpEntityField")
+	/** Finding 54: until 2026-10-07 the field came out as the serialized CcpEntityField. */
 	@Test
 	public void metricAggregationsNameTheirTypeAndField() {
 		CcpQueryOptions request = CcpQueryOptions.INSTANCE.startAggregations()
@@ -53,7 +53,7 @@ public class AggregationsTest {
 		assertEquals("salary", this.fieldOf(aggs, "total", "sum"));
 	}
 
-	@org.junit.Ignore("finding 54: the field of an aggregation must be the field name, not the serialized CcpEntityField")
+	/** Finding 54: until 2026-10-07 the field came out as the serialized CcpEntityField. */
 	@Test
 	public void aTermsBucketCarriesItsSizeAndItsSubAggregations() {
 		CcpQueryOptions request = CcpQueryOptions.INSTANCE.startAggregations()
@@ -68,17 +68,6 @@ public class AggregationsTest {
 		assertEquals("salary", terms.getAsString(new CcpFieldName("field")));
 		assertEquals(5, (int) terms.getAsIntegerNumber(new CcpFieldName("size")));
 		assertTrue(bucket.toString(), bucket.getInnerJson(new CcpFieldName("aggs")).containsField(new CcpFieldName("average")));
-	}
-
-	@Test
-	public void theFieldOfAnAggregationCurrentlyComesOutAsTheSerializedEntityField() {
-		CcpQueryOptions request = CcpQueryOptions.INSTANCE.startAggregations()
-				.addMinAggregation("lowest", SALARY)
-				.endAggregationsAndBackToRequest();
-
-		CcpJsonRepresentation field = this.aggs(request).getInnerJsonFromPath(new CcpFieldName("lowest"), new CcpFieldName("min"), new CcpFieldName("field"));
-
-		assertEquals("salary", field.getAsString(new CcpFieldName("name")));
 	}
 
 	@Test

@@ -1,19 +1,29 @@
 A) Solucionar bugs
-B) New Skill
-C) Agrupamento de entidades
-D) Revisitar cache e bulk
+B) New Skill, desacoplar jb e vis
+10/10
+C) Decorator de agrupamento de entidade
+D) Decorator de notificação
 E) Endpoints genéricos
-F) Lógica do agrupador
-G) Melhoria dos synonyms
-H) Estatisticas das skills 
-I) Recriação das entidades do VIS. 
-J) E-mail com curriculos
-K) Responsividade de todo o front end
-L) Deploy
-M) Cadastro de vagas
-N) Teste de invasão 
-O) Tornar o sistema multi idioma.
-P) Versão Mobile
+F) Recriação das entidades do VIS. 
+17/10
+G) E-mail com curriculos
+H) Responsividade de todo o front end
+24/10
+I) Deploy (primeira entrega)
+31/10
+J) Novos decorators
+07/11
+K) Estatisticas das skills 
+L) Melhoria dos synonyms
+14/11
+L) Cadastro de vagas (segunda entrega)
+21/11
+M) Teste de invasão 
+28/11
+
+
+N) Tornar o sistema multi idioma.
+O) Versão Mobile
 
 Solucionar bugs encontrados
 Desacoplar vis e jb
@@ -22,3 +32,10 @@ Desacoplar vis e jb
 extração de variaveis
 strings soltas
 centralização dos enums
+
+
+Decorator do agrupador
+Decorator do notificador
+Decorator do flow processor
+Decorator do controller
+Decorator do swagger

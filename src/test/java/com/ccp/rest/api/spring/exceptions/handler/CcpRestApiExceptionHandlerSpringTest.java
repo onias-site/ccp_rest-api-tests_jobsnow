@@ -5,15 +5,22 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Test;
 
 import com.ccp.aop.CcpNullParameterException;
+import com.ccp.business.CcpBusiness;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 public class CcpRestApiExceptionHandlerSpringTest {
 
@@ -69,6 +76,38 @@ public class CcpRestApiExceptionHandlerSpringTest {
 		List<String> causeChain = handledException.getAsStringList(CcpJsonRepresentation.CcpStackTraceFields.cause);
 		List<String> expectedCauseChain = Arrays.asList("java.lang.IllegalArgumentException: direct message", "java.lang.IllegalStateException: root message");
 		assertEquals(expectedCauseChain, causeChain);
+	}
+
+	/** Finding 36: until 2026-10-07 the 500 answered an empty body, with nothing the user could hand to support. */
+	@Test
+	public void theInternalErrorAnswersTheStatusAndTheHashOfTheRecordedErrorTest() {
+		AtomicReference<CcpJsonRepresentation> recordedError = new AtomicReference<>();
+		AtomicInteger status = new AtomicInteger();
+		HttpServletResponse response = (HttpServletResponse) Proxy.newProxyInstance(this.getClass().getClassLoader(),
+				new Class<?>[] { HttpServletResponse.class }, (proxy, m, args) -> {
+					if ("setStatus".equals(m.getName())) {
+						status.set((Integer) args[0]);
+					}
+					return null;
+				});
+		CcpBusiness previousHandler = CcpRestApiExceptionHandlerSpring.genericExceptionHandler;
+		CcpRestApiExceptionHandlerSpring.genericExceptionHandler = new CcpBusiness() {
+			public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
+				recordedError.set(json);
+				return json;
+			}
+		};
+		try {
+			Map<String, Object> body = new CcpRestApiExceptionHandlerSpring().handle(new IllegalStateException("secret detail"), response);
+
+			assertEquals(500, status.get());
+			assertEquals("INTERNAL_SERVER_ERROR", body.get(CcpRestApiExceptionHandlerSpring.JsonFieldNames.status.name()));
+			String expectedHash = recordedError.get().getAsString(CcpRestApiExceptionHandlerSpring.JsonFieldNames.stackTraceHash);
+			assertEquals(expectedHash, body.get(CcpRestApiExceptionHandlerSpring.JsonFieldNames.stackTraceHash.name()));
+			assertEquals(2, body.size());
+		} finally {
+			CcpRestApiExceptionHandlerSpring.genericExceptionHandler = previousHandler;
+		}
 	}
 
 	@Test

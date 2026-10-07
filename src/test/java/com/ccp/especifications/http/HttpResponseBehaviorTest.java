@@ -8,7 +8,6 @@ import static org.junit.Assert.fail;
 import java.util.Base64;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ccp.decorators.CcpFieldName;
@@ -61,22 +60,38 @@ public class HttpResponseBehaviorTest {
 		assertTrue(text, text.contains("hello"));
 	}
 
-	@Test
-	public void aListOfRecordsCurrentlyHoldsMapsInsteadOfJsons() {
-		List<CcpJsonRepresentation> records = CcpHttpResponseType.listRecord.transform(this.response("[{\"a\":1}]", 200));
-		try {
-			CcpJsonRepresentation first = records.get(0);
-			fail("the item is a " + first.getClass());
-		} catch (ClassCastException expected) {
-			// finding 23: the list comes straight from Gson, with maps inside
-		}
-	}
-
-	@Ignore("finding 23: asListRecord must return CcpJsonRepresentation items")
+	/** Finding 23: until 2026-10-07 the items were the maps of Gson and reading one raised ClassCastException. */
 	@Test
 	public void aListOfRecordsHoldsJsons() {
-		List<CcpJsonRepresentation> records = CcpHttpResponseType.listRecord.transform(this.response("[{\"a\":1}]", 200));
+		List<CcpJsonRepresentation> records = CcpHttpResponseType.listRecord.transform(this.response("[{\"a\":1},{\"a\":2}]", 200));
 
+		assertEquals(2, records.size());
 		assertEquals(1, (int) records.get(0).getAsIntegerNumber(new CcpFieldName("a")));
+		assertEquals(2, (int) records.get(1).getAsIntegerNumber(new CcpFieldName("a")));
+	}
+
+	@Test
+	public void aBlankBodyIsAnEmptyListOfRecords() {
+		assertTrue(CcpHttpResponseType.listRecord.transform(this.response("  ", 200)).isEmpty());
+		assertTrue(CcpHttpResponseType.listRecord.transform(this.response("[]", 200)).isEmpty());
+	}
+
+	@Test
+	public void aListWithAnItemThatIsNotAnObjectIsRefusedWhereItIsRead() {
+		this.assertNotListOfRecords("[{\"a\":1}, 2]");
+	}
+
+	@Test
+	public void aBodyThatIsNotAListIsRefusedWhereItIsRead() {
+		this.assertNotListOfRecords("{\"a\":1}");
+	}
+
+	private void assertNotListOfRecords(String body) {
+		try {
+			CcpHttpResponseType.listRecord.transform(this.response(body, 200));
+			fail("the body " + body + " is not a list of records");
+		} catch (CcpHttpResponse.CcpErrorHttpResponseIsNotListOfRecords expected) {
+			assertTrue(expected.getMessage(), expected.getMessage().contains(body));
+		}
 	}
 }

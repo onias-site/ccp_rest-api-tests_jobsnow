@@ -50,11 +50,23 @@ public class CcpPasswordDecoratorTest {
 		assertFalse(p.isStrong());
 	}
 
+	/** Finding 13: the rule is the one of the API, with no maximum; until 2026-10-07 isStrong refused more than 20. */
 	@Test
-	public void tooLongIsNotStrongTest() {
-		// more than 20 characters
+	public void aLongPasswordIsStrongAsInTheApiTest() {
 		CcpPasswordDecorator p = new CcpStringDecorator("Abc@1234567890123456789").password();
-		assertFalse(p.isStrong());
+		assertTrue(p.isStrong());
+	}
+
+	/**
+	 * Finding 13: any character that is neither a letter nor a digit counts as special. Until 2026-10-07 the list of
+	 * isStrong had an en dash instead of the hyphen and a nested '[', so these did not count.
+	 */
+	@Test
+	public void hyphenDotUnderscoreAndBracketsCountAsSpecialTest() {
+		for (String special : new String[] { "-", ".", "_", "[", "]", "%", "|" }) {
+			CcpPasswordDecorator p = new CcpStringDecorator("Abcd1234" + special).password();
+			assertTrue(special, p.isStrong());
+		}
 	}
 
 	@Test
