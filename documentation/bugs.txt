@@ -1,6 +1,0 @@
-A) Fazer teste de login apos ter solucionado um ticket de unlock ou resending
-B) Nao está deslogando o login antigo ao resolver conflito
-E) Notificar telegram ao usuário solicitar reenvio de token
-F) Notificar telegram ao usuário solicitar desbloqueio de token
-G) Rotina para reenvio de token
-H) Rotina para desbloqueio de token

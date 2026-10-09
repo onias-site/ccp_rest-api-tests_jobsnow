@@ -92,7 +92,7 @@ public class PendingTicketsThroughSupportBotTest {
 	private static final String UNLOCK_TICKET = "/solveLoginTokenTicket unlockToken " + USER_EMAIL;
 
 	/** A request that does not exist: running it ends right away, telling the operator there is nothing to review. */
-	private static final String SKILL_TICKET = "/fixSkillHierarchy JVM add pending.tickets@jobsnow.com";
+	private static final String SKILL_TICKET = "/fixSkillHierarchy add pending.tickets@jobsnow.com JVM";
 
 	@Before
 	public void setUpScenario() {

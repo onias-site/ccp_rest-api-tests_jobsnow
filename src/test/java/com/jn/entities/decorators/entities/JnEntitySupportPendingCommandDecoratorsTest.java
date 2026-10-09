@@ -21,7 +21,7 @@ public class JnEntitySupportPendingCommandDecoratorsTest extends EntityDecorator
 	protected CcpJsonRepresentation validRecord() {
 		return this.com(JnEntitySupportPendingCommand.Fields.botName, "bot" + this.unique)
 				.put(JnEntitySupportPendingCommand.Fields.chatId, this.unique)
-				.put(JnEntitySupportPendingCommand.Fields.command, "/fixSkillHierarchy JVM add " + this.email)
+				.put(JnEntitySupportPendingCommand.Fields.command, "/fixSkillHierarchy add " + this.email + " JVM")
 				.put(JnEntitySupportPendingCommand.Fields.timestamp, System.currentTimeMillis());
 	}
 

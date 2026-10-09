@@ -1,9 +1,9 @@
 A) Solucionar bugs
 B) New Skill, desacoplar jb e vis
-10/10
 C) Decorator de agrupamento de entidade
 D) Decorator de notificação
 E) Endpoints genéricos
+10/10
 F) Recriação das entidades do VIS. 
 17/10
 G) E-mail com curriculos

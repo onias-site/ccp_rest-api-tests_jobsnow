@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -42,12 +43,15 @@ import com.jn.entities.JnEntityInstantMessengerMessageSent;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.vis.business.skill.VisBusinessSkillFixHierarchyIgnoreUser;
+import com.vis.business.skill.VisSkillWordsGroups;
 import com.vis.entities.VisEntityCommandNotAllowedToUser;
+import com.vis.entities.VisEntityGroupPositionsBySkills;
 import com.vis.entities.VisEntitySkill;
 import com.vis.entities.VisEntitySkillFixHierarchyFulfiled;
 import com.vis.entities.VisEntitySkillFixHierarchyItemApproved;
 import com.vis.entities.VisEntitySkillFixHierarchyItemPending;
 import com.vis.entities.VisEntitySkillFixHierarchyPending;
+import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.json.fields.validation.VisSkillFixHierarchyTypes;
 import com.vis.json.fields.validation.VisUserRequestCommands;
 import com.vis.messages.VisMessages;
@@ -56,7 +60,7 @@ import com.vis.status.VisProcessStatusFixSkillHierarchy;
 
 /**
  * Exercises the whole circuit of a skill hierarchy fix request: the user's request notifies the support bot
- * operator with {@code /fixSkillHierarchy <parent> <type> <email>}, the operator runs that command, reads the user's
+ * operator with {@code /fixSkillHierarchy <type> <email> <parent>}, the operator runs that command, reads the user's
  * justification and the pending items, decides them (all at once or one by one, always with a justification),
  * the items and the request move to the approved/rejected entities and the user gets an email listing the
  * approved and the rejected items with the operator's justifications.
@@ -146,9 +150,9 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		this.openRequest(ONE_BY_ONE_USER, VisSkillFixHierarchyTypes.add, "java", "Uso spring e hibernate em todo projeto java", "spring", "hibernate");
 
 		String notice = TELEGRAM.lastMessageFor(SUPPORT_CHAT).getAsString(JnJsonCommonsFields.message);
-		assertEquals("/fixSkillHierarchy java add " + ONE_BY_ONE_USER, notice);
+		assertEquals("/fixSkillHierarchy add " + ONE_BY_ONE_USER + " java", notice);
 
-		String request = this.operatorTypes("/fixSkillHierarchy java add " + ONE_BY_ONE_USER);
+		String request = this.operatorTypes("/fixSkillHierarchy add " + ONE_BY_ONE_USER + " java");
 		assertTrue(request, request.contains("Uso spring e hibernate em todo projeto java"));
 		assertTrue(request, request.contains("spring, hibernate"));
 		assertTrue(request, request.contains("um a um"));
@@ -193,7 +197,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		this.openRequest(APPROVE_ALL_USER, VisSkillFixHierarchyTypes.remove, "python", "Django não é python puro", "django", "flask");
 
-		this.operatorTypes("/fixSkillHierarchy python remove " + APPROVE_ALL_USER);
+		this.operatorTypes("/fixSkillHierarchy remove " + APPROVE_ALL_USER + " python");
 		String summary = this.operatorTypes("aprovar os dois são frameworks e não linguagem");
 		assertTrue(summary, summary.contains("Aprovados: django, flask"));
 		assertTrue(summary, summary.contains("Reprovados: -"));
@@ -210,24 +214,29 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		assertFalse(body, body.contains("Itens reprovados"));
 
 		// once decided, the request is no longer pending for the operator
-		String again = this.operatorTypes("/fixSkillHierarchy python remove " + APPROVE_ALL_USER);
+		String again = this.operatorTypes("/fixSkillHierarchy remove " + APPROVE_ALL_USER + " python");
 		assertTrue(again, again.startsWith("Não há itens pendentes"));
 	}
 
 	/**
 	 * An approved association adds the parent to the {@code parent} array of the skill in {@link VisEntitySkill}; a
-	 * rejected one leaves the skill as it was.
+	 * rejected one leaves the skill as it was. The lookup the resume screen reads changes too, in the item of the skill
+	 * and in the item of its synonym (another group, since the synonym starts with other letters).
 	 */
 	@Test
 	public void approvedAssociationAddsTheParentToTheSkill() {
 
 		this.saveSkill("TESTE.SKILL.ASSOCIADA", "TESTE.PAI.ANTIGO");
 		this.saveSkill("TESTE.SKILL.REJEITADA", "TESTE.PAI.ANTIGO");
+		this.addSynonym("TESTE.SKILL.ASSOCIADA", "XTESTE.SINONIMO.ASSOCIADA");
+		this.putInTheWordsGroup("TESTE.SKILL.ASSOCIADA", "TESTE.SKILL.ASSOCIADA", "TESTE.PAI.ANTIGO");
+		this.putInTheWordsGroup("TESTE.SKILL.ASSOCIADA", "XTESTE.SINONIMO.ASSOCIADA", "TESTE.PAI.ANTIGO");
+		this.putInTheWordsGroup("TESTE.SKILL.REJEITADA", "TESTE.SKILL.REJEITADA", "TESTE.PAI.ANTIGO");
 
 		try {
 			this.openRequest(SKILL_PARENTS_USER, VisSkillFixHierarchyTypes.add, "TESTE.PAI", "As duas dependem de TESTE.PAI", "TESTE.SKILL.ASSOCIADA", "TESTE.SKILL.REJEITADA");
 
-			this.operatorTypes("/fixSkillHierarchy TESTE.PAI add " + SKILL_PARENTS_USER);
+			this.operatorTypes("/fixSkillHierarchy add " + SKILL_PARENTS_USER + " TESTE.PAI");
 			this.operatorTypes("um a um");
 			this.operatorTypes("aprovar depende mesmo");
 			String summary = this.operatorTypes("rejeitar não depende");
@@ -235,9 +244,88 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 			assertEquals(Arrays.asList("TESTE.PAI.ANTIGO", "TESTE.PAI"), this.skillParents("TESTE.SKILL.ASSOCIADA"));
 			assertEquals(Arrays.asList("TESTE.PAI.ANTIGO"), this.skillParents("TESTE.SKILL.REJEITADA"));
+
+			assertEquals(Arrays.asList("TESTE.PAI.ANTIGO", "TESTE.PAI"), this.wordParents("TESTE.SKILL.ASSOCIADA"));
+			assertEquals(Arrays.asList("TESTE.PAI.ANTIGO", "TESTE.PAI"), this.wordParents("XTESTE.SINONIMO.ASSOCIADA"));
+			assertEquals(Arrays.asList("TESTE.PAI.ANTIGO"), this.wordParents("TESTE.SKILL.REJEITADA"));
 		} finally {
 			this.deleteSkill("TESTE.SKILL.ASSOCIADA");
 			this.deleteSkill("TESTE.SKILL.REJEITADA");
+			this.removeFromTheWordsGroup("TESTE.SKILL.ASSOCIADA", "XTESTE.SINONIMO.ASSOCIADA", "TESTE.SKILL.REJEITADA");
+		}
+	}
+
+	/**
+	 * A parent with spaces (FRONT END, HTTP SERVER) goes last in the command, which takes the rest of the text: up to
+	 * 2026-10-08 it went first and the bot read the first word as the parent and the second as the type.
+	 */
+	@Test
+	public void operatorReviewsAParentWithSpaces() {
+
+		this.openRequest(SKILL_PARENTS_USER, VisSkillFixHierarchyTypes.add, "TESTE PAI COM ESPACO", "Depende do termo com espaço", "TESTE.SKILL.COM.ESPACO");
+
+		String notice = TELEGRAM.lastMessageFor(SUPPORT_CHAT).getAsString(JnJsonCommonsFields.message);
+		assertEquals("/fixSkillHierarchy add " + SKILL_PARENTS_USER + " TESTE PAI COM ESPACO", notice);
+
+		String request = this.operatorTypes(notice);
+		assertTrue(request, request.startsWith("Solicitação de associação de " + SKILL_PARENTS_USER + " para o termo TESTE PAI COM ESPACO"));
+		assertTrue(request, request.contains("Itens pendentes: TESTE.SKILL.COM.ESPACO"));
+
+		String summary = this.operatorTypes("aprovar depende mesmo");
+		assertTrue(summary, summary.startsWith("Revisão concluída para " + SKILL_PARENTS_USER + " / TESTE PAI COM ESPACO."));
+		CcpJsonRepresentation requestKey = this.request(SKILL_PARENTS_USER, VisSkillFixHierarchyTypes.add, "TESTE PAI COM ESPACO");
+		assertTrue(VisEntitySkillFixHierarchyFulfiled.ENTITY.exists(requestKey));
+	}
+
+	private void addSynonym(String skill, String synonym) {
+		CcpJsonRepresentation skillKey = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkill.Fields.skill, skill);
+		CcpJsonRepresentation skillRecord = VisEntitySkill.ENTITY.getOneById(skillKey);
+		VisEntitySkill.ENTITY.save(skillRecord.put(VisEntitySkill.Fields.synonym, Arrays.asList(synonym)));
+	}
+
+	/**
+	 * Puts the word in the lookup with the given parents, as the initial load does for the known skills.
+	 */
+	private void putInTheWordsGroup(String skill, String word, String... parents) {
+		this.removeFromTheWordsGroup(word);
+		VisSkillWordsGroups.addWord(skill, word);
+		for (String parent : parents) {
+			VisSkillWordsGroups.changeParents(skill, Arrays.asList(word), wordParents -> wordParents.add(parent));
+		}
+	}
+
+	private List<String> wordParents(String word) {
+		List<CcpJsonRepresentation> items = this.wordsGroupItems(word);
+		CcpJsonRepresentation item = items.stream().filter(x -> word.equals(x.getAsString(VisJsonCommonsFields.word))).findFirst().get();
+		List<String> parents = item.getAsStringList(VisJsonCommonsFields.parent);
+		return parents;
+	}
+
+	private List<CcpJsonRepresentation> wordsGroupItems(String word) {
+		CcpJsonRepresentation groupKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityGroupPositionsBySkills.Fields.firstTwoInitials, word.substring(0, 2));
+		CcpJsonRepresentation group = VisEntityGroupPositionsBySkills.ENTITY.getEntityMetaData().getOneByIdOrHandleItIfThisIdWasNotFound(groupKey, notFound -> CcpOtherConstants.EMPTY_JSON);
+		List<CcpJsonRepresentation> items = group.getAsJsonList(VisEntityGroupPositionsBySkills.Fields.skill);
+		return items;
+	}
+
+	/**
+	 * Removes the test words from the lookup, so that they do not stay in the real lookup.
+	 */
+	private void removeFromTheWordsGroup(String... words) {
+		for (String word : words) {
+			CcpJsonRepresentation groupKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityGroupPositionsBySkills.Fields.firstTwoInitials, word.substring(0, 2));
+			List<CcpJsonRepresentation> items = this.wordsGroupItems(word);
+			List<CcpJsonRepresentation> otherItems = items.stream().filter(item -> false == word.equals(item.getAsString(VisJsonCommonsFields.word))).collect(Collectors.toList());
+			boolean nothingToRemove = otherItems.size() == items.size();
+			if(nothingToRemove) {
+				continue;
+			}
+			boolean groupWouldBeEmpty = otherItems.isEmpty();
+			if(groupWouldBeEmpty) {
+				VisEntityGroupPositionsBySkills.ENTITY.delete(groupKey);
+				continue;
+			}
+			VisEntityGroupPositionsBySkills.ENTITY.save(groupKey.put(VisEntityGroupPositionsBySkills.Fields.skill, otherItems));
 		}
 	}
 
@@ -253,7 +341,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		try {
 			this.openRequest(SKILL_PARENTS_USER, VisSkillFixHierarchyTypes.remove, "TESTE.PAI", "Não depende de TESTE.PAI", "TESTE.SKILL.DESASSOCIADA");
 
-			this.operatorTypes("/fixSkillHierarchy TESTE.PAI remove " + SKILL_PARENTS_USER);
+			this.operatorTypes("/fixSkillHierarchy remove " + SKILL_PARENTS_USER + " TESTE.PAI");
 			String summary = this.operatorTypes("aprovar não depende mesmo");
 			assertTrue(summary, summary.contains("Aprovados: TESTE.SKILL.DESASSOCIADA"));
 
@@ -292,7 +380,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		this.openRequest(REJECT_ALL_USER, VisSkillFixHierarchyTypes.add, "kotlin", "Ktor e Exposed são de kotlin", "ktor", "exposed");
 
-		this.operatorTypes("/fixSkillHierarchy kotlin add " + REJECT_ALL_USER);
+		this.operatorTypes("/fixSkillHierarchy add " + REJECT_ALL_USER + " kotlin");
 		String summary = this.operatorTypes("rejeitar já estão associados a kotlin");
 		assertTrue(summary, summary.contains("Aprovados: -"));
 		assertTrue(summary, summary.contains("Reprovados: ktor, exposed"));
@@ -325,7 +413,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		this.clearItems(DECIDED_BEFORE_USER, VisSkillFixHierarchyTypes.add, "kotlin", "ktor");
 		this.openRequest(DECIDED_BEFORE_USER, VisSkillFixHierarchyTypes.add, "kotlin", "Uso spring e hibernate com kotlin", "spring", "hibernate");
-		this.operatorTypes("/fixSkillHierarchy kotlin add " + DECIDED_BEFORE_USER);
+		this.operatorTypes("/fixSkillHierarchy add " + DECIDED_BEFORE_USER + " kotlin");
 		this.operatorTypes("um a um");
 		this.operatorTypes("aprovar spring roda em kotlin");
 		this.operatorTypes("rejeitar hibernate não tem relação");
@@ -337,7 +425,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		String pendingBody = pendingEmail.getAsString(JnJsonCommonsFields.message);
 		assertTrue(pendingBody, pendingBody.contains("spring, hibernate, ktor"));
 
-		String request = this.operatorTypes("/fixSkillHierarchy kotlin add " + DECIDED_BEFORE_USER);
+		String request = this.operatorTypes("/fixSkillHierarchy add " + DECIDED_BEFORE_USER + " kotlin");
 		assertTrue(request, request.contains("Itens pendentes: ktor"));
 		assertTrue(request, request.contains("Já aprovados anteriormente (não serão perguntados): spring"));
 		assertTrue(request, request.contains("Já reprovados anteriormente (não serão perguntados): hibernate"));
@@ -374,7 +462,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 	public void requestWithEveryItemReviewedBeforeIsRefused() {
 
 		this.openRequest(ALL_DECIDED_BEFORE_USER, VisSkillFixHierarchyTypes.remove, "scala", "Akka não é scala puro", "akka", "play");
-		this.operatorTypes("/fixSkillHierarchy scala remove " + ALL_DECIDED_BEFORE_USER);
+		this.operatorTypes("/fixSkillHierarchy remove " + ALL_DECIDED_BEFORE_USER + " scala");
 		this.operatorTypes("um a um");
 		this.operatorTypes("aprovar akka é biblioteca");
 		this.operatorTypes("rejeitar play depende de scala");
@@ -393,7 +481,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		assertFalse(EMAIL_INBOX.sentEmails.toString(), this.anyEmailSentTo(ALL_DECIDED_BEFORE_USER, VisMessages.VisNotifySupportAndUserAboutPendingSkillHierarchyRequest.class));
 		assertTrue(TELEGRAM.sentMessages.toString(), TELEGRAM.sentMessages.isEmpty());
 
-		String answer = this.operatorTypes("/fixSkillHierarchy scala remove " + ALL_DECIDED_BEFORE_USER);
+		String answer = this.operatorTypes("/fixSkillHierarchy remove " + ALL_DECIDED_BEFORE_USER + " scala");
 		assertTrue(answer, answer.startsWith("Não há itens pendentes"));
 	}
 
@@ -412,7 +500,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		this.openRequest(IGNORED_USER, VisSkillFixHierarchyTypes.add, "rust", "Palavrão e bobagem sem sentido", "blablabla", "blebleble");
 
-		String request = this.operatorTypes("/fixSkillHierarchy rust add " + IGNORED_USER);
+		String request = this.operatorTypes("/fixSkillHierarchy add " + IGNORED_USER + " rust");
 		assertTrue(request, request.contains("• ignorar"));
 
 		String confirmation = this.operatorTypes("ignorar");
@@ -429,7 +517,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		this.operatorTypes("ignorar");
 		String ignored = this.operatorTypes("sim");
-		assertTrue(ignored, ignored.startsWith("O usuário " + IGNORED_USER + " foi ignorado no comando fixSkillHierarchy."));
+		assertTrue(ignored, ignored.startsWith("O usuário " + IGNORED_USER + " foi ignorado pelo suporte, em todos os comandos."));
 
 		assertTrue(VisEntityCommandNotAllowedToUser.ENTITY.exists(ignoredUser));
 		CcpJsonRepresentation record = VisEntityCommandNotAllowedToUser.ENTITY.getOneById(ignoredUser);
@@ -468,7 +556,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 	}
 
 	/**
-	 * The operator undoes the decision with {@code /allowCommandToUser <command> <email>}: the record leaves
+	 * The operator undoes the decision with {@code /allowCommandToUser <email>}: the record leaves
 	 * vis_command_not_allowed_to_user and the next request of the user is saved and reaches the operator again.
 	 * Asking it again for the same user tells the operator that the user is not ignored.
 	 */
@@ -487,8 +575,8 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		CcpErrorFlowDisturb refusal = this.refusalOf(request);
 		assertEquals(VisProcessStatusFixSkillHierarchy.userNotAllowed, refusal.status);
 
-		String allowed = this.operatorTypes("/allowCommandToUser fixSkillHierarchy " + UNIGNORED_USER);
-		assertEquals("O usuário " + UNIGNORED_USER + " não é mais ignorado no comando fixSkillHierarchy: as próximas solicitações dele voltarão a chegar ao suporte.", allowed);
+		String allowed = this.operatorTypes("/allowCommandToUser " + UNIGNORED_USER);
+		assertEquals("O usuário " + UNIGNORED_USER + " não é mais ignorado pelo suporte: as próximas solicitações dele, em todos os comandos, voltarão a chegar ao suporte.", allowed);
 		assertFalse(VisEntityCommandNotAllowedToUser.ENTITY.exists(ignoredUserKey));
 
 		// the record is kept in the twin, for control and tracking
@@ -498,8 +586,8 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		CcpJsonRepresentation reallowedDescription = reallowedUser.getInnerJson(VisEntityCommandNotAllowedToUser.Fields.description);
 		assertEquals("go", reallowedDescription.getAsString(VisEntitySkillFixHierarchyPending.Fields.parent));
 
-		String notIgnored = this.operatorTypes("/allowCommandToUser fixSkillHierarchy " + UNIGNORED_USER);
-		assertEquals("O usuário " + UNIGNORED_USER + " não está sendo ignorado no comando fixSkillHierarchy", notIgnored);
+		String notIgnored = this.operatorTypes("/allowCommandToUser " + UNIGNORED_USER);
+		assertEquals("O usuário " + UNIGNORED_USER + " não está sendo ignorado pelo suporte", notIgnored);
 
 		// the request goes through again: cleans what a previous run left and sends it through the service
 		this.clearItems(UNIGNORED_USER, VisSkillFixHierarchyTypes.add, "go", "gin");
@@ -509,7 +597,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
 		String notice = TELEGRAM.lastMessageFor(SUPPORT_CHAT).getAsString(JnJsonCommonsFields.message);
-		assertEquals("/fixSkillHierarchy go add " + UNIGNORED_USER, notice);
+		assertEquals("/fixSkillHierarchy add " + UNIGNORED_USER + " go", notice);
 	}
 
 	/**
@@ -529,17 +617,17 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		CcpJsonRepresentation ignoredUser = ignoredUserKey.put(VisEntityCommandNotAllowedToUser.Fields.description, ignoredDescription);
 		VisEntityCommandNotAllowedToUser.ENTITY.save(ignoredUser);
 
-		String refused = this.operatorTypes("/fixSkillHierarchy elixir add " + BLOCKED_USER);
-		assertEquals("O usuário " + BLOCKED_USER + " está sendo ignorado no comando fixSkillHierarchy e as solicitações dele não são atendidas. "
-				+ "Para voltar a atendê-lo, use /allowCommandToUser fixSkillHierarchy " + BLOCKED_USER, refused);
+		String refused = this.operatorTypes("/fixSkillHierarchy add " + BLOCKED_USER + " elixir");
+		assertEquals("O usuário " + BLOCKED_USER + " está sendo ignorado pelo suporte e as solicitações dele não são atendidas em nenhum comando. "
+				+ "Para voltar a atendê-lo, use /allowCommandToUser " + BLOCKED_USER, refused);
 
 		CcpJsonRepresentation requestKey = this.request(BLOCKED_USER, VisSkillFixHierarchyTypes.add, "elixir");
 		CcpJsonRepresentation item = this.item(BLOCKED_USER, VisSkillFixHierarchyTypes.add, "elixir", "phoenix");
 		assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
 		assertTrue(VisEntitySkillFixHierarchyItemPending.ENTITY.exists(item));
 
-		this.operatorTypes("/allowCommandToUser fixSkillHierarchy " + BLOCKED_USER);
-		String request = this.operatorTypes("/fixSkillHierarchy elixir add " + BLOCKED_USER);
+		this.operatorTypes("/allowCommandToUser " + BLOCKED_USER);
+		String request = this.operatorTypes("/fixSkillHierarchy add " + BLOCKED_USER + " elixir");
 		assertTrue(request, request.contains("Itens pendentes: phoenix"));
 	}
 
@@ -612,7 +700,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		assertEquals(pending.toString(), "pending", pending.getAsString(new com.ccp.decorators.CcpFieldName("status")));
 		assertEquals(Arrays.asList("ktor"), pending.getAsStringList(VisEntitySkillFixHierarchyPending.Fields.skill));
 
-		this.operatorTypes("/fixSkillHierarchy kotlin add " + CONSULTING_USER);
+		this.operatorTypes("/fixSkillHierarchy add " + CONSULTING_USER + " kotlin");
 		this.operatorTypes("aprovar ktor roda sobre kotlin");
 
 		CcpJsonRepresentation fulfiled = this.consult(CONSULTING_USER, VisSkillFixHierarchyTypes.add, "kotlin");
@@ -644,13 +732,13 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 	@Test
 	public void requestThatDoesNotExist() {
-		String answer = this.operatorTypes("/fixSkillHierarchy termoinexistente add ninguem@teste.com");
+		String answer = this.operatorTypes("/fixSkillHierarchy add ninguem@teste.com termoinexistente");
 		assertEquals("Não há itens pendentes de ajuste (add) na hierarquia de conhecimentos para o e-mail 'ninguem@teste.com' e o termo 'termoinexistente'", answer);
 	}
 
 	@Test
 	public void typeThatDoesNotExist() {
-		String answer = this.operatorTypes("/fixSkillHierarchy java associar " + ONE_BY_ONE_USER);
+		String answer = this.operatorTypes("/fixSkillHierarchy associar " + ONE_BY_ONE_USER + " java");
 		assertEquals("Não há itens pendentes de ajuste (associar) na hierarquia de conhecimentos para o e-mail '" + ONE_BY_ONE_USER + "' e o termo 'java'", answer);
 	}
 
@@ -663,13 +751,13 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		this.openRequest(TWO_TYPES_USER, VisSkillFixHierarchyTypes.add, "php", "Laravel é framework php", "laravel");
 		String addNotice = TELEGRAM.lastMessageFor(SUPPORT_CHAT).getAsString(JnJsonCommonsFields.message);
-		assertEquals("/fixSkillHierarchy php add " + TWO_TYPES_USER, addNotice);
+		assertEquals("/fixSkillHierarchy add " + TWO_TYPES_USER + " php", addNotice);
 
 		this.openRequest(TWO_TYPES_USER, VisSkillFixHierarchyTypes.remove, "php", "Wordpress é produto, não depende de php", "wordpress");
 		String removeNotice = TELEGRAM.lastMessageFor(SUPPORT_CHAT).getAsString(JnJsonCommonsFields.message);
-		assertEquals("/fixSkillHierarchy php remove " + TWO_TYPES_USER, removeNotice);
+		assertEquals("/fixSkillHierarchy remove " + TWO_TYPES_USER + " php", removeNotice);
 
-		String removeRequest = this.operatorTypes("/fixSkillHierarchy php remove " + TWO_TYPES_USER);
+		String removeRequest = this.operatorTypes("/fixSkillHierarchy remove " + TWO_TYPES_USER + " php");
 		assertTrue(removeRequest, removeRequest.startsWith("Solicitação de desassociação de " + TWO_TYPES_USER + " para o termo php"));
 		assertTrue(removeRequest, removeRequest.contains("Itens pendentes: wordpress"));
 		assertFalse(removeRequest, removeRequest.contains("laravel"));
@@ -682,7 +770,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		assertTrue(VisEntitySkillFixHierarchyFulfiled.ENTITY.exists(removeRequestKey));
 		assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(addRequestKey));
 
-		String addRequest = this.operatorTypes("/fixSkillHierarchy php add " + TWO_TYPES_USER);
+		String addRequest = this.operatorTypes("/fixSkillHierarchy add " + TWO_TYPES_USER + " php");
 		assertTrue(addRequest, addRequest.startsWith("Solicitação de associação de " + TWO_TYPES_USER + " para o termo php"));
 		assertTrue(addRequest, addRequest.contains("Itens pendentes: laravel"));
 		assertFalse(addRequest, addRequest.contains("wordpress"));
@@ -756,7 +844,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 				.put(JnJsonInstantMessengerFields.botName, JbBotType.support)
 				.put(JnJsonInstantMessengerFields.chatId, chatIdAsTheDatabaseReturnsIt)
 				.put(JnJsonInstantMessengerFields.instantMessageType, JnInstantMessageType.text)
-				.put(JnJsonCommonsFields.message, "/fixSkillHierarchy " + parent + " " + type + " " + email);
+				.put(JnJsonCommonsFields.message, "/fixSkillHierarchy " + type + " " + email + " " + parent);
 		JnEntityInstantMessengerMessageSent.ENTITY.delete(sentNotice);
 
 		return newRequest;
