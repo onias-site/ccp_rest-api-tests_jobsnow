@@ -20,11 +20,7 @@ public class JnEntitiesStructureTest {
 	// ── ENTITY not null (ensures CcpEntityFactory initialized each entity) ────────
 
 	@Test public void asyncTaskEntityTest() { assertNotNull(JnEntityAsyncTask.ENTITY); }
-	@Test public void contactUsEntityTest() { assertNotNull(JnEntityContactUs.ENTITY); }
-	@Test public void contactUsIgnoredEntityTest() { assertNotNull(JnEntityContactUsIgnored.ENTITY); }
-	@Test public void contactUsSkipedEntityTest() { assertNotNull(JnEntityContactUsSkiped.ENTITY); }
 	@Test public void disposableRecordEntityTest() { assertNotNull(JnEntityDisposableRecord.ENTITY); }
-	@Test public void disposableTestEntityTest() { assertNotNull(JnEntityDisposableTest.ENTITY); }
 	@Test public void emailMessageSentEntityTest() { assertNotNull(JnEntityEmailMessageSent.ENTITY); }
 	@Test public void emailParametersToSendEntityTest() { assertNotNull(JnEntityEmailParametersToSend.ENTITY); }
 	@Test public void emailReportedAsSpamEntityTest() { assertNotNull(JnEntityEmailReportedAsSpam.ENTITY); }
@@ -37,7 +33,6 @@ public class JnEntitiesStructureTest {
 	@Test public void instantMessengerParametersToSendEntityTest() { assertNotNull(JnEntityInstantMessengerParametersToSend.ENTITY); }
 	@Test public void instantMessengerTemplateMessageEntityTest() { assertNotNull(JnEntityInstantMessengerTemplateMessage.ENTITY); }
 	@Test public void jobsnowErrorEntityTest() { assertNotNull(JnEntityJobsnowError.ENTITY); }
-	@Test public void jobsnowPenddingErrorEntityTest() { assertNotNull(JnEntityJobsnowPenddingError.ENTITY); }
 	@Test public void jobsnowWarningEntityTest() { assertNotNull(JnEntityJobsnowWarning.ENTITY); }
 	@Test public void loginAnswersEntityTest() { assertNotNull(JnEntityLoginAnswers.ENTITY); }
 	@Test public void loginEmailEntityTest() { assertNotNull(JnEntityLoginEmail.ENTITY); }
@@ -58,7 +53,6 @@ public class JnEntitiesStructureTest {
 	// ── Fields.values() not null ─────────────────────────────────────────────
 
 	@Test public void asyncTaskFieldsTest() { assertNotNull(JnEntityAsyncTask.Fields.values()); }
-	@Test public void contactUsFieldsTest() { assertNotNull(JnEntityContactUs.Fields.values()); }
 	@Test public void disposableRecordFieldsTest() { assertNotNull(JnEntityDisposableRecord.Fields.values()); }
 	@Test public void emailMessageSentFieldsTest() { assertNotNull(JnEntityEmailMessageSent.Fields.values()); }
 	@Test public void emailParametersToSendFieldsTest() { assertNotNull(JnEntityEmailParametersToSend.Fields.values()); }
@@ -87,7 +81,6 @@ public class JnEntitiesStructureTest {
 	// ── configurator constructors not null ───────────────────────────────────
 
 	@Test public void asyncTaskCtorTest() { assertNotNull(new JnEntityAsyncTask()); }
-	@Test public void contactUsCtorTest() { assertNotNull(new JnEntityContactUs()); }
 	@Test public void loginEmailCtorTest() { assertNotNull(new JnEntityLoginEmail()); } 
 	@Test public void loginPasswordCtorTest() { assertNotNull(new JnEntityLoginPassword()); }
 	@Test public void loginTokenCtorTest() { assertNotNull(new JnEntityLoginToken()); }

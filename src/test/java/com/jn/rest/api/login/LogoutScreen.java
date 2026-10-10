@@ -1,5 +1,14 @@
 package com.jn.rest.api.login;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublisher;
+import java.net.http.HttpResponse;
 import java.util.function.Function;
 
 import org.junit.Test;
@@ -13,6 +22,7 @@ import com.ccp.process.CcpProcessStatus;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityLoginSessionValidation;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.rest.api.commons.JnTestTemplate;
 import com.jn.rest.api.commons.TestVariables;
 import com.jn.status.login.JnProcessStatusExecuteLogout;
@@ -50,7 +60,42 @@ public class LogoutScreen extends JnTestTemplate {
 		};
 		this.execute(testVariables, JnProcessStatusExecuteLogout.expectedStatus, producer);
 	}
-	
+
+	/**
+	 * A logout carrying a JSON body ends the session. Until 2026-10-09 it answered 500 with "invalid json": the filter
+	 * swaps the body for a larger JSON with the session values but kept the original {@code Content-Length}, and Spring
+	 * read only that many bytes of the new body. The Apache client of {@link #execute} sends no body in a DELETE, so this
+	 * test sends it through {@link HttpClient}.
+	 */
+	@Test
+	public void happyPathWithJsonBody() throws IOException, InterruptedException {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		String token = "12345678";
+		CcpJsonRepresentation sessionJson = testVariables.REQUEST_TO_LOGIN.put(JnEntityLoginSessionValidation.Fields.token, token);
+		JnEntityLoginSessionValidation.ENTITY.save(sessionJson);
+
+		String url = this.ENDPOINT_URL + "login/" + testVariables.VALID_EMAIL + "/" + token;
+		URI uri = URI.create(url);
+		BodyPublisher jsonBody = HttpRequest.BodyPublishers.ofString("{}");
+		// the session key holds the user agent, so the request repeats the one saved above
+		String userAgent = testVariables.REQUEST_TO_LOGIN.getAsString(JnJsonCommonsFields.userAgent);
+		HttpRequest request = HttpRequest.newBuilder(uri)
+				.header("Content-Type", "application/json")
+				.header("User-Agent", userAgent)
+				.method("DELETE", jsonBody)
+				.build();
+		HttpClient client = HttpClient.newHttpClient();
+		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+		int expectedStatus = JnProcessStatusExecuteLogout.expectedStatus.asNumber();
+		String body = response.body();
+		assertEquals(body, expectedStatus, response.statusCode());
+		boolean sessionStillExists = JnEntityLoginSessionValidation.ENTITY.exists(sessionJson);
+		assertFalse(sessionStillExists);
+	}
+
 	protected CcpJsonRepresentation getHeaders() { 
 		CcpJsonRepresentation headers = CcpOtherConstants.EMPTY_JSON
 				;

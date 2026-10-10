@@ -43,7 +43,7 @@ public class DecoratorFieldsTransformerCoverageTest {
 	 * originates inside the very methods this decorator forwards.</li>
 	 * <li>{@code getOneByIdAnyWhere} — the default implementation delegates to {@code getOneById} on the
 	 * same instance, and that one is forwarded with the transformed json.</li>
-	 * <li>{@code getIdToSearchDisposableRecord} — its implementors call {@code getHandledJson} on their
+	 * <li>{@code getIdToSearchDisposableRecord} — its implementors call {@code getJsonWithHandledPrimaryKey} on their
 	 * own before building the id.</li>
 	 * <li>{@code toBulkItems} — <b>this is not a comfortable exemption.</b> Whoever builds bulk items
 	 * must transform the json beforehand, from the outside, and nothing enforces it. It is here so the
@@ -79,7 +79,7 @@ public class DecoratorFieldsTransformerCoverageTest {
 	 * right result.
 	 *
 	 * <p>Left out, for example, is {@code getRecordFromUnionAll}, which receives a json supplier and
-	 * not the json: its default implementation calls {@code getHandledJson} on its own, so the
+	 * not the json: its default implementation calls {@code getJsonWithHandledPrimaryKey} on its own, so the
 	 * transformation already happens without depending on anyone forwarding it.
 	 */
 	private Set<String> entityMethodsReceivingJson() {

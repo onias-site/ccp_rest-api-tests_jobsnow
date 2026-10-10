@@ -1,5 +1,8 @@
 package com.jn.services.login;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
@@ -57,6 +60,11 @@ public class SavePassword extends JnServiceLoginTestTemplate {
 		mirrorEntity.save(testVariables.REQUEST_TO_LOGIN);
 		JnEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		this.expectedFlow(testVariables);
+		// the status alone does not prove the unlock: the password must leave the locked twin for the main entity
+		boolean stillLocked = mirrorEntity.exists(testVariables.REQUEST_TO_LOGIN);
+		boolean savedInTheMainEntity = JnEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
+		assertFalse(stillLocked);
+		assertTrue(savedInTheMainEntity);
 	}
 
 	@Test

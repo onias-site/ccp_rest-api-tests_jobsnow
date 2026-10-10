@@ -111,7 +111,7 @@ public class SeedsOfTheEntitiesTest {
 				.map(id -> "" + Double.valueOf(id).longValue()).collect(Collectors.toList()));
 
 		List<String> bots = this.jsonsOf(new JbEntityBotExplanation()).stream()
-				.map(seed -> seed.getAsString(JnJsonInstantMessengerFields.botName)).sorted().collect(Collectors.toList());
+				.map(seed -> seed.getAsString(JnJsonInstantMessengerFields.botName)).distinct().sorted().collect(Collectors.toList());
 		assertEquals(Arrays.asList("support", "user"), bots);
 
 		CcpJsonRepresentation name = this.jsonsOf(new JbEntityBotCommandName()).get(0);

@@ -51,7 +51,7 @@ import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.business.login.JnBusinessExecuteLogout;
-import com.jn.entities.JnEntityDisposableTest;
+import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
@@ -121,7 +121,7 @@ public class CcpRandomScripts {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnJsonCommonsFields.email, "onias85@gmail.com")
 				;
-		CcpEntity entity = JnEntityDisposableTest.ENTITY;
+		CcpEntity entity = JnEntityLoginSessionConflict.ENTITY;
 		entity.save(json);
 		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class); 
 		for(int k = 0; k < 70; k++) {

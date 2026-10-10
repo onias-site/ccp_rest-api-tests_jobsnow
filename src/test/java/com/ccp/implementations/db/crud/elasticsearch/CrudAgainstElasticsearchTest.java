@@ -27,7 +27,7 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.entities.JnEntityAsyncTask;
-import com.jn.entities.JnEntityContactUsIgnored;
+import com.jn.entities.JnEntityLoginEmail;
 
 /**
  * Proves the Elasticsearch CRUD ({@code CcpCrud}) on an index of its own, created before and dropped after the tests:
@@ -96,7 +96,7 @@ public class CrudAgainstElasticsearchTest {
 		ElasticSearchCrud elasticSearchCrud = new ElasticSearchCrud();
 
 		CcpJsonRepresentation body = elasticSearchCrud.getRequestBodyToMultipleGet(new LinkedHashSet<>(Arrays.asList("1", "2")),
-				JnEntityAsyncTask.ENTITY, JnEntityContactUsIgnored.ENTITY);
+				JnEntityAsyncTask.ENTITY, JnEntityLoginEmail.ENTITY);
 
 		List<CcpJsonRepresentation> docs = body.getAsJsonList(new CcpFieldName("docs"));
 		assertEquals(4, docs.size());

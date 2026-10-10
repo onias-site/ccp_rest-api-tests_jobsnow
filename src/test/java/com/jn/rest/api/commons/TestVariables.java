@@ -18,6 +18,8 @@ public class TestVariables {
 			.put(JnJsonCommonsFields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
 			.put(JnJsonCommonsFields.ip, "127.0.0.1")
 			.put(JnJsonCommonsFields.password, "Novasenha1!")
+			// the transformer only hashes a token it is given (since 2026-10-08)
+			.put(JnJsonCommonsFields.originalToken, JnJsonTransformersFieldsEntityDefault.getOriginalToken())
 			.getTransformedJson(JnJsonTransformersFieldsEntityDefault.token)
 			;
 			

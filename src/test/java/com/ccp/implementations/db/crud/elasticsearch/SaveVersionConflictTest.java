@@ -78,7 +78,7 @@ public class SaveVersionConflictTest {
 			throw new UnsupportedOperationException();
 		}
 
-		public CcpDbRequester createTables(String pathToCreateEntityScript, String pathToJavaClasses, String mappingJnEntitiesErrors, String insertErrors) {
+		public CcpDbRequester createTables(String pathToCreateEntityScript, String pathToJavaClasses, String mappingJnEntitiesErrors, String insertResults) {
 			throw new UnsupportedOperationException();
 		}
 	}

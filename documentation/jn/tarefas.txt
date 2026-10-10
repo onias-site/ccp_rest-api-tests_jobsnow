@@ -39,3 +39,5 @@ Decorator do notificador
 Decorator do flow processor
 Decorator do controller
 Decorator do swagger
+
+acrescentar botoes de interrogação nos inputs da skill e dos sinônimos no modal de adicionar skill

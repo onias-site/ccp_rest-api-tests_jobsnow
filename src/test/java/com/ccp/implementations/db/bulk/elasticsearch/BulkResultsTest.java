@@ -22,7 +22,7 @@ import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.entities.JnEntityAsyncTask;
-import com.jn.entities.JnEntityContactUsIgnored;
+import com.jn.entities.JnEntityLoginEmail;
 
 /**
  * Proves how the Elasticsearch bulk pairs each item with its line of the answer ({@link ElasticSearchBulkOperationResult}),
@@ -47,7 +47,7 @@ public class BulkResultsTest {
 
 	@Test
 	public void eachItemFindsItsLineByIdAndEntity() {
-		List<CcpJsonRepresentation> answer = Arrays.asList(this.line("jn_contact_us_ignored", "abc", 409), this.line("jn_async_task", "abc", 201));
+		List<CcpJsonRepresentation> answer = Arrays.asList(this.line("jn_login_email", "abc", 409), this.line("jn_async_task", "abc", 201));
 
 		ElasticSearchBulkOperationResult result = new ElasticSearchBulkOperationResult(this.item, answer);
 
@@ -61,7 +61,7 @@ public class BulkResultsTest {
 	public void anItemWithoutItsLineIsAnError() {
 		for (List<CcpJsonRepresentation> answer : Arrays.asList(
 				Arrays.asList(this.line("jn_async_task", "other", 201)),
-				Arrays.asList(this.line("jn_contact_us_ignored", "abc", 201)))) {
+				Arrays.asList(this.line("jn_login_email", "abc", 201)))) {
 			try {
 				new ElasticSearchBulkOperationResult(this.item, answer);
 				fail("the answer has no line for the item");
@@ -75,7 +75,7 @@ public class BulkResultsTest {
 	public void theRequestLinesAreTheSameWhenEntityAndIdAreTheSame() {
 		BulkItem line = new BulkItem(this.item);
 		BulkItem sameDocument = new BulkItem(new CcpBulkItem(this.item, CcpBulkEntityOperationType.delete));
-		BulkItem otherEntity = new BulkItem(new CcpBulkItem(this.item.json, CcpBulkEntityOperationType.create, JnEntityContactUsIgnored.ENTITY, "abc"));
+		BulkItem otherEntity = new BulkItem(new CcpBulkItem(this.item.json, CcpBulkEntityOperationType.create, JnEntityLoginEmail.ENTITY, "abc"));
 
 		assertEquals(line, sameDocument);
 		assertEquals(line.hashCode(), sameDocument.hashCode());

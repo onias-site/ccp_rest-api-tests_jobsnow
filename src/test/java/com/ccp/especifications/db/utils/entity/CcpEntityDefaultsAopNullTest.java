@@ -81,6 +81,11 @@ public class CcpEntityDefaultsAopNullTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
+	public void getJsonWithHandledPrimaryKeyNullTest() {
+		entity().getJsonWithHandledPrimaryKey(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
 	public void getOneByIdNullTest() {
 		entity().getOneById(null);
 	}

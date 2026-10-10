@@ -50,7 +50,7 @@ public class VisRemainingAopNullTest {
 	private static final CcpEntity ENTITY = JnEntityJobsnowError.ENTITY;
 
 	/** Entity with a twin: required by the constructor of {@code VisGroupDetailsByMasters}. */
-	private static final CcpEntity TWIN_ENTITY = com.jn.entities.JnEntityContactUs.ENTITY;
+	private static final CcpEntity TWIN_ENTITY = com.jn.entities.JnEntityLoginSessionValidation.ENTITY;
 
 	// ── business/position ─────────────────────────────────────────────────────
 

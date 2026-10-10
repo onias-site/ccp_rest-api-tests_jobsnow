@@ -26,13 +26,15 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.entities.JnEntityInstantMessengerBotLocked;
+import com.jn.entities.JnEntitySupportPendingCommand;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 
 /**
  * Proves how the instant messenger channel of {@link JnMessageType} handles the failures of the provider: too many
  * requests is retried up to the maximum tries and then reported, and a bot blocked by the user is recorded in
- * {@code jn_instant_messenger_bot_locked} without failing the sending.
+ * {@code jn_instant_messenger_bot_locked} without failing the sending, and a command to the support keeps its ticket
+ * even when the delivery fails.
  */
 public class InstantMessengerFailuresTest {
 
@@ -75,6 +77,11 @@ public class InstantMessengerFailuresTest {
 		CcpDependencyInjection.loadAllDependencies(counting);
 	}
 
+	/** A delivery refused by the provider for a reason with no special handling, such as a dropped connection. */
+	private static class FailedDelivery extends RuntimeException {
+		private static final long serialVersionUID = 1L;
+	}
+
 	private final long chatId = System.nanoTime() % 1_000_000_000L;
 
 	private CcpJsonRepresentation message() {
@@ -96,6 +103,30 @@ public class InstantMessengerFailuresTest {
 			fail("the provider never accepted the message");
 		} catch (JnMessageType.JnErrorUnableToSendInstantMessage e) {
 			assertEquals(JnMessageType.instantMessenger.getMaxTries(), CALLS.get());
+		}
+	}
+
+	/**
+	 * Reproduces the skill suggestion lost on 2026-10-10: the notice to the operator failed with a dropped connection
+	 * and, since the ticket was recorded only after a successful delivery, nothing reached {@code /pendingTickets}.
+	 */
+	@Test
+	public void aCommandToTheSupportKeepsItsTicketWhenTheDeliveryFails() {
+		failure = new FailedDelivery();
+		String command = "/reviewSkillSuggestion delivery.failure@teste.com KIPREV";
+		CcpJsonRepresentation commandToTheSupport = this.message().put(JnJsonCommonsFields.message, command);
+		CcpJsonRepresentation ticket = CcpOtherConstants.EMPTY_JSON
+				.put(JnEntitySupportPendingCommand.Fields.botName, "support")
+				.put(JnEntitySupportPendingCommand.Fields.chatId, this.chatId)
+				.put(JnEntitySupportPendingCommand.Fields.command, command);
+
+		try {
+			JnMessageType.instantMessenger.execute(commandToTheSupport);
+			fail("the provider never accepted the message");
+		} catch (FailedDelivery e) {
+			assertTrue(JnEntitySupportPendingCommand.ENTITY.exists(ticket));
+		} finally {
+			JnEntitySupportPendingCommand.ENTITY.delete(ticket);
 		}
 	}
 

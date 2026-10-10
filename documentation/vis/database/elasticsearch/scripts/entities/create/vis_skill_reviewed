@@ -1,0 +1,19 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"explanation": {
+				"type": "text"
+			},
+			"skill": {
+				"type": "keyword"
+			},
+			"status": {
+				"type": "keyword"
+			},
+			"synonym": {
+				"type": "keyword"
+			}
+		}
+	}
+}

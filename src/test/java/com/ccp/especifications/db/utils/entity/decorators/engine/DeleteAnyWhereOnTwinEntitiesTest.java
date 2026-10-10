@@ -23,9 +23,6 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.jn.entities.JnEntityContactUs;
-import com.jn.entities.JnEntityContactUsIgnored;
-import com.jn.entities.JnEntityJobsnowPenddingError;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
@@ -77,32 +74,6 @@ public class DeleteAnyWhereOnTwinEntitiesTest {
 	private final String email = "twin" + System.currentTimeMillis() + "@jobsnow.com";
 
 	// ── entities without side effects on save ────────────────────────────────
-
-	@Test
-	public void contactUs() {
-		CcpJsonRepresentation record = this.withEmail()
-				.put(JnJsonCommonsFields.subjectType, "question")
-				.put(JnJsonCommonsFields.subject, "test subject")
-				.put(JnJsonInstantMessengerFields.chatId, 751717896L)
-				.put(JnJsonCommonsFields.sender, "devs.jobsnow@gmail.com");
-
-		this.shouldDeleteFromBothIndexes(JnEntityContactUs.ENTITY, record);
-	}
-
-	@Test
-	public void contactUsIgnored() {
-		this.shouldDeleteFromBothIndexes(JnEntityContactUsIgnored.ENTITY, this.withEmail());
-	}
-
-	@Test
-	public void jobsnowPenddingError() {
-		CcpJsonRepresentation record = CcpOtherConstants.EMPTY_JSON
-				.put(JnEntityJobsnowPenddingError.Fields.stackTraceHash, this.email)
-				.put(JnEntityJobsnowPenddingError.Fields.type, "java.lang.RuntimeException")
-				.put(JnJsonCommonsFields.message, "test error");
-
-		this.shouldDeleteFromBothIndexes(JnEntityJobsnowPenddingError.ENTITY, record);
-	}
 
 	@Test
 	public void loginPassword() {

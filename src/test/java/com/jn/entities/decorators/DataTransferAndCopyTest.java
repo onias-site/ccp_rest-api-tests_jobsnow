@@ -7,8 +7,6 @@ import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
-import com.jn.entities.JnEntityContactUsSkiped;
-import com.jn.entities.JnEntityDisposableTest;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityVersionable;
@@ -47,7 +45,7 @@ public class DataTransferAndCopyTest extends EntityDecoratorTestTemplate {
 	@Test
 	public void copyThroughInnerLayer() {
 		CcpEntity source = JnEntityLoginEmail.ENTITY;
-		CcpEntity target = JnEntityContactUsSkiped.ENTITY;
+		CcpEntity target = JnEntityLoginSessionConflict.ENTITY;
 		CcpJsonRepresentation record = this.validRecord();
 
 		source.save(record);
@@ -60,7 +58,7 @@ public class DataTransferAndCopyTest extends EntityDecoratorTestTemplate {
 
 	@Test
 	public void transferThroughDefaultDelegator() {
-		CcpEntity source = JnEntityDisposableTest.ENTITY;
+		CcpEntity source = JnEntityLoginSessionConflict.ENTITY;
 		CcpEntity target = JnEntityLoginEmail.ENTITY;
 		CcpJsonRepresentation record = this.validRecord();
 
@@ -74,7 +72,7 @@ public class DataTransferAndCopyTest extends EntityDecoratorTestTemplate {
 
 	@Test
 	public void readingADisposableAnyWhereFindsTheRecordInItsOwnEntity() {
-		CcpEntity disposable = JnEntityDisposableTest.ENTITY;
+		CcpEntity disposable = JnEntityLoginSessionConflict.ENTITY;
 		CcpJsonRepresentation record = this.validRecord();
 		disposable.save(record);
 

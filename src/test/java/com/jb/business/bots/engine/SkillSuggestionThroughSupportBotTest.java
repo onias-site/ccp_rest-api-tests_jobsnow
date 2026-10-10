@@ -39,7 +39,9 @@ import com.jb.entities.JbEntityBotCommandStep;
 import com.jb.entities.JbEntityBotCommandStepEndMessage;
 import com.jb.entities.JbEntityBotCommandStepSession;
 import com.jb.entities.JbEntityPendingTickets;
+import com.jn.entities.JnEntitySupportCancelledCommand;
 import com.jn.entities.JnEntitySupportPendingCommand;
+import com.jn.entities.decorators.ElasticsearchLocal;
 import com.jn.business.messages.JnInstantMessageType;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityInstantMessengerMessageSent;
@@ -49,9 +51,11 @@ import com.vis.entities.VisEntityCommandNotAllowedToUser;
 import com.vis.entities.VisEntityGroupPositionsBySkills;
 import com.vis.entities.VisEntitySkill;
 import com.vis.entities.VisEntitySkillApproved;
+import com.vis.entities.VisEntitySkillFixHierarchyItemPending;
 import com.vis.entities.VisEntitySkillFixHierarchyPending;
 import com.vis.entities.VisEntitySkillPending;
 import com.vis.entities.VisEntitySkillRejected;
+import com.vis.entities.VisEntitySkillReviewed;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.json.fields.validation.VisSkillFixHierarchyTypes;
 import com.vis.json.fields.validation.VisUserRequestCommands;
@@ -195,6 +199,11 @@ public class SkillSuggestionThroughSupportBotTest {
 			// found in resumes and its synonyms can no longer be suggested as new skills
 			assertEquals(0, VisEntityGroupPositionsBySkills.getWordStatus(skill));
 			assertEquals(0, VisEntityGroupPositionsBySkills.getWordStatus("TESTE SINONIMO B"));
+
+			// another candidate who looks the same skill up sees the operator's decision
+			CcpJsonRepresentation decisionSeenByAnother = VisServiceSkillSuggestion.GetSkillSuggestion.execute(this.suggestion(SERVICE_USER, skill));
+			assertEquals("approved", decisionSeenByAnother.getAsString(JnJsonCommonsFields.status));
+			assertEquals("ferramenta relevante para o mercado", decisionSeenByAnother.getAsString(JnJsonCommonsFields.explanation));
 			CcpJsonRepresentation synonymSuggestion = this.newSuggestion(this.suggestion(SERVICE_USER, "TESTE SINONIMO B"), "O sinônimo da skill aprovada como skill nova");
 			CcpProcessStatus synonymRefused = this.statusOf(() -> VisServiceSkillSuggestion.SuggestSkill.execute(synonymSuggestion));
 			assertEquals(VisProcessStatusSuggestSkill.skillAlreadyExists, synonymRefused);
@@ -282,6 +291,45 @@ public class SkillSuggestionThroughSupportBotTest {
 	}
 
 	/**
+	 * Once the operator decided on a skill, the decision holds for every candidate: another candidate who suggests the
+	 * same skill is refused with {@code alreadyReviewed} (410), no new ticket nor notice reaches the operator, and the
+	 * lookup of the suggestion returns the operator's decision, without the email or the justification of the
+	 * candidate who suggested it first.
+	 */
+	@Test
+	public void anotherCandidateGetsTheDecisionAlreadyTaken() {
+
+		String skill = "TESTE SKILL JA AVALIADA";
+		this.openSuggestion(REJECTED_USER, skill, "Primeiro candidato a sugerir", "TESTE SINONIMO AVALIADO");
+		this.operatorTypes("/reviewSkillSuggestion " + REJECTED_USER + " " + skill);
+		this.operatorTypes("rejeitar não é uma habilidade técnica");
+
+		CcpJsonRepresentation skillKey = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillReviewed.Fields.skill, skill);
+		assertTrue(VisEntitySkillReviewed.ENTITY.exists(skillKey));
+
+		CcpJsonRepresentation otherCandidateKey = this.suggestion(SERVICE_USER, skill);
+		CcpJsonRepresentation otherCandidateSuggestion = this.newSuggestion(otherCandidateKey, "Segundo candidato, mesma habilidade");
+		VisEntitySkillPending.ENTITY.delete(otherCandidateSuggestion);
+		VisEntitySkillApproved.ENTITY.delete(otherCandidateKey);
+		VisEntitySkillRejected.ENTITY.delete(otherCandidateKey);
+		TELEGRAM.sentMessages.clear();
+
+		CcpJsonRepresentation decision = VisServiceSkillSuggestion.GetSkillSuggestion.execute(otherCandidateKey);
+		assertEquals("rejected", decision.getAsString(JnJsonCommonsFields.status));
+		assertEquals("não é uma habilidade técnica", decision.getAsString(JnJsonCommonsFields.explanation));
+		assertEquals(Arrays.asList("TESTE SINONIMO AVALIADO"), decision.getAsStringList(VisEntitySkillReviewed.Fields.synonym));
+		assertFalse(decision.toString(), decision.containsField(JnJsonCommonsFields.email));
+		assertFalse(decision.toString(), decision.containsField(JnJsonCommonsFields.description));
+
+		CcpProcessStatus refusal = this.statusOf(() -> VisServiceSkillSuggestion.SuggestSkill.execute(otherCandidateSuggestion));
+		assertEquals(VisProcessStatusSuggestSkill.alreadyReviewed, refusal);
+		assertEquals(410, refusal.asNumber());
+		assertFalse(VisEntitySkillPending.ENTITY.exists(otherCandidateKey));
+		assertFalse(this.isPendingTicket("/reviewSkillSuggestion " + SERVICE_USER + " " + skill));
+		assertTrue(TELEGRAM.sentMessages.toString(), TELEGRAM.sentMessages.isEmpty());
+	}
+
+	/**
 	 * The operator asks to ignore the candidate, gives up, asks again and confirms: the suggestion is discarded
 	 * without any email, the next suggestion of the candidate is refused with {@code userNotAllowed} (403) and the
 	 * command itself refuses to review the candidate until {@code allowCommandToUser}.
@@ -326,11 +374,98 @@ public class SkillSuggestionThroughSupportBotTest {
 		assertEquals(VisProcessStatusFixSkillHierarchy.userNotAllowed, hierarchyRefusal);
 
 		String notAllowed = this.operatorTypes("/reviewSkillSuggestion " + IGNORED_USER + " " + skill);
-		assertTrue(notAllowed, notAllowed.contains("/allowCommandToUser " + IGNORED_USER));
+		// the bot names the command in the operator's language (Portuguese by default); the canonical name still works
+		String allowCommandInPortuguese = JbCommandNamesInPortuguese.allowCommandToUser.getValue();
+		assertTrue(notAllowed, notAllowed.contains("/" + allowCommandInPortuguese + " " + IGNORED_USER));
 
 		this.operatorTypes("/allowCommandToUser " + IGNORED_USER);
 		VisServiceSkillSuggestion.SuggestSkill.execute(newSuggestion);
 		assertTrue(VisEntitySkillPending.ENTITY.exists(suggestionKey));
+	}
+
+	/**
+	 * Ignoring a user discards every request of the user still pending, as if it had never existed: the skill
+	 * suggestions (not only the one being reviewed) and the skill hierarchy fix requests leave the pending entities and
+	 * their tickets leave {@code /pendingTickets}, nothing goes to the approved or rejected entities and no email is
+	 * sent. A hierarchy item also asked by another user stays pending; an item only the ignored user asked for goes.
+	 */
+	@Test
+	public void ignoringTheUserDiscardsAllTheirPendingRequests() {
+
+		String reviewedSkill = "TESTE SKILL IGNORADA REVISADA";
+		String otherSkill = "TESTE SKILL IGNORADA OUTRA";
+		String parent = "TESTE PAI DO IGNORADO";
+		String sharedSkill = "TESTE ITEM COMPARTILHADO";
+		String exclusiveSkill = "TESTE ITEM EXCLUSIVO";
+
+		this.allowCandidate(IGNORED_USER);
+		this.openSuggestion(IGNORED_USER, reviewedSkill, "Sugestão que o operador vai revisar");
+		this.openSuggestion(IGNORED_USER, otherSkill, "Outra sugestão pendente do mesmo usuário");
+		CcpJsonRepresentation ignoredUserRequest = this.openHierarchyRequest(IGNORED_USER, parent, sharedSkill, exclusiveSkill);
+		CcpJsonRepresentation otherUserRequest = this.openHierarchyRequest(SERVICE_USER, parent, sharedSkill);
+		String hierarchyTicket = "/fixSkillHierarchy " + VisSkillFixHierarchyTypes.add + " " + IGNORED_USER + " " + parent;
+
+		try {
+			assertTrue(VisEntitySkillFixHierarchyItemPending.ENTITY.exists(this.hierarchyItem(parent, sharedSkill)));
+			assertTrue(VisEntitySkillFixHierarchyItemPending.ENTITY.exists(this.hierarchyItem(parent, exclusiveSkill)));
+			// the pending requests are found by queries, which see a write only after a refresh
+			ElasticsearchLocal.refresh("vis_skill_pending", "vis_skill_fix_hierarchy_pending");
+
+			this.operatorTypes("/reviewSkillSuggestion " + IGNORED_USER + " " + reviewedSkill);
+			this.operatorTypes("ignorar");
+			String ignored = this.operatorTypes("sim");
+			assertTrue(ignored, ignored.startsWith("O usuário " + IGNORED_USER + " foi ignorado"));
+
+			for (String skill : Arrays.asList(reviewedSkill, otherSkill)) {
+				CcpJsonRepresentation suggestionKey = this.suggestion(IGNORED_USER, skill);
+				assertFalse(skill, VisEntitySkillPending.ENTITY.exists(suggestionKey));
+				assertFalse(skill, VisEntitySkillApproved.ENTITY.exists(suggestionKey));
+				assertFalse(skill, VisEntitySkillRejected.ENTITY.exists(suggestionKey));
+				assertFalse(skill, this.isPendingTicket("/reviewSkillSuggestion " + IGNORED_USER + " " + skill));
+				CcpJsonRepresentation lookedUp = VisServiceSkillSuggestion.GetSkillSuggestion.execute(suggestionKey);
+				assertTrue(lookedUp.toString(), lookedUp.isEmpty());
+			}
+
+			assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(ignoredUserRequest));
+			assertFalse(this.isPendingTicket(hierarchyTicket));
+			assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(otherUserRequest));
+			assertTrue(VisEntitySkillFixHierarchyItemPending.ENTITY.exists(this.hierarchyItem(parent, sharedSkill)));
+			assertFalse(VisEntitySkillFixHierarchyItemPending.ENTITY.exists(this.hierarchyItem(parent, exclusiveSkill)));
+
+			assertFalse(this.anyEmailSentTo(IGNORED_USER, VisMessages.VisNotifyUserAboutRejectedSkill.class));
+			assertFalse(this.anyEmailSentTo(IGNORED_USER, VisMessages.VisNotifyUserAboutAprovedSkill.class));
+		} finally {
+			this.allowCandidate(IGNORED_USER);
+			VisEntitySkillFixHierarchyPending.ENTITY.deleteAnyWhere(otherUserRequest);
+			VisEntitySkillFixHierarchyPending.ENTITY.deleteAnyWhere(ignoredUserRequest);
+		}
+	}
+
+	/**
+	 * Saves a pending skill hierarchy fix request of type {@code add}, which creates its items and sends the
+	 * operator its ticket; whatever a previous run left is discarded first.
+	 */
+	private CcpJsonRepresentation openHierarchyRequest(String email, String parent, String... skills) {
+		CcpJsonRepresentation request = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntitySkillFixHierarchyPending.Fields.email, email)
+				.put(VisEntitySkillFixHierarchyPending.Fields.parent, parent)
+				.put(VisEntitySkillFixHierarchyPending.Fields.type, VisSkillFixHierarchyTypes.add)
+				.put(VisEntitySkillFixHierarchyPending.Fields.description, "Pedido de ajuste para testar o ignorar")
+				.put(VisEntitySkillFixHierarchyPending.Fields.skill, Arrays.asList(skills));
+		VisEntitySkillFixHierarchyPending.ENTITY.deleteAnyWhere(request);
+		for (String skill : skills) {
+			VisEntitySkillFixHierarchyItemPending.ENTITY.deleteAnyWhere(this.hierarchyItem(parent, skill));
+		}
+		VisEntitySkillFixHierarchyPending.ENTITY.save(request);
+		return request;
+	}
+
+	private CcpJsonRepresentation hierarchyItem(String parent, String skill) {
+		CcpJsonRepresentation item = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntitySkillFixHierarchyItemPending.Fields.parent, parent)
+				.put(VisEntitySkillFixHierarchyItemPending.Fields.type, VisSkillFixHierarchyTypes.add)
+				.put(VisEntitySkillFixHierarchyItemPending.Fields.skill, skill);
+		return item;
 	}
 
 	/**
@@ -350,12 +485,103 @@ public class SkillSuggestionThroughSupportBotTest {
 
 		String finished = this.operatorTypes("aprovar parecia uma boa habilidade");
 		assertTrue(finished, finished.contains("não está mais pendente"));
-		// withdrawing in the screen does not touch the ticket; the operator's session ending (even without a decision) does
+		// withdrawing cancelled the ticket and the operator's session ending (even without a decision) took it out too
 		assertFalse(this.isPendingTicket("/reviewSkillSuggestion " + WITHDRAWN_USER + " " + skill));
 		assertFalse(VisEntitySkillApproved.ENTITY.exists(suggestionKey));
 
 		CcpProcessStatus notFound = this.statusOf(() -> VisServiceSkillSuggestion.DeleteSkillSuggestion.execute(suggestionKey));
 		assertEquals(CcpProcessStatusDefault.NOT_FOUND, notFound);
+	}
+
+	/**
+	 * Withdrawing a suggestion the operator has not listed yet takes its ticket out of the jn inbox at once; the
+	 * cancellation is recorded as well, in case the bot had already moved the ticket to its own list.
+	 */
+	@Test
+	public void withdrawingTakesTheTicketOutOfTheInbox() {
+
+		String skill = "TESTE SKILL DESISTENCIA NA CAIXA";
+		String ticket = "/reviewSkillSuggestion " + WITHDRAWN_USER + " " + skill;
+		this.openSuggestion(WITHDRAWN_USER, skill, "Vou desistir antes de o operador ver");
+		assertTrue(this.isPendingTicket(ticket));
+
+		VisServiceSkillSuggestion.DeleteSkillSuggestion.execute(this.suggestion(WITHDRAWN_USER, skill));
+
+		assertFalse(this.isPendingTicket(ticket));
+		assertTrue(JnEntitySupportCancelledCommand.ENTITY.exists(this.cancelledCommand(ticket)));
+	}
+
+	/**
+	 * Withdrawing a suggestion whose ticket {@code /pendingTickets} already moved to the list of the bot: the vis can
+	 * not reach that list (jb), so the ticket waits there until the next listing, which applies the cancellation and
+	 * consumes it.
+	 */
+	@Test
+	public void withdrawingTakesTheTicketOutOfTheOperatorList() {
+
+		String skill = "TESTE SKILL DESISTENCIA NA LISTA";
+		String ticket = "/reviewSkillSuggestion " + WITHDRAWN_USER + " " + skill;
+		this.openSuggestion(WITHDRAWN_USER, skill, "Vou desistir depois de o operador listar");
+		this.listTheTickets();
+		assertTrue(JbEntityPendingTickets.ENTITY.exists(this.listedTicket(ticket)));
+
+		VisServiceSkillSuggestion.DeleteSkillSuggestion.execute(this.suggestion(WITHDRAWN_USER, skill));
+		assertTrue(JnEntitySupportCancelledCommand.ENTITY.exists(this.cancelledCommand(ticket)));
+
+		this.listTheTickets();
+
+		assertFalse(this.isPendingTicket(ticket));
+		assertFalse(JnEntitySupportCancelledCommand.ENTITY.exists(this.cancelledCommand(ticket)));
+	}
+
+	/**
+	 * Suggesting again after withdrawing sends the same command to the operator: the new ticket deletes the old
+	 * cancellation, so the next listing keeps it.
+	 */
+	@Test
+	public void suggestingAgainAfterWithdrawingOpensTheTicketAgain() {
+
+		String skill = "TESTE SKILL REENVIADA";
+		String ticket = "/reviewSkillSuggestion " + WITHDRAWN_USER + " " + skill;
+		this.openSuggestion(WITHDRAWN_USER, skill, "Primeira vez, vou desistir");
+		VisServiceSkillSuggestion.DeleteSkillSuggestion.execute(this.suggestion(WITHDRAWN_USER, skill));
+		assertTrue(JnEntitySupportCancelledCommand.ENTITY.exists(this.cancelledCommand(ticket)));
+
+		this.openSuggestion(WITHDRAWN_USER, skill, "Mudei de ideia, sugiro de novo");
+
+		assertFalse(JnEntitySupportCancelledCommand.ENTITY.exists(this.cancelledCommand(ticket)));
+		this.listTheTickets();
+		assertTrue(JbEntityPendingTickets.ENTITY.exists(this.listedTicket(ticket)));
+
+		VisServiceSkillSuggestion.DeleteSkillSuggestion.execute(this.suggestion(WITHDRAWN_USER, skill));
+		this.listTheTickets();
+		assertFalse(this.isPendingTicket(ticket));
+	}
+
+	/**
+	 * Runs {@code /pendingTickets}, which moves the inbox to the list of the bot and applies the cancellations, and
+	 * leaves the list with another command. Both are read by queries, which see a write only after a refresh.
+	 */
+	private void listTheTickets() {
+		ElasticsearchLocal.refresh("jn_support_pending_command", "jb_pending_tickets", "jn_support_cancelled_command");
+		this.operatorTypes("/pendingTickets");
+		this.clearTheBotSession();
+	}
+
+	private CcpJsonRepresentation listedTicket(String command) {
+		CcpJsonRepresentation listedTicket = CcpOtherConstants.EMPTY_JSON
+				.put(JbEntityPendingTickets.Fields.botName, JbBotType.support)
+				.put(JbEntityPendingTickets.Fields.chatId, SUPPORT_CHAT)
+				.put(JbEntityPendingTickets.Fields.ticket, command);
+		return listedTicket;
+	}
+
+	private CcpJsonRepresentation cancelledCommand(String command) {
+		CcpJsonRepresentation cancelledCommand = CcpOtherConstants.EMPTY_JSON
+				.put(JnEntitySupportCancelledCommand.Fields.botName, JbBotType.support)
+				.put(JnEntitySupportCancelledCommand.Fields.chatId, SUPPORT_CHAT)
+				.put(JnEntitySupportCancelledCommand.Fields.command, command);
+		return cancelledCommand;
 	}
 
 	/**
@@ -424,6 +650,7 @@ public class SkillSuggestionThroughSupportBotTest {
 		VisEntitySkillPending.ENTITY.delete(newSuggestion);
 		VisEntitySkillApproved.ENTITY.delete(suggestionKey);
 		VisEntitySkillRejected.ENTITY.delete(suggestionKey);
+		VisEntitySkillReviewed.ENTITY.delete(suggestionKey);
 
 		List<Class<?>> templates = Arrays.asList(
 				VisMessages.VisNotifySupportAndUserAboutPendingSkillRequest.class,

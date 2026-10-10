@@ -97,10 +97,10 @@ public class CcpCreateEntities {
 		String mappingJnEntitiesErrors = "c:\\logs\\"
 				+ systemName
 				+ "\\mappingJnEntitiesErrors.json";
-		String insertErrors = "c:\\logs\\"
+		String insertResults = "c:\\logs\\"
 				+ systemName
-				+ "\\insertErrors.json";
+				+ "\\insertResults.json";
 		CcpDbRequester database = CcpDependencyInjection.getDependency(CcpDbRequester.class);
-		database.createTables(pathToCreateEntityScript, pathToJavaClasses, mappingJnEntitiesErrors, insertErrors);
+		database.createTables(pathToCreateEntityScript, pathToJavaClasses, mappingJnEntitiesErrors, insertResults);
 	}
 }

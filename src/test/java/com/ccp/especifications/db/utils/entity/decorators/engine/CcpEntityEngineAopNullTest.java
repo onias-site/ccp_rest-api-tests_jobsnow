@@ -14,7 +14,7 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.CcpEntityOperationType;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jn.entities.JnEntityContactUs;
+import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityLoginTokenRequestResend;
@@ -129,6 +129,11 @@ public class CcpEntityEngineAopNullTest {
 	@Test(expected = CcpNullParameterException.class)
 	public void delegatorGetHandledJsonNullTest() {
 		delegator().getHandledJson(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
+	public void delegatorGetJsonWithHandledPrimaryKeyNullTest() {
+		delegator().getJsonWithHandledPrimaryKey(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -529,6 +534,11 @@ public class CcpEntityEngineAopNullTest {
 	}
 
 	@Test(expected = CcpNullParameterException.class)
+	public void transformerDecoratorGetJsonWithHandledPrimaryKeyNullTest() {
+		transformerDecorator().getJsonWithHandledPrimaryKey(null);
+	}
+
+	@Test(expected = CcpNullParameterException.class)
 	public void transformerDecoratorGetOneByIdNullTest() {
 		transformerDecorator().getOneById(null);
 	}
@@ -804,12 +814,12 @@ public class CcpEntityEngineAopNullTest {
 	// ── DecoratorTwinEntity ───────────────────────────────────────────────────
 
 	private static DecoratorTwinEntity twinDecorator() {
-		return new DecoratorTwinEntity(ENTITY, JnEntityContactUs.class);
+		return new DecoratorTwinEntity(ENTITY, JnEntityLoginSessionValidation.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void twinDecoratorConstructorEntityNullTest() {
-		new DecoratorTwinEntity(null, JnEntityContactUs.class);
+		new DecoratorTwinEntity(null, JnEntityLoginSessionValidation.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

@@ -19,17 +19,14 @@ import com.jb.entities.JbEntityBotCommandName;
 import com.jb.entities.JbEntityBotCommandStep;
 import com.jb.entities.JbEntityBotCommandStepEndMessage;
 import com.jb.entities.JbEntityBotCommandStepExplanation;
+import com.jb.entities.JbEntityBotChatLanguage;
 import com.jb.entities.JbEntityBotCommandStepSession;
 import com.jb.entities.JbEntityBotCommandStepStartMessage;
 import com.jb.entities.JbEntityBotExplanation;
 import com.jb.entities.JbEntityBotUpdateId;
 import com.jn.business.messages.JnInstantMessageType;
 import com.jn.entities.JnEntityAsyncTask;
-import com.jn.entities.JnEntityContactUs;
-import com.jn.entities.JnEntityContactUsIgnored;
-import com.jn.entities.JnEntityContactUsSkiped;
 import com.jn.entities.JnEntityDisposableRecord;
-import com.jn.entities.JnEntityDisposableTest;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityEmailParametersToSend;
 import com.jn.entities.JnEntityEmailReportedAsSpam;
@@ -42,7 +39,6 @@ import com.jn.entities.JnEntityInstantMessengerMessageSent;
 import com.jn.entities.JnEntityInstantMessengerParametersToSend;
 import com.jn.entities.JnEntityInstantMessengerTemplateMessage;
 import com.jn.entities.JnEntityJobsnowError;
-import com.jn.entities.JnEntityJobsnowPenddingError;
 import com.jn.entities.JnEntityJobsnowWarning;
 import com.jn.entities.JnEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
@@ -75,14 +71,14 @@ public class ValidationRulesCopyTest {
 			JbEntityBot.class, JbEntityBotAllowedUser.class, JbEntityBotCommand.class, JbEntityBotCommandExplanation.class,
 			JbEntityBotCommandName.class, JbEntityBotCommandStep.class, JbEntityBotCommandStepEndMessage.class,
 			JbEntityBotCommandStepExplanation.class, JbEntityBotCommandStepSession.class, JbEntityBotCommandStepStartMessage.class,
-			JbEntityBotExplanation.class, JbEntityBotUpdateId.class,
-			JnEntityAsyncTask.class, JnEntityContactUs.class, JnEntityContactUsIgnored.class, JnEntityContactUsSkiped.class,
-			JnEntityDisposableRecord.class, JnEntityDisposableTest.class, JnEntityEmailMessageSent.class,
+			JbEntityBotExplanation.class, JbEntityBotUpdateId.class, JbEntityBotChatLanguage.class,
+			JnEntityAsyncTask.class,
+			JnEntityDisposableRecord.class, JnEntityEmailMessageSent.class,
 			JnEntityEmailParametersToSend.class, JnEntityEmailReportedAsSpam.class, JnEntityEmailTemplateMessage.class,
 			JnEntityHttpApiErrorClient.class, JnEntityHttpApiErrorServer.class, JnEntityHttpApiRetrySendRequest.class,
 			JnEntityInstantMessengerBotLocked.class, JnEntityInstantMessengerMessageSent.class,
 			JnEntityInstantMessengerParametersToSend.class, JnEntityInstantMessengerTemplateMessage.class,
-			JnEntityJobsnowError.class, JnEntityJobsnowPenddingError.class, JnEntityJobsnowWarning.class,
+			JnEntityJobsnowError.class, JnEntityJobsnowWarning.class,
 			JnEntityLoginAnswers.class, JnEntityLoginEmail.class, JnEntityLoginPassword.class, JnEntityLoginPasswordAttempts.class,
 			JnEntityLoginSessionConflict.class, JnEntityLoginSessionTokenAttempts.class, JnEntityLoginSessionValidation.class,
 			JnEntityLoginStats.class, JnEntityLoginToken.class, JnEntityLoginTokenAttempts.class,

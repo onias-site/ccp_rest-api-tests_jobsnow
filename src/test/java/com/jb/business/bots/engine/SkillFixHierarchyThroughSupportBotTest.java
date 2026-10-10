@@ -37,9 +37,13 @@ import com.jb.entities.JbEntityBotCommand;
 import com.jb.entities.JbEntityBotCommandStep;
 import com.jb.entities.JbEntityBotCommandStepEndMessage;
 import com.jb.entities.JbEntityBotCommandStepSession;
+import com.jb.entities.JbEntityPendingTickets;
 import com.jn.business.messages.JnInstantMessageType;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityInstantMessengerMessageSent;
+import com.jn.entities.JnEntitySupportCancelledCommand;
+import com.jn.entities.JnEntitySupportPendingCommand;
+import com.jn.entities.decorators.ElasticsearchLocal;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.vis.business.skill.VisBusinessSkillFixHierarchyIgnoreUser;
@@ -118,6 +122,8 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 	private static final String WITHDRAWN_REQUEST_USER = "desistiu.da.solicitacao@teste.com";
 
+	private static final String ALREADY_REVIEWED_SERVICE_USER = "revisao.ja.atendida.pelo.servico@teste.com";
+
 	/**
 	 * Saves the bot, its commands, their steps, their end messages and the message templates of the requests again so
 	 * that the index follows what is declared in java (the create operation of the initial records does not overwrite
@@ -184,6 +190,14 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		CcpJsonRepresentation request1 = this.request(ONE_BY_ONE_USER, VisSkillFixHierarchyTypes.add, "java");
 		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(request1));
 		assertTrue(VisEntitySkillFixHierarchyFulfiled.ENTITY.exists(request1));
+
+		// the "Motivo" panel of the screen shows the explanation: the decisions are written in the language of the
+		// user (the language of the system, Portuguese, while the language of the user is not stored)
+		CcpJsonRepresentation fulfiled = VisEntitySkillFixHierarchyFulfiled.ENTITY.getOneById(request1);
+		String explanation = fulfiled.getAsString(JnJsonCommonsFields.explanation);
+		assertTrue(explanation, explanation.contains("spring (aprovado): spring é framework java"));
+		assertTrue(explanation, explanation.contains("hibernate (reprovado): hibernate já está associado a jpa"));
+		assertFalse(explanation, explanation.contains("approved"));
 
 		CcpJsonRepresentation email = this.emailSentTo(ONE_BY_ONE_USER, VisMessages.VisNotifyUserAboutFulfiledSkillHierarchy.class);
 		String body = email.getAsString(JnJsonCommonsFields.message);
@@ -486,6 +500,29 @@ public class SkillFixHierarchyThroughSupportBotTest {
 	}
 
 	/**
+	 * The same refusal through the service the screen calls: the answer is {@code alreadyReviewed} (208), so the screen
+	 * tells the user the request is complete and an email is on its way, instead of a 200 that reads as "sent for
+	 * review"; nothing stays pending and the email goes out.
+	 */
+	@Test
+	public void theServiceAnswersThatTheRequestWasAlreadyReviewed() {
+
+		this.openRequest(ALREADY_REVIEWED_SERVICE_USER, VisSkillFixHierarchyTypes.add, "groovy", "Grails é framework groovy", "grails");
+		this.operatorTypes("/fixSkillHierarchy add " + ALREADY_REVIEWED_SERVICE_USER + " groovy");
+		this.operatorTypes("aprovar grails roda sobre groovy");
+
+		EMAIL_INBOX.sentEmails.clear();
+		CcpJsonRepresentation sameRequest = this.clearRequest(ALREADY_REVIEWED_SERVICE_USER, VisSkillFixHierarchyTypes.add, "groovy", "Pedindo de novo", "grails");
+		CcpErrorFlowDisturb answer = this.refusalOf(sameRequest);
+
+		assertEquals(VisProcessStatusFixSkillHierarchy.alreadyReviewed, answer.status);
+		assertEquals(208, VisProcessStatusFixSkillHierarchy.alreadyReviewed.asNumber());
+		CcpJsonRepresentation request = this.request(ALREADY_REVIEWED_SERVICE_USER, VisSkillFixHierarchyTypes.add, "groovy");
+		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(request));
+		assertTrue(EMAIL_INBOX.sentEmails.toString(), this.anyEmailSentTo(ALREADY_REVIEWED_SERVICE_USER, VisMessages.VisNotifyUserAboutAlreadyReviewedSkillHierarchy.class));
+	}
+
+	/**
 	 * The operator ignores a user who only plays with the requests: the intention is confirmed (a "no" goes back
 	 * to the options), the user is recorded in vis_command_not_allowed_to_user with the request, the request and
 	 * its items are discarded without any email, and the next request of the user reaches nobody.
@@ -601,14 +638,16 @@ public class SkillFixHierarchyThroughSupportBotTest {
 	}
 
 	/**
-	 * A request left pending from before the user was ignored (another parent, for instance) cannot be reviewed:
-	 * the command refuses it, telling the operator how to stop ignoring the user, and leaves the request as it
-	 * is. Once the user is allowed again, the same command shows the request.
+	 * The command refuses to review a request of an ignored user, telling the operator how to stop ignoring the user.
+	 * The request that was pending when the user was ignored no longer exists: ignoring discards every pending request
+	 * of the user, so even after the user is allowed again there is nothing to review.
 	 */
 	@Test
 	public void operatorCannotReviewAnIgnoredUser() {
 
 		this.openRequest(BLOCKED_USER, VisSkillFixHierarchyTypes.add, "elixir", "Phoenix é framework web em elixir", "phoenix");
+		// ignoring finds the pending requests by a query, which sees a write only after a refresh
+		ElasticsearchLocal.refresh("vis_skill_fix_hierarchy_pending");
 
 		CcpJsonRepresentation ignoredUserKey = CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityCommandNotAllowedToUser.Fields.email, BLOCKED_USER)
@@ -618,17 +657,20 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		VisEntityCommandNotAllowedToUser.ENTITY.save(ignoredUser);
 
 		String refused = this.operatorTypes("/fixSkillHierarchy add " + BLOCKED_USER + " elixir");
+		// the bot names the command in the operator's language (Portuguese by default); the canonical name still works
+		String allowCommandInPortuguese = JbCommandNamesInPortuguese.allowCommandToUser.getValue();
 		assertEquals("O usuário " + BLOCKED_USER + " está sendo ignorado pelo suporte e as solicitações dele não são atendidas em nenhum comando. "
-				+ "Para voltar a atendê-lo, use /allowCommandToUser " + BLOCKED_USER, refused);
+				+ "Para voltar a atendê-lo, use /" + allowCommandInPortuguese + " " + BLOCKED_USER, refused);
 
+		// since 2026-10-10 ignoring the user discards every request of the user still pending, as if it had never existed
 		CcpJsonRepresentation requestKey = this.request(BLOCKED_USER, VisSkillFixHierarchyTypes.add, "elixir");
 		CcpJsonRepresentation item = this.item(BLOCKED_USER, VisSkillFixHierarchyTypes.add, "elixir", "phoenix");
-		assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
-		assertTrue(VisEntitySkillFixHierarchyItemPending.ENTITY.exists(item));
+		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
+		assertFalse(VisEntitySkillFixHierarchyItemPending.ENTITY.exists(item));
 
 		this.operatorTypes("/allowCommandToUser " + BLOCKED_USER);
 		String request = this.operatorTypes("/fixSkillHierarchy add " + BLOCKED_USER + " elixir");
-		assertTrue(request, request.contains("Itens pendentes: phoenix"));
+		assertFalse(request, request.contains("Itens pendentes: phoenix"));
 	}
 
 	private CcpJsonRepresentation newRequest(CcpJsonRepresentation requestKey, String description, String... skills) {
@@ -647,19 +689,84 @@ public class SkillFixHierarchyThroughSupportBotTest {
 	}
 
 	/**
-	 * The candidate withdraws a request that is still pending: the request leaves the pending entity.
+	 * The candidate withdraws a request that is still pending: the request leaves the pending entity and its ticket
+	 * leaves the operator's tickets (the jn inbox at once; a cancellation is recorded for the list of the bot).
 	 */
 	@Test
 	public void candidateWithdrawsAPendingRequest() {
 
 		this.openRequest(WITHDRAWN_REQUEST_USER, VisSkillFixHierarchyTypes.add, "rust", "Tokio é runtime assíncrono de rust", "tokio");
+		String ticket = "/fixSkillHierarchy add " + WITHDRAWN_REQUEST_USER + " rust";
 
 		CcpJsonRepresentation requestKey = this.request(WITHDRAWN_REQUEST_USER, VisSkillFixHierarchyTypes.add, "rust");
 		assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
+		assertTrue(this.isPendingTicket(ticket));
 
 		VisServiceSkillFixHierarchy.DeleteSkillFixHierarchy.execute(requestKey);
 
 		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
+		assertFalse(this.isPendingTicket(ticket));
+		assertTrue(JnEntitySupportCancelledCommand.ENTITY.exists(this.cancelledCommand(ticket)));
+	}
+
+	/**
+	 * The candidate withdraws a request whose ticket {@code /pendingTickets} already moved to the list of the bot: the
+	 * next listing applies the cancellation and the ticket leaves the list.
+	 */
+	@Test
+	public void candidateWithdrawsARequestAlreadyInTheOperatorList() {
+
+		this.openRequest(WITHDRAWN_REQUEST_USER, VisSkillFixHierarchyTypes.remove, "rust", "Serde não é rust puro", "serde");
+		String ticket = "/fixSkillHierarchy remove " + WITHDRAWN_REQUEST_USER + " rust";
+		this.listTheTickets();
+		assertTrue(JbEntityPendingTickets.ENTITY.exists(this.listedTicket(ticket)));
+
+		CcpJsonRepresentation requestKey = this.request(WITHDRAWN_REQUEST_USER, VisSkillFixHierarchyTypes.remove, "rust");
+		VisServiceSkillFixHierarchy.DeleteSkillFixHierarchy.execute(requestKey);
+		this.listTheTickets();
+
+		assertFalse(this.isPendingTicket(ticket));
+		assertFalse(JnEntitySupportCancelledCommand.ENTITY.exists(this.cancelledCommand(ticket)));
+	}
+
+	/**
+	 * Runs {@code /pendingTickets}, which moves the inbox to the list of the bot and applies the cancellations, and
+	 * leaves the list. Both are read by queries, which see a write only after a refresh.
+	 */
+	private void listTheTickets() {
+		ElasticsearchLocal.refresh("jn_support_pending_command", "jb_pending_tickets", "jn_support_cancelled_command");
+		this.operatorTypes("/pendingTickets");
+		this.clearTheBotSession();
+	}
+
+	/**
+	 * Tells whether the command is still a ticket of the operator: in the jn inbox or in the jb list.
+	 */
+	private boolean isPendingTicket(String command) {
+		CcpJsonRepresentation pendingCommand = CcpOtherConstants.EMPTY_JSON
+				.put(JnEntitySupportPendingCommand.Fields.botName, JbBotType.support)
+				.put(JnEntitySupportPendingCommand.Fields.chatId, SUPPORT_CHAT)
+				.put(JnEntitySupportPendingCommand.Fields.command, command);
+		boolean inTheInbox = JnEntitySupportPendingCommand.ENTITY.exists(pendingCommand);
+		boolean inTheList = JbEntityPendingTickets.ENTITY.exists(this.listedTicket(command));
+		boolean pending = inTheInbox || inTheList;
+		return pending;
+	}
+
+	private CcpJsonRepresentation listedTicket(String command) {
+		CcpJsonRepresentation listedTicket = CcpOtherConstants.EMPTY_JSON
+				.put(JbEntityPendingTickets.Fields.botName, JbBotType.support)
+				.put(JbEntityPendingTickets.Fields.chatId, SUPPORT_CHAT)
+				.put(JbEntityPendingTickets.Fields.ticket, command);
+		return listedTicket;
+	}
+
+	private CcpJsonRepresentation cancelledCommand(String command) {
+		CcpJsonRepresentation cancelledCommand = CcpOtherConstants.EMPTY_JSON
+				.put(JnEntitySupportCancelledCommand.Fields.botName, JbBotType.support)
+				.put(JnEntitySupportCancelledCommand.Fields.chatId, SUPPORT_CHAT)
+				.put(JnEntitySupportCancelledCommand.Fields.command, command);
+		return cancelledCommand;
 	}
 
 	/**

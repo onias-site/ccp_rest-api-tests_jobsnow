@@ -19,12 +19,12 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.jn.entities.JnEntityContactUsIgnored;
+import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
- * Proves the entity operations of {@link CcpEntityOperationType} as callbacks, on {@code jn_contact_us_ignored} (a twin
- * entity whose records expire daily): save, copy and transfer between the entity and its twin (naming the target by
+ * Proves the entity operations of {@link CcpEntityOperationType} as callbacks, on {@code jn_login_session_validation} (a twin
+ * entity whose records expire hourly): save, copy and transfer between the entity and its twin (naming the target by
  * configurator and entity name, or by configurator only), delete and delete everywhere.
  */
 public class OperationTypesBehaviorTest {
@@ -41,11 +41,12 @@ public class OperationTypesBehaviorTest {
 				new CcpApacheMimeHttp());
 	}
 
-	private final CcpEntity main = JnEntityContactUsIgnored.ENTITY;
+	private final CcpEntity main = JnEntityLoginSessionValidation.ENTITY;
 
-	private final CcpEntity twin = JnEntityContactUsIgnored.ENTITY.getTwinEntity();
+	private final CcpEntity twin = JnEntityLoginSessionValidation.ENTITY.getTwinEntity();
 
-	private final CcpJsonRepresentation record = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.email, "operations" + System.nanoTime() + "@jobsnow.com");
+	private final CcpJsonRepresentation record = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.email, "operations" + System.nanoTime() + "@jobsnow.com")
+			.put(JnEntityLoginSessionValidation.Fields.token, "TOKEN123").put(JnJsonCommonsFields.ip, "127.0.0.1").put(JnJsonCommonsFields.userAgent, "junit");
 
 	@After
 	public void removeTheRecord() {
@@ -116,9 +117,9 @@ public class OperationTypesBehaviorTest {
 
 	@Test
 	public void deletingNeedsNoInputRules() {
-		assertFalse(JnEntityContactUsIgnored.Fields.class.equals(CcpEntityOperationType.delete.getJsonValidationClass(this.main)));
-		assertFalse(JnEntityContactUsIgnored.Fields.class.equals(CcpEntityOperationType.deleteAnyWhere.getJsonValidationClass(this.main)));
-		assertEquals(JnEntityContactUsIgnored.Fields.class, CcpEntityOperationType.save.getJsonValidationClass(this.main));
+		assertFalse(JnEntityLoginSessionValidation.Fields.class.equals(CcpEntityOperationType.delete.getJsonValidationClass(this.main)));
+		assertFalse(JnEntityLoginSessionValidation.Fields.class.equals(CcpEntityOperationType.deleteAnyWhere.getJsonValidationClass(this.main)));
+		assertEquals(JnEntityLoginSessionValidation.Fields.class, CcpEntityOperationType.save.getJsonValidationClass(this.main));
 	}
 
 	/** A business with a public constructor, to be instantiated by reflection. */
