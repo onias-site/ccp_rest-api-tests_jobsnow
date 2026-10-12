@@ -1,13 +1,9 @@
 package com.ccp.random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.utils.CcpDbRequester;
@@ -44,49 +40,49 @@ public class CcpCreateEntities {
 	// in the order the recreation must run: vis seeds message templates into jn indices, so jn goes first
 	private static final String[] COST_CENTERS = { "jn", "vis", "jb" };
 
+	/**
+	 * Recreates the entities of the cost centers given as arguments ({@code jn}, {@code vis}, {@code jb}), always in
+	 * the order of {@link #COST_CENTERS} whatever the order typed; without arguments, recreates all three. Until
+	 * 2026-10-11 a checkbox dialog asked which ones, and nothing ran without someone at the screen.
+	 * @param args the cost centers to recreate; none means all of them
+	 */
 	public static void main(String[] args) {
-		List<String> chosenCostCenters = chooseCostCenters();
-		boolean nothingChosen = chosenCostCenters.isEmpty();
-		if (nothingChosen) {
-			System.out.println("CcpCreateEntities: no cost center chosen, nothing was changed.");
-			return;
-		}
+		List<String> chosenCostCenters = chooseCostCenters(args);
 		for (String costCenter : chosenCostCenters) {
 			createEntities(costCenter);
 		}
+		System.out.println("CcpCreateEntities: recreated " + chosenCostCenters);
 	}
 
 	/**
-	 * Recreating the entities discards what the local Elasticsearch holds, so a single dialog lists the cost
-	 * centers with every box unchecked: only the ones checked by hand are recreated, and closing or cancelling
-	 * the dialog recreates none.
+	 * The cost centers to recreate, in the order of {@link #COST_CENTERS}: the ones given, or all of them when none
+	 * is given. Recreating jn alone erases the records vis seeds into jn indices (templates and sending parameters),
+	 * so asking for jn without vis prints a warning.
+	 * @throws IllegalArgumentException when an argument is not a cost center
 	 */
-	private static List<String> chooseCostCenters() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(new JLabel("Choose the cost centers whose entities will be recreated in the local Elasticsearch:"));
-		// recreating jn alone erases the records vis seeds into jn indices (templates and sending parameters)
-		panel.add(new JLabel("Note: recreating jn also erases the message templates vis seeds into jn; check vis too to restore them."));
-		List<JCheckBox> checkBoxes = new ArrayList<>();
-		for (String costCenter : COST_CENTERS) {
-			JCheckBox checkBox = new JCheckBox(costCenter);
-			checkBoxes.add(checkBox);
-			panel.add(checkBox);
+	private static List<String> chooseCostCenters(String[] args) {
+		List<String> allCostCenters = Arrays.asList(COST_CENTERS);
+		boolean noArguments = args.length == 0;
+		if (noArguments) {
+			return allCostCenters;
 		}
-		Object[] options = { "Recreate checked", "Cancel" };
-		int chosenOption = JOptionPane.showOptionDialog(null, panel, "CcpCreateEntities",
-				JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[1]);
+		List<String> givenCostCenters = Arrays.asList(args);
+		for (String given : givenCostCenters) {
+			boolean unknown = false == allCostCenters.contains(given);
+			if (unknown) {
+				throw new IllegalArgumentException("Unknown cost center '" + given + "'; use any of " + allCostCenters + ", or nothing for all of them");
+			}
+		}
 		List<String> chosenCostCenters = new ArrayList<>();
-		boolean notConfirmed = chosenOption != JOptionPane.OK_OPTION;
-		if (notConfirmed) {
-			return chosenCostCenters;
-		}
-		for (JCheckBox checkBox : checkBoxes) {
-			boolean checked = checkBox.isSelected();
-			if (checked) {
-				String costCenter = checkBox.getText();
+		for (String costCenter : COST_CENTERS) {
+			boolean chosen = givenCostCenters.contains(costCenter);
+			if (chosen) {
 				chosenCostCenters.add(costCenter);
 			}
+		}
+		boolean jnWithoutVis = chosenCostCenters.contains("jn") && false == chosenCostCenters.contains("vis");
+		if (jnWithoutVis) {
+			System.out.println("CcpCreateEntities: recreating jn without vis erases the message templates vis seeds into jn.");
 		}
 		return chosenCostCenters;
 	}

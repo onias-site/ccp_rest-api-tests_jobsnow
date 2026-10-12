@@ -20,7 +20,6 @@ import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatus;
 import com.jn.entities.JnEntityLoginEmail;
-import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.rest.api.commons.JnTestTemplate;
@@ -47,15 +46,11 @@ public class LogoutScreen extends JnTestTemplate {
 	public void happyPath() {
 		TestVariables testVariables = new TestVariables();
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		// saves the raw json: the token is chosen here, and the transformer stores its hash. Saving the
 		// pre-transformed json (email hashed) was rejected by the validator.
 		String token = "12345678";
 		Function<TestVariables, String> producer = variables -> {
-			CcpJsonRepresentation sessionJson = variables.REQUEST_TO_LOGIN
-					.put(JnEntityLoginSessionValidation.Fields.token, token)
-					;
-			JnEntityLoginSessionValidation.ENTITY.save(sessionJson);
+			variables.saveCurrentSession(token);
 			return token;
 		};
 		this.execute(testVariables, JnProcessStatusExecuteLogout.expectedStatus, producer);
@@ -71,10 +66,8 @@ public class LogoutScreen extends JnTestTemplate {
 	public void happyPathWithJsonBody() throws IOException, InterruptedException {
 		TestVariables testVariables = new TestVariables();
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		String token = "12345678";
-		CcpJsonRepresentation sessionJson = testVariables.REQUEST_TO_LOGIN.put(JnEntityLoginSessionValidation.Fields.token, token);
-		JnEntityLoginSessionValidation.ENTITY.save(sessionJson);
+		CcpJsonRepresentation sessionJson = testVariables.saveCurrentSession(token);
 
 		String url = this.ENDPOINT_URL + "login/" + testVariables.VALID_EMAIL + "/" + token;
 		URI uri = URI.create(url);

@@ -1,5 +1,6 @@
 package com.ccp.especifications.db.utils.entity.decorators.engine;
 
+import java.util.function.Supplier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -469,12 +470,12 @@ public class CcpEntityEngineAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void cacheDecoratorGetRecordFromUnionAllUnionNullTest() {
-		cacheDecorator().getRecordFromUnionAll(null, JSON);
+		cacheDecorator().getRecordFromUnionAll(null, JSON.getJsonSupplier());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void cacheDecoratorGetRecordFromUnionAllJsonNullTest() {
-		cacheDecorator().getRecordFromUnionAll(unionAll(), (CcpJsonRepresentation) null);
+		cacheDecorator().getRecordFromUnionAll(unionAll(), (Supplier<CcpJsonRepresentation>) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

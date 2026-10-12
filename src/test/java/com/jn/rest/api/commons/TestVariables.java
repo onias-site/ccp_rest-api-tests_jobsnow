@@ -4,6 +4,9 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.jn.entities.JnEntityLoginAnswers;
+import com.jn.entities.JnEntityLoginSessionConflict;
+import com.jn.entities.JnEntityLoginSessionValidation;
+import com.jn.entities.fields.transformers.JnJsonTransformersFieldEntityTokenHash;
 import com.jn.entities.fields.transformers.JnJsonTransformersFieldsEntityDefault;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
@@ -37,5 +40,22 @@ public class TestVariables {
 		this.REQUEST_TO_LOGIN = this.REQUEST_TO_LOGIN.put(JnJsonCommonsFields.email, email);
 		this.VALID_EMAIL = email;
 		this.ANSWERS_JSON = this.REQUEST_TO_LOGIN.put(JnEntityLoginAnswers.Fields.goal, "jobs").put(JnEntityLoginAnswers.Fields.channel, "linkedin");
-	}	
+	}
+
+	/**
+	 * Saves an open session of this e-mail with the given token, the way a login does: the session itself and the record
+	 * that makes it the current session of the e-mail (since 2026-10-11 only the current session is accepted).
+	 * @param sessionToken the session token
+	 * @return the session as saved (raw, before the transformers)
+	 */
+	public CcpJsonRepresentation saveCurrentSession(String sessionToken) {
+		CcpJsonRepresentation session = this.REQUEST_TO_LOGIN.put(JnEntityLoginSessionValidation.Fields.token, sessionToken);
+		JnJsonTransformersFieldEntityTokenHash tokenHash = new JnJsonTransformersFieldEntityTokenHash();
+		CcpJsonRepresentation sessionWithTokenHash = tokenHash.execute(session);
+		String sessionTokenHash = sessionWithTokenHash.getAsString(JnEntityLoginSessionValidation.Fields.token);
+		CcpJsonRepresentation currentSession = this.REQUEST_TO_LOGIN.put(JnEntityLoginSessionConflict.Fields.currentSessionTokenHash, sessionTokenHash);
+		JnEntityLoginSessionConflict.ENTITY.save(currentSession);
+		JnEntityLoginSessionValidation.ENTITY.save(session);
+		return session;
+	}
 }

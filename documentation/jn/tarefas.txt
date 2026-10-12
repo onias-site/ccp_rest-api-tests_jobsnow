@@ -1,25 +1,29 @@
 A) Solucionar bugs
 B) New Skill, desacoplar jb e vis
-C) Decorator de agrupamento de entidade
-D) Decorator de notificação
-E) Endpoints genéricos
+C) Responsividade de todo o front end
+D) Execução dos roteiros de teste
+E) Recriação das entidades do VIS.
+F) Decorator de entidade para agrupadores, desacoplar jb e vis
 10/10
-F) Recriação das entidades do VIS. 
-17/10
 G) E-mail com curriculos
-H) Responsividade de todo o front end
+17/10
+H) Teste em ambiente local de salvamento de curriculos
 24/10
-I) Deploy (primeira entrega)
+I) Deploy 
 31/10
-J) Novos decorators
+J) Teste em ambiente remoto para aferição de futuros custos e limitações(primeira entrega)
 07/11
-K) Estatisticas das skills 
-L) Melhoria dos synonyms
+K) Novos decorators
 14/11
-L) Cadastro de vagas (segunda entrega)
+L) Fale conosco
+M) Estatisticas das skills 
 21/11
-M) Teste de invasão 
+N) Melhoria dos synonyms
 28/11
+O) Cadastro de vagas (segunda entrega)
+05/12
+P) Teste de invasão 
+12/12
 
 
 N) Tornar o sistema multi idioma.

@@ -76,6 +76,20 @@ public class SkillsFromTextTest {
 		}
 	}
 
+	/**
+	 * Each chosen skill brings its synonyms, read from {@code vis_skill}: the screen needs them to refuse the suggestion
+	 * of a skill already in the resume under another name.
+	 */
+	@Test
+	public void eachChosenSkillBringsItsSynonyms() {
+		CcpJsonRepresentation response = this.find("Developer with java and sql experience", Arrays.asList());
+
+		List<CcpJsonRepresentation> skills = response.getAsJsonList(VisJsonCommonsFields.skill);
+		CcpJsonRepresentation java = skills.stream().filter(skill -> "JAVA".equals(skill.getAsString(VisJsonCommonsFields.skill))).findFirst().get();
+		List<String> synonyms = java.getAsStringList(VisJsonCommonsFields.synonym);
+		assertTrue(synonyms.toString(), synonyms.contains("JAVA 8"));
+	}
+
 	@Test
 	public void anExcludedSkillIsLeftOut() {
 		CcpJsonRepresentation excludedJava = CcpOtherConstants.EMPTY_JSON

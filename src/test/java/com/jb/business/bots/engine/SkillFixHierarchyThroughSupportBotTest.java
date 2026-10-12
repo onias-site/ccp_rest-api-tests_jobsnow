@@ -55,11 +55,13 @@ import com.vis.entities.VisEntitySkillFixHierarchyFulfiled;
 import com.vis.entities.VisEntitySkillFixHierarchyItemApproved;
 import com.vis.entities.VisEntitySkillFixHierarchyItemPending;
 import com.vis.entities.VisEntitySkillFixHierarchyPending;
+import com.vis.entities.VisEntitySkillFixHierarchyWithdrawn;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.json.fields.validation.VisSkillFixHierarchyTypes;
 import com.vis.json.fields.validation.VisUserRequestCommands;
 import com.vis.messages.VisMessages;
 import com.vis.services.VisServiceSkillFixHierarchy;
+import com.vis.status.VisProcessStatusDeleteSkillFixHierarchy;
 import com.vis.status.VisProcessStatusFixSkillHierarchy;
 
 /**
@@ -201,7 +203,8 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		CcpJsonRepresentation email = this.emailSentTo(ONE_BY_ONE_USER, VisMessages.VisNotifyUserAboutFulfiledSkillHierarchy.class);
 		String body = email.getAsString(JnJsonCommonsFields.message);
-		assertTrue(body, body.contains("associação com o termo java"));
+		assertTrue(body, body.contains("associação com o conhecimento implícito (pai) java"));
+		assertTrue(body, body.contains("Sua justificativa:</b> Uso spring e hibernate em todo projeto java"));
 		assertTrue(body, body.contains("Itens aprovados:</p><ul><li><b>spring</b>: spring é framework java</li></ul>"));
 		assertTrue(body, body.contains("Itens reprovados:</p><ul><li><b>hibernate</b>: hibernate já está associado a jpa</li></ul>"));
 	}
@@ -223,7 +226,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		CcpJsonRepresentation email = this.emailSentTo(APPROVE_ALL_USER, VisMessages.VisNotifyUserAboutFulfiledSkillHierarchy.class);
 		String body = email.getAsString(JnJsonCommonsFields.message);
-		assertTrue(body, body.contains("desassociação com o termo python"));
+		assertTrue(body, body.contains("desassociação com o conhecimento implícito (pai) python"));
 		assertTrue(body, body.contains("<li><b>django</b>: os dois são frameworks e não linguagem</li>"));
 		assertFalse(body, body.contains("Itens reprovados"));
 
@@ -490,8 +493,9 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		CcpJsonRepresentation email = this.emailSentTo(ALL_DECIDED_BEFORE_USER, VisMessages.VisNotifyUserAboutAlreadyReviewedSkillHierarchy.class);
 		String body = email.getAsString(JnJsonCommonsFields.message);
-		assertTrue(body, body.contains("desassociação entre os termos akka, play e scala"));
-		assertTrue(body, body.contains("já foram atendidos em solicitações anteriores"));
+		assertTrue(body, body.contains("desassociação entre as habilidades akka, play e o conhecimento implícito (pai) scala"));
+		assertTrue(body, body.contains("já foram atendidas em solicitações anteriores"));
+		assertTrue(body, body.contains("Sua justificativa:</b> Pedindo de novo a mesma coisa"));
 		assertFalse(EMAIL_INBOX.sentEmails.toString(), this.anyEmailSentTo(ALL_DECIDED_BEFORE_USER, VisMessages.VisNotifySupportAndUserAboutPendingSkillHierarchyRequest.class));
 		assertTrue(TELEGRAM.sentMessages.toString(), TELEGRAM.sentMessages.isEmpty());
 
@@ -786,6 +790,131 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		throw new AssertionError("The withdrawal of a request that does not exist was accepted: " + requestKey);
 	}
 
+	private static final String UNDECIDED_USER = "usuario.indeciso@teste.com";
+
+	/**
+	 * An undecided candidate requests, withdraws, requests again and tries to withdraw again: the second withdrawal
+	 * within the hour is refused with {@code withdrawnRecently} (429) and the request stays pending, so the operator is
+	 * not loaded with notices and cancellations in a loop. Requesting again after the first withdrawal is allowed.
+	 */
+	@Test
+	public void candidateCannotWithdrawTheSameRequestTwiceWithinTheHour() {
+
+		this.openRequest(UNDECIDED_USER, VisSkillFixHierarchyTypes.add, "go", "Gin é framework web de go", "gin");
+		CcpJsonRepresentation requestKey = this.request(UNDECIDED_USER, VisSkillFixHierarchyTypes.add, "go");
+		VisServiceSkillFixHierarchy.DeleteSkillFixHierarchy.execute(requestKey);
+		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
+		assertTrue(VisEntitySkillFixHierarchyWithdrawn.ENTITY.exists(requestKey));
+
+		CcpJsonRepresentation sameRequest = this.newRequest(requestKey, "Gin é framework web de go", "gin");
+		VisServiceSkillFixHierarchy.FixSkillHierarchy.execute(sameRequest);
+		assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
+
+		try {
+			VisServiceSkillFixHierarchy.DeleteSkillFixHierarchy.execute(requestKey);
+		} catch (CcpErrorFlowDisturb refusal) {
+			assertEquals(VisProcessStatusDeleteSkillFixHierarchy.withdrawnRecently, refusal.status);
+			assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
+			return;
+		}
+		throw new AssertionError("The second withdrawal within the hour was accepted: " + requestKey);
+	}
+
+	/**
+	 * The withdrawal of an association does not block the withdrawal of a dissociation of the same parent: the block is
+	 * per parent and type.
+	 */
+	@Test
+	public void theWithdrawalBlockIsPerType() {
+
+		this.openRequest(UNDECIDED_USER, VisSkillFixHierarchyTypes.add, "elixir", "Phoenix é framework de elixir", "phoenix");
+		this.openRequest(UNDECIDED_USER, VisSkillFixHierarchyTypes.remove, "elixir", "Erlang não depende de elixir", "erlang");
+		CcpJsonRepresentation addKey = this.request(UNDECIDED_USER, VisSkillFixHierarchyTypes.add, "elixir");
+		CcpJsonRepresentation removeKey = this.request(UNDECIDED_USER, VisSkillFixHierarchyTypes.remove, "elixir");
+
+		VisServiceSkillFixHierarchy.DeleteSkillFixHierarchy.execute(addKey);
+		VisServiceSkillFixHierarchy.DeleteSkillFixHierarchy.execute(removeKey);
+
+		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(addKey));
+		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(removeKey));
+	}
+
+	private static final String EMAIL_DETAILS_USER = "detalhes.do.email@teste.com";
+
+	/**
+	 * The email of a new request tells which term is the parent (the implicit knowledge) and which are the skills, and
+	 * carries the justification the user typed, escaped (a {@code <} shows up as text) and with its line breaks. Up to
+	 * 2026-10-11 it read "between the terms ANGULAR, ANT, AOP and AGIL", without the justification.
+	 */
+	@Test
+	public void theEmailOfTheRequestTellsTheParentAndTheJustification() {
+
+		this.openRequest(EMAIL_DETAILS_USER, VisSkillFixHierarchyTypes.add, "agil", "Uso <scrum> no dia a dia\ncom kanban", "angular", "ant", "aop");
+
+		CcpJsonRepresentation email = this.emailSentTo(EMAIL_DETAILS_USER, VisMessages.VisNotifySupportAndUserAboutPendingSkillHierarchyRequest.class);
+		String body = email.getAsString(JnJsonCommonsFields.message);
+		assertTrue(body, body.contains("associação entre as habilidades angular, ant, aop e o conhecimento implícito (pai) agil"));
+		assertTrue(body, body.contains("Conhecimento implícito (pai):</b> agil"));
+		assertTrue(body, body.contains("Habilidades:</b> angular, ant, aop"));
+		assertTrue(body, body.contains("Sua justificativa:</b> Uso &lt;scrum&gt; no dia a dia<br>com kanban"));
+
+		// what is stored is what the user typed
+		CcpJsonRepresentation requestKey = this.request(EMAIL_DETAILS_USER, VisSkillFixHierarchyTypes.add, "agil");
+		CcpJsonRepresentation stored = VisEntitySkillFixHierarchyPending.ENTITY.getOneById(requestKey);
+		assertEquals("Uso <scrum> no dia a dia\ncom kanban", stored.getAsString(VisEntitySkillFixHierarchyPending.Fields.description));
+	}
+
+	private static final String WITHDRAWN_DURING_REVIEW_USER = "desistiu.durante.a.revisao@teste.com";
+
+	/**
+	 * The user withdraws the request while the operator decides it one by one: the next answer of the operator is not
+	 * applied, the session ends telling that the user gave up, and nothing is approved.
+	 */
+	@Test
+	public void operatorIsToldThatTheUserWithdrewDuringTheOneByOneReview() {
+
+		this.openRequest(WITHDRAWN_DURING_REVIEW_USER, VisSkillFixHierarchyTypes.add, "haskell", "Yesod e servant são de haskell", "yesod", "servant");
+		this.operatorTypes("/fixSkillHierarchy add " + WITHDRAWN_DURING_REVIEW_USER + " haskell");
+		String firstItem = this.operatorTypes("um a um");
+		assertTrue(firstItem, firstItem.startsWith("Item 1 de 2: yesod"));
+
+		CcpJsonRepresentation requestKey = this.request(WITHDRAWN_DURING_REVIEW_USER, VisSkillFixHierarchyTypes.add, "haskell");
+		VisServiceSkillFixHierarchy.DeleteSkillFixHierarchy.execute(requestKey);
+
+		String notice = this.operatorTypes("aprovar yesod é framework haskell");
+		assertTrue(notice, notice.startsWith("O usuário " + WITHDRAWN_DURING_REVIEW_USER + " desistiu da solicitação de associação com o termo haskell"));
+
+		CcpJsonRepresentation yesod = this.item(WITHDRAWN_DURING_REVIEW_USER, VisSkillFixHierarchyTypes.add, "haskell", "yesod");
+		assertFalse(VisEntitySkillFixHierarchyItemApproved.ENTITY.exists(yesod));
+		assertFalse(VisEntitySkillFixHierarchyFulfiled.ENTITY.exists(requestKey));
+
+		// the session ended: a new answer is no longer read as the decision of the next item
+		String afterTheEnd = this.operatorTypes("rejeitar servant não é de haskell");
+		assertFalse(afterTheEnd, afterTheEnd.startsWith("Item 2 de 2"));
+		assertFalse(afterTheEnd, afterTheEnd.startsWith("Revisão concluída"));
+	}
+
+	/**
+	 * The user withdraws the request after the operator saw it, before the operator chose how to decide it: the choice
+	 * is not applied and the session ends telling that the user gave up.
+	 */
+	@Test
+	public void operatorIsToldThatTheUserWithdrewBeforeChoosingTheMode() {
+
+		this.openRequest(WITHDRAWN_DURING_REVIEW_USER, VisSkillFixHierarchyTypes.remove, "haskell", "Pandoc é ferramenta, não depende de haskell", "pandoc");
+		this.operatorTypes("/fixSkillHierarchy remove " + WITHDRAWN_DURING_REVIEW_USER + " haskell");
+
+		CcpJsonRepresentation requestKey = this.request(WITHDRAWN_DURING_REVIEW_USER, VisSkillFixHierarchyTypes.remove, "haskell");
+		VisServiceSkillFixHierarchy.DeleteSkillFixHierarchy.execute(requestKey);
+
+		String notice = this.operatorTypes("aprovar pandoc é ferramenta");
+		assertTrue(notice, notice.startsWith("O usuário " + WITHDRAWN_DURING_REVIEW_USER + " desistiu da solicitação de desassociação com o termo haskell"));
+
+		CcpJsonRepresentation pandoc = this.item(WITHDRAWN_DURING_REVIEW_USER, VisSkillFixHierarchyTypes.remove, "haskell", "pandoc");
+		assertFalse(VisEntitySkillFixHierarchyItemApproved.ENTITY.exists(pandoc));
+		assertFalse(VisEntitySkillFixHierarchyFulfiled.ENTITY.exists(requestKey));
+	}
+
 	private static final String CONSULTING_USER = "consulta.da.solicitacao@teste.com";
 
 	private CcpJsonRepresentation consult(String email, VisSkillFixHierarchyTypes type, String parent) {
@@ -933,6 +1062,8 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		// the pending entity writes through the messaging, which validates the whole record, even to delete it
 		VisEntitySkillFixHierarchyPending.ENTITY.delete(newRequest);
 		VisEntitySkillFixHierarchyFulfiled.ENTITY.delete(request);
+		// a withdrawal of a previous run, within the hour, would refuse the withdrawal of this one
+		VisEntitySkillFixHierarchyWithdrawn.ENTITY.delete(request);
 
 		List<Class<?>> templates = Arrays.asList(
 				VisMessages.VisNotifySupportAndUserAboutPendingSkillHierarchyRequest.class,

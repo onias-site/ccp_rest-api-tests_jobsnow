@@ -13,6 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.ccp.constants.CcpOtherConstants;
+import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
@@ -56,12 +57,16 @@ import com.vis.entities.VisEntitySkillFixHierarchyPending;
 import com.vis.entities.VisEntitySkillPending;
 import com.vis.entities.VisEntitySkillRejected;
 import com.vis.entities.VisEntitySkillReviewed;
+import com.vis.entities.VisEntitySkillSuggestionWithdrawn;
+import com.vis.entities.VisEntitySkillSynonym;
+import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.json.fields.validation.VisSkillFixHierarchyTypes;
 import com.vis.json.fields.validation.VisUserRequestCommands;
 import com.vis.messages.VisMessages;
 import com.vis.services.VisServiceSkillFixHierarchy;
 import com.vis.services.VisServiceSkillSuggestion;
+import com.vis.status.VisProcessStatusDeleteSkillSuggestion;
 import com.vis.status.VisProcessStatusFixSkillHierarchy;
 import com.vis.status.VisProcessStatusSuggestSkill;
 
@@ -76,6 +81,12 @@ import com.vis.status.VisProcessStatusSuggestSkill;
  * provider are test doubles, as in {@link SkillFixHierarchyThroughSupportBotTest}.
  */
 public class SkillSuggestionThroughSupportBotTest {
+
+	/** Fields of the answer of the suggestion lookup that only the service declares (package-private there). */
+	enum SuggestionResponseFields implements CcpJsonFieldName {
+		/** The skill typed by the candidate, when the suggestion was found through it as a synonym. */
+		typedSynonym
+	}
 
 	private static final FakeInstantMessenger TELEGRAM = new FakeInstantMessenger();
 
@@ -189,7 +200,11 @@ public class SkillSuggestionThroughSupportBotTest {
 			CcpJsonRepresentation email = this.emailSentTo(APPROVED_USER, VisMessages.VisNotifyUserAboutAprovedSkill.class);
 			String body = email.getAsString(JnJsonCommonsFields.message);
 			assertTrue(body, body.contains("a habilidade " + skill + " que você sugeriu foi aprovada"));
-			assertTrue(body, body.contains("ferramenta relevante para o mercado"));
+			assertTrue(body, body.contains("Justificativa do suporte: ferramenta relevante para o mercado"));
+			// the candidate's own justification goes along in every email of the suggestion
+			assertTrue(body, body.contains("Sua justificativa: Uso esta ferramenta em todos os projetos citados"));
+			String pendingBody = this.emailSentTo(APPROVED_USER, VisMessages.VisNotifySupportAndUserAboutPendingSkillRequest.class).getAsString(JnJsonCommonsFields.message);
+			assertTrue(pendingBody, pendingBody.contains("Sua justificativa: Uso esta ferramenta em todos os projetos citados"));
 
 			// once decided, the suggestion is no longer pending for the operator
 			String again = this.operatorTypes("/reviewSkillSuggestion " + APPROVED_USER + " " + skill);
@@ -276,7 +291,9 @@ public class SkillSuggestionThroughSupportBotTest {
 		CcpJsonRepresentation email = this.emailSentTo(REJECTED_USER, VisMessages.VisNotifyUserAboutRejectedSkill.class);
 		String body = email.getAsString(JnJsonCommonsFields.message);
 		assertTrue(body, body.contains("não foi aprovada"));
+		assertTrue(body, body.contains("Justificativa do suporte: "));
 		assertTrue(body, body.contains("não é uma &lt;habilidade&gt; técnica"));
+		assertTrue(body, body.contains("Sua justificativa: Acho que esta habilidade deveria constar"));
 
 		CcpJsonRepresentation found = VisServiceSkillSuggestion.GetSkillSuggestion.execute(suggestionKey);
 		assertEquals("rejected", found.getAsString(JnJsonCommonsFields.status));
@@ -357,6 +374,13 @@ public class SkillSuggestionThroughSupportBotTest {
 		assertFalse(VisEntitySkillPending.ENTITY.exists(suggestionKey));
 		assertFalse(VisEntitySkillRejected.ENTITY.exists(suggestionKey));
 		assertFalse(this.anyEmailSentTo(IGNORED_USER, VisMessages.VisNotifyUserAboutRejectedSkill.class));
+
+		// the email of the record is a hash; the readable one is in the description, for /ignoredUsers to list it
+		CcpJsonRepresentation ignoredUserKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityCommandNotAllowedToUser.Fields.email, IGNORED_USER);
+		CcpJsonRepresentation ignoredUser = VisEntityCommandNotAllowedToUser.ENTITY.getOneById(ignoredUserKey);
+		CcpJsonRepresentation ignoredUserDescription = ignoredUser.getInnerJson(VisEntityCommandNotAllowedToUser.Fields.description);
+		assertEquals(IGNORED_USER, ignoredUserDescription.getAsString(JnJsonCommonsFields.email));
+		assertEquals(skill, ignoredUserDescription.getAsString(VisEntitySkillPending.Fields.skill));
 
 		CcpJsonRepresentation newSuggestion = this.newSuggestion(suggestionKey, "Tentando de novo depois de ignorado");
 		CcpProcessStatus refusal = this.statusOf(() -> VisServiceSkillSuggestion.SuggestSkill.execute(newSuggestion));
@@ -643,6 +667,16 @@ public class SkillSuggestionThroughSupportBotTest {
 	 * "already sent" records of the notices, then saves the suggestion, which notifies the candidate and the operator.
 	 */
 	private void openSuggestion(String email, String skill, String description, String... synonyms) {
+		CcpJsonRepresentation newSuggestion = this.clearSuggestion(email, skill, description, synonyms);
+		VisEntitySkillPending.ENTITY.save(newSuggestion);
+	}
+
+	/**
+	 * Erases every trace of a previous run of the suggestion (pending, decided, withdrawn, emails and the notice to
+	 * the operator), so that it can be suggested again.
+	 * @return the new suggestion, not saved
+	 */
+	private CcpJsonRepresentation clearSuggestion(String email, String skill, String description, String... synonyms) {
 		CcpJsonRepresentation suggestionKey = this.suggestion(email, skill);
 		CcpJsonRepresentation newSuggestion = this.newSuggestion(suggestionKey, description, synonyms);
 
@@ -651,6 +685,8 @@ public class SkillSuggestionThroughSupportBotTest {
 		VisEntitySkillApproved.ENTITY.delete(suggestionKey);
 		VisEntitySkillRejected.ENTITY.delete(suggestionKey);
 		VisEntitySkillReviewed.ENTITY.delete(suggestionKey);
+		// a withdrawal of a previous run would refuse the withdrawals of this one for an hour
+		this.forgetWithdrawal(email, skill);
 
 		List<Class<?>> templates = Arrays.asList(
 				VisMessages.VisNotifySupportAndUserAboutPendingSkillRequest.class,
@@ -671,8 +707,102 @@ public class SkillSuggestionThroughSupportBotTest {
 				.put(JnJsonInstantMessengerFields.instantMessageType, JnInstantMessageType.text)
 				.put(JnJsonCommonsFields.message, "/reviewSkillSuggestion " + email + " " + skill);
 		JnEntityInstantMessengerMessageSent.ENTITY.delete(sentNotice);
+		return newSuggestion;
+	}
 
-		VisEntitySkillPending.ENTITY.save(newSuggestion);
+	private void forgetWithdrawal(String email, String skill) {
+		CcpJsonRepresentation suggestionKey = this.suggestion(email, skill);
+		VisEntitySkillSuggestionWithdrawn.ENTITY.delete(suggestionKey);
+	}
+
+	private void forgetSynonyms(String... synonyms) {
+		for (String synonym : synonyms) {
+			CcpJsonRepresentation synonymKey = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillSynonym.Fields.skill, synonym);
+			VisEntitySkillSynonym.ENTITY.delete(synonymKey);
+		}
+	}
+
+	/**
+	 * Saving a suggestion through the service records each synonym pointing to the suggested skill. Typing one of the
+	 * synonyms, the candidate gets the suggestion already made (with {@code typedSynonym}), and suggesting the synonym
+	 * as a new skill is refused with {@code suggestedThroughSynonym} (409). Another candidate typing the synonym gets
+	 * nothing: the suggestion is not theirs, and it was not reviewed yet.
+	 */
+	@Test
+	public void aSynonymOfASuggestionLeadsToIt() {
+
+		String skill = "TESTE SKILL COM SINONIMOS";
+		String synonym = "TESTE SINONIMO DA SUGESTAO";
+		String acronym = "TSDS";
+		CcpJsonRepresentation newSuggestion = this.clearSuggestion(SERVICE_USER, skill, "Sugestão com dois sinônimos", synonym, acronym);
+		this.forgetSynonyms(synonym, acronym);
+
+		try {
+			VisServiceSkillSuggestion.SuggestSkill.execute(newSuggestion);
+
+			for (String eachSynonym : Arrays.asList(synonym, acronym)) {
+				CcpJsonRepresentation synonymKey = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillSynonym.Fields.skill, eachSynonym);
+				CcpJsonRepresentation synonymRecord = VisEntitySkillSynonym.ENTITY.getOneById(synonymKey);
+				assertEquals(skill, synonymRecord.getAsString(VisEntitySkillSynonym.Fields.synonym));
+			}
+
+			CcpJsonRepresentation typedSynonym = this.suggestion(SERVICE_USER, acronym);
+			CcpJsonRepresentation found = VisServiceSkillSuggestion.GetSkillSuggestion.execute(typedSynonym);
+			assertEquals("pending", found.getAsString(JnJsonCommonsFields.status));
+			assertEquals(skill, found.getAsString(VisEntitySkillPending.Fields.skill));
+			assertEquals(acronym, found.getAsString(SuggestionResponseFields.typedSynonym));
+
+			CcpJsonRepresentation synonymAsNewSkill = this.newSuggestion(typedSynonym, "Sugiro o sinônimo como se fosse outra habilidade");
+			CcpProcessStatus refusal = this.statusOf(() -> VisServiceSkillSuggestion.SuggestSkill.execute(synonymAsNewSkill));
+			assertEquals(VisProcessStatusSuggestSkill.suggestedThroughSynonym, refusal);
+			assertFalse(VisEntitySkillPending.ENTITY.exists(typedSynonym));
+
+			CcpJsonRepresentation anotherCandidate = this.suggestion(WITHDRAWN_USER, acronym);
+			CcpJsonRepresentation notFound = VisServiceSkillSuggestion.GetSkillSuggestion.execute(anotherCandidate);
+			assertTrue(notFound.toString(), notFound.isEmpty());
+		} finally {
+			this.clearSuggestion(SERVICE_USER, skill, "Sugestão com dois sinônimos", synonym, acronym);
+			this.forgetSynonyms(synonym, acronym);
+		}
+	}
+
+	/**
+	 * Withdrawing a suggestion of the same skill again within the hour is refused (429) and the suggestion stays
+	 * pending: suggesting it again is allowed, withdrawing it again is not.
+	 */
+	@Test
+	public void withdrawingTheSameSkillAgainWithinTheHourIsRefused() {
+
+		String skill = "TESTE SKILL DESISTENCIA REPETIDA";
+		this.openSuggestion(WITHDRAWN_USER, skill, "Primeira vez, vou desistir");
+		CcpJsonRepresentation suggestionKey = this.suggestion(WITHDRAWN_USER, skill);
+
+		VisServiceSkillSuggestion.DeleteSkillSuggestion.execute(suggestionKey);
+		assertTrue(VisEntitySkillSuggestionWithdrawn.ENTITY.exists(suggestionKey));
+
+		CcpJsonRepresentation sameSuggestionAgain = this.newSuggestion(suggestionKey, "Sugiro de novo e vou tentar desistir de novo");
+		VisEntitySkillPending.ENTITY.save(sameSuggestionAgain);
+
+		CcpProcessStatus refusal = this.statusOf(() -> VisServiceSkillSuggestion.DeleteSkillSuggestion.execute(suggestionKey));
+		assertEquals(VisProcessStatusDeleteSkillSuggestion.withdrawnRecently, refusal);
+		assertTrue(VisEntitySkillPending.ENTITY.exists(suggestionKey));
+
+		this.clearSuggestion(WITHDRAWN_USER, skill, "Sugiro de novo e vou tentar desistir de novo");
+	}
+
+	/**
+	 * The lookup of a suggestion refuses a skill with a single character besides the spaces: the length counts after a
+	 * trim, as on the screen.
+	 */
+	@Test
+	public void theLookupRefusesASkillWithASingleCharacterBesidesTheSpaces() {
+		CcpJsonRepresentation oneCharacterAmongSpaces = this.suggestion(SERVICE_USER, "  X  ");
+		try {
+			VisServiceSkillSuggestion.GetSkillSuggestion.execute(oneCharacterAmongSpaces);
+		} catch (CcpJsonValidationError expected) {
+			return;
+		}
+		throw new AssertionError("The lookup accepted a skill with a single character besides the spaces");
 	}
 
 	/**

@@ -61,6 +61,18 @@ public class ExecuteLogin extends JnServiceLoginTestTemplate {
 		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JnProcessStatusExecuteLogin.loginConflict);
 	}
 
+	/**
+	 * The session opened by a password save is the current login of the e-mail: a second login is a conflict. Until
+	 * 2026-10-11 the password save deleted the record of the current login right after creating it, and the second login
+	 * got in.
+	 */
+	@Test
+	public void sessionOpenedByAPasswordSaveIsTheCurrentLogin() {
+		TestVariables testVariables = new TestVariables();
+		new SavePassword().expectedFlow(testVariables);
+		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JnProcessStatusExecuteLogin.loginConflict);
+	}
+
 	@Test
 	public void happyPath() {
 		TestVariables testVariables = new TestVariables();

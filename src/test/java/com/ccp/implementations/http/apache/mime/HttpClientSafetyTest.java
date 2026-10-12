@@ -11,11 +11,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpVersion;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.message.BasicHttpResponse;
+import org.apache.http.protocol.BasicHttpContext;
 import org.junit.Test;
 
 import com.ccp.constants.CcpOtherConstants;
@@ -129,5 +132,25 @@ public class HttpClientSafetyTest {
 		} finally {
 			server.stop(0);
 		}
+	}
+
+	/**
+	 * A connection is never reused after 20 seconds idle, even when the server promises to keep it longer
+	 * ({@code Keep-Alive: timeout=300}): a keep-alive connection left idle for minutes may be dropped by the other side
+	 * without notice, and reusing it gave {@code Connection reset} when sending to the Telegram (2026-10-11). A shorter
+	 * promise of the server is kept, and a server that promises nothing gets the limit.
+	 */
+	@Test
+	public void anIdleConnectionIsNotReusedAfterTheLimit() {
+		assertEquals(20_000L, CcpHttpRequestRetryHandler.getKeepAliveDuration(this.responseWithKeepAlive("timeout=300"), new BasicHttpContext()));
+		assertEquals(5_000L, CcpHttpRequestRetryHandler.getKeepAliveDuration(this.responseWithKeepAlive("timeout=5"), new BasicHttpContext()));
+		BasicHttpResponse withoutKeepAlive = new BasicHttpResponse(HttpVersion.HTTP_1_1, 200, "OK");
+		assertEquals(20_000L, CcpHttpRequestRetryHandler.getKeepAliveDuration(withoutKeepAlive, new BasicHttpContext()));
+	}
+
+	private BasicHttpResponse responseWithKeepAlive(String keepAlive) {
+		BasicHttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, 200, "OK");
+		response.addHeader("Keep-Alive", keepAlive);
+		return response;
 	}
 }

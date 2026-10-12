@@ -138,7 +138,7 @@ public class DefaultBotCommandsTest {
 		String answer = this.answerTo("/showAllCommands");
 
 		assertEquals("/solucionarTicketsDeTokenDeLogin, /ajustarHierarquiaDeHabilidades, /permitirComandoAoUsuario, /ticketsPendentes, "
-				+ "/avaliarSugestaoDeHabilidade, /idDoChat, /mostrarTodosOsComandos, /explicarEsteBot, /definirIdioma", answer);
+				+ "/avaliarSugestaoDeHabilidade, /listarUsuariosIgnorados, /idDoChat, /mostrarTodosOsComandos, /explicarEsteBot, /definirIdioma", answer);
 	}
 
 	/** The name in Portuguese runs the command, and the canonical one keeps working. */
@@ -162,7 +162,7 @@ public class DefaultBotCommandsTest {
 
 		String commandsInEnglish = this.answerTo("/showAllCommands");
 		assertEquals("/solveLoginTokenTicket, /fixSkillHierarchy, /allowCommandToUser, /pendingTickets, "
-				+ "/reviewSkillSuggestion, /chatId, /showAllCommands, /explainThisBot, /setLanguage", commandsInEnglish);
+				+ "/reviewSkillSuggestion, /ignoredUsers, /chatId, /showAllCommands, /explainThisBot, /setLanguage", commandsInEnglish);
 		assertTrue(this.answerTo("/explainThisBot").startsWith("Bot of administrative routines"));
 
 		assertEquals("Idioma definido: português.", this.answerTo("/setLanguage Portugues"));
