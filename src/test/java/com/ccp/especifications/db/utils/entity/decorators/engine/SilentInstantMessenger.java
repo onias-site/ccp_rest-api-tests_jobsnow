@@ -10,7 +10,7 @@ import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
  * environment properties is real — without this test double the test would send a real message on
  * every run.
  */
-class SilentInstantMessenger implements CcpInstantMessenger {
+public class SilentInstantMessenger implements CcpInstantMessenger {
 
 	public CcpJsonRepresentation sendTextMessage(CcpJsonFieldName botType, String botToken, Long chatId, Long replyTo, String message) {
 		return CcpOtherConstants.EMPTY_JSON;

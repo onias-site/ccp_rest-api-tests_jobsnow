@@ -30,7 +30,6 @@ import com.jn.entities.JnEntityLoginTokenRequestResend;
 import com.jn.entities.JnEntityLoginTokenRequestUnlock;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
-import com.vis.entities.VisEntityDeniedViewToCompany;
 import com.vis.entities.VisEntityPosition;
 import com.vis.entities.VisEntityResume;
 
@@ -93,16 +92,6 @@ public class DeleteAnyWhereOnTwinEntitiesTest {
 		this.shouldDeleteFromBothIndexes(JnEntityLoginSessionValidation.ENTITY, record);
 	}
 
-	@Test
-	public void deniedViewToCompany() {
-		CcpJsonRepresentation record = this.withEmail()
-				.put(VisEntityDeniedViewToCompany.Fields.domain, "jobsnow.com")
-				.put(VisEntityDeniedViewToCompany.Fields.reasonType, "test")
-				.put(VisEntityDeniedViewToCompany.Fields.reasonText, "test reason");
-
-		this.shouldDeleteFromBothIndexes(VisEntityDeniedViewToCompany.ENTITY, record);
-	}
-
 	// ── entities that notify someone on save ─────────────────────────────────
 
 	@Test
@@ -155,7 +144,7 @@ public class DeleteAnyWhereOnTwinEntitiesTest {
 				.put(VisEntityResume.Fields.ddd, Arrays.asList(11))
 				.put(VisEntityResume.Fields.desiredJob, "developer")
 				.put(VisEntityResume.Fields.disponibility, 5)
-				.put(VisEntityResume.Fields.experience, this.daysAgo(5 * 365))
+				.put(VisEntityResume.Fields.experience, 5)
 				.put(VisEntityResume.Fields.linkedinAddress, "https://www.linkedin.com/in/onias")
 				.put(VisEntityResume.Fields.resumeType, 1)
 				.put(VisEntityResume.Fields.temporallyJobTime, 6)

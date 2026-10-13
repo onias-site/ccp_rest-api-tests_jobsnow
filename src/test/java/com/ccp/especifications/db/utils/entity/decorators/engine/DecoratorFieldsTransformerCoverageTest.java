@@ -41,8 +41,6 @@ public class DecoratorFieldsTransformerCoverageTest {
 	 * pass that rule.</li>
 	 * <li>{@code calculateId} — the caller already hands over the transformed json, because the call
 	 * originates inside the very methods this decorator forwards.</li>
-	 * <li>{@code getOneByIdAnyWhere} — the default implementation delegates to {@code getOneById} on the
-	 * same instance, and that one is forwarded with the transformed json.</li>
 	 * <li>{@code getIdToSearchDisposableRecord} — its implementors call {@code getJsonWithHandledPrimaryKey} on their
 	 * own before building the id.</li>
 	 * <li>{@code toBulkItems} — <b>this is not a comfortable exemption.</b> Whoever builds bulk items
@@ -53,7 +51,6 @@ public class DecoratorFieldsTransformerCoverageTest {
 	private static final List<String> EXEMPT = Arrays.asList(
 			"calculateId(CcpJsonRepresentation)",
 			"getIdToSearchDisposableRecord(CcpJsonRepresentation)",
-			"getOneByIdAnyWhere(CcpJsonRepresentation)",
 			"toBulkItems(CcpJsonRepresentation, CcpBulkEntityOperationType)",
 			"validateJson(CcpJsonRepresentation)"
 	);

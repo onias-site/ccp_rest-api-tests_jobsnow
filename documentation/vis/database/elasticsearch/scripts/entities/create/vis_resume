@@ -8,9 +8,6 @@
       "clt": {
         "type": "double"
       },
-      "date": {
-        "type": "text"
-      },
       "ddd": {
         "type": "integer"
       },
@@ -53,7 +50,10 @@
       "experience": {
         "type": "integer"
       },
-      "language": {
+      "hash": {
+        "type": "keyword"
+      },
+      "spokenLanguage": {
         "dynamic": "strict",
         "properties": {
           "name": {
@@ -87,9 +87,6 @@
       },
       "travel": {
         "type": "boolean"
-      },
-      "timestamp": {
-        "type": "long"
       }
     }
   }

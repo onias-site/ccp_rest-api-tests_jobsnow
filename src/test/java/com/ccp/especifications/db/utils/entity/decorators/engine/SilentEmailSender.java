@@ -9,7 +9,7 @@ import com.ccp.especifications.http.CcpHttpContentType;
  * Swallows the emails. Saving the login token triggers a message to the user, and what this test
  * measures is the state of both indexes after {@code deleteAnyWhere}, not the message content.
  */
-class SilentEmailSender implements CcpEmailSender {
+public class SilentEmailSender implements CcpEmailSender {
 
 	public CcpJsonRepresentation sendSimpleTextEmailMessage(String providerToken, String providerUrl, String templateId, String sender, String subject, String message, CcpHttpContentType contentType, String... recipients) {
 		return CcpOtherConstants.EMPTY_JSON;

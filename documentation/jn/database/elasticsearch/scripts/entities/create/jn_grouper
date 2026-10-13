@@ -1,0 +1,30 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"parentId": {
+				"type": "keyword"
+			},
+			"parentName": {
+				"type": "keyword"
+			},
+			"parentJson": {
+				"dynamic": "true",
+				"properties": {}
+			},
+			"childName": {
+				"type": "keyword"
+			},
+			"childPage": {
+				"type": "integer"
+			},
+			"childJson": {
+				"type": "object",
+				"enabled": false
+			},
+			"childCount": {
+				"type": "integer"
+			}
+		}
+	}
+}

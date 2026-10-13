@@ -32,7 +32,6 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.ccp.especifications.db.utils.entity.fields.CcpEntityField;
 import com.ccp.especifications.db.utils.entity.fields.annotations.CcpEntityFieldPrimaryKey;
-import com.ccp.especifications.http.CcpHttpHandler;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpRequester;
 import com.ccp.especifications.http.CcpHttpResponse;
@@ -60,8 +59,6 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
 import com.vis.entities.VisEntitySkillFixHierarchyPending;
-import com.vis.json.fields.validation.VisJsonCommonsFields;
-import com.vis.resumes.ImportResumeFromOldJobsNow;
 
 
 public class CcpRandomScripts {
@@ -266,18 +263,6 @@ public class CcpRandomScripts {
 		}
 		System.out.println(total);
 		new CcpStringDecorator("c:\\logs\\teste.json").file().reset().append(result.asPrettyJson());
-	}
-
-	static void saveResume() {
-		VisEntityResume.ENTITY.delete(CcpOtherConstants.EMPTY_JSON.put(VisJsonCommonsFields.email, "onias85@gmail.com"));
-		String path = "http://localhost:9200/profissionais2/_doc/onias85@gmail.com/_source";
-		CcpHttpHandler http = new CcpHttpHandler(200, CcpOtherConstants.DO_NOTHING, path);
-		CcpHttpMethods method = CcpHttpMethods.GET;
-		CcpJsonRepresentation headers = CcpOtherConstants.EMPTY_JSON;
-		String asUgglyJson = "";
-		CcpHttpResponse response = http.ccpHttp.executeHttpRequest(path, method, headers, asUgglyJson);
-		CcpJsonRepresentation asSingleJson = response.asSingleJson();
-		ImportResumeFromOldJobsNow.INSTANCE.accept(asSingleJson);
 	}
 
 	static void transferToReverseEntity() {
