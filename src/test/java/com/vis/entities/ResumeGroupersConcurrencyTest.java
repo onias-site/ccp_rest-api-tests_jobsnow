@@ -34,13 +34,12 @@ import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.entities.JnEntityGrouper;
-import com.vis.business.resume.VisResumeGroupers;
+import com.jn.utils.JnGroupers;
 
 /**
- * Proves that resumes changing the same page of the same groups at the same time do not overwrite each other: the page
- * is changed by atomic scripts, applied by Elasticsearch one after the other. Eight resumes with the same data (so the
- * same hashes) and e-mails chosen to fall in the same page are saved at once; then four are deleted while the other four
- * are saved again, also at once.
+ * Proves that resumes changing the same groups at the same time do not overwrite each other: the group is changed by
+ * atomic scripts, applied by Elasticsearch one after the other. Eight resumes with the same data (so the same hashes)
+ * are saved at once; then four are deleted while the other four are saved again, also at once.
  */
 public class ResumeGroupersConcurrencyTest {
 
@@ -67,24 +66,17 @@ public class ResumeGroupersConcurrencyTest {
 
 	private static final int RESUMES = 8;
 
-	/** The e-mail as it is stored: the same SHA-1 of the field transformer of the e-mail. */
-	private static String storedEmail(String email) {
-		return new CcpStringDecorator(email).email().hash().asString(CcpHashAlgorithm.SHA1);
+	/** The id of the record of the resume, as the groups keep it: calculated from the e-mail as it is stored. */
+	private static String resumeId(String email) {
+		String storedEmail = new CcpStringDecorator(email).email().hash().asString(CcpHashAlgorithm.SHA1);
+		CcpJsonRepresentation storedKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, storedEmail);
+		return VisEntityResume.ENTITY.calculateId(storedKey);
 	}
 
-	/** Picks e-mails whose stored form falls in the same page of the groups. */
-	private static List<String> emailsInTheSamePage(String prefix) {
+	private static List<String> emails(String prefix) {
 		List<String> emails = new ArrayList<>();
-		int targetPage = -1;
-		for (int k = 0; emails.size() < RESUMES; k++) {
-			String email = prefix + k + "@jobsnow.com";
-			int page = VisResumeGroupers.getChildPage(storedEmail(email));
-			if (targetPage < 0) {
-				targetPage = page;
-			}
-			if (page == targetPage) {
-				emails.add(email);
-			}
+		for (int k = 0; k < RESUMES; k++) {
+			emails.add(prefix + k + "@jobsnow.com");
 		}
 		return emails;
 	}
@@ -116,25 +108,30 @@ public class ResumeGroupersConcurrencyTest {
 		pool.shutdown();
 	}
 
-	private static Set<String> childrenOfThePage(String hash, int page) {
-		CcpJsonRepresentation groupKey = VisResumeGroupers.getGroupKey(hash, page);
+	private static CcpJsonRepresentation groupKey(String hash) {
+		String parentName = VisEntityVirtualHashGrouper.ENTITY.getEntityMetaData().entityName;
+		String childName = VisEntityResume.ENTITY.getEntityMetaData().entityName;
+		return JnGroupers.getGroupKey(parentName, childName, hash);
+	}
+
+	private static Set<String> childrenOfTheGroup(String hash) {
+		CcpJsonRepresentation groupKey = groupKey(hash);
 		boolean exists = JnEntityGrouper.ENTITY.exists(groupKey);
 		if (false == exists) {
 			return new HashSet<>();
 		}
 		CcpJsonRepresentation group = JnEntityGrouper.ENTITY.getOneById(groupKey);
-		List<CcpJsonRepresentation> children = group.getAsJsonList(JnEntityGrouper.Fields.childJson);
+		List<String> children = group.getAsStringList(JnEntityGrouper.Fields.child);
 		assertEquals(children.size(), group.getAsIntegerNumber(JnEntityGrouper.Fields.childCount).intValue());
-		return children.stream().map(child -> child.getAsString(VisEntityResume.Fields.email)).collect(Collectors.toSet());
+		return new HashSet<>(children);
 	}
 
 	@Test
-	public void concurrentWritersOfTheSamePageLoseNothing() throws Exception {
-		List<String> emails = emailsInTheSamePage("concurrency" + System.currentTimeMillis() + "_");
-		int page = VisResumeGroupers.getChildPage(storedEmail(emails.get(0)));
-		Set<String> allStoredEmails = emails.stream().map(email -> storedEmail(email)).collect(Collectors.toSet());
+	public void concurrentWritersOfTheSameGroupLoseNothing() throws Exception {
+		List<String> emails = emails("concurrency" + System.currentTimeMillis() + "_");
+		Set<String> allResumeIds = emails.stream().map(email -> resumeId(email)).collect(Collectors.toSet());
 
-		// eight resumes saved at once, all in the same page of the same groups
+		// eight resumes saved at once, all in the same groups
 		List<Runnable> saves = emails.stream().map(email -> (Runnable) () -> VisEntityResume.ENTITY.save(resume(email))).collect(Collectors.toList());
 		runAtOnce(saves);
 
@@ -143,7 +140,7 @@ public class ResumeGroupersConcurrencyTest {
 		// languages: none; skills: none, JAVA, JVM; the rest has one value
 		assertEquals(3, hashes.size());
 		for (String hash : hashes) {
-			assertEquals(hash, allStoredEmails, childrenOfThePage(hash, page));
+			assertEquals(hash, allResumeIds, childrenOfTheGroup(hash));
 		}
 
 		// four deleted while the other four are saved again, at once
@@ -158,17 +155,17 @@ public class ResumeGroupersConcurrencyTest {
 		}
 		runAtOnce(mixed);
 
-		Set<String> keptStoredEmails = kept.stream().map(email -> storedEmail(email)).collect(Collectors.toSet());
+		Set<String> keptResumeIds = kept.stream().map(email -> resumeId(email)).collect(Collectors.toSet());
 		for (String hash : hashes) {
-			assertEquals(hash, keptStoredEmails, childrenOfThePage(hash, page));
+			assertEquals(hash, keptResumeIds, childrenOfTheGroup(hash));
 		}
 
-		// cleanup: the last four leave, and the pages are deleted
+		// cleanup: the last four leave, and the groups are deleted
 		List<Runnable> cleanup = kept.stream().map(email -> (Runnable) () -> VisEntityResume.ENTITY.deleteAnyWhere(CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, email))).collect(Collectors.toList());
 		runAtOnce(cleanup);
 		for (String hash : hashes) {
-			assertTrue(hash, childrenOfThePage(hash, page).isEmpty());
-			assertTrue(hash, false == JnEntityGrouper.ENTITY.exists(VisResumeGroupers.getGroupKey(hash, page)));
+			assertTrue(hash, childrenOfTheGroup(hash).isEmpty());
+			assertTrue(hash, false == JnEntityGrouper.ENTITY.exists(groupKey(hash)));
 		}
 	}
 }

@@ -1,13 +1,22 @@
 package com.jn.entities.decorators.entities;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
+import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.dependency.injection.CcpDependencyInjection;
+import com.ccp.especifications.db.crud.CcpCrud;
+import com.ccp.especifications.db.crud.CcpSelectUnionAll;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.jn.entities.JnEntityLoginSessionValidation;
+import com.jn.entities.decorators.ElasticsearchLocal;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
+import com.jn.utils.JnDeleteKeysFromCache;
 
 /**
  * jn_login_session_validation: twin of jn_login_session_terminated (ended session),
@@ -72,5 +81,35 @@ public class JnEntityLoginSessionValidationDecoratorsTest extends EntityDecorato
 	@Test
 	public void disposable() {
 		this.shouldKeepDisposableCopyUntilDeadline(CcpEntityExpurgableOptions.hourly);
+	}
+
+	/**
+	 * The session validation ({@code JnServiceLogin.ValidateLogin}) does not ask {@code exists}: it reads the session through
+	 * a union all ({@code CcpGetEntityId}). When the hour changes the document of the period is no longer the current one,
+	 * and only the disposable copy keeps the session alive until its deadline; without it every session ended at the turn
+	 * of the hour, and each request after that counted a wrong session token attempt until the password was locked (423).
+	 */
+	@Test
+	public void unionAllFindsTheSessionByTheCopyAfterTheHourChanges() {
+		CcpEntity entityUnderTest = this.entityUnderTest();
+		CcpJsonRepresentation record = this.validRecord();
+		entityUnderTest.save(record);
+
+		// the turn of the hour: the document of the period is gone, the copy is still valid
+		ElasticsearchLocal.delete(this.name(), this.idInTheDatabase(record));
+		this.clearCache(record);
+
+		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
+		CcpJsonRepresentation[] parametersToSearch = new CcpJsonRepresentation[] { record };
+		CcpSelectUnionAll unionAll = crud.unionAll(parametersToSearch, JnDeleteKeysFromCache.INSTANCE, entityUnderTest);
+		assertTrue("the valid copy did not keep the session in the union all", entityUnderTest.isPresentInThisUnionAll(unionAll, record));
+
+		// past the deadline of the copy the session is gone
+		long now = System.currentTimeMillis();
+		CcpJsonRepresentation expiredTimestamp = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.timestamp, now - 1000);
+		ElasticsearchLocal.update("jn_disposable_record", this.disposableCopyId(record), expiredTimestamp);
+		this.clearCache(record);
+		CcpSelectUnionAll unionAllAfterTheDeadline = crud.unionAll(parametersToSearch, JnDeleteKeysFromCache.INSTANCE, entityUnderTest);
+		assertFalse("the expired copy still keeps the session in the union all", entityUnderTest.isPresentInThisUnionAll(unionAllAfterTheDeadline, record));
 	}
 }

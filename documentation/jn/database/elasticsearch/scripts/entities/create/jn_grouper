@@ -15,12 +15,8 @@
 			"childName": {
 				"type": "keyword"
 			},
-			"childPage": {
-				"type": "integer"
-			},
-			"childJson": {
-				"type": "object",
-				"enabled": false
+			"child": {
+				"type": "keyword"
 			},
 			"childCount": {
 				"type": "integer"

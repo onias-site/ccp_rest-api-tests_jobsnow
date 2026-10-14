@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +14,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.business.CcpBusiness;
@@ -36,6 +41,21 @@ public class CcpRestApiExceptionHandlerSpringTest {
 	@Test
 	public void methodNoSupportedTest() {
 		new CcpRestApiExceptionHandlerSpring().methodNoSupported();
+	}
+
+	/**
+	 * A body the controller cannot read (a GET without Content-Type to a controller that requires the body) answers 400
+	 * through its own handler, and not 500 through the one of {@code Throwable}, which records a system error.
+	 */
+	@Test
+	public void unreadableBodyAnswers400Test() throws NoSuchMethodException {
+		Method unreadableBody = CcpRestApiExceptionHandlerSpring.class.getMethod("unreadableBody");
+		ExceptionHandler exceptionHandler = unreadableBody.getAnnotation(ExceptionHandler.class);
+		List<Class<? extends Throwable>> handledExceptions = Arrays.asList(exceptionHandler.value());
+		assertTrue(handledExceptions.contains(HttpMessageNotReadableException.class));
+		ResponseStatus responseStatus = unreadableBody.getAnnotation(ResponseStatus.class);
+		assertEquals(HttpStatus.BAD_REQUEST, responseStatus.code());
+		new CcpRestApiExceptionHandlerSpring().unreadableBody();
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────

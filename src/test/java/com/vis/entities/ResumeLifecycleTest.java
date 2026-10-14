@@ -3,6 +3,7 @@ package com.vis.entities;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
+import com.ccp.especifications.db.crud.CcpCrud;
 import com.ccp.dependency.injection.CcpInstanceProvider;
 import com.ccp.especifications.db.utils.entity.decorators.engine.SilentInstantMessenger;
 import com.ccp.especifications.email.CcpEmailSender;
@@ -28,15 +30,18 @@ import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.db.bulk.JnExecuteBulkOperation;
 import com.jn.entities.JnEntityGrouper;
+import com.ccp.flow.CcpErrorFlowDisturb;
+import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.utils.JnDeleteKeysFromCache;
-import com.vis.business.resume.VisResumeGroupers;
+import com.jn.utils.JnGroupers;
 import com.vis.json.transformers.VisResumeHashCombinations;
 
 /**
  * Proves the life cycle of the resume end to end: the save fills the {@code hash} list and puts the resume in the group
- * of {@code JnEntityGrouper} of each hash; saving again moves it to the groups of the new hashes; the deactivation takes
- * it out of every group and the reactivation puts it back; the delete everywhere takes it out for good. Each of the
- * four steps (save, deactivation, reactivation, delete everywhere) e-mails the owner.
+ * of {@code JnEntityGrouper} of each hash; saving again moves it to the groups of the new hashes; the deactivation moves
+ * it to the twin groups, a save on the twin keeps it there with its new hashes, and the reactivation moves it back; the
+ * delete everywhere takes it out of both sides. Save, deactivation, reactivation and delete everywhere e-mail the owner
+ * (the save on the twin does not).
  */
 public class ResumeLifecycleTest {
 
@@ -88,30 +93,46 @@ public class ResumeLifecycleTest {
 		return CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, this.email);
 	}
 
-	private String storedEmail;
+	private static final boolean MAIN_GROUPER = false;
+
+	private static final boolean TWIN_GROUPER = true;
+
+	private static final String PARENT_NAME = VisEntityVirtualHashGrouper.ENTITY.getEntityMetaData().entityName;
 
 	private CcpJsonRepresentation groupKey(String hash) {
-		int childPage = VisResumeGroupers.getChildPage(this.storedEmail);
-		return VisResumeGroupers.getGroupKey(hash, childPage);
+		String childName = VisEntityResume.ENTITY.getEntityMetaData().entityName;
+		return JnGroupers.getGroupKey(PARENT_NAME, childName, hash);
 	}
 
-	private List<CcpJsonRepresentation> childrenOfTheGroup(String hash) {
-		CcpJsonRepresentation groupKey = this.groupKey(hash);
-		boolean groupExists = JnEntityGrouper.ENTITY.exists(groupKey);
-		if (false == groupExists) {
+	/** Read only through JnGroupers.getGroup: a group that is only on the other side comes empty, it does not redirect. */
+	private List<String> childrenOfTheGroup(boolean twinSide, String hash) {
+		String childName = VisEntityResume.ENTITY.getEntityMetaData().entityName;
+		CcpJsonRepresentation group = JnGroupers.getGroup(twinSide, PARENT_NAME, childName, hash);
+		if (group.isEmpty()) {
 			return Arrays.asList();
 		}
-		CcpJsonRepresentation group = JnEntityGrouper.ENTITY.getOneById(groupKey);
-		List<CcpJsonRepresentation> children = group.getAsJsonList(JnEntityGrouper.Fields.childJson);
+		List<String> children = JnGroupers.getChildren(twinSide, PARENT_NAME, childName, hash);
 		assertEquals(children.size(), group.getAsIntegerNumber(JnEntityGrouper.Fields.childCount).intValue());
 		return children;
 	}
 
-	private boolean isInTheGroup(String hash, String storedEmail) {
-		List<String> emails = this.childrenOfTheGroup(hash).stream()
-				.map(child -> child.getAsString(VisEntityResume.Fields.email))
-				.collect(Collectors.toList());
-		return emails.contains(storedEmail);
+	private boolean isInTheGroup(boolean twinSide, String hash, String resumeId) {
+		return this.childrenOfTheGroup(twinSide, hash).contains(resumeId);
+	}
+
+	/** The resume is in the groups of the hashes on one side of the grouper and in none of them on the other side. */
+	private void assertOnlyIn(boolean twinSide, List<String> hashes, String resumeId) {
+		for (String hash : hashes) {
+			assertTrue(hash, this.isInTheGroup(twinSide, hash, resumeId));
+			assertFalse(hash, this.isInTheGroup(false == twinSide, hash, resumeId));
+		}
+	}
+
+	private void assertInNone(List<String> hashes, String resumeId) {
+		for (String hash : hashes) {
+			assertFalse(hash, this.isInTheGroup(MAIN_GROUPER, hash, resumeId));
+			assertFalse(hash, this.isInTheGroup(TWIN_GROUPER, hash, resumeId));
+		}
 	}
 
 	private List<String> noticesToTheOwner() {
@@ -128,55 +149,61 @@ public class ResumeLifecycleTest {
 		// save
 		VisEntityResume.ENTITY.save(resume);
 		CcpJsonRepresentation stored = VisEntityResume.ENTITY.getOneById(this.key());
-		String storedEmail = stored.getAsString(VisEntityResume.Fields.email);
-		this.storedEmail = storedEmail;
-		CcpJsonRepresentation firstGroupKey = this.groupKey(stored.getAsStringList(VisEntityResume.Fields.hash).get(0));
-		assertEquals(VisResumeGroupers.getChildPage(storedEmail), firstGroupKey.getAsIntegerNumber(JnEntityGrouper.Fields.childPage).intValue());
+		String resumeId = VisEntityResume.ENTITY.calculateId(stored);
 		List<String> hashes = stored.getAsStringList(VisEntityResume.Fields.hash);
 		assertEquals(12, hashes.size());
-		for (String hash : hashes) {
-			assertTrue(hash, this.isInTheGroup(hash, storedEmail));
-		}
+		this.assertOnlyIn(MAIN_GROUPER, hashes, resumeId);
 		CcpJsonRepresentation group = JnEntityGrouper.ENTITY.getOneById(this.groupKey(hashes.get(0)));
 		assertTrue(group.getInnerJson(JnEntityGrouper.Fields.parentJson).containsAllFields(VisEntityVirtualHashGrouper.Fields.skillName));
-		CcpJsonRepresentation child = group.getAsJsonList(JnEntityGrouper.Fields.childJson).get(0);
-		assertFalse("the child keeps no hash list", child.containsAllFields(VisEntityResume.Fields.hash));
-		assertTrue(child.containsAllFields(VisEntityResume.Fields.desiredJob));
+		assertEquals(Arrays.asList(resumeId), group.getAsStringList(JnEntityGrouper.Fields.child));
+		// the child is the id of the record of the resume: reading by it brings the resume back
+		String resumeEntityName = VisEntityResume.ENTITY.getEntityMetaData().entityName;
+		CcpJsonRepresentation resumeById = CcpDependencyInjection.getDependency(CcpCrud.class).getOneById(resumeEntityName, resumeId);
+		assertEquals(stored.getAsString(VisEntityResume.Fields.desiredJob), resumeById.getAsString(VisEntityResume.Fields.desiredJob));
 		assertEquals(1, this.noticesToTheOwner().size());
 
 		// saved again with another ddd: leaves the old groups, enters the new ones
 		VisEntityResume.ENTITY.save(this.resume(21));
 		List<String> newHashes = VisEntityResume.ENTITY.getOneById(this.key()).getAsStringList(VisEntityResume.Fields.hash);
-		for (String hash : hashes) {
-			assertFalse(hash, this.isInTheGroup(hash, storedEmail));
-		}
-		for (String hash : newHashes) {
-			assertTrue(hash, this.isInTheGroup(hash, storedEmail));
-		}
+		this.assertInNone(hashes, resumeId);
+		this.assertOnlyIn(MAIN_GROUPER, newHashes, resumeId);
 		assertEquals(2, this.noticesToTheOwner().size());
 
-		// deactivation: moves to the twin and leaves every group
+		// deactivation: moves to the twin, and from the main groups to the twin groups
 		VisEntityResume.ENTITY.delete(this.key());
 		assertFalse(VisEntityResume.ENTITY.exists(this.key()));
 		assertTrue(VisEntityResume.ENTITY.getTwinEntity().exists(this.key()));
-		for (String hash : newHashes) {
-			assertFalse(hash, this.isInTheGroup(hash, storedEmail));
+		this.assertOnlyIn(TWIN_GROUPER, newHashes, resumeId);
+		assertEquals(3, this.noticesToTheOwner().size());
+		// the group is only on the twin side: reading it on the main side by getOneById redirects, JnGroupers does not
+		CcpJsonRepresentation twinOnlyGroupKey = this.groupKey(newHashes.get(0));
+		try {
+			JnEntityGrouper.ENTITY.getOneById(twinOnlyGroupKey);
+			fail("the group exists only on the twin side, the main getOneById should have redirected");
+		} catch (CcpErrorFlowDisturb redirect) {
+			assertEquals(CcpProcessStatusDefault.REDIRECT, redirect.status);
 		}
+		String childName = VisEntityResume.ENTITY.getEntityMetaData().entityName;
+		assertTrue(JnGroupers.getGroup(MAIN_GROUPER, PARENT_NAME, childName, newHashes.get(0)).isEmpty());
+		assertEquals(Arrays.asList(resumeId), JnGroupers.getChildren(TWIN_GROUPER, PARENT_NAME, childName, newHashes.get(0)));
+
+		// saved on the twin (still inactive) with another ddd: the twin groups follow the new hashes; no notice
+		VisEntityResume.ENTITY.getTwinEntity().save(this.resume(31));
+		assertFalse(VisEntityResume.ENTITY.exists(this.key()));
+		List<String> inactiveHashes = VisEntityResume.ENTITY.getTwinEntity().getOneById(this.key()).getAsStringList(VisEntityResume.Fields.hash);
+		this.assertInNone(newHashes, resumeId);
+		this.assertOnlyIn(TWIN_GROUPER, inactiveHashes, resumeId);
 		assertEquals(3, this.noticesToTheOwner().size());
 
-		// reactivation: back from the twin, enters the groups again
+		// reactivation: back from the twin, and from the twin groups to the main groups
 		VisEntityResume.ENTITY.getTwinEntity().delete(this.key());
 		assertTrue(VisEntityResume.ENTITY.exists(this.key()));
-		for (String hash : newHashes) {
-			assertTrue(hash, this.isInTheGroup(hash, storedEmail));
-		}
+		this.assertOnlyIn(MAIN_GROUPER, inactiveHashes, resumeId);
 		assertEquals(4, this.noticesToTheOwner().size());
 
-		// delete everywhere: leaves every group for good
+		// delete everywhere: leaves the groups of both sides for good
 		VisEntityResume.ENTITY.deleteAnyWhere(this.key());
-		for (String hash : newHashes) {
-			assertFalse(hash, this.isInTheGroup(hash, storedEmail));
-		}
+		this.assertInNone(inactiveHashes, resumeId);
 		assertEquals(5, this.noticesToTheOwner().size());
 	}
 }

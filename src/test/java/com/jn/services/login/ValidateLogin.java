@@ -8,10 +8,15 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityMetaData;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatusDefault;
+import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityLoginPassword;
+import com.jn.entities.JnEntityLoginSessionValidation;
+import com.jn.entities.decorators.ElasticsearchLocal;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnSystemProperties;
 import com.jn.rest.api.commons.TestVariables;
@@ -76,6 +81,68 @@ public class ValidateLogin extends JnServiceLoginTestTemplate {
 		boolean passwordStillUnlocked = JnEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
 		assertTrue(passwordStillUnlocked);
 		this.execute(currentSession, CcpProcessStatusDefault.OK);
+	}
+
+	/**
+	 * A session past its deadline is refused (401), and repeating it more times than the attempts limit does not lock the
+	 * password: it is a session that existed, not a guess. Until 2026-10-13 each request of an expired session counted an
+	 * attempt, and a tab left open locked the password of its owner.
+	 */
+	@Test
+	public void expiredSessionIsRefusedWithoutCountingAttempts() {
+		TestVariables testVariables = new TestVariables();
+		CcpJsonRepresentation session = this.executeLogin(testVariables);
+		this.execute(session, CcpProcessStatusDefault.OK);
+		this.expire(session);
+
+		int moreThanTheAttemptsLimit = JnSystemProperties.INSTANCE.maxAttempts() + 1;
+		for (int attempt = 1; attempt <= moreThanTheAttemptsLimit; attempt++) {
+			this.execute(session, CcpProcessStatusDefault.UNHAUTHORIZED);
+		}
+
+		boolean passwordStillUnlocked = JnEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
+		assertTrue(passwordStillUnlocked);
+	}
+
+	/** A token of no session at all keeps counting: the attempts limit locks the password. */
+	@Test
+	public void tokenOfNoSessionLocksThePasswordAtTheAttemptsLimit() {
+		TestVariables testVariables = new TestVariables();
+		CcpJsonRepresentation session = this.executeLogin(testVariables);
+		CcpJsonRepresentation guessedSession = session.put(new CcpFieldName("sessionToken"), "A8B7C6D5");
+
+		int attemptsLimit = JnSystemProperties.INSTANCE.maxAttempts();
+		for (int attempt = 1; attempt <= attemptsLimit; attempt++) {
+			this.execute(guessedSession, CcpProcessStatusDefault.UNHAUTHORIZED);
+		}
+
+		boolean passwordLocked = false == JnEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
+		assertTrue(passwordLocked);
+	}
+
+	/**
+	 * Takes the session past its deadline the way time does: the document of the period is gone (the turn of the hour)
+	 * and the disposable copy is expired.
+	 */
+	private void expire(CcpJsonRepresentation session) {
+		CcpFieldName sessionTokenField = new CcpFieldName("sessionToken");
+		String sessionToken = session.getAsString(sessionTokenField);
+		CcpJsonRepresentation record = session.put(JnEntityLoginSessionValidation.Fields.token, sessionToken);
+		CcpEntity entity = JnEntityLoginSessionValidation.ENTITY;
+		CcpEntityMetaData metaData = entity.getEntityMetaData();
+		CcpJsonRepresentation transformedRecord = entity.getHandledJson(record);
+
+		String periodDocumentId = entity.calculateId(transformedRecord);
+		ElasticsearchLocal.delete(metaData.entityName, periodDocumentId);
+
+		String serializedPrimaryKey = metaData.getPrimaryKeyValues(transformedRecord.getJsonSupplier()).asUgglyJson();
+		CcpJsonRepresentation copyKey = CcpOtherConstants.EMPTY_JSON
+				.put(JnJsonCommonsFields.entity, metaData.entityName)
+				.put(JnJsonCommonsFields.id, serializedPrimaryKey);
+		String copyId = JnEntityDisposableRecord.ENTITY.calculateId(copyKey);
+		long now = System.currentTimeMillis();
+		CcpJsonRepresentation expiredTimestamp = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.timestamp, now - 1000);
+		ElasticsearchLocal.update("jn_disposable_record", copyId, expiredTimestamp);
 	}
 
 	@Test(expected = CcpJsonValidationError.class)
