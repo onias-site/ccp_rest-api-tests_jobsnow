@@ -33447,49 +33447,16 @@
     "skillsWithCommonParents": [],
     "synonym": [
       {
-        "skill": "DEVTOOLS SPRINGBOOT"
-      },
-      {
         "skill": "SPRING.BOOT"
       },
       {
         "skill": "BOOT SPRING"
       },
       {
-        "skill": "DEVTOOLS"
-      },
-      {
-        "skill": "DEV TOOLS"
-      },
-      {
-        "skill": "DEV-TOOLS"
-      },
-      {
-        "skill": "SPRINGBOOT DEVTOOLS"
-      },
-      {
         "skill": "SPRING BOOT"
       },
       {
         "skill": "SPRING-BOOT"
-      },
-      {
-        "skill": "SPRINGBOOT-DEVTOOLS"
-      },
-      {
-        "skill": "SPRINGBOOTDEVTOOLS"
-      },
-      {
-        "skill": "DEV.TOOLS"
-      },
-      {
-        "skill": "SPRINGBOOT.DEVTOOLS"
-      },
-      {
-        "skill": "SPRING BOOT DEVTOOLS"
-      },
-      {
-        "skill": "TOOLS DEV"
       }
     ],
     "description": "Framework opinionado sobre o Spring que elimina configuração boilerplate com auto-configuração e servidor embarcado"
@@ -33643,15 +33610,6 @@
         "skill": "DEVTOOLS SPRINGBOOT"
       },
       {
-        "skill": "SPRING.BOOT"
-      },
-      {
-        "skill": "BOOT SPRING"
-      },
-      {
-        "skill": "SPRINGBOOT"
-      },
-      {
         "skill": "DEVTOOLS"
       },
       {
@@ -33659,12 +33617,6 @@
       },
       {
         "skill": "DEV-TOOLS"
-      },
-      {
-        "skill": "SPRING BOOT"
-      },
-      {
-        "skill": "SPRING-BOOT"
       },
       {
         "skill": "SPRINGBOOT-DEVTOOLS"

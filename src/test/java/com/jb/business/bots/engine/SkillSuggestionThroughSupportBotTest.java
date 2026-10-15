@@ -1,5 +1,6 @@
 package com.jb.business.bots.engine;
 
+import com.vis.business.bots.VisCommandNamesInPortuguese;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -35,9 +36,9 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatus;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jb.entities.JbEntityBot;
-import com.jb.entities.JbEntityBotCommand;
-import com.jb.entities.JbEntityBotCommandStep;
-import com.jb.entities.JbEntityBotCommandStepEndMessage;
+import com.jn.entities.JnEntityBotCommand;
+import com.jn.entities.JnEntityBotCommandStep;
+import com.jn.entities.JnEntityBotCommandStepEndMessage;
 import com.jb.entities.JbEntityBotCommandStepSession;
 import com.jb.entities.JbEntityPendingTickets;
 import com.jn.entities.JnEntitySupportCancelledCommand;
@@ -57,7 +58,7 @@ import com.vis.entities.VisEntitySkillFixHierarchyPending;
 import com.vis.entities.VisEntitySkillPending;
 import com.vis.entities.VisEntitySkillRejected;
 import com.vis.entities.VisEntitySkillReviewed;
-import com.vis.entities.VisEntitySkillSuggestionWithdrawn;
+import com.vis.entities.VisEntitySkillSuggestionDailyLimit;
 import com.vis.entities.VisEntitySkillSynonym;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
@@ -66,7 +67,6 @@ import com.vis.json.fields.validation.VisUserRequestCommands;
 import com.vis.messages.VisMessages;
 import com.vis.services.VisServiceSkillFixHierarchy;
 import com.vis.services.VisServiceSkillSuggestion;
-import com.vis.status.VisProcessStatusDeleteSkillSuggestion;
 import com.vis.status.VisProcessStatusFixSkillHierarchy;
 import com.vis.status.VisProcessStatusSuggestSkill;
 
@@ -131,7 +131,7 @@ public class SkillSuggestionThroughSupportBotTest {
 	 */
 	@BeforeClass
 	public static void resaveBotConfiguration() {
-		List<CcpEntityConfigurator> configurators = Arrays.asList(new JbEntityBot(), new JbEntityBotCommand(), new JbEntityBotCommandStep(), new JbEntityBotCommandStepEndMessage(), new VisEntitySkillPending());
+		List<CcpEntityConfigurator> configurators = Arrays.asList(new JbEntityBot(), new JnEntityBotCommand(), new JnEntityBotCommandStep(), new JnEntityBotCommandStepEndMessage(), new VisEntitySkillPending());
 		for (CcpEntityConfigurator configurator : configurators) {
 			List<CcpBulkItem> records = configurator.getFirstRecordsToInsert();
 			for (CcpBulkItem record : records) {
@@ -399,7 +399,7 @@ public class SkillSuggestionThroughSupportBotTest {
 
 		String notAllowed = this.operatorTypes("/reviewSkillSuggestion " + IGNORED_USER + " " + skill);
 		// the bot names the command in the operator's language (Portuguese by default); the canonical name still works
-		String allowCommandInPortuguese = JbCommandNamesInPortuguese.allowCommandToUser.getValue();
+		String allowCommandInPortuguese = VisCommandNamesInPortuguese.allowCommandToUser.getValue();
 		assertTrue(notAllowed, notAllowed.contains("/" + allowCommandInPortuguese + " " + IGNORED_USER));
 
 		this.operatorTypes("/allowCommandToUser " + IGNORED_USER);
@@ -685,8 +685,8 @@ public class SkillSuggestionThroughSupportBotTest {
 		VisEntitySkillApproved.ENTITY.delete(suggestionKey);
 		VisEntitySkillRejected.ENTITY.delete(suggestionKey);
 		VisEntitySkillReviewed.ENTITY.delete(suggestionKey);
-		// a withdrawal of a previous run would refuse the withdrawals of this one for an hour
-		this.forgetWithdrawal(email, skill);
+		// a suggestion of a previous test, today, would refuse the suggestions of this one with dailyLimitReached
+		this.forgetTodaysSuggestion(email);
 
 		List<Class<?>> templates = Arrays.asList(
 				VisMessages.VisNotifySupportAndUserAboutPendingSkillRequest.class,
@@ -710,9 +710,45 @@ public class SkillSuggestionThroughSupportBotTest {
 		return newSuggestion;
 	}
 
-	private void forgetWithdrawal(String email, String skill) {
-		CcpJsonRepresentation suggestionKey = this.suggestion(email, skill);
-		VisEntitySkillSuggestionWithdrawn.ENTITY.delete(suggestionKey);
+
+	private void forgetTodaysSuggestion(String email) {
+		CcpJsonRepresentation dailyLimit = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillSuggestionDailyLimit.Fields.email, email);
+		VisEntitySkillSuggestionDailyLimit.ENTITY.delete(dailyLimit);
+	}
+
+	private static final String DAILY_LIMIT_USER = "limite.diario.sugestao@teste.com";
+
+	/**
+	 * One skill suggestion per candidate per day, because each one emails the candidate and opens a ticket to the
+	 * operator: the first suggestion through the service spends the day, and a suggestion of another skill is refused
+	 * with {@code dailyLimitReached} (429) without being saved. The refusals that send nothing (here the 409 of the same
+	 * skill still pending) are answered first, with their own reason.
+	 */
+	@Test
+	public void onlyOneSuggestionPerDay() {
+
+		String firstSkill = "TESTE SKILL LIMITE UM";
+		String secondSkill = "TESTE SKILL LIMITE DOIS";
+		CcpJsonRepresentation firstSuggestion = this.clearSuggestion(DAILY_LIMIT_USER, firstSkill, "Primeira sugestão do dia");
+		CcpJsonRepresentation secondSuggestion = this.clearSuggestion(DAILY_LIMIT_USER, secondSkill, "Segunda sugestão do dia");
+
+		VisServiceSkillSuggestion.SuggestSkill.execute(firstSuggestion);
+		CcpJsonRepresentation dailyLimit = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillSuggestionDailyLimit.Fields.email, DAILY_LIMIT_USER);
+		assertTrue(VisEntitySkillSuggestionDailyLimit.ENTITY.exists(dailyLimit));
+
+		CcpProcessStatus repeated = this.statusOf(() -> VisServiceSkillSuggestion.SuggestSkill.execute(firstSuggestion));
+		assertEquals(CcpProcessStatusDefault.CONFLICT, repeated);
+
+		CcpProcessStatus refusal = this.statusOf(() -> VisServiceSkillSuggestion.SuggestSkill.execute(secondSuggestion));
+		assertEquals(VisProcessStatusSuggestSkill.dailyLimitReached, refusal);
+		assertEquals(429, refusal.asNumber());
+		CcpJsonRepresentation secondKey = this.suggestion(DAILY_LIMIT_USER, secondSkill);
+		assertFalse(VisEntitySkillPending.ENTITY.exists(secondKey));
+
+		// the next day (simulated by discarding the record) the candidate may suggest again
+		this.forgetTodaysSuggestion(DAILY_LIMIT_USER);
+		VisServiceSkillSuggestion.SuggestSkill.execute(secondSuggestion);
+		assertTrue(VisEntitySkillPending.ENTITY.exists(secondKey));
 	}
 
 	private void forgetSynonyms(String... synonyms) {
@@ -767,27 +803,28 @@ public class SkillSuggestionThroughSupportBotTest {
 	}
 
 	/**
-	 * Withdrawing a suggestion of the same skill again within the hour is refused (429) and the suggestion stays
-	 * pending: suggesting it again is allowed, withdrawing it again is not.
+	 * Withdrawing a suggestion of the same skill again, right after suggesting it again, is accepted: there is no block
+	 * on withdrawing the same skill twice in a short period (removed on 2026-10-15; the daily limit of the suggestion
+	 * already bounds the tickets).
 	 */
 	@Test
-	public void withdrawingTheSameSkillAgainWithinTheHourIsRefused() {
+	public void withdrawingTheSameSkillAgainIsAccepted() {
 
 		String skill = "TESTE SKILL DESISTENCIA REPETIDA";
 		this.openSuggestion(WITHDRAWN_USER, skill, "Primeira vez, vou desistir");
 		CcpJsonRepresentation suggestionKey = this.suggestion(WITHDRAWN_USER, skill);
 
 		VisServiceSkillSuggestion.DeleteSkillSuggestion.execute(suggestionKey);
-		assertTrue(VisEntitySkillSuggestionWithdrawn.ENTITY.exists(suggestionKey));
+		assertFalse(VisEntitySkillPending.ENTITY.exists(suggestionKey));
 
-		CcpJsonRepresentation sameSuggestionAgain = this.newSuggestion(suggestionKey, "Sugiro de novo e vou tentar desistir de novo");
+		CcpJsonRepresentation sameSuggestionAgain = this.newSuggestion(suggestionKey, "Sugiro de novo e desisto de novo");
 		VisEntitySkillPending.ENTITY.save(sameSuggestionAgain);
-
-		CcpProcessStatus refusal = this.statusOf(() -> VisServiceSkillSuggestion.DeleteSkillSuggestion.execute(suggestionKey));
-		assertEquals(VisProcessStatusDeleteSkillSuggestion.withdrawnRecently, refusal);
 		assertTrue(VisEntitySkillPending.ENTITY.exists(suggestionKey));
 
-		this.clearSuggestion(WITHDRAWN_USER, skill, "Sugiro de novo e vou tentar desistir de novo");
+		VisServiceSkillSuggestion.DeleteSkillSuggestion.execute(suggestionKey);
+		assertFalse(VisEntitySkillPending.ENTITY.exists(suggestionKey));
+
+		this.clearSuggestion(WITHDRAWN_USER, skill, "Sugiro de novo e desisto de novo");
 	}
 
 	/**

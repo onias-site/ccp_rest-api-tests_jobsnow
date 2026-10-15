@@ -81,8 +81,14 @@ public class ResumeGroupersConcurrencyTest {
 		return emails;
 	}
 
+	/**
+	 * Without the ddd in the hash, the groups of common values are shared with the resumes already stored; a skill of
+	 * this execution alone gives the test groups no other resume reaches.
+	 */
+	private static final String UNIQUE_SKILL = "CONCURRENCY" + System.currentTimeMillis();
+
 	private static CcpJsonRepresentation resume(String email) {
-		CcpJsonRepresentation java = new CcpJsonRepresentation("{\"skill\":\"JAVA\",\"word\":\"JAVA\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\",\"parent\":[\"JVM\"]}");
+		CcpJsonRepresentation java = new CcpJsonRepresentation("{\"skill\":\"" + UNIQUE_SKILL + "\",\"word\":\"" + UNIQUE_SKILL + "\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\",\"parent\":[\"JVM\"]}");
 		return CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityResume.Fields.email, email)
 				.put(VisEntityResume.Fields.ddd, Arrays.asList(11))
@@ -126,6 +132,13 @@ public class ResumeGroupersConcurrencyTest {
 		return new HashSet<>(children);
 	}
 
+	/** The resumes of this test inside the group: the groups of common values also hold the resumes already stored. */
+	private static Set<String> resumesOfTheTestInTheGroup(String hash, Set<String> resumesOfTheTest) {
+		Set<String> children = childrenOfTheGroup(hash);
+		children.retainAll(resumesOfTheTest);
+		return children;
+	}
+
 	@Test
 	public void concurrentWritersOfTheSameGroupLoseNothing() throws Exception {
 		List<String> emails = emails("concurrency" + System.currentTimeMillis() + "_");
@@ -137,11 +150,18 @@ public class ResumeGroupersConcurrencyTest {
 
 		CcpJsonRepresentation key = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, emails.get(0));
 		List<String> hashes = VisEntityResume.ENTITY.getOneById(key).getAsStringList(VisEntityResume.Fields.hash);
-		// languages: none; skills: none, JAVA, JVM; the rest has one value
+		// languages: none; skills: none, the unique one, JVM; the rest has one value
 		assertEquals(3, hashes.size());
+		List<String> exclusiveHashes = new ArrayList<>();
 		for (String hash : hashes) {
-			assertEquals(hash, allResumeIds, childrenOfTheGroup(hash));
+			assertEquals(hash, allResumeIds, resumesOfTheTestInTheGroup(hash, allResumeIds));
+			boolean exclusive = allResumeIds.equals(childrenOfTheGroup(hash));
+			if (exclusive) {
+				exclusiveHashes.add(hash);
+			}
 		}
+		// at least the group of the unique skill holds the resumes of this test alone
+		assertTrue(false == exclusiveHashes.isEmpty());
 
 		// four deleted while the other four are saved again, at once
 		List<String> deleted = emails.subList(0, RESUMES / 2);
@@ -157,14 +177,16 @@ public class ResumeGroupersConcurrencyTest {
 
 		Set<String> keptResumeIds = kept.stream().map(email -> resumeId(email)).collect(Collectors.toSet());
 		for (String hash : hashes) {
-			assertEquals(hash, keptResumeIds, childrenOfTheGroup(hash));
+			assertEquals(hash, keptResumeIds, resumesOfTheTestInTheGroup(hash, allResumeIds));
 		}
 
-		// cleanup: the last four leave, and the groups are deleted
+		// cleanup: the last four leave, and the groups that only they held are deleted
 		List<Runnable> cleanup = kept.stream().map(email -> (Runnable) () -> VisEntityResume.ENTITY.deleteAnyWhere(CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, email))).collect(Collectors.toList());
 		runAtOnce(cleanup);
 		for (String hash : hashes) {
-			assertTrue(hash, childrenOfTheGroup(hash).isEmpty());
+			assertTrue(hash, resumesOfTheTestInTheGroup(hash, allResumeIds).isEmpty());
+		}
+		for (String hash : exclusiveHashes) {
 			assertTrue(hash, false == JnEntityGrouper.ENTITY.exists(groupKey(hash)));
 		}
 	}

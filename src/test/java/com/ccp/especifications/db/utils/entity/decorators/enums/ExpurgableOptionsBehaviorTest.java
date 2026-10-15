@@ -3,7 +3,9 @@ package com.ccp.especifications.db.utils.entity.decorators.enums;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import org.junit.Test;
 
@@ -51,6 +53,33 @@ public class ExpurgableOptionsBehaviorTest {
 		assertTrue(next >= before + ONE_DAY);
 		assertTrue(next <= System.currentTimeMillis() + ONE_DAY);
 		assertTrue(CcpEntityExpurgableOptions.daily.getNextDate().matches("\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}"));
+	}
+
+	/**
+	 * Every granularity expires a record exactly one unit after its write, never at the turn of the period: written at
+	 * 19:59:17.250, hourly lives until 20:59:17.250 (and not until 20:00).
+	 */
+	@Test
+	public void eachGranularityExpiresOneUnitAfterTheWriteNotAtTheTurnOfThePeriod() {
+		TimeZone saoPaulo = TimeZone.getTimeZone("America/Sao_Paulo");
+		GregorianCalendar writtenAt = new GregorianCalendar(saoPaulo);
+		writtenAt.clear();
+		writtenAt.set(2026, Calendar.OCTOBER, 14, 19, 59, 17);
+		writtenAt.set(Calendar.MILLISECOND, 250);
+		long write = writtenAt.getTimeInMillis();
+
+		assertEquals("14/10/2027 19:59:17.250", CcpEntityExpurgableOptions.yearly.getNextDate(write));
+		assertEquals("14/11/2026 19:59:17.250", CcpEntityExpurgableOptions.monthly.getNextDate(write));
+		assertEquals("15/10/2026 19:59:17.250", CcpEntityExpurgableOptions.daily.getNextDate(write));
+		assertEquals("14/10/2026 20:59:17.250", CcpEntityExpurgableOptions.hourly.getNextDate(write));
+		assertEquals("14/10/2026 20:00:17.250", CcpEntityExpurgableOptions.minute.getNextDate(write));
+		assertEquals("14/10/2026 19:59:18.250", CcpEntityExpurgableOptions.second.getNextDate(write));
+		assertEquals("14/10/2026 19:59:17.251", CcpEntityExpurgableOptions.millisecond.getNextDate(write));
+
+		assertEquals(write + 3_600_000L, (long) CcpEntityExpurgableOptions.hourly.getNextTimeStamp(write));
+		assertEquals(write + 60_000L, (long) CcpEntityExpurgableOptions.minute.getNextTimeStamp(write));
+		assertEquals(write + 1_000L, (long) CcpEntityExpurgableOptions.second.getNextTimeStamp(write));
+		assertEquals(write + 1L, (long) CcpEntityExpurgableOptions.millisecond.getNextTimeStamp(write));
 	}
 
 	@Test

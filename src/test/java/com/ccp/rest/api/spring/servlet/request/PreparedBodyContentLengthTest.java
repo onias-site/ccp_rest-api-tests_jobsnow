@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.ccp.aop.CcpAllowNullParameter;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
@@ -34,6 +35,7 @@ public class PreparedBodyContentLengthTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
+	@CcpAllowNullParameter
 	private static HttpServletRequest request(String body, String contentType) {
 		byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
@@ -83,6 +85,7 @@ public class PreparedBodyContentLengthTest {
 				});
 	}
 
+	@CcpAllowNullParameter
 	private static CcpPutSessionValuesRequestWrapper prepared(String body, String contentType) throws IOException {
 		HttpServletRequest request = request(body, contentType);
 		CcpPutSessionValuesRequestWrapper wrapper = new CcpPutSessionValuesRequestWrapper(request, CcpOtherConstants.DO_NOTHING);
@@ -124,6 +127,28 @@ public class PreparedBodyContentLengthTest {
 		CcpPutSessionValuesRequestWrapper wrapper = prepared("plain text", "text/plain");
 		assertEquals("plain text".length(), wrapper.getContentLength());
 		assertEquals("plain text", readAsSpringDoes(wrapper));
+	}
+
+	/**
+	 * A request without body and without {@code Content-Type} (a {@code GET}) is given as JSON, so Spring reads the body
+	 * with the session values and the validation of the service runs. Until 2026-10-14 Spring did not read it and the
+	 * request answered 400.
+	 */
+	@Test
+	public void aRequestWithoutContentTypeIsGivenAsJson() throws IOException {
+		CcpPutSessionValuesRequestWrapper wrapper = prepared("", null);
+		assertEquals("application/json", wrapper.getContentType());
+		assertEquals("application/json", wrapper.getHeader("Content-Type"));
+		assertEquals("application/json", wrapper.getHeaders("content-type").nextElement());
+		CcpJsonRepresentation json = new CcpJsonRepresentation(readAsSpringDoes(wrapper));
+		assertEquals("someone@example.com", json.getAsString(CcpPutSessionValuesRequestWrapper.JsonFieldNames.email));
+	}
+
+	@Test
+	public void theContentTypeOfTheRequestIsKept() throws IOException {
+		CcpPutSessionValuesRequestWrapper wrapper = prepared("plain text", "text/plain");
+		assertEquals("text/plain", wrapper.getContentType());
+		assertEquals("text/plain", wrapper.getHeader("Content-Type"));
 	}
 
 	@Test

@@ -1,23 +1,24 @@
-package com.jb.entities.decorators;
+package com.jn.entities.decorators;
 
 import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
-import com.jb.entities.JbEntityBotCommandExplanation;
+import com.jn.entities.JnEntityBotCommandStepEndMessage;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 
-/** jb_bot_command_explanation: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
-public class JbEntityBotCommandExplanationDecoratorsTest extends EntityDecoratorTestTemplate {
+/** jn_bot_command_step_end_message: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
+public class JnEntityBotCommandStepEndMessageDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {
-		return JbEntityBotCommandExplanation.ENTITY;
+		return JnEntityBotCommandStepEndMessage.ENTITY;
 	}
 
 	protected CcpJsonRepresentation validRecord() {
-		return this.com(JbEntityBotCommandExplanation.Fields.commandName, "/comando" + this.unique)
-				.put(JbEntityBotCommandExplanation.Fields.language, "portuguese")
-				.put(JbEntityBotCommandExplanation.Fields.message, "explica o comando de teste");
+		return this.com(JnEntityBotCommandStepEndMessage.Fields.stepName, "passo" + this.unique)
+				.put(JnEntityBotCommandStepEndMessage.Fields.language, "portuguese")
+				.put(JnEntityBotCommandStepEndMessage.Fields.message, "fim do passo de teste")
+				.put(JnEntityBotCommandStepEndMessage.Fields.instantMessageType, "text");
 	}
 
 	@Test
@@ -32,7 +33,7 @@ public class JbEntityBotCommandExplanationDecoratorsTest extends EntityDecorator
 
 	@Test
 	public void validator() {
-		this.shouldRefuseInvalidRecord(this.validRecord().removeFields(JbEntityBotCommandExplanation.Fields.message));
+		this.shouldRefuseInvalidRecord(this.validRecord().put(JnEntityBotCommandStepEndMessage.Fields.instantMessageType, "sinal-de-fumaca"));
 	}
 
 	@Test

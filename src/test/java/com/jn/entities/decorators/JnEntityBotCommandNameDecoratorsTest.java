@@ -1,24 +1,23 @@
-package com.jb.entities.decorators;
+package com.jn.entities.decorators;
 
 import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
-import com.jb.entities.JbEntityBotCommandStepStartMessage;
+import com.jn.entities.JnEntityBotCommandName;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 
-/** jb_bot_command_step_start_message: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
-public class JbEntityBotCommandStepStartMessageDecoratorsTest extends EntityDecoratorTestTemplate {
+/** jn_bot_command_name: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
+public class JnEntityBotCommandNameDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {
-		return JbEntityBotCommandStepStartMessage.ENTITY;
+		return JnEntityBotCommandName.ENTITY;
 	}
 
 	protected CcpJsonRepresentation validRecord() {
-		return this.com(JbEntityBotCommandStepStartMessage.Fields.stepName, "passo" + this.unique)
-				.put(JbEntityBotCommandStepStartMessage.Fields.language, "portuguese")
-				.put(JbEntityBotCommandStepStartMessage.Fields.message, "inicio do passo de teste")
-				.put(JbEntityBotCommandStepStartMessage.Fields.instantMessageType, "text");
+		return this.com(JnEntityBotCommandName.Fields.commandName, "/comando" + this.unique)
+				.put(JnEntityBotCommandName.Fields.language, "english")
+				.put(JnEntityBotCommandName.Fields.message, "test command");
 	}
 
 	@Test
@@ -33,7 +32,7 @@ public class JbEntityBotCommandStepStartMessageDecoratorsTest extends EntityDeco
 
 	@Test
 	public void validator() {
-		this.shouldRefuseInvalidRecord(this.validRecord().removeFields(JbEntityBotCommandStepStartMessage.Fields.instantMessageType));
+		this.shouldRefuseInvalidRecord(this.validRecord().removeFields(JnEntityBotCommandName.Fields.message));
 	}
 
 	@Test

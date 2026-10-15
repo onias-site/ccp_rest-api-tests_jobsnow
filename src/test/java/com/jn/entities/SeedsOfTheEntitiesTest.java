@@ -16,9 +16,14 @@ import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
 import com.ccp.especifications.db.bulk.CcpBulkItem;
 import com.ccp.especifications.db.utils.entity.decorators.interfaces.CcpEntityConfigurator;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
+import com.jb.entities.JbEntityBot;
 import com.jb.entities.JbEntityBotAllowedUser;
-import com.jb.entities.JbEntityBotCommandExplanation;
-import com.jb.entities.JbEntityBotCommandName;
+import com.vis.entities.VisEntityCommandNotAllowedToUser;
+import com.vis.entities.VisEntitySkillFixHierarchyPending;
+import com.vis.entities.VisEntitySkillPending;
+import com.jn.entities.JnEntityBotCommandExplanation;
+import com.jn.entities.JnEntityBotCommandName;
 import com.jb.entities.JbEntityBotExplanation;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
@@ -114,10 +119,48 @@ public class SeedsOfTheEntitiesTest {
 				.map(seed -> seed.getAsString(JnJsonInstantMessengerFields.botName)).distinct().sorted().collect(Collectors.toList());
 		assertEquals(Arrays.asList("support", "user"), bots);
 
-		CcpJsonRepresentation name = this.jsonsOf(new JbEntityBotCommandName()).get(0);
+		// since 2026-10-15 the bot entities are in jn and have no seeds of their own: jb seeds its commands through JbEntityBot
+		JbEntityBot jbBot = new JbEntityBot();
+		CcpJsonRepresentation name = this.seedsInto(jbBot, JnEntityBotCommandName.ENTITY).get(0);
 		assertEquals("solucionarTicketsDeTokenDeLogin", name.getAsString(JnJsonInstantMessengerFields.message));
 
-		CcpJsonRepresentation explanation = this.jsonsOf(new JbEntityBotCommandExplanation()).get(0);
+		CcpJsonRepresentation explanation = this.seedsInto(jbBot, JnEntityBotCommandExplanation.ENTITY).get(0);
 		assertEquals("solveLoginTokenTicket", explanation.getAsString(JnJsonInstantMessengerFields.commandName));
+	}
+
+	/**
+	 * jb seeds only its own commands and vis seeds the four of its own, all in the support bot: jb no longer imports vis
+	 * (2026-10-15), and the bot finds the commands of both by botName.
+	 */
+	@Test
+	public void eachCostCenterSeedsItsOwnCommandsOfTheSupportBot() {
+		List<String> jbCommands = this.commandsSeededBy(new JbEntityBot());
+		assertEquals(Arrays.asList("pendingTickets", "solveLoginTokenTicket"), jbCommands);
+
+		List<String> visCommands = new java.util.ArrayList<>();
+		visCommands.addAll(this.commandsSeededBy(new VisEntitySkillPending()));
+		visCommands.addAll(this.commandsSeededBy(new VisEntitySkillFixHierarchyPending()));
+		visCommands.addAll(this.commandsSeededBy(new VisEntityCommandNotAllowedToUser()));
+		visCommands.sort(null);
+		assertEquals(Arrays.asList("allowCommandToUser", "fixSkillHierarchy", "ignoredUsers", "reviewSkillSuggestion"), visCommands);
+	}
+
+	/** The records that the seeds of the configurator write into another entity. */
+	private List<CcpJsonRepresentation> seedsInto(CcpEntityConfigurator configurator, CcpEntity entity) {
+		String entityName = entity.getEntityMetaData().entityName;
+		List<CcpJsonRepresentation> jsons = this.seedsOf(configurator).stream()
+				.filter(seed -> seed.entity.getEntityMetaData().entityName.equals(entityName))
+				.map(seed -> seed.json).collect(Collectors.toList());
+		assertFalse(entityName, jsons.isEmpty());
+		return jsons;
+	}
+
+	/** The commands of the support bot that the configurator seeds, sorted. */
+	private List<String> commandsSeededBy(CcpEntityConfigurator configurator) {
+		List<CcpJsonRepresentation> commands = this.seedsInto(configurator, JnEntityBotCommand.ENTITY);
+		for (CcpJsonRepresentation command : commands) {
+			assertEquals(command.toString(), "support", command.getAsString(JnJsonInstantMessengerFields.botName));
+		}
+		return commands.stream().map(command -> command.getAsString(JnJsonInstantMessengerFields.commandName)).sorted().collect(Collectors.toList());
 	}
 }

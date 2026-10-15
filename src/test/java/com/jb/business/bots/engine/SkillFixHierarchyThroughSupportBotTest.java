@@ -1,5 +1,6 @@
 package com.jb.business.bots.engine;
 
+import com.vis.business.bots.VisCommandNamesInPortuguese;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -33,9 +34,9 @@ import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jb.entities.JbEntityBot;
-import com.jb.entities.JbEntityBotCommand;
-import com.jb.entities.JbEntityBotCommandStep;
-import com.jb.entities.JbEntityBotCommandStepEndMessage;
+import com.jn.entities.JnEntityBotCommand;
+import com.jn.entities.JnEntityBotCommandStep;
+import com.jn.entities.JnEntityBotCommandStepEndMessage;
 import com.jb.entities.JbEntityBotCommandStepSession;
 import com.jb.entities.JbEntityPendingTickets;
 import com.jn.business.messages.JnInstantMessageType;
@@ -55,13 +56,12 @@ import com.vis.entities.VisEntitySkillFixHierarchyFulfiled;
 import com.vis.entities.VisEntitySkillFixHierarchyItemApproved;
 import com.vis.entities.VisEntitySkillFixHierarchyItemPending;
 import com.vis.entities.VisEntitySkillFixHierarchyPending;
-import com.vis.entities.VisEntitySkillFixHierarchyWithdrawn;
+import com.vis.entities.VisEntitySkillFixHierarchyDailyLimit;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.json.fields.validation.VisSkillFixHierarchyTypes;
 import com.vis.json.fields.validation.VisUserRequestCommands;
 import com.vis.messages.VisMessages;
 import com.vis.services.VisServiceSkillFixHierarchy;
-import com.vis.status.VisProcessStatusDeleteSkillFixHierarchy;
 import com.vis.status.VisProcessStatusFixSkillHierarchy;
 
 /**
@@ -133,7 +133,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 	 */
 	@BeforeClass
 	public static void resaveBotConfiguration() {
-		List<CcpEntityConfigurator> configurators = Arrays.asList(new JbEntityBot(), new JbEntityBotCommand(), new JbEntityBotCommandStep(), new JbEntityBotCommandStepEndMessage(), new VisEntitySkillFixHierarchyPending());
+		List<CcpEntityConfigurator> configurators = Arrays.asList(new JbEntityBot(), new JnEntityBotCommand(), new JnEntityBotCommandStep(), new JnEntityBotCommandStepEndMessage(), new VisEntitySkillFixHierarchyPending());
 		for (CcpEntityConfigurator configurator : configurators) {
 			List<CcpBulkItem> records = configurator.getFirstRecordsToInsert();
 			for (CcpBulkItem record : records) {
@@ -662,7 +662,7 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		String refused = this.operatorTypes("/fixSkillHierarchy add " + BLOCKED_USER + " elixir");
 		// the bot names the command in the operator's language (Portuguese by default); the canonical name still works
-		String allowCommandInPortuguese = JbCommandNamesInPortuguese.allowCommandToUser.getValue();
+		String allowCommandInPortuguese = VisCommandNamesInPortuguese.allowCommandToUser.getValue();
 		assertEquals("O usuário " + BLOCKED_USER + " está sendo ignorado pelo suporte e as solicitações dele não são atendidas em nenhum comando. "
 				+ "Para voltar a atendê-lo, use /" + allowCommandInPortuguese + " " + BLOCKED_USER, refused);
 
@@ -793,50 +793,24 @@ public class SkillFixHierarchyThroughSupportBotTest {
 	private static final String UNDECIDED_USER = "usuario.indeciso@teste.com";
 
 	/**
-	 * An undecided candidate requests, withdraws, requests again and tries to withdraw again: the second withdrawal
-	 * within the hour is refused with {@code withdrawnRecently} (429) and the request stays pending, so the operator is
-	 * not loaded with notices and cancellations in a loop. Requesting again after the first withdrawal is allowed.
+	 * An undecided candidate requests, withdraws, requests again and withdraws again: both withdrawals are accepted.
+	 * There is no block on withdrawing the same request twice in a short period (removed on 2026-10-15; the daily limit
+	 * of the request already bounds the tickets).
 	 */
 	@Test
-	public void candidateCannotWithdrawTheSameRequestTwiceWithinTheHour() {
+	public void candidateCanWithdrawTheSameRequestAgain() {
 
 		this.openRequest(UNDECIDED_USER, VisSkillFixHierarchyTypes.add, "go", "Gin é framework web de go", "gin");
 		CcpJsonRepresentation requestKey = this.request(UNDECIDED_USER, VisSkillFixHierarchyTypes.add, "go");
 		VisServiceSkillFixHierarchy.DeleteSkillFixHierarchy.execute(requestKey);
 		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
-		assertTrue(VisEntitySkillFixHierarchyWithdrawn.ENTITY.exists(requestKey));
 
 		CcpJsonRepresentation sameRequest = this.newRequest(requestKey, "Gin é framework web de go", "gin");
 		VisServiceSkillFixHierarchy.FixSkillHierarchy.execute(sameRequest);
 		assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
 
-		try {
-			VisServiceSkillFixHierarchy.DeleteSkillFixHierarchy.execute(requestKey);
-		} catch (CcpErrorFlowDisturb refusal) {
-			assertEquals(VisProcessStatusDeleteSkillFixHierarchy.withdrawnRecently, refusal.status);
-			assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
-			return;
-		}
-		throw new AssertionError("The second withdrawal within the hour was accepted: " + requestKey);
-	}
-
-	/**
-	 * The withdrawal of an association does not block the withdrawal of a dissociation of the same parent: the block is
-	 * per parent and type.
-	 */
-	@Test
-	public void theWithdrawalBlockIsPerType() {
-
-		this.openRequest(UNDECIDED_USER, VisSkillFixHierarchyTypes.add, "elixir", "Phoenix é framework de elixir", "phoenix");
-		this.openRequest(UNDECIDED_USER, VisSkillFixHierarchyTypes.remove, "elixir", "Erlang não depende de elixir", "erlang");
-		CcpJsonRepresentation addKey = this.request(UNDECIDED_USER, VisSkillFixHierarchyTypes.add, "elixir");
-		CcpJsonRepresentation removeKey = this.request(UNDECIDED_USER, VisSkillFixHierarchyTypes.remove, "elixir");
-
-		VisServiceSkillFixHierarchy.DeleteSkillFixHierarchy.execute(addKey);
-		VisServiceSkillFixHierarchy.DeleteSkillFixHierarchy.execute(removeKey);
-
-		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(addKey));
-		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(removeKey));
+		VisServiceSkillFixHierarchy.DeleteSkillFixHierarchy.execute(requestKey);
+		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
 	}
 
 	private static final String EMAIL_DETAILS_USER = "detalhes.do.email@teste.com";
@@ -1062,8 +1036,8 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		// the pending entity writes through the messaging, which validates the whole record, even to delete it
 		VisEntitySkillFixHierarchyPending.ENTITY.delete(newRequest);
 		VisEntitySkillFixHierarchyFulfiled.ENTITY.delete(request);
-		// a withdrawal of a previous run, within the hour, would refuse the withdrawal of this one
-		VisEntitySkillFixHierarchyWithdrawn.ENTITY.delete(request);
+		// a request of a previous test, today, would refuse the requests of this one with dailyLimitReached
+		this.forgetTodaysRequest(email);
 
 		List<Class<?>> templates = Arrays.asList(
 				VisMessages.VisNotifySupportAndUserAboutPendingSkillHierarchyRequest.class,
@@ -1086,6 +1060,46 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		JnEntityInstantMessengerMessageSent.ENTITY.delete(sentNotice);
 
 		return newRequest;
+	}
+
+	private void forgetTodaysRequest(String email) {
+		CcpJsonRepresentation dailyLimit = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillFixHierarchyDailyLimit.Fields.email, email);
+		VisEntitySkillFixHierarchyDailyLimit.ENTITY.delete(dailyLimit);
+	}
+
+	private static final String DAILY_LIMIT_USER = "limite.diario.hierarquia@teste.com";
+
+	/**
+	 * One skill hierarchy fix request per candidate per day, because each one emails the candidate and opens a ticket
+	 * to the operator: the first request through the service spends the day, and a request of another parent, or of
+	 * the other type, is refused with {@code dailyLimitReached} (429) without being saved. A repeated request still
+	 * pending is answered with 409 first, so it tells the real reason.
+	 */
+	@Test
+	public void onlyOneRequestPerDay() {
+
+		this.clearItems(DAILY_LIMIT_USER, VisSkillFixHierarchyTypes.add, "kotlin", "ktor");
+		this.clearItems(DAILY_LIMIT_USER, VisSkillFixHierarchyTypes.remove, "rust", "tokio");
+		CcpJsonRepresentation firstRequest = this.clearRequest(DAILY_LIMIT_USER, VisSkillFixHierarchyTypes.add, "kotlin", "Ktor é framework de kotlin", "ktor");
+		CcpJsonRepresentation secondRequest = this.clearRequest(DAILY_LIMIT_USER, VisSkillFixHierarchyTypes.remove, "rust", "Tokio é runtime de rust", "tokio");
+
+		VisServiceSkillFixHierarchy.FixSkillHierarchy.execute(firstRequest);
+		CcpJsonRepresentation dailyLimit = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillFixHierarchyDailyLimit.Fields.email, DAILY_LIMIT_USER);
+		assertTrue(VisEntitySkillFixHierarchyDailyLimit.ENTITY.exists(dailyLimit));
+
+		CcpErrorFlowDisturb repeated = this.refusalOf(firstRequest);
+		assertEquals(CcpProcessStatusDefault.CONFLICT, repeated.status);
+
+		CcpErrorFlowDisturb refusal = this.refusalOf(secondRequest);
+		assertEquals(VisProcessStatusFixSkillHierarchy.dailyLimitReached, refusal.status);
+		assertEquals(429, refusal.status.asNumber());
+		CcpJsonRepresentation secondKey = this.request(DAILY_LIMIT_USER, VisSkillFixHierarchyTypes.remove, "rust");
+		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(secondKey));
+
+		// the next day (simulated by discarding the record) the candidate may request again
+		this.forgetTodaysRequest(DAILY_LIMIT_USER);
+		VisServiceSkillFixHierarchy.FixSkillHierarchy.execute(secondRequest);
+		assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(secondKey));
 	}
 
 	private CcpJsonRepresentation request(String email, VisSkillFixHierarchyTypes type, String parent) {

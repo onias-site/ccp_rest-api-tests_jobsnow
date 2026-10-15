@@ -1,4 +1,4 @@
-package com.jb.business.bots.skill.hierarchy;
+package com.vis.business.bots.skill.hierarchy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -13,7 +13,7 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.vis.business.skill.VisSkillFixHierarchyDecisions;
 
 /**
- * Proves how {@link JbSupportSkillFixHierarchyAnswer} reads what the operator typed in the {@code fixSkillHierarchy}
+ * Proves how {@link VisSupportSkillFixHierarchyAnswer} reads what the operator typed in the {@code fixSkillHierarchy}
  * command, in Portuguese or English and ignoring case.
  */
 public class OperatorAnswerReadingTest {
@@ -22,8 +22,8 @@ public class OperatorAnswerReadingTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	private JbSupportSkillFixHierarchyAnswer read(String typedValue) {
-		JbSupportSkillFixHierarchyAnswer answer = JbSupportSkillFixHierarchyAnswer.read(CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.typedValue, typedValue));
+	private VisSupportSkillFixHierarchyAnswer read(String typedValue) {
+		VisSupportSkillFixHierarchyAnswer answer = VisSupportSkillFixHierarchyAnswer.read(CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.typedValue, typedValue));
 		return answer;
 	}
 
@@ -49,7 +49,7 @@ public class OperatorAnswerReadingTest {
 
 	@Test
 	public void anApprovalKeepsTheRestOfTheTextAsTheJustification() {
-		JbSupportSkillFixHierarchyAnswer answer = this.read("aprovar   it is in the resume");
+		VisSupportSkillFixHierarchyAnswer answer = this.read("aprovar   it is in the resume");
 
 		assertTrue(answer.isDecisionWithJustification());
 		assertEquals("it is in the resume", answer.justification);
@@ -70,9 +70,9 @@ public class OperatorAnswerReadingTest {
 
 	@Test
 	public void anythingElseIsNotUnderstood() {
-		JbSupportSkillFixHierarchyAnswer answer = this.read("maybe later");
+		VisSupportSkillFixHierarchyAnswer answer = this.read("maybe later");
 
-		assertEquals(JbSupportSkillFixHierarchyAnswerType.notUnderstood, answer.type);
+		assertEquals(VisSupportSkillFixHierarchyAnswerType.notUnderstood, answer.type);
 		assertFalse(answer.isDecisionWithJustification());
 		assertFalse(answer.isYes());
 		assertFalse(answer.isNo());

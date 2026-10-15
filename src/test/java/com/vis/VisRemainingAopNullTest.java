@@ -8,7 +8,6 @@ import com.ccp.aop.CcpNullParameterException;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.vis.business.recruiter.VisBusinessRecruiterReceivingResumes;
 import com.vis.entities.VisEntityGroupPositionsBySkills;
 import com.vis.json.transformers.VisJsonTransformerPutEmailHashAndDomainRecruiter;
 
@@ -21,13 +20,6 @@ public class VisRemainingAopNullTest {
 
 	static {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
-	}
-
-	// ── business/recruiter ────────────────────────────────────────────────────
-
-	@Test(expected = CcpNullParameterException.class)
-	public void recruiterReceivingResumesApplyNullTest() {
-		VisBusinessRecruiterReceivingResumes.INSTANCE.execute(null);
 	}
 
 	// ── entities ──────────────────────────────────────────────────────────────

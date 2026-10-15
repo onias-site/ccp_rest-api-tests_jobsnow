@@ -1,12 +1,12 @@
 package com.vis.json.transformers;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.Test;
 
@@ -20,8 +20,8 @@ import com.vis.entities.VisEntityResume;
 import com.vis.entities.VisEntityVirtualHashGrouper;
 
 /**
- * Proves the ddd of the hashes of a resume: every region ("any state / city") becomes the single neutral ddd, and a
- * partial choice keeps one value per ddd.
+ * Proves the hashes of a resume: the regions (ddd) stay out of them, so the number of combinations does not grow with
+ * the number of regions (until 2026-10-14 it was multiplied by it, up to 48,720 groups for one resume).
  */
 public class VisResumeHashCombinationsTest {
 
@@ -34,32 +34,7 @@ public class VisResumeHashCombinationsTest {
 			93, 94, 69, 95, 63, 27, 28, 31, 32, 33, 34, 35, 37, 38, 21, 22, 24, 11, 12, 13, 14, 15, 16, 17, 18, 19, 41, 42,
 			43, 44, 45, 46, 51, 53, 54, 55, 47, 48, 49);
 
-	private List<Integer> dddsOfTheHashes(List<Integer> ddds) {
-		CcpJsonRepresentation resume = CcpOtherConstants.EMPTY_JSON
-				.put(VisEntityResume.Fields.resumeType, 2)
-				.put(VisEntityResume.Fields.experience, 3)
-				.put(VisEntityResume.Fields.ddd, ddds);
-		List<CcpJsonRepresentation> dddValues = new VisResumeHashCombinations().getValuesByField(resume).get(3);
-		return dddValues.stream().map(value -> value.getAsIntegerNumber(VisEntityVirtualHashGrouper.Fields.ddd)).collect(Collectors.toList());
-	}
-
-	@Test
-	public void everyRegionBecomesTheSingleNeutralDdd() {
-		assertEquals(67, ALL_REGIONS.size());
-		assertEquals(Arrays.asList(VisResumeHashCombinations.ANY_REGION), this.dddsOfTheHashes(ALL_REGIONS));
-	}
-
-	@Test
-	public void everyRegionPlusHomeOfficeKeepsTheHomeOffice() {
-		List<Integer> ddds = new ArrayList<>(ALL_REGIONS);
-		ddds.add(10);
-		assertEquals(Arrays.asList(10, VisResumeHashCombinations.ANY_REGION), this.dddsOfTheHashes(ddds));
-	}
-
-	@Test
-	public void everyCombinationObeysTheRulesOfTheGrouper() {
-		List<Integer> ddds = new ArrayList<>(ALL_REGIONS);
-		ddds.add(10);
+	private CcpJsonRepresentation resume(List<Integer> ddds) {
 		CcpJsonRepresentation java = new CcpJsonRepresentation("{\"skill\":\"JAVA\",\"word\":\"JAVA\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\",\"parent\":[\"JVM\"]}");
 		CcpJsonRepresentation spanish = new CcpJsonRepresentation("{\"name\":\"Espanhol\",\"level\":2}");
 		CcpJsonRepresentation resume = CcpOtherConstants.EMPTY_JSON
@@ -71,11 +46,37 @@ public class VisResumeHashCombinationsTest {
 				.put(VisEntityResume.Fields.negotiableClaim, true)
 				.put(VisEntityResume.Fields.skill, Arrays.asList(java))
 				.put(VisEntityResume.Fields.spokenLanguage, Arrays.asList(spanish));
+		return resume;
+	}
 
-		List<CcpJsonRepresentation> combinations = new VisResumeHashCombinations().apply(resume);
+	@Test
+	public void theRegionsDoNotMultiplyTheCombinations() {
+		assertEquals(67, ALL_REGIONS.size());
+		VisResumeHashCombinations combinations = new VisResumeHashCombinations();
+		long oneRegion = combinations.countCombinations(this.resume(Arrays.asList(11)));
+		long homeOffice = combinations.countCombinations(this.resume(Arrays.asList(10)));
+		long everyRegion = combinations.countCombinations(this.resume(ALL_REGIONS));
+		assertEquals(oneRegion, homeOffice);
+		assertEquals(oneRegion, everyRegion);
+	}
 
-		// languages: none, Espanhol 2, Espanhol 1; skills: none, JAVA, JVM; ddd: 10 and 0; three flags with 2 values each
-		assertEquals(3 * 3 * 2 * 2 * 2 * 2, combinations.size());
+	@Test
+	public void noCombinationCarriesTheDdd() {
+		List<CcpJsonRepresentation> combinations = new VisResumeHashCombinations().apply(this.resume(Arrays.asList(11, 21)));
+		for (CcpJsonRepresentation combination : combinations) {
+			assertFalse(combination.fieldSet().contains("ddd"));
+		}
+	}
+
+	@Test
+	public void everyCombinationObeysTheRulesOfTheGrouper() {
+		List<Integer> ddds = new ArrayList<>(ALL_REGIONS);
+		ddds.add(10);
+
+		List<CcpJsonRepresentation> combinations = new VisResumeHashCombinations().apply(this.resume(ddds));
+
+		// languages: none, Espanhol 2, Espanhol 1; skills: none, JAVA, JVM; three flags with 2 values each
+		assertEquals(3 * 3 * 2 * 2 * 2, combinations.size());
 		for (CcpJsonRepresentation combination : combinations) {
 			CcpJsonValidatorEngine.INSTANCE.validateJson(VisEntityVirtualHashGrouper.Fields.class, combination, "combination");
 		}
@@ -86,11 +87,5 @@ public class VisResumeHashCombinationsTest {
 			fail("pcd 3 was accepted");
 		} catch (CcpJsonValidationError e) {
 		}
-	}
-
-	@Test
-	public void aPartialChoiceKeepsOneValuePerDdd() {
-		List<Integer> ddds = ALL_REGIONS.subList(0, 66);
-		assertEquals(66, this.dddsOfTheHashes(ddds).size());
 	}
 }

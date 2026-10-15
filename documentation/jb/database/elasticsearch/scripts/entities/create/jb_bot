@@ -4,11 +4,7 @@
 		"properties": {
 			"botName": {
 				"type": "keyword"
-			},
-			"commandName": {
-				"type": "keyword"
 			}
 		}
 	}
 }
-	

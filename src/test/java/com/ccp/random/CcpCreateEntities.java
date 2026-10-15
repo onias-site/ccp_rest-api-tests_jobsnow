@@ -37,7 +37,8 @@ public class CcpCreateEntities {
 				);
 	}
 
-	// in the order the recreation must run: vis seeds message templates into jn indices, so jn goes first
+	// in the order the recreation must run: vis and jb seed into jn indices (message templates and, since 2026-10-15,
+	// the commands of the bots), so jn goes first
 	private static final String[] COST_CENTERS = { "jn", "vis", "jb" };
 
 	/**
@@ -56,8 +57,8 @@ public class CcpCreateEntities {
 
 	/**
 	 * The cost centers to recreate, in the order of {@link #COST_CENTERS}: the ones given, or all of them when none
-	 * is given. Recreating jn alone erases the records vis seeds into jn indices (templates and sending parameters),
-	 * so asking for jn without vis prints a warning.
+	 * is given. Recreating jn alone erases the records vis and jb seed into jn indices (templates, sending parameters
+	 * and the commands of the bots), so asking for jn without both prints a warning.
 	 * @throws IllegalArgumentException when an argument is not a cost center
 	 */
 	private static List<String> chooseCostCenters(String[] args) {
@@ -80,9 +81,9 @@ public class CcpCreateEntities {
 				chosenCostCenters.add(costCenter);
 			}
 		}
-		boolean jnWithoutVis = chosenCostCenters.contains("jn") && false == chosenCostCenters.contains("vis");
-		if (jnWithoutVis) {
-			System.out.println("CcpCreateEntities: recreating jn without vis erases the message templates vis seeds into jn.");
+		boolean jnWithoutTheOthers = chosenCostCenters.contains("jn") && false == chosenCostCenters.containsAll(Arrays.asList("vis", "jb"));
+		if (jnWithoutTheOthers) {
+			System.out.println("CcpCreateEntities: recreating jn without vis and jb erases what they seed into jn (message templates and the commands of the bots).");
 		}
 		return chosenCostCenters;
 	}

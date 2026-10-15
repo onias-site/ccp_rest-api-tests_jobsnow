@@ -1,4 +1,4 @@
-package com.jb.entities.decorators;
+package com.jn.entities.decorators;
 
 import java.util.Arrays;
 
@@ -7,24 +7,24 @@ import org.junit.Test;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
-import com.jb.entities.JbEntityBotCommandStep;
-import com.jb.entities.subfields.JbNextStepFields;
+import com.jn.entities.JnEntityBotCommandStep;
+import com.jn.entities.subfields.JnNextStepFields;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 
-/** jb_bot_command_step: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
-public class JbEntityBotCommandStepDecoratorsTest extends EntityDecoratorTestTemplate {
+/** jn_bot_command_step: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
+public class JnEntityBotCommandStepDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {
-		return JbEntityBotCommandStep.ENTITY;
+		return JnEntityBotCommandStep.ENTITY;
 	}
 
 	protected CcpJsonRepresentation validRecord() {
 		CcpJsonRepresentation proximoPasso = CcpOtherConstants.EMPTY_JSON
-				.put(JbNextStepFields.status, 200)
-				.put(JbNextStepFields.nextStep, "fim");
-		return this.com(JbEntityBotCommandStep.Fields.stepName, "passo" + this.unique)
-				.put(JbEntityBotCommandStep.Fields.stepFlow, Arrays.asList(proximoPasso))
-				.put(JbEntityBotCommandStep.Fields.engine, "com.jb.business.Teste");
+				.put(JnNextStepFields.status, 200)
+				.put(JnNextStepFields.nextStep, "fim");
+		return this.com(JnEntityBotCommandStep.Fields.stepName, "passo" + this.unique)
+				.put(JnEntityBotCommandStep.Fields.stepFlow, Arrays.asList(proximoPasso))
+				.put(JnEntityBotCommandStep.Fields.engine, "com.jb.business.Teste");
 	}
 
 	@Test
@@ -39,7 +39,7 @@ public class JbEntityBotCommandStepDecoratorsTest extends EntityDecoratorTestTem
 
 	@Test
 	public void validator() {
-		this.shouldRefuseInvalidRecord(this.validRecord().removeFields(JbEntityBotCommandStep.Fields.engine));
+		this.shouldRefuseInvalidRecord(this.validRecord().removeFields(JnEntityBotCommandStep.Fields.engine));
 	}
 
 	@Test

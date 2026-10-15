@@ -13,15 +13,15 @@ import com.ccp.especifications.db.utils.entity.decorators.annotations.CcpEntityF
 import com.ccp.json.validations.fields.annotations.CcpJsonCopyFieldValidationsFrom;
 import com.jb.entities.JbEntityBot;
 import com.jb.entities.JbEntityBotAllowedUser;
-import com.jb.entities.JbEntityBotCommand;
-import com.jb.entities.JbEntityBotCommandExplanation;
-import com.jb.entities.JbEntityBotCommandName;
-import com.jb.entities.JbEntityBotCommandStep;
-import com.jb.entities.JbEntityBotCommandStepEndMessage;
-import com.jb.entities.JbEntityBotCommandStepExplanation;
+import com.jn.entities.JnEntityBotCommand;
+import com.jn.entities.JnEntityBotCommandExplanation;
+import com.jn.entities.JnEntityBotCommandName;
+import com.jn.entities.JnEntityBotCommandStep;
+import com.jn.entities.JnEntityBotCommandStepEndMessage;
+import com.jn.entities.JnEntityBotCommandStepExplanation;
 import com.jb.entities.JbEntityBotChatLanguage;
 import com.jb.entities.JbEntityBotCommandStepSession;
-import com.jb.entities.JbEntityBotCommandStepStartMessage;
+import com.jn.entities.JnEntityBotCommandStepStartMessage;
 import com.jb.entities.JbEntityBotExplanation;
 import com.jb.entities.JbEntityBotUpdateId;
 import com.jn.business.messages.JnInstantMessageType;
@@ -68,9 +68,9 @@ import com.jn.entities.JnEntityVersionable;
 public class ValidationRulesCopyTest {
 
 	private static final List<Class<?>> ENTITIES = Arrays.asList(
-			JbEntityBot.class, JbEntityBotAllowedUser.class, JbEntityBotCommand.class, JbEntityBotCommandExplanation.class,
-			JbEntityBotCommandName.class, JbEntityBotCommandStep.class, JbEntityBotCommandStepEndMessage.class,
-			JbEntityBotCommandStepExplanation.class, JbEntityBotCommandStepSession.class, JbEntityBotCommandStepStartMessage.class,
+			JbEntityBot.class, JbEntityBotAllowedUser.class, JnEntityBotCommand.class, JnEntityBotCommandExplanation.class,
+			JnEntityBotCommandName.class, JnEntityBotCommandStep.class, JnEntityBotCommandStepEndMessage.class,
+			JnEntityBotCommandStepExplanation.class, JbEntityBotCommandStepSession.class, JnEntityBotCommandStepStartMessage.class,
 			JbEntityBotExplanation.class, JbEntityBotUpdateId.class, JbEntityBotChatLanguage.class,
 			JnEntityAsyncTask.class,
 			JnEntityDisposableRecord.class, JnEntityEmailMessageSent.class,

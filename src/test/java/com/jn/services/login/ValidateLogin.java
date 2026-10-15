@@ -15,6 +15,7 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityLoginPassword;
+import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.decorators.ElasticsearchLocal;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
@@ -118,6 +119,56 @@ public class ValidateLogin extends JnServiceLoginTestTemplate {
 
 		boolean passwordLocked = false == JnEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
 		assertTrue(passwordLocked);
+	}
+
+	/**
+	 * A session lives one hour from its creation, not until the turn of the hour: after the turn the documents of the
+	 * period are gone (of the session and of the current session of the e-mail), the disposable copies still valid keep
+	 * it (200). Until 2026-10-14 the current session was read only from the document of the period, and every session
+	 * died at the turn of the hour (401), while the login of the same e-mail went on answering 409.
+	 */
+	@Test
+	public void sessionSurvivesTheTurnOfTheHourWhileItsCopyIsValid() {
+		TestVariables testVariables = new TestVariables();
+		CcpJsonRepresentation session = this.executeLogin(testVariables);
+		this.execute(session, CcpProcessStatusDefault.OK);
+
+		CcpFieldName sessionTokenField = new CcpFieldName("sessionToken");
+		String sessionToken = session.getAsString(sessionTokenField);
+		CcpJsonRepresentation sessionRecord = session.put(JnEntityLoginSessionValidation.Fields.token, sessionToken);
+		this.deleteTheDocumentOfThePeriod(JnEntityLoginSessionValidation.ENTITY, sessionRecord);
+		this.deleteTheDocumentOfThePeriod(JnEntityLoginSessionConflict.ENTITY, session);
+
+		this.execute(session, CcpProcessStatusDefault.OK);
+	}
+
+	/**
+	 * The right token of the current session sent by another user agent is refused (401) without counting an attempt: it
+	 * is not a guess against the password. Until 2026-10-14 the attempts limit locked the password (423) while the session
+	 * went on valid on its own user agent.
+	 */
+	@Test
+	public void currentSessionFromAnotherUserAgentIsRefusedWithoutCountingAttempts() {
+		TestVariables testVariables = new TestVariables();
+		CcpJsonRepresentation session = this.executeLogin(testVariables);
+		CcpJsonRepresentation sessionFromAnotherUserAgent = session.put(JnJsonCommonsFields.userAgent, "Mozilla/5.0 (another browser)");
+
+		int moreThanTheAttemptsLimit = JnSystemProperties.INSTANCE.maxAttempts() + 1;
+		for (int attempt = 1; attempt <= moreThanTheAttemptsLimit; attempt++) {
+			this.execute(sessionFromAnotherUserAgent, CcpProcessStatusDefault.UNHAUTHORIZED);
+		}
+
+		boolean passwordStillUnlocked = JnEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
+		assertTrue(passwordStillUnlocked);
+		this.execute(session, CcpProcessStatusDefault.OK);
+	}
+
+	/** The turn of the period: the document of the current period is gone, the disposable copy stays. */
+	private void deleteTheDocumentOfThePeriod(CcpEntity entity, CcpJsonRepresentation record) {
+		CcpEntityMetaData metaData = entity.getEntityMetaData();
+		CcpJsonRepresentation transformedRecord = entity.getHandledJson(record);
+		String periodDocumentId = entity.calculateId(transformedRecord);
+		ElasticsearchLocal.delete(metaData.entityName, periodDocumentId);
 	}
 
 	/**

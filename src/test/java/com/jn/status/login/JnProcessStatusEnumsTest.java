@@ -75,4 +75,17 @@ public class JnProcessStatusEnumsTest {
 	public void updatePasswordAsNumberTest() {
 		JnProcessStatusUpdatePassword.values()[0].asNumber();
 	}
+
+	/**
+	 * A locked password is 423 in every endpoint: until 2026-10-14 the e-mail steps answered 427, the status of the wrong
+	 * password in the login.
+	 */
+	@Test
+	public void lockedPasswordIs423InEveryEndpoint() {
+		org.junit.Assert.assertEquals(423, JnProcessStatusCreateLoginEmail.lockedPassword.asNumber());
+		org.junit.Assert.assertEquals(423, JnProcessStatusExistsLoginEmail.lockedPassword.asNumber());
+		org.junit.Assert.assertEquals(423, JnProcessStatusSaveAnswers.lockedPassword.asNumber());
+		org.junit.Assert.assertEquals(423, JnProcessStatusExecuteLogin.lockedPassword.asNumber());
+		org.junit.Assert.assertEquals(427, JnProcessStatusExecuteLogin.wrongPassword.asNumber());
+	}
 }

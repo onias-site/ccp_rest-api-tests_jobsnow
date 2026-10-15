@@ -47,7 +47,9 @@ public class ResumeFieldTransformersTest {
 		CcpJsonRepresentation resume = transformed
 				.put(VisEntityResume.Fields.resumeType, 1)
 				.put(VisEntityResume.Fields.ddd, Arrays.asList(11));
-		List<CcpJsonRepresentation> seniorities = new VisResumeHashCombinations().getValuesByField(resume).get(7);
+		List<List<CcpJsonRepresentation>> valuesByField = new VisResumeHashCombinations().getValuesByField(resume);
+		// the seniority is the last field of the combinations
+		List<CcpJsonRepresentation> seniorities = valuesByField.get(valuesByField.size() - 1);
 		assertEquals(1, seniorities.size());
 		return seniorities.get(0).getAsString(VisEntityVirtualHashGrouper.Fields.seniority);
 	}
@@ -70,6 +72,15 @@ public class ResumeFieldTransformersTest {
 		CcpJsonRepresentation transformed = new VisJsonTransformerExperienceStartYear().execute(resume);
 
 		assertEquals(VisSeniorityType.pleno.name(), this.seniorityOf(transformed));
+	}
+
+	@Test
+	public void theLongestExperienceAcceptedByTheValidationIsASpecialist() {
+		CcpJsonRepresentation resume = CcpOtherConstants.EMPTY_JSON.put(VisJsonCommonsFields.experience, 70);
+
+		CcpJsonRepresentation transformed = new VisJsonTransformerExperienceStartYear().execute(resume);
+
+		assertEquals(VisSeniorityType.especialista.name(), this.seniorityOf(transformed));
 	}
 
 	@Test

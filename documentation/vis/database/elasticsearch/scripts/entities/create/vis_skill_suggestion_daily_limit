@@ -2,13 +2,9 @@
 	"mappings": {
 		"dynamic": "strict",
 		"properties": {
-			"commandName": {
+			"email": {
 				"type": "keyword"
-			},
-			"parameterName": {
-				"type": "text"
 			}
 		}
 	}
 }
-	

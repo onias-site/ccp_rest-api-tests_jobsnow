@@ -1,7 +1,17 @@
 package com.jn.services.login;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
+
+import java.util.Arrays;
+
 import org.junit.Test;
+import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.flow.CcpErrorFlowDisturb;
+import com.ccp.json.fields.validation.CcpJsonCommonsFields;
+import com.jn.services.JnServiceLogin;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.process.CcpProcessStatusDefault;
@@ -59,6 +69,30 @@ public class ExecuteLogin extends JnServiceLoginTestTemplate {
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JnEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JnProcessStatusExecuteLogin.loginConflict);
+	}
+
+	/**
+	 * A refused login does not answer the session token generated before the checks: it never became a session. Until
+	 * 2026-10-14 every 409 answered a new one.
+	 */
+	@Test
+	public void refusedLoginDoesNotAnswerASessionToken() {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		CcpJsonRepresentation request = CcpOtherConstants.EMPTY_JSON
+				.put(JnJsonCommonsFields.email, testVariables.VALID_EMAIL)
+				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
+				.put(JnJsonCommonsFields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
+				.put(JnJsonCommonsFields.ip, "127.0.0.1");
+		try {
+			JnServiceLogin.ExecuteLogin.execute(request);
+			fail("the login of an open session was accepted");
+		} catch (CcpErrorFlowDisturb refused) {
+			assertEquals(JnProcessStatusExecuteLogin.loginConflict, refused.status);
+			assertFalse(refused.json.containsAllFields(CcpJsonCommonsFields.sessionToken));
+			assertFalse(Arrays.asList(refused.fields).contains(CcpJsonCommonsFields.sessionToken));
+		}
 	}
 
 	/**

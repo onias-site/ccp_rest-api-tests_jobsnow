@@ -1,24 +1,23 @@
-package com.jb.entities.decorators;
-
-import java.util.Arrays;
+package com.jn.entities.decorators;
 
 import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
-import com.jb.entities.JbEntityBotCommand;
+import com.jn.entities.JnEntityBotCommandExplanation;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 
-/** jb_bot_command: {@code @CcpEntityCache(3600)}, versionable (priority 2), transformer and validator. */
-public class JbEntityBotCommandDecoratorsTest extends EntityDecoratorTestTemplate {
+/** jn_bot_command_explanation: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
+public class JnEntityBotCommandExplanationDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {
-		return JbEntityBotCommand.ENTITY;
+		return JnEntityBotCommandExplanation.ENTITY;
 	}
 
 	protected CcpJsonRepresentation validRecord() {
-		return this.com(JbEntityBotCommand.Fields.commandName, "/comando" + this.unique)
-				.put(JbEntityBotCommand.Fields.parameterName, Arrays.asList("email"));
+		return this.com(JnEntityBotCommandExplanation.Fields.commandName, "/comando" + this.unique)
+				.put(JnEntityBotCommandExplanation.Fields.language, "portuguese")
+				.put(JnEntityBotCommandExplanation.Fields.message, "explica o comando de teste");
 	}
 
 	@Test
@@ -33,7 +32,7 @@ public class JbEntityBotCommandDecoratorsTest extends EntityDecoratorTestTemplat
 
 	@Test
 	public void validator() {
-		this.shouldRefuseInvalidRecord(this.validRecord().put(JbEntityBotCommand.Fields.parameterName, Arrays.asList("")));
+		this.shouldRefuseInvalidRecord(this.validRecord().removeFields(JnEntityBotCommandExplanation.Fields.message));
 	}
 
 	@Test

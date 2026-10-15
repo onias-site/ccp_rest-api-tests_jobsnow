@@ -1,24 +1,24 @@
-package com.jb.entities.decorators;
+package com.jn.entities.decorators;
 
 import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
-import com.jb.entities.JbEntityBotCommandStepEndMessage;
+import com.jn.entities.JnEntityBotCommandStepStartMessage;
 import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 
-/** jb_bot_command_step_end_message: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
-public class JbEntityBotCommandStepEndMessageDecoratorsTest extends EntityDecoratorTestTemplate {
+/** jn_bot_command_step_start_message: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
+public class JnEntityBotCommandStepStartMessageDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {
-		return JbEntityBotCommandStepEndMessage.ENTITY;
+		return JnEntityBotCommandStepStartMessage.ENTITY;
 	}
 
 	protected CcpJsonRepresentation validRecord() {
-		return this.com(JbEntityBotCommandStepEndMessage.Fields.stepName, "passo" + this.unique)
-				.put(JbEntityBotCommandStepEndMessage.Fields.language, "portuguese")
-				.put(JbEntityBotCommandStepEndMessage.Fields.message, "fim do passo de teste")
-				.put(JbEntityBotCommandStepEndMessage.Fields.instantMessageType, "text");
+		return this.com(JnEntityBotCommandStepStartMessage.Fields.stepName, "passo" + this.unique)
+				.put(JnEntityBotCommandStepStartMessage.Fields.language, "portuguese")
+				.put(JnEntityBotCommandStepStartMessage.Fields.message, "inicio do passo de teste")
+				.put(JnEntityBotCommandStepStartMessage.Fields.instantMessageType, "text");
 	}
 
 	@Test
@@ -33,7 +33,7 @@ public class JbEntityBotCommandStepEndMessageDecoratorsTest extends EntityDecora
 
 	@Test
 	public void validator() {
-		this.shouldRefuseInvalidRecord(this.validRecord().put(JbEntityBotCommandStepEndMessage.Fields.instantMessageType, "sinal-de-fumaca"));
+		this.shouldRefuseInvalidRecord(this.validRecord().removeFields(JnEntityBotCommandStepStartMessage.Fields.instantMessageType));
 	}
 
 	@Test

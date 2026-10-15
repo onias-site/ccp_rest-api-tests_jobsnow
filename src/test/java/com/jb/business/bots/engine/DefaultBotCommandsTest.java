@@ -30,8 +30,8 @@ import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jb.entities.JbEntityBot;
 import com.jb.entities.JbEntityBotChatLanguage;
-import com.jb.entities.JbEntityBotCommandExplanation;
-import com.jb.entities.JbEntityBotCommandName;
+import com.jn.entities.JnEntityBotCommandExplanation;
+import com.jn.entities.JnEntityBotCommandName;
 import com.jb.entities.JbEntityBotExplanation;
 import com.jb.entities.JbEntityBotCommandStepSession;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
@@ -76,7 +76,7 @@ public class DefaultBotCommandsTest {
 	 */
 	@BeforeClass
 	public static void resaveBotConfiguration() {
-		List<CcpEntityConfigurator> configurators = Arrays.asList(new JbEntityBot(), new JbEntityBotCommandName(), new JbEntityBotExplanation(), new JbEntityBotCommandExplanation());
+		List<CcpEntityConfigurator> configurators = Arrays.asList(new JbEntityBot(), new JnEntityBotCommandName(), new JbEntityBotExplanation(), new JnEntityBotCommandExplanation());
 		for (CcpEntityConfigurator configurator : configurators) {
 			List<CcpBulkItem> records = configurator.getFirstRecordsToInsert();
 			for (CcpBulkItem record : records) {
@@ -137,8 +137,10 @@ public class DefaultBotCommandsTest {
 	public void inPortugueseNoCommandIsListedByItsEnglishName() {
 		String answer = this.answerTo("/showAllCommands");
 
-		assertEquals("/solucionarTicketsDeTokenDeLogin, /ajustarHierarquiaDeHabilidades, /permitirComandoAoUsuario, /ticketsPendentes, "
-				+ "/avaliarSugestaoDeHabilidade, /listarUsuariosIgnorados, /idDoChat, /mostrarTodosOsComandos, /explicarEsteBot, /definirIdioma", answer);
+		// the configured commands come in the alphabetical order of their canonical names (since 2026-10-15 they are found
+		// by botName, seeded by jb and vis), then the default ones
+		assertEquals("/permitirComandoAoUsuario, /ajustarHierarquiaDeHabilidades, /listarUsuariosIgnorados, /ticketsPendentes, "
+				+ "/avaliarSugestaoDeHabilidade, /solucionarTicketsDeTokenDeLogin, /idDoChat, /mostrarTodosOsComandos, /explicarEsteBot, /definirIdioma", answer);
 	}
 
 	/** The name in Portuguese runs the command, and the canonical one keeps working. */
@@ -161,12 +163,12 @@ public class DefaultBotCommandsTest {
 		assertEquals("Language set: English.", this.answerTo("/definirIdioma inglês"));
 
 		String commandsInEnglish = this.answerTo("/showAllCommands");
-		assertEquals("/solveLoginTokenTicket, /fixSkillHierarchy, /allowCommandToUser, /pendingTickets, "
-				+ "/reviewSkillSuggestion, /ignoredUsers, /chatId, /showAllCommands, /explainThisBot, /setLanguage", commandsInEnglish);
+		assertEquals("/allowCommandToUser, /fixSkillHierarchy, /ignoredUsers, /pendingTickets, "
+				+ "/reviewSkillSuggestion, /solveLoginTokenTicket, /chatId, /showAllCommands, /explainThisBot, /setLanguage", commandsInEnglish);
 		assertTrue(this.answerTo("/explainThisBot").startsWith("Bot of administrative routines"));
 
 		assertEquals("Idioma definido: português.", this.answerTo("/setLanguage Portugues"));
-		assertTrue(this.answerTo("/showAllCommands").startsWith("/solucionarTicketsDeTokenDeLogin"));
+		assertTrue(this.answerTo("/showAllCommands").startsWith("/permitirComandoAoUsuario"));
 	}
 
 	/** Spanish has no texts of the bot, so it is not offered. */
@@ -231,7 +233,7 @@ public class DefaultBotCommandsTest {
 
 		String answer = this.answerTo("/explainThisCommand");
 
-		assertTrue("nothing to explain, so the bot shows all commands: " + answer, answer.startsWith("/solucionarTicketsDeTokenDeLogin"));
+		assertTrue("nothing to explain, so the bot shows all commands: " + answer, answer.startsWith("/permitirComandoAoUsuario"));
 	}
 
 	/** Until 2026-10-06 it could never run: it was invisible without a command in the message, and then explained itself. */
@@ -331,6 +333,6 @@ public class DefaultBotCommandsTest {
 
 		String answer = this.answerTo("/sair");
 
-		assertTrue("nothing to leave, so the bot shows all commands: " + answer, answer.startsWith("/solucionarTicketsDeTokenDeLogin"));
+		assertTrue("nothing to leave, so the bot shows all commands: " + answer, answer.startsWith("/permitirComandoAoUsuario"));
 	}
 }

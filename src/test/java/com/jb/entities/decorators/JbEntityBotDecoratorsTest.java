@@ -17,8 +17,7 @@ public class JbEntityBotDecoratorsTest extends EntityDecoratorTestTemplate {
 	}
 
 	protected CcpJsonRepresentation validRecord() {
-		return this.com(JbEntityBot.Fields.botName, "bot" + this.unique)
-				.put(JbEntityBot.Fields.commandName, Arrays.asList("/start"));
+		return this.com(JbEntityBot.Fields.botName, "bot" + this.unique);
 	}
 
 	@Test
@@ -33,7 +32,9 @@ public class JbEntityBotDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	@Test
 	public void validator() {
-		this.shouldRefuseInvalidRecord(this.validRecord().put(JbEntityBot.Fields.commandName, Arrays.asList()));
+		// since 2026-10-15 the bot has only its name (the commands are found by botName in jn_bot_command): a name that
+		// is not a text is the invalid record
+		this.shouldRefuseInvalidRecord(this.validRecord().put(JbEntityBot.Fields.botName, Arrays.asList("bot")));
 	}
 
 	@Test

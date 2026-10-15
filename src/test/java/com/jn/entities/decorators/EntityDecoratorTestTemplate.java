@@ -19,6 +19,8 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
 import com.ccp.especifications.cache.CcpCache;
+import com.ccp.especifications.db.crud.CcpCrud;
+import com.ccp.especifications.db.crud.CcpSelectUnionAll;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.process.CcpProcessStatus;
@@ -41,6 +43,7 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.decorators.annotations.JnEntityDisposable;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
+import com.jn.utils.JnDeleteKeysFromCache;
 
 /**
  * Base of the tests that prove, entity by entity, that each decorator annotated on it delivers the
@@ -430,15 +433,41 @@ public abstract class EntityDecoratorTestTemplate {
 		assertEquals("deadline format of the copy of " + this.name(), deadline.format, disposableCopy.getAsString(JnEntityDisposableRecord.Fields.format));
 		Long expiration = disposableCopy.getAsLongNumber(JnJsonCommonsFields.timestamp);
 		assertTrue("copy of " + this.name() + " was already expired when created", expiration > beforeSave);
+		// exactly one period after the write: a record written at 19:59:17 with hourly lives until 20:59:17
+		Long writtenAt = disposableCopy.getAsLongNumber(JnEntityDisposableRecord.Fields.trueTimestamp);
+		Long expectedExpiration = deadline.getNextTimeStamp(writtenAt);
+		assertEquals("deadline of the copy of " + this.name(), expectedExpiration, expiration);
 
+		// the turn of the period: the document of the period is gone, the copy is still valid
 		ElasticsearchLocal.delete(this.name(), this.idInTheDatabase(record));
 		this.clearCache(record);
 		assertTrue("valid copy did not sustain the existence of " + this.name(), entityUnderTest.exists(record));
+		this.assertUnionAllFindsTheRecord(record, true);
 
 		CcpJsonRepresentation expiredTimestamp = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.timestamp, beforeSave - 1000);
 		ElasticsearchLocal.update("jn_disposable_record", disposableCopyId, expiredTimestamp);
 		this.clearCache(record);
 		assertFalse("expired copy still sustains the existence of " + this.name(), entityUnderTest.exists(record));
+		this.assertUnionAllFindsTheRecord(record, false);
+	}
+
+	/**
+	 * Reads the record through a union all both ways {@code CcpGetEntityId} does: {@code isPresentInThisUnionAll} and
+	 * {@code getRecordFromUnionAll} with a supplier (the one of {@code loadThisIdFromEntity}). Until 2026-10-14 the second
+	 * one ignored the disposable copy, and the current session of the e-mail vanished at the turn of the hour.
+	 */
+	private void assertUnionAllFindsTheRecord(CcpJsonRepresentation record, boolean expected) {
+		// the exists before puts the record in the cache, which the union all reads first
+		this.clearCache(record);
+		CcpEntity entityUnderTest = this.entityUnderTest();
+		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
+		CcpJsonRepresentation[] parametersToSearch = new CcpJsonRepresentation[] { record };
+		CcpSelectUnionAll unionAll = crud.unionAll(parametersToSearch, JnDeleteKeysFromCache.INSTANCE, entityUnderTest);
+		boolean present = entityUnderTest.isPresentInThisUnionAll(unionAll, record);
+		assertEquals("isPresentInThisUnionAll of " + this.name() + " after the turn of the period", expected, present);
+		CcpJsonRepresentation recordFromUnionAll = entityUnderTest.getRecordFromUnionAll(unionAll, record.getJsonSupplier());
+		boolean found = false == recordFromUnionAll.isEmpty();
+		assertEquals("getRecordFromUnionAll of " + this.name() + " after the turn of the period", expected, found);
 	}
 
 	protected String disposableCopyId(CcpJsonRepresentation record) {

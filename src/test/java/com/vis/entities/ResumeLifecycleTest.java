@@ -70,17 +70,21 @@ public class ResumeLifecycleTest {
 
 	private final String email = "lifecycle" + System.currentTimeMillis() + "@jobsnow.com";
 
-	private CcpJsonRepresentation resume(int ddd) {
-		CcpJsonRepresentation java = new CcpJsonRepresentation("{\"skill\":\"JAVA\",\"word\":\"JAVA\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\",\"parent\":[\"JVM\"]}");
-		CcpJsonRepresentation spring = new CcpJsonRepresentation("{\"skill\":\"SPRING\",\"word\":\"SPRING\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\",\"parent\":[\"JAVA\"]}");
+	private final String uniqueSkill = "LIFECYCLE" + System.currentTimeMillis();
+
+	private CcpJsonRepresentation resume(int experience) {
+		// a skill of this run only: without the ddd in the hash, the groups of common skills are shared with the resumes already
+		// in the database
+		CcpJsonRepresentation java = new CcpJsonRepresentation("{\"skill\":\"" + this.uniqueSkill + "\",\"word\":\"" + this.uniqueSkill + "\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\",\"parent\":[\"JVM\"]}");
+		CcpJsonRepresentation spring = new CcpJsonRepresentation("{\"skill\":\"SPRING\",\"word\":\"SPRING\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\",\"parent\":[\"" + this.uniqueSkill + "\"]}");
 		CcpJsonRepresentation python = new CcpJsonRepresentation("{\"skill\":\"PYTHON\",\"word\":\"PYTHON\",\"type\":\"excludedSkills\",\"category\":\"excludedSkills\"}");
 		CcpJsonRepresentation english = new CcpJsonRepresentation("{\"name\":\"English\",\"level\":2,\"id\":0}");
 		return CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityResume.Fields.email, this.email)
-				.put(VisEntityResume.Fields.ddd, Arrays.asList(ddd))
+				.put(VisEntityResume.Fields.ddd, Arrays.asList(11))
 				.put(VisEntityResume.Fields.desiredJob, "developer")
 				.put(VisEntityResume.Fields.disponibility, 5)
-				.put(VisEntityResume.Fields.experience, 4)
+				.put(VisEntityResume.Fields.experience, experience)
 				.put(VisEntityResume.Fields.linkedinAddress, "https://www.linkedin.com/in/onias")
 				.put(VisEntityResume.Fields.resumeType, 1)
 				.put(VisEntityResume.Fields.temporallyJobTime, 0)
@@ -135,6 +139,20 @@ public class ResumeLifecycleTest {
 		}
 	}
 
+	/** A hash whose group has the skill of this run: only this resume is in it. */
+	private String hashOfTheUniqueSkill(boolean twinSide, List<String> hashes) {
+		String childName = VisEntityResume.ENTITY.getEntityMetaData().entityName;
+		for (String hash : hashes) {
+			CcpJsonRepresentation group = JnGroupers.getGroup(twinSide, PARENT_NAME, childName, hash);
+			CcpJsonRepresentation parentJson = group.getInnerJson(JnEntityGrouper.Fields.parentJson);
+			boolean ofTheUniqueSkill = this.uniqueSkill.equals(parentJson.getAsString(VisEntityVirtualHashGrouper.Fields.skillName));
+			if (ofTheUniqueSkill) {
+				return hash;
+			}
+		}
+		throw new AssertionError("no group of the skill " + this.uniqueSkill);
+	}
+
 	private List<String> noticesToTheOwner() {
 		return RecordingEmailSender.SENT.stream().filter(sent -> sent.contains(this.email)).collect(Collectors.toList());
 	}
@@ -142,8 +160,8 @@ public class ResumeLifecycleTest {
 	@Test
 	public void theWholeLifeCycleKeepsTheGroupsAndTellsTheOwner() {
 		RecordingEmailSender.SENT.clear();
-		CcpJsonRepresentation resume = this.resume(11);
-		// languages: none, English 2, English 1; skills: none, JAVA, JVM, SPRING (PYTHON is excluded); the rest has one value
+		CcpJsonRepresentation resume = this.resume(4);
+		// languages: none, English 2, English 1; skills: none, the unique one, JVM, SPRING (PYTHON is excluded); the rest has one value
 		assertEquals(12, new VisResumeHashCombinations().countCombinations(resume));
 
 		// save
@@ -153,7 +171,7 @@ public class ResumeLifecycleTest {
 		List<String> hashes = stored.getAsStringList(VisEntityResume.Fields.hash);
 		assertEquals(12, hashes.size());
 		this.assertOnlyIn(MAIN_GROUPER, hashes, resumeId);
-		CcpJsonRepresentation group = JnEntityGrouper.ENTITY.getOneById(this.groupKey(hashes.get(0)));
+		CcpJsonRepresentation group = JnEntityGrouper.ENTITY.getOneById(this.groupKey(this.hashOfTheUniqueSkill(MAIN_GROUPER, hashes)));
 		assertTrue(group.getInnerJson(JnEntityGrouper.Fields.parentJson).containsAllFields(VisEntityVirtualHashGrouper.Fields.skillName));
 		assertEquals(Arrays.asList(resumeId), group.getAsStringList(JnEntityGrouper.Fields.child));
 		// the child is the id of the record of the resume: reading by it brings the resume back
@@ -162,8 +180,8 @@ public class ResumeLifecycleTest {
 		assertEquals(stored.getAsString(VisEntityResume.Fields.desiredJob), resumeById.getAsString(VisEntityResume.Fields.desiredJob));
 		assertEquals(1, this.noticesToTheOwner().size());
 
-		// saved again with another ddd: leaves the old groups, enters the new ones
-		VisEntityResume.ENTITY.save(this.resume(21));
+		// saved again with another seniority (the ddd is out of the hash): leaves the old groups, enters the new ones
+		VisEntityResume.ENTITY.save(this.resume(7));
 		List<String> newHashes = VisEntityResume.ENTITY.getOneById(this.key()).getAsStringList(VisEntityResume.Fields.hash);
 		this.assertInNone(hashes, resumeId);
 		this.assertOnlyIn(MAIN_GROUPER, newHashes, resumeId);
@@ -176,7 +194,8 @@ public class ResumeLifecycleTest {
 		this.assertOnlyIn(TWIN_GROUPER, newHashes, resumeId);
 		assertEquals(3, this.noticesToTheOwner().size());
 		// the group is only on the twin side: reading it on the main side by getOneById redirects, JnGroupers does not
-		CcpJsonRepresentation twinOnlyGroupKey = this.groupKey(newHashes.get(0));
+		String twinOnlyHash = this.hashOfTheUniqueSkill(TWIN_GROUPER, newHashes);
+		CcpJsonRepresentation twinOnlyGroupKey = this.groupKey(twinOnlyHash);
 		try {
 			JnEntityGrouper.ENTITY.getOneById(twinOnlyGroupKey);
 			fail("the group exists only on the twin side, the main getOneById should have redirected");
@@ -184,11 +203,11 @@ public class ResumeLifecycleTest {
 			assertEquals(CcpProcessStatusDefault.REDIRECT, redirect.status);
 		}
 		String childName = VisEntityResume.ENTITY.getEntityMetaData().entityName;
-		assertTrue(JnGroupers.getGroup(MAIN_GROUPER, PARENT_NAME, childName, newHashes.get(0)).isEmpty());
-		assertEquals(Arrays.asList(resumeId), JnGroupers.getChildren(TWIN_GROUPER, PARENT_NAME, childName, newHashes.get(0)));
+		assertTrue(JnGroupers.getGroup(MAIN_GROUPER, PARENT_NAME, childName, twinOnlyHash).isEmpty());
+		assertEquals(Arrays.asList(resumeId), JnGroupers.getChildren(TWIN_GROUPER, PARENT_NAME, childName, twinOnlyHash));
 
-		// saved on the twin (still inactive) with another ddd: the twin groups follow the new hashes; no notice
-		VisEntityResume.ENTITY.getTwinEntity().save(this.resume(31));
+		// saved on the twin (still inactive) with another seniority: the twin groups follow the new hashes; no notice
+		VisEntityResume.ENTITY.getTwinEntity().save(this.resume(12));
 		assertFalse(VisEntityResume.ENTITY.exists(this.key()));
 		List<String> inactiveHashes = VisEntityResume.ENTITY.getTwinEntity().getOneById(this.key()).getAsStringList(VisEntityResume.Fields.hash);
 		this.assertInNone(newHashes, resumeId);

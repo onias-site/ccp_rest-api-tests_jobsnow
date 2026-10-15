@@ -4,12 +4,6 @@
 		"properties": {
 			"email": {
 				"type": "keyword"
-			},
-			"parent": {
-				"type": "keyword"
-			},
-			"type": {
-				"type": "keyword"
 			}
 		}
 	}

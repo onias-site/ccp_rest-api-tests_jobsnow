@@ -100,8 +100,7 @@ public class PositionServiceTest {
 	@Test
 	public void itemsWithoutAnInputRulesClassCurrentlyFailOnExecute() {
 		JnService[] itemsWithoutRules = {
-				VisServicePosition.Save, VisServicePosition.GetData, VisServicePosition.ChangeStatus,
-				VisServiceRecruiter.SaveOpinionAboutThisResume };
+				VisServicePosition.Save, VisServicePosition.GetData, VisServicePosition.ChangeStatus };
 		for (JnService item : itemsWithoutRules) {
 			try {
 				item.execute(this.position());

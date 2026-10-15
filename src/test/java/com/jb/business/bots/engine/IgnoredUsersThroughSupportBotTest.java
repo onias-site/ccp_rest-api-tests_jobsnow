@@ -31,10 +31,10 @@ import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jb.entities.JbEntityBot;
-import com.jb.entities.JbEntityBotCommand;
-import com.jb.entities.JbEntityBotCommandName;
-import com.jb.entities.JbEntityBotCommandStep;
-import com.jb.entities.JbEntityBotCommandStepEndMessage;
+import com.jn.entities.JnEntityBotCommand;
+import com.jn.entities.JnEntityBotCommandName;
+import com.jn.entities.JnEntityBotCommandStep;
+import com.jn.entities.JnEntityBotCommandStepEndMessage;
 import com.jb.entities.JbEntityBotCommandStepSession;
 import com.jn.entities.decorators.ElasticsearchLocal;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
@@ -87,7 +87,7 @@ public class IgnoredUsersThroughSupportBotTest {
 	/** Saves the bot configuration and its texts again, so that the index follows what is declared in java. */
 	@BeforeClass
 	public static void resaveBotConfiguration() {
-		List<CcpEntityConfigurator> configurators = Arrays.asList(new JbEntityBot(), new JbEntityBotCommand(), new JbEntityBotCommandName(), new JbEntityBotCommandStep(), new JbEntityBotCommandStepEndMessage());
+		List<CcpEntityConfigurator> configurators = Arrays.asList(new JbEntityBot(), new JnEntityBotCommand(), new JnEntityBotCommandName(), new JnEntityBotCommandStep(), new JnEntityBotCommandStepEndMessage());
 		for (CcpEntityConfigurator configurator : configurators) {
 			List<CcpBulkItem> records = configurator.getFirstRecordsToInsert();
 			for (CcpBulkItem record : records) {

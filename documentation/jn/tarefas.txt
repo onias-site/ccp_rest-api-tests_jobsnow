@@ -36,4 +36,6 @@ Decorator do flow processor
 Decorator do controller
 Decorator do swagger
 
-acrescentar botoes de interrogação nos inputs da skill e dos sinônimos no modal de adicionar skill
+roteiros de cadastro de currículo
+cadastro de curriculos em multi thread.
+reteste de todos os roteiros.

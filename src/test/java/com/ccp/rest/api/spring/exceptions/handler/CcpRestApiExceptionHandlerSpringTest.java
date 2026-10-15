@@ -1,6 +1,7 @@
 package com.ccp.rest.api.spring.exceptions.handler;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -21,7 +22,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.business.CcpBusiness;
+import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.flow.CcpErrorFlowDisturb;
+import com.ccp.process.CcpProcessStatusDefault;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
@@ -128,6 +132,36 @@ public class CcpRestApiExceptionHandlerSpringTest {
 		} finally {
 			CcpRestApiExceptionHandlerSpring.genericExceptionHandler = previousHandler;
 		}
+	}
+
+	/**
+	 * Finding 25: until 2026-10-15 a business error answered, in {@code message}, the whole JSON of the request, with the
+	 * session token, the IP and the user agent. Now the body has only the name of the status and the fields the exception
+	 * lists.
+	 */
+	@Test
+	public void aBusinessErrorDoesNotEchoTheRequestTest() throws IOException {
+		AtomicInteger status = new AtomicInteger();
+		HttpServletResponse response = (HttpServletResponse) Proxy.newProxyInstance(this.getClass().getClassLoader(),
+				new Class<?>[] { HttpServletResponse.class }, (proxy, m, args) -> {
+					if ("setStatus".equals(m.getName())) {
+						status.set((Integer) args[0]);
+					}
+					return null;
+				});
+		CcpFieldName skill = new CcpFieldName("skill");
+		CcpJsonRepresentation request = new CcpJsonRepresentation(
+				"{\"skill\":\"JAVA\",\"sessionToken\":\"SECRET\",\"ip\":\"10.0.0.1\",\"userAgent\":\"Chrome\",\"email\":\"someone@jobsnow.com\"}");
+		CcpErrorFlowDisturb businessError = new CcpErrorFlowDisturb(request, CcpProcessStatusDefault.CONFLICT, skill);
+
+		Map<String, Object> body = new CcpRestApiExceptionHandlerSpring().handle(businessError, response);
+
+		assertEquals(409, status.get());
+		assertEquals("CONFLICT", body.get(CcpRestApiExceptionHandlerSpring.JsonFieldNames.status.name()));
+		assertEquals("CONFLICT", body.get(CcpRestApiExceptionHandlerSpring.JsonFieldNames.message.name()));
+		assertEquals("JAVA", body.get("skill"));
+		assertEquals(body.toString(), 3, body.size());
+		assertFalse(body.toString(), body.toString().contains("SECRET"));
 	}
 
 	@Test
