@@ -23,7 +23,7 @@ import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.process.CcpProcessStatusDefault;
-import com.jn.services.JnServiceLogin;
+import com.jn.business.login.JnBusinessValidateLogin;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ReadListener;
@@ -226,7 +226,7 @@ public class SessionValidationTest {
 
 	@Test
 	public void theRealSessionValidationRefusesARequestWithoutSessionToken() {
-		Outcome outcome = run(JnServiceLogin.ValidateLogin, request("GET", "", "", Map.of()), false);
+		Outcome outcome = run(JnBusinessValidateLogin.INSTANCE, request("GET", "", "", Map.of()), false);
 
 		assertFalse("the request reached the controller without a session token", outcome.reachedController);
 		assertTrue(String.valueOf(outcome.status.get()), outcome.status.get() >= 400 && outcome.status.get() < 500);

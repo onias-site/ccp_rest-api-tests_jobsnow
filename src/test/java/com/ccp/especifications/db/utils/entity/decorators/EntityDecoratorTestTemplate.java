@@ -1,4 +1,4 @@
-package com.jn.entities.decorators;
+package com.ccp.especifications.db.utils.entity.decorators;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -41,7 +41,7 @@ import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.entities.JnEntityDisposableRecord;
-import com.jn.entities.decorators.annotations.JnEntityDisposable;
+import com.ccp.especifications.db.utils.entity.decorators.annotations.CcpEntityDisposable;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnDeleteKeysFromCache;
 
@@ -345,7 +345,7 @@ public abstract class EntityDecoratorTestTemplate {
 		assertFalse("new save did not delete from the twin " + twinName, twin.exists(record));
 	}
 
-	// ── JnEntityVersionable ──────────────────────────────────────────────────
+	// ── @CcpEntityVersionable ──────────────────────────────────────────────────
 
 	/** Each write through the entity adds exactly one history line to jn_versionable. */
 	protected void shouldRecordHistoryOnEachWrite() {
@@ -413,7 +413,7 @@ public abstract class EntityDecoratorTestTemplate {
 		}
 	}
 
-	// ── JnEntityDisposable ───────────────────────────────────────────────────
+	// ── @CcpEntityDisposable ───────────────────────────────────────────────────
 
 	/**
 	 * Saving leaves a copy in jn_disposable_record with a deadline in the future. While the deadline
@@ -478,7 +478,7 @@ public abstract class EntityDecoratorTestTemplate {
 		return id;
 	}
 
-	// ── JnEntityAsyncWriter ──────────────────────────────────────────────────
+	// ── @CcpEntityAsyncWriter ──────────────────────────────────────────────────
 
 	/**
 	 * {@code save} does not write directly: it publishes to the queue (leaving a trace in jn_async_task
@@ -498,7 +498,7 @@ public abstract class EntityDecoratorTestTemplate {
 		assertTrue("queue consumer did not save " + this.name(), entityUnderTest.exists(record));
 	}
 
-	// ── JnEntitySendMessageToUserWhenWrite ───────────────────────────────────
+	// ── @Ccp*Send*Message* ───────────────────────────────────
 
 	/** {@code afterInsert}: the insert notifies via Telegram; an update of the same record does not. */
 	protected void shouldNotifyByTelegramOnlyOnInsert() {
@@ -603,7 +603,7 @@ public abstract class EntityDecoratorTestTemplate {
 	}
 
 	protected boolean isDisposable() {
-		boolean disposable = this.entityUnderTest().getEntityMetaData().configurationClass.isAnnotationPresent(JnEntityDisposable.class);
+		boolean disposable = this.entityUnderTest().getEntityMetaData().configurationClass.isAnnotationPresent(CcpEntityDisposable.class);
 		return disposable;
 	}
 

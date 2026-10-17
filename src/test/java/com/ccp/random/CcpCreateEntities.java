@@ -38,12 +38,12 @@ public class CcpCreateEntities {
 	}
 
 	// in the order the recreation must run: vis and jb seed into jn indices (message templates and, since 2026-10-15,
-	// the commands of the bots), so jn goes first
-	private static final String[] COST_CENTERS = { "jn", "vis", "jb" };
+	// the commands of the bots), so jn goes first; js (the login, since 2026-10-17) seeds nothing
+	private static final String[] COST_CENTERS = { "jn", "js", "vis", "jb" };
 
 	/**
-	 * Recreates the entities of the cost centers given as arguments ({@code jn}, {@code vis}, {@code jb}), always in
-	 * the order of {@link #COST_CENTERS} whatever the order typed; without arguments, recreates all three. Until
+	 * Recreates the entities of the cost centers given as arguments ({@code jn}, {@code js}, {@code vis}, {@code jb}), always in
+	 * the order of {@link #COST_CENTERS} whatever the order typed; without arguments, recreates all of them. Until
 	 * 2026-10-11 a checkbox dialog asked which ones, and nothing ran without someone at the screen.
 	 * @param args the cost centers to recreate; none means all of them
 	 */

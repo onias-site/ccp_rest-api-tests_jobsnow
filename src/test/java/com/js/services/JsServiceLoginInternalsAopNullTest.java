@@ -1,4 +1,4 @@
-package com.jn.services;
+package com.js.services;
 
 import org.junit.Test;
 
@@ -8,9 +8,9 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
 /**
  * Coverage of {@code CcpNullParameterAspect} over the protected method
- * {@code JnServiceLogin.createParametersToSearchInAllEntities}.
+ * {@code JsServiceLogin.createParametersToSearchInAllEntities}.
  */
-public class JnServiceLoginInternalsAopNullTest {
+public class JsServiceLoginInternalsAopNullTest {
 
 	static {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
@@ -18,6 +18,6 @@ public class JnServiceLoginInternalsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void createParametersToSearchInAllEntitiesNullTest() {
-		JnServiceLogin.ExecuteLogin.createParametersToSearchInAllEntities(null);
+		JsServiceLogin.ExecuteLogin.createParametersToSearchInAllEntities(null);
 	}
 }

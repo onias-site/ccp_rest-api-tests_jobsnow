@@ -5,7 +5,7 @@ import org.junit.Test;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.jn.entities.JnEntitySupportCancelledCommand;
-import com.jn.entities.decorators.EntityDecoratorTestTemplate;
+import com.ccp.especifications.db.utils.entity.decorators.EntityDecoratorTestTemplate;
 
 /** jn_support_cancelled_command: transformer and validator, without cache, as the inbox it cancels. */
 public class JnEntitySupportCancelledCommandDecoratorsTest extends EntityDecoratorTestTemplate {

@@ -11,7 +11,7 @@ import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 /**
  * Entity used only by the database setup test: it has no creation script, which is an unexpected setup failure.
  */
-@CcpEntityFieldsValidator(classReferenceWithTheFields = JnEntitySetupProbeWithoutScript.Fields.class)
+@CcpEntityFieldsValidator(JnEntitySetupProbeWithoutScript.Fields.class)
 public class JnEntitySetupProbeWithoutScript implements CcpEntityConfigurator {
 
 	/** The entity {@code jn_setup_probe_without_script}. */

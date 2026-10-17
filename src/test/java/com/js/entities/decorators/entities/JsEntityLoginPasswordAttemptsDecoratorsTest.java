@@ -1,19 +1,19 @@
-package com.jn.entities.decorators.entities;
+package com.js.entities.decorators.entities;
 
 import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
-import com.jn.entities.JnEntityLoginPasswordAttempts;
-import com.jn.entities.decorators.EntityDecoratorTestTemplate;
+import com.js.entities.JsEntityLoginPasswordAttempts;
+import com.ccp.especifications.db.utils.entity.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-/** jn_login_password_attempts: {@code @CcpEntityCache(86400)}, daily disposable, transformer and validator. */
-public class JnEntityLoginPasswordAttemptsDecoratorsTest extends EntityDecoratorTestTemplate {
+/** js_login_password_attempts: {@code @CcpEntityCache(86400)}, daily disposable, transformer and validator. */
+public class JsEntityLoginPasswordAttemptsDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {
-		return JnEntityLoginPasswordAttempts.ENTITY;
+		return JsEntityLoginPasswordAttempts.ENTITY;
 	}
 
 	protected CcpJsonRepresentation validRecord() {

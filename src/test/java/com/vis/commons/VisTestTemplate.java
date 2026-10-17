@@ -28,10 +28,10 @@ import com.ccp.process.CcpProcessStatus;
 import com.jn.business.messages.JnMessages.JnNotifyUserAboutLoginToken;
 import com.jn.db.bulk.JnExecuteBulkOperation;
 import com.jn.entities.JnEntityEmailMessageSent;
-import com.jn.entities.JnEntityLoginAnswers;
+import com.js.entities.JsEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
-import com.jn.entities.JnEntityLoginPasswordAttempts;
+import com.js.entities.JsEntityLoginPasswordAttempts;
 import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.entities.JnEntityLoginTokenAttempts;
@@ -174,8 +174,8 @@ public abstract class VisTestTemplate {
 				,JnEntityLoginSessionConflict.ENTITY
 				,JnEntityLoginToken.ENTITY
 				,JnEntityLoginEmail.ENTITY
-				,JnEntityLoginPasswordAttempts.ENTITY
-				,JnEntityLoginAnswers.ENTITY
+				,JsEntityLoginPasswordAttempts.ENTITY
+				,JsEntityLoginAnswers.ENTITY
 				,JnEntityLoginPassword.ENTITY.getTwinEntity()
 				,JnEntityLoginToken.ENTITY.getTwinEntity()
 				,JnEntityLoginTokenAttempts.ENTITY
@@ -208,8 +208,8 @@ public abstract class VisTestTemplate {
 		CcpJsonRepresentation responseFromEndpoint = this.getJsonResponseFromEndpoint(processStatus, scenarioName, body, uri, headers);
 		JnEntityLoginEmail.ENTITY.delete(body);
 		JnEntityLoginPassword.ENTITY.delete(body);
-		JnEntityLoginPasswordAttempts.ENTITY.delete(body);
-		JnEntityLoginAnswers.ENTITY.delete(body);
+		JsEntityLoginPasswordAttempts.ENTITY.delete(body);
+		JsEntityLoginAnswers.ENTITY.delete(body);
 		JnEntityLoginPassword.ENTITY.getTwinEntity().delete(body);
 		JnEntityLoginTokenAttempts.ENTITY.delete(body);
 		JnEntityLoginToken.ENTITY.getTwinEntity().delete(body);

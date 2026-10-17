@@ -8,7 +8,7 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponseType;
 import com.ccp.process.CcpProcessStatus;
-import com.jn.entities.JnEntityLoginAnswers;
+import com.js.entities.JsEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionConflict;
@@ -44,7 +44,7 @@ public class PasswordLoginScreen extends JnTestTemplate{
 	public void missingPasswordRegistration() {
 		TestVariables testVariables = new TestVariables();
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		this.execute(testVariables, JnProcessStatusExecuteLogin.missingSavePassword, x-> TestVariables.CORRECT_PASSWORD);
 	}
 

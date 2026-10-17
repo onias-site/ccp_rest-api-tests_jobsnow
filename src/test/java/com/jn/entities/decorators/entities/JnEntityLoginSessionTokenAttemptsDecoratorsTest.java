@@ -5,7 +5,7 @@ import org.junit.Test;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.jn.entities.JnEntityLoginSessionTokenAttempts;
-import com.jn.entities.decorators.EntityDecoratorTestTemplate;
+import com.ccp.especifications.db.utils.entity.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /** jn_login_session_token_attempts: {@code @CcpEntityCache(3600)}, transformador e validador. */

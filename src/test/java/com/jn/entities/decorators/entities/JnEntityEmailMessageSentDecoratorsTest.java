@@ -6,7 +6,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.jn.entities.JnEntityEmailMessageSent;
-import com.jn.entities.decorators.EntityDecoratorTestTemplate;
+import com.ccp.especifications.db.utils.entity.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /** jn_email_message_sent: {@code @CcpEntityCache(3600)}, daily disposable, transformer and validator. */

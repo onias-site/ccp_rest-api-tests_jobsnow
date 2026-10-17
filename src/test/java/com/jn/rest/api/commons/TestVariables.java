@@ -3,7 +3,7 @@ package com.jn.rest.api.commons;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
-import com.jn.entities.JnEntityLoginAnswers;
+import com.js.entities.JsEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.fields.transformers.JnJsonTransformersFieldEntityTokenHash;
@@ -39,7 +39,7 @@ public class TestVariables {
 	
 		this.REQUEST_TO_LOGIN = this.REQUEST_TO_LOGIN.put(JnJsonCommonsFields.email, email);
 		this.VALID_EMAIL = email;
-		this.ANSWERS_JSON = this.REQUEST_TO_LOGIN.put(JnEntityLoginAnswers.Fields.goal, "jobs").put(JnEntityLoginAnswers.Fields.channel, "linkedin");
+		this.ANSWERS_JSON = this.REQUEST_TO_LOGIN.put(JsEntityLoginAnswers.Fields.goal, "jobs").put(JsEntityLoginAnswers.Fields.channel, "linkedin");
 	}
 
 	/**

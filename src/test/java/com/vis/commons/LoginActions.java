@@ -15,17 +15,17 @@ import com.ccp.especifications.db.utils.entity.decorators.engine.CcpErrorEntityP
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.jn.business.messages.JnMessages.JnNotifyUserAboutLoginToken;
 import com.jn.entities.JnEntityEmailMessageSent;
-import com.jn.entities.JnEntityLoginAnswers;
+import com.js.entities.JsEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
-import com.jn.services.JnServiceLogin;
+import com.js.services.JsServiceLogin;
 
 public enum LoginActions implements CcpBusiness {
-	SaveAnswers(JnEntityLoginAnswers.ENTITY),
+	SaveAnswers(JsEntityLoginAnswers.ENTITY),
 	ExecuteLogin(JnEntityLoginSessionConflict.ENTITY, JnEntityLoginSessionValidation.ENTITY),
 	SavePassword(JnEntityLoginPassword.ENTITY),
 	ExecuteLogout(JnEntityLoginSessionValidation.ENTITY.getTwinEntity()),
@@ -67,7 +67,7 @@ public enum LoginActions implements CcpBusiness {
 				CcpJsonRepresentation jsonWithSubjectType = json.put(JnJsonCommonsFields.subjectType, JnNotifyUserAboutLoginToken.class.getName());
 				loginAction.printAllStatus(jsonWithSubjectType);
 			}
-			JnServiceLogin service = JnServiceLogin.valueOf(this.name());
+			JsServiceLogin service = JsServiceLogin.valueOf(this.name());
 			Map<String, Object> serviceResult = service.execute(json.content);
 			CcpJsonRepresentation result = new CcpJsonRepresentation(serviceResult);
 			return result;

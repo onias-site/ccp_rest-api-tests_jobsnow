@@ -19,7 +19,7 @@ import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.rest.api.utils.CcpRestApiUtils;
-import com.jn.entities.JnEntityLoginAnswers;
+import com.js.entities.JsEntityLoginAnswers;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 public class BaseTest {
@@ -27,7 +27,7 @@ public class BaseTest {
 			.put(JnJsonCommonsFields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
 			;
 
-	public final static CcpJsonRepresentation ANSWERS_JSON = REQUEST_TO_LOGIN.put(JnEntityLoginAnswers.Fields.goal, "jobs").put(JnEntityLoginAnswers.Fields.channel, "linkedin");
+	public final static CcpJsonRepresentation ANSWERS_JSON = REQUEST_TO_LOGIN.put(JsEntityLoginAnswers.Fields.goal, "jobs").put(JsEntityLoginAnswers.Fields.channel, "linkedin");
 
 	static {
 		boolean localEnvironment = CcpRestApiUtils.isLocalEnvironment();	

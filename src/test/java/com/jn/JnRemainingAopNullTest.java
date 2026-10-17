@@ -7,7 +7,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.services.JnService;
-import com.jn.services.JnServiceLogin;
+import com.js.services.JsServiceLogin;
 
 /** Coverage of {@code CcpNullParameterAspect} over the default method {@code JnService.execute}. */
 public class JnRemainingAopNullTest {
@@ -18,7 +18,7 @@ public class JnRemainingAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void jnServiceExecuteNullTest() {
-		JnService service = JnServiceLogin.ExecuteLogin;
+		JnService service = JsServiceLogin.ExecuteLogin;
 		service.execute((CcpJsonRepresentation) null);
 	}
 }

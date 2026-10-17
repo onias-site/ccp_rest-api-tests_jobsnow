@@ -40,7 +40,7 @@ public class SenderFailurePoliciesTest {
 				new CcpElasticSearchCrud(),
 				new CcpGsonJsonHandler(),
 				new CcpApacheMimeHttp(),
-				(com.ccp.dependency.injection.CcpInstanceProvider<com.ccp.especifications.instant.messenger.CcpInstantMessenger>) () -> new com.jn.entities.decorators.CountingInstantMessenger());
+				(com.ccp.dependency.injection.CcpInstanceProvider<com.ccp.especifications.instant.messenger.CcpInstantMessenger>) () -> new com.ccp.especifications.db.utils.entity.decorators.CountingInstantMessenger());
 	}
 
 	/** A failure whose type names only this test, so its warning does not collide with real ones. */

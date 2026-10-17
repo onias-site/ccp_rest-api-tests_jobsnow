@@ -43,7 +43,7 @@ import com.jb.entities.JbEntityBotCommandStepSession;
 import com.jb.entities.JbEntityPendingTickets;
 import com.jn.entities.JnEntitySupportCancelledCommand;
 import com.jn.entities.JnEntitySupportPendingCommand;
-import com.jn.entities.decorators.ElasticsearchLocal;
+import com.ccp.especifications.db.utils.entity.decorators.ElasticsearchLocal;
 import com.jn.business.messages.JnInstantMessageType;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityInstantMessengerMessageSent;

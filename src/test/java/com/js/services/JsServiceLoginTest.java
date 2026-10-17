@@ -1,4 +1,4 @@
-package com.jn.services;
+package com.js.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -10,8 +10,9 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.json.fields.validation.CcpJsonCommonsFields;
+import com.jn.business.login.JnBusinessValidateLogin;
 
-public class JnServiceLoginTest {
+public class JsServiceLoginTest {
 
 	{
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
@@ -21,95 +22,100 @@ public class JnServiceLoginTest {
 
 	@Test
 	public void valuesTest() {
-		assertEquals(10, JnServiceLogin.values().length);
+		assertEquals(9, JsServiceLogin.values().length);
 	}
 
 	@Test
 	public void valueOfExecuteLoginTest() {
-		assertNotNull(JnServiceLogin.valueOf("ExecuteLogin"));
+		assertNotNull(JsServiceLogin.valueOf("ExecuteLogin"));
+	}
+
+	/** Desde 2026-10-17 a validação da sessão é a classe JnBusinessValidateLogin, não mais um item do enum. */
+	@Test(expected = IllegalArgumentException.class)
+	public void validateLoginIsNoLongerAnItemTest() {
+		JsServiceLogin.valueOf("ValidateLogin");
 	}
 
 	@Test
-	public void valueOfValidateLoginTest() {
-		assertNotNull(JnServiceLogin.valueOf("ValidateLogin"));
+	public void validateLoginInstanceTest() {
+		assertNotNull(JnBusinessValidateLogin.INSTANCE);
 	}
 
 	@Test
 	public void allConstantsAccessibleTest() {
-		assertNotNull(JnServiceLogin.ExecuteLogin);
-		assertNotNull(JnServiceLogin.ValidateLogin);
-		assertNotNull(JnServiceLogin.CreateLoginEmail);
-		assertNotNull(JnServiceLogin.ExistsLoginEmail);
-		assertNotNull(JnServiceLogin.ExecuteLogout);
-		assertNotNull(JnServiceLogin.SaveAnswers);
-		assertNotNull(JnServiceLogin.CreateLoginToken);
-		assertNotNull(JnServiceLogin.SavePassword);
-		assertNotNull(JnServiceLogin.ResendLoginToken);
-		assertNotNull(JnServiceLogin.UnlockLoginToken);
+		assertNotNull(JsServiceLogin.ExecuteLogin);
+		assertNotNull(JsServiceLogin.CreateLoginEmail);
+		assertNotNull(JsServiceLogin.ExistsLoginEmail);
+		assertNotNull(JsServiceLogin.ExecuteLogout);
+		assertNotNull(JsServiceLogin.SaveAnswers);
+		assertNotNull(JsServiceLogin.CreateLoginToken);
+		assertNotNull(JsServiceLogin.SavePassword);
+		assertNotNull(JsServiceLogin.ResendLoginToken);
+		assertNotNull(JsServiceLogin.UnlockLoginToken);
 	}
 
 	// ── null-parameter tests (AOP): each value.apply(null) ───────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeLoginApplyNullTest() {
-		JnServiceLogin.ExecuteLogin.execute((CcpJsonRepresentation) null);
+		JsServiceLogin.ExecuteLogin.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void validateLoginApplyNullTest() {
-		JnServiceLogin.ValidateLogin.execute((CcpJsonRepresentation) null);
+		JnBusinessValidateLogin.INSTANCE.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void createLoginEmailApplyNullTest() {
-		JnServiceLogin.CreateLoginEmail.execute((CcpJsonRepresentation) null);
+		JsServiceLogin.CreateLoginEmail.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void existsLoginEmailApplyNullTest() {
-		JnServiceLogin.ExistsLoginEmail.execute((CcpJsonRepresentation) null);
+		JsServiceLogin.ExistsLoginEmail.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeLogoutApplyNullTest() {
-		JnServiceLogin.ExecuteLogout.execute((CcpJsonRepresentation) null);
+		JsServiceLogin.ExecuteLogout.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void saveAnswersApplyNullTest() {
-		JnServiceLogin.SaveAnswers.execute((CcpJsonRepresentation) null);
+		JsServiceLogin.SaveAnswers.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void createLoginTokenApplyNullTest() {
-		JnServiceLogin.CreateLoginToken.execute((CcpJsonRepresentation) null);
+		JsServiceLogin.CreateLoginToken.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void savePasswordApplyNullTest() {
-		JnServiceLogin.SavePassword.execute((CcpJsonRepresentation) null);
+		JsServiceLogin.SavePassword.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void resendLoginTokenApplyNullTest() {
-		JnServiceLogin.ResendLoginToken.execute((CcpJsonRepresentation) null);
+		JsServiceLogin.ResendLoginToken.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void unlockLoginTokenApplyNullTest() {
-		JnServiceLogin.UnlockLoginToken.execute((CcpJsonRepresentation) null);
+		JsServiceLogin.UnlockLoginToken.execute((CcpJsonRepresentation) null);
 	}
 
 	// ── JsonFieldNames inner enum ────────────────────────────────────────────
 
 	@Test
 	public void jsonFieldNamesValuesTest() {
-		assertNotNull(JnServiceLogin.JsonFieldNames.values());
+		assertNotNull(JsServiceLogin.JsonFieldNames.values());
 	}
 
 	@Test
 	public void jsonFieldNamesValueOfTest() {
-		assertNotNull(JnServiceLogin.JsonFieldNames.valueOf("inexistentField"));
+		assertNotNull(JsServiceLogin.JsonFieldNames.valueOf("inexistentField"));
 	}
 
 	/** sessionToken saiu do enum local e passou a viver no centralizador do centro de custo ccp. */

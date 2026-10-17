@@ -1,25 +1,40 @@
 package com.ccp.especifications.db.utils.entity.decorators.enums;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import com.ccp.business.CcpBusiness;
 import com.ccp.constants.CcpOtherConstants;
-import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
-import com.ccp.especifications.db.utils.entity.decorators.annotations.CcpEntityOperation;
-import com.ccp.especifications.db.utils.entity.decorators.annotations.CcpEntityOperations;
 import com.ccp.especifications.db.utils.entity.decorators.annotations.CcpExceptionFlow;
+import com.ccp.especifications.db.utils.entity.decorators.annotations.operations.CcpAfterDeleteFromMainEntity;
+import com.ccp.especifications.db.utils.entity.decorators.annotations.operations.CcpAfterSaveFromMainEntity;
+import com.ccp.especifications.db.utils.entity.decorators.annotations.operations.CcpAfterSaveFromTwinEntity;
+import com.ccp.especifications.db.utils.entity.decorators.annotations.operations.CcpBeforeSaveFromMainEntity;
+import com.ccp.especifications.db.utils.entity.decorators.annotations.transfers.CcpAfterCopyDataFromMainEntity;
+import com.ccp.especifications.db.utils.entity.decorators.annotations.transfers.CcpBeforeCopyDataFromMainEntity;
+import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityDecoratorTypes;
+import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityDelegator;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.entities.JnEntityJobsnowError;
+import com.jn.entities.JnEntityJobsnowWarning;
 
 /**
- * Proves two fixes of 2026-10-06 in the flow of the entity decorators: every {@code @CcpEntityOperation} that matches the
- * operation, entity and phase runs (only the first one used to run, the others were ignored in silence), and a handler of
- * {@code @CcpExceptionFlow} also catches the subclasses of its exception (only the exact class used to be looked up).
+ * Proves the flow of the side effect decorators of the entities, each one built from its own annotation by
+ * {@code CcpEntityDecoratorTypes}: every business of the annotation runs, in order (until 2026-10-06 only the first
+ * matching item ran); a handler of {@code @CcpExceptionFlow} also catches the subclasses of its exception; a handled
+ * exception in the {@code before} phase cancels the operation; every instance of a repeated transfer annotation runs;
+ * and an annotation that refers to the other side of the entity, to another operation or to another target does not
+ * run. The entity under the decorators is a facade that answers the writes without reaching the database.
  */
 public class EntityFlowTest {
 
@@ -27,17 +42,30 @@ public class EntityFlowTest {
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
 	}
 
-	/** Puts {@code first}. */
-	public static class PutFirst implements CcpBusiness {
+	/** The businesses that ran, in order. */
+	static final List<String> RUNS = new CopyOnWriteArrayList<>();
+
+	/** Records {@code first}. */
+	public static class RecordFirst implements CcpBusiness {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			return json.put(new CcpFieldName("first"), true);
+			RUNS.add("first");
+			return json;
 		}
 	}
 
-	/** Puts {@code second}. */
-	public static class PutSecond implements CcpBusiness {
+	/** Records {@code second}. */
+	public static class RecordSecond implements CcpBusiness {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			return json.put(new CcpFieldName("second"), true);
+			RUNS.add("second");
+			return json;
+		}
+	}
+
+	/** Records {@code twin}. */
+	public static class RecordTwin implements CcpBusiness {
+		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
+			RUNS.add("twin");
+			return json;
 		}
 	}
 
@@ -58,89 +86,137 @@ public class EntityFlowTest {
 		}
 	}
 
-	/** The handler: marks the JSON as handled. */
-	public static class MarkHandled implements CcpBusiness {
+	/** The handler: records {@code handled}. */
+	public static class RecordHandled implements CcpBusiness {
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			return json.put(new CcpFieldName("handled"), true);
-		}
-	}
-
-	/** Two items for the same operation, entity and phase, and one item whose business throws the subclass. */
-	@CcpEntityOperations({
-		@CcpEntityOperation(operationType = CcpEntityOperationType.afterSaveFromMainEntity, execute = {PutFirst.class}, operationHandlers = {}),
-		@CcpEntityOperation(operationType = CcpEntityOperationType.afterSaveFromMainEntity, execute = {PutSecond.class}, operationHandlers = {}),
-		@CcpEntityOperation(operationType = CcpEntityOperationType.afterDeleteFromMainEntity, execute = {ThrowsTheSubclass.class},
-				operationHandlers = {@CcpExceptionFlow(whenThrowing = ConfiguredError.class, thenExecute = {MarkHandled.class})}),
-	})
-	public static class FlowOperations {
-		/** The entity of the items ({@code mainEntity} reads it from this field). */
-		public static final CcpEntity ENTITY = JnEntityJobsnowError.ENTITY;
-	}
-
-	/** Counts the runs of the handler of the transfer. */
-	static final java.util.concurrent.atomic.AtomicInteger TRANSFER_HANDLER_RUNS = new java.util.concurrent.atomic.AtomicInteger();
-
-	/** The handler of the transfer: counts its runs. */
-	public static class CountTransferHandler implements CcpBusiness {
-		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
-			TRANSFER_HANDLER_RUNS.incrementAndGet();
+			RUNS.add("handled");
 			return json;
 		}
 	}
 
 	/**
-	 * A copy whose {@code before} throws a handled exception, and two {@code after} items for the same transfer, target
-	 * and phase.
+	 * Two businesses after the save of the main entity, one after the save of the twin (which must not run here), a
+	 * business after the delete that throws the subclass, and a before the save whose handled exception cancels it.
 	 */
-	@com.ccp.especifications.db.utils.entity.decorators.annotations.CcpEntityDataTransfers({
-		@com.ccp.especifications.db.utils.entity.decorators.annotations.CcpEntityDataTransfer(operationType = CcpEntityDataTransferType.beforeCopyDataFromMainEntity,
-				targetEntity = com.jn.entities.JnEntityJobsnowWarning.class, execute = {ThrowsTheSubclass.class},
-				transferHandlers = {@CcpExceptionFlow(whenThrowing = ConfiguredError.class, thenExecute = {CountTransferHandler.class})}),
-		@com.ccp.especifications.db.utils.entity.decorators.annotations.CcpEntityDataTransfer(operationType = CcpEntityDataTransferType.afterCopyDataFromMainEntity,
-				targetEntity = com.jn.entities.JnEntityJobsnowWarning.class, execute = {PutFirst.class}, transferHandlers = {}),
-		@com.ccp.especifications.db.utils.entity.decorators.annotations.CcpEntityDataTransfer(operationType = CcpEntityDataTransferType.afterCopyDataFromMainEntity,
-				targetEntity = com.jn.entities.JnEntityJobsnowWarning.class, execute = {PutSecond.class}, transferHandlers = {}),
-	})
-	public static class TransferOperations {
-		/** The source entity of the items ({@code mainEntity} reads it from this field). */
+	@CcpAfterSaveFromMainEntity(execute = {RecordFirst.class, RecordSecond.class}, operationHandlers = {})
+	@CcpAfterSaveFromTwinEntity(execute = {RecordTwin.class}, operationHandlers = {})
+	@CcpAfterDeleteFromMainEntity(execute = {ThrowsTheSubclass.class}, operationHandlers = {@CcpExceptionFlow(whenThrowing = ConfiguredError.class, thenExecute = {RecordHandled.class})})
+	@CcpBeforeSaveFromMainEntity(execute = {ThrowsTheSubclass.class}, operationHandlers = {@CcpExceptionFlow(whenThrowing = ConfiguredError.class, thenExecute = {RecordHandled.class})})
+	public static class FlowOperations {
+		/** The entity of the annotations ({@code mainEntity} reads it from this field). */
 		public static final CcpEntity ENTITY = JnEntityJobsnowError.ENTITY;
+	}
+
+	/**
+	 * A copy whose {@code before} throws a handled exception, two {@code after} instances for the same target and one for
+	 * another target (which must not run).
+	 */
+	@CcpBeforeCopyDataFromMainEntity(targetEntity = JnEntityJobsnowWarning.class, execute = {ThrowsTheSubclass.class}, transferHandlers = {@CcpExceptionFlow(whenThrowing = ConfiguredError.class, thenExecute = {RecordHandled.class})})
+	@CcpAfterCopyDataFromMainEntity(targetEntity = JnEntityJobsnowWarning.class, execute = {RecordFirst.class}, transferHandlers = {})
+	@CcpAfterCopyDataFromMainEntity(targetEntity = JnEntityJobsnowWarning.class, execute = {RecordSecond.class}, transferHandlers = {})
+	@CcpAfterCopyDataFromMainEntity(targetEntity = JnEntityJobsnowError.class, execute = {RecordTwin.class}, transferHandlers = {})
+	public static class TransferOperations {
+		/** The source entity of the annotations ({@code mainEntity} reads it from this field). */
+		public static final CcpEntity ENTITY = JnEntityJobsnowError.ENTITY;
+	}
+
+	/** The main entity, answering every write with {@code true} without reaching the database. */
+	private static CcpEntity facade() {
+		return new CcpEntityDelegator(JnEntityJobsnowError.ENTITY) {
+			public boolean save(CcpJsonRepresentation json) {
+				return true;
+			}
+
+			public boolean delete(CcpJsonRepresentation json) {
+				return true;
+			}
+
+			public boolean copyDataTo(CcpJsonRepresentation json, CcpEntity targetEntity) {
+				return true;
+			}
+		};
+	}
+
+	@Before
+	public void clearRuns() {
+		RUNS.clear();
+	}
+
+	@Test
+	public void everyBusinessOfTheAnnotationRunsInOrder() {
+		CcpEntity decorated = CcpEntityDecoratorTypes.AfterSaveFromMainEntity.getEntity(FlowOperations.class, facade());
+
+		boolean inserted = decorated.save(CcpOtherConstants.EMPTY_JSON);
+
+		assertTrue(inserted);
+		assertEquals(List.of("first", "second"), RUNS);
+	}
+
+	@Test
+	public void anAnnotationOfTheOtherSideOfTheEntityDoesNotRun() {
+		CcpEntity decorated = CcpEntityDecoratorTypes.AfterSaveFromTwinEntity.getEntity(FlowOperations.class, facade());
+
+		decorated.save(CcpOtherConstants.EMPTY_JSON);
+
+		assertTrue("the side effect of the twin ran on the main entity: " + RUNS, RUNS.isEmpty());
+	}
+
+	@Test
+	public void anAnnotationOfAnotherOperationDoesNotRun() {
+		CcpEntity decorated = CcpEntityDecoratorTypes.AfterDeleteFromMainEntity.getEntity(FlowOperations.class, facade());
+
+		decorated.save(CcpOtherConstants.EMPTY_JSON);
+
+		assertTrue("the side effect of the delete ran on a save: " + RUNS, RUNS.isEmpty());
+	}
+
+	@Test
+	public void aSubclassOfAConfiguredExceptionIsHandled() {
+		CcpEntity decorated = CcpEntityDecoratorTypes.AfterDeleteFromMainEntity.getEntity(FlowOperations.class, facade());
+
+		boolean deleted = decorated.delete(CcpOtherConstants.EMPTY_JSON);
+
+		assertTrue("an exception handled after the delete does not undo it", deleted);
+		assertEquals("the subclass escaped the handler", List.of("handled"), RUNS);
+	}
+
+	@Test
+	public void aHandledExceptionInTheBeforeOfAWriteCancelsIt() {
+		CcpEntity decorated = CcpEntityDecoratorTypes.BeforeSaveFromMainEntity.getEntity(FlowOperations.class, facade());
+
+		boolean saved = decorated.save(CcpOtherConstants.EMPTY_JSON);
+
+		assertFalse("the save went on after a handled exception", saved);
+		assertEquals("the handler ran", List.of("handled"), RUNS);
 	}
 
 	/** Decided with the user on 2026-10-06: as in the write operations, a handled exception in the before cancels. */
 	@Test
 	public void aHandledExceptionInTheBeforeOfATransferCancelsIt() {
-		int runsBefore = TRANSFER_HANDLER_RUNS.get();
+		CcpEntity decorated = CcpEntityDecoratorTypes.BeforeCopyDataFromMainEntity.getEntity(TransferOperations.class, facade());
 
-		boolean transferred = CcpEntityDecoratorTransferType.copyDataTo.executeBefore(CcpOtherConstants.EMPTY_JSON,
-				TransferOperations.class, TransferOperations.ENTITY, com.jn.entities.JnEntityJobsnowWarning.ENTITY);
+		boolean copied = decorated.copyDataTo(CcpOtherConstants.EMPTY_JSON, JnEntityJobsnowWarning.ENTITY);
 
-		org.junit.Assert.assertFalse("the transfer went on after a handled exception", transferred);
-		org.junit.Assert.assertEquals("the handler ran", runsBefore + 1, TRANSFER_HANDLER_RUNS.get());
+		assertFalse("the transfer went on after a handled exception", copied);
+		assertEquals("the handler ran", List.of("handled"), RUNS);
 	}
 
 	@Test
-	public void everyTransferItemOfTheSameTypeTargetAndPhaseRuns() {
-		CcpJsonRepresentation result = CcpEntityDecoratorTransferType.copyDataTo.executeFlow(CcpOtherConstants.EMPTY_JSON,
-				CcpEntityOperationPhase._after, TransferOperations.class, TransferOperations.ENTITY, com.jn.entities.JnEntityJobsnowWarning.ENTITY);
+	public void everyRepeatedTransferAnnotationOfTheTargetRuns() {
+		CcpEntity decorated = CcpEntityDecoratorTypes.AfterCopyDataFromMainEntity.getEntity(TransferOperations.class, facade());
 
-		assertTrue(result.toString(), result.getAsBoolean(new CcpFieldName("first")));
-		assertTrue("the second transfer item used to be ignored: " + result, result.getAsBoolean(new CcpFieldName("second")));
+		boolean copied = decorated.copyDataTo(CcpOtherConstants.EMPTY_JSON, JnEntityJobsnowWarning.ENTITY);
+
+		assertTrue(copied);
+		assertEquals("the instance of another target must not run", List.of("first", "second"), RUNS);
 	}
 
 	@Test
-	public void everyItemOfTheSameOperationEntityAndPhaseRuns() {
-		CcpJsonRepresentation result = CcpEntityDecoratorOperationType.save.executeFlow(CcpOtherConstants.EMPTY_JSON,
-				CcpEntityOperationPhase._after, FlowOperations.class, FlowOperations.ENTITY);
+	public void aTransferAnnotationDoesNotRunOnAnotherTransfer() {
+		CcpEntity decorated = CcpEntityDecoratorTypes.AfterCopyDataFromMainEntity.getEntity(TransferOperations.class, facade());
 
-		assertTrue(result.toString(), result.getAsBoolean(new CcpFieldName("first")));
-		assertTrue("the second item used to be ignored: " + result, result.getAsBoolean(new CcpFieldName("second")));
-	}
+		decorated.save(CcpOtherConstants.EMPTY_JSON);
 
-	@Test
-	public void aSubclassOfAConfiguredExceptionIsHandled() {
-		CcpJsonRepresentation result = CcpEntityDecoratorOperationType.delete.executeFlow(CcpOtherConstants.EMPTY_JSON,
-				CcpEntityOperationPhase._after, FlowOperations.class, FlowOperations.ENTITY);
-
-		assertTrue("the subclass escaped the handler: " + result, result.getAsBoolean(new CcpFieldName("handled")));
+		assertTrue(RUNS.isEmpty());
 	}
 }

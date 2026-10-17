@@ -1,4 +1,4 @@
-package com.jn.services.login;
+package com.js.services.login;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -11,7 +11,7 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.json.fields.validation.CcpJsonCommonsFields;
-import com.jn.services.JnServiceLogin;
+import com.js.services.JsServiceLogin;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.process.CcpProcessStatusDefault;
@@ -24,7 +24,7 @@ import com.jn.status.login.JnProcessStatusExecuteLogin;
 import com.jn.status.login.JnProcessStatusExistsLoginEmail;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-public class ExecuteLogin extends JnServiceLoginTestTemplate {
+public class ExecuteLogin extends JsServiceLoginTestTemplate {
 
 	@Test(expected = CcpJsonValidationError.class)
 	public void invalidEmail() {
@@ -50,7 +50,7 @@ public class ExecuteLogin extends JnServiceLoginTestTemplate {
 	public void missingPasswordRegistration() {
 		TestVariables testVariables = new TestVariables();
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		com.jn.entities.JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		com.js.entities.JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JnProcessStatusExecuteLogin.missingSavePassword);
 	}
 
@@ -86,7 +86,7 @@ public class ExecuteLogin extends JnServiceLoginTestTemplate {
 				.put(JnJsonCommonsFields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
 				.put(JnJsonCommonsFields.ip, "127.0.0.1");
 		try {
-			JnServiceLogin.ExecuteLogin.execute(request);
+			JsServiceLogin.ExecuteLogin.execute(request);
 			fail("the login of an open session was accepted");
 		} catch (CcpErrorFlowDisturb refused) {
 			assertEquals(JnProcessStatusExecuteLogin.loginConflict, refused.status);

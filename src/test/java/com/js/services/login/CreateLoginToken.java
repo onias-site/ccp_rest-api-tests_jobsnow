@@ -1,4 +1,4 @@
-package com.jn.services.login;
+package com.js.services.login;
 
 import org.junit.Test;
 
@@ -6,14 +6,14 @@ import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.process.CcpProcessStatusDefault;
-import com.jn.entities.JnEntityLoginAnswers;
+import com.js.entities.JsEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.rest.api.commons.TestVariables;
 import com.jn.status.login.JnProcessStatusCreateLoginToken;
 import com.jn.utils.JnLanguage;
 
-public class CreateLoginToken extends JnServiceLoginTestTemplate {
+public class CreateLoginToken extends JsServiceLoginTestTemplate {
 
 	public void invalidEmail() {
 		TestVariables testVariables = withInvalidEmail();
@@ -41,7 +41,7 @@ public class CreateLoginToken extends JnServiceLoginTestTemplate {
 	public void happyPath() {
 		TestVariables testVariables = new TestVariables();
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		CcpJsonRepresentation jsonWithLanguage = this.withLanguage(testVariables);
 		this.execute(jsonWithLanguage, JnProcessStatusCreateLoginToken.expectedStatus);
 	}
@@ -54,7 +54,7 @@ public class CreateLoginToken extends JnServiceLoginTestTemplate {
 	public void tokenAlreadySent() {
 		TestVariables testVariables = new TestVariables();
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		CcpJsonRepresentation jsonWithLanguage = this.withLanguage(testVariables);
 		this.execute(jsonWithLanguage, JnProcessStatusCreateLoginToken.expectedStatus);
 

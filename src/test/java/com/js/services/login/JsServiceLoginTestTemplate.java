@@ -1,7 +1,6 @@
-package com.jn.services.login;
+package com.js.services.login;
 
-import java.util.Map;
-
+import com.ccp.business.CcpBusiness;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
@@ -20,14 +19,23 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatus;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.rest.api.commons.TestVariables;
-import com.jn.services.JnServiceLogin;
+import com.js.services.JsServiceLogin;
 import com.ccp.decorators.CcpJsonFieldName;
 
-public abstract class JnServiceLoginTestTemplate {
-	public final JnServiceLogin service;
+public abstract class JsServiceLoginTestTemplate {
+	public final CcpBusiness service;
 	
-	public JnServiceLoginTestTemplate() {
-		this.service = JnServiceLogin.valueOf(this.getClass().getSimpleName());
+	/** The service is the item of {@code JsServiceLogin} named after the test class. */
+	public JsServiceLoginTestTemplate() {
+		this.service = JsServiceLogin.valueOf(this.getClass().getSimpleName());
+	}
+
+	/**
+	 * For a login business that is not an item of {@code JsServiceLogin} (such as {@code JnBusinessValidateLogin}).
+	 * @param service the business under test
+	 */
+	protected JsServiceLoginTestTemplate(CcpBusiness service) {
+		this.service = service;
 	}
 
 	enum JsonFieldNames implements CcpJsonFieldName {
@@ -55,9 +63,8 @@ public abstract class JnServiceLoginTestTemplate {
 		int actualStatus;
 		CcpJsonRepresentation response;
 		try {
-			Map<String, Object> result = this.service.execute(json.content);
+			response = this.service.execute(json);
 			actualStatus = CcpProcessStatusDefault.OK.asNumber();
-			response = new CcpJsonRepresentation(result);
 		} catch (CcpErrorFlowDisturb e) {
 			actualStatus = e.status.asNumber();
 			response = e.json;

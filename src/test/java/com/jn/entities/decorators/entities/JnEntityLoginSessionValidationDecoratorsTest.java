@@ -13,8 +13,8 @@ import com.ccp.especifications.db.crud.CcpSelectUnionAll;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.jn.entities.JnEntityLoginSessionValidation;
-import com.jn.entities.decorators.ElasticsearchLocal;
-import com.jn.entities.decorators.EntityDecoratorTestTemplate;
+import com.ccp.especifications.db.utils.entity.decorators.ElasticsearchLocal;
+import com.ccp.especifications.db.utils.entity.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnDeleteKeysFromCache;
 
@@ -84,7 +84,7 @@ public class JnEntityLoginSessionValidationDecoratorsTest extends EntityDecorato
 	}
 
 	/**
-	 * The session validation ({@code JnServiceLogin.ValidateLogin}) does not ask {@code exists}: it reads the session through
+	 * The session validation ({@code JnBusinessValidateLogin}) does not ask {@code exists}: it reads the session through
 	 * a union all ({@code CcpGetEntityId}). When the hour changes the document of the period is no longer the current one,
 	 * and only the disposable copy keeps the session alive until its deadline; without it every session ended at the turn
 	 * of the hour, and each request after that counted a wrong session token attempt until the password was locked (423).

@@ -1,5 +1,6 @@
 package com.jn.entities.decorators;
 
+import com.ccp.especifications.db.utils.entity.decorators.EntityDecoratorTestTemplate;
 import java.util.Arrays;
 
 import org.junit.Test;

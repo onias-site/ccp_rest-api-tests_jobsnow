@@ -1,5 +1,6 @@
 package com.jn.entities.decorators;
 
+import com.ccp.especifications.db.utils.entity.decorators.EntityDecoratorTestTemplate;
 import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;

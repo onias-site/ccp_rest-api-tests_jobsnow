@@ -73,7 +73,7 @@ public class InstantMessengerFailuresTest {
 	 */
 	@AfterClass
 	public static void restoreAHarmlessMessenger() {
-		CcpInstanceProvider<CcpInstantMessenger> counting = () -> new com.jn.entities.decorators.CountingInstantMessenger();
+		CcpInstanceProvider<CcpInstantMessenger> counting = () -> new com.ccp.especifications.db.utils.entity.decorators.CountingInstantMessenger();
 		CcpDependencyInjection.loadAllDependencies(counting);
 	}
 

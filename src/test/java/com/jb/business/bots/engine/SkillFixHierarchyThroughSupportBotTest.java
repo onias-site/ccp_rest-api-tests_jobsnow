@@ -44,7 +44,7 @@ import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityInstantMessengerMessageSent;
 import com.jn.entities.JnEntitySupportCancelledCommand;
 import com.jn.entities.JnEntitySupportPendingCommand;
-import com.jn.entities.decorators.ElasticsearchLocal;
+import com.ccp.especifications.db.utils.entity.decorators.ElasticsearchLocal;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.vis.business.skill.VisBusinessSkillFixHierarchyIgnoreUser;

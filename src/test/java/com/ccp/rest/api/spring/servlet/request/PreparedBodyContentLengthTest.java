@@ -66,7 +66,7 @@ public class PreparedBodyContentLengthTest {
 					case "getInputStream":
 						return servletInputStream;
 					case "getRequestURL":
-						return new StringBuffer("http://localhost:8080/login/someone@example.com/ABCDEFGH");
+						return new StringBuffer("http://localhost:8082/login/someone@example.com/ABCDEFGH");
 					case "getRemoteAddr":
 						return "127.0.0.1";
 					case "getHeader":

@@ -3,6 +3,8 @@ package com.jn.entities.decorators;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import com.ccp.especifications.db.utils.entity.decorators.EntityDecoratorTestTemplate;
+import com.ccp.especifications.db.utils.entity.decorators.ElasticsearchLocal;
 import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;

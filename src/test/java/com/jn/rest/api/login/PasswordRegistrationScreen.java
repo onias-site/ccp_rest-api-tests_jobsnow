@@ -8,7 +8,7 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponseType;
 import com.ccp.process.CcpProcessStatus;
-import com.jn.entities.JnEntityLoginAnswers;
+import com.js.entities.JsEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionConflict;
@@ -68,7 +68,7 @@ public class PasswordRegistrationScreen extends JnTestTemplate{
 	}
 	
 	public String expectedFlow(TestVariables testVariables) {
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		String token = this.getToken(testVariables);
 		String result = this.execute(testVariables,JnProcessStatusUpdatePassword.expectedStatus, x -> token);
 		return result;
@@ -100,7 +100,7 @@ public class PasswordRegistrationScreen extends JnTestTemplate{
 	public void missTokenThenGetItRight() {
 		TestVariables testVariables = new TestVariables();
 		String token = this.getToken(testVariables);
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		for(int k = 1; k < 3; k++) {
 			this.execute(testVariables, JnProcessStatusUpdatePassword.wrongToken, x -> "abcdefgh");
 		}
@@ -111,7 +111,7 @@ public class PasswordRegistrationScreen extends JnTestTemplate{
 	public void recentlyLockedToken() {
 		TestVariables testVariables = new TestVariables();
 		String token = this.getToken(testVariables);
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		for(int k = 1; k <= 2; k++) {
 			this.execute(testVariables, JnProcessStatusUpdatePassword.wrongToken, x -> "abcdefgh");
 		}
@@ -145,7 +145,7 @@ public class PasswordRegistrationScreen extends JnTestTemplate{
 	
 	private String getTokenToValidateLogin(TestVariables testVariables) {
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		return "12345678";
 
 	}

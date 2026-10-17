@@ -11,7 +11,7 @@ import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 /**
  * Entity used only by the database setup test: {@code jn_setup_probe_plain}, without twin and without seeds.
  */
-@CcpEntityFieldsValidator(classReferenceWithTheFields = JnEntitySetupProbePlain.Fields.class)
+@CcpEntityFieldsValidator(JnEntitySetupProbePlain.Fields.class)
 public class JnEntitySetupProbePlain implements CcpEntityConfigurator {
 
 	/** The entity {@code jn_setup_probe_plain}. */

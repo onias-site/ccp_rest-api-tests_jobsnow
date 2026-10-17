@@ -10,7 +10,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatus;
-import com.jn.entities.JnEntityLoginAnswers;
+import com.js.entities.JsEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.rest.api.commons.JnTestTemplate;
@@ -44,7 +44,7 @@ public class OnEnteringPasswordRegistrationScreen extends JnTestTemplate{
 	public void happyPath() {
 		TestVariables testVariables = new TestVariables();
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		this.execute(testVariables, JnProcessStatusCreateLoginToken.expectedStatus);
 	} 
 
@@ -55,7 +55,7 @@ public class OnEnteringPasswordRegistrationScreen extends JnTestTemplate{
 	public void theLanguageOfTheTokenRequestIsKeptInTheLoginEmail() {
 		TestVariables testVariables = new TestVariables();
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 
 		this.createLoginToken(testVariables.VALID_EMAIL, JnProcessStatusCreateLoginToken.expectedStatus, JnLanguage.english);
 

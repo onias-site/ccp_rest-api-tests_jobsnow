@@ -19,7 +19,7 @@ import com.jn.utils.JnDeleteKeysFromCache;
  * Entity used only by the database setup test: {@code jn_setup_probe_twin}, with the twin
  * {@code jn_setup_probe_twin_copy} and one seed.
  */
-@CcpEntityFieldsValidator(classReferenceWithTheFields = JnEntitySetupProbeTwin.Fields.class)
+@CcpEntityFieldsValidator(JnEntitySetupProbeTwin.Fields.class)
 @CcpEntityTwin(
 		twinEntityName = "jn_setup_probe_twin_copy",
 		bulkExecutorClass = JnExecuteBulkOperation.class,

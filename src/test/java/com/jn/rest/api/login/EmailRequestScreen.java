@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatus;
-import com.jn.entities.JnEntityLoginAnswers;
+import com.js.entities.JsEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionConflict;
@@ -57,7 +57,7 @@ public class EmailRequestScreen extends JnTestTemplate{
 	@Test
 	public void missingPasswordRegistration() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		this.execute(testVariables, JnProcessStatusExistsLoginEmail.missingPassword);		
 	}
@@ -73,7 +73,7 @@ public class EmailRequestScreen extends JnTestTemplate{
 	public void happyPath() {
 		TestVariables testVariables = new TestVariables();
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		JnEntityLoginPassword.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		this.execute(testVariables, JnProcessStatusExistsLoginEmail.expectedStatus);		
 	}

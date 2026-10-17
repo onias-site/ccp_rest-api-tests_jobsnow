@@ -1,4 +1,4 @@
-package com.jn.services.login;
+package com.js.services.login;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -9,7 +9,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.process.CcpProcessStatusDefault;
-import com.jn.entities.JnEntityLoginAnswers;
+import com.js.entities.JsEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionConflict;
@@ -18,7 +18,7 @@ import com.jn.rest.api.commons.TestVariables;
 import com.jn.status.login.JnProcessStatusUpdatePassword;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-public class SavePassword extends JnServiceLoginTestTemplate {
+public class SavePassword extends JsServiceLoginTestTemplate {
 
 	@Test(expected = CcpJsonValidationError.class)
 	public void invalidEmail() {
@@ -45,7 +45,7 @@ public class SavePassword extends JnServiceLoginTestTemplate {
 	public void missingToken() {
 		TestVariables testVariables = new TestVariables();
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		JnEntityLoginEmail.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
 		CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
 				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
@@ -82,7 +82,7 @@ public class SavePassword extends JnServiceLoginTestTemplate {
 	public void missTokenThenGetItRight() {
 		TestVariables testVariables = new TestVariables();
 		String token = getToken(testVariables);
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		for (int k = 1; k < 3; k++) {
 			CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
 					.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
@@ -99,7 +99,7 @@ public class SavePassword extends JnServiceLoginTestTemplate {
 	public void recentlyLockedToken() {
 		TestVariables testVariables = new TestVariables();
 		String token = getToken(testVariables);
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		for (int k = 1; k <= 2; k++) {
 			CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
 					.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
@@ -117,7 +117,7 @@ public class SavePassword extends JnServiceLoginTestTemplate {
 	}
 
 	public CcpJsonRepresentation expectedFlow(TestVariables testVariables) {
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 
 		String token = this.getToken(testVariables);
 		CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
@@ -141,7 +141,7 @@ public class SavePassword extends JnServiceLoginTestTemplate {
 
 	private String getTokenToValidateLogin(TestVariables testVariables) {
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		return "12345678";
 	}
 }

@@ -6,7 +6,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.jn.entities.JnEntityInstantMessengerMessageSent;
-import com.jn.entities.decorators.EntityDecoratorTestTemplate;
+import com.ccp.especifications.db.utils.entity.decorators.EntityDecoratorTestTemplate;
 
 /**
  * jn_instant_messenger_message_sent: {@code @CcpEntityCache(3600)}, hourly disposable, transformer (hash of the

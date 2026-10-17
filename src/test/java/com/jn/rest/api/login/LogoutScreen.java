@@ -80,7 +80,10 @@ public class LogoutScreen extends JnTestTemplate {
 				.method("DELETE", jsonBody)
 				.build();
 		HttpClient client = HttpClient.newHttpClient();
+		long requestStart = System.currentTimeMillis();
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+		// the logout deletes the session after answering
+		this.waitForTheAsynchronousWrites(requestStart);
 
 		int expectedStatus = JnProcessStatusExecuteLogout.expectedStatus.asNumber();
 		String body = response.body();

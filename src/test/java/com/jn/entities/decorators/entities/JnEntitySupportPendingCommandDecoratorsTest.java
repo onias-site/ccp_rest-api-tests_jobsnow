@@ -9,7 +9,7 @@ import org.junit.Test;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.jn.entities.JnEntitySupportPendingCommand;
-import com.jn.entities.decorators.EntityDecoratorTestTemplate;
+import com.ccp.especifications.db.utils.entity.decorators.EntityDecoratorTestTemplate;
 
 /** jn_support_pending_command: transformer and validator, without cache; and the rules of what a command is. */
 public class JnEntitySupportPendingCommandDecoratorsTest extends EntityDecoratorTestTemplate {

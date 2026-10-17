@@ -12,7 +12,7 @@ import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
  * Entity used only by the database setup test: {@code jn_setup_probe_wrong}, whose script declares a field the
  * entity does not have, so the setup reports an incorrect mapping and does not create it.
  */
-@CcpEntityFieldsValidator(classReferenceWithTheFields = JnEntitySetupProbeWrong.Fields.class)
+@CcpEntityFieldsValidator(JnEntitySetupProbeWrong.Fields.class)
 public class JnEntitySetupProbeWrong implements CcpEntityConfigurator {
 
 	/** The entity {@code jn_setup_probe_wrong}. */

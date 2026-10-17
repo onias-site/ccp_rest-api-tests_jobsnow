@@ -24,7 +24,7 @@ public class EntityWithoutPrimaryKeyTest {
 	}
 
 	/** An entity that forgot to declare its primary key. */
-	@CcpEntityFieldsValidator(classReferenceWithTheFields = FakeEntityWithoutKey.Fields.class)
+	@CcpEntityFieldsValidator(FakeEntityWithoutKey.Fields.class)
 	public static class FakeEntityWithoutKey implements CcpEntityConfigurator {
 		/** The fields, none of them the key. */
 		public static enum Fields implements CcpJsonFieldName {

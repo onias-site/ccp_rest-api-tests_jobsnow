@@ -1,4 +1,4 @@
-	package com.jn.services.login;
+	package com.js.services.login;
 
 import static org.junit.Assert.assertTrue;
 
@@ -17,13 +17,18 @@ import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityLoginSessionValidation;
-import com.jn.entities.decorators.ElasticsearchLocal;
+import com.ccp.especifications.db.utils.entity.decorators.ElasticsearchLocal;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnSystemProperties;
 import com.jn.rest.api.commons.TestVariables;
-import com.jn.services.JnServiceLogin;
+import com.jn.business.login.JnBusinessValidateLogin;
+import com.js.services.JsServiceLogin;
 
-public class ValidateLogin extends JnServiceLoginTestTemplate {
+public class ValidateLogin extends JsServiceLoginTestTemplate {
+
+	public ValidateLogin() {
+		super(JnBusinessValidateLogin.INSTANCE);
+	}
 
 	@Test
 	public void happyPath() {
@@ -37,7 +42,7 @@ public class ValidateLogin extends JnServiceLoginTestTemplate {
 		savePassword.expectedFlow(testVariables);
 		ExecuteLogout executeLogout = new ExecuteLogout();
 		executeLogout.expectedFlow(testVariables);
-		CcpJsonRepresentation loginResponse = JnServiceLogin.ExecuteLogin.execute(CcpOtherConstants
+		CcpJsonRepresentation loginResponse = JsServiceLogin.ExecuteLogin.execute(CcpOtherConstants
 				.EMPTY_JSON 
 				.put(JnJsonCommonsFields.email, testVariables.VALID_EMAIL)
 				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)

@@ -1,4 +1,4 @@
-package com.jn.services.login;
+package com.js.services.login;
 
 import static org.junit.Assert.assertTrue;
 
@@ -12,7 +12,7 @@ import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.rest.api.commons.TestVariables;
 import com.jn.status.login.JnProcessStatusExecuteLogout;
 
-public class ExecuteLogout extends JnServiceLoginTestTemplate {
+public class ExecuteLogout extends JsServiceLoginTestTemplate {
 
 	@Test(expected = CcpJsonValidationError.class)
 	public void invalidEmail() {

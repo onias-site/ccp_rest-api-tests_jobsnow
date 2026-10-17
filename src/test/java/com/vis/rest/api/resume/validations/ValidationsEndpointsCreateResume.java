@@ -13,7 +13,7 @@ import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.business.messages.JnMessages.JnNotifyUserAboutLoginToken;
 import com.jn.entities.JnEntityAsyncTask;
 import com.jn.entities.JnEntityEmailMessageSent;
-import com.jn.entities.JnEntityLoginAnswers;
+import com.js.entities.JsEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginToken;
@@ -114,7 +114,7 @@ public class ValidationsEndpointsCreateResume  extends VisTestTemplate{
 	public void missingPreRegistration() {
 		String scenarioName = new Object() {}.getClass().getEnclosingMethod().getName();
 		this.getJsonResponseFromEndpoint(JnProcessStatusCreateLoginEmail.missingSaveAnswers, scenarioName, this.pathToJsonFile, 
-				CcpEntityOperationType.delete.getOperationCallback(JnEntityLoginAnswers.ENTITY)
+				CcpEntityOperationType.delete.getOperationCallback(JsEntityLoginAnswers.ENTITY)
 				);
 		
 	}

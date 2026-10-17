@@ -26,7 +26,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.jn.entities.decorators.CountingInstantMessenger;
+import com.ccp.especifications.db.utils.entity.decorators.CountingInstantMessenger;
 
 /**
  * The resume that last saved each LinkedIn address ({@link VisEntityResumeLinkedin}): a resume saving the address of

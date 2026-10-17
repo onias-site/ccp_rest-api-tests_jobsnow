@@ -17,11 +17,11 @@ import com.google.gson.JsonParser;
  * Proves that the published OpenAPI document describes each token request path with its own action (finding 49): until
  * 2026-10-07 the documentation of the unlock and of the resend sat on each other's method names in
  * {@code JnOpenApiLogin}, and springdoc pairs it with the controller by the method name, so {@code /unlocking} was
- * documented as a resend and {@code /resending} as an unlock. Requires the jn API up at {@code localhost:8080}.
+ * documented as a resend and {@code /resending} as an unlock. Requires the js API up at {@code localhost:8082}.
  */
 public class LoginTokenRequestDocumentationTest {
 
-	private static final String API_DOCS = "http://localhost:8080/api-docs";
+	private static final String API_DOCS = "http://localhost:8082/api-docs";
 
 	private final HttpClient client = HttpClient.newHttpClient();
 

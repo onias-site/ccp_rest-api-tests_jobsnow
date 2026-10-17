@@ -10,7 +10,7 @@ import com.ccp.json.validations.fields.annotations.CcpJsonCopyFieldValidationsFr
 import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-@CcpEntityFieldsValidator(classReferenceWithTheFields = FakeEntityCopyFieldValidations.Fields.class)
+@CcpEntityFieldsValidator(FakeEntityCopyFieldValidations.Fields.class)
 /**
  * Entidade fictícia, existente só para os testes. Serve para medir de onde vêm as regras de validação
  * de cada campo, e por isso os dois campos que ela declara têm nome igual ao de campos de

@@ -15,11 +15,11 @@ import org.junit.Test;
  * A client error must come out with the client's status, and not as a system error. Until 2026-09-27
  * the {@code @ExceptionHandler(Throwable)} of {@code CcpRestApiExceptionHandlerSpring} turned a
  * nonexistent route into 500 and also saved it in {@code JnEntityJobsnowError}, notifying support the
- * first time within the hour. Requires the jn API up at {@code localhost:8080}, like the other REST tests.
+ * first time within the hour. Requires the js API up at {@code localhost:8082}, like the other login REST tests.
  */
 public class ClientErrorStatusTest {
 
-	private static final String API = "http://localhost:8080/";
+	private static final String API = "http://localhost:8082/";
 
 	private final HttpClient client = HttpClient.newHttpClient();
 

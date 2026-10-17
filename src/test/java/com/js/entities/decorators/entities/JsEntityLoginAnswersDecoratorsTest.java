@@ -1,24 +1,24 @@
-package com.jn.entities.decorators.entities;
+package com.js.entities.decorators.entities;
 
 import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
-import com.jn.entities.JnEntityLoginAnswers;
-import com.jn.entities.decorators.EntityDecoratorTestTemplate;
+import com.js.entities.JsEntityLoginAnswers;
+import com.ccp.especifications.db.utils.entity.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-/** jn_login_answers: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
-public class JnEntityLoginAnswersDecoratorsTest extends EntityDecoratorTestTemplate {
+/** js_login_answers: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
+public class JsEntityLoginAnswersDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {
-		return JnEntityLoginAnswers.ENTITY;
+		return JsEntityLoginAnswers.ENTITY;
 	}
 
 	protected CcpJsonRepresentation validRecord() {
 		return this.com(JnJsonCommonsFields.email, this.email)
-				.put(JnEntityLoginAnswers.Fields.channel, "linkedin")
-				.put(JnEntityLoginAnswers.Fields.goal, "jobs");
+				.put(JsEntityLoginAnswers.Fields.channel, "linkedin")
+				.put(JsEntityLoginAnswers.Fields.goal, "jobs");
 	}
 
 	@Test
@@ -33,7 +33,7 @@ public class JnEntityLoginAnswersDecoratorsTest extends EntityDecoratorTestTempl
 
 	@Test
 	public void validator() {
-		this.shouldRefuseInvalidRecord(this.validRecord().put(JnEntityLoginAnswers.Fields.goal, "ferias"));
+		this.shouldRefuseInvalidRecord(this.validRecord().put(JsEntityLoginAnswers.Fields.goal, "ferias"));
 	}
 
 	@Test

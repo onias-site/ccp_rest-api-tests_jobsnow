@@ -40,7 +40,7 @@ import com.jn.entities.JnEntityInstantMessengerTemplateMessage;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.entities.JnEntityLoginTokenRequestUnlock;
 import com.jn.entities.JnEntitySupportPendingCommand;
-import com.jn.entities.decorators.ElasticsearchLocal;
+import com.ccp.especifications.db.utils.entity.decorators.ElasticsearchLocal;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 

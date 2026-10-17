@@ -1,4 +1,4 @@
-package com.jn.entities.decorators;
+package com.ccp.especifications.db.utils.entity.decorators;
 
 import java.net.URI;
 import java.net.http.HttpClient;

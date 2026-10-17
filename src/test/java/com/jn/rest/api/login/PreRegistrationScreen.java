@@ -10,7 +10,7 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponseType;
 import com.ccp.process.CcpProcessStatus;
-import com.jn.entities.JnEntityLoginAnswers;
+import com.js.entities.JsEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
 import com.jn.entities.JnEntityLoginSessionConflict;
@@ -51,7 +51,7 @@ public class PreRegistrationScreen  extends JnTestTemplate{
 	@Test
 	public void missingPasswordRegistration() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		this.execute(testVariables, JnProcessStatusSaveAnswers.missingPassword);
 	}
@@ -82,8 +82,8 @@ public class PreRegistrationScreen  extends JnTestTemplate{
 	private void savePreRegistration(String email, CcpProcessStatus expectedStatus) {
 		CcpJsonRepresentation body = CcpOtherConstants
 				.EMPTY_JSON
-				.put(JnEntityLoginAnswers.Fields.goal, "jobs")
-				.put(JnEntityLoginAnswers.Fields.channel, "linkedin")
+				.put(JsEntityLoginAnswers.Fields.goal, "jobs")
+				.put(JsEntityLoginAnswers.Fields.channel, "linkedin")
 				;
 		String uri = "login/"+ email 	+ "/pre-registration";
 		this.testEndpoint(expectedStatus, body, uri,  CcpHttpResponseType.singleRecord);

@@ -36,7 +36,7 @@ import com.jn.entities.JnEntityBotCommandName;
 import com.jn.entities.JnEntityBotCommandStep;
 import com.jn.entities.JnEntityBotCommandStepEndMessage;
 import com.jb.entities.JbEntityBotCommandStepSession;
-import com.jn.entities.decorators.ElasticsearchLocal;
+import com.ccp.especifications.db.utils.entity.decorators.ElasticsearchLocal;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.vis.entities.VisEntityCommandNotAllowedToUser;

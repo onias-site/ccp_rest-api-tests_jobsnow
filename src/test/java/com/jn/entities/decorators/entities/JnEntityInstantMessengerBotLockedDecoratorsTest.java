@@ -5,7 +5,7 @@ import org.junit.Test;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.jn.entities.JnEntityInstantMessengerBotLocked;
-import com.jn.entities.decorators.EntityDecoratorTestTemplate;
+import com.ccp.especifications.db.utils.entity.decorators.EntityDecoratorTestTemplate;
 
 /** jn_instant_messenger_bot_locked: {@code @CcpEntityCache(3600)}, transformador e validador. */
 public class JnEntityInstantMessengerBotLockedDecoratorsTest extends EntityDecoratorTestTemplate {

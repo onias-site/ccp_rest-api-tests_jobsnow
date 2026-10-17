@@ -40,14 +40,14 @@ import com.jn.entities.JnEntityInstantMessengerParametersToSend;
 import com.jn.entities.JnEntityInstantMessengerTemplateMessage;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityJobsnowWarning;
-import com.jn.entities.JnEntityLoginAnswers;
+import com.js.entities.JsEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
 import com.jn.entities.JnEntityLoginPassword;
-import com.jn.entities.JnEntityLoginPasswordAttempts;
+import com.js.entities.JsEntityLoginPasswordAttempts;
 import com.jn.entities.JnEntityLoginSessionConflict;
 import com.jn.entities.JnEntityLoginSessionTokenAttempts;
 import com.jn.entities.JnEntityLoginSessionValidation;
-import com.jn.entities.JnEntityLoginStats;
+import com.js.entities.JsEntityLoginStats;
 import com.jn.entities.JnEntityLoginToken;
 import com.jn.entities.JnEntityLoginTokenAttempts;
 import com.jn.entities.JnEntityLoginTokenRequestResend;
@@ -79,9 +79,9 @@ public class ValidationRulesCopyTest {
 			JnEntityInstantMessengerBotLocked.class, JnEntityInstantMessengerMessageSent.class,
 			JnEntityInstantMessengerParametersToSend.class, JnEntityInstantMessengerTemplateMessage.class,
 			JnEntityJobsnowError.class, JnEntityJobsnowWarning.class,
-			JnEntityLoginAnswers.class, JnEntityLoginEmail.class, JnEntityLoginPassword.class, JnEntityLoginPasswordAttempts.class,
+			JsEntityLoginAnswers.class, JnEntityLoginEmail.class, JnEntityLoginPassword.class, JsEntityLoginPasswordAttempts.class,
 			JnEntityLoginSessionConflict.class, JnEntityLoginSessionTokenAttempts.class, JnEntityLoginSessionValidation.class,
-			JnEntityLoginStats.class, JnEntityLoginToken.class, JnEntityLoginTokenAttempts.class,
+			JsEntityLoginStats.class, JnEntityLoginToken.class, JnEntityLoginTokenAttempts.class,
 			JnEntityLoginTokenRequestResend.class, JnEntityLoginTokenRequestUnlock.class, JnEntityMessageDidNotSent.class,
 			JnEntityRecordToReprocess.class, JnEntitySystemMessage.class, JnEntityVersionable.class
 	);
@@ -92,7 +92,7 @@ public class ValidationRulesCopyTest {
 
 		for (Class<?> entityUnderTest : ENTITIES) {
 			CcpEntityFieldsValidator validator = entityUnderTest.getAnnotation(CcpEntityFieldsValidator.class);
-			this.findLostFields(validator.classReferenceWithTheFields(), lostFields);
+			this.findLostFields(validator.value(), lostFields);
 		}
 
 		for (Class<?> messageValidator : JnInstantMessageType.class.getDeclaredClasses()) {

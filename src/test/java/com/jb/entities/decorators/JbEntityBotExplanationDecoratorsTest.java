@@ -5,7 +5,7 @@ import org.junit.Test;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.jb.entities.JbEntityBotExplanation;
-import com.jn.entities.decorators.EntityDecoratorTestTemplate;
+import com.ccp.especifications.db.utils.entity.decorators.EntityDecoratorTestTemplate;
 
 /** jb_bot_explanation: {@code @CcpEntityCache(3600)}, transformador e validador. */
 public class JbEntityBotExplanationDecoratorsTest extends EntityDecoratorTestTemplate {

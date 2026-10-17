@@ -577,7 +577,7 @@ public class CcpRandomScripts {
 		CcpHttpRequester dependency = CcpDependencyInjection.getDependency(CcpHttpRequester.class);
 
 		while (true) {
-			dependency.executeHttpRequest("http://localhost:8080/login/r066u1bd@teste.com", CcpHttpMethods.GET,
+			dependency.executeHttpRequest("http://localhost:8082/login/r066u1bd@teste.com", CcpHttpMethods.GET,
 					CcpOtherConstants.EMPTY_JSON, "");
 			ccpTimeDecorator.sleep(60_000);
 		}

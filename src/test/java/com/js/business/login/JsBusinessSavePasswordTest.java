@@ -1,4 +1,4 @@
-package com.jn.business.login;
+package com.js.business.login;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -8,7 +8,7 @@ import com.ccp.aop.CcpNullParameterException;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
-public class JnBusinessSavePasswordTest {
+public class JsBusinessSavePasswordTest {
 
 	{
 		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
@@ -16,16 +16,16 @@ public class JnBusinessSavePasswordTest {
 
 	@Test
 	public void instanceExistsTest() {
-		assertNotNull(JnBusinessSavePassword.INSTANCE);
+		assertNotNull(JsBusinessSavePassword.INSTANCE);
 	}
 
 	@Test
 	public void getJsonValidationClassTest() {
-		assertNotNull(JnBusinessSavePassword.INSTANCE.getJsonValidationClass());
+		assertNotNull(JsBusinessSavePassword.INSTANCE.getJsonValidationClass());
 	}
  
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		JnBusinessSavePassword.INSTANCE.execute(null);
+		JsBusinessSavePassword.INSTANCE.execute(null);
 	}
 }
