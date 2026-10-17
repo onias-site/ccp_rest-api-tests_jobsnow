@@ -34,6 +34,7 @@ public class BulkItemAndBucketTest {
 
 	private final CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(JnEntityAsyncTask.Fields.topic, "t");
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Test
 	public void twoItemsAreTheSameWhenEntityAndIdAreTheSame() {
 		CcpBulkItem create = new CcpBulkItem(this.json, CcpBulkEntityOperationType.create, JnEntityAsyncTask.ENTITY, "1");
@@ -45,7 +46,7 @@ public class BulkItemAndBucketTest {
 		assertEquals(create.hashCode(), delete.hashCode());
 		assertNotEquals(create, otherId);
 		assertNotEquals(create, otherEntity);
-		assertFalse(create.equals("not an item"));
+		assertFalse("not an item".equals(create));
 		Set<CcpBulkItem> unique = new HashSet<>();
 		unique.add(create);
 		unique.add(delete);

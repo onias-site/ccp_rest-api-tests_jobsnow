@@ -12,6 +12,8 @@ import com.ccp.business.CcpBusiness;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
+import com.ccp.especifications.mensageria.receiver.CcpMensageriaReceiver;
+import com.ccp.especifications.mensageria.sender.CcpMensageriaSender;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.query.elasticsearch.CcpElasticSearchQueryExecutor;
@@ -98,5 +100,31 @@ public class ReceiverOutcomeTest {
 		CcpJsonRepresentation recorded = this.run(EchoTask.class, (double) System.currentTimeMillis());
 
 		assertTrue(recorded.getAsBoolean(JnEntityAsyncTask.Fields.success));
+	}
+
+	/**
+	 * The local asynchronous messaging runs each message in a thread of its own; until 2026-10-15 a failure there was only
+	 * printed to the standard error, and the task stayed in {@code jn_async_task} with no outcome.
+	 */
+	@Test
+	public void aFailureInTheLocalAsynchronousMessagingIsRecorded() throws InterruptedException {
+		CcpJsonRepresentation message = this.message(FailingTask.class, System.currentTimeMillis())
+				.put(CcpMensageriaReceiver.JsonFieldNames.mensageriaReceiver, JnMensageriaReceiver.class.getName());
+		CcpMensageriaSender asyncMessaging = (CcpMensageriaSender) CcpLocalInstances.asyncMensageriaListener.getInstance();
+
+		asyncMessaging.sendToMensageria(FailingTask.class.getName(), message.asUgglyJson());
+
+		CcpJsonRepresentation recorded = CcpOtherConstants.EMPTY_JSON;
+		for (int attempt = 0; attempt < 40; attempt++) {
+			boolean exists = JnEntityAsyncTask.ENTITY.exists(message);
+			if (exists) {
+				recorded = JnEntityAsyncTask.ENTITY.getOneById(message);
+				break;
+			}
+			Thread.sleep(250);
+		}
+		assertTrue("the outcome was not recorded", recorded.containsField(JnEntityAsyncTask.Fields.success));
+		assertFalse(recorded.getAsBoolean(JnEntityAsyncTask.Fields.success));
+		assertTrue(recorded.toString(), recorded.getAsString(JnJsonCommonsFields.response).contains("the task failed"));
 	}
 }

@@ -5,7 +5,6 @@ import org.junit.Test;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.jn.entities.JnEntityBotCommandStepEndMessage;
-import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 
 /** jn_bot_command_step_end_message: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
 public class JnEntityBotCommandStepEndMessageDecoratorsTest extends EntityDecoratorTestTemplate {

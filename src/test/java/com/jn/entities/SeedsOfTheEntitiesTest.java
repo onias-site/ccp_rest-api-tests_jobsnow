@@ -14,20 +14,18 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
 import com.ccp.especifications.db.bulk.CcpBulkItem;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.interfaces.CcpEntityConfigurator;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.jb.entities.JbEntityBot;
 import com.jb.entities.JbEntityBotAllowedUser;
-import com.vis.entities.VisEntityCommandNotAllowedToUser;
-import com.vis.entities.VisEntitySkillFixHierarchyPending;
-import com.vis.entities.VisEntitySkillPending;
-import com.jn.entities.JnEntityBotCommandExplanation;
-import com.jn.entities.JnEntityBotCommandName;
 import com.jb.entities.JbEntityBotExplanation;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.jn.utils.JnLanguage;
+import com.vis.entities.VisEntityCommandNotAllowedToUser;
+import com.vis.entities.VisEntitySkillFixHierarchyPending;
+import com.vis.entities.VisEntitySkillPending;
 
 /**
  * Proves the initial loads ({@code getFirstRecordsToInsert}) of the jn and jb entities: every seed is a {@code create}

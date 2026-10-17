@@ -1,15 +1,15 @@
 A) Teste em ambiente local de salvamento de curriculos
-B) E-mail com curriculos
 17/10
-C) Fale conosco
+B) Estatisticas das skills 
+C) E-mail com curriculos
+D) Fale conosco
 24/10
-D) Deploy 
+E) Deploy 
 31/10
-E) Teste em ambiente remoto para aferição de futuros custos e limitações(primeira entrega)
+G) Teste em ambiente remoto para aferição de futuros custos e limitações(primeira entrega)
 31/10
-F) Novos decorators
+G) Novos decorators
 07/11
-G) Estatisticas das skills 
 H) Melhoria dos synonyms
 14/11
 I) Cadastro de vagas (segunda entrega)

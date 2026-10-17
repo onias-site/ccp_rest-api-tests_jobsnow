@@ -9,7 +9,6 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.jn.entities.JnEntityBotCommandStep;
 import com.jn.entities.subfields.JnNextStepFields;
-import com.jn.entities.decorators.EntityDecoratorTestTemplate;
 
 /** jn_bot_command_step: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
 public class JnEntityBotCommandStepDecoratorsTest extends EntityDecoratorTestTemplate {
