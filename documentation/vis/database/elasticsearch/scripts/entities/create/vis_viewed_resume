@@ -1,0 +1,16 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"alias": {
+				"type": "keyword"
+			},
+			"email": {
+				"type": "keyword"
+			},
+			"linkedin": {
+				"type": "keyword"
+			}
+		}
+	}
+}

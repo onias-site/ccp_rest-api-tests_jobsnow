@@ -124,7 +124,23 @@ public class QueryExecutorAgainstElasticsearchTest {
 
 	@Test
 	public void theIndexesAreJoinedByCommas() {
-		assertEquals("/a, b", new ElasticSearchQueryExecutor().getIndexes(new String[] { "a", "b" }));
+		assertEquals("/a,b", new ElasticSearchQueryExecutor().getIndexes(new String[] { "a", "b" }));
+	}
+
+	@Test
+	public void theTotalAndTheScrollCoverSeveralIndexes() throws Exception {
+		String secondIndex = INDEX + "_second";
+		call("DELETE", secondIndex, "");
+		call("PUT", secondIndex + "/_doc/4?refresh=true", "{\"name\":\"c\",\"value\":4}");
+		try {
+			String[] bothIndexes = { INDEX, secondIndex };
+			assertEquals(4, this.executor.total(this.allDocuments(), bothIndexes));
+			List<CcpJsonRepresentation> documents = new ArrayList<>();
+			this.executor.consumeQueryResult(this.allDocuments(), bothIndexes, "10s", 2, documents::add, "name");
+			assertEquals(4, documents.size());
+		} finally {
+			call("DELETE", secondIndex, "");
+		}
 	}
 
 	@Test

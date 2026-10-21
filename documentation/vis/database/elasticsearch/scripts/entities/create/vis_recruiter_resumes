@@ -1,0 +1,14 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"email": {
+				"type": "keyword"
+			},
+			"resumes": {
+				"type": "object",
+				"enabled": false
+			}
+		}
+	}
+}
