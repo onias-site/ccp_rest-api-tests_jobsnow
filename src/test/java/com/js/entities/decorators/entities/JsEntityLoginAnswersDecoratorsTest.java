@@ -8,7 +8,7 @@ import com.js.entities.JsEntityLoginAnswers;
 import com.ccp.especifications.db.utils.entity.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-/** js_login_answers: {@code @CcpEntityCache(3600)}, versionable, transformer and validator. */
+/** js_login_answers: {@code @CcpEntityCache(3600)}, versionable, transformer, validator and the announcement of the insert. */
 public class JsEntityLoginAnswersDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {
@@ -23,7 +23,7 @@ public class JsEntityLoginAnswersDecoratorsTest extends EntityDecoratorTestTempl
 
 	@Test
 	public void chain() {
-		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "JnVersionablePurgeEntity", "DecoratorCacheEntity", "JnVersionableEntity", "DefaultImplementationEntity");
+		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "JnVersionablePurgeEntity", "DecoratorWriteSideEffectEntity", "DecoratorCacheEntity", "JnVersionableEntity", "DefaultImplementationEntity");
 	}
 
 	@Test

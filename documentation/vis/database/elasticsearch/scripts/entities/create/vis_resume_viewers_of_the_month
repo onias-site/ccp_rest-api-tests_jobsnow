@@ -1,0 +1,16 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"domain": {
+				"type": "keyword"
+			},
+			"email": {
+				"type": "keyword"
+			},
+			"resumeGroup": {
+				"type": "keyword"
+			}
+		}
+	}
+}

@@ -199,6 +199,61 @@ public class ResumesToRecruitersTest {
 	}
 
 	@Test
+	public void aCompanyNameMadeOnlyOfSymbolsForbidsNothingButTheNextNamesStillCount() {
+		assertFalse(VisBusinessSendResumesToRecruiters.isForbiddenCompany("empresa.com.br", List.of("***")));
+		assertTrue(VisBusinessSendResumesToRecruiters.isForbiddenCompany("itau.com.br", List.of("***", "Itaú")));
+	}
+
+	private static CcpJsonRepresentation withSortKeys(Object... keys) {
+		return CcpOtherConstants.EMPTY_JSON.put(VisRecruiterResumesFields.sortKeys, Arrays.asList(keys));
+	}
+
+	@Test
+	public void theResumesAreSortedByTheFirstKeyThatDiffers() {
+		CcpJsonRepresentation lowerClt = withSortKeys(1, 8_000d, 12_000d, 2020);
+		CcpJsonRepresentation higherClt = withSortKeys(1, 9_000d, 0d, 2010);
+
+		assertTrue(VisBusinessSendResumesToRecruiters.BY_SORT_KEYS.compare(lowerClt, higherClt) < 0);
+		assertTrue(VisBusinessSendResumesToRecruiters.BY_SORT_KEYS.compare(higherClt, lowerClt) > 0);
+		assertEquals(0, VisBusinessSendResumesToRecruiters.BY_SORT_KEYS.compare(lowerClt, withSortKeys(1, 8_000d, 12_000d, 2020)));
+	}
+
+	@Test
+	public void theEmailFoldsTheRegionsBeyondTheThirdOne() {
+		String recruiter = this.recruiter("regions", "gmail.com");
+		this.saveRecruiter(recruiter);
+		String job = "Analista de cinco regioes " + this.run;
+		CcpJsonRepresentation fiveRegions = this.resume("regioes", job).put(VisEntityResume.Fields.ddd, Arrays.asList(11, 21, 31, 41, 51));
+		this.saveResume(fiveRegions);
+
+		sendTo(recruiter);
+
+		String message = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(recruiter);
+		assertTrue("the regions beyond the third one are folded: " + message, message.contains("<details>"));
+		CcpJsonRepresentation row = rowOf(rowsOf(recruiter), job);
+		assertEquals(5, row.getAsStringList(VisRecruiterResumesFields.regions).size());
+	}
+
+	@Test
+	public void theEmailShowsTheFirst40ResumesAndLinksToTheScreenWithAllOfThem() {
+		String recruiter = this.recruiter("many", "gmail.com");
+		this.saveRecruiter(recruiter);
+		int resumesOfTheTest = VisBusinessSendResumesToRecruiters.RESUMES_IN_THE_EMAIL + 1;
+		for (int index = 0; index < resumesOfTheTest; index++) {
+			this.saveResume(this.resume("muitos" + index, "Analista numero " + index + " " + this.run));
+		}
+
+		sendTo(recruiter);
+
+		List<CcpJsonRepresentation> rows = rowsOf(recruiter);
+		assertTrue("the screen \"see all\" has every resume: " + rows.size(), rows.size() >= resumesOfTheTest);
+		String message = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(recruiter);
+		assertTrue(message.contains("/meu-recrutamento/curriculos-da-semana"));
+		int linksToResumes = message.split("/recrutador/ver-curriculo\\?email=", -1).length - 1;
+		assertEquals(VisBusinessSendResumesToRecruiters.RESUMES_IN_THE_EMAIL, linksToResumes);
+	}
+
+	@Test
 	public void theLinksAreSignedForTheirPurposeAndValues() {
 		String recruiter = this.recruiter("links", "empresa.com.br");
 		String token = VisRecruiterLinks.view.sign(recruiter, "resume1");

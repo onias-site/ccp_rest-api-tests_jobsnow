@@ -5,10 +5,16 @@
 			"alias": {
 				"type": "keyword"
 			},
+			"date": {
+				"type": "keyword"
+			},
 			"email": {
 				"type": "keyword"
 			},
 			"linkedin": {
+				"type": "keyword"
+			},
+			"monthGroup": {
 				"type": "keyword"
 			}
 		}

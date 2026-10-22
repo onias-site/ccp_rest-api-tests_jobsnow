@@ -1,0 +1,16 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"entityName": {
+				"type": "keyword"
+			},
+			"writeOperation": {
+				"type": "keyword"
+			},
+			"subscribers": {
+				"type": "keyword"
+			}
+		}
+	}
+}
