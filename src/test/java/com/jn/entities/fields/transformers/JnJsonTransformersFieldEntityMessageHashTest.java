@@ -12,26 +12,26 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class JnJsonTransformersFieldEntityMessageHashTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test
 	public void constructorTest() {
-		assertNotNull(new JnJsonTransformersFieldEntityMessageHash());
+		assertNotNull(JnJsonTransformersFieldEntityMessageHash.INSTANCE);
 	}
 
 	@Test
 	public void canBePrimaryKeyTest() {
-		assertTrue(new JnJsonTransformersFieldEntityMessageHash().canBePrimaryKey());
+		assertTrue(JnJsonTransformersFieldEntityMessageHash.INSTANCE.canBePrimaryKey());
 	}
 
 	@Test
 	public void nameTest() {
-		assertNotNull(new JnJsonTransformersFieldEntityMessageHash().name());
+		assertNotNull(JnJsonTransformersFieldEntityMessageHash.INSTANCE.name());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		new JnJsonTransformersFieldEntityMessageHash().execute(null);
+		JnJsonTransformersFieldEntityMessageHash.INSTANCE.execute(null);
 	}
 }

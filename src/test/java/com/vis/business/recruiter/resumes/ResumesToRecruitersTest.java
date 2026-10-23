@@ -51,24 +51,24 @@ import com.vis.services.VisServiceRecruiterResumes;
 public class ResumesToRecruitersTest {
 
 	static {
-		CcpInstanceProvider<CcpEmailSender> email = () -> new RecordingResumesEmailSender();
+		CcpInstanceProvider<CcpEmailSender> email = () -> RecordingResumesEmailSender.INSTANCE;
 
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
 				CcpLocalInstances.bucket,
 				CcpLocalInstances.instantMessenger,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
 				email
 		);
-		List<CcpBulkItem> seeds = new VisEntityRecruiterResumes().getFirstRecordsToInsert();
+		List<CcpBulkItem> seeds = VisEntityRecruiterResumes.INSTANCE.getFirstRecordsToInsert();
 		for (CcpBulkItem seed : seeds) {
 			seed.entity.save(seed.json);
 		}

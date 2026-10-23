@@ -11,41 +11,41 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatus;
 import com.js.entities.JsEntityLoginAnswers;
-import com.jn.entities.JnEntityLoginEmail;
-import com.jn.entities.JnEntityLoginToken;
+import com.js.entities.JsEntityLoginEmail;
+import com.js.entities.JsEntityLoginToken;
 import com.jn.rest.api.commons.JnTestTemplate;
 import com.jn.rest.api.commons.TestVariables;
-import com.jn.status.login.JnProcessStatusCreateLoginToken;
+import com.js.status.login.JsProcessStatusCreateLoginToken;
 import com.jn.utils.JnLanguage;
 
 public class OnEnteringPasswordRegistrationScreen extends JnTestTemplate{
 
 	@Test
 	public void invalidEmail() {
-		this.createLoginToken(TestVariables.INVALID_EMAIL, JnProcessStatusCreateLoginToken.statusInvalidEmail);
+		this.createLoginToken(TestVariables.INVALID_EMAIL, JsProcessStatusCreateLoginToken.statusInvalidEmail);
 	} 
 	 
 	@Test
 	public void lockedToken() { 
 		TestVariables testVariables = new TestVariables();
-		CcpEntity mirrorEntity = JnEntityLoginToken.ENTITY.getTwinEntity();
+		CcpEntity mirrorEntity = JsEntityLoginToken.ENTITY.getTwinEntity();
 		mirrorEntity.save(testVariables.REQUEST_TO_LOGIN);
-		this.execute(testVariables, JnProcessStatusCreateLoginToken.statusLockedToken);
+		this.execute(testVariables, JsProcessStatusCreateLoginToken.statusLockedToken);
 	}
 	
 	@Test
 	public void missingToken() {
 		TestVariables testVariables = new TestVariables();
-		this.execute(testVariables, JnProcessStatusCreateLoginToken.statusMissingEmail);
+		this.execute(testVariables, JsProcessStatusCreateLoginToken.statusMissingEmail);
 	}
 	
 	
 	@Test
 	public void happyPath() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
-		this.execute(testVariables, JnProcessStatusCreateLoginToken.expectedStatus);
+		this.execute(testVariables, JsProcessStatusCreateLoginToken.expectedStatus);
 	} 
 
 	
@@ -54,13 +54,13 @@ public class OnEnteringPasswordRegistrationScreen extends JnTestTemplate{
 	@Test
 	public void theLanguageOfTheTokenRequestIsKeptInTheLoginEmail() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 
-		this.createLoginToken(testVariables.VALID_EMAIL, JnProcessStatusCreateLoginToken.expectedStatus, JnLanguage.english);
+		this.createLoginToken(testVariables.VALID_EMAIL, JsProcessStatusCreateLoginToken.expectedStatus, JnLanguage.english);
 
-		CcpJsonRepresentation loginEmail = JnEntityLoginEmail.ENTITY.getOneById(testVariables.REQUEST_TO_LOGIN);
-		assertEquals(loginEmail.toString(), JnLanguage.english.name(), loginEmail.getAsString(JnEntityLoginEmail.Fields.language));
+		CcpJsonRepresentation loginEmail = JsEntityLoginEmail.ENTITY.getOneById(testVariables.REQUEST_TO_LOGIN);
+		assertEquals(loginEmail.toString(), JnLanguage.english.name(), loginEmail.getAsString(JsEntityLoginEmail.Fields.language));
 	}
 
 	public String execute(TestVariables testVariables, CcpProcessStatus expectedStatus, Function<TestVariables, String> producer) {

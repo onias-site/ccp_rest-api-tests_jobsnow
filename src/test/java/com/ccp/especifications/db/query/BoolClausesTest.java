@@ -18,8 +18,8 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class BoolClausesTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpApacheMimeHttp(), new CcpElasticSearchDbRequest(),
-				new CcpElasticSearchQueryExecutor());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpApacheMimeHttp.INSTANCE, CcpElasticSearchDbRequest.INSTANCE,
+				CcpElasticSearchQueryExecutor.INSTANCE);
 	}
 
 	private static final CcpEntityField TITLE = new CcpEntityField("title", false, true, json -> json);

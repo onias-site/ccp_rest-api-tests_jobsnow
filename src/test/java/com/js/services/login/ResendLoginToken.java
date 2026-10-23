@@ -4,10 +4,10 @@ import org.junit.Test;
 
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.process.CcpProcessStatusDefault;
-import com.jn.entities.JnEntityLoginToken;
-import com.jn.entities.JnEntityLoginTokenRequestResend;
+import com.js.entities.JsEntityLoginToken;
+import com.js.entities.JsEntityLoginTokenRequestResend;
 import com.jn.rest.api.commons.TestVariables;
-import com.jn.status.login.JnProcessStatusUnlockLoginToken;
+import com.js.status.login.JsProcessStatusUnlockLoginToken;
 
 public class ResendLoginToken extends JsServiceLoginTestTemplate {
 
@@ -25,31 +25,31 @@ public class ResendLoginToken extends JsServiceLoginTestTemplate {
 	@Test
 	public void resendAlreadyDone() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginToken.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginTokenRequestResend.ENTITY.getTwinEntity().save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginToken.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginTokenRequestResend.ENTITY.getTwinEntity().save(testVariables.REQUEST_TO_LOGIN);
 
-		this.execute(testVariables.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusTokenAlredyResent);
+		this.execute(testVariables.REQUEST_TO_LOGIN, JsProcessStatusUnlockLoginToken.statusTokenAlredyResent);
 	}
 
 	@Test
 	public void tokenDoesNotExist() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginTokenRequestResend.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		this.execute(testVariables.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusTokenNotExists);
+		JsEntityLoginTokenRequestResend.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		this.execute(testVariables.REQUEST_TO_LOGIN, JsProcessStatusUnlockLoginToken.statusTokenNotExists);
 	}
 
 	@Test
 	public void resendAlreadyRequested() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginToken.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginTokenRequestResend.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		this.execute(testVariables.REQUEST_TO_LOGIN, JnProcessStatusUnlockLoginToken.statusAlreadyRequested);
+		JsEntityLoginToken.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginTokenRequestResend.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		this.execute(testVariables.REQUEST_TO_LOGIN, JsProcessStatusUnlockLoginToken.statusAlreadyRequested);
 	}
 
 	@Test
 	public void happyPath() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginToken.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginToken.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		this.execute(testVariables.REQUEST_TO_LOGIN, CcpProcessStatusDefault.OK);
 	}
 }

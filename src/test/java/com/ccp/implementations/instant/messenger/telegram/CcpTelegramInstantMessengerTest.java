@@ -19,7 +19,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class CcpTelegramInstantMessengerTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpTelegramInstantMessenger());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpTelegramInstantMessenger.INSTANCE);
 	}
 
 	private static CcpInstantMessenger getMessenger() {
@@ -34,12 +34,12 @@ public class CcpTelegramInstantMessengerTest {
 
 	@Test
 	public void constructorProviderTest() {
-		assertNotNull(new CcpTelegramInstantMessenger());
+		assertNotNull(CcpTelegramInstantMessenger.INSTANCE);
 	}
 
 	@Test
 	public void getInstanceTest() {
-		CcpInstantMessenger instance = new CcpTelegramInstantMessenger().getInstance();
+		CcpInstantMessenger instance = CcpTelegramInstantMessenger.INSTANCE.getInstance();
 		assertNotNull(instance);
 	}
 
@@ -118,7 +118,7 @@ public class CcpTelegramInstantMessengerTest {
 
 	@AfterClass
 	public static void restoreTheRealHttpRequester() {
-		CcpDependencyInjection.loadAllDependencies(new CcpApacheMimeHttp());
+		CcpDependencyInjection.loadAllDependencies(CcpApacheMimeHttp.INSTANCE);
 	}
 
 	@Test

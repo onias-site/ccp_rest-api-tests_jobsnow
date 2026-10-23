@@ -6,7 +6,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,7 +34,7 @@ import com.sun.net.httpserver.HttpServer;
  */
 public class HttpClientSafetyTest {
 
-	private final ApacheMimeHttpRequester requester = new ApacheMimeHttpRequester();
+	private final ApacheMimeHttpRequester requester = ApacheMimeHttpRequester.INSTANCE;
 
 	@Test
 	public void theCurlMasksTheCredentialHeaders() throws Exception {
@@ -84,13 +83,7 @@ public class HttpClientSafetyTest {
 	@Test(timeout = 60_000)
 	public void aBigMultipartRequestAcceptedByTheServerIsNotReportedAsAFailure() throws Exception {
 		HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 0), 0);
-		server.createContext("/", exchange -> {
-			exchange.getRequestBody().readAllBytes();
-			byte[] body = "{\"ok\":true}".getBytes(StandardCharsets.UTF_8);
-			exchange.sendResponseHeaders(200, body.length);
-			exchange.getResponseBody().write(body);
-			exchange.close();
-		});
+		server.createContext("/", OkJsonHandler.INSTANCE);
 		server.start();
 		try {
 			String url = "http://localhost:" + server.getAddress().getPort() + "/sendDocument";
@@ -116,12 +109,7 @@ public class HttpClientSafetyTest {
 	@Test(timeout = 60_000)
 	public void theConnectionsGoBackToThePool() throws Exception {
 		HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 0), 0);
-		server.createContext("/", exchange -> {
-			byte[] body = "{\"ok\":true}".getBytes(StandardCharsets.UTF_8);
-			exchange.sendResponseHeaders(200, body.length);
-			exchange.getResponseBody().write(body);
-			exchange.close();
-		});
+		server.createContext("/", OkJsonHandler.INSTANCE);
 		server.start();
 		try {
 			String url = "http://localhost:" + server.getAddress().getPort() + "/ping";

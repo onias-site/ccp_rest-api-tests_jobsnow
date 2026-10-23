@@ -11,7 +11,7 @@ import com.ccp.especifications.mensageria.sender.CcpMensageriaSender;
 public class CcpGcpPubSubMensageriaSenderTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGcpPubSubMensageriaSender());
+		CcpDependencyInjection.loadAllDependencies(CcpGcpPubSubMensageriaSender.INSTANCE);
 	}
 
 	private static CcpMensageriaSender getSender() {
@@ -22,12 +22,12 @@ public class CcpGcpPubSubMensageriaSenderTest {
 
 	@Test
 	public void constructorProviderTest() {
-		assertNotNull(new CcpGcpPubSubMensageriaSender());
+		assertNotNull(CcpGcpPubSubMensageriaSender.INSTANCE);
 	}
 
 	@Test
 	public void getInstanceTest() {
-		CcpMensageriaSender instance = new CcpGcpPubSubMensageriaSender().getInstance();
+		CcpMensageriaSender instance = CcpGcpPubSubMensageriaSender.INSTANCE.getInstance();
 		assertNotNull(instance);
 	}
 

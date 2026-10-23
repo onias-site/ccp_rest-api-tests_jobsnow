@@ -13,7 +13,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class CcpSendGridEmailSenderTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpSendGridEmailSender());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpSendGridEmailSender.INSTANCE);
 	}
 
 	private static CcpEmailSender getSender() {
@@ -24,12 +24,12 @@ public class CcpSendGridEmailSenderTest {
 
 	@Test
 	public void constructorProviderTest() {
-		assertNotNull(new CcpSendGridEmailSender());
+		assertNotNull(CcpSendGridEmailSender.INSTANCE);
 	}
 
 	@Test
 	public void getInstanceTest() {
-		CcpEmailSender instance = new CcpSendGridEmailSender().getInstance();
+		CcpEmailSender instance = CcpSendGridEmailSender.INSTANCE.getInstance();
 		assertNotNull(instance);
 	}
 

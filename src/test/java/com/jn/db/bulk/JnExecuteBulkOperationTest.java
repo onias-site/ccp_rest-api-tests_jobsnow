@@ -17,7 +17,7 @@ import com.jn.utils.JnDeleteKeysFromCache;
 public class JnExecuteBulkOperationTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test

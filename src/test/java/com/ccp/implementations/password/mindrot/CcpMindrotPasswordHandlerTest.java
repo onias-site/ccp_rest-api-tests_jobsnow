@@ -11,7 +11,7 @@ import com.ccp.especifications.password.CcpPasswordHandler;
 public class CcpMindrotPasswordHandlerTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpMindrotPasswordHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpMindrotPasswordHandler.INSTANCE);
 	}
 
 	private static CcpPasswordHandler getHandler() {
@@ -22,12 +22,12 @@ public class CcpMindrotPasswordHandlerTest {
 
 	@Test
 	public void constructorProviderTest() {
-		assertNotNull(new CcpMindrotPasswordHandler());
+		assertNotNull(CcpMindrotPasswordHandler.INSTANCE);
 	}
 
 	@Test
 	public void getInstanceTest() {
-		CcpPasswordHandler instance = new CcpMindrotPasswordHandler().getInstance();
+		CcpPasswordHandler instance = CcpMindrotPasswordHandler.INSTANCE.getInstance();
 		assertNotNull(instance);
 	}
 

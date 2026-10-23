@@ -28,7 +28,7 @@ import com.jn.entities.JnEntityJobsnowError;
 public class CcpEntityDecoratorEnumsAopNullTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static final CcpEntity ENTITY = JnEntityJobsnowError.ENTITY;

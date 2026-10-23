@@ -30,7 +30,7 @@ import com.ccp.especifications.http.CcpHttpResponse;
 import com.ccp.especifications.http.CcpHttpResponseType;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jn.entities.JnEntityAsyncTask;
+import com.jn.entities.JnEntitySupportPendingCommand;
 
 /**
  * Proves the requests and the setup messages of {@link ElasticSearchDbRequester} (finding 31): until 2026-10-07 the
@@ -40,7 +40,7 @@ import com.jn.entities.JnEntityAsyncTask;
 public class RequestHeadersTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	/** Keeps the URL and the headers of the last request and answers an empty JSON. */
@@ -61,14 +61,14 @@ public class RequestHeadersTest {
 
 	@After
 	public void restoreTheRealHttp() {
-		CcpDependencyInjection.loadAllDependencies(new CcpApacheMimeHttp());
+		CcpDependencyInjection.loadAllDependencies(CcpApacheMimeHttp.INSTANCE);
 	}
 
 	@Test
 	public void theAddressOfTheDatabaseIsNotSentAsAHeader() {
 		CapturingRequester requester = new CapturingRequester();
 		CcpDependencyInjection.loadAllDependencies(() -> requester);
-		CcpDbRequester db = new CcpElasticSearchDbRequest().getInstance();
+		CcpDbRequester db = CcpElasticSearchDbRequest.INSTANCE.getInstance();
 		String dbUrl = db.getConnectionDetails().getAsString(new CcpFieldName("DB_URL"));
 
 		db.executeHttpRequest("headers", "/_cluster/health", CcpHttpMethods.GET, 200, CcpOtherConstants.EMPTY_JSON, CcpHttpResponseType.singleRecord);
@@ -82,16 +82,16 @@ public class RequestHeadersTest {
 
 	@Test
 	public void theMappingThatIsNotStrictNamesTheEntityAndTheValueFound() throws Exception {
-		CcpEntity entity = JnEntityAsyncTask.ENTITY;
+		CcpEntity entity = JnEntitySupportPendingCommand.ENTITY;
 		String entityName = entity.getEntityMetaData().entityName;
 		File scriptsFolder = Files.createTempDirectory("ccp_strict_test").toFile();
 		File script = new File(scriptsFolder, entityName);
 		Files.write(script.toPath(), "{\"mappings\":{\"dynamic\":\"true\",\"properties\":{}}}".getBytes(StandardCharsets.UTF_8));
-		Object db = new CcpElasticSearchDbRequest().getInstance();
+		Object db = CcpElasticSearchDbRequest.INSTANCE.getInstance();
 		Method validateEntityFields = db.getClass().getDeclaredMethod("validateEntityFields", CcpEntity.class, String.class, String.class);
 		validateEntityFields.setAccessible(true);
 		try {
-			validateEntityFields.invoke(db, entity, scriptsFolder.getAbsolutePath(), "JnEntityAsyncTask");
+			validateEntityFields.invoke(db, entity, scriptsFolder.getAbsolutePath(), "JnEntitySupportPendingCommand");
 			fail("the mapping is not strict");
 		} catch (InvocationTargetException e) {
 			Throwable cause = e.getCause();

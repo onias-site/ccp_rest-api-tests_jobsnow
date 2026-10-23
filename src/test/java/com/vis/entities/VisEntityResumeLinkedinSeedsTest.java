@@ -30,14 +30,14 @@ import com.vis.messages.VisMessages;
 public class VisEntityResumeLinkedinSeedsTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(),
-				new com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp(),
-				new com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest(),
-				new com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud(),
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE,
+				com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp.INSTANCE,
+				com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest.INSTANCE,
+				com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud.INSTANCE,
 				com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances.mock);
 	}
 
-	private final List<CcpBulkItem> seeds = new VisEntityResumeLinkedin().getFirstRecordsToInsert();
+	private final List<CcpBulkItem> seeds = VisEntityResumeLinkedin.INSTANCE.getFirstRecordsToInsert();
 
 	private final String templateId = VisMessages.VisNotifySupportAboutSharedLinkedin.class.getName();
 

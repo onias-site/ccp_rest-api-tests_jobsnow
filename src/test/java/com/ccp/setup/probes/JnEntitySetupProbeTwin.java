@@ -26,6 +26,10 @@ import com.jn.utils.JnDeleteKeysFromCache;
 		functionToDeleteKeysInTheCacheClass = JnDeleteKeysFromCache.class
 		)
 public class JnEntitySetupProbeTwin implements CcpEntityConfigurator {
+	/** The single instance: the class keeps no state. */
+	public final static JnEntitySetupProbeTwin INSTANCE = new JnEntitySetupProbeTwin();
+
+	private JnEntitySetupProbeTwin() {}
 
 	/** The entity {@code jn_setup_probe_twin}. */
 	public static final CcpEntity ENTITY = new CcpEntityFactory(JnEntitySetupProbeTwin.class).entityInstance;

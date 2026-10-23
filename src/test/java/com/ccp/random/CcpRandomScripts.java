@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,12 +48,12 @@ import com.ccp.json.validations.fields.annotations.CcpJsonCopyFieldValidationsFr
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.jn.business.login.JnBusinessExecuteLogout;
-import com.jn.entities.JnEntityLoginSessionConflict;
+import com.js.business.login.JsBusinessExecuteLogout;
+import com.js.entities.JsEntityLoginSessionConflict;
 import com.jn.entities.JnEntityJobsnowError;
-import com.jn.entities.JnEntityLoginPassword;
-import com.jn.entities.JnEntityLoginSessionValidation;
-import com.jn.entities.JnEntityLoginToken;
+import com.js.entities.JsEntityLoginPassword;
+import com.js.entities.JsEntityLoginSessionValidation;
+import com.js.entities.JsEntityLoginToken;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.entities.VisEntityResume;
@@ -76,18 +75,18 @@ public class CcpRandomScripts {
 	 
 	static {
 		CcpDependencyInjection.loadAllDependencies(
-				new CcpElasticSearchQueryExecutor(), 
-				new CcpElasticSearchDbRequest(),
+				CcpElasticSearchQueryExecutor.INSTANCE, 
+				CcpElasticSearchDbRequest.INSTANCE,
 				CcpLocalInstances.syncMensageriaListener,
 				CcpLocalInstances.bucket,
 				CcpLocalInstances.email,
-				new CcpMindrotPasswordHandler(), 
-				new CcpElasticSerchDbBulk(), 
+				CcpMindrotPasswordHandler.INSTANCE, 
+				CcpElasticSerchDbBulk.INSTANCE, 
 				CcpLocalCacheInstances.map,
-				new CcpElasticSearchCrud(), 
-				new CcpGsonJsonHandler(), 
-				new CcpTelegramInstantMessenger(),				
-				new CcpApacheMimeHttp()
+				CcpElasticSearchCrud.INSTANCE, 
+				CcpGsonJsonHandler.INSTANCE, 
+				CcpTelegramInstantMessenger.INSTANCE,				
+				CcpApacheMimeHttp.INSTANCE
 				);
 	}
 
@@ -118,7 +117,7 @@ public class CcpRandomScripts {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnJsonCommonsFields.email, "onias85@gmail.com")
 				;
-		CcpEntity entity = JnEntityLoginSessionConflict.ENTITY;
+		CcpEntity entity = JsEntityLoginSessionConflict.ENTITY;
 		entity.save(json);
 		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class); 
 		for(int k = 0; k < 70; k++) {
@@ -159,26 +158,17 @@ public class CcpRandomScripts {
 				
 				synonym = synonym.put(JsonFields.parent, parent);
 				{
-					List<CcpJsonRepresentation> collect = synonym.getAsJsonList(JsonFields.synonym).stream().filter(x -> {
-						String word = x.getAsString(JsonFields.skill);
-						return word.length() > 2 && word.length() <= 50 && false == removidas.contains(word) && false == skill.equals(word);
-					}).collect(Collectors.toList());
+					List<CcpJsonRepresentation> collect = synonym.getAsJsonList(JsonFields.synonym).stream().filter(new RandomScriptsValidWord(removidas, JsonFields.skill, skill, false)).collect(Collectors.toList());
 
 					synonym = synonym.put(JsonFields.synonym, collect);
 				}
 				{
-					List<CcpJsonRepresentation> collect = synonym.getAsJsonList(JsonFields.preRequisite).stream().filter(x -> {
-						String word = x.getAsString(JsonFields.word);
-						return word.length() > 2 && word.length() <= 50 && false == removidas.contains(word);
-					}).collect(Collectors.toList());
+					List<CcpJsonRepresentation> collect = synonym.getAsJsonList(JsonFields.preRequisite).stream().filter(new RandomScriptsValidWord(removidas, JsonFields.word, "", false)).collect(Collectors.toList());
 
 					synonym = synonym.put(JsonFields.preRequisite, collect);
 				}
 				{
-					List<CcpJsonRepresentation> collect = synonym.getAsJsonList(JsonFields.similar).stream().filter(x -> {
-						String word = x.getAsString(JsonFields.word).replace("_", " ");
-						return word.length() > 2 && word.length() <= 50 && false == removidas.contains(word);
-					}).collect(Collectors.toList());
+					List<CcpJsonRepresentation> collect = synonym.getAsJsonList(JsonFields.similar).stream().filter(new RandomScriptsValidWord(removidas, JsonFields.word, "", true)).collect(Collectors.toList());
 
 					synonym = synonym.put(JsonFields.similar, collect);
 				}
@@ -217,40 +207,11 @@ public class CcpRandomScripts {
 		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
 		CcpQueryOptions query = CcpQueryOptions.INSTANCE.matchAll();
 		
-		Consumer<CcpJsonRepresentation> consumer = json -> {
-			String x = json.getAsString(JsonFields.id);
-				String[] split = x.split("@");
-				if(split.length != 2) {
-					return;
-				}
-				
-				
-			String domain = split[1];
-			
-			String[] split1 = domain.split("\\.");			
-
-			String companyName = split1[0].toUpperCase().trim();
-			
-			if(companyName.length() < 3) {
-				return;
-			}
-			
-			String capitalizedCompanyName = new CcpStringDecorator(companyName).text().capitalize().content;
-			
-			String initials = companyName.substring(0, 3);
-			
-			LinkedHashSet<String> orDefault = groupedCompanies.getOrDefault(new CcpFieldName(initials), () -> new LinkedHashSet<>());
-			orDefault.add(capitalizedCompanyName);
-			groupedCompanies = groupedCompanies.put(new CcpFieldName(initials), orDefault);
-		};
+		Consumer<CcpJsonRepresentation> consumer = RandomScriptsCompanyGrouper.INSTANCE;
 		queryExecutor.consumeQueryResult(query, new String[] {"old_recruiters"}, "1s", 10000, consumer, "id");
 
 		ArrayList<String> arrayList = new ArrayList<> (groupedCompanies.fieldSet());
-		arrayList.sort((a, b) ->{
-			Set<String> set1 = groupedCompanies.getAsObject(new CcpFieldName(a));
-			Set<String> set2 = groupedCompanies.getAsObject(new CcpFieldName(b));
-			return set2.size() - set1.size();
-		});
+		arrayList.sort(RandomScriptsGroupSizeComparator.INSTANCE);
 		
 		CcpJsonRepresentation result = CcpOtherConstants.EMPTY_JSON;
 		int total = 0;
@@ -273,20 +234,20 @@ public class CcpRandomScripts {
 				+ "    \"password\": \"Jobsnow1!\",\r\n"
 				+ "    \"token\": \"4ISALLOL\"\r\n"
 				+ "  }");
-		JnEntityLoginToken.ENTITY.save(json);
-		JnEntityLoginToken.ENTITY.delete(json);
+		JsEntityLoginToken.ENTITY.save(json);
+		JsEntityLoginToken.ENTITY.delete(json);
 	}
 
 	static void saveLoginToken() {
 		String value = "12345678";
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnJsonCommonsFields.email, "onias85@gmail.com")
-				.put(JnEntityLoginToken.Fields.token, value)
+				.put(JsEntityLoginToken.Fields.token, value)
 				.put(JnJsonCommonsFields.ip, "127.0.0.1")
 				.put(JnJsonCommonsFields.userAgent, "teste");
-		JnEntityLoginToken.ENTITY.save(json);
-		CcpJsonRepresentation oneById = JnEntityLoginToken.ENTITY.getOneById(json);
-		String token = oneById.getAsString(JnEntityLoginToken.Fields.token);
+		JsEntityLoginToken.ENTITY.save(json);
+		CcpJsonRepresentation oneById = JsEntityLoginToken.ENTITY.getOneById(json);
+		String token = oneById.getAsString(JsEntityLoginToken.Fields.token);
 		CcpPasswordHandler dependency = CcpDependencyInjection.getDependency(CcpPasswordHandler.class);
 		System.out.println(dependency.matches(value, token));
 	}
@@ -304,10 +265,7 @@ public class CcpRandomScripts {
 			return asSingleJson.content;
 		}
 		CcpFolderDecorator asFolder = fileUnderTest.asFolder();
-		asFolder.readFiles(subFile -> {
-			Map<String, Object> subJson = getJson(subFile);
-			json.put(subFile.getName().replace(".json", ""), subJson);
-		});
+		asFolder.readFiles(new RandomScriptsSubJsonCollector(json));
 		return json;
 	}
 	
@@ -321,11 +279,7 @@ public class CcpRandomScripts {
 	static void moveFileLocation() {
 		CcpFolderDecorator folder = new CcpStringDecorator("C:\\eclipse-workspaces\\ccp\\github").folder();
 
-		folder.readFiles(file -> {
-			String oldName = file.content + "\\.gitignore";
-			String newName = oldName.replace("github", "");
-			new CcpStringDecorator(oldName).file().rename(newName);
-		});
+		folder.readFiles(RandomScriptsGitignoreMover.INSTANCE);
 	}
 
 	static void testExpurgable2() {
@@ -333,7 +287,7 @@ public class CcpRandomScripts {
 				+ "  \"ip\": \"127.0.0.1\",\r\n" + "  \"password\": \"Jobsnow1!\",\r\n"
 				+ "  \"token\": \"M6ZRDQ83\",\r\n" + "  \"originalToken\": \"M6ZRDQ83\",\r\n"
 				+ "  \"userAgent\": \"Apache-HttpClient/4.5.4 (Java/17.0.9)\"\r\n" + "}");
-		testExpurgable(json, JnEntityLoginSessionValidation.ENTITY);
+		testExpurgable(json, JsEntityLoginSessionValidation.ENTITY);
 	}
 
 	static void testExpurgable() {
@@ -364,11 +318,11 @@ public class CcpRandomScripts {
 	static void testPasswordSaving() {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
 				.put(JnJsonCommonsFields.password, "123456").put(JsonFieldNames.email, "onias85@gmail.com");
-		JnEntityLoginPassword.ENTITY.save(json);
+		JsEntityLoginPassword.ENTITY.save(json);
 
 		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
 		CcpSelectUnionAll unionAll = crud.unionAll(new CcpJsonRepresentation[] { json }, JnDeleteKeysFromCache.INSTANCE,
-				JnEntityLoginPassword.ENTITY);
+				JsEntityLoginPassword.ENTITY);
 		System.out.println(unionAll);
 
 		System.out.println(com.ccp.dependency.injection.CcpDependencyInjection
@@ -383,17 +337,7 @@ public class CcpRandomScripts {
 		CcpFolderDecorator folder = new CcpStringDecorator(
 				"documentation/database/elasticsearch/scripts/entities/create").folder();
 		Map<String, List<String>> map = new TreeMap<>();
-		folder.readFiles(file -> {
-			String fileName = file.getName();
-			String javaClassName = "JnEntity" + new CcpStringDecorator(fileName).text().toCamelCase().toString();
-			CcpJsonRepresentation json = file.asSingleJson().getInnerJsonFromPath(JsonFieldNames.mappings, JsonFieldNames.properties);
-			Set<String> fields = json.fieldSet();
-			for (String field : fields) {
-				List<String> javaClassesName = map.getOrDefault(field, new ArrayList<>());
-				javaClassesName.add(javaClassName);
-				map.put(field, javaClassesName);
-			}
-		});
+		folder.readFiles(new RandomScriptsFieldsByEntityCollector(map));
 		CcpFileDecorator reset = new CcpStringDecorator("c:\\logs\\fields.txt").file().reset();
 		Set<String> keySet = map.keySet();
 		for (String string : keySet) {
@@ -416,13 +360,13 @@ public class CcpRandomScripts {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(JsonFieldNames.email, "onias85@gmail.com")
 
 		;
-		List<CcpJsonRepresentation> parametersToSearch = JnEntityLoginSessionValidation.ENTITY
+		List<CcpJsonRepresentation> parametersToSearch = JsEntityLoginSessionValidation.ENTITY
 				.getParametersToSearch(json);
 
 		System.out.println(parametersToSearch);
 
-		JnEntityLoginSessionValidation.ENTITY.getTwinEntity().save(json);
-		JnBusinessExecuteLogout.INSTANCE.execute(json);
+		JsEntityLoginSessionValidation.ENTITY.getTwinEntity().save(json);
+		JsBusinessExecuteLogout.INSTANCE.execute(json);
 	}
 
 	static void testExpurgableEntity() {
@@ -465,12 +409,7 @@ public class CcpRandomScripts {
 						mgetJson.asUgglyJson());
 		CcpJsonRepresentation asSingleJson = executeHttpRequest.asSingleJson();
 
-		List<CcpJsonRepresentation> collect = asSingleJson.getAsJsonList(JsonFieldNames.docs).stream().map(json -> {
-			String id = json.getAsString(JsonFieldNames._id);
-			CcpJsonRepresentation source = json.getInnerJson(JsonFieldNames._source);
-			CcpJsonRepresentation put = source.put(JsonFieldNames.id, id);
-			return put;
-		}).collect(Collectors.toList());
+		List<CcpJsonRepresentation> collect = asSingleJson.getAsJsonList(JsonFieldNames.docs).stream().map(RandomScriptsSourceWithId.INSTANCE).collect(Collectors.toList());
 
 		CcpJsonRepresentation resumes = CcpOtherConstants.EMPTY_JSON;
 
@@ -532,18 +471,7 @@ public class CcpRandomScripts {
 		String[] resourcesNames = new String[] { tabela };
 		CcpQueryExecutor queryExecutor = CcpDependencyInjection.getDependency(CcpQueryExecutor.class);
 		Set<Object> set = new HashSet<>();
-		queryExecutor.consumeQueryResult(query, resourcesNames, "10s", 10000, json -> {
-			for (String field : fields) {
-
-				String value = json.getAsTextDecorator(new CcpFieldName(field)).content.trim().toLowerCase();
-
-				if (value.isEmpty()) {
-					continue;
-				}
-				set.add(value);
-			}
-
-		}, fields);
+		queryExecutor.consumeQueryResult(query, resourcesNames, "10s", 10000, new RandomScriptsEmailCollector(set, fields), fields);
 		return set;
 	}
 
@@ -590,12 +518,7 @@ public class CcpRandomScripts {
 		CcpQueryOptions queryToSearchLastUpdatedResumes = CcpQueryOptions.INSTANCE.matchAll();
 		CcpFileDecorator file = new CcpStringDecorator("vagas.txt").file();
 		String[] resourcesNames = new String[] { "vagas" };
-		queryExecutor.consumeQueryResult(queryToSearchLastUpdatedResumes, resourcesNames, "10s", 10000, vaga -> {
-			String textValue = vaga.getAsString(JsonFieldNames.vaga).replace("\n", "").trim();
-			String completeLeft = new CcpStringDecorator("" + ++counter).text().completeLeft('0', 6).content;
-			file.append(completeLeft + ": " + textValue);
-//					CcpTimeDecorator.appendLog(counter);
-		}, "vaga");
+		queryExecutor.consumeQueryResult(queryToSearchLastUpdatedResumes, resourcesNames, "10s", 10000, new RandomScriptsPositionWriter(file), "vaga");
 	}
 
 }

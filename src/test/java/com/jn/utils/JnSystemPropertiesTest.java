@@ -10,7 +10,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class JnSystemPropertiesTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────

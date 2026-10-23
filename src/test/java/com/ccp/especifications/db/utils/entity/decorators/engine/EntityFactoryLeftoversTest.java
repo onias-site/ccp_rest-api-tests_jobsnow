@@ -17,7 +17,7 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.fields.CcpEntityField;
 import com.ccp.especifications.db.utils.entity.fields.annotations.CcpEntityFieldPrimaryKey;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jn.entities.JnEntityLoginToken;
+import com.js.entities.JsEntityLoginToken;
 
 /**
  * Proves the leftovers of finding 21 fixed on 2026-10-06: an entity without {@code @CcpEntityFieldsValidator} takes its
@@ -27,7 +27,7 @@ import com.jn.entities.JnEntityLoginToken;
 public class EntityFactoryLeftoversTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	/** A configurator with the {@code Fields} enum and without {@code @CcpEntityFieldsValidator}. */
@@ -50,7 +50,7 @@ public class EntityFactoryLeftoversTest {
 
 	@Test
 	public void theMetadataOfTheTwinIsBoundOnce() {
-		CcpEntity twin = JnEntityLoginToken.ENTITY.getTwinEntity();
+		CcpEntity twin = JsEntityLoginToken.ENTITY.getTwinEntity();
 
 		CcpEntityMetaData first = twin.getEntityMetaData();
 		CcpEntityMetaData second = twin.getEntityMetaData();
@@ -61,8 +61,8 @@ public class EntityFactoryLeftoversTest {
 
 	@Test
 	public void theMetadataOfTheMainEntityIsBoundOnce() {
-		CcpEntityMetaData first = JnEntityLoginToken.ENTITY.getEntityMetaData();
-		CcpEntityMetaData second = JnEntityLoginToken.ENTITY.getEntityMetaData();
+		CcpEntityMetaData first = JsEntityLoginToken.ENTITY.getEntityMetaData();
+		CcpEntityMetaData second = JsEntityLoginToken.ENTITY.getEntityMetaData();
 
 		assertNotNull(first.entity);
 		assertSame(first, second);

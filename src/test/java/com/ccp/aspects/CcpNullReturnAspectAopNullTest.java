@@ -24,14 +24,14 @@ import org.junit.Test;
 public class CcpNullReturnAspectAopNullTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	/** Test targets intercepted by the aspects because they live in {@code com.ccp..}. */
 
 
 	private static InterceptedTargets target() {
-		return new InterceptedTargets();
+		return InterceptedTargets.INSTANCE;
 	}
 
 	// ── CcpNullReturnAspect ───────────────────────────────────────────────────

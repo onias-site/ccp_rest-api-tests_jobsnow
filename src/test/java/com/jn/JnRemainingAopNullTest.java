@@ -13,7 +13,7 @@ import com.js.services.JsServiceLogin;
 public class JnRemainingAopNullTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

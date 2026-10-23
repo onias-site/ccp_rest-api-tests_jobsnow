@@ -17,10 +17,10 @@ public class CcpJsonFieldTypeTimeAfterTest {
 	private static final long ONE_DAY = 86_400_000L;
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
-	private final BusinessFieldTypeTimeAfter business = new BusinessFieldTypeTimeAfter();
+	private final BusinessFieldTypeTimeAfter business = BusinessFieldTypeTimeAfter.INSTANCE;
 
 	private CcpJsonRepresentation jsonWithDaysAhead(RulesFieldTypeTimeAfter field, long days) {
 		long currentTimeMillis = System.currentTimeMillis();

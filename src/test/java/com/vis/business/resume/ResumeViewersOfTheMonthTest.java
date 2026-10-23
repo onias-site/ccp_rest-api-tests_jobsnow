@@ -1,6 +1,7 @@
 package com.vis.business.resume;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -16,8 +17,12 @@ import org.junit.After;
 import org.junit.Test;
 
 import com.ccp.constants.CcpOtherConstants;
+import com.ccp.decorators.CcpFieldName;
+import com.ccp.hash.CcpHashAlgorithm;
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
+import com.ccp.especifications.db.crud.CcpCrud;
 import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityMetaData;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
@@ -30,17 +35,19 @@ import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.jn.entities.JnEntityGrouper;
 import com.jn.utils.JnGroupers;
 import com.vis.entities.VisEntityResume;
-import com.vis.entities.VisEntityResumeViewersOfTheMonth;
+import com.vis.entities.VisEntityResumeViewsOfTheMonth;
 import com.vis.entities.VisEntityViewedResume;
+import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.services.VisServiceResume;
 
 /**
- * Proves the viewers of the month of a resume (the screen "Quem me viu"): the first view of each recruiter counts the
- * domain of their e-mail ({@code VisBusinessCountTheFirstViewOfTheResume}, after the insert of {@code vis_viewed_resume});
- * the later views do not; recruiters of the same domain viewing at the same moment all count
- * ({@code @CcpEntityArraysAppendedOnSave}); and the screen reads the month by id
+ * Proves the views of the month of a resume (the screen "Quem me viu"): every save of {@code vis_viewed_resume} counts
+ * the domain of the recruiter in the group of counters of the resume in the month ({@code jn_grouper}, parent
+ * {@code vis_resume_views_of_the_month}, {@code @CcpEntityGrouperChildCounter}); each recruiter counts once per month;
+ * recruiters of the same domain viewing at the same moment all count; and the screen reads the month by id
  * ({@code VisBusinessResumeViewersOfTheMonth}).
  */
 public class ResumeViewersOfTheMonthTest {
@@ -52,14 +59,14 @@ public class ResumeViewersOfTheMonthTest {
 				CcpLocalInstances.bucket,
 				CcpLocalInstances.email,
 				CcpLocalInstances.instantMessenger,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp()
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE
 		);
 	}
 
@@ -83,8 +90,8 @@ public class ResumeViewersOfTheMonthTest {
 		for (CcpJsonRepresentation view : this.createdViews) {
 			VisEntityViewedResume.ENTITY.deleteAnyWhere(view);
 		}
-		CcpJsonRepresentation viewersKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityResumeViewersOfTheMonth.Fields.email, this.candidate);
-		VisEntityResumeViewersOfTheMonth.ENTITY.deleteAnyWhere(viewersKey);
+		CcpJsonRepresentation groupKey = this.groupKeyOfTheMonth();
+		JnEntityGrouper.ENTITY.deleteAnyWhere(groupKey);
 	}
 
 	private void saveResume() {
@@ -121,9 +128,24 @@ public class ResumeViewersOfTheMonthTest {
 		return view;
 	}
 
-	private void saveView(String recruiter) {
+	private CcpJsonRepresentation saveView(String recruiter) {
 		CcpJsonRepresentation view = this.view(recruiter, this.linkedin, "Dev Java visto");
 		VisEntityViewedResume.ENTITY.save(view);
+		return view;
+	}
+
+	private static String sha1(String text) {
+		return new CcpStringDecorator(text).hash().asString(CcpHashAlgorithm.SHA1);
+	}
+
+	private CcpJsonRepresentation groupKeyOfTheMonth() {
+		CcpJsonRepresentation parentJson = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityResumeViewsOfTheMonth.Fields.email, sha1(this.candidate))
+				.put(VisEntityResumeViewsOfTheMonth.Fields.monthYear, this.currentMonth);
+		String parentId = VisEntityResumeViewsOfTheMonth.ENTITY.calculateId(parentJson);
+		String parentName = VisEntityResumeViewsOfTheMonth.ENTITY.getEntityMetaData().entityName;
+		String childName = VisEntityViewedResume.ENTITY.getEntityMetaData().entityName;
+		return JnGroupers.getGroupKey(parentName, childName, parentId);
 	}
 
 	private CcpJsonRepresentation viewersOf(String month) {
@@ -141,7 +163,7 @@ public class ResumeViewersOfTheMonthTest {
 	}
 
 	private static void assertViewer(CcpJsonRepresentation viewer, String domain, int views) {
-		assertEquals(domain, viewer.getAsString(VisEntityResumeViewersOfTheMonth.Fields.domain));
+		assertEquals(domain, viewer.getAsString(VisJsonCommonsFields.domain));
 		assertEquals(Integer.valueOf(views), viewer.getAsIntegerNumber(VisBusinessResumeViewersOfTheMonth.ResponseFields.views));
 	}
 
@@ -157,7 +179,7 @@ public class ResumeViewersOfTheMonthTest {
 	}
 
 	@Test
-	public void theLaterViewsOfTheSameRecruiterDoNotCount() {
+	public void theLaterViewsOfTheSameRecruiterInTheMonthDoNotCount() {
 		this.saveResume();
 		String recruiter = this.recruiter("rh", "empresa.com.br");
 		this.saveView(recruiter);
@@ -169,6 +191,26 @@ public class ResumeViewersOfTheMonthTest {
 
 		assertEquals(1, viewers.size());
 		assertViewer(viewers.get(0), "empresa.com.br", 1);
+	}
+
+	@Test
+	public void theFirstViewOfAnotherMonthCountsAgain() {
+		this.saveResume();
+		CcpJsonRepresentation view = this.saveView(this.recruiter("rh", "empresa.com.br"));
+		// the stored view goes back to january of 2000, as if its last save had been then
+		CcpJsonRepresentation stored = VisEntityViewedResume.ENTITY.getOneById(view);
+		CcpJsonRepresentation storedInAnotherMonth = stored.put(VisEntityViewedResume.Fields.date, "15/01/2000 10:00:00");
+		CcpEntityMetaData viewDetails = VisEntityViewedResume.ENTITY.getEntityMetaData();
+		CcpJsonRepresentation viewWithHashedKey = VisEntityViewedResume.ENTITY.getJsonWithHandledPrimaryKey(view);
+		CcpJsonRepresentation viewKey = viewDetails.getOnlyExistingFields(viewWithHashedKey);
+		String viewId = VisEntityViewedResume.ENTITY.calculateId(viewKey);
+		CcpDependencyInjection.getDependency(CcpCrud.class).save(viewDetails.entityName, storedInAnotherMonth, viewId);
+
+		this.saveView(this.recruiter("rh", "empresa.com.br"));
+
+		List<CcpJsonRepresentation> viewers = this.viewersOfTheCurrentMonth();
+		assertEquals(1, viewers.size());
+		assertViewer(viewers.get(0), "empresa.com.br", 2);
 	}
 
 	@Test
@@ -194,10 +236,7 @@ public class ResumeViewersOfTheMonthTest {
 		for (int index = 0; index < SIMULTANEOUS_RECRUITERS; index++) {
 			String recruiter = this.recruiter("rh" + index + "x", "mesmaempresa.com");
 			CcpJsonRepresentation view = this.view(recruiter, this.linkedin, "Dev Java ao mesmo tempo");
-			Callable<Boolean> save = () -> {
-				start.await();
-				return VisEntityViewedResume.ENTITY.save(view);
-			};
+			Callable<Boolean> save = new SaveAfterTheStart(start, VisEntityViewedResume.ENTITY, view);
 			Future<Boolean> saving = executor.submit(save);
 			saves.add(saving);
 		}
@@ -214,47 +253,50 @@ public class ResumeViewersOfTheMonthTest {
 	}
 
 	@Test
-	public void theSaveAddsTheItemsInsteadOfReplacingThem() throws Exception {
-		CountDownLatch start = new CountDownLatch(1);
-		ExecutorService executor = Executors.newFixedThreadPool(SIMULTANEOUS_RECRUITERS);
-		List<Future<Boolean>> saves = new ArrayList<>();
-		for (int index = 0; index < SIMULTANEOUS_RECRUITERS; index++) {
-			CcpJsonRepresentation viewers = CcpOtherConstants.EMPTY_JSON
-					.put(VisEntityResumeViewersOfTheMonth.Fields.email, this.candidate)
-					.put(VisEntityResumeViewersOfTheMonth.Fields.domain, Arrays.asList("dominio" + index + ".com"));
-			Callable<Boolean> save = () -> {
-				start.await();
-				return VisEntityResumeViewersOfTheMonth.ENTITY.save(viewers);
-			};
-			Future<Boolean> saving = executor.submit(save);
-			saves.add(saving);
-		}
-		start.countDown();
-		for (Future<Boolean> saving : saves) {
-			saving.get();
-		}
-		executor.shutdown();
+	public void theGroupOfTheMonthKeepsASingleJsonOfCountersByDomain() {
+		this.saveResume();
+		this.saveView(this.recruiter("alfa", "consultoria.com"));
+		this.saveView(this.recruiter("rh", "empresa.com.br"));
+		this.saveView(this.recruiter("tech", "empresa.com.br"));
 
-		List<CcpJsonRepresentation> viewers = this.viewersOfTheCurrentMonth();
+		CcpJsonRepresentation group = JnEntityGrouper.ENTITY.getOneById(this.groupKeyOfTheMonth());
 
-		assertEquals(SIMULTANEOUS_RECRUITERS, viewers.size());
+		// the only child is a JSON text, and childCount is the number of its keys
+		List<String> children = group.getAsStringList(JnEntityGrouper.Fields.child);
+		assertEquals(1, children.size());
+		assertEquals("{\"consultoria.com\":1,\"empresa.com.br\":2}", children.get(0));
+		CcpJsonRepresentation counters = new CcpJsonRepresentation(children.get(0));
+		assertEquals(2, counters.fieldSet().size());
+		assertEquals(Integer.valueOf(2), counters.getAsIntegerNumber(new CcpFieldName("empresa.com.br")));
+		assertEquals(Integer.valueOf(1), counters.getAsIntegerNumber(new CcpFieldName("consultoria.com")));
+		assertEquals(Integer.valueOf(2), group.getAsIntegerNumber(JnEntityGrouper.Fields.childCount));
+		CcpJsonRepresentation parentJson = group.getInnerJson(JnEntityGrouper.Fields.parentJson);
+		assertEquals(sha1(this.candidate), parentJson.getAsString(VisEntityResumeViewsOfTheMonth.Fields.email));
+		assertEquals(this.currentMonth, parentJson.getAsString(VisEntityResumeViewsOfTheMonth.Fields.monthYear));
+		assertEquals(2, parentJson.fieldSet().size());
+		assertFalse(group.toString().contains(this.candidate));
 	}
 
 	@Test
-	public void theRecordOfTheMonthIsInTheGroupOfTheResume() {
+	public void theStoredViewKeepsNoParentIds() {
 		this.saveResume();
-		this.saveView(this.recruiter("rh", "empresa.com.br"));
+		CcpJsonRepresentation view = this.saveView(this.recruiter("rh", "empresa.com.br"));
 
-		CcpJsonRepresentation candidate = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, this.candidate);
-		CcpJsonRepresentation candidateWithHashedEmail = VisEntityResume.ENTITY.getJsonWithHandledPrimaryKey(candidate);
-		String resumeId = VisEntityResume.ENTITY.calculateId(candidateWithHashedEmail);
-		CcpJsonRepresentation viewersWithHashedEmail = VisEntityResumeViewersOfTheMonth.ENTITY.getJsonWithHandledPrimaryKey(candidate);
-		String viewersId = VisEntityResumeViewersOfTheMonth.ENTITY.calculateId(viewersWithHashedEmail);
-		CcpEntityMetaData resumeDetails = VisEntityResume.ENTITY.getEntityMetaData();
-		CcpEntityMetaData viewersDetails = VisEntityResumeViewersOfTheMonth.ENTITY.getEntityMetaData();
-		List<String> children = JnGroupers.getChildren(false, resumeDetails.entityName, viewersDetails.entityName, resumeId);
+		CcpJsonRepresentation stored = VisEntityViewedResume.ENTITY.getOneById(view);
 
-		assertEquals(Arrays.asList(viewersId), children);
+		assertFalse(stored.fieldSet().contains("monthGroup"));
+	}
+
+	@Test
+	public void deletingTheViewKeepsTheCounters() {
+		this.saveResume();
+		CcpJsonRepresentation view = this.saveView(this.recruiter("rh", "empresa.com.br"));
+
+		VisEntityViewedResume.ENTITY.deleteAnyWhere(view);
+
+		List<CcpJsonRepresentation> viewers = this.viewersOfTheCurrentMonth();
+		assertEquals(1, viewers.size());
+		assertViewer(viewers.get(0), "empresa.com.br", 1);
 	}
 
 	@Test

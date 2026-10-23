@@ -10,19 +10,19 @@ import com.ccp.especifications.main.authentication.CcpAuthenticationProvider;
 public class CcpGcpMainAuthenticationTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGcpMainAuthentication());
+		CcpDependencyInjection.loadAllDependencies(CcpGcpMainAuthentication.INSTANCE);
 	}
 
 	// ── provider ──────────────────────────────────────────────────────────────
 
 	@Test
 	public void constructorProviderTest() {
-		assertNotNull(new CcpGcpMainAuthentication());
+		assertNotNull(CcpGcpMainAuthentication.INSTANCE);
 	}
 
 	@Test
 	public void getInstanceTest() {
-		CcpAuthenticationProvider instance = new CcpGcpMainAuthentication().getInstance();
+		CcpAuthenticationProvider instance = CcpGcpMainAuthentication.INSTANCE.getInstance();
 		assertNotNull(instance);
 	}
 

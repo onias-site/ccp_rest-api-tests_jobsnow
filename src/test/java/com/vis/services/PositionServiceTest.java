@@ -44,14 +44,14 @@ public class PositionServiceTest {
 				CcpLocalInstances.bucket,
 				CcpLocalInstances.email,
 				CcpLocalInstances.instantMessenger,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp());
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE);
 	}
 
 	private final String email = "position" + System.currentTimeMillis() + "@jobsnow.com";

@@ -25,7 +25,7 @@ import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 public class ReplyToAfterJsonTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	/** Keeps the replyTo of each sending. */
@@ -46,7 +46,7 @@ public class ReplyToAfterJsonTest {
 	private RecordingMessenger messengerReplaced() {
 		RecordingMessenger messenger = new RecordingMessenger();
 		CcpInstanceProvider<CcpInstantMessenger> provider = () -> messenger;
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), provider);
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, provider);
 		return messenger;
 	}
 

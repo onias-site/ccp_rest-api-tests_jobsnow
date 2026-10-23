@@ -24,7 +24,7 @@ public class CacheDeletionMarksTest {
 
 	@BeforeClass
 	public static void loadDependencies() {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private final String key = "test.cache.deletion.marks." + System.nanoTime();

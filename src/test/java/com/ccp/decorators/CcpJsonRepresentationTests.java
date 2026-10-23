@@ -114,7 +114,7 @@ import com.ccp.process.CcpProcessStatusDefault;
 @SuppressWarnings("unchecked")
 public class CcpJsonRepresentationTests {
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());	
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);	
 	}
 
 	@Test
@@ -753,7 +753,7 @@ public class CcpJsonRepresentationTests {
 		} catch (RuntimeException e) {
 			assertTrue(true);
 		}
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());	
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);	
 	}
 	
 	@SuppressWarnings("unlikely-arg-type")

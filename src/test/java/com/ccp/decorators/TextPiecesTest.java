@@ -19,7 +19,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class TextPiecesTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private List<String> piecesOf(String text, String beginDelimiter, String endDelimiter) {

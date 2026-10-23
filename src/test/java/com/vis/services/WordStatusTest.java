@@ -2,7 +2,6 @@ package com.vis.services;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ccp.dependency.injection.CcpDependencyInjection;
@@ -25,13 +24,13 @@ public class WordStatusTest {
 	static {
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp());
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE);
 	}
 
 	@Test
@@ -50,14 +49,10 @@ public class WordStatusTest {
 		assertEquals(2, VisEntityGroupPositionsBySkills.getWordStatus("JAQZXYW"));
 	}
 
-	@Test(expected = StringIndexOutOfBoundsException.class)
-	public void aOneLetterWordCurrentlyBreaks() {
-		VisEntityGroupPositionsBySkills.getWordStatus("J");
-	}
-
-	@Ignore("finding 46: a word shorter than two letters has no group and should be 1, not an exception")
+	/** Finding 46, corrected in 2026-10-22: until then a one letter word broke with StringIndexOutOfBoundsException. */
 	@Test
-	public void aOneLetterWordShouldHaveNoGroup() {
+	public void aWordShorterThanTwoLettersHasNoGroup() {
 		assertEquals(1, VisEntityGroupPositionsBySkills.getWordStatus("J"));
+		assertEquals(1, VisEntityGroupPositionsBySkills.getWordStatus(""));
 	}
 }

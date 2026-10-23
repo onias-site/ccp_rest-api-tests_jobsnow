@@ -21,8 +21,8 @@ import com.ccp.especifications.db.bulk.CcpBulkItem;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jn.entities.JnEntityAsyncTask;
-import com.jn.entities.JnEntityLoginEmail;
+import com.jn.entities.JnEntitySupportPendingCommand;
+import com.js.entities.JsEntityLoginEmail;
 
 /**
  * Proves how the Elasticsearch bulk pairs each item with its line of the answer ({@link ElasticSearchBulkOperationResult}),
@@ -31,11 +31,11 @@ import com.jn.entities.JnEntityLoginEmail;
 public class BulkResultsTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpApacheMimeHttp(), new CcpElasticSearchDbRequest(), new CcpElasticSerchDbBulk());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpApacheMimeHttp.INSTANCE, CcpElasticSearchDbRequest.INSTANCE, CcpElasticSerchDbBulk.INSTANCE);
 	}
 
-	private final CcpBulkItem item = new CcpBulkItem(CcpOtherConstants.EMPTY_JSON.put(JnEntityAsyncTask.Fields.topic, "t"),
-			CcpBulkEntityOperationType.create, JnEntityAsyncTask.ENTITY, "abc");
+	private final CcpBulkItem item = new CcpBulkItem(CcpOtherConstants.EMPTY_JSON.put(JnEntitySupportPendingCommand.Fields.command, "t"),
+			CcpBulkEntityOperationType.create, JnEntitySupportPendingCommand.ENTITY, "abc");
 
 	private CcpJsonRepresentation line(String index, String id, int status) {
 		CcpJsonRepresentation details = CcpOtherConstants.EMPTY_JSON
@@ -47,7 +47,7 @@ public class BulkResultsTest {
 
 	@Test
 	public void eachItemFindsItsLineByIdAndEntity() {
-		List<CcpJsonRepresentation> answer = Arrays.asList(this.line("jn_login_email", "abc", 409), this.line("jn_async_task", "abc", 201));
+		List<CcpJsonRepresentation> answer = Arrays.asList(this.line("js_login_email", "abc", 409), this.line("jn_support_pending_command", "abc", 201));
 
 		ElasticSearchBulkOperationResult result = new ElasticSearchBulkOperationResult(this.item, answer);
 
@@ -60,8 +60,8 @@ public class BulkResultsTest {
 	@Test
 	public void anItemWithoutItsLineIsAnError() {
 		for (List<CcpJsonRepresentation> answer : Arrays.asList(
-				Arrays.asList(this.line("jn_async_task", "other", 201)),
-				Arrays.asList(this.line("jn_login_email", "abc", 201)))) {
+				Arrays.asList(this.line("jn_support_pending_command", "other", 201)),
+				Arrays.asList(this.line("js_login_email", "abc", 201)))) {
 			try {
 				new ElasticSearchBulkOperationResult(this.item, answer);
 				fail("the answer has no line for the item");
@@ -75,13 +75,13 @@ public class BulkResultsTest {
 	public void theRequestLinesAreTheSameWhenEntityAndIdAreTheSame() {
 		BulkItem line = new BulkItem(this.item);
 		BulkItem sameDocument = new BulkItem(new CcpBulkItem(this.item, CcpBulkEntityOperationType.delete));
-		BulkItem otherEntity = new BulkItem(new CcpBulkItem(this.item.json, CcpBulkEntityOperationType.create, JnEntityLoginEmail.ENTITY, "abc"));
+		BulkItem otherEntity = new BulkItem(new CcpBulkItem(this.item.json, CcpBulkEntityOperationType.create, JsEntityLoginEmail.ENTITY, "abc"));
 
 		assertEquals(line, sameDocument);
 		assertEquals(line.hashCode(), sameDocument.hashCode());
 		assertNotEquals(line, otherEntity);
 		assertNotEquals(line, "not a line");
-		assertTrue(line.toString(), line.toString().contains("id=abc") && line.toString().contains("entity=jn_async_task"));
+		assertTrue(line.toString(), line.toString().contains("id=abc") && line.toString().contains("entity=jn_support_pending_command"));
 	}
 
 	@Test

@@ -19,7 +19,7 @@ public class VisRecruiterLinksTest {
 
 	static {
 		// the system properties, where the secret is, are parsed as json
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static final String RECRUITER = "recrutador@empresa.com.br";

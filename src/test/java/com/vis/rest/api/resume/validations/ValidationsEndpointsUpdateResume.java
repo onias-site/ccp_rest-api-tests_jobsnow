@@ -7,6 +7,9 @@ import com.ccp.process.CcpProcessStatusDefault;
 import com.vis.commons.VisTestTemplate;
 
 public class ValidationsEndpointsUpdateResume  extends VisTestTemplate{
+	public final static ValidationsEndpointsUpdateResume INSTANCE = new ValidationsEndpointsUpdateResume();
+
+	private ValidationsEndpointsUpdateResume() {}
 
 //	@Test
 	public void saveResume() {

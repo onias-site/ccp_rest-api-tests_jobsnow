@@ -16,33 +16,33 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class JnJsonTransformersFieldsEntityDoNothingTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test
 	public void constructorTest() {
-		assertNotNull(new JnJsonTransformersFieldsEntityDoNothing());
+		assertNotNull(JnJsonTransformersFieldsEntityDoNothing.INSTANCE);
 	}
 
 	@Test
 	public void applyReturnsSameJsonTest() {
 		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON;
-		CcpJsonRepresentation r = new JnJsonTransformersFieldsEntityDoNothing().execute(input);
+		CcpJsonRepresentation r = JnJsonTransformersFieldsEntityDoNothing.INSTANCE.execute(input);
 		assertSame(input, r);
 	}
 
 	@Test
 	public void canBePrimaryKeyTest() {
-		assertTrue(new JnJsonTransformersFieldsEntityDoNothing().canBePrimaryKey());
+		assertTrue(JnJsonTransformersFieldsEntityDoNothing.INSTANCE.canBePrimaryKey());
 	}
 
 	@Test
 	public void nameTest() {
-		assertEquals("doNothing", new JnJsonTransformersFieldsEntityDoNothing().name());
+		assertEquals("doNothing", JnJsonTransformersFieldsEntityDoNothing.INSTANCE.name());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		new JnJsonTransformersFieldsEntityDoNothing().execute(null);
+		JnJsonTransformersFieldsEntityDoNothing.INSTANCE.execute(null);
 	}
 }

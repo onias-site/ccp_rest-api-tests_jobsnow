@@ -47,14 +47,14 @@ public class ViewedResumesOfTheMonthTest {
 				CcpLocalInstances.syncMensageriaListener,
 				CcpLocalInstances.bucket,
 				CcpLocalInstances.email,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp()
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE
 		);
 	}
 
@@ -196,14 +196,15 @@ public class ViewedResumesOfTheMonthTest {
 	}
 
 	@Test
-	public void theStoredViewKeepsTheDateAndTheGroupOfTheMonthButNoReadableValue() {
+	public void theStoredViewKeepsTheDateButNoParentIdNorReadableValue() {
 		String linkedin = this.linkedin("candidato");
 		CcpJsonRepresentation view = this.save(linkedin, "Dev Java sênior");
 
 		CcpJsonRepresentation stored = VisEntityViewedResume.ENTITY.getOneById(view);
 
 		assertTrue(stored.getAsString(VisEntityViewedResume.Fields.date).matches(DATE_REGEX));
-		assertEquals(Arrays.asList(this.groupIdOfTheMonth(this.currentMonth)), stored.getAsStringList(VisEntityViewedResume.Fields.monthGroup));
+		// oneToMany: the parents come from the view itself, no field keeps their ids
+		assertFalse(stored.fieldSet().contains("monthGroup"));
 		assertFalse(stored.toString().contains(linkedin));
 		assertFalse(stored.toString().contains(this.email));
 	}

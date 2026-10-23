@@ -5,13 +5,11 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpCollectionDecorator;
-import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpJsonFieldName;
@@ -196,17 +194,7 @@ public class SkillManager {
 		.stream()
 		.map(x -> CcpOtherConstants.EMPTY_JSON.put(JsonFields.skill, x))
 		.map(x -> x.put(JsonFields.childrenCount, new ArrayList<>(skillLines).stream().filter(skillsInThisLine -> skillsInThisLine.indexOf(x.getAsString(JsonFields.skill)) > 0).count()))
-		.map(x -> {
-			Optional<List<String>> lineStartingWithSkill = new ArrayList<>(skillLines).stream().filter(skillsInThisLine -> skillsInThisLine.indexOf(x.getAsString(JsonFields.skill)) == 0).findFirst();
-			boolean hasNoParent = false == lineStartingWithSkill.isPresent();
-			if(hasNoParent) {
-				return x;
-			}
-			List<String> skillLine = lineStartingWithSkill.get();
-			List<String> parent = skillLine.subList(1, skillLine.size());
-			CcpJsonRepresentation skillWithParent = x.put(JsonFields.parent, parent);
-			return skillWithParent;
-		})
+		.map(new SkillWithItsParents(skillLines))
 		.map(x -> x.put(JsonFields.hasNoParent, new ArrayList<>( skillLines).stream().allMatch(skillsInThisLine -> skillsInThisLine.indexOf(x.getAsString(JsonFields.skill)) != 0)))
 		.collect(Collectors.toList());
 		
@@ -304,40 +292,7 @@ public class SkillManager {
 	 * @return the comparator
 	 */
 	static Comparator<? super CcpJsonRepresentation> getSorter(String... fields){
-		Comparator<? super CcpJsonRepresentation> sorter = (a, b) -> {
-			
-			for (String field : fields) {
-				CcpStringDecorator firstFieldValue = a.getAsStringDecorator(new CcpFieldName(field));
-
-				if(firstFieldValue.isLongNumber()) {
-					Integer secondNumber = b.getAsIntegerNumber(new CcpFieldName(field));
-					Integer firstNumber = a.getAsIntegerNumber(new CcpFieldName(field));
-					int difference = secondNumber - firstNumber;
-					if(difference == 0) {
-						continue;
-					}
-					return difference;
-				}
-
-				var firstString = a.getAsString(new CcpFieldName(field));
-				var secondString = b.getAsString(new CcpFieldName(field));
-
-				if(firstFieldValue.isBoolean()) {
-					int comparison = secondString.compareTo(firstString);
-					if(comparison == 0) {
-						continue;
-					}
-					return comparison;
-				}
-				int comparison = firstString.compareTo(secondString);
-				if(comparison == 0) {
-					continue;
-				}
-				return comparison;
-			}
-			
-			return 0;
-		};
+		Comparator<? super CcpJsonRepresentation> sorter = new SkillReportSorter(fields);
 		return sorter;
 	}
 

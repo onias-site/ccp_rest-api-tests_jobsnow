@@ -15,13 +15,13 @@ import com.js.services.JsServiceLogin;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.process.CcpProcessStatusDefault;
-import com.jn.entities.JnEntityLoginEmail;
-import com.jn.entities.JnEntityLoginPassword;
-import com.jn.entities.JnEntityLoginSessionConflict;
-import com.jn.entities.JnEntityLoginToken;
+import com.js.entities.JsEntityLoginEmail;
+import com.js.entities.JsEntityLoginPassword;
+import com.js.entities.JsEntityLoginSessionConflict;
+import com.js.entities.JsEntityLoginToken;
 import com.jn.rest.api.commons.TestVariables;
-import com.jn.status.login.JnProcessStatusExecuteLogin;
-import com.jn.status.login.JnProcessStatusExistsLoginEmail;
+import com.js.status.login.JsProcessStatusExecuteLogin;
+import com.js.status.login.JsProcessStatusExistsLoginEmail;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 public class ExecuteLogin extends JsServiceLoginTestTemplate {
@@ -35,40 +35,40 @@ public class ExecuteLogin extends JsServiceLoginTestTemplate {
 	@Test
 	public void lockedToken() {
 		TestVariables testVariables = new TestVariables();
-		CcpEntity mirrorEntity = JnEntityLoginToken.ENTITY.getTwinEntity();
+		CcpEntity mirrorEntity = JsEntityLoginToken.ENTITY.getTwinEntity();
 		mirrorEntity.save(testVariables.REQUEST_TO_LOGIN);
-		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JnProcessStatusExecuteLogin.lockedToken);
+		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JsProcessStatusExecuteLogin.lockedToken);
 	}
 
 	@Test
 	public void missingToken() {
 		TestVariables testVariables = new TestVariables();
-		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JnProcessStatusExecuteLogin.missingSavingEmail);
+		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JsProcessStatusExecuteLogin.missingSavingEmail);
 	}
 
 	@Test
 	public void missingPasswordRegistration() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		com.js.entities.JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
-		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JnProcessStatusExecuteLogin.missingSavePassword);
+		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JsProcessStatusExecuteLogin.missingSavePassword);
 	}
 
 	@Test
 	public void lockedPassword() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		CcpEntity mirrorEntity = JnEntityLoginPassword.ENTITY.getTwinEntity();
+		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		CcpEntity mirrorEntity = JsEntityLoginPassword.ENTITY.getTwinEntity();
 		mirrorEntity.save(testVariables.REQUEST_TO_LOGIN);
-		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JnProcessStatusExecuteLogin.lockedPassword);
+		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JsProcessStatusExecuteLogin.lockedPassword);
 	}
 
 	@Test
 	public void userAlreadyLoggedIn() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JnProcessStatusExecuteLogin.loginConflict);
+		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JsProcessStatusExecuteLogin.loginConflict);
 	}
 
 	/**
@@ -78,8 +78,8 @@ public class ExecuteLogin extends JsServiceLoginTestTemplate {
 	@Test
 	public void refusedLoginDoesNotAnswerASessionToken() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		CcpJsonRepresentation request = CcpOtherConstants.EMPTY_JSON
 				.put(JnJsonCommonsFields.email, testVariables.VALID_EMAIL)
 				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
@@ -89,7 +89,7 @@ public class ExecuteLogin extends JsServiceLoginTestTemplate {
 			JsServiceLogin.ExecuteLogin.execute(request);
 			fail("the login of an open session was accepted");
 		} catch (CcpErrorFlowDisturb refused) {
-			assertEquals(JnProcessStatusExecuteLogin.loginConflict, refused.status);
+			assertEquals(JsProcessStatusExecuteLogin.loginConflict, refused.status);
 			assertFalse(refused.json.containsAllFields(CcpJsonCommonsFields.sessionToken));
 			assertFalse(Arrays.asList(refused.fields).contains(CcpJsonCommonsFields.sessionToken));
 		}
@@ -104,7 +104,7 @@ public class ExecuteLogin extends JsServiceLoginTestTemplate {
 	public void sessionOpenedByAPasswordSaveIsTheCurrentLogin() {
 		TestVariables testVariables = new TestVariables();
 		new SavePassword().expectedFlow(testVariables);
-		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JnProcessStatusExecuteLogin.loginConflict);
+		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JsProcessStatusExecuteLogin.loginConflict);
 	}
 
 	@Test
@@ -117,23 +117,23 @@ public class ExecuteLogin extends JsServiceLoginTestTemplate {
 	public void lockPassword() {
 		TestVariables testVariables = new TestVariables();
 		new SavePassword().expectedFlow(testVariables);
-		JnEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
-		executeLogin(testVariables, TestVariables.WRONG_PASSWORD, JnProcessStatusExecuteLogin.wrongPassword);
-		executeLogin(testVariables, TestVariables.WRONG_PASSWORD, JnProcessStatusExecuteLogin.wrongPassword);
-		executeLogin(testVariables, TestVariables.WRONG_PASSWORD, JnProcessStatusExecuteLogin.passwordLockedRecently);
-		executeLogin(testVariables, TestVariables.WRONG_PASSWORD, JnProcessStatusExecuteLogin.lockedPassword);
-		new ExistsLoginEmail().execute(testVariables, JnProcessStatusExistsLoginEmail.lockedPassword);
+		JsEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
+		executeLogin(testVariables, TestVariables.WRONG_PASSWORD, JsProcessStatusExecuteLogin.wrongPassword);
+		executeLogin(testVariables, TestVariables.WRONG_PASSWORD, JsProcessStatusExecuteLogin.wrongPassword);
+		executeLogin(testVariables, TestVariables.WRONG_PASSWORD, JsProcessStatusExecuteLogin.passwordLockedRecently);
+		executeLogin(testVariables, TestVariables.WRONG_PASSWORD, JsProcessStatusExecuteLogin.lockedPassword);
+		new ExistsLoginEmail().execute(testVariables, JsProcessStatusExistsLoginEmail.lockedPassword);
 	}
 
 	@Test
 	public void missPasswordThenGetItRight() {
 		TestVariables testVariables = new TestVariables();
 		new SavePassword().expectedFlow(testVariables);
-		JnEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
 		for (int k = 1; k < 3; k++) {
-			executeLogin(testVariables, TestVariables.WRONG_PASSWORD, JnProcessStatusExecuteLogin.wrongPassword);
+			executeLogin(testVariables, TestVariables.WRONG_PASSWORD, JsProcessStatusExecuteLogin.wrongPassword);
 		}
-		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JnProcessStatusExecuteLogin.expectedStatus);
+		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JsProcessStatusExecuteLogin.expectedStatus);
 	}
 
 	@Test
@@ -141,19 +141,19 @@ public class ExecuteLogin extends JsServiceLoginTestTemplate {
 		TestVariables testVariables = new TestVariables();
 		SavePassword savePassword = new SavePassword();
 		savePassword.expectedFlow(testVariables);
-		JnEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
 		for (int k = 1; k <= 2; k++) {
-			executeLogin(testVariables, TestVariables.WRONG_PASSWORD, JnProcessStatusExecuteLogin.wrongPassword);
+			executeLogin(testVariables, TestVariables.WRONG_PASSWORD, JsProcessStatusExecuteLogin.wrongPassword);
 		}
-		executeLogin(testVariables, TestVariables.WRONG_PASSWORD, JnProcessStatusExecuteLogin.passwordLockedRecently);
-		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JnProcessStatusExecuteLogin.lockedPassword);
+		executeLogin(testVariables, TestVariables.WRONG_PASSWORD, JsProcessStatusExecuteLogin.passwordLockedRecently);
+		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JsProcessStatusExecuteLogin.lockedPassword);
 	}
 
 	public CcpJsonRepresentation expectedFlow(TestVariables testVariables) {
 		SavePassword savePassword = new SavePassword();
 		savePassword.expectedFlow(testVariables);
-		JnEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
-		CcpJsonRepresentation loginResponse = this.executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JnProcessStatusExecuteLogin.expectedStatus);
+		JsEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
+		CcpJsonRepresentation loginResponse = this.executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JsProcessStatusExecuteLogin.expectedStatus);
 		return loginResponse;
 	}
 

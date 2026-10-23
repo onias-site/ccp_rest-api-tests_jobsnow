@@ -19,7 +19,7 @@ import org.junit.Test;
 public class CcpJsonFieldInterfacesAopNullTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;

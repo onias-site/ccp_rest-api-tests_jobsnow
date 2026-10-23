@@ -8,7 +8,7 @@ import org.junit.Test;
 public class CcpCronTasksControllerTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 

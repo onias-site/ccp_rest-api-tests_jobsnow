@@ -8,6 +8,10 @@ import com.ccp.json.validations.global.interfaces.CcpJsonValidator;
  * rest, so when it reports an error it interrupts the other class validations.
  */
 public class CriticalContractValidator implements CcpJsonValidator {
+	/** The single instance: the class keeps no state. */
+	public final static CriticalContractValidator INSTANCE = new CriticalContractValidator();
+
+	private CriticalContractValidator() {}
 
 	public static final String MESSAGE = "O tipo de contrato e obrigatorio e sem ele nada mais pode ser avaliado";
 

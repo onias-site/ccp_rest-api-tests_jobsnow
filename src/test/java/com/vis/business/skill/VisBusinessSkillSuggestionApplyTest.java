@@ -40,14 +40,14 @@ public class VisBusinessSkillSuggestionApplyTest {
 				CcpLocalInstances.bucket,
 				CcpLocalInstances.instantMessenger,
 				CcpLocalInstances.email,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp()
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE
 		);
 	}
 
@@ -64,7 +64,7 @@ public class VisBusinessSkillSuggestionApplyTest {
 			CcpJsonRepresentation approvedSkill = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillApproved.Fields.skill, SKILL);
 			CcpJsonRepresentation approved = approvedSkill.put(VisEntitySkillApproved.Fields.synonym, Arrays.asList("TESTE SINONIMO COMUM", "TESTE SINONIMO NOVO"));
 
-			new VisBusinessSkillSuggestionApply().execute(approved);
+			VisBusinessSkillSuggestionApply.INSTANCE.execute(approved);
 
 			CcpJsonRepresentation skillRecord = VisEntitySkill.ENTITY.getOneById(skillKey);
 			List<String> synonyms = skillRecord.getAsStringList(VisEntitySkill.Fields.synonym);

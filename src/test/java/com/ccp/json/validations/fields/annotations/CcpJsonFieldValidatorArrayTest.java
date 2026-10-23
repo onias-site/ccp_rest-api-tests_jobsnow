@@ -19,10 +19,10 @@ import com.ccp.json.validations.fields.enums.CcpJsonFieldTypeError;
 public class CcpJsonFieldValidatorArrayTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
-	private final BusinessValidatorArray business = new BusinessValidatorArray();
+	private final BusinessValidatorArray business = BusinessValidatorArray.INSTANCE;
 
 	private CcpJsonRepresentation json(RulesValidatorArray field, Object value) {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(field, value);

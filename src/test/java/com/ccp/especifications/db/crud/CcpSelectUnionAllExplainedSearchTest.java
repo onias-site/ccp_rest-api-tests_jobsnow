@@ -34,10 +34,10 @@ public class CcpSelectUnionAllExplainedSearchTest {
 
 	static {
 		CcpDependencyInjection.loadAllDependencies(
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
-				new CcpElasticSearchDbRequest(),
-				new CcpElasticSearchCrud(),
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
 				CcpLocalCacheInstances.mock);
 	}
 

@@ -11,14 +11,14 @@ import org.junit.Test;
 public class JnBusinessSendHttpRequestTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 
 
 	@Test
 	public void constructorTest() {
-		assertNotNull(new JnBusinessSendHttpRequest(new NoopExecutor(), JnMessageSenderExceptionHandler.THROWS));
+		assertNotNull(new JnBusinessSendHttpRequest(NoopExecutor.INSTANCE, JnMessageSenderExceptionHandler.THROWS));
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -28,6 +28,6 @@ public class JnBusinessSendHttpRequestTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		new JnBusinessSendHttpRequest(new NoopExecutor(), JnMessageSenderExceptionHandler.THROWS).execute(null);
+		new JnBusinessSendHttpRequest(NoopExecutor.INSTANCE, JnMessageSenderExceptionHandler.THROWS).execute(null);
 	}
 }

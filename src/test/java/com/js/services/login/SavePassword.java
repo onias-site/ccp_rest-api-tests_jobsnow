@@ -10,12 +10,12 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.js.entities.JsEntityLoginAnswers;
-import com.jn.entities.JnEntityLoginEmail;
-import com.jn.entities.JnEntityLoginPassword;
-import com.jn.entities.JnEntityLoginSessionConflict;
-import com.jn.entities.JnEntityLoginToken;
+import com.js.entities.JsEntityLoginEmail;
+import com.js.entities.JsEntityLoginPassword;
+import com.js.entities.JsEntityLoginSessionConflict;
+import com.js.entities.JsEntityLoginToken;
 import com.jn.rest.api.commons.TestVariables;
-import com.jn.status.login.JnProcessStatusUpdatePassword;
+import com.js.status.login.JsProcessStatusUpdatePassword;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 public class SavePassword extends JsServiceLoginTestTemplate {
@@ -25,44 +25,44 @@ public class SavePassword extends JsServiceLoginTestTemplate {
 		TestVariables testVariables = withInvalidEmail();
 		CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
 				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
-				.put(JnEntityLoginToken.Fields.token, "abcdefgh");
+				.put(JsEntityLoginToken.Fields.token, "abcdefgh");
 		this.execute(body, CcpProcessStatusDefault.UNPROCESSABLE_ENTITY);
 	}
 
 	@Test
 	public void lockedToken() {
 		TestVariables testVariables = new TestVariables();
-		CcpEntity mirrorEntity = JnEntityLoginToken.ENTITY.getTwinEntity();
+		CcpEntity mirrorEntity = JsEntityLoginToken.ENTITY.getTwinEntity();
 		mirrorEntity.save(testVariables.REQUEST_TO_LOGIN);
 		String token = getTokenToValidateLogin(testVariables);
 		CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
 				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
-				.put(JnEntityLoginToken.Fields.token, token);
-		this.execute(body, JnProcessStatusUpdatePassword.lockedToken);
+				.put(JsEntityLoginToken.Fields.token, token);
+		this.execute(body, JsProcessStatusUpdatePassword.lockedToken);
 	}
 
 	@Test
 	public void missingToken() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
-		JnEntityLoginEmail.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginEmail.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
 		CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
 				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
-				.put(JnEntityLoginToken.Fields.token, "12345678");
-		this.execute(body, JnProcessStatusUpdatePassword.missingEmail);
+				.put(JsEntityLoginToken.Fields.token, "12345678");
+		this.execute(body, JsProcessStatusUpdatePassword.missingEmail);
 	}
 
 	@Test
 	public void performUnlocks() {
 		TestVariables testVariables = new TestVariables();
-		CcpEntity mirrorEntity = JnEntityLoginPassword.ENTITY.getTwinEntity();
+		CcpEntity mirrorEntity = JsEntityLoginPassword.ENTITY.getTwinEntity();
 		mirrorEntity.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		this.expectedFlow(testVariables);
 		// the status alone does not prove the unlock: the password must leave the locked twin for the main entity
 		boolean stillLocked = mirrorEntity.exists(testVariables.REQUEST_TO_LOGIN);
-		boolean savedInTheMainEntity = JnEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
+		boolean savedInTheMainEntity = JsEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
 		assertFalse(stillLocked);
 		assertTrue(savedInTheMainEntity);
 	}
@@ -75,7 +75,7 @@ public class SavePassword extends JsServiceLoginTestTemplate {
 
 	@Test(expected = CcpJsonValidationError.class)
 	public void invalidJson() {
-		this.execute(CcpOtherConstants.EMPTY_JSON, JnProcessStatusUpdatePassword.invalidJson);
+		this.execute(CcpOtherConstants.EMPTY_JSON, JsProcessStatusUpdatePassword.invalidJson);
 	}
 
 	@Test
@@ -86,13 +86,13 @@ public class SavePassword extends JsServiceLoginTestTemplate {
 		for (int k = 1; k < 3; k++) {
 			CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
 					.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
-					.put(JnEntityLoginToken.Fields.token, "abcdefgh");
-			this.execute(body, JnProcessStatusUpdatePassword.wrongToken);
+					.put(JsEntityLoginToken.Fields.token, "abcdefgh");
+			this.execute(body, JsProcessStatusUpdatePassword.wrongToken);
 		}
 		CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
 				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
-				.put(JnEntityLoginToken.Fields.token, token);
-		this.execute(body, JnProcessStatusUpdatePassword.expectedStatus);
+				.put(JsEntityLoginToken.Fields.token, token);
+		this.execute(body, JsProcessStatusUpdatePassword.expectedStatus);
 	}
 
 	@Test
@@ -103,17 +103,17 @@ public class SavePassword extends JsServiceLoginTestTemplate {
 		for (int k = 1; k <= 2; k++) {
 			CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
 					.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
-					.put(JnEntityLoginToken.Fields.token, "abcdefgh");
-			this.execute(body, JnProcessStatusUpdatePassword.wrongToken);
+					.put(JsEntityLoginToken.Fields.token, "abcdefgh");
+			this.execute(body, JsProcessStatusUpdatePassword.wrongToken);
 		}
 		CcpJsonRepresentation bodyWrong = testVariables.REQUEST_TO_LOGIN
 				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
-				.put(JnEntityLoginToken.Fields.token, "abcdefgh");
-		this.execute(bodyWrong, JnProcessStatusUpdatePassword.tokenLockedRecently);
+				.put(JsEntityLoginToken.Fields.token, "abcdefgh");
+		this.execute(bodyWrong, JsProcessStatusUpdatePassword.tokenLockedRecently);
 		CcpJsonRepresentation bodyRight = testVariables.REQUEST_TO_LOGIN
 				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
-				.put(JnEntityLoginToken.Fields.token, token);
-		this.execute(bodyRight, JnProcessStatusUpdatePassword.lockedToken);
+				.put(JsEntityLoginToken.Fields.token, token);
+		this.execute(bodyRight, JsProcessStatusUpdatePassword.lockedToken);
 	}
 
 	public CcpJsonRepresentation expectedFlow(TestVariables testVariables) {
@@ -122,8 +122,8 @@ public class SavePassword extends JsServiceLoginTestTemplate {
 		String token = this.getToken(testVariables);
 		CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
 				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
-				.put(JnEntityLoginToken.Fields.token, token);
-		return this.execute(body, JnProcessStatusUpdatePassword.expectedStatus);
+				.put(JsEntityLoginToken.Fields.token, token);
+		return this.execute(body, JsProcessStatusUpdatePassword.expectedStatus);
 	}
 
 	/**
@@ -133,14 +133,14 @@ public class SavePassword extends JsServiceLoginTestTemplate {
 	 * transformers — would refuse.
 	 */
 	private String getToken(TestVariables testVariables) {
-		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginToken.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginToken.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		String token = testVariables.REQUEST_TO_LOGIN.getAsString(JnJsonCommonsFields.originalToken);
 		return token;
 	}
 
 	private String getTokenToValidateLogin(TestVariables testVariables) {
-		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		return "12345678";
 	}

@@ -24,7 +24,7 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 public class TemporaryReplacementTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), CcpLocalCacheInstances.map);
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpLocalCacheInstances.map);
 	}
 
 	/** An interface that no other test registers. */
@@ -41,14 +41,14 @@ public class TemporaryReplacementTest {
 
 	/** Implementation that declares no interface of its own, like an enum constant with a body. */
 	public static class InheritedGreeter extends PlainGreeter {
+		/** The single instance: the class keeps no state. */
+		public final static InheritedGreeter INSTANCE = new InheritedGreeter();
+
+		private InheritedGreeter() {}
+
 		public String greet() {
 			return "hi";
 		}
-	}
-
-	/** Raised by the business of the tests. */
-	@SuppressWarnings("serial")
-	static class BusinessFailed extends RuntimeException {
 	}
 
 	@Test
@@ -57,11 +57,7 @@ public class TemporaryReplacementTest {
 		CcpCache replacement = CcpLocalCacheInstances.mock.getInstance();
 		AtomicBoolean ran = new AtomicBoolean();
 
-		CcpDependencyInjection.replaceDependenciesTemporally(CcpOtherConstants.EMPTY_JSON, json -> {
-			assertEquals(replacement.getClass(), CcpDependencyInjection.getDependency(CcpCache.class).getClass());
-			ran.set(true);
-			return json;
-		}, CcpLocalCacheInstances.mock);
+		CcpDependencyInjection.replaceDependenciesTemporally(CcpOtherConstants.EMPTY_JSON, new TemporaryReplacementCacheCheck(replacement.getClass(), ran), CcpLocalCacheInstances.mock);
 
 		assertTrue(ran.get());
 		assertSame(before, CcpDependencyInjection.getDependency(CcpCache.class));
@@ -72,11 +68,9 @@ public class TemporaryReplacementTest {
 		CcpCache before = CcpDependencyInjection.getDependency(CcpCache.class);
 
 		try {
-			CcpDependencyInjection.replaceDependenciesTemporally(CcpOtherConstants.EMPTY_JSON, json -> {
-				throw new BusinessFailed();
-			}, CcpLocalCacheInstances.mock);
+			CcpDependencyInjection.replaceDependenciesTemporally(CcpOtherConstants.EMPTY_JSON, TemporaryReplacementFailingBusiness.INSTANCE, CcpLocalCacheInstances.mock);
 			fail("the business throws");
-		} catch (BusinessFailed expected) {
+		} catch (TemporaryReplacementBusinessFailed expected) {
 		}
 
 		assertSame(before, CcpDependencyInjection.getDependency(CcpCache.class));
@@ -86,10 +80,7 @@ public class TemporaryReplacementTest {
 	public void anInterfaceWithoutImplementationBeforeIsLeftWithoutOne() {
 		CcpDependencyInjection.removeDependecy(Greeter.class);
 
-		String greeting = CcpDependencyInjection.replaceDependenciesTemporally(CcpOtherConstants.EMPTY_JSON, json -> {
-			String greetingInside = CcpDependencyInjection.getDependency(Greeter.class).greet();
-			return json.put(new com.ccp.decorators.CcpFieldName("greeting"), greetingInside);
-		}, () -> new PlainGreeter()).getAsString(new com.ccp.decorators.CcpFieldName("greeting"));
+		String greeting = CcpDependencyInjection.replaceDependenciesTemporally(CcpOtherConstants.EMPTY_JSON, TemporaryReplacementGreeting.INSTANCE, () -> new PlainGreeter()).getAsString(TemporaryReplacementGreeting.greeting);
 
 		assertEquals("hello", greeting);
 		assertFalse(CcpDependencyInjection.hasDependency(Greeter.class));
@@ -98,7 +89,7 @@ public class TemporaryReplacementTest {
 	@Test
 	public void anImplementationWithoutInterfaceOfItsOwnIsRegisteredUnderTheInheritedOne() {
 		try {
-			CcpDependencyInjection.loadAllDependencies(() -> new InheritedGreeter());
+			CcpDependencyInjection.loadAllDependencies(() -> InheritedGreeter.INSTANCE);
 
 			assertEquals("hi", CcpDependencyInjection.getDependency(Greeter.class).greet());
 		} finally {

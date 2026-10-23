@@ -18,10 +18,10 @@ import com.ccp.json.validations.fields.enums.CcpJsonFieldTypeError;
 public class CcpJsonCopyFieldValidationsFromTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
-	private final BusinessCopyFieldValidationsFrom business = new BusinessCopyFieldValidationsFrom();
+	private final BusinessCopyFieldValidationsFrom business = BusinessCopyFieldValidationsFrom.INSTANCE;
 
 	private CcpJsonRepresentation json(Object value) {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesCopyFieldValidationsFrom.apelido, value);

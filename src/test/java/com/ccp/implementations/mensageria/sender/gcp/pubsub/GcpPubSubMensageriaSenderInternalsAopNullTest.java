@@ -13,7 +13,7 @@ import org.junit.Test;
 public class GcpPubSubMensageriaSenderInternalsAopNullTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGcpPubSubMensageriaSender());
+		CcpDependencyInjection.loadAllDependencies(CcpGcpPubSubMensageriaSender.INSTANCE);
 	}
 
 

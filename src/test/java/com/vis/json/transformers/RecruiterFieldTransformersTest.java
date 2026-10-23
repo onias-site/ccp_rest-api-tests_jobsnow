@@ -37,14 +37,14 @@ public class RecruiterFieldTransformersTest {
 				CcpLocalInstances.bucket,
 				CcpLocalInstances.instantMessenger,
 				CcpLocalInstances.email,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp()
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE
 		);
 	}
 
@@ -54,7 +54,7 @@ public class RecruiterFieldTransformersTest {
 
 	@Test
 	public void theDomainIsTheWholeTextAfterTheAt() {
-		CcpJsonRepresentation transformed = new VisJsonTransformerRecruiterDomain().execute(recruiter("maria@rh.empresa.com.br"));
+		CcpJsonRepresentation transformed = VisJsonTransformerRecruiterDomain.INSTANCE.execute(recruiter("maria@rh.empresa.com.br"));
 
 		assertEquals("rh.empresa.com.br", transformed.getAsString(VisEntityRecruiter.Fields.domain));
 	}
@@ -63,14 +63,14 @@ public class RecruiterFieldTransformersTest {
 	public void aRecruiterWithoutEmailHasNoDomain() {
 		CcpJsonRepresentation withoutEmail = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.source, "test");
 
-		CcpJsonRepresentation transformed = new VisJsonTransformerRecruiterDomain().execute(withoutEmail);
+		CcpJsonRepresentation transformed = VisJsonTransformerRecruiterDomain.INSTANCE.execute(withoutEmail);
 
 		assertSame(withoutEmail, transformed);
 	}
 
 	@Test
 	public void theDomainTransformerNamesItsFieldAndCanBePartOfAKey() {
-		VisJsonTransformerRecruiterDomain transformer = new VisJsonTransformerRecruiterDomain();
+		VisJsonTransformerRecruiterDomain transformer = VisJsonTransformerRecruiterDomain.INSTANCE;
 
 		assertEquals(VisEntityRecruiter.Fields.domain.name(), transformer.name());
 		assertTrue(transformer.canBePrimaryKey());
@@ -78,14 +78,14 @@ public class RecruiterFieldTransformersTest {
 
 	@Test
 	public void aCompanyEmailIsProfessional() {
-		CcpJsonRepresentation transformed = new VisJsonTransformerRecruiterProfessional().execute(recruiter("maria@empresa.com.br"));
+		CcpJsonRepresentation transformed = VisJsonTransformerRecruiterProfessional.INSTANCE.execute(recruiter("maria@empresa.com.br"));
 
 		assertTrue(transformed.getAsBoolean(VisEntityRecruiter.Fields.professional));
 	}
 
 	@Test
 	public void aWebmailEmailIsNotProfessional() {
-		CcpJsonRepresentation transformed = new VisJsonTransformerRecruiterProfessional().execute(recruiter("maria@hotmail.com"));
+		CcpJsonRepresentation transformed = VisJsonTransformerRecruiterProfessional.INSTANCE.execute(recruiter("maria@hotmail.com"));
 
 		assertFalse(transformed.getAsBoolean(VisEntityRecruiter.Fields.professional));
 	}
@@ -94,14 +94,14 @@ public class RecruiterFieldTransformersTest {
 	public void aRecruiterWithoutEmailIsNotClassified() {
 		CcpJsonRepresentation withoutEmail = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.source, "test");
 
-		CcpJsonRepresentation transformed = new VisJsonTransformerRecruiterProfessional().execute(withoutEmail);
+		CcpJsonRepresentation transformed = VisJsonTransformerRecruiterProfessional.INSTANCE.execute(withoutEmail);
 
 		assertSame(withoutEmail, transformed);
 	}
 
 	@Test
 	public void theProfessionalTransformerNamesItsFieldAndCanNotBePartOfAKey() {
-		VisJsonTransformerRecruiterProfessional transformer = new VisJsonTransformerRecruiterProfessional();
+		VisJsonTransformerRecruiterProfessional transformer = VisJsonTransformerRecruiterProfessional.INSTANCE;
 
 		assertEquals(VisEntityRecruiter.Fields.professional.name(), transformer.name());
 		assertFalse("it depends on a list kept in the database", transformer.canBePrimaryKey());
@@ -111,7 +111,7 @@ public class RecruiterFieldTransformersTest {
 	public void theLinkedinIsKeptOnlyAsAStableHash() {
 		String linkedin = "https://www.linkedin.com/in/alguem";
 		CcpJsonRepresentation view = CcpOtherConstants.EMPTY_JSON.put(VisEntityViewedResume.Fields.linkedin, linkedin);
-		VisJsonTransformerLinkedinHash transformer = new VisJsonTransformerLinkedinHash();
+		VisJsonTransformerLinkedinHash transformer = VisJsonTransformerLinkedinHash.INSTANCE;
 
 		String hash = transformer.execute(view).getAsString(VisEntityViewedResume.Fields.linkedin);
 		String sameHash = transformer.execute(view).getAsString(VisEntityViewedResume.Fields.linkedin);
@@ -125,14 +125,14 @@ public class RecruiterFieldTransformersTest {
 	public void aViewWithoutLinkedinGoesThroughUntouched() {
 		CcpJsonRepresentation withoutLinkedin = CcpOtherConstants.EMPTY_JSON.put(VisEntityViewedResume.Fields.alias, "apelido");
 
-		CcpJsonRepresentation transformed = new VisJsonTransformerLinkedinHash().execute(withoutLinkedin);
+		CcpJsonRepresentation transformed = VisJsonTransformerLinkedinHash.INSTANCE.execute(withoutLinkedin);
 
 		assertSame(withoutLinkedin, transformed);
 	}
 
 	@Test
 	public void theLinkedinTransformerNamesItsFieldAndCanBePartOfAKey() {
-		VisJsonTransformerLinkedinHash transformer = new VisJsonTransformerLinkedinHash();
+		VisJsonTransformerLinkedinHash transformer = VisJsonTransformerLinkedinHash.INSTANCE;
 
 		assertEquals(VisEntityViewedResume.Fields.linkedin.name(), transformer.name());
 		assertTrue(transformer.canBePrimaryKey());

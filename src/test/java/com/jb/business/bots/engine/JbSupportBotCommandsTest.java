@@ -7,8 +7,8 @@ import org.junit.Test;
 public class JbSupportBotCommandsTest {
 
 	@Test
-	public void solveLoginTokenTicketExistsTest() {
-		assertNotNull(JbSupportBotCommands.solveLoginTokenTicket);
+	public void pendingTicketsExistsTest() {
+		assertNotNull(JbSupportBotCommands.pendingTickets);
 	}
 
 	@Test
@@ -18,6 +18,6 @@ public class JbSupportBotCommandsTest {
  
 	@Test
 	public void valueOfTest() {
-		assertNotNull(JbSupportBotCommands.valueOf("solveLoginTokenTicket"));
+		assertNotNull(JbSupportBotCommands.valueOf("pendingTickets"));
 	}
 }

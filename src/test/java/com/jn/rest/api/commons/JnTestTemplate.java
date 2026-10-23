@@ -11,10 +11,6 @@ import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
-import com.ccp.especifications.db.query.CcpQueryExecutorDecorator;
-import com.ccp.especifications.db.query.CcpQueryOptions;
-import com.ccp.especifications.db.utils.CcpDbRequester;
-import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityMetaData;
 import com.ccp.especifications.email.CcpEmailSender;
 import com.ccp.especifications.http.CcpHttpHandler;
 import com.ccp.especifications.http.CcpHttpMethods;
@@ -30,11 +26,11 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
+import com.ccp.local.testings.implementations.CcpLocalMensageriaRunningMarks;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatus;
 import com.ccp.especifications.db.utils.entity.decorators.CountingEmailSender;
 import com.ccp.especifications.db.utils.entity.decorators.CountingInstantMessenger;
-import com.jn.entities.JnEntityAsyncTask;
 
 
 public abstract class JnTestTemplate {
@@ -53,21 +49,20 @@ public abstract class JnTestTemplate {
 	 */
 	@BeforeClass
 	public static void loadDependencies() {
-		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> new CountingInstantMessenger();
-		CcpInstanceProvider<CcpEmailSender> email = () -> new CountingEmailSender();
+		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> CountingInstantMessenger.INSTANCE;
+		CcpInstanceProvider<CcpEmailSender> email = () -> CountingEmailSender.INSTANCE;
 
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
-				// counts the asynchronous tasks still running (see waitForTheAsynchronousWrites)
-				new CcpElasticSearchQueryExecutor(),
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
+				CcpElasticSearchQueryExecutor.INSTANCE,
 				telegram,
 				email
 				);
@@ -122,41 +117,19 @@ public abstract class JnTestTemplate {
 	 * Waits until every asynchronous task the request started has finished: the APIs run with the asynchronous mensageria
 	 * and answer before writing (the login answers the token before the session exists, the password registration before
 	 * the password is saved), so the next step of a flow saw the old state (401 {@code invalidSession}, 202
-	 * {@code missingSavePassword}). A task is saved in {@code jn_async_task} before the answer and gets {@code success} when
-	 * it ends, and a task started by another one is saved before the first one ends; the index is refreshed before each
-	 * count because a new task is not searchable before the refresh of Elasticsearch.
+	 * {@code missingSavePassword}). Each message of the asynchronous mensageria leaves a running mark before the answer
+	 * ({@link CcpLocalMensageriaRunningMarks}), and a task started by another one is marked before the first one ends.
+	 * Only the marks published strictly after the request count: the setup of a test writes in this JVM through the
+	 * synchronous mensageria, which leaves no mark, but the API may still be ending the writes of an earlier request.
 	 * @param requestStart when the request was sent
 	 * @throws JnErrorAsynchronousWritesDidNotEnd when some task does not end in {@value #MAX_WAIT_FOR_ASYNC_WRITES} ms
 	 */
 	protected void waitForTheAsynchronousWrites(long requestStart) {
-		CcpDbRequester database = CcpDependencyInjection.getDependency(CcpDbRequester.class);
-		CcpEntityMetaData asyncTaskMetaData = JnEntityAsyncTask.ENTITY.getEntityMetaData();
-		String asyncTaskIndex = asyncTaskMetaData.entityName;
-		String[] asyncTaskIndexes = new String[] {asyncTaskIndex};
-		String startedField = JnEntityAsyncTask.Fields.started.name();
-		String successField = JnEntityAsyncTask.Fields.success.name();
-
-		CcpQueryOptions unfinishedTasksStartedByTheRequest = CcpQueryOptions.INSTANCE
-				.startQuery()
-					.startBool()
-						.startMust()
-							.startRange().startFieldRange(startedField).greaterThanEquals(requestStart).endFieldRangeAndBackToRange().endRangeAndBackToMust()
-						.endMustAndBackToBool()
-						.startMustNot()
-							.exists(successField)
-						.endMustNotAndBackToBool()
-					.endBoolAndBackToQuery()
-				.endQueryAndBackToRequest();
-
-		CcpQueryExecutorDecorator unfinishedTasks = unfinishedTasksStartedByTheRequest.selectFrom(asyncTaskIndex);
-		String refreshPath = ElasticsearchPaths.refresh.getValue();
 		long deadline = requestStart + MAX_WAIT_FOR_ASYNC_WRITES;
 
 		while (System.currentTimeMillis() < deadline) {
-			database.executeHttpRequest(refreshPath, refreshPath, CcpHttpMethods.POST, 200, CcpOtherConstants.EMPTY_JSON, asyncTaskIndexes, CcpHttpResponseType.singleRecord);
-			long unfinishedCount = unfinishedTasks.total();
-			boolean allTasksEnded = unfinishedCount == 0;
-			if (allTasksEnded) {
+			boolean someTaskIsRunning = CcpLocalMensageriaRunningMarks.isAnyRunningPublishedAfter(requestStart);
+			if (false == someTaskIsRunning) {
 				return;
 			}
 			this.pause();
@@ -165,7 +138,7 @@ public abstract class JnTestTemplate {
 		throw timeout;
 	}
 
-	/** Waits a little before counting the unfinished tasks again. */
+	/** Waits a little before looking at the running tasks again. */
 	private void pause() {
 		try {
 			Thread.sleep(PAUSE_BETWEEN_COUNTS);
@@ -178,18 +151,8 @@ public abstract class JnTestTemplate {
 	/** How long, in ms, the asynchronous writes of a request may take. */
 	private static final long MAX_WAIT_FOR_ASYNC_WRITES = 30_000;
 
-	/** The pause, in ms, between two counts of the unfinished tasks. */
+	/** The pause, in ms, between two looks at the running tasks. */
 	private static final long PAUSE_BETWEEN_COUNTS = 100;
-
-	/** The paths of Elasticsearch used here. */
-	enum ElasticsearchPaths implements CcpJsonFieldName {
-		/** Makes the recent writes of the index searchable. */
-		refresh {
-			public String getValue() {
-				return "/_refresh";
-			}
-		}
-	}
 
 	/** Some asynchronous task of the request did not end in time. */
 	@SuppressWarnings("serial")

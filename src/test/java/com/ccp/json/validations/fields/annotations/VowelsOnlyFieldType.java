@@ -3,7 +3,6 @@ package com.ccp.json.validations.fields.annotations;
 import java.lang.reflect.Field;
 import java.util.function.Predicate;
 
-import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.json.validations.fields.interfaces.CcpJsonFieldType;
 import com.ccp.json.validations.fields.interfaces.CcpJsonFieldValidatorInterface;
@@ -13,14 +12,13 @@ import com.ccp.json.validations.fields.interfaces.CcpJsonFieldValidatorInterface
  * compatible. It proves that the engine instantiates and consults the class given in the annotation.
  */
 public class VowelsOnlyFieldType implements CcpJsonFieldType {
+	/** The single instance: the class keeps no state. */
+	public final static VowelsOnlyFieldType INSTANCE = new VowelsOnlyFieldType();
+
+	private VowelsOnlyFieldType() {}
 
 	public Predicate<CcpJsonRepresentation> evaluateCompatibleType(String fieldName) {
-		return json -> {
-			CcpFieldName ccpFieldName = new CcpFieldName(fieldName);
-			String value = json.getAsString(ccpFieldName);
-			boolean onlyVowels = value.matches("^[aeiouAEIOU]+$");
-			return onlyVowels;
-		};
+		return new VowelsOnlyCompatibility(fieldName);
 	}
 
 	public boolean hasRuleExplanation(Field field) {

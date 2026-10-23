@@ -38,10 +38,10 @@ public class QueryExecutorAgainstElasticsearchTest {
 
 	static {
 		CcpDependencyInjection.loadAllDependencies(
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
-				new CcpElasticSearchDbRequest(),
-				new CcpElasticSearchQueryExecutor());
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpElasticSearchQueryExecutor.INSTANCE);
 	}
 
 	private static String call(String method, String path, String body) throws Exception {
@@ -124,7 +124,7 @@ public class QueryExecutorAgainstElasticsearchTest {
 
 	@Test
 	public void theIndexesAreJoinedByCommas() {
-		assertEquals("/a,b", new ElasticSearchQueryExecutor().getIndexes(new String[] { "a", "b" }));
+		assertEquals("/a,b", ElasticSearchQueryExecutor.INSTANCE.getIndexes(new String[] { "a", "b" }));
 	}
 
 	@Test
@@ -148,10 +148,7 @@ public class QueryExecutorAgainstElasticsearchTest {
 		List<Integer> pageSizes = new ArrayList<>();
 		List<CcpJsonRepresentation> documents = new ArrayList<>();
 
-		this.executor.consumeQueryResult(this.allDocuments(), this.index, "10s", 2L, page -> {
-			pageSizes.add(page.size());
-			documents.addAll(page);
-		}, "name");
+		this.executor.consumeQueryResult(this.allDocuments(), this.index, "10s", 2L, new PageCollector(pageSizes, documents), "name");
 
 		assertEquals(3, documents.size());
 		assertEquals(Integer.valueOf(2), pageSizes.get(0));

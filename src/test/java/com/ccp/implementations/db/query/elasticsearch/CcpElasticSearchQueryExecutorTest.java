@@ -23,15 +23,15 @@ public class CcpElasticSearchQueryExecutorTest {
 
 	public CcpElasticSearchQueryExecutorTest() {
 		CcpDependencyInjection.loadAllDependencies(
-				new CcpElasticSearchQueryExecutor(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchDbRequest(), 
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchDbRequest.INSTANCE, 
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(), 
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(), 
-				new CcpApacheMimeHttp() 
+				CcpElasticSerchDbBulk.INSTANCE, 
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE, 
+				CcpApacheMimeHttp.INSTANCE 
 				);
 	}
 
@@ -47,12 +47,12 @@ public class CcpElasticSearchQueryExecutorTest {
 
 	@Test
 	public void constructorProviderTest() {
-		assertNotNull(new CcpElasticSearchQueryExecutor());
+		assertNotNull(CcpElasticSearchQueryExecutor.INSTANCE);
 	}
 
 	@Test
 	public void getInstanceTest() {
-		CcpQueryExecutor instance = new CcpElasticSearchQueryExecutor().getInstance();
+		CcpQueryExecutor instance = CcpElasticSearchQueryExecutor.INSTANCE.getInstance();
 		assertNotNull(instance);
 	}
 

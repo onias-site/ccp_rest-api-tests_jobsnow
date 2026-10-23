@@ -26,20 +26,21 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.jb.business.bots.login.token.JbSupportLoginTokenTypes;
+import com.js.business.bots.JsSupportBotCommands;
+import com.js.business.bots.login.token.JsSupportLoginTokenTypes;
 import com.jn.business.messages.JnInstantMessageType;
 import com.jn.business.messages.JnMessages;
 import com.jn.entities.JnEntityInstantMessengerMessageSent;
 import com.jn.entities.JnEntityInstantMessengerTemplateMessage;
-import com.jn.entities.JnEntityLoginToken;
-import com.jn.entities.JnEntityLoginTokenRequestUnlock;
+import com.js.entities.JsEntityLoginToken;
+import com.js.entities.JsEntityLoginTokenRequestUnlock;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 
 /**
  * Exercises the handling of a token unlock ticket from start to finish: the message arrives the way
  * the Telegram reader delivers it, the {@code Bot} identifies the command and the
- * {@code JbSupportLoginToken} engine solves the ticket.
+ * {@code JsSupportLoginToken} engine solves the ticket.
  *
  * <p>The database is the real Elasticsearch, as in the other flow tests, because that is where
  * {@code JbBotEngine} reads the whole bot configuration from. Telegram and the e-mail provider, on the
@@ -60,13 +61,13 @@ public class UnlockTokenThroughSupportBotTest {
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
 				telegram,
 				email
 		);
@@ -104,7 +105,7 @@ public class UnlockTokenThroughSupportBotTest {
 		CcpJsonRepresentation user = this.user();
 
 		// saving to the twin deletes the record from the main entity: that is how the token gets locked
-		JnEntityLoginToken.ENTITY.getTwinEntity().save(user);
+		JsEntityLoginToken.ENTITY.getTwinEntity().save(user);
 
 		this.openUnlockTicket(user);
 
@@ -131,7 +132,7 @@ public class UnlockTokenThroughSupportBotTest {
 
 		this.deleteAlreadySentPendingTicketNotice();
 
-		JnEntityLoginTokenRequestUnlock.ENTITY.save(user);
+		JsEntityLoginTokenRequestUnlock.ENTITY.save(user);
 	}
 
 	@Test
@@ -165,13 +166,13 @@ public class UnlockTokenThroughSupportBotTest {
 		CcpJsonRepresentation user = this.user();
 
 		// 2) the previous token left login_token and its twin; what is there now is the new token
-		CcpEntity lockedToken = JnEntityLoginToken.ENTITY.getTwinEntity();
+		CcpEntity lockedToken = JsEntityLoginToken.ENTITY.getTwinEntity();
 		assertFalse(lockedToken.exists(user));
-		assertTrue(JnEntityLoginToken.ENTITY.exists(user));
+		assertTrue(JsEntityLoginToken.ENTITY.exists(user));
 
 		// 3) the ticket left the main entity and is in the twin
-		CcpEntity handledTicket = JnEntityLoginTokenRequestUnlock.ENTITY.getTwinEntity();
-		assertFalse(JnEntityLoginTokenRequestUnlock.ENTITY.exists(user));
+		CcpEntity handledTicket = JsEntityLoginTokenRequestUnlock.ENTITY.getTwinEntity();
+		assertFalse(JsEntityLoginTokenRequestUnlock.ENTITY.exists(user));
 		assertTrue(handledTicket.exists(user));
 	}
 
@@ -208,7 +209,7 @@ public class UnlockTokenThroughSupportBotTest {
 	 * there.
 	 */
 	private void resaveMessageTemplates() {
-		JnEntityInstantMessengerTemplateMessage configurator = new JnEntityInstantMessengerTemplateMessage();
+		JnEntityInstantMessengerTemplateMessage configurator = JnEntityInstantMessengerTemplateMessage.INSTANCE;
 		List<CcpBulkItem> templates = configurator.getFirstRecordsToInsert();
 		for (CcpBulkItem template : templates) {
 			template.entity.save(template.json);
@@ -227,8 +228,8 @@ public class UnlockTokenThroughSupportBotTest {
 	 */
 	private void deleteAlreadySentPendingTicketNotice() {
 
-		String noticeText = "/" + JbSupportBotCommands.solveLoginTokenTicket + " "
-				+ JbSupportLoginTokenTypes.unlockToken + " " + USER_EMAIL + " ";
+		String noticeText = "/" + JsSupportBotCommands.solveLoginTokenTicket + " "
+				+ JsSupportLoginTokenTypes.unlockToken + " " + USER_EMAIL + " ";
 
 		double chatIdAsTheDatabaseReturnsIt = SUPPORT_CHAT.doubleValue();
 

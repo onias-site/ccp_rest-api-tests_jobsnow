@@ -29,13 +29,13 @@ public class ProcedureWithoutFieldsTest {
 
 	static {
 		CcpDependencyInjection.loadAllDependencies(
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp());
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE);
 	}
 
 	@Test

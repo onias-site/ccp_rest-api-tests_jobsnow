@@ -19,10 +19,10 @@ public class CcpQueryOptionsAopNullTest {
 
 	static {
 		CcpDependencyInjection.loadAllDependencies(
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
-				new CcpElasticSearchDbRequest(),
-				new CcpElasticSearchQueryExecutor());
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpElasticSearchQueryExecutor.INSTANCE);
 	}
 
 	private static final CcpEntityField FIELD = CcpEntityField.TIMESTAMP;
@@ -609,8 +609,7 @@ public class CcpQueryOptionsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executorConsumeQueryResultScrollTimeNullTest() {
-		executor().consumeQueryResult(null, 10, json -> {
-		}, "f");
+		executor().consumeQueryResult(null, 10, json -> {}, "f");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -620,8 +619,7 @@ public class CcpQueryOptionsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executorConsumeQueryResultFieldsNullTest() {
-		executor().consumeQueryResult("1m", 10, json -> {
-		}, (String[]) null);
+		executor().consumeQueryResult("1m", 10, json -> {}, (String[]) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

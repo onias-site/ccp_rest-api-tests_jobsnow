@@ -26,8 +26,8 @@ import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.jn.entities.JnEntityAsyncTask;
-import com.jn.entities.JnEntityLoginEmail;
+import com.jn.entities.JnEntitySupportPendingCommand;
+import com.js.entities.JsEntityLoginEmail;
 
 /**
  * Proves the Elasticsearch CRUD ({@code CcpCrud}) on an index of its own, created before and dropped after the tests:
@@ -40,8 +40,8 @@ public class CrudAgainstElasticsearchTest {
 	private static final HttpClient HTTP = HttpClient.newHttpClient();
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpApacheMimeHttp(), new CcpElasticSearchDbRequest(),
-				new CcpElasticSearchCrud(), CcpLocalCacheInstances.mock);
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpApacheMimeHttp.INSTANCE, CcpElasticSearchDbRequest.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE, CcpLocalCacheInstances.mock);
 	}
 
 	private static void call(String method, String path) throws Exception {
@@ -93,21 +93,21 @@ public class CrudAgainstElasticsearchTest {
 
 	@Test
 	public void theMultipleGetAsksForEveryIdInEveryEntity() {
-		ElasticSearchCrud elasticSearchCrud = new ElasticSearchCrud();
+		ElasticSearchCrud elasticSearchCrud = ElasticSearchCrud.INSTANCE;
 
 		CcpJsonRepresentation body = elasticSearchCrud.getRequestBodyToMultipleGet(new LinkedHashSet<>(Arrays.asList("1", "2")),
-				JnEntityAsyncTask.ENTITY, JnEntityLoginEmail.ENTITY);
+				JnEntitySupportPendingCommand.ENTITY, JsEntityLoginEmail.ENTITY);
 
 		List<CcpJsonRepresentation> docs = body.getAsJsonList(new CcpFieldName("docs"));
 		assertEquals(4, docs.size());
-		assertEquals("jn_async_task", docs.get(0).getAsString(new CcpFieldName("_index")));
+		assertEquals("jn_support_pending_command", docs.get(0).getAsString(new CcpFieldName("_index")));
 		assertEquals("2", docs.get(1).getAsString(new CcpFieldName("_id")));
 	}
 
 	@Test
 	public void aMultipleGetWithoutAnyCompleteKeyIsUnfeasible() {
 		try {
-			this.crud.getUnionAllExecutor().unionAll(Arrays.asList(CcpOtherConstants.EMPTY_JSON), JnEntityAsyncTask.ENTITY);
+			this.crud.getUnionAllExecutor().unionAll(Arrays.asList(CcpOtherConstants.EMPTY_JSON), JnEntitySupportPendingCommand.ENTITY);
 			fail("no record has the primary key of the entity");
 		} catch (RuntimeException e) {
 			assertTrue(e.getClass().getName(), e.getClass().getName().endsWith("CcpErrorCrudMultiGetSearchUnfeasible"));

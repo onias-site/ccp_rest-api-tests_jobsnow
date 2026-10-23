@@ -22,7 +22,7 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 public class SessionJsonProducersTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private final CcpFieldName answer = new CcpFieldName("answer");

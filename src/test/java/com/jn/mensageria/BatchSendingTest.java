@@ -31,13 +31,13 @@ public class BatchSendingTest {
 	static {
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp());
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE);
 	}
 
 	static final AtomicInteger RECORDED_RUNS = new AtomicInteger();
@@ -46,6 +46,11 @@ public class BatchSendingTest {
 
 	/** A task that may be recorded as an asynchronous task. */
 	public static class RecordedTask implements CcpBusiness {
+		/** The single instance: the class keeps no state. */
+		public final static RecordedTask INSTANCE = new RecordedTask();
+
+		private RecordedTask() {}
+
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			RECORDED_RUNS.incrementAndGet();
 			return json;
@@ -54,6 +59,11 @@ public class BatchSendingTest {
 
 	/** A task that declines being recorded as an asynchronous task. */
 	public static class UnrecordedTask implements CcpBusiness {
+		/** The single instance: the class keeps no state. */
+		public final static UnrecordedTask INSTANCE = new UnrecordedTask();
+
+		private UnrecordedTask() {}
+
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			UNRECORDED_RUNS.incrementAndGet();
 			return json;
@@ -71,8 +81,8 @@ public class BatchSendingTest {
 	public void eachMessageOfTheBatchRunsTheTaskOnce() {
 		RECORDED_RUNS.set(0);
 
-		new JnFunctionMensageriaSender(new RecordedTask()).sendToMensageria(Arrays.asList(this.message(1), this.message(2)));
-		new JnFunctionMensageriaSender(new RecordedTask()).sendToMensageria(this.message(3));
+		new JnFunctionMensageriaSender(RecordedTask.INSTANCE).sendToMensageria(Arrays.asList(this.message(1), this.message(2)));
+		new JnFunctionMensageriaSender(RecordedTask.INSTANCE).sendToMensageria(this.message(3));
 
 		assertEquals(3, RECORDED_RUNS.get());
 	}
@@ -81,7 +91,7 @@ public class BatchSendingTest {
 	public void aTaskThatDeclinesBeingRecordedStillRunsInABatch() {
 		UNRECORDED_RUNS.set(0);
 
-		new JnFunctionMensageriaSender(new UnrecordedTask()).sendToMensageria(this.message(1), this.message(2));
+		new JnFunctionMensageriaSender(UnrecordedTask.INSTANCE).sendToMensageria(this.message(1), this.message(2));
 
 		assertEquals(2, UNRECORDED_RUNS.get());
 	}
@@ -90,7 +100,7 @@ public class BatchSendingTest {
 	public void theSingleSendingRunsTheTaskEvenWhenItDeclinesBeingRecorded() {
 		UNRECORDED_RUNS.set(0);
 
-		new JnFunctionMensageriaSender(new UnrecordedTask()).execute(this.message(1));
+		new JnFunctionMensageriaSender(UnrecordedTask.INSTANCE).execute(this.message(1));
 
 		assertEquals(1, UNRECORDED_RUNS.get());
 	}

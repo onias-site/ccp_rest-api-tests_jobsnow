@@ -22,10 +22,10 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.CcpEntityOperationType;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jn.entities.JnEntityLoginSessionValidation;
+import com.js.entities.JsEntityLoginSessionValidation;
 import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityJobsnowError;
-import com.jn.entities.JnEntityLoginTokenRequestResend;
+import com.js.entities.JsEntityLoginTokenRequestResend;
 import org.junit.Test;
 
 /**
@@ -42,7 +42,7 @@ public class CcpEntityEngineAopNullTest {
 	 * gets to run. Nothing here touches the database — both methods used return a field name.
 	 */
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpElasticSearchDbRequest());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpElasticSearchDbRequest.INSTANCE);
 	}
 
 	static final CcpEntity ENTITY = JnEntityJobsnowError.ENTITY;
@@ -329,7 +329,7 @@ public class CcpEntityEngineAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void factoryGetCustomEntityConfiguratorDecoratorsNullTest() {
-		CcpEntityFactory.getCustomEntity(new JnEntityJobsnowError(), (CcpEntityDecoratorTypes[]) null);
+		CcpEntityFactory.getCustomEntity(JnEntityJobsnowError.INSTANCE, (CcpEntityDecoratorTypes[]) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -647,13 +647,13 @@ public class CcpEntityEngineAopNullTest {
 	// ── DecoratorWriteSideEffectEntity ──────────────────────────────────────
 
 	private static DecoratorWriteSideEffectEntity writeSideEffectDecorator(CcpEntityOperationPhase phase) {
-		return new DecoratorWriteSideEffectEntity(ENTITY, JnEntityLoginTokenRequestResend.class, CcpBeforeSaveFromMainEntity.class, phase,
+		return new DecoratorWriteSideEffectEntity(ENTITY, JsEntityLoginTokenRequestResend.class, CcpBeforeSaveFromMainEntity.class, phase,
 				CcpEntityDecoratorOperationType.save, CcpEntityPhase.mainEntity, CcpEntitySideEffectBusinesses.operation);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void writeSideEffectDecoratorConstructorEntityNullTest() {
-		new DecoratorWriteSideEffectEntity(null, JnEntityLoginTokenRequestResend.class, CcpBeforeSaveFromMainEntity.class, CcpEntityOperationPhase._before,
+		new DecoratorWriteSideEffectEntity(null, JsEntityLoginTokenRequestResend.class, CcpBeforeSaveFromMainEntity.class, CcpEntityOperationPhase._before,
 				CcpEntityDecoratorOperationType.save, CcpEntityPhase.mainEntity, CcpEntitySideEffectBusinesses.operation);
 	}
 
@@ -665,7 +665,7 @@ public class CcpEntityEngineAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void writeSideEffectDecoratorConstructorSideEffectNullTest() {
-		new DecoratorWriteSideEffectEntity(ENTITY, JnEntityLoginTokenRequestResend.class, CcpBeforeSaveFromMainEntity.class, CcpEntityOperationPhase._before,
+		new DecoratorWriteSideEffectEntity(ENTITY, JsEntityLoginTokenRequestResend.class, CcpBeforeSaveFromMainEntity.class, CcpEntityOperationPhase._before,
 				CcpEntityDecoratorOperationType.save, CcpEntityPhase.mainEntity, null);
 	}
 
@@ -782,12 +782,12 @@ public class CcpEntityEngineAopNullTest {
 	// ── DecoratorTwinEntity ───────────────────────────────────────────────────
 
 	private static DecoratorTwinEntity twinDecorator() {
-		return new DecoratorTwinEntity(ENTITY, JnEntityLoginSessionValidation.class);
+		return new DecoratorTwinEntity(ENTITY, JsEntityLoginSessionValidation.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void twinDecoratorConstructorEntityNullTest() {
-		new DecoratorTwinEntity(null, JnEntityLoginSessionValidation.class);
+		new DecoratorTwinEntity(null, JsEntityLoginSessionValidation.class);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

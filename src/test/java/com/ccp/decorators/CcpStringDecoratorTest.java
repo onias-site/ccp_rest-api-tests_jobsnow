@@ -20,7 +20,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class CcpStringDecoratorTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	// ── construtores ──────────────────────────────────────────────────────────

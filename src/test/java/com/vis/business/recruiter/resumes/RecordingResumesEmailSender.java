@@ -11,6 +11,10 @@ import com.ccp.especifications.http.CcpHttpContentType;
 
 /** E-mail sender of the tests that sends nothing and keeps the last message of each recipient, with its subject. */
 public class RecordingResumesEmailSender implements CcpEmailSender {
+	/** The single instance: the class keeps no state. */
+	public final static RecordingResumesEmailSender INSTANCE = new RecordingResumesEmailSender();
+
+	private RecordingResumesEmailSender() {}
 
 	/** The last "subject + message" of each recipient. */
 	public static final Map<String, String> LAST_MESSAGE_BY_RECIPIENT = new LinkedHashMap<>();

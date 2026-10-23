@@ -31,7 +31,7 @@ public class HashConcurrencyTest {
 	private static final int HASHES_PER_THREAD = 3000;
 
 	/** The SHA-1 computed with a digest of its own, as the reference. */
-	private static BigInteger expectedSha1(String text) throws Exception {
+	static BigInteger expectedSha1(String text) throws Exception {
 		MessageDigest digest = MessageDigest.getInstance("SHA1");
 		byte[] hash = digest.digest(text.getBytes(StandardCharsets.UTF_8));
 		return new BigInteger(hash);
@@ -44,19 +44,7 @@ public class HashConcurrencyTest {
 			List<Future<Integer>> wrongHashesPerThread = new ArrayList<>();
 
 			for (int thread = 0; thread < THREADS; thread++) {
-				int threadNumber = thread;
-				Callable<Integer> hashing = () -> {
-					int wrongHashes = 0;
-					for (int k = 0; k < HASHES_PER_THREAD; k++) {
-						String text = "thread " + threadNumber + " record " + k + " " + "x".repeat(k % 50);
-						BigInteger computed = new CcpStringDecorator(text).hash().asBigInteger(CcpHashAlgorithm.SHA1);
-						boolean isWrong = false == expectedSha1(text).equals(computed);
-						if (isWrong) {
-							wrongHashes++;
-						}
-					}
-					return wrongHashes;
-				};
+				Callable<Integer> hashing = new HashConcurrencyHashing(thread, HASHES_PER_THREAD);
 				wrongHashesPerThread.add(executor.submit(hashing));
 			}
 

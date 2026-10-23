@@ -21,7 +21,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class CcpFileDecoratorTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static final String BASE = System.getProperty("java.io.tmpdir") + "/ccp_file_test/";

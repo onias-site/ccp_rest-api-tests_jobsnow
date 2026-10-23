@@ -16,7 +16,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.jn.entities.JnEntityAsyncTask;
+import com.jn.entities.JnEntitySupportPendingCommand;
 
 /**
  * Proves {@link CcpCacheDecorator} over the in-memory cache: the key of an entity record, the composed keys, reading
@@ -25,16 +25,16 @@ import com.jn.entities.JnEntityAsyncTask;
 public class CacheDecoratorBehaviorTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), CcpLocalCacheInstances.map);
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpLocalCacheInstances.map);
 	}
 
 	private final String base = "test.cache." + System.nanoTime();
 
 	@Test
 	public void theKeyOfARecordNamesTheEntityAndTheId() {
-		CcpCacheDecorator cache = new CcpCacheDecorator(JnEntityAsyncTask.ENTITY, "abc");
+		CcpCacheDecorator cache = new CcpCacheDecorator(JnEntitySupportPendingCommand.ENTITY, "abc");
 
-		assertEquals("records.entity.jn_async_task.id.abc", cache.key);
+		assertEquals("records.entity.jn_support_pending_command.id.abc", cache.key);
 		assertEquals(cache.key, cache.toString());
 	}
 

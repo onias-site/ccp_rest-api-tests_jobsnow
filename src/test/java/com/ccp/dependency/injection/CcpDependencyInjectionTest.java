@@ -13,12 +13,12 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class CcpDependencyInjectionTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test
 	public void loadAndGetDependencyTest() {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 		assertTrue(CcpDependencyInjection.hasDependency(CcpJsonHandler.class));
 		assertNotNull(CcpDependencyInjection.getDependency(CcpJsonHandler.class));
 	}
@@ -31,12 +31,12 @@ public class CcpDependencyInjectionTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void replaceDependenciesTemporallyJsonNullTest() {
-		CcpDependencyInjection.replaceDependenciesTemporally(null, j -> j, new CcpGsonJsonHandler());
+		CcpDependencyInjection.replaceDependenciesTemporally(null, j -> j, CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void replaceDependenciesTemporallyBusinessNullTest() {
-		CcpDependencyInjection.replaceDependenciesTemporally(CcpOtherConstants.EMPTY_JSON, null, new CcpGsonJsonHandler());
+		CcpDependencyInjection.replaceDependenciesTemporally(CcpOtherConstants.EMPTY_JSON, null, CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Test;
@@ -25,17 +24,13 @@ import com.sun.net.httpserver.HttpServer;
 public class SendGridContentTypeTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpApacheMimeHttp(), new CcpSendGridEmailSender());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpApacheMimeHttp.INSTANCE, CcpSendGridEmailSender.INSTANCE);
 	}
 
 	private String send(CcpHttpContentType contentType) throws Exception {
 		AtomicReference<String> received = new AtomicReference<>();
 		HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 0), 0);
-		server.createContext("/", exchange -> {
-			received.set(new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8));
-			exchange.sendResponseHeaders(202, -1);
-			exchange.close();
-		});
+		server.createContext("/", new SendGridBodyKeepingHandler(received));
 		server.start();
 		try {
 			String url = "http://localhost:" + server.getAddress().getPort() + "/v3/mail/send";

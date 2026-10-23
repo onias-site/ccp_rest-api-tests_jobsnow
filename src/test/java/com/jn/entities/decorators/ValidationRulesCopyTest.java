@@ -25,7 +25,6 @@ import com.jn.entities.JnEntityBotCommandStepStartMessage;
 import com.jb.entities.JbEntityBotExplanation;
 import com.jb.entities.JbEntityBotUpdateId;
 import com.jn.business.messages.JnInstantMessageType;
-import com.jn.entities.JnEntityAsyncTask;
 import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityEmailParametersToSend;
@@ -41,17 +40,16 @@ import com.jn.entities.JnEntityInstantMessengerTemplateMessage;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityJobsnowWarning;
 import com.js.entities.JsEntityLoginAnswers;
-import com.jn.entities.JnEntityLoginEmail;
-import com.jn.entities.JnEntityLoginPassword;
+import com.js.entities.JsEntityLoginEmail;
+import com.js.entities.JsEntityLoginPassword;
 import com.js.entities.JsEntityLoginPasswordAttempts;
-import com.jn.entities.JnEntityLoginSessionConflict;
-import com.jn.entities.JnEntityLoginSessionTokenAttempts;
-import com.jn.entities.JnEntityLoginSessionValidation;
-import com.js.entities.JsEntityLoginStats;
-import com.jn.entities.JnEntityLoginToken;
-import com.jn.entities.JnEntityLoginTokenAttempts;
-import com.jn.entities.JnEntityLoginTokenRequestResend;
-import com.jn.entities.JnEntityLoginTokenRequestUnlock;
+import com.js.entities.JsEntityLoginSessionConflict;
+import com.js.entities.JsEntityLoginSessionTokenAttempts;
+import com.js.entities.JsEntityLoginSessionValidation;
+import com.js.entities.JsEntityLoginToken;
+import com.js.entities.JsEntityLoginTokenAttempts;
+import com.js.entities.JsEntityLoginTokenRequestResend;
+import com.js.entities.JsEntityLoginTokenRequestUnlock;
 import com.jn.entities.JnEntityMessageDidNotSent;
 import com.jn.entities.JnEntityRecordToReprocess;
 import com.jn.entities.JnEntitySystemMessage;
@@ -72,17 +70,16 @@ public class ValidationRulesCopyTest {
 			JnEntityBotCommandName.class, JnEntityBotCommandStep.class, JnEntityBotCommandStepEndMessage.class,
 			JnEntityBotCommandStepExplanation.class, JbEntityBotCommandStepSession.class, JnEntityBotCommandStepStartMessage.class,
 			JbEntityBotExplanation.class, JbEntityBotUpdateId.class, JbEntityBotChatLanguage.class,
-			JnEntityAsyncTask.class,
 			JnEntityDisposableRecord.class, JnEntityEmailMessageSent.class,
 			JnEntityEmailParametersToSend.class, JnEntityEmailReportedAsSpam.class, JnEntityEmailTemplateMessage.class,
 			JnEntityHttpApiErrorClient.class, JnEntityHttpApiErrorServer.class, JnEntityHttpApiRetrySendRequest.class,
 			JnEntityInstantMessengerBotLocked.class, JnEntityInstantMessengerMessageSent.class,
 			JnEntityInstantMessengerParametersToSend.class, JnEntityInstantMessengerTemplateMessage.class,
 			JnEntityJobsnowError.class, JnEntityJobsnowWarning.class,
-			JsEntityLoginAnswers.class, JnEntityLoginEmail.class, JnEntityLoginPassword.class, JsEntityLoginPasswordAttempts.class,
-			JnEntityLoginSessionConflict.class, JnEntityLoginSessionTokenAttempts.class, JnEntityLoginSessionValidation.class,
-			JsEntityLoginStats.class, JnEntityLoginToken.class, JnEntityLoginTokenAttempts.class,
-			JnEntityLoginTokenRequestResend.class, JnEntityLoginTokenRequestUnlock.class, JnEntityMessageDidNotSent.class,
+			JsEntityLoginAnswers.class, JsEntityLoginEmail.class, JsEntityLoginPassword.class, JsEntityLoginPasswordAttempts.class,
+			JsEntityLoginSessionConflict.class, JsEntityLoginSessionTokenAttempts.class, JsEntityLoginSessionValidation.class,
+			JsEntityLoginToken.class, JsEntityLoginTokenAttempts.class,
+			JsEntityLoginTokenRequestResend.class, JsEntityLoginTokenRequestUnlock.class, JnEntityMessageDidNotSent.class,
 			JnEntityRecordToReprocess.class, JnEntitySystemMessage.class, JnEntityVersionable.class
 	);
 

@@ -22,7 +22,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class HttpResponseBehaviorTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private CcpHttpResponse response(String body, int status) {

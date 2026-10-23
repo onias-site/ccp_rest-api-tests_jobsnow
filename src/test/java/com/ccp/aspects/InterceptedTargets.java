@@ -8,6 +8,9 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 
 class InterceptedTargets {
+	public final static InterceptedTargets INSTANCE = new InterceptedTargets();
+
+	private InterceptedTargets() {}
 
 	String returnsNull() {
 		return null;

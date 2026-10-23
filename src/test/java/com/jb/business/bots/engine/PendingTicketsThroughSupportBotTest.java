@@ -28,7 +28,8 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.jb.business.bots.login.token.JbSupportLoginTokenTypes;
+import com.js.business.bots.JsSupportBotCommands;
+import com.js.business.bots.login.token.JsSupportLoginTokenTypes;
 import com.jb.business.bots.pending.tickets.JbSupportPendingTicketsFields;
 import com.jb.business.bots.pending.tickets.JbSupportPendingTicketsSteps;
 import com.jb.entities.JbEntityBotCommandStepSession;
@@ -37,8 +38,8 @@ import com.jn.business.messages.JnBusinessRegisterSupportPendingCommand;
 import com.jn.business.messages.JnInstantMessageType;
 import com.jn.entities.JnEntityInstantMessengerMessageSent;
 import com.jn.entities.JnEntityInstantMessengerTemplateMessage;
-import com.jn.entities.JnEntityLoginToken;
-import com.jn.entities.JnEntityLoginTokenRequestUnlock;
+import com.js.entities.JsEntityLoginToken;
+import com.js.entities.JsEntityLoginTokenRequestUnlock;
 import com.jn.entities.JnEntitySupportPendingCommand;
 import com.ccp.especifications.db.utils.entity.decorators.ElasticsearchLocal;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
@@ -72,14 +73,14 @@ public class PendingTicketsThroughSupportBotTest {
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpElasticSearchQueryExecutor(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
 				telegram,
 				email
 		);
@@ -107,10 +108,10 @@ public class PendingTicketsThroughSupportBotTest {
 		CcpJsonRepresentation user = this.user();
 
 		// saving to the twin deletes the record from the main entity: that is how the token gets locked
-		JnEntityLoginToken.ENTITY.getTwinEntity().save(user);
+		JsEntityLoginToken.ENTITY.getTwinEntity().save(user);
 
 		this.deleteAlreadySentPendingTicketNotice();
-		JnEntityLoginTokenRequestUnlock.ENTITY.save(user);
+		JsEntityLoginTokenRequestUnlock.ENTITY.save(user);
 
 		TELEGRAM.sentMessages.clear();
 		EMAIL_INBOX.sentEmails.clear();
@@ -156,7 +157,7 @@ public class PendingTicketsThroughSupportBotTest {
 		assertTrue(this.messagesToTheSupport().contains("Resolvendo o ticket " + UNLOCK_TICKET));
 
 		// the command of the ticket really ran: the ticket of the user went to the twin
-		assertFalse(JnEntityLoginTokenRequestUnlock.ENTITY.exists(this.user()));
+		assertFalse(JsEntityLoginTokenRequestUnlock.ENTITY.exists(this.user()));
 		assertFalse(JbEntityPendingTickets.ENTITY.exists(this.pendingTicket(UNLOCK_TICKET)));
 
 		assertEquals("Você tem 1 ticket para resolver\n" + this.prompt(1, 1, SKILL_TICKET), this.lastMessage());
@@ -176,7 +177,7 @@ public class PendingTicketsThroughSupportBotTest {
 		// with two spaces, as an operator may type it
 		this.type("/solveLoginTokenTicket  unlockToken " + USER_EMAIL);
 
-		assertFalse(JnEntityLoginTokenRequestUnlock.ENTITY.exists(this.user()));
+		assertFalse(JsEntityLoginTokenRequestUnlock.ENTITY.exists(this.user()));
 		assertFalse(JnEntitySupportPendingCommand.ENTITY.exists(this.pendingCommand(UNLOCK_TICKET)));
 
 		this.type("/pendingTickets");
@@ -196,7 +197,7 @@ public class PendingTicketsThroughSupportBotTest {
 		this.type("1");
 		assertEquals("O ticket " + UNLOCK_TICKET + " já foi resolvido.\n\n" + this.prompt(1, 1, SKILL_TICKET), this.lastMessage());
 		// the ticket was not run: the ticket of the user is still open
-		assertTrue(JnEntityLoginTokenRequestUnlock.ENTITY.exists(this.user()));
+		assertTrue(JsEntityLoginTokenRequestUnlock.ENTITY.exists(this.user()));
 	}
 
 	@Test
@@ -346,7 +347,7 @@ public class PendingTicketsThroughSupportBotTest {
 	}
 
 	private void resaveMessageTemplates() {
-		JnEntityInstantMessengerTemplateMessage configurator = new JnEntityInstantMessengerTemplateMessage();
+		JnEntityInstantMessengerTemplateMessage configurator = JnEntityInstantMessengerTemplateMessage.INSTANCE;
 		List<CcpBulkItem> templates = configurator.getFirstRecordsToInsert();
 		for (CcpBulkItem template : templates) {
 			template.entity.save(template.json);
@@ -359,8 +360,8 @@ public class PendingTicketsThroughSupportBotTest {
 	 */
 	private void deleteAlreadySentPendingTicketNotice() {
 
-		String noticeText = "/" + JbSupportBotCommands.solveLoginTokenTicket + " "
-				+ JbSupportLoginTokenTypes.unlockToken + " " + USER_EMAIL + " ";
+		String noticeText = "/" + JsSupportBotCommands.solveLoginTokenTicket + " "
+				+ JsSupportLoginTokenTypes.unlockToken + " " + USER_EMAIL + " ";
 
 		double chatIdAsTheDatabaseReturnsIt = SUPPORT_CHAT.doubleValue();
 

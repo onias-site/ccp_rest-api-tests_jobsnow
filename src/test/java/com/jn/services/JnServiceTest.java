@@ -11,7 +11,7 @@ import org.junit.Test;
 public class JnServiceTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	// Implemented as an enum since JnService requires name() (inherited from CcpService/CcpJsonFieldName)

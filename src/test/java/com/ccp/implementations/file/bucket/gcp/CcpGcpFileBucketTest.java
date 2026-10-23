@@ -11,7 +11,7 @@ import com.ccp.especifications.file.bucket.CcpFileBucket;
 public class CcpGcpFileBucketTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGcpFileBucket());
+		CcpDependencyInjection.loadAllDependencies(CcpGcpFileBucket.INSTANCE);
 	}
 
 	private static CcpFileBucket getBucket() {
@@ -22,12 +22,12 @@ public class CcpGcpFileBucketTest {
 
 	@Test
 	public void constructorProviderTest() {
-		assertNotNull(new CcpGcpFileBucket());
+		assertNotNull(CcpGcpFileBucket.INSTANCE);
 	}
 
 	@Test
 	public void getInstanceTest() {
-		CcpFileBucket instance = new CcpGcpFileBucket().getInstance();
+		CcpFileBucket instance = CcpGcpFileBucket.INSTANCE.getInstance();
 		assertNotNull(instance);
 	}
 

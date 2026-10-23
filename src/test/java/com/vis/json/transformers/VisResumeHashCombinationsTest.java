@@ -26,7 +26,7 @@ import com.vis.entities.VisEntityVirtualHashGrouper;
 public class VisResumeHashCombinationsTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static final List<Integer> ALL_REGIONS = Arrays.asList(
@@ -52,7 +52,7 @@ public class VisResumeHashCombinationsTest {
 	@Test
 	public void theRegionsDoNotMultiplyTheCombinations() {
 		assertEquals(67, ALL_REGIONS.size());
-		VisResumeHashCombinations combinations = new VisResumeHashCombinations();
+		VisResumeHashCombinations combinations = VisResumeHashCombinations.INSTANCE;
 		long oneRegion = combinations.countCombinations(this.resume(Arrays.asList(11)));
 		long homeOffice = combinations.countCombinations(this.resume(Arrays.asList(10)));
 		long everyRegion = combinations.countCombinations(this.resume(ALL_REGIONS));
@@ -62,7 +62,7 @@ public class VisResumeHashCombinationsTest {
 
 	@Test
 	public void noCombinationCarriesTheDdd() {
-		List<CcpJsonRepresentation> combinations = new VisResumeHashCombinations().apply(this.resume(Arrays.asList(11, 21)));
+		List<CcpJsonRepresentation> combinations = VisResumeHashCombinations.INSTANCE.apply(this.resume(Arrays.asList(11, 21)));
 		for (CcpJsonRepresentation combination : combinations) {
 			assertFalse(combination.fieldSet().contains("ddd"));
 		}
@@ -73,7 +73,7 @@ public class VisResumeHashCombinationsTest {
 		List<Integer> ddds = new ArrayList<>(ALL_REGIONS);
 		ddds.add(10);
 
-		List<CcpJsonRepresentation> combinations = new VisResumeHashCombinations().apply(this.resume(ddds));
+		List<CcpJsonRepresentation> combinations = VisResumeHashCombinations.INSTANCE.apply(this.resume(ddds));
 
 		// languages: none, Espanhol 2, Espanhol 1; skills: none, JAVA, JVM; three flags with 2 values each
 		assertEquals(3 * 3 * 2 * 2 * 2, combinations.size());

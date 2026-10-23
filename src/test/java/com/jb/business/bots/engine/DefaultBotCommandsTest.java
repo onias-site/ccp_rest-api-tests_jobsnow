@@ -55,14 +55,14 @@ public class DefaultBotCommandsTest {
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
 				telegram,
 				email
 		);
@@ -76,7 +76,7 @@ public class DefaultBotCommandsTest {
 	 */
 	@BeforeClass
 	public static void resaveBotConfiguration() {
-		List<CcpEntityConfigurator> configurators = Arrays.asList(new JbEntityBot(), new JnEntityBotCommandName(), new JbEntityBotExplanation(), new JnEntityBotCommandExplanation());
+		List<CcpEntityConfigurator> configurators = Arrays.asList(JbEntityBot.INSTANCE, JnEntityBotCommandName.INSTANCE, JbEntityBotExplanation.INSTANCE, JnEntityBotCommandExplanation.INSTANCE);
 		for (CcpEntityConfigurator configurator : configurators) {
 			List<CcpBulkItem> records = configurator.getFirstRecordsToInsert();
 			for (CcpBulkItem record : records) {

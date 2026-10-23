@@ -8,13 +8,13 @@ import org.junit.Test;
 public class JnBusinessSendToMensageriaTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 
 
 	@Test(expected = CcpNullParameterException.class)
 	public void sendToMensageriaNullTest() {
-		new NoopSender().sendToMensageria(null);
+		NoopSender.INSTANCE.sendToMensageria(null);
 	}
 }

@@ -8,6 +8,10 @@ import com.ccp.json.validations.global.interfaces.CcpJsonValidator;
  * list and accumulates the errors of each one.
  */
 public class RequiredTitleValidator implements CcpJsonValidator {
+	/** The single instance: the class keeps no state. */
+	public final static RequiredTitleValidator INSTANCE = new RequiredTitleValidator();
+
+	private RequiredTitleValidator() {}
 
 	public static final String MESSAGE = "O titulo da vaga e obrigatorio";
 

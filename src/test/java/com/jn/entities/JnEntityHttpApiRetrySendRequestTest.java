@@ -10,7 +10,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class JnEntityHttpApiRetrySendRequestTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

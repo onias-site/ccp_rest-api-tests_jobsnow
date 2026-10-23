@@ -18,7 +18,7 @@ public class JnEntityMessageDidNotSentDecoratorsTest extends EntityDecoratorTest
 	protected CcpJsonRepresentation validRecord() {
 		return this.com(JnJsonCommonsFields.subjectType, "login")
 				.put(JnJsonCommonsFields.email, this.email)
-				.put(JnEntityMessageDidNotSent.Fields.reasonType, "jn_login_email")
+				.put(JnEntityMessageDidNotSent.Fields.reasonType, "js_login_email")
 				.put(JnEntityMessageDidNotSent.Fields.reasonDescription, "alreadySentEntities")
 				.put(JnEntityMessageDidNotSent.Fields.reasonDetails, "isPresentInThisUnionAll");
 	}

@@ -57,13 +57,13 @@ public class InstantMessengerFailuresTest {
 		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> provider;
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
 				telegram);
 	}
 
@@ -73,7 +73,7 @@ public class InstantMessengerFailuresTest {
 	 */
 	@AfterClass
 	public static void restoreAHarmlessMessenger() {
-		CcpInstanceProvider<CcpInstantMessenger> counting = () -> new com.ccp.especifications.db.utils.entity.decorators.CountingInstantMessenger();
+		CcpInstanceProvider<CcpInstantMessenger> counting = () -> com.ccp.especifications.db.utils.entity.decorators.CountingInstantMessenger.INSTANCE;
 		CcpDependencyInjection.loadAllDependencies(counting);
 	}
 

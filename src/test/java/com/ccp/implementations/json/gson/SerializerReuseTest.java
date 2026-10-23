@@ -29,7 +29,7 @@ public class SerializerReuseTest {
 		Class<?> type = String.class;
 	}
 
-	private final GsonJsonHandler handler = new GsonJsonHandler();
+	private final GsonJsonHandler handler = GsonJsonHandler.INSTANCE;
 
 	private static Object readField(Object owner, Class<?> ownerClass, String fieldName) throws Exception {
 		Field field = ownerClass.getDeclaredField(fieldName);

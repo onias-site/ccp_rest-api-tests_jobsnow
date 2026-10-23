@@ -7,8 +7,16 @@ import org.junit.Test;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.js.entities.JsEntityLoginAnswers;
+import com.js.entities.JsEntityLoginEmail;
+import com.js.entities.JsEntityLoginPassword;
 import com.js.entities.JsEntityLoginPasswordAttempts;
-import com.js.entities.JsEntityLoginStats;
+import com.js.entities.JsEntityLoginSessionConflict;
+import com.js.entities.JsEntityLoginSessionTokenAttempts;
+import com.js.entities.JsEntityLoginSessionValidation;
+import com.js.entities.JsEntityLoginToken;
+import com.js.entities.JsEntityLoginTokenAttempts;
+import com.js.entities.JsEntityLoginTokenRequestResend;
+import com.js.entities.JsEntityLoginTokenRequestUnlock;
 
 /**
  * Structure tests for every JnEntityXxx entity: checks that the static ENTITY field initializes without error
@@ -17,12 +25,11 @@ import com.js.entities.JsEntityLoginStats;
 public class JnEntitiesStructureTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	// ── ENTITY not null (ensures CcpEntityFactory initialized each entity) ────────
 
-	@Test public void asyncTaskEntityTest() { assertNotNull(JnEntityAsyncTask.ENTITY); }
 	@Test public void disposableRecordEntityTest() { assertNotNull(JnEntityDisposableRecord.ENTITY); }
 	@Test public void emailMessageSentEntityTest() { assertNotNull(JnEntityEmailMessageSent.ENTITY); }
 	@Test public void emailParametersToSendEntityTest() { assertNotNull(JnEntityEmailParametersToSend.ENTITY); }
@@ -38,24 +45,23 @@ public class JnEntitiesStructureTest {
 	@Test public void jobsnowErrorEntityTest() { assertNotNull(JnEntityJobsnowError.ENTITY); }
 	@Test public void jobsnowWarningEntityTest() { assertNotNull(JnEntityJobsnowWarning.ENTITY); }
 	@Test public void loginAnswersEntityTest() { assertNotNull(JsEntityLoginAnswers.ENTITY); }
-	@Test public void loginEmailEntityTest() { assertNotNull(JnEntityLoginEmail.ENTITY); }
-	@Test public void loginPasswordEntityTest() { assertNotNull(JnEntityLoginPassword.ENTITY); }
+	@Test public void loginEmailEntityTest() { assertNotNull(JsEntityLoginEmail.ENTITY); }
+	@Test public void loginPasswordEntityTest() { assertNotNull(JsEntityLoginPassword.ENTITY); }
 	@Test public void loginPasswordAttemptsEntityTest() { assertNotNull(JsEntityLoginPasswordAttempts.ENTITY); }
-	@Test public void loginSessionConflictEntityTest() { assertNotNull(JnEntityLoginSessionConflict.ENTITY); }
-	@Test public void loginSessionTokenAttemptsEntityTest() { assertNotNull(JnEntityLoginSessionTokenAttempts.ENTITY); }
-	@Test public void loginSessionValidationEntityTest() { assertNotNull(JnEntityLoginSessionValidation.ENTITY); }
-	@Test public void loginStatsEntityTest() { assertNotNull(JsEntityLoginStats.ENTITY); }
-	@Test public void loginTokenEntityTest() { assertNotNull(JnEntityLoginToken.ENTITY); }
-	@Test public void loginTokenAttemptsEntityTest() { assertNotNull(JnEntityLoginTokenAttempts.ENTITY); }
-	@Test public void loginTokenRequestResendEntityTest() { assertNotNull(JnEntityLoginTokenRequestResend.ENTITY); }
-	@Test public void loginTokenRequestUnlockEntityTest() { assertNotNull(JnEntityLoginTokenRequestUnlock.ENTITY); }
+	@Test public void loginSessionConflictEntityTest() { assertNotNull(JsEntityLoginSessionConflict.ENTITY); }
+	@Test public void loginSessionTokenAttemptsEntityTest() { assertNotNull(JsEntityLoginSessionTokenAttempts.ENTITY); }
+	@Test public void loginSessionValidationEntityTest() { assertNotNull(JsEntityLoginSessionValidation.ENTITY); }
+	@Test public void loginTokenEntityTest() { assertNotNull(JsEntityLoginToken.ENTITY); }
+	@Test public void loginTokenAttemptsEntityTest() { assertNotNull(JsEntityLoginTokenAttempts.ENTITY); }
+	@Test public void loginTokenRequestResendEntityTest() { assertNotNull(JsEntityLoginTokenRequestResend.ENTITY); }
+	@Test public void loginTokenRequestUnlockEntityTest() { assertNotNull(JsEntityLoginTokenRequestUnlock.ENTITY); }
+	@Test public void sessionValidatorEntityTest() { assertNotNull(JnEntitySessionValidator.ENTITY); }
 	@Test public void recordToReprocessEntityTest() { assertNotNull(JnEntityRecordToReprocess.ENTITY); }
 	@Test public void systemMessageEntityTest() { assertNotNull(JnEntitySystemMessage.ENTITY); }
 	@Test public void versionableEntityTest() { assertNotNull(JnEntityVersionable.ENTITY); }
 
 	// ── Fields.values() not null ─────────────────────────────────────────────
 
-	@Test public void asyncTaskFieldsTest() { assertNotNull(JnEntityAsyncTask.Fields.values()); }
 	@Test public void disposableRecordFieldsTest() { assertNotNull(JnEntityDisposableRecord.Fields.values()); }
 	@Test public void emailMessageSentFieldsTest() { assertNotNull(JnEntityEmailMessageSent.Fields.values()); }
 	@Test public void emailParametersToSendFieldsTest() { assertNotNull(JnEntityEmailParametersToSend.Fields.values()); }
@@ -68,24 +74,24 @@ public class JnEntitiesStructureTest {
 	@Test public void instantMessengerTemplateMessageFieldsTest() { assertNotNull(JnEntityInstantMessengerTemplateMessage.Fields.values()); }
 	@Test public void jobsnowErrorFieldsTest() { assertNotNull(JnEntityJobsnowError.Fields.values()); }
 	@Test public void loginAnswersFieldsTest() { assertNotNull(JsEntityLoginAnswers.Fields.values()); }
-	@Test public void loginEmailFieldsTest() { assertNotNull(JnEntityLoginEmail.Fields.values()); }
-	@Test public void loginPasswordFieldsTest() { assertNotNull(JnEntityLoginPassword.Fields.values()); }
+	@Test public void loginEmailFieldsTest() { assertNotNull(JsEntityLoginEmail.Fields.values()); }
+	@Test public void loginPasswordFieldsTest() { assertNotNull(JsEntityLoginPassword.Fields.values()); }
 	@Test public void loginPasswordAttemptsFieldsTest() { assertNotNull(JsEntityLoginPasswordAttempts.Fields.values()); }
-	@Test public void loginSessionConflictFieldsTest() { assertNotNull(JnEntityLoginSessionConflict.Fields.values()); }
-	@Test public void loginSessionTokenAttemptsFieldsTest() { assertNotNull(JnEntityLoginSessionTokenAttempts.Fields.values()); }
-	@Test public void loginSessionValidationFieldsTest() { assertNotNull(JnEntityLoginSessionValidation.Fields.values()); }
-	@Test public void loginTokenFieldsTest() { assertNotNull(JnEntityLoginToken.Fields.values()); }
-	@Test public void loginTokenAttemptsFieldsTest() { assertNotNull(JnEntityLoginTokenAttempts.Fields.values()); }
-	@Test public void loginTokenRequestResendFieldsTest() { assertNotNull(JnEntityLoginTokenRequestResend.Fields.values()); }
-	@Test public void loginTokenRequestUnlockFieldsTest() { assertNotNull(JnEntityLoginTokenRequestUnlock.Fields.values()); }
+	@Test public void loginSessionConflictFieldsTest() { assertNotNull(JsEntityLoginSessionConflict.Fields.values()); }
+	@Test public void loginSessionTokenAttemptsFieldsTest() { assertNotNull(JsEntityLoginSessionTokenAttempts.Fields.values()); }
+	@Test public void loginSessionValidationFieldsTest() { assertNotNull(JsEntityLoginSessionValidation.Fields.values()); }
+	@Test public void loginTokenFieldsTest() { assertNotNull(JsEntityLoginToken.Fields.values()); }
+	@Test public void loginTokenAttemptsFieldsTest() { assertNotNull(JsEntityLoginTokenAttempts.Fields.values()); }
+	@Test public void loginTokenRequestResendFieldsTest() { assertNotNull(JsEntityLoginTokenRequestResend.Fields.values()); }
+	@Test public void loginTokenRequestUnlockFieldsTest() { assertNotNull(JsEntityLoginTokenRequestUnlock.Fields.values()); }
+	@Test public void sessionValidatorFieldsTest() { assertNotNull(JnEntitySessionValidator.Fields.values()); }
 	@Test public void recordToReprocessFieldsTest() { assertNotNull(JnEntityRecordToReprocess.Fields.values()); }
 	@Test public void versionableFieldsTest() { assertNotNull(JnEntityVersionable.Fields.values()); }
 
 	// ── configurator constructors not null ───────────────────────────────────
 
-	@Test public void asyncTaskCtorTest() { assertNotNull(new JnEntityAsyncTask()); }
-	@Test public void loginEmailCtorTest() { assertNotNull(new JnEntityLoginEmail()); } 
-	@Test public void loginPasswordCtorTest() { assertNotNull(new JnEntityLoginPassword()); }
-	@Test public void loginTokenCtorTest() { assertNotNull(new JnEntityLoginToken()); }
-	@Test public void jobsnowErrorCtorTest() { assertNotNull(new JnEntityJobsnowError()); }
+	@Test public void loginEmailCtorTest() { assertNotNull(JsEntityLoginEmail.INSTANCE); } 
+	@Test public void loginPasswordCtorTest() { assertNotNull(JsEntityLoginPassword.INSTANCE); }
+	@Test public void loginTokenCtorTest() { assertNotNull(JsEntityLoginToken.INSTANCE); }
+	@Test public void jobsnowErrorCtorTest() { assertNotNull(JnEntityJobsnowError.INSTANCE); }
 }

@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Test;
@@ -26,9 +25,8 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
 import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.PubsubMessage;
-import com.jn.entities.JnEntityAsyncTask;
+import com.ccp.json.fields.validation.CcpJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
-import com.jn.mensageria.JnMensageriaReceiver;
 
 /**
  * Proves that {@link CcpMessageReceiver} runs the task of the subscription over each pulled message before acknowledging
@@ -40,13 +38,13 @@ public class PullReceiverTest {
 	static {
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp());
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE);
 	}
 
 	private static final String TOPIC = "pullTestTopic";
@@ -85,6 +83,11 @@ public class PullReceiverTest {
 
 	/** A task of the topic that answers its input, run through the real jn receiver. */
 	public static class EchoTask implements CcpBusiness {
+		/** The single instance: the class keeps no state. */
+		public final static EchoTask INSTANCE = new EchoTask();
+
+		private EchoTask() {}
+
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			return CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.message, "done");
 		}
@@ -137,25 +140,16 @@ public class PullReceiverTest {
 	}
 
 	@Test
-	public void aPulledMessageRunsThroughTheJnReceiverAndItsOutcomeIsRecorded() {
+	public void aPulledMessageRunsThroughTheJnReceiver() {
 		String topic = EchoTask.class.getName();
-		CcpJsonRepresentation message = CcpOtherConstants.EMPTY_JSON
-				.put(JnEntityAsyncTask.Fields.messageId, UUID.randomUUID().toString())
-				.put(JnEntityAsyncTask.Fields.started, System.currentTimeMillis())
-				.put(JnEntityAsyncTask.Fields.data, "06102026 00:00:00")
-				.put(JnEntityAsyncTask.Fields.topic, topic)
-				.put(JnEntityAsyncTask.Fields.request, "{}");
-		CcpBusiness task = json -> {
-			JnMensageriaReceiver.INSTANCE.executeProcess(JnEntityAsyncTask.ENTITY, topic, json);
-			return json;
-		};
+		CcpJsonRepresentation message = CcpOtherConstants.EMPTY_JSON.put(CcpJsonCommonsFields.topic, topic);
+		JnReceiverTask task = new JnReceiverTask(topic);
 		Reply reply = new Reply();
 
 		new CcpMessageReceiver(this.notifyError, topic, task).receiveMessage(pubsubMessage(message.asUgglyJson()), reply);
 
 		assertEquals(this.notifyError.received.toString(), 1, reply.acks.get());
-		CcpJsonRepresentation recorded = JnEntityAsyncTask.ENTITY.getOneById(message);
-		assertTrue(recorded.getAsBoolean(JnEntityAsyncTask.Fields.success));
-		assertTrue(recorded.getAsString(JnJsonCommonsFields.response).contains("done"));
+		assertEquals(1, task.responses.size());
+		assertEquals("done", task.responses.get(0).getAsString(JnJsonCommonsFields.message));
 	}
 }

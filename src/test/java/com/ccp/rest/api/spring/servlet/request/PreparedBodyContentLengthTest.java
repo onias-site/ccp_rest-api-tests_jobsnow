@@ -7,9 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Proxy;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -32,7 +30,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class PreparedBodyContentLengthTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@CcpAllowNullParameter
@@ -59,30 +57,7 @@ public class PreparedBodyContentLengthTest {
 		headers.put("User-Agent", "test");
 		headers.put("Content-Length", String.valueOf(bytes.length));
 		return (HttpServletRequest) Proxy.newProxyInstance(PreparedBodyContentLengthTest.class.getClassLoader(),
-				new Class<?>[] { HttpServletRequest.class }, (proxy, m, args) -> {
-					switch (m.getName()) {
-					case "getContentType":
-						return contentType;
-					case "getInputStream":
-						return servletInputStream;
-					case "getRequestURL":
-						return new StringBuffer("http://localhost:8082/login/someone@example.com/ABCDEFGH");
-					case "getRemoteAddr":
-						return "127.0.0.1";
-					case "getHeader":
-						return headers.get(args[0]);
-					case "getHeaders":
-						String value = headers.get(args[0]);
-						List<String> values = value == null ? List.of() : List.of(value);
-						return Collections.enumeration(values);
-					case "getContentLength":
-						return bytes.length;
-					case "getContentLengthLong":
-						return (long) bytes.length;
-					default:
-						return null;
-					}
-				});
+				new Class<?>[] { HttpServletRequest.class }, new PreparedBodyRequestHandler(contentType, servletInputStream, headers, bytes.length));
 	}
 
 	@CcpAllowNullParameter

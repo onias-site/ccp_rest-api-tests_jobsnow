@@ -15,10 +15,10 @@ import com.ccp.json.validations.fields.enums.CcpJsonFieldError;
 public class CcpJsonFieldValidatorRequiredTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
-	private final BusinessValidatorRequired business = new BusinessValidatorRequired();
+	private final BusinessValidatorRequired business = BusinessValidatorRequired.INSTANCE;
 
 	private CcpJsonRepresentation completeJson() {
 		CcpJsonRepresentation withRequired = CcpOtherConstants.EMPTY_JSON.put(RulesValidatorRequired.obrigatorio, "valor");

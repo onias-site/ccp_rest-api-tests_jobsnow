@@ -16,7 +16,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class SimplifiedQuerySingleClauseTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static final CcpEntityField NAME = new CcpEntityField("name", false, true, json -> json);

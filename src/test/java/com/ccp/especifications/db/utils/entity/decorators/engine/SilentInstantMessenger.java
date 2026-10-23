@@ -11,6 +11,10 @@ import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
  * every run.
  */
 public class SilentInstantMessenger implements CcpInstantMessenger {
+	/** The single instance: the class keeps no state. */
+	public final static SilentInstantMessenger INSTANCE = new SilentInstantMessenger();
+
+	private SilentInstantMessenger() {}
 
 	public CcpJsonRepresentation sendTextMessage(CcpJsonFieldName botType, String botToken, Long chatId, Long replyTo, String message) {
 		return CcpOtherConstants.EMPTY_JSON;

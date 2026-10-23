@@ -86,14 +86,14 @@ public class SaveVersionConflictTest {
 	private ConflictingRequester elasticsearchAnswering409(int conflicts) {
 		ConflictingRequester requester = new ConflictingRequester(conflicts);
 		CcpInstanceProvider<CcpDbRequester> provider = () -> requester;
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), provider);
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, provider);
 		return requester;
 	}
 
 	/** Gives the other test classes back the real Elasticsearch requester. */
 	@After
 	public void restoreTheRealRequester() {
-		CcpDependencyInjection.loadAllDependencies(new CcpElasticSearchDbRequest());
+		CcpDependencyInjection.loadAllDependencies(CcpElasticSearchDbRequest.INSTANCE);
 	}
 
 	private final CcpJsonRepresentation document = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("name"), "jobsnow");
@@ -102,7 +102,7 @@ public class SaveVersionConflictTest {
 	public void aConflictThatGoesAwayIsRetriedAndTheSaveSucceeds() {
 		ConflictingRequester requester = this.elasticsearchAnswering409(1);
 
-		CcpJsonRepresentation response = new ElasticSearchCrud().save("some_index", this.document, "id1");
+		CcpJsonRepresentation response = ElasticSearchCrud.INSTANCE.save("some_index", this.document, "id1");
 
 		assertEquals(2, requester.urls.size());
 		assertEquals("updated", response.getAsString(new CcpFieldName("result")));
@@ -113,7 +113,7 @@ public class SaveVersionConflictTest {
 		ConflictingRequester requester = this.elasticsearchAnswering409(1000);
 
 		try {
-			new ElasticSearchCrud().save("some_index", this.document, "id1");
+			ElasticSearchCrud.INSTANCE.save("some_index", this.document, "id1");
 			fail("a persistent conflict was retried forever");
 		} catch (ElasticSearchCrud.CcpErrorElasticSearchVersionConflict e) {
 			assertTrue(e.getMessage(), e.getMessage().contains("id1"));
@@ -127,7 +127,7 @@ public class SaveVersionConflictTest {
 	public void elasticsearchIsAskedToRetryTheConflictItself() {
 		ConflictingRequester requester = this.elasticsearchAnswering409(0);
 
-		new ElasticSearchCrud().save("some_index", this.document, "id1");
+		ElasticSearchCrud.INSTANCE.save("some_index", this.document, "id1");
 
 		assertEquals("/some_index/_update/id1?retry_on_conflict=" + ElasticSearchCrud.MAX_SAVE_ATTEMPTS, requester.urls.get(0));
 	}

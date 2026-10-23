@@ -9,7 +9,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class JnEntityDisposableRecordTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

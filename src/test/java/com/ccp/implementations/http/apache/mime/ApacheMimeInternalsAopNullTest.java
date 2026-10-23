@@ -17,19 +17,19 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class ApacheMimeInternalsAopNullTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpApacheMimeHttp());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpApacheMimeHttp.INSTANCE);
 	}
 
 	// ── CcpHttpRequestRetryHandler ────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void retryRequestExceptionNullTest() {
-		new CcpHttpRequestRetryHandler().retryRequest(null, 1, new BasicHttpContext());
+		CcpHttpRequestRetryHandler.INSTANCE.retryRequest(null, 1, new BasicHttpContext());
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void retryRequestContextNullTest() {
-		new CcpHttpRequestRetryHandler().retryRequest(new IOException("failure"), 1, null);
+		CcpHttpRequestRetryHandler.INSTANCE.retryRequest(new IOException("failure"), 1, null);
 	}
 
 	// ── HttpMethod ────────────────────────────────────────────────────────────

@@ -1,10 +1,8 @@
 package com.jn.mensageria;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import java.util.UUID;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -12,39 +10,42 @@ import com.ccp.business.CcpBusiness;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
-import com.ccp.especifications.mensageria.receiver.CcpMensageriaReceiver;
-import com.ccp.especifications.mensageria.sender.CcpMensageriaSender;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.query.elasticsearch.CcpElasticSearchQueryExecutor;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import com.ccp.json.fields.validation.CcpJsonCommonsFields;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.jn.entities.JnEntityAsyncTask;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
- * Proves that {@link JnMensageriaReceiver#executeProcess} runs the task of the topic and records its outcome in
- * {@code jn_async_task}: success, end time, elapsed time and response, or the failure without rethrowing it.
+ * Proves that {@link JnMensageriaReceiver#executeProcess} runs the task of the topic and answers its response, and that
+ * a failure of the task is rethrown to the consumer (so the messaging can redeliver the message).
  */
 public class ReceiverOutcomeTest {
 
 	static {
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp());
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE);
 	}
 
 	/** A task that answers its input. */
 	public static class EchoTask implements CcpBusiness {
+		/** The single instance: the class keeps no state. */
+		public final static EchoTask INSTANCE = new EchoTask();
+
+		private EchoTask() {}
+
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			return CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.message, "done");
 		}
@@ -52,79 +53,38 @@ public class ReceiverOutcomeTest {
 
 	/** A task that always fails. */
 	public static class FailingTask implements CcpBusiness {
+		/** The single instance: the class keeps no state. */
+		public final static FailingTask INSTANCE = new FailingTask();
+
+		private FailingTask() {}
+
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			throw new IllegalStateException("the task failed");
 		}
 	}
 
-	private CcpJsonRepresentation message(Class<?> task, Object started) {
-		CcpJsonRepresentation message = CcpOtherConstants.EMPTY_JSON
-				.put(JnEntityAsyncTask.Fields.messageId, UUID.randomUUID().toString())
-				.put(JnEntityAsyncTask.Fields.started, started)
-				.put(JnEntityAsyncTask.Fields.data, "05102026 00:00:00")
-				.put(JnEntityAsyncTask.Fields.topic, task.getName())
-				.put(JnEntityAsyncTask.Fields.request, "{}");
+	private CcpJsonRepresentation message(Class<?> task) {
+		CcpJsonRepresentation message = CcpOtherConstants.EMPTY_JSON.put(CcpJsonCommonsFields.topic, task.getName());
 		return message;
 	}
 
-	private CcpJsonRepresentation run(Class<?> task, Object started) {
-		CcpJsonRepresentation message = this.message(task, started);
-		JnMensageriaReceiver.INSTANCE.executeProcess(JnEntityAsyncTask.ENTITY, task.getName(), message);
-		CcpJsonRepresentation recorded = JnEntityAsyncTask.ENTITY.getOneById(message);
-		return recorded;
+	@Test
+	public void aSuccessfulTaskAnswersItsResponse() {
+		CcpJsonRepresentation message = this.message(EchoTask.class);
+
+		CcpJsonRepresentation response = JnMensageriaReceiver.INSTANCE.executeProcess(EchoTask.class.getName(), message);
+
+		assertEquals("done", response.getAsString(JnJsonCommonsFields.message));
 	}
 
 	@Test
-	public void aSuccessfulTaskIsRecordedWithItsResponseAndTimes() {
-		long started = System.currentTimeMillis() - 1_000;
-
-		CcpJsonRepresentation recorded = this.run(EchoTask.class, started);
-
-		assertTrue(recorded.getAsBoolean(JnEntityAsyncTask.Fields.success));
-		assertTrue(recorded.getAsLongNumber(JnEntityAsyncTask.Fields.finished) >= started);
-		assertTrue(recorded.getAsLongNumber(JnEntityAsyncTask.Fields.enlapsedTime) >= 1_000);
-		String response = recorded.getAsString(JnJsonCommonsFields.response);
-		assertEquals("done", new CcpJsonRepresentation(response).getAsString(JnJsonCommonsFields.message));
-	}
-
-	@Test
-	public void aFailedTaskIsRecordedAndNotRethrown() {
-		CcpJsonRepresentation recorded = this.run(FailingTask.class, System.currentTimeMillis());
-
-		assertFalse(recorded.getAsBoolean(JnEntityAsyncTask.Fields.success));
-		assertTrue(recorded.toString(), recorded.getAsString(JnJsonCommonsFields.response).contains("the task failed"));
-	}
-
-	@Test
-	public void aStartTimeThatCameThroughJsonIsAccepted() {
-		CcpJsonRepresentation recorded = this.run(EchoTask.class, (double) System.currentTimeMillis());
-
-		assertTrue(recorded.getAsBoolean(JnEntityAsyncTask.Fields.success));
-	}
-
-	/**
-	 * The local asynchronous messaging runs each message in a thread of its own; until 2026-10-15 a failure there was only
-	 * printed to the standard error, and the task stayed in {@code jn_async_task} with no outcome.
-	 */
-	@Test
-	public void aFailureInTheLocalAsynchronousMessagingIsRecorded() throws InterruptedException {
-		CcpJsonRepresentation message = this.message(FailingTask.class, System.currentTimeMillis())
-				.put(CcpMensageriaReceiver.JsonFieldNames.mensageriaReceiver, JnMensageriaReceiver.class.getName());
-		CcpMensageriaSender asyncMessaging = (CcpMensageriaSender) CcpLocalInstances.asyncMensageriaListener.getInstance();
-
-		asyncMessaging.sendToMensageria(FailingTask.class.getName(), message.asUgglyJson());
-
-		CcpJsonRepresentation recorded = CcpOtherConstants.EMPTY_JSON;
-		for (int attempt = 0; attempt < 40; attempt++) {
-			boolean exists = JnEntityAsyncTask.ENTITY.exists(message);
-			if (exists) {
-				recorded = JnEntityAsyncTask.ENTITY.getOneById(message);
-				break;
-			}
-			Thread.sleep(250);
+	public void aFailedTaskIsRethrown() {
+		CcpJsonRepresentation message = this.message(FailingTask.class);
+		try {
+			JnMensageriaReceiver.INSTANCE.executeProcess(FailingTask.class.getName(), message);
+			fail("the failure of the task must reach the consumer");
+		} catch (IllegalStateException e) {
+			assertTrue(e.getMessage(), e.getMessage().contains("the task failed"));
 		}
-		assertTrue("the outcome was not recorded", recorded.containsField(JnEntityAsyncTask.Fields.success));
-		assertFalse(recorded.getAsBoolean(JnEntityAsyncTask.Fields.success));
-		assertTrue(recorded.toString(), recorded.getAsString(JnJsonCommonsFields.response).contains("the task failed"));
 	}
 }

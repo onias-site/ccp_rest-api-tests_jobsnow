@@ -20,11 +20,16 @@ import com.ccp.service.CcpService;
 public class ServiceDefaultValuesTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	/** A service that answers the JSON it got. */
 	static class EchoService implements CcpService {
+		/** The single instance: the class keeps no state. */
+		public final static EchoService INSTANCE = new EchoService();
+
+		private EchoService() {}
+
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			return json;
 		}
@@ -42,7 +47,7 @@ public class ServiceDefaultValuesTest {
 	public void anAbsentFieldGetsItsDefaultValueThroughTheRestPath() {
 		Map<String, Object> input = new HashMap<>();
 
-		Map<String, Object> output = new EchoService().execute(input);
+		Map<String, Object> output = EchoService.INSTANCE.execute(input);
 
 		assertEquals("preenchido pelo valor padrao", output.get(RulesDefaultValueWithRequired.obrigatorioComValorPadrao.name()));
 		assertEquals("chave gerada", output.get(RulesDefaultValueWithRequired.chavePrimariaComValorPadrao.name()));
@@ -53,7 +58,7 @@ public class ServiceDefaultValuesTest {
 		Map<String, Object> input = new HashMap<>();
 		input.put(RulesDefaultValueWithRequired.obrigatorioComValorPadrao.name(), "sent by the caller");
 
-		Map<String, Object> output = new EchoService().execute(input);
+		Map<String, Object> output = EchoService.INSTANCE.execute(input);
 
 		assertEquals("sent by the caller", output.get(RulesDefaultValueWithRequired.obrigatorioComValorPadrao.name()));
 	}

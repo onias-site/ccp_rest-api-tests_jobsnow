@@ -12,7 +12,7 @@ import com.ccp.especifications.db.crud.CcpCrud;
 public class CcpElasticSearchCrudTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpElasticSearchCrud());
+		CcpDependencyInjection.loadAllDependencies(CcpElasticSearchCrud.INSTANCE);
 	}
 
 	private static CcpCrud getCrud() {
@@ -23,12 +23,12 @@ public class CcpElasticSearchCrudTest {
 
 	@Test
 	public void constructorProviderTest() {
-		assertNotNull(new CcpElasticSearchCrud());
+		assertNotNull(CcpElasticSearchCrud.INSTANCE);
 	}
 
 	@Test
 	public void getInstanceTest() {
-		CcpCrud instance = new CcpElasticSearchCrud().getInstance();
+		CcpCrud instance = CcpElasticSearchCrud.INSTANCE.getInstance();
 		assertNotNull(instance);
 	}
 

@@ -41,21 +41,21 @@ import com.vis.entities.VisEntityResume;
 public class ResumeServiceTest {
 
 	static {
-		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> new SilentInstantMessenger();
-		CcpInstanceProvider<CcpEmailSender> email = () -> new SilentEmailSender();
+		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> SilentInstantMessenger.INSTANCE;
+		CcpInstanceProvider<CcpEmailSender> email = () -> SilentEmailSender.INSTANCE;
 
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
 				CcpLocalInstances.bucket,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
 				telegram,
 				email
 		);

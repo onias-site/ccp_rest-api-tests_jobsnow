@@ -14,20 +14,20 @@ import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.entities.JnEntityDisposableRecord;
-import com.jn.entities.JnEntityLoginPassword;
-import com.jn.entities.JnEntityLoginSessionConflict;
-import com.jn.entities.JnEntityLoginSessionValidation;
+import com.js.entities.JsEntityLoginPassword;
+import com.js.entities.JsEntityLoginSessionConflict;
+import com.js.entities.JsEntityLoginSessionValidation;
 import com.ccp.especifications.db.utils.entity.decorators.ElasticsearchLocal;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnSystemProperties;
 import com.jn.rest.api.commons.TestVariables;
-import com.jn.business.login.JnBusinessValidateLogin;
+import com.js.business.login.JsBusinessValidateLogin;
 import com.js.services.JsServiceLogin;
 
 public class ValidateLogin extends JsServiceLoginTestTemplate {
 
 	public ValidateLogin() {
-		super(JnBusinessValidateLogin.INSTANCE);
+		super(JsBusinessValidateLogin.INSTANCE);
 	}
 
 	@Test
@@ -84,7 +84,7 @@ public class ValidateLogin extends JsServiceLoginTestTemplate {
 			this.execute(replacedSession, CcpProcessStatusDefault.UNHAUTHORIZED);
 		}
 
-		boolean passwordStillUnlocked = JnEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
+		boolean passwordStillUnlocked = JsEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
 		assertTrue(passwordStillUnlocked);
 		this.execute(currentSession, CcpProcessStatusDefault.OK);
 	}
@@ -106,7 +106,7 @@ public class ValidateLogin extends JsServiceLoginTestTemplate {
 			this.execute(session, CcpProcessStatusDefault.UNHAUTHORIZED);
 		}
 
-		boolean passwordStillUnlocked = JnEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
+		boolean passwordStillUnlocked = JsEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
 		assertTrue(passwordStillUnlocked);
 	}
 
@@ -122,7 +122,7 @@ public class ValidateLogin extends JsServiceLoginTestTemplate {
 			this.execute(guessedSession, CcpProcessStatusDefault.UNHAUTHORIZED);
 		}
 
-		boolean passwordLocked = false == JnEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
+		boolean passwordLocked = false == JsEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
 		assertTrue(passwordLocked);
 	}
 
@@ -140,9 +140,9 @@ public class ValidateLogin extends JsServiceLoginTestTemplate {
 
 		CcpFieldName sessionTokenField = new CcpFieldName("sessionToken");
 		String sessionToken = session.getAsString(sessionTokenField);
-		CcpJsonRepresentation sessionRecord = session.put(JnEntityLoginSessionValidation.Fields.token, sessionToken);
-		this.deleteTheDocumentOfThePeriod(JnEntityLoginSessionValidation.ENTITY, sessionRecord);
-		this.deleteTheDocumentOfThePeriod(JnEntityLoginSessionConflict.ENTITY, session);
+		CcpJsonRepresentation sessionRecord = session.put(JsEntityLoginSessionValidation.Fields.token, sessionToken);
+		this.deleteTheDocumentOfThePeriod(JsEntityLoginSessionValidation.ENTITY, sessionRecord);
+		this.deleteTheDocumentOfThePeriod(JsEntityLoginSessionConflict.ENTITY, session);
 
 		this.execute(session, CcpProcessStatusDefault.OK);
 	}
@@ -163,7 +163,7 @@ public class ValidateLogin extends JsServiceLoginTestTemplate {
 			this.execute(sessionFromAnotherUserAgent, CcpProcessStatusDefault.UNHAUTHORIZED);
 		}
 
-		boolean passwordStillUnlocked = JnEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
+		boolean passwordStillUnlocked = JsEntityLoginPassword.ENTITY.exists(testVariables.REQUEST_TO_LOGIN);
 		assertTrue(passwordStillUnlocked);
 		this.execute(session, CcpProcessStatusDefault.OK);
 	}
@@ -183,8 +183,8 @@ public class ValidateLogin extends JsServiceLoginTestTemplate {
 	private void expire(CcpJsonRepresentation session) {
 		CcpFieldName sessionTokenField = new CcpFieldName("sessionToken");
 		String sessionToken = session.getAsString(sessionTokenField);
-		CcpJsonRepresentation record = session.put(JnEntityLoginSessionValidation.Fields.token, sessionToken);
-		CcpEntity entity = JnEntityLoginSessionValidation.ENTITY;
+		CcpJsonRepresentation record = session.put(JsEntityLoginSessionValidation.Fields.token, sessionToken);
+		CcpEntity entity = JsEntityLoginSessionValidation.ENTITY;
 		CcpEntityMetaData metaData = entity.getEntityMetaData();
 		CcpJsonRepresentation transformedRecord = entity.getHandledJson(record);
 

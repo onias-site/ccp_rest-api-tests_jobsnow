@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Proxy;
@@ -23,12 +22,11 @@ import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.process.CcpProcessStatusDefault;
-import com.jn.business.login.JnBusinessValidateLogin;
+import com.js.business.login.JsBusinessValidateLogin;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
-import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -41,7 +39,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SessionValidationTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static final String URL = "http://localhost:8080/resume/someone@example.com";
@@ -74,7 +72,7 @@ public class SessionValidationTest {
 		boolean reachedController;
 	}
 
-	private static ServletInputStream streamOf(byte[] bytes) {
+	static ServletInputStream streamOf(byte[] bytes) {
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
 		return new ServletInputStream() {
 			public int read() {
@@ -100,55 +98,18 @@ public class SessionValidationTest {
 		allHeaders.put("Host", "localhost:8080");
 		allHeaders.put("User-Agent", "test");
 		return (HttpServletRequest) Proxy.newProxyInstance(SessionValidationTest.class.getClassLoader(),
-				new Class<?>[] { HttpServletRequest.class }, (proxy, m, args) -> {
-					switch (m.getName()) {
-					case "getMethod":
-						return method;
-					case "getContentType":
-						return contentType.isEmpty() ? null : contentType;
-					case "getInputStream":
-						return streamOf(bytes);
-					case "getRequestURL":
-						return new StringBuffer(URL);
-					case "getHeader":
-						return allHeaders.get(args[0]);
-					default:
-						return null;
-					}
-				});
+				new Class<?>[] { HttpServletRequest.class }, new SessionValidationRequestHandler(method, contentType, bytes, URL, allHeaders));
 	}
 
 	private static HttpServletResponse response(Outcome outcome) {
 		PrintWriter writer = new PrintWriter(outcome.body, true);
 		return (HttpServletResponse) Proxy.newProxyInstance(SessionValidationTest.class.getClassLoader(),
-				new Class<?>[] { HttpServletResponse.class }, (proxy, m, args) -> {
-					switch (m.getName()) {
-					case "setStatus":
-						outcome.status.set((Integer) args[0]);
-						return null;
-					case "getStatus":
-						return outcome.status.get();
-					case "getWriter":
-						return writer;
-					default:
-						return null;
-					}
-				});
+				new Class<?>[] { HttpServletResponse.class }, new SessionValidationResponseHandler(outcome, writer));
 	}
 
 	private static Outcome run(CcpBusiness task, HttpServletRequest request, boolean controllerReadsBody) {
 		Outcome outcome = new Outcome();
-		FilterChain chain = (ServletRequest req, jakarta.servlet.ServletResponse res) -> {
-			outcome.reachedController = true;
-			if (controllerReadsBody) {
-				try {
-					byte[] read = req.getInputStream().readAllBytes();
-					outcome.bodySeenByController.set(new String(read, StandardCharsets.UTF_8));
-				} catch (IOException e) {
-					throw new IllegalStateException(e);
-				}
-			}
-		};
+		FilterChain chain = new SessionValidationController(outcome, controllerReadsBody);
 		new CcpPutSessionValuesAndExecuteTaskFilter(task).doFilter(request, response(outcome), chain);
 		return outcome;
 	}
@@ -226,7 +187,7 @@ public class SessionValidationTest {
 
 	@Test
 	public void theRealSessionValidationRefusesARequestWithoutSessionToken() {
-		Outcome outcome = run(JnBusinessValidateLogin.INSTANCE, request("GET", "", "", Map.of()), false);
+		Outcome outcome = run(JsBusinessValidateLogin.INSTANCE, request("GET", "", "", Map.of()), false);
 
 		assertFalse("the request reached the controller without a session token", outcome.reachedController);
 		assertTrue(String.valueOf(outcome.status.get()), outcome.status.get() >= 400 && outcome.status.get() < 500);

@@ -13,6 +13,10 @@ import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
  */
 @CcpEntityFieldsValidator(JnEntitySetupProbePlain.Fields.class)
 public class JnEntitySetupProbePlain implements CcpEntityConfigurator {
+	/** The single instance: the class keeps no state. */
+	public final static JnEntitySetupProbePlain INSTANCE = new JnEntitySetupProbePlain();
+
+	private JnEntitySetupProbePlain() {}
 
 	/** The entity {@code jn_setup_probe_plain}. */
 	public static final CcpEntity ENTITY = new CcpEntityFactory(JnEntitySetupProbePlain.class).entityInstance;

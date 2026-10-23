@@ -21,12 +21,12 @@ import com.vis.entities.VisEntityResume;
 public class VisJsonValidatorHomeOfficeAloneTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private boolean hasError(List<Integer> ddds) {
 		CcpJsonRepresentation resume = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.ddd, ddds);
-		boolean hasError = new VisJsonValidatorHomeOfficeAlone().hasError(resume, VisEntityResume.Fields.class);
+		boolean hasError = VisJsonValidatorHomeOfficeAlone.INSTANCE.hasError(resume, VisEntityResume.Fields.class);
 		return hasError;
 	}
 
@@ -49,6 +49,6 @@ public class VisJsonValidatorHomeOfficeAloneTest {
 
 	@Test
 	public void aResumeWithoutDddIsLeftToTheFieldRules() {
-		assertFalse(new VisJsonValidatorHomeOfficeAlone().hasError(CcpOtherConstants.EMPTY_JSON, VisEntityResume.Fields.class));
+		assertFalse(VisJsonValidatorHomeOfficeAlone.INSTANCE.hasError(CcpOtherConstants.EMPTY_JSON, VisEntityResume.Fields.class));
 	}
 }

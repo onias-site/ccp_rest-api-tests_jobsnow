@@ -24,10 +24,10 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.jn.entities.JnEntityAsyncTask;
+import com.jn.entities.JnEntitySupportPendingCommand;
 
 /**
- * Proves {@link CcpEntityMetaData} on {@code jn_async_task}: the bulk items of each operation carry the id of the
+ * Proves {@link CcpEntityMetaData} on {@code jn_support_pending_command}: the bulk items of each operation carry the id of the
  * record, the updatable fields are kept and the unknown ones dropped, and several records are read by id at once.
  */
 public class EntityMetaDataBehaviorTest {
@@ -35,37 +35,36 @@ public class EntityMetaDataBehaviorTest {
 	static {
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp());
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE);
 	}
 
-	private final CcpEntityMetaData metaData = JnEntityAsyncTask.ENTITY.getEntityMetaData();
+	private final CcpEntityMetaData metaData = JnEntitySupportPendingCommand.ENTITY.getEntityMetaData();
 
 	private CcpJsonRepresentation task() {
 		CcpJsonRepresentation task = CcpOtherConstants.EMPTY_JSON
-				.put(JnEntityAsyncTask.Fields.messageId, UUID.randomUUID().toString())
-				.put(JnEntityAsyncTask.Fields.started, System.currentTimeMillis())
-				.put(JnEntityAsyncTask.Fields.data, "05102026 00:00:00")
-				.put(JnEntityAsyncTask.Fields.topic, "test")
-				.put(JnEntityAsyncTask.Fields.request, "{}");
+				.put(JnEntitySupportPendingCommand.Fields.botName, "test")
+				.put(JnEntitySupportPendingCommand.Fields.chatId, 999L)
+				.put(JnEntitySupportPendingCommand.Fields.command, "/test " + UUID.randomUUID())
+				.put(JnEntitySupportPendingCommand.Fields.timestamp, System.currentTimeMillis());
 		return task;
 	}
 
 	@Test
 	public void theNameOfTheMetaDataIsTheEntityName() {
-		assertEquals("jn_async_task", this.metaData.name());
-		assertEquals("jn_async_task", this.metaData.toString());
+		assertEquals("jn_support_pending_command", this.metaData.name());
+		assertEquals("jn_support_pending_command", this.metaData.toString());
 	}
 
 	@Test
 	public void eachBulkItemCarriesItsOperationAndTheIdOfTheRecord() {
 		CcpJsonRepresentation task = this.task();
-		String id = JnEntityAsyncTask.ENTITY.calculateId(task);
+		String id = JnEntitySupportPendingCommand.ENTITY.calculateId(task);
 
 		CcpBulkItem create = this.metaData.toCreateBulkItem(task);
 		CcpBulkItem update = this.metaData.toUpdateBulkItem(task);
@@ -76,7 +75,7 @@ public class EntityMetaDataBehaviorTest {
 		assertEquals(CcpBulkEntityOperationType.delete, delete.operation);
 		for (CcpBulkItem item : Arrays.asList(create, update, delete)) {
 			assertEquals(id, item.id);
-			assertEquals(JnEntityAsyncTask.ENTITY, item.entity);
+			assertEquals(JnEntitySupportPendingCommand.ENTITY, item.entity);
 		}
 	}
 
@@ -86,7 +85,7 @@ public class EntityMetaDataBehaviorTest {
 
 		CcpJsonRepresentation updatable = this.metaData.getOnlyUpdatableFields(withAnUnknownField);
 
-		assertTrue(updatable.containsField(JnEntityAsyncTask.Fields.topic));
+		assertTrue(updatable.containsField(JnEntitySupportPendingCommand.Fields.timestamp));
 		assertFalse(updatable.containsField(new CcpFieldName("unknown")));
 	}
 
@@ -99,15 +98,17 @@ public class EntityMetaDataBehaviorTest {
 	public void severalRecordsAreReadByIdAtOnce() {
 		CcpJsonRepresentation first = this.task();
 		CcpJsonRepresentation second = this.task();
-		JnEntityAsyncTask.ENTITY.save(first);
-		JnEntityAsyncTask.ENTITY.save(second);
+		JnEntitySupportPendingCommand.ENTITY.save(first);
+		JnEntitySupportPendingCommand.ENTITY.save(second);
 
 		CcpJsonRepresentation byId = this.metaData.getMultipleByIds(Arrays.asList(first, second));
+		JnEntitySupportPendingCommand.ENTITY.delete(first);
+		JnEntitySupportPendingCommand.ENTITY.delete(second);
 
-		String firstId = JnEntityAsyncTask.ENTITY.calculateId(first);
-		String secondId = JnEntityAsyncTask.ENTITY.calculateId(second);
-		assertEquals(first.getAsString(JnEntityAsyncTask.Fields.messageId),
-				byId.getInnerJson(new CcpFieldName(firstId)).getAsString(JnEntityAsyncTask.Fields.messageId));
+		String firstId = JnEntitySupportPendingCommand.ENTITY.calculateId(first);
+		String secondId = JnEntitySupportPendingCommand.ENTITY.calculateId(second);
+		assertEquals(first.getAsString(JnEntitySupportPendingCommand.Fields.command),
+				byId.getInnerJson(new CcpFieldName(firstId)).getAsString(JnEntitySupportPendingCommand.Fields.command));
 		assertTrue(byId.toString(), byId.containsField(new CcpFieldName(secondId)));
 	}
 }

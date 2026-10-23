@@ -11,7 +11,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class JsBusinessSavePasswordTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test

@@ -16,10 +16,10 @@ import com.ccp.json.validations.fields.enums.CcpJsonFieldTypeError;
 public class CcpJsonFieldTypeNestedJsonTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
-	private final BusinessFieldTypeNestedJson business = new BusinessFieldTypeNestedJson();
+	private final BusinessFieldTypeNestedJson business = BusinessFieldTypeNestedJson.INSTANCE;
 
 	private CcpJsonRepresentation json(RulesFieldTypeNestedJson field, Object value) {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(field, value);

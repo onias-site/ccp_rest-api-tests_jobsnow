@@ -29,6 +29,8 @@ import com.ccp.especifications.db.utils.entity.decorators.annotations.CcpEntityT
 import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityMetaData;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.ccp.especifications.email.CcpEmailSender;
+import com.ccp.especifications.db.utils.entity.CcpEntityOperationType;
+import com.ccp.especifications.mensageria.sender.CcpMensageriaSender;
 import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
@@ -63,21 +65,22 @@ public abstract class EntityDecoratorTestTemplate {
 
 	@BeforeClass
 	public static void loadDependencies() {
-		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> new CountingInstantMessenger();
-		CcpInstanceProvider<CcpEmailSender> email = () -> new CountingEmailSender();
+		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> CountingInstantMessenger.INSTANCE;
+		CcpInstanceProvider<CcpEmailSender> email = () -> CountingEmailSender.INSTANCE;
+		CcpInstanceProvider<CcpMensageriaSender> mensageria = () -> CountingMensageriaSender.INSTANCE;
 
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
-				CcpLocalInstances.syncMensageriaListener,
+				mensageria,
 				CcpLocalInstances.bucket,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.map,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
 				telegram,
 				email
 		);
@@ -481,8 +484,8 @@ public abstract class EntityDecoratorTestTemplate {
 	// ── @CcpEntityAsyncWriter ──────────────────────────────────────────────────
 
 	/**
-	 * {@code save} does not write directly: it publishes to the queue (leaving a trace in jn_async_task
-	 * with the entity's topic) and returns that the message was accepted. With the synchronous messaging
+	 * {@code save} does not write directly: it publishes to the queue (a message with the entity's topic,
+	 * counted by {@link CountingMensageriaSender}) and returns that the message was accepted. With the synchronous messaging
 	 * of the tests, the consumer runs right away and the record shows up in the database.
 	 */
 	protected void shouldSaveThroughQueue() {
@@ -490,11 +493,13 @@ public abstract class EntityDecoratorTestTemplate {
 		CcpJsonRepresentation record = this.validRecord();
 		String topic = entityUnderTest.getEntityMetaData().configurationClass.getName();
 
-		long before = ElasticsearchLocal.count("jn_async_task", "topic", topic, "operation", "save");
+		String saveOperation = CcpEntityOperationType.save.name();
+		long before = CountingMensageriaSender.howMany(topic, saveOperation);
 		boolean accepted = entityUnderTest.save(record);
 
 		assertTrue("queue refused the save of " + this.name(), accepted);
-		assertEquals("save of " + this.name() + " did not go through the queue", before + 1, ElasticsearchLocal.count("jn_async_task", "topic", topic, "operation", "save"));
+		long after = CountingMensageriaSender.howMany(topic, saveOperation);
+		assertEquals("save of " + this.name() + " did not go through the queue", before + 1, after);
 		assertTrue("queue consumer did not save " + this.name(), entityUnderTest.exists(record));
 	}
 

@@ -29,7 +29,7 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.jn.entities.JnEntityLoginPassword;
+import com.js.entities.JsEntityLoginPassword;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnDeleteKeysFromCache;
 
@@ -54,20 +54,20 @@ public class ReadsTransformOnlyThePrimaryKeyTest {
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchDbRequest(),
+				CcpElasticSearchDbRequest.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpElasticSearchQueryExecutor(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
 				passwords
 		);
 	}
 
 	@After
 	public void deleteTheRecord() {
-		JnEntityLoginPassword.ENTITY.delete(this.login());
+		JsEntityLoginPassword.ENTITY.delete(this.login());
 		PASSWORDS.reset();
 	}
 
@@ -75,7 +75,7 @@ public class ReadsTransformOnlyThePrimaryKeyTest {
 	public void theJsonOfAReadHasOnlyThePrimaryKeyTransformed() {
 		PASSWORDS.reset();
 
-		CcpJsonRepresentation handled = JnEntityLoginPassword.ENTITY.getJsonWithHandledPrimaryKey(this.login());
+		CcpJsonRepresentation handled = JsEntityLoginPassword.ENTITY.getJsonWithHandledPrimaryKey(this.login());
 
 		assertEquals(this.emailHash(), handled.getAsString(JnJsonCommonsFields.email));
 		assertEquals(PASSWORD, handled.getAsString(JnJsonCommonsFields.password));
@@ -86,7 +86,7 @@ public class ReadsTransformOnlyThePrimaryKeyTest {
 	public void theJsonOfAWriteHasEveryFieldTransformed() {
 		PASSWORDS.reset();
 
-		CcpJsonRepresentation handled = JnEntityLoginPassword.ENTITY.getHandledJson(this.login());
+		CcpJsonRepresentation handled = JsEntityLoginPassword.ENTITY.getHandledJson(this.login());
 
 		String hashedPassword = handled.getAsString(JnJsonCommonsFields.password);
 		assertEquals(this.emailHash(), handled.getAsString(JnJsonCommonsFields.email));
@@ -102,24 +102,24 @@ public class ReadsTransformOnlyThePrimaryKeyTest {
 	@Test
 	public void readingWithThePasswordInTheJsonComputesNoHash() {
 		CcpJsonRepresentation login = this.login();
-		JnEntityLoginPassword.ENTITY.save(login);
+		JsEntityLoginPassword.ENTITY.save(login);
 		PASSWORDS.reset();
 
-		assertTrue(JnEntityLoginPassword.ENTITY.exists(login));
+		assertTrue(JsEntityLoginPassword.ENTITY.exists(login));
 
-		CcpJsonRepresentation saved = JnEntityLoginPassword.ENTITY.getOneById(login);
+		CcpJsonRepresentation saved = JsEntityLoginPassword.ENTITY.getOneById(login);
 		String savedPassword = saved.getAsString(JnJsonCommonsFields.password);
 		assertTrue(PASSWORDS.matches(PASSWORD, savedPassword));
 
-		List<CcpJsonRepresentation> parametersToSearch = JnEntityLoginPassword.ENTITY.getParametersToSearch(login);
+		List<CcpJsonRepresentation> parametersToSearch = JsEntityLoginPassword.ENTITY.getParametersToSearch(login);
 		// the main entity and its twin, where a locked password goes
 		assertEquals(2, parametersToSearch.size());
 
 		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
-		CcpSelectUnionAll unionAll = crud.unionAll(login, JnDeleteKeysFromCache.INSTANCE, JnEntityLoginPassword.ENTITY);
-		assertTrue(JnEntityLoginPassword.ENTITY.isPresentInThisUnionAll(unionAll, login));
+		CcpSelectUnionAll unionAll = crud.unionAll(login, JnDeleteKeysFromCache.INSTANCE, JsEntityLoginPassword.ENTITY);
+		assertTrue(JsEntityLoginPassword.ENTITY.isPresentInThisUnionAll(unionAll, login));
 		Supplier<CcpJsonRepresentation> loginSupplier = login.getJsonSupplier();
-		CcpJsonRepresentation fromTheUnionAll = JnEntityLoginPassword.ENTITY.getRecordFromUnionAll(unionAll, loginSupplier);
+		CcpJsonRepresentation fromTheUnionAll = JsEntityLoginPassword.ENTITY.getRecordFromUnionAll(unionAll, loginSupplier);
 		assertFalse(fromTheUnionAll.isEmpty());
 
 		assertEquals(0, PASSWORDS.hashes.get());

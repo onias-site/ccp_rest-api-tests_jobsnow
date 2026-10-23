@@ -5,6 +5,10 @@ import com.ccp.decorators.CcpJsonRepresentation;
 
 /** Business whose validation rules live in {@code RulesFieldTypeNumberInteger}. */
 public class BusinessFieldTypeNumberInteger implements CcpBusiness {
+	/** The single instance: the class keeps no state. */
+	public final static BusinessFieldTypeNumberInteger INSTANCE = new BusinessFieldTypeNumberInteger();
+
+	private BusinessFieldTypeNumberInteger() {}
 
 	public Class<?> getJsonValidationClass() {
 		return RulesFieldTypeNumberInteger.class;

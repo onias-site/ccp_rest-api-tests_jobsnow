@@ -19,7 +19,7 @@ import com.vis.business.skill.VisSkillFixHierarchyDecisions;
 public class OperatorAnswerReadingTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private VisSupportSkillFixHierarchyAnswer read(String typedValue) {

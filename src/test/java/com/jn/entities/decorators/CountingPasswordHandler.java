@@ -14,7 +14,7 @@ class CountingPasswordHandler implements CcpPasswordHandler {
 	/** The hashes computed since the last {@link #reset()}. */
 	final AtomicInteger hashes = new AtomicInteger();
 
-	private final CcpPasswordHandler bcrypt = new CcpMindrotPasswordHandler().getInstance();
+	private final CcpPasswordHandler bcrypt = CcpMindrotPasswordHandler.INSTANCE.getInstance();
 
 	public boolean matches(String password, String hash) {
 		boolean matches = this.bcrypt.matches(password, hash);

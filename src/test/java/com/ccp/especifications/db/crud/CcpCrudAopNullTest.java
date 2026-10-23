@@ -32,10 +32,10 @@ public class CcpCrudAopNullTest {
 
 	static {
 		CcpDependencyInjection.loadAllDependencies(
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
-				new CcpElasticSearchDbRequest(),
-				new CcpElasticSearchCrud(),
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
 				CcpLocalCacheInstances.mock);
 	}
 
@@ -76,8 +76,7 @@ public class CcpCrudAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void unionAllArrayJsonsNullTest() {
-		crud().unionAll((CcpJsonRepresentation[]) null, keys -> {
-		}, ENTITY);
+		crud().unionAll((CcpJsonRepresentation[]) null, keys -> {}, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -87,14 +86,12 @@ public class CcpCrudAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void unionAllArrayEntitiesNullTest() {
-		crud().unionAll(new CcpJsonRepresentation[] { JSON }, keys -> {
-		}, (CcpEntity[]) null);
+		crud().unionAll(new CcpJsonRepresentation[] { JSON }, keys -> {}, (CcpEntity[]) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void unionAllJsonNullTest() {
-		crud().unionAll((CcpJsonRepresentation) null, keys -> {
-		}, ENTITY);
+		crud().unionAll((CcpJsonRepresentation) null, keys -> {}, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -104,14 +101,12 @@ public class CcpCrudAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void unionAllJsonEntitiesNullTest() {
-		crud().unionAll(JSON, keys -> {
-		}, (CcpEntity[]) null);
+		crud().unionAll(JSON, keys -> {}, (CcpEntity[]) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void deleteKeysInCacheJsonsNullTest() {
-		crud().deleteKeysInCache((CcpJsonRepresentation[]) null, keys -> {
-		}, ENTITY);
+		crud().deleteKeysInCache((CcpJsonRepresentation[]) null, keys -> {}, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -121,8 +116,7 @@ public class CcpCrudAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void deleteKeysInCacheEntitiesNullTest() {
-		crud().deleteKeysInCache(new CcpJsonRepresentation[] { JSON }, keys -> {
-		}, (CcpEntity[]) null);
+		crud().deleteKeysInCache(new CcpJsonRepresentation[] { JSON }, keys -> {}, (CcpEntity[]) null);
 	}
 
 	// ── CcpSelectUnionAll ─────────────────────────────────────────────────────
@@ -237,20 +231,17 @@ public class CcpCrudAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void selectFinallyEndThisProcedureContextNullTest() {
-		selectFinally().endThisProcedure(null, json -> json, json -> json, keys -> {
-		});
+		selectFinally().endThisProcedure(null, json -> json, json -> json, keys -> {});
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void selectFinallyEndThisProcedureWhenErrorNullTest() {
-		selectFinally().endThisProcedure(CcpSelectFoundInEntity.JsonFieldNames.statements, null, json -> json, keys -> {
-		});
+		selectFinally().endThisProcedure(CcpSelectFoundInEntity.JsonFieldNames.statements, null, json -> json, keys -> {});
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void selectFinallyEndThisProcedureWhenSuccessNullTest() {
-		selectFinally().endThisProcedure(CcpSelectFoundInEntity.JsonFieldNames.statements, json -> json, null, keys -> {
-		});
+		selectFinally().endThisProcedure(CcpSelectFoundInEntity.JsonFieldNames.statements, json -> json, null, keys -> {});
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -261,22 +252,19 @@ public class CcpCrudAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void selectFinallyEndRetrievingDataContextNullTest() {
-		selectFinally().endThisProcedureRetrievingTheResultingData(null, json -> json, json -> json, keys -> {
-		});
+		selectFinally().endThisProcedureRetrievingTheResultingData(null, json -> json, json -> json, keys -> {});
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void selectFinallyEndRetrievingDataWhenErrorNullTest() {
 		selectFinally().endThisProcedureRetrievingTheResultingData(CcpSelectFoundInEntity.JsonFieldNames.statements,
-				null, json -> json, keys -> {
-				});
+				null, json -> json, keys -> {});
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void selectFinallyEndRetrievingDataWhenSuccessNullTest() {
 		selectFinally().endThisProcedureRetrievingTheResultingData(CcpSelectFoundInEntity.JsonFieldNames.statements,
-				json -> json, null, keys -> {
-				});
+				json -> json, null, keys -> {});
 	}
 
 	@Test(expected = CcpNullParameterException.class)

@@ -14,7 +14,7 @@ import com.ccp.especifications.http.CcpHttpResponseType;
 public class CcpElasticSearchDbRequestTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpElasticSearchDbRequest());
+		CcpDependencyInjection.loadAllDependencies(CcpElasticSearchDbRequest.INSTANCE);
 	}
 
 	private static CcpDbRequester getDb() {
@@ -25,12 +25,12 @@ public class CcpElasticSearchDbRequestTest {
 
 	@Test
 	public void constructorProviderTest() {
-		assertNotNull(new CcpElasticSearchDbRequest());
+		assertNotNull(CcpElasticSearchDbRequest.INSTANCE);
 	}
 
 	@Test
 	public void getInstanceTest() {
-		CcpDbRequester instance = new CcpElasticSearchDbRequest().getInstance();
+		CcpDbRequester instance = CcpElasticSearchDbRequest.INSTANCE.getInstance();
 		assertNotNull(instance);
 	}
 

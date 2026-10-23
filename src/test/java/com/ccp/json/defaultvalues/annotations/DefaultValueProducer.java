@@ -9,6 +9,10 @@ import com.ccp.decorators.CcpJsonRepresentation;
  * reaches the producer whole, since the stored value is derived from another field.
  */
 public class DefaultValueProducer implements CcpBusiness {
+	/** The single instance: the class keeps no state. */
+	public final static DefaultValueProducer INSTANCE = new DefaultValueProducer();
+
+	private DefaultValueProducer() {}
 
 	public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 

@@ -12,7 +12,7 @@ import com.jn.entities.JnEntityJobsnowError;
 public class JnSendMessageToUserFluentTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 

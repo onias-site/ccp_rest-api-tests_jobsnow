@@ -19,7 +19,7 @@ import com.vis.json.transformers.VisJsonTransformerPutEmailHashAndDomainRecruite
 public class VisRemainingAopNullTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	// ── entities ──────────────────────────────────────────────────────────────

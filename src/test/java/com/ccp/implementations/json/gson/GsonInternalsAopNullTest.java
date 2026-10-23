@@ -13,7 +13,7 @@ import com.ccp.especifications.json.CcpJsonHandler;
 public class GsonInternalsAopNullTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static GsonJsonHandler handler() {

@@ -23,11 +23,11 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.jn.entities.JnEntityLoginPassword;
-import com.jn.entities.JnEntityLoginSessionValidation;
-import com.jn.entities.JnEntityLoginToken;
-import com.jn.entities.JnEntityLoginTokenRequestResend;
-import com.jn.entities.JnEntityLoginTokenRequestUnlock;
+import com.js.entities.JsEntityLoginPassword;
+import com.js.entities.JsEntityLoginSessionValidation;
+import com.js.entities.JsEntityLoginToken;
+import com.js.entities.JsEntityLoginTokenRequestResend;
+import com.js.entities.JsEntityLoginTokenRequestUnlock;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.vis.entities.VisEntityPosition;
@@ -50,21 +50,21 @@ import com.vis.entities.VisEntityResume;
 public class DeleteAnyWhereOnTwinEntitiesTest {
 
 	static {
-		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> new SilentInstantMessenger();
-		CcpInstanceProvider<CcpEmailSender> email = () -> new SilentEmailSender();
+		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> SilentInstantMessenger.INSTANCE;
+		CcpInstanceProvider<CcpEmailSender> email = () -> SilentEmailSender.INSTANCE;
 
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
 				CcpLocalInstances.bucket,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
 				telegram,
 				email
 		);
@@ -79,24 +79,24 @@ public class DeleteAnyWhereOnTwinEntitiesTest {
 		CcpJsonRepresentation record = this.withEmail()
 				.put(JnJsonCommonsFields.password, "Senha#12345");
 
-		this.shouldDeleteFromBothIndexes(JnEntityLoginPassword.ENTITY, record);
+		this.shouldDeleteFromBothIndexes(JsEntityLoginPassword.ENTITY, record);
 	}
 
 	@Test
 	public void loginSessionValidation() {
 		CcpJsonRepresentation record = this.withEmail()
-				.put(JnEntityLoginSessionValidation.Fields.token, "TOKEN123")
+				.put(JsEntityLoginSessionValidation.Fields.token, "TOKEN123")
 				.put(JnJsonCommonsFields.ip, "127.0.0.1")
 				.put(JnJsonCommonsFields.userAgent, "junit");
 
-		this.shouldDeleteFromBothIndexes(JnEntityLoginSessionValidation.ENTITY, record);
+		this.shouldDeleteFromBothIndexes(JsEntityLoginSessionValidation.ENTITY, record);
 	}
 
 	// ── entities that notify someone on save ─────────────────────────────────
 
 	@Test
 	public void loginToken() {
-		this.shouldDeleteFromBothIndexes(JnEntityLoginToken.ENTITY, this.withEmail());
+		this.shouldDeleteFromBothIndexes(JsEntityLoginToken.ENTITY, this.withEmail());
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class DeleteAnyWhereOnTwinEntitiesTest {
 		CcpJsonRepresentation record = this.withEmail()
 				.put(JnJsonInstantMessengerFields.chatId, 751717896L);
 
-		this.shouldDeleteFromBothIndexes(JnEntityLoginTokenRequestResend.ENTITY, record);
+		this.shouldDeleteFromBothIndexes(JsEntityLoginTokenRequestResend.ENTITY, record);
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class DeleteAnyWhereOnTwinEntitiesTest {
 		CcpJsonRepresentation record = this.withEmail()
 				.put(JnJsonInstantMessengerFields.chatId, 751717896L);
 
-		this.shouldDeleteFromBothIndexes(JnEntityLoginTokenRequestUnlock.ENTITY, record);
+		this.shouldDeleteFromBothIndexes(JsEntityLoginTokenRequestUnlock.ENTITY, record);
 	}
 
 	// ── entities with many required fields ───────────────────────────────────

@@ -29,15 +29,15 @@ import com.jn.business.messages.JnMessages.JnNotifyUserAboutLoginToken;
 import com.jn.db.bulk.JnExecuteBulkOperation;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.js.entities.JsEntityLoginAnswers;
-import com.jn.entities.JnEntityLoginEmail;
-import com.jn.entities.JnEntityLoginPassword;
+import com.js.entities.JsEntityLoginEmail;
+import com.js.entities.JsEntityLoginPassword;
 import com.js.entities.JsEntityLoginPasswordAttempts;
-import com.jn.entities.JnEntityLoginSessionConflict;
-import com.jn.entities.JnEntityLoginToken;
-import com.jn.entities.JnEntityLoginTokenAttempts;
+import com.js.entities.JsEntityLoginSessionConflict;
+import com.js.entities.JsEntityLoginToken;
+import com.js.entities.JsEntityLoginTokenAttempts;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
-import com.jn.status.login.JnProcessStatusCreateLoginEmail;
-import com.jn.status.login.JnProcessStatusExecuteLogin;
+import com.js.status.login.JsProcessStatusCreateLoginEmail;
+import com.js.status.login.JsProcessStatusExecuteLogin;
 import com.jn.utils.JnDeleteKeysFromCache;
 
 public abstract class VisTestTemplate {
@@ -49,14 +49,14 @@ public abstract class VisTestTemplate {
 	static {
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(), 
-				new CcpMindrotPasswordHandler(), 
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE, 
+				CcpMindrotPasswordHandler.INSTANCE, 
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(), 
-				new CcpApacheMimeHttp(),  
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE, 
+				CcpApacheMimeHttp.INSTANCE,  
 				CcpLocalInstances.email
 				);
 	}
@@ -170,27 +170,27 @@ public abstract class VisTestTemplate {
 				,CcpBulkEntityOperationType.delete 
 				, JnDeleteKeysFromCache.INSTANCE
 				,JnEntityEmailMessageSent.ENTITY
-				,JnEntityLoginPassword.ENTITY
-				,JnEntityLoginSessionConflict.ENTITY
-				,JnEntityLoginToken.ENTITY
-				,JnEntityLoginEmail.ENTITY
+				,JsEntityLoginPassword.ENTITY
+				,JsEntityLoginSessionConflict.ENTITY
+				,JsEntityLoginToken.ENTITY
+				,JsEntityLoginEmail.ENTITY
 				,JsEntityLoginPasswordAttempts.ENTITY
 				,JsEntityLoginAnswers.ENTITY
-				,JnEntityLoginPassword.ENTITY.getTwinEntity()
-				,JnEntityLoginToken.ENTITY.getTwinEntity()
-				,JnEntityLoginTokenAttempts.ENTITY
+				,JsEntityLoginPassword.ENTITY.getTwinEntity()
+				,JsEntityLoginToken.ENTITY.getTwinEntity()
+				,JsEntityLoginTokenAttempts.ENTITY
 				);
 		
 		CcpJsonRepresentation loginResult = CcpTreeFlow
 		.beginThisStatement()
 		.tryToExecuteTheGivenFinalTargetProcess(LoginActions.ExecuteLogin).usingTheGivenJson(sessionValuesToTest)
-		.butIfThisExecutionReturns(JnProcessStatusExecuteLogin.missingSavingEmail).thenExecuteTheGivenProcesses(LoginActions.CreateLoginEmail)
+		.butIfThisExecutionReturns(JsProcessStatusExecuteLogin.missingSavingEmail).thenExecuteTheGivenProcesses(LoginActions.CreateLoginEmail)
 		.and()
-		.ifThisExecutionReturns(JnProcessStatusCreateLoginEmail.missingSavePassword).thenExecuteTheGivenProcesses(
+		.ifThisExecutionReturns(JsProcessStatusCreateLoginEmail.missingSavePassword).thenExecuteTheGivenProcesses(
 				LoginActions.SaveAnswers, LoginActions.CreateLoginToken, LoginActions.readTokenFromReceivedEmail, 
 				LoginActions.SavePassword, LoginActions.renameTokenField, LoginActions.ExecuteLogout)
 		.and()
-		.ifThisExecutionReturns(JnProcessStatusCreateLoginEmail.missingSaveAnswers).thenExecuteTheGivenProcesses(LoginActions.SaveAnswers)
+		.ifThisExecutionReturns(JsProcessStatusCreateLoginEmail.missingSaveAnswers).thenExecuteTheGivenProcesses(LoginActions.SaveAnswers)
 		.and()
 		.endThisStatement(whatToNext);
 		
@@ -206,14 +206,14 @@ public abstract class VisTestTemplate {
 		
 		String uri = this.getUri();
 		CcpJsonRepresentation responseFromEndpoint = this.getJsonResponseFromEndpoint(processStatus, scenarioName, body, uri, headers);
-		JnEntityLoginEmail.ENTITY.delete(body);
-		JnEntityLoginPassword.ENTITY.delete(body);
+		JsEntityLoginEmail.ENTITY.delete(body);
+		JsEntityLoginPassword.ENTITY.delete(body);
 		JsEntityLoginPasswordAttempts.ENTITY.delete(body);
 		JsEntityLoginAnswers.ENTITY.delete(body);
-		JnEntityLoginPassword.ENTITY.getTwinEntity().delete(body);
-		JnEntityLoginTokenAttempts.ENTITY.delete(body);
-		JnEntityLoginToken.ENTITY.getTwinEntity().delete(body);
-		JnEntityLoginToken.ENTITY.delete(body);
+		JsEntityLoginPassword.ENTITY.getTwinEntity().delete(body);
+		JsEntityLoginTokenAttempts.ENTITY.delete(body);
+		JsEntityLoginToken.ENTITY.getTwinEntity().delete(body);
+		JsEntityLoginToken.ENTITY.delete(body);
 		
 		return responseFromEndpoint;
 	}

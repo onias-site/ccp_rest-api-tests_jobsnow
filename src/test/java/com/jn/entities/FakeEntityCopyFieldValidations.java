@@ -30,6 +30,10 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
  * entidades varre {@code jn_business_jobsnow}.
  */
 public class FakeEntityCopyFieldValidations implements CcpEntityConfigurator {
+	/** The single instance: the class keeps no state. */
+	public final static FakeEntityCopyFieldValidations INSTANCE = new FakeEntityCopyFieldValidations();
+
+	private FakeEntityCopyFieldValidations() {}
 
 	public static final CcpEntity ENTITY = new CcpEntityFactory(FakeEntityCopyFieldValidations.class).entityInstance;
 

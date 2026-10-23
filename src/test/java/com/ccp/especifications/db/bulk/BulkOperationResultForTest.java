@@ -3,6 +3,9 @@ package com.ccp.especifications.db.bulk;
 import com.ccp.decorators.CcpJsonRepresentation;
 
 final class BulkOperationResultForTest implements CcpBulkOperationResult {
+	public final static BulkOperationResultForTest INSTANCE = new BulkOperationResultForTest();
+
+	private BulkOperationResultForTest() {}
 
 	public CcpJsonRepresentation getErrorDetails() {
 		return CcpBulkAopNullTest.JSON;

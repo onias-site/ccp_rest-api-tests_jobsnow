@@ -13,7 +13,7 @@ public class CcpProcessStatusTest {
 
 	// throwException builds a JSON: without the handler loaded here the class failed when run alone
 	static {
-		com.ccp.dependency.injection.CcpDependencyInjection.loadAllDependencies(new com.ccp.implementations.json.gson.CcpGsonJsonHandler());
+		com.ccp.dependency.injection.CcpDependencyInjection.loadAllDependencies(com.ccp.implementations.json.gson.CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test

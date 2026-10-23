@@ -12,21 +12,21 @@ import org.junit.Test;
 public class CcpServiceTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 
 
 	@Test
 	public void executeTest() {
-		assertNotNull(new CcpServiceTestStubService().execute(new HashMap<>()));
+		assertNotNull(CcpServiceTestStubService.INSTANCE.execute(new HashMap<>()));
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeNullParamTest() {
-		new CcpServiceTestStubService().execute((java.util.Map<String, Object>) null);
+		CcpServiceTestStubService.INSTANCE.execute((java.util.Map<String, Object>) null);
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────

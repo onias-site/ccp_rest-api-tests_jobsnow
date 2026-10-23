@@ -18,7 +18,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class AggregationsTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static final CcpEntityField SALARY = new CcpEntityField("salary", false, true, json -> json);

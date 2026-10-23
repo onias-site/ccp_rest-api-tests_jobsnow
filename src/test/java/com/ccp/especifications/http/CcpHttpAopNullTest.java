@@ -20,7 +20,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class CcpHttpAopNullTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpApacheMimeHttp());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpApacheMimeHttp.INSTANCE);
 	}
 
 	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;

@@ -20,7 +20,7 @@ import com.ccp.json.defaultvalues.annotations.RulesDefaultValueStrings;
 public class CcpJsonFieldDefaultValuesEngineTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test

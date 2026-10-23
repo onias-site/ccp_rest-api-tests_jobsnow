@@ -14,7 +14,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class CcpJsonServletInputStreamTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test

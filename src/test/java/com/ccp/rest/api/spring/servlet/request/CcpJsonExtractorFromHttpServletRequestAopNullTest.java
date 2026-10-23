@@ -20,6 +20,6 @@ public class CcpJsonExtractorFromHttpServletRequestAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void extractJsonFromHttpServletRequestNullTest() throws Exception {
-		new ExtractorForTest().extractJsonFromHttpServletRequest(null);
+		ExtractorForTest.INSTANCE.extractJsonFromHttpServletRequest(null);
 	}
 }

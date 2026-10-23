@@ -32,12 +32,27 @@ public class TextDelimitersTest {
 	}
 
 	/**
-	 * The set of this expression differs from {@link CcpOtherConstants#DELIMITERS_ARRAY} on purpose until the vis decides
-	 * how skills are recognized: the hyphen splits, the slash does not.
+	 * The hyphen splits; the slash and the backslash do not, so short skills such as CI/CD and UI/UX stay whole words.
 	 */
 	@Test
-	public void theHyphenSplitsAndTheSlashDoesNotUntilTheSetIsDecided() {
+	public void theHyphenSplitsAndTheSlashDoesNot() {
 		assertEquals(Arrays.asList("front", "end"), this.wordsOf("front-end"));
-		assertEquals(Arrays.asList("Java/Spring"), this.wordsOf("Java/Spring"));
+		assertEquals(Arrays.asList("CI/CD", "UI\\UX"), this.wordsOf("CI/CD UI\\UX"));
+	}
+
+	/**
+	 * Finding 1, corrected in 2026-10-22: the expression and {@link CcpOtherConstants#DELIMITERS_ARRAY} are the same set.
+	 * Until then the expression split on the hyphen and white space, and the array on the slash and the backslash.
+	 */
+	@Test
+	public void theExpressionSplitsOnEveryItemOfTheArrayAndOnNothingElse() {
+		for (String delimiter : CcpOtherConstants.DELIMITERS_ARRAY) {
+			assertEquals(delimiter, Arrays.asList("a", "b"), this.wordsOf("a" + delimiter + "b"));
+		}
+		for (char character = 32; character < 127; character++) {
+			String text = String.valueOf(character);
+			boolean isDelimiter = Arrays.asList(CcpOtherConstants.DELIMITERS_ARRAY).contains(text);
+			assertEquals(text, isDelimiter, text.matches(CcpOtherConstants.DELIMITERS));
+		}
 	}
 }

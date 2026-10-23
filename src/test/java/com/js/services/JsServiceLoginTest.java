@@ -10,12 +10,12 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.json.fields.validation.CcpJsonCommonsFields;
-import com.jn.business.login.JnBusinessValidateLogin;
+import com.js.business.login.JsBusinessValidateLogin;
 
 public class JsServiceLoginTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	// ── enum estrutura ───────────────────────────────────────────────────────
@@ -30,7 +30,7 @@ public class JsServiceLoginTest {
 		assertNotNull(JsServiceLogin.valueOf("ExecuteLogin"));
 	}
 
-	/** Desde 2026-10-17 a validação da sessão é a classe JnBusinessValidateLogin, não mais um item do enum. */
+	/** Desde 2026-10-17 a validação da sessão é a classe JsBusinessValidateLogin, não mais um item do enum. */
 	@Test(expected = IllegalArgumentException.class)
 	public void validateLoginIsNoLongerAnItemTest() {
 		JsServiceLogin.valueOf("ValidateLogin");
@@ -38,7 +38,7 @@ public class JsServiceLoginTest {
 
 	@Test
 	public void validateLoginInstanceTest() {
-		assertNotNull(JnBusinessValidateLogin.INSTANCE);
+		assertNotNull(JsBusinessValidateLogin.INSTANCE);
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class JsServiceLoginTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void validateLoginApplyNullTest() {
-		JnBusinessValidateLogin.INSTANCE.execute((CcpJsonRepresentation) null);
+		JsBusinessValidateLogin.INSTANCE.execute((CcpJsonRepresentation) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

@@ -14,14 +14,14 @@ public class VisJsonTransformersContractTest {
 
 	@Test
 	public void theExperienceTransformerIsTheOneOfTheExperienceFieldAndIsNotAPrimaryKey() {
-		VisJsonTransformerExperienceStartYear transformer = new VisJsonTransformerExperienceStartYear();
+		VisJsonTransformerExperienceStartYear transformer = VisJsonTransformerExperienceStartYear.INSTANCE;
 		assertEquals("experience", transformer.name());
 		assertFalse(transformer.canBePrimaryKey());
 	}
 
 	@Test
 	public void theSpokenLanguageTransformerIsTheOneOfTheSpokenLanguageFieldAndIsNotAPrimaryKey() {
-		VisJsonTransformerSpokenLanguageWithoutId transformer = new VisJsonTransformerSpokenLanguageWithoutId();
+		VisJsonTransformerSpokenLanguageWithoutId transformer = VisJsonTransformerSpokenLanguageWithoutId.INSTANCE;
 		assertEquals("spokenLanguage", transformer.name());
 		assertFalse(transformer.canBePrimaryKey());
 	}

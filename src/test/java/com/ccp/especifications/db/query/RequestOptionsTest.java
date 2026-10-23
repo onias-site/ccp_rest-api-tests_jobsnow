@@ -18,7 +18,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class RequestOptionsTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static final CcpEntityField TITLE = new CcpEntityField("title", false, true, json -> json);

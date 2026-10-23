@@ -33,14 +33,14 @@ public class SenderFailurePoliciesTest {
 	static {
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
-				(com.ccp.dependency.injection.CcpInstanceProvider<com.ccp.especifications.instant.messenger.CcpInstantMessenger>) () -> new com.ccp.especifications.db.utils.entity.decorators.CountingInstantMessenger());
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
+				(com.ccp.dependency.injection.CcpInstanceProvider<com.ccp.especifications.instant.messenger.CcpInstantMessenger>) () -> com.ccp.especifications.db.utils.entity.decorators.CountingInstantMessenger.INSTANCE);
 	}
 
 	/** A failure whose type names only this test, so its warning does not collide with real ones. */

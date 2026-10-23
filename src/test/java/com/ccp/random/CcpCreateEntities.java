@@ -22,23 +22,23 @@ public class CcpCreateEntities {
 
 	static {
 		CcpDependencyInjection.loadAllDependencies(
-				new CcpElasticSearchQueryExecutor(), 
-				new CcpElasticSearchDbRequest(),
+				CcpElasticSearchQueryExecutor.INSTANCE, 
+				CcpElasticSearchDbRequest.INSTANCE,
 				CcpLocalInstances.syncMensageriaListener,
 				CcpLocalInstances.bucket,
 				CcpLocalInstances.email,
-				new CcpMindrotPasswordHandler(),
-				new CcpElasticSerchDbBulk(),
+				CcpMindrotPasswordHandler.INSTANCE,
+				CcpElasticSerchDbBulk.INSTANCE,
 				CcpLocalCacheInstances.map,
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpTelegramInstantMessenger(),
-				new CcpApacheMimeHttp()
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpTelegramInstantMessenger.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE
 				);
 	}
 
-	// in the order the recreation must run: vis and jb seed into jn indices (message templates and, since 2026-10-15,
-	// the commands of the bots), so jn goes first; js (the login, since 2026-10-17) seeds nothing
+	// in the order the recreation must run: js, vis and jb seed into jn indices (message templates, the commands of the
+	// bots since 2026-10-15 and, from js, the session validator since 2026-10-22), so jn goes first
 	private static final String[] COST_CENTERS = { "jn", "js", "vis", "jb" };
 
 	/**

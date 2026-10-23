@@ -10,6 +10,10 @@ import com.ccp.especifications.db.crud.CcpCrud;
 import com.ccp.especifications.db.crud.CcpUnionAllExecutor;
 
 class FakeCrud implements CcpCrud {
+	/** The single instance: the class keeps no state. */
+	public final static FakeCrud INSTANCE = new FakeCrud();
+
+	private FakeCrud() {}
 
 	enum JsonFieldNames implements CcpJsonFieldName {
 		inserted

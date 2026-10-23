@@ -23,6 +23,11 @@ import com.js.entities.JsEntityLoginAnswers;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 public class BaseTest {
+	/** The single instance: the class keeps no state. */
+	public final static BaseTest INSTANCE = new BaseTest();
+
+	private BaseTest() {}
+
 	public final static CcpJsonRepresentation REQUEST_TO_LOGIN = CcpOtherConstants.EMPTY_JSON
 			.put(JnJsonCommonsFields.userAgent, "Apache-HttpClient/4.5.4 (Java/17.0.9)")
 			;
@@ -34,20 +39,20 @@ public class BaseTest {
 
 		
 		CcpDependencyInjection.loadAllDependencies(
-				new CcpApacheMimeHttp(), 
-				new CcpGsonJsonHandler(), 
-				new CcpElasticSearchCrud(),
-				new CcpMindrotPasswordHandler(),
-				new CcpElasticSearchDbRequest(),
-				localEnvironment ? CcpLocalInstances.bucket : new CcpGcpFileBucket(),
-			    localEnvironment ? CcpLocalCacheInstances.map : new CcpGcpMemCache(),
-	    		localEnvironment ? CcpLocalInstances.email : new CcpSendGridEmailSender(),
-				localEnvironment ? CcpLocalInstances.syncMensageriaListener : new CcpGcpPubSubMensageriaSender()
+				CcpApacheMimeHttp.INSTANCE, 
+				CcpGsonJsonHandler.INSTANCE, 
+				CcpElasticSearchCrud.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				localEnvironment ? CcpLocalInstances.bucket : CcpGcpFileBucket.INSTANCE,
+			    localEnvironment ? CcpLocalCacheInstances.map : CcpGcpMemCache.INSTANCE,
+	    		localEnvironment ? CcpLocalInstances.email : CcpSendGridEmailSender.INSTANCE,
+				localEnvironment ? CcpLocalInstances.syncMensageriaListener : CcpGcpPubSubMensageriaSender.INSTANCE
 				);	
 		
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpElasticSearchCrud(),
-				new CcpElasticSearchDbRequest(), new CcpApacheMimeHttp(),
-				new CcpElasticSerchDbBulk()); 
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpElasticSearchCrud.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE, CcpApacheMimeHttp.INSTANCE,
+				CcpElasticSerchDbBulk.INSTANCE); 
 	}
 	
 	protected void saveErrors(CcpFileDecorator file, CcpJsonValidationError e) {

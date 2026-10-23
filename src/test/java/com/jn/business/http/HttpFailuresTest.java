@@ -42,13 +42,13 @@ public class HttpFailuresTest {
 	static {
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp());
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE);
 	}
 
 	private final String url = "http://localhost/test/" + System.nanoTime();
@@ -139,10 +139,7 @@ public class HttpFailuresTest {
 	public void anyOtherFailureGoesToTheExceptionHandler() {
 		IllegalStateException error = new IllegalStateException("no connection");
 		CcpJsonRepresentation handled = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("handled"), true);
-		JnBusinessSendHttpRequest business = new JnBusinessSendHttpRequest(new FailingExecutor(error), e -> {
-			assertSame(error, e);
-			return handled;
-		});
+		JnBusinessSendHttpRequest business = new JnBusinessSendHttpRequest(new FailingExecutor(error), new ExpectedErrorHandler(error, handled));
 
 		assertEquals(handled, business.execute(this.request));
 	}

@@ -33,7 +33,7 @@ import com.ccp.json.validations.global.engine.CcpJsonValidationRulesEngine;
 public class CcpJsonFieldDefaultValueTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private CcpJsonRepresentation withName() {
@@ -153,7 +153,7 @@ public class CcpJsonFieldDefaultValueTest {
 
 	@Test
 	public void defaultProducerReturnsTheSameJsonTest() {
-		CcpBusiness doNothing = new CcpJsonFieldDefaultValueDoNothing();
+		CcpBusiness doNothing = CcpJsonFieldDefaultValueDoNothing.INSTANCE;
 		CcpJsonRepresentation json = this.withName();
 		CcpJsonRepresentation returned = doNothing.execute(json);
 		assertSame(json, returned);

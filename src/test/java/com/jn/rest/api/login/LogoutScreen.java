@@ -19,12 +19,12 @@ import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatus;
-import com.jn.entities.JnEntityLoginEmail;
-import com.jn.entities.JnEntityLoginSessionValidation;
+import com.js.entities.JsEntityLoginEmail;
+import com.js.entities.JsEntityLoginSessionValidation;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.rest.api.commons.JnTestTemplate;
 import com.jn.rest.api.commons.TestVariables;
-import com.jn.status.login.JnProcessStatusExecuteLogout;
+import com.js.status.login.JsProcessStatusExecuteLogout;
 enum LogoutScreenConstants implements CcpJsonFieldName{
 	originalToken
 }
@@ -33,27 +33,24 @@ public class LogoutScreen extends JnTestTemplate {
 	@Test
 	public void invalidEmail() {
 		TestVariables testVariables = new TestVariables(TestVariables.INVALID_EMAIL);
-		this.execute(testVariables, JnProcessStatusExecuteLogout.invalidEmail, variables -> "anyToken");
+		this.execute(testVariables, JsProcessStatusExecuteLogout.invalidEmail, variables -> "anyToken");
 	}
 
 	@Test
 	public void userNotLoggedIn() {
 		TestVariables testVariables = new TestVariables();
-		this.execute(testVariables, JnProcessStatusExecuteLogout.missingLogin, variables -> "anyToken");
+		this.execute(testVariables, JsProcessStatusExecuteLogout.missingLogin, variables -> "anyToken");
 	}
 
 	@Test
 	public void happyPath() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		// saves the raw json: the token is chosen here, and the transformer stores its hash. Saving the
 		// pre-transformed json (email hashed) was rejected by the validator.
 		String token = "12345678";
-		Function<TestVariables, String> producer = variables -> {
-			variables.saveCurrentSession(token);
-			return token;
-		};
-		this.execute(testVariables, JnProcessStatusExecuteLogout.expectedStatus, producer);
+		Function<TestVariables, String> producer = new LogoutScreenCurrentSession(token);
+		this.execute(testVariables, JsProcessStatusExecuteLogout.expectedStatus, producer);
 	}
 
 	/**
@@ -65,7 +62,7 @@ public class LogoutScreen extends JnTestTemplate {
 	@Test
 	public void happyPathWithJsonBody() throws IOException, InterruptedException {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		String token = "12345678";
 		CcpJsonRepresentation sessionJson = testVariables.saveCurrentSession(token);
 
@@ -85,10 +82,10 @@ public class LogoutScreen extends JnTestTemplate {
 		// the logout deletes the session after answering
 		this.waitForTheAsynchronousWrites(requestStart);
 
-		int expectedStatus = JnProcessStatusExecuteLogout.expectedStatus.asNumber();
+		int expectedStatus = JsProcessStatusExecuteLogout.expectedStatus.asNumber();
 		String body = response.body();
 		assertEquals(body, expectedStatus, response.statusCode());
-		boolean sessionStillExists = JnEntityLoginSessionValidation.ENTITY.exists(sessionJson);
+		boolean sessionStillExists = JsEntityLoginSessionValidation.ENTITY.exists(sessionJson);
 		assertFalse(sessionStillExists);
 	}
 

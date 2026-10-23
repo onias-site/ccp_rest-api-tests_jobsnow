@@ -23,13 +23,13 @@ import com.ccp.json.validations.global.engine.CcpJsonValidationError.CcpValidati
 public class ExplainedMessageTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test
 	public void theDescriptionsOfTheFieldErrorsBecomeSentences() {
 		try {
-			new BusinessValidatorRequired().execute(CcpOtherConstants.EMPTY_JSON);
+			BusinessValidatorRequired.INSTANCE.execute(CcpOtherConstants.EMPTY_JSON);
 			fail("the required field is missing");
 		} catch (CcpJsonValidationError e) {
 			CcpJsonRepresentation errors = e.json.getInnerJson(CcpValidationErrorFields.errors);

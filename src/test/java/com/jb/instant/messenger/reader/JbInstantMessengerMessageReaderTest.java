@@ -43,8 +43,8 @@ public class JbInstantMessengerMessageReaderTest {
 	 * database is emptied. What is measured here is the saving of the offset, not the cache.
 	 */
 	static {
-		CcpInstanceProvider<CcpCrud> inMemoryCrud = () -> new FakeCrud();
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), CcpLocalCacheInstances.mock, inMemoryCrud);
+		CcpInstanceProvider<CcpCrud> inMemoryCrud = () -> FakeCrud.INSTANCE;
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpLocalCacheInstances.mock, inMemoryCrud);
 	}
 
 	@Before

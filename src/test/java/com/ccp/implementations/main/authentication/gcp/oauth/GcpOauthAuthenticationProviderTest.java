@@ -8,7 +8,7 @@ public class GcpOauthAuthenticationProviderTest {
 
 	@Test
 	public void constructorTest() {
-		assertNotNull(new GcpOauthAuthenticationProvider());
+		assertNotNull(GcpOauthAuthenticationProvider.INSTANCE);
 	}
 
 	// getJwtToken() has no parameters that could be null and depends on external credentials;

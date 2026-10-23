@@ -21,7 +21,7 @@ public class JnEntityDisposableRecordDecoratorsTest extends EntityDecoratorTestT
 	protected CcpJsonRepresentation validRecord() {
 		return this.com(JnJsonCommonsFields.timestamp, System.currentTimeMillis() + 3_600_000L)
 				.put(JnEntityDisposableRecord.Fields.format, "dd/MM/yyyy HH")
-				.put(JnJsonCommonsFields.entity, "jn_login_email")
+				.put(JnJsonCommonsFields.entity, "js_login_email")
 				.put(JnJsonCommonsFields.date, "27/09/2026 10:00:00.000")
 				.put(JnJsonCommonsFields.json, this.com(JnJsonCommonsFields.email, this.email))
 				.put(JnJsonCommonsFields.id, "{\"email\":\"" + this.unique + "\"}")

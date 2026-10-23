@@ -34,7 +34,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class CcpRestApiExceptionHandlerSpringTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test
@@ -108,12 +108,7 @@ public class CcpRestApiExceptionHandlerSpringTest {
 		AtomicReference<CcpJsonRepresentation> recordedError = new AtomicReference<>();
 		AtomicInteger status = new AtomicInteger();
 		HttpServletResponse response = (HttpServletResponse) Proxy.newProxyInstance(this.getClass().getClassLoader(),
-				new Class<?>[] { HttpServletResponse.class }, (proxy, m, args) -> {
-					if ("setStatus".equals(m.getName())) {
-						status.set((Integer) args[0]);
-					}
-					return null;
-				});
+				new Class<?>[] { HttpServletResponse.class }, new StatusRecordingResponseHandler(status));
 		CcpBusiness previousHandler = CcpRestApiExceptionHandlerSpring.genericExceptionHandler;
 		CcpRestApiExceptionHandlerSpring.genericExceptionHandler = new CcpBusiness() {
 			public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
@@ -143,12 +138,7 @@ public class CcpRestApiExceptionHandlerSpringTest {
 	public void aBusinessErrorDoesNotEchoTheRequestTest() throws IOException {
 		AtomicInteger status = new AtomicInteger();
 		HttpServletResponse response = (HttpServletResponse) Proxy.newProxyInstance(this.getClass().getClassLoader(),
-				new Class<?>[] { HttpServletResponse.class }, (proxy, m, args) -> {
-					if ("setStatus".equals(m.getName())) {
-						status.set((Integer) args[0]);
-					}
-					return null;
-				});
+				new Class<?>[] { HttpServletResponse.class }, new StatusRecordingResponseHandler(status));
 		CcpFieldName skill = new CcpFieldName("skill");
 		CcpJsonRepresentation request = new CcpJsonRepresentation(
 				"{\"skill\":\"JAVA\",\"sessionToken\":\"SECRET\",\"ip\":\"10.0.0.1\",\"userAgent\":\"Chrome\",\"email\":\"someone@jobsnow.com\"}");

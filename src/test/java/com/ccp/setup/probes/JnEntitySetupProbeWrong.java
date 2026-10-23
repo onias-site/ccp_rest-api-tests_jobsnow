@@ -14,6 +14,10 @@ import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
  */
 @CcpEntityFieldsValidator(JnEntitySetupProbeWrong.Fields.class)
 public class JnEntitySetupProbeWrong implements CcpEntityConfigurator {
+	/** The single instance: the class keeps no state. */
+	public final static JnEntitySetupProbeWrong INSTANCE = new JnEntitySetupProbeWrong();
+
+	private JnEntitySetupProbeWrong() {}
 
 	/** The entity {@code jn_setup_probe_wrong}. */
 	public static final CcpEntity ENTITY = new CcpEntityFactory(JnEntitySetupProbeWrong.class).entityInstance;

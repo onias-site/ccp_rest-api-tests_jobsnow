@@ -15,7 +15,7 @@ import com.ccp.process.CcpProcessStatusDefault;
 public class CcpTreeFlowTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test
@@ -40,7 +40,7 @@ public class CcpTreeFlowTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void tryToExecuteTheGivenFinalTargetProcessNullTest() {
-		new CcpBeginThisStatement().tryToExecuteTheGivenFinalTargetProcess(null);
+		CcpBeginThisStatement.INSTANCE.tryToExecuteTheGivenFinalTargetProcess(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

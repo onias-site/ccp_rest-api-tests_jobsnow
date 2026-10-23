@@ -12,7 +12,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class CcpGcpMemCacheTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpGcpMemCache());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpGcpMemCache.INSTANCE);
 	}
 
 	private static CcpCache getCache() {
@@ -23,12 +23,12 @@ public class CcpGcpMemCacheTest {
 
 	@Test
 	public void constructorProviderTest() {
-		assertNotNull(new CcpGcpMemCache());
+		assertNotNull(CcpGcpMemCache.INSTANCE);
 	}
 
 	@Test
 	public void getInstanceTest() {
-		CcpCache instance = new CcpGcpMemCache().getInstance();
+		CcpCache instance = CcpGcpMemCache.INSTANCE.getInstance();
 		assertNotNull(instance);
 	}
 

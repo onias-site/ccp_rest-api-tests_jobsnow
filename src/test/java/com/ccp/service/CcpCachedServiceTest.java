@@ -11,7 +11,7 @@ public class CcpCachedServiceTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void ctorFieldToCacheNullTest() {
-		new CcpCachedService(null, new CcpCachedServiceTestStubService(), 10);
+		new CcpCachedService(null, CcpCachedServiceTestStubService.INSTANCE, 10);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -21,7 +21,7 @@ public class CcpCachedServiceTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeNullTest() {
-		new CcpCachedService(() -> "x", new CcpCachedServiceTestStubService(), 10).execute(null);
+		new CcpCachedService(() -> "x", CcpCachedServiceTestStubService.INSTANCE, 10).execute(null);
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────

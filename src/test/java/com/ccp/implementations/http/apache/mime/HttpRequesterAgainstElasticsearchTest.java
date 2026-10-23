@@ -40,7 +40,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class HttpRequesterAgainstElasticsearchTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpApacheMimeHttp());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpApacheMimeHttp.INSTANCE);
 	}
 
 	private static final String INDEX_URL = "http://localhost:9200/ccp_http_requester_test";
@@ -95,7 +95,7 @@ public class HttpRequesterAgainstElasticsearchTest {
 	private boolean retries(IOException failure, int executionCount, Object request) {
 		HttpClientContext context = HttpClientContext.create();
 		context.setAttribute(HttpCoreContext.HTTP_REQUEST, request);
-		boolean retry = new CcpHttpRequestRetryHandler().retryRequest(failure, executionCount, context);
+		boolean retry = CcpHttpRequestRetryHandler.INSTANCE.retryRequest(failure, executionCount, context);
 		return retry;
 	}
 

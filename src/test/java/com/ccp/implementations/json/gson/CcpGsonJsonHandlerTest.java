@@ -11,7 +11,7 @@ import com.ccp.especifications.json.CcpJsonHandler;
 public class CcpGsonJsonHandlerTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static CcpJsonHandler getHandler() {
@@ -22,12 +22,12 @@ public class CcpGsonJsonHandlerTest {
 
 	@Test
 	public void constructorProviderTest() {
-		assertNotNull(new CcpGsonJsonHandler());
+		assertNotNull(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test
 	public void getInstanceTest() {
-		CcpJsonHandler instance = new CcpGsonJsonHandler().getInstance();
+		CcpJsonHandler instance = CcpGsonJsonHandler.INSTANCE.getInstance();
 		assertNotNull(instance);
 	}
 

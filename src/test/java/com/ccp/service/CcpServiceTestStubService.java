@@ -3,6 +3,10 @@ package com.ccp.service;
 import com.ccp.decorators.CcpJsonRepresentation;
 
 class CcpServiceTestStubService implements CcpService {
+	public final static CcpServiceTestStubService INSTANCE = new CcpServiceTestStubService();
+
+	private CcpServiceTestStubService() {}
+
 	public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 		return json;
 	}

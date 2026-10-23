@@ -32,7 +32,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class FileSideEffectsTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static final String ROOT = new File(System.getProperty("java.io.tmpdir"), "ccp_file_side_effects_test").getAbsolutePath();

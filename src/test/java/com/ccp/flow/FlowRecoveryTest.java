@@ -27,7 +27,7 @@ import com.ccp.process.CcpProcessStatusDefault;
 public class FlowRecoveryTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static final CcpFieldName fixed = new CcpFieldName("fixed");
@@ -36,23 +36,11 @@ public class FlowRecoveryTest {
 
 	private static final List<String> calls = new ArrayList<>();
 
-	private static final CcpBusiness mainProcess = json -> {
-		calls.add("main");
-		if (json.containsAllFields(fixed)) {
-			return json;
-		}
-		throw new CcpErrorFlowDisturb(json, CcpProcessStatusDefault.NOT_FOUND);
-	};
+	private static final CcpBusiness mainProcess = new FlowRecoveryMainProcess(calls, fixed);
 
-	private static final CcpBusiness fixer = json -> {
-		calls.add("fixer");
-		return json.put(fixed, true);
-	};
+	private static final CcpBusiness fixer = new FlowRecoveryFixer(calls, fixed);
 
-	private static final CcpBusiness disturbingHandler = json -> {
-		calls.add("disturbing");
-		throw new CcpErrorFlowDisturb(CcpOtherConstants.EMPTY_JSON.put(merged, 1), CcpProcessStatusDefault.CONFLICT);
-	};
+	private static final CcpBusiness disturbingHandler = new FlowRecoveryDisturbingHandler(calls, merged);
 
 	@Before
 	public void forgetTheCalls() {
@@ -61,10 +49,7 @@ public class FlowRecoveryTest {
 
 	@Test
 	public void theHandlersFixTheJsonAndTheMainProcessRunsAgain() {
-		CcpBusiness next = json -> {
-			calls.add("next " + json.containsAllFields(fixed, merged));
-			return json;
-		};
+		CcpBusiness next = new FlowRecoveryNext(calls, fixed, merged);
 
 		CcpJsonRepresentation result = CcpTreeFlow.beginThisStatement()
 				.tryToExecuteTheGivenFinalTargetProcess(mainProcess)
@@ -95,10 +80,7 @@ public class FlowRecoveryTest {
 
 	@Test
 	public void aStatusIsHandledOnlyOnce() {
-		CcpBusiness doesNotFix = json -> {
-			calls.add("doesNotFix");
-			return json;
-		};
+		CcpBusiness doesNotFix = new FlowRecoveryCallRecorder(calls, "doesNotFix");
 		try {
 			CcpTreeFlow.beginThisStatement()
 					.tryToExecuteTheGivenFinalTargetProcess(mainProcess)

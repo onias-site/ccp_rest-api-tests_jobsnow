@@ -13,7 +13,7 @@ import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.bulk.CcpBulkItem;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jn.entities.JnEntityLoginSessionValidation;
+import com.js.entities.JsEntityLoginSessionValidation;
 import com.jn.entities.JnEntityJobsnowError;
 
 /**
@@ -24,12 +24,12 @@ import com.jn.entities.JnEntityJobsnowError;
 public class CcpBulkHandlersAopNullTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static final CcpEntity ENTITY = JnEntityJobsnowError.ENTITY;
 
-	private static final CcpEntity TWIN_ENTITY = JnEntityLoginSessionValidation.ENTITY;
+	private static final CcpEntity TWIN_ENTITY = JsEntityLoginSessionValidation.ENTITY;
 
 	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;
 

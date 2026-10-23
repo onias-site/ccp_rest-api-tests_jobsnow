@@ -24,7 +24,7 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 public class CachedReadThroughTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), CcpLocalCacheInstances.map);
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpLocalCacheInstances.map);
 	}
 
 	private final CcpFieldName counter = new CcpFieldName("counter");

@@ -46,26 +46,26 @@ import com.vis.json.transformers.VisResumeHashCombinations;
 public class ResumeLifecycleTest {
 
 	static {
-		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> new SilentInstantMessenger();
-		CcpInstanceProvider<CcpEmailSender> email = () -> new RecordingEmailSender();
+		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> SilentInstantMessenger.INSTANCE;
+		CcpInstanceProvider<CcpEmailSender> email = () -> RecordingEmailSender.INSTANCE;
 
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
 				CcpLocalInstances.bucket,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
 				telegram,
 				email
 		);
 		// the e-mail templates of the resume, as CcpCreateEntities seeds them
-		JnExecuteBulkOperation.INSTANCE.executeBulk(new VisEntityResume().getFirstRecordsToInsert(), JnDeleteKeysFromCache.INSTANCE);
+		JnExecuteBulkOperation.INSTANCE.executeBulk(VisEntityResume.INSTANCE.getFirstRecordsToInsert(), JnDeleteKeysFromCache.INSTANCE);
 	}
 
 	private final String email = "lifecycle" + System.currentTimeMillis() + "@jobsnow.com";
@@ -162,7 +162,7 @@ public class ResumeLifecycleTest {
 		RecordingEmailSender.SENT.clear();
 		CcpJsonRepresentation resume = this.resume(4);
 		// languages: none, English 2, English 1; skills: none, the unique one, JVM, SPRING (PYTHON is excluded); the rest has one value
-		assertEquals(12, new VisResumeHashCombinations().countCombinations(resume));
+		assertEquals(12, VisResumeHashCombinations.INSTANCE.countCombinations(resume));
 
 		// save
 		VisEntityResume.ENTITY.save(resume);

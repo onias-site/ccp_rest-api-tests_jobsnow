@@ -4,9 +4,9 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.js.entities.JsEntityLoginAnswers;
-import com.jn.entities.JnEntityLoginSessionConflict;
-import com.jn.entities.JnEntityLoginSessionValidation;
-import com.jn.entities.fields.transformers.JnJsonTransformersFieldEntityTokenHash;
+import com.js.entities.JsEntityLoginSessionConflict;
+import com.js.entities.JsEntityLoginSessionValidation;
+import com.js.entities.fields.transformers.JsJsonTransformersFieldEntityTokenHash;
 import com.jn.entities.fields.transformers.JnJsonTransformersFieldsEntityDefault;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
@@ -49,13 +49,13 @@ public class TestVariables {
 	 * @return the session as saved (raw, before the transformers)
 	 */
 	public CcpJsonRepresentation saveCurrentSession(String sessionToken) {
-		CcpJsonRepresentation session = this.REQUEST_TO_LOGIN.put(JnEntityLoginSessionValidation.Fields.token, sessionToken);
-		JnJsonTransformersFieldEntityTokenHash tokenHash = new JnJsonTransformersFieldEntityTokenHash();
+		CcpJsonRepresentation session = this.REQUEST_TO_LOGIN.put(JsEntityLoginSessionValidation.Fields.token, sessionToken);
+		JsJsonTransformersFieldEntityTokenHash tokenHash = new JsJsonTransformersFieldEntityTokenHash();
 		CcpJsonRepresentation sessionWithTokenHash = tokenHash.execute(session);
-		String sessionTokenHash = sessionWithTokenHash.getAsString(JnEntityLoginSessionValidation.Fields.token);
-		CcpJsonRepresentation currentSession = this.REQUEST_TO_LOGIN.put(JnEntityLoginSessionConflict.Fields.currentSessionTokenHash, sessionTokenHash);
-		JnEntityLoginSessionConflict.ENTITY.save(currentSession);
-		JnEntityLoginSessionValidation.ENTITY.save(session);
+		String sessionTokenHash = sessionWithTokenHash.getAsString(JsEntityLoginSessionValidation.Fields.token);
+		CcpJsonRepresentation currentSession = this.REQUEST_TO_LOGIN.put(JsEntityLoginSessionConflict.Fields.currentSessionTokenHash, sessionTokenHash);
+		JsEntityLoginSessionConflict.ENTITY.save(currentSession);
+		JsEntityLoginSessionValidation.ENTITY.save(session);
 		return session;
 	}
 }

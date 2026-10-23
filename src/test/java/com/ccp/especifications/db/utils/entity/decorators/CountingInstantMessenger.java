@@ -15,6 +15,10 @@ import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
  * static because the dependency injection instantiates the double by itself.
  */
 public class CountingInstantMessenger implements CcpInstantMessenger {
+	/** The single instance: the class keeps no state. */
+	public final static CountingInstantMessenger INSTANCE = new CountingInstantMessenger();
+
+	private CountingInstantMessenger() {}
 
 	private static final List<String> sentMessages = Collections.synchronizedList(new ArrayList<>());
 

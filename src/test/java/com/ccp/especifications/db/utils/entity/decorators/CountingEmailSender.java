@@ -15,6 +15,10 @@ import com.ccp.especifications.http.CcpHttpContentType;
  * decorator that sends to the user did (or did not) send the e-mail.
  */
 public class CountingEmailSender implements CcpEmailSender {
+	/** The single instance: the class keeps no state. */
+	public final static CountingEmailSender INSTANCE = new CountingEmailSender();
+
+	private CountingEmailSender() {}
 
 	private static final List<String> sentRecipients = Collections.synchronizedList(new ArrayList<>());
 

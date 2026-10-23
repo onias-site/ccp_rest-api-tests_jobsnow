@@ -9,6 +9,10 @@ import com.ccp.json.validations.global.interfaces.CcpJsonValidator;
  * a field annotation.
  */
 public class ConsistentSalaryRangeValidator implements CcpJsonValidator {
+	/** The single instance: the class keeps no state. */
+	public final static ConsistentSalaryRangeValidator INSTANCE = new ConsistentSalaryRangeValidator();
+
+	private ConsistentSalaryRangeValidator() {}
 
 	public static final String MESSAGE = "O piso salarial nao pode ser maior que o teto salarial";
 

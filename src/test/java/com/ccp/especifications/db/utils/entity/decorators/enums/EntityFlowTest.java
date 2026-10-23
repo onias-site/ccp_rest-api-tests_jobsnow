@@ -39,7 +39,7 @@ import com.jn.entities.JnEntityJobsnowWarning;
 public class EntityFlowTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	/** The businesses that ran, in order. */
@@ -47,6 +47,11 @@ public class EntityFlowTest {
 
 	/** Records {@code first}. */
 	public static class RecordFirst implements CcpBusiness {
+		/** The single instance: the class keeps no state. */
+		public final static RecordFirst INSTANCE = new RecordFirst();
+
+		private RecordFirst() {}
+
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			RUNS.add("first");
 			return json;
@@ -55,6 +60,11 @@ public class EntityFlowTest {
 
 	/** Records {@code second}. */
 	public static class RecordSecond implements CcpBusiness {
+		/** The single instance: the class keeps no state. */
+		public final static RecordSecond INSTANCE = new RecordSecond();
+
+		private RecordSecond() {}
+
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			RUNS.add("second");
 			return json;
@@ -63,6 +73,11 @@ public class EntityFlowTest {
 
 	/** Records {@code twin}. */
 	public static class RecordTwin implements CcpBusiness {
+		/** The single instance: the class keeps no state. */
+		public final static RecordTwin INSTANCE = new RecordTwin();
+
+		private RecordTwin() {}
+
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			RUNS.add("twin");
 			return json;
@@ -81,6 +96,11 @@ public class EntityFlowTest {
 
 	/** Throws the subclass. */
 	public static class ThrowsTheSubclass implements CcpBusiness {
+		/** The single instance: the class keeps no state. */
+		public final static ThrowsTheSubclass INSTANCE = new ThrowsTheSubclass();
+
+		private ThrowsTheSubclass() {}
+
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			throw new MoreSpecificError();
 		}
@@ -88,6 +108,11 @@ public class EntityFlowTest {
 
 	/** The handler: records {@code handled}. */
 	public static class RecordHandled implements CcpBusiness {
+		/** The single instance: the class keeps no state. */
+		public final static RecordHandled INSTANCE = new RecordHandled();
+
+		private RecordHandled() {}
+
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			RUNS.add("handled");
 			return json;

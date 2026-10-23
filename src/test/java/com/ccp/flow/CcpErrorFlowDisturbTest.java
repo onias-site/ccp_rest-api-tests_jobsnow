@@ -14,7 +14,7 @@ import com.ccp.process.CcpProcessStatusDefault;
 public class CcpErrorFlowDisturbTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test

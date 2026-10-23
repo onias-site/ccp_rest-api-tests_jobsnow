@@ -15,7 +15,7 @@ import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
 import com.ccp.especifications.db.bulk.CcpBulkItem;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jn.entities.JnEntityLoginSessionValidation;
+import com.js.entities.JsEntityLoginSessionValidation;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
@@ -25,10 +25,10 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 public class DeleteAnyWhereHandlerTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
-	private final CcpJsonRepresentation record = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.email, "handler@jobsnow.com").put(JnEntityLoginSessionValidation.Fields.token, "TOKEN123").put(JnJsonCommonsFields.ip, "127.0.0.1").put(JnJsonCommonsFields.userAgent, "junit");
+	private final CcpJsonRepresentation record = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.email, "handler@jobsnow.com").put(JsEntityLoginSessionValidation.Fields.token, "TOKEN123").put(JnJsonCommonsFields.ip, "127.0.0.1").put(JnJsonCommonsFields.userAgent, "junit");
 
 	private Set<String> entitiesOf(List<CcpBulkItem> items) {
 		for (CcpBulkItem item : items) {
@@ -40,15 +40,15 @@ public class DeleteAnyWhereHandlerTest {
 
 	@Test
 	public void foundOrNotTheRecordIsDeletedFromBothSides() {
-		CcpEntityBulkHandlerDeleteAnyWhere handler = new CcpEntityBulkHandlerDeleteAnyWhere(JnEntityLoginSessionValidation.ENTITY);
-		String main = JnEntityLoginSessionValidation.ENTITY.getEntityMetaData().entityName;
-		String twin = JnEntityLoginSessionValidation.ENTITY.getTwinEntity().getEntityMetaData().entityName;
+		CcpEntityBulkHandlerDeleteAnyWhere handler = new CcpEntityBulkHandlerDeleteAnyWhere(JsEntityLoginSessionValidation.ENTITY);
+		String main = JsEntityLoginSessionValidation.ENTITY.getEntityMetaData().entityName;
+		String twin = JsEntityLoginSessionValidation.ENTITY.getTwinEntity().getEntityMetaData().entityName;
 
 		Set<String> whenFound = this.entitiesOf(handler.whenRecordWasFoundInTheEntitySearch(this.record, this.record));
 		Set<String> whenNotFound = this.entitiesOf(handler.whenRecordWasNotFoundInTheEntitySearch(this.record));
 
 		assertTrue(whenFound.toString(), whenFound.contains(main) && whenFound.contains(twin));
 		assertEquals(whenFound, whenNotFound);
-		assertEquals(JnEntityLoginSessionValidation.ENTITY, handler.getEntityToSearch());
+		assertEquals(JsEntityLoginSessionValidation.ENTITY, handler.getEntityToSearch());
 	}
 }

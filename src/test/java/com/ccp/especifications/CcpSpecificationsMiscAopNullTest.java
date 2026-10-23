@@ -27,7 +27,7 @@ import org.junit.Test;
 public class CcpSpecificationsMiscAopNullTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), CcpLocalCacheInstances.mock,
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpLocalCacheInstances.mock,
 				CcpLocalInstances.syncMensageriaListener);
 	}
 
@@ -105,9 +105,6 @@ public class CcpSpecificationsMiscAopNullTest {
 				return null;
 			}
 
-			public CcpMensageriaReceiver executeProcessAndRecordOutcome(String processName, com.ccp.decorators.CcpJsonRepresentation json) {
-				return this;
-			}
 		};
 	}
 

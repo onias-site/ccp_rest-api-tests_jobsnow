@@ -22,12 +22,12 @@ import com.vis.json.fields.validation.VisJsonCommonsFields;
 public class SkillSeedsTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test
 	public void skillsAreRankedFromTheMostMentionedInResumes() {
-		List<CcpBulkItem> seeds = new VisEntitySkill().getFirstRecordsToInsert();
+		List<CcpBulkItem> seeds = VisEntitySkill.INSTANCE.getFirstRecordsToInsert();
 
 		assertFalse(seeds.isEmpty());
 		assertEquals("SQL", seeds.get(0).json.getAsString(VisJsonCommonsFields.skill));
@@ -42,7 +42,7 @@ public class SkillSeedsTest {
 
 	@Test
 	public void wordsAreGroupedByTheirFirstTwoLetters() {
-		List<CcpBulkItem> seeds = new VisEntityGroupPositionsBySkills().getFirstRecordsToInsert();
+		List<CcpBulkItem> seeds = VisEntityGroupPositionsBySkills.INSTANCE.getFirstRecordsToInsert();
 
 		assertFalse(seeds.isEmpty());
 		for (CcpBulkItem group : seeds) {

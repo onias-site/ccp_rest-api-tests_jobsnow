@@ -21,7 +21,7 @@ import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine;
 public class VisJsonFieldRulesTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private void accepts(Class<?> rules, CcpJsonRepresentation json) {

@@ -12,10 +12,10 @@ import com.ccp.json.validations.fields.enums.CcpJsonFieldError;
 public class CcpJsonFieldTypeBooleanTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
-	private final BusinessFieldTypeBoolean business = new BusinessFieldTypeBoolean();
+	private final BusinessFieldTypeBoolean business = BusinessFieldTypeBoolean.INSTANCE;
 
 	private CcpJsonRepresentation json(Object value) {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(RulesFieldTypeBoolean.ativo, value);

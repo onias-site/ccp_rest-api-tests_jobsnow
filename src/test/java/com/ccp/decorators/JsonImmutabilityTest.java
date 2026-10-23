@@ -24,7 +24,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class JsonImmutabilityTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private final CcpFieldName a = new CcpFieldName("a");

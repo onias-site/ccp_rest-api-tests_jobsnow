@@ -28,7 +28,7 @@ public class CcpEntityDefaultsAopNullTest {
 	 * gets to run. Nothing here touches the database — both methods used return a field name.
 	 */
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpElasticSearchDbRequest());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpElasticSearchDbRequest.INSTANCE);
 	}
 
 	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;
@@ -37,7 +37,7 @@ public class CcpEntityDefaultsAopNullTest {
 
 
 	private static CcpEntity entity() {
-		return new PlainEntity();
+		return PlainEntity.INSTANCE;
 	}
 
 	private static CcpSelectUnionAll unionAll() {

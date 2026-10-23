@@ -22,10 +22,10 @@ import com.vis.entities.VisEntityResume;
 public class VisJsonValidatorSkillTypeMatchesCategoryTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
-	private final VisJsonValidatorSkillTypeMatchesCategory validator = new VisJsonValidatorSkillTypeMatchesCategory();
+	private final VisJsonValidatorSkillTypeMatchesCategory validator = VisJsonValidatorSkillTypeMatchesCategory.INSTANCE;
 
 	private CcpJsonRepresentation skill(String category, String type) {
 		return new CcpJsonRepresentation("{\"skill\":\"JAVA\",\"word\":\"JAVA\",\"category\":\"" + category + "\",\"type\":\"" + type + "\"}");

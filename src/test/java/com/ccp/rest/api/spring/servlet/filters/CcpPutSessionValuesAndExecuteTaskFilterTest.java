@@ -11,7 +11,7 @@ public class CcpPutSessionValuesAndExecuteTaskFilterTest {
 
 	@Test
 	public void constructorTest() {
-		assertNotNull(new CcpPutSessionValuesAndExecuteTaskFilter(new NoopBusiness()));
+		assertNotNull(new CcpPutSessionValuesAndExecuteTaskFilter(NoopBusiness.INSTANCE));
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -26,16 +26,16 @@ public class CcpPutSessionValuesAndExecuteTaskFilterTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void doFilterReqNullTest() {
-		new CcpPutSessionValuesAndExecuteTaskFilter(new NoopBusiness()).doFilter(null, null, null);
+		new CcpPutSessionValuesAndExecuteTaskFilter(NoopBusiness.INSTANCE).doFilter(null, null, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void initNullTest() throws Exception {
-		new CcpPutSessionValuesAndExecuteTaskFilter(new NoopBusiness()).init(null);
+		new CcpPutSessionValuesAndExecuteTaskFilter(NoopBusiness.INSTANCE).init(null);
 	}
 
 	@Test
 	public void destroyTest() {
-		new CcpPutSessionValuesAndExecuteTaskFilter(new NoopBusiness()).destroy();
+		new CcpPutSessionValuesAndExecuteTaskFilter(NoopBusiness.INSTANCE).destroy();
 	}
 }

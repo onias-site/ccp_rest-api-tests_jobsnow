@@ -15,7 +15,7 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 /**
  * Measures where the validation rules of each field of an entity come from.
  *
- * <p>The doubt recorded in {@code JnEntityLoginTokenRequestResend} was whether the engine would always
+ * <p>The doubt recorded in {@code JsEntityLoginTokenRequestResend} was whether the engine would always
  * be copying the rules from {@code JnJsonCommonsFields}, regardless of what each field declares. The
  * fictitious entity {@link FakeEntityCopyFieldValidations} answers that with two fields with the same
  * names as the ones there and opposite origins, and the two proofs are symmetric:
@@ -34,7 +34,7 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 public class CopyFieldValidationsFromTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static final String REAL_EMAIL = "onias85@gmail.com";

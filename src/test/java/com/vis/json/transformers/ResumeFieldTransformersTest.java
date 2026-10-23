@@ -26,7 +26,7 @@ import com.vis.json.fields.validation.VisJsonCommonsFields;
 public class ResumeFieldTransformersTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private final CcpFieldName id = new CcpFieldName("id");
@@ -37,7 +37,7 @@ public class ResumeFieldTransformersTest {
 	public void yearsOfExperienceBecomeTheYearTheExperienceStarted() {
 		CcpJsonRepresentation resume = CcpOtherConstants.EMPTY_JSON.put(VisJsonCommonsFields.experience, 17);
 
-		CcpJsonRepresentation transformed = new VisJsonTransformerExperienceStartYear().execute(resume);
+		CcpJsonRepresentation transformed = VisJsonTransformerExperienceStartYear.INSTANCE.execute(resume);
 
 		int currentYear = new CcpTimeDecorator().getYear();
 		assertEquals(currentYear - 17, (int) transformed.getAsIntegerNumber(VisJsonCommonsFields.experience));
@@ -47,7 +47,7 @@ public class ResumeFieldTransformersTest {
 		CcpJsonRepresentation resume = transformed
 				.put(VisEntityResume.Fields.resumeType, 1)
 				.put(VisEntityResume.Fields.ddd, Arrays.asList(11));
-		List<List<CcpJsonRepresentation>> valuesByField = new VisResumeHashCombinations().getValuesByField(resume);
+		List<List<CcpJsonRepresentation>> valuesByField = VisResumeHashCombinations.INSTANCE.getValuesByField(resume);
 		// the seniority is the last field of the combinations
 		List<CcpJsonRepresentation> seniorities = valuesByField.get(valuesByField.size() - 1);
 		assertEquals(1, seniorities.size());
@@ -58,7 +58,7 @@ public class ResumeFieldTransformersTest {
 	public void firstJobStartsTheExperienceInTheCurrentYearAndIsAnIntern() {
 		CcpJsonRepresentation resume = CcpOtherConstants.EMPTY_JSON.put(VisJsonCommonsFields.experience, 0);
 
-		CcpJsonRepresentation transformed = new VisJsonTransformerExperienceStartYear().execute(resume);
+		CcpJsonRepresentation transformed = VisJsonTransformerExperienceStartYear.INSTANCE.execute(resume);
 
 		int currentYear = new CcpTimeDecorator().getYear();
 		assertEquals(currentYear, (int) transformed.getAsIntegerNumber(VisJsonCommonsFields.experience));
@@ -69,7 +69,7 @@ public class ResumeFieldTransformersTest {
 	public void seniorityIsCalculatedFromTheTransformedExperience() {
 		CcpJsonRepresentation resume = CcpOtherConstants.EMPTY_JSON.put(VisJsonCommonsFields.experience, 4);
 
-		CcpJsonRepresentation transformed = new VisJsonTransformerExperienceStartYear().execute(resume);
+		CcpJsonRepresentation transformed = VisJsonTransformerExperienceStartYear.INSTANCE.execute(resume);
 
 		assertEquals(VisSeniorityType.pleno.name(), this.seniorityOf(transformed));
 	}
@@ -78,7 +78,7 @@ public class ResumeFieldTransformersTest {
 	public void theLongestExperienceAcceptedByTheValidationIsASpecialist() {
 		CcpJsonRepresentation resume = CcpOtherConstants.EMPTY_JSON.put(VisJsonCommonsFields.experience, 70);
 
-		CcpJsonRepresentation transformed = new VisJsonTransformerExperienceStartYear().execute(resume);
+		CcpJsonRepresentation transformed = VisJsonTransformerExperienceStartYear.INSTANCE.execute(resume);
 
 		assertEquals(VisSeniorityType.especialista.name(), this.seniorityOf(transformed));
 	}
@@ -87,7 +87,7 @@ public class ResumeFieldTransformersTest {
 	public void resumeWithoutExperienceIsReturnedAsIs() {
 		CcpJsonRepresentation resume = CcpOtherConstants.EMPTY_JSON.put(VisJsonCommonsFields.ddd, 11);
 
-		CcpJsonRepresentation transformed = new VisJsonTransformerExperienceStartYear().execute(resume);
+		CcpJsonRepresentation transformed = VisJsonTransformerExperienceStartYear.INSTANCE.execute(resume);
 
 		assertSame(resume, transformed);
 	}
@@ -98,7 +98,7 @@ public class ResumeFieldTransformersTest {
 		CcpJsonRepresentation spanish = CcpOtherConstants.EMPTY_JSON.put(this.name, "Espanhol").put(this.level, 1).put(this.id, 3);
 		CcpJsonRepresentation resume = CcpOtherConstants.EMPTY_JSON.put(VisJsonCommonsFields.spokenLanguage, Arrays.asList(english, spanish));
 
-		CcpJsonRepresentation transformed = new VisJsonTransformerSpokenLanguageWithoutId().execute(resume);
+		CcpJsonRepresentation transformed = VisJsonTransformerSpokenLanguageWithoutId.INSTANCE.execute(resume);
 
 		List<CcpJsonRepresentation> spokenLanguages = transformed.getAsJsonList(VisJsonCommonsFields.spokenLanguage);
 		assertEquals(2, spokenLanguages.size());
@@ -113,7 +113,7 @@ public class ResumeFieldTransformersTest {
 	public void resumeWithoutSpokenLanguageIsReturnedAsIs() {
 		CcpJsonRepresentation resume = CcpOtherConstants.EMPTY_JSON.put(VisJsonCommonsFields.ddd, 11);
 
-		CcpJsonRepresentation transformed = new VisJsonTransformerSpokenLanguageWithoutId().execute(resume);
+		CcpJsonRepresentation transformed = VisJsonTransformerSpokenLanguageWithoutId.INSTANCE.execute(resume);
 
 		assertSame(resume, transformed);
 	}

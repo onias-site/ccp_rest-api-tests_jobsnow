@@ -16,10 +16,10 @@ import com.ccp.json.validations.fields.enums.CcpJsonFieldTypeError;
 public class CcpJsonFieldTypeNumberTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
-	private final BusinessFieldTypeNumber business = new BusinessFieldTypeNumber();
+	private final BusinessFieldTypeNumber business = BusinessFieldTypeNumber.INSTANCE;
 
 	private CcpJsonRepresentation json(RulesFieldTypeNumber field, Object value) {
 		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(field, value);

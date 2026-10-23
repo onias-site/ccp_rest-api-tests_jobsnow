@@ -24,7 +24,7 @@ import static com.ccp.decorators.JsonFieldNames.*;
 public class CcpTextDecoratorTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	// ── completeLeft ──────────────────────────────────────────────────────────

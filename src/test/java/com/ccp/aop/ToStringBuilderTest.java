@@ -54,13 +54,18 @@ public class ToStringBuilderTest {
 	}
 
 	static class Exploding {
+		/** The single instance: the class keeps no state. */
+		public final static Exploding INSTANCE = new Exploding();
+
+		private Exploding() {}
+
 		public String toString() {
 			throw new IllegalStateException("boom");
 		}
 	}
 
 	static class HoldsExploding {
-		final Exploding value = new Exploding();
+		final Exploding value = Exploding.INSTANCE;
 	}
 
 	static class HoldsBrokenContainers {

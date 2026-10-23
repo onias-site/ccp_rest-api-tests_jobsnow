@@ -13,7 +13,7 @@ import org.junit.Test;
 public class CcpTransformersTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 
@@ -21,30 +21,30 @@ public class CcpTransformersTest {
 	@Test
 	public void substringTest() {
 		CcpJsonRepresentation j = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("k"), "0123456789");
-		CcpJsonRepresentation r = new Impl().substring(j, "k", 3);
+		CcpJsonRepresentation r = Impl.INSTANCE.substring(j, "k", 3);
 		assertEquals("012", r.getAsString(new CcpFieldName("k")));
 	}
 
 	@Test
 	public void addRequiredAtLeastOneSetsTheFieldOnlyWhenNoneOfTheOthersIsPresent() {
-		CcpJsonRepresentation without = new Impl().addRequiredAtLeastOne(CcpOtherConstants.EMPTY_JSON, "clt", 1000, "clt", "pj");
+		CcpJsonRepresentation without = Impl.INSTANCE.addRequiredAtLeastOne(CcpOtherConstants.EMPTY_JSON, "clt", 1000, "clt", "pj");
 		assertEquals(Integer.valueOf(1000), without.getAsIntegerNumber(new CcpFieldName("clt")));
 
 		CcpJsonRepresentation withOne = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("pj"), 5);
-		assertEquals(withOne, new Impl().addRequiredAtLeastOne(withOne, "clt", 1000, "clt", "pj"));
+		assertEquals(withOne, Impl.INSTANCE.addRequiredAtLeastOne(withOne, "clt", 1000, "clt", "pj"));
 	}
 
 	@Test
 	public void putMinValueTest() {
 		CcpJsonRepresentation j = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("k"), 1);
-		CcpJsonRepresentation r = new Impl().putMinValue(j, "k", 5);
+		CcpJsonRepresentation r = Impl.INSTANCE.putMinValue(j, "k", 5);
 		assertEquals(Double.valueOf(5), r.getAsDoubleNumber(new CcpFieldName("k")));
 	}
 
 	@Test
 	public void addLongValueTest() {
 		CcpJsonRepresentation j = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("k"), "abc");
-		CcpJsonRepresentation r = new Impl().addLongValue(j, "k", 42L);
+		CcpJsonRepresentation r = Impl.INSTANCE.addLongValue(j, "k", 42L);
 		assertEquals(Long.valueOf(42), r.getAsLongNumber(new CcpFieldName("k")));
 	}
 
@@ -52,56 +52,56 @@ public class CcpTransformersTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void substringJsonNullTest() {
-		new Impl().substring(null, "k", 3);
+		Impl.INSTANCE.substring(null, "k", 3);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void substringFieldNullTest() {
-		new Impl().substring(CcpOtherConstants.EMPTY_JSON, null, 3);
+		Impl.INSTANCE.substring(CcpOtherConstants.EMPTY_JSON, null, 3);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void putMinValueJsonNullTest() {
-		new Impl().putMinValue(null, "k", 3);
+		Impl.INSTANCE.putMinValue(null, "k", 3);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void putMinValueFieldNullTest() {
-		new Impl().putMinValue(CcpOtherConstants.EMPTY_JSON, null, 3);
+		Impl.INSTANCE.putMinValue(CcpOtherConstants.EMPTY_JSON, null, 3);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addLongValueJsonNullTest() {
-		new Impl().addLongValue(null, "k", 1L);
+		Impl.INSTANCE.addLongValue(null, "k", 1L);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addLongValueFieldNullTest() {
-		new Impl().addLongValue(CcpOtherConstants.EMPTY_JSON, null, 1L);
+		Impl.INSTANCE.addLongValue(CcpOtherConstants.EMPTY_JSON, null, 1L);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addLongValueLongNullTest() {
-		new Impl().addLongValue(CcpOtherConstants.EMPTY_JSON, "k", null);
+		Impl.INSTANCE.addLongValue(CcpOtherConstants.EMPTY_JSON, "k", null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addRequiredAtLeastOneJsonNullTest() {
-		new Impl().addRequiredAtLeastOne(null, "k", "v", "f1");
+		Impl.INSTANCE.addRequiredAtLeastOne(null, "k", "v", "f1");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addRequiredAtLeastOneFieldNullTest() {
-		new Impl().addRequiredAtLeastOne(CcpOtherConstants.EMPTY_JSON, null, "v", "f1");
+		Impl.INSTANCE.addRequiredAtLeastOne(CcpOtherConstants.EMPTY_JSON, null, "v", "f1");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addRequiredAtLeastOneValueNullTest() {
-		new Impl().addRequiredAtLeastOne(CcpOtherConstants.EMPTY_JSON, "k", null, "f1");
+		Impl.INSTANCE.addRequiredAtLeastOne(CcpOtherConstants.EMPTY_JSON, "k", null, "f1");
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void addRequiredAtLeastOneFieldsNullTest() {
-		new Impl().addRequiredAtLeastOne(CcpOtherConstants.EMPTY_JSON, "k", "v", (String[]) null);
+		Impl.INSTANCE.addRequiredAtLeastOne(CcpOtherConstants.EMPTY_JSON, "k", "v", (String[]) null);
 	}
 }

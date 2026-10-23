@@ -13,7 +13,6 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
-import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.query.elasticsearch.CcpElasticSearchQueryExecutor;
@@ -36,13 +35,13 @@ public class ForEachIdPresentInEntityTest {
 	static {
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchQueryExecutor(),
-				new CcpElasticSearchDbRequest(),
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp());
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE);
 	}
 
 	private final long run = System.currentTimeMillis() % 100000;
@@ -68,14 +67,7 @@ public class ForEachIdPresentInEntityTest {
 
 	/** Collects, for each run of the action, the key it got and the record found for that key. */
 	private static CcpBusiness collectInto(List<String> keysSeen, List<String> recordsSeen) {
-		return keyWithItsRecord -> {
-			String synonym = keyWithItsRecord.getAsString(VisEntitySkillSynonym.Fields.skill);
-			CcpJsonRepresentation record = keyWithItsRecord.getInnerJsonFromPath(CcpEntity.JsonFieldNames._entities, VisEntitySkillSynonym.ENTITY);
-			String skill = record.getAsString(VisEntitySkillSynonym.Fields.synonym);
-			keysSeen.add(synonym);
-			recordsSeen.add(skill);
-			return keyWithItsRecord;
-		};
+		return new SynonymKeyAndRecordCollector(keysSeen, recordsSeen);
 	}
 
 	@Test

@@ -12,7 +12,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class CcpErrorHttpTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test

@@ -30,11 +30,11 @@ public class CcpBulkAopNullTest {
 
 	static {
 		CcpDependencyInjection.loadAllDependencies(
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
-				new CcpElasticSearchDbRequest(),
-				new CcpElasticSearchCrud(),
-				new CcpElasticSerchDbBulk(),
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpElasticSerchDbBulk.INSTANCE,
 				CcpLocalCacheInstances.mock);
 	}
 
@@ -98,7 +98,7 @@ public class CcpBulkAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void operationTypeGetReprocessProducerNullTest() {
-		CcpBulkEntityOperationType.create.getReprocess(null, new BulkOperationResultForTest(), ENTITY);
+		CcpBulkEntityOperationType.create.getReprocess(null, BulkOperationResultForTest.INSTANCE, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
@@ -108,19 +108,19 @@ public class CcpBulkAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void operationTypeGetReprocessEntityNullTest() {
-		CcpBulkEntityOperationType.create.getReprocess(result -> JSON, new BulkOperationResultForTest(), null);
+		CcpBulkEntityOperationType.create.getReprocess(result -> JSON, BulkOperationResultForTest.INSTANCE, null);
 	}
 
 	// ── CcpBulkOperationResult ────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void bulkOperationResultGetReprocessMapperNullTest() {
-		new BulkOperationResultForTest().getReprocess(null, ENTITY);
+		BulkOperationResultForTest.INSTANCE.getReprocess(null, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void bulkOperationResultGetReprocessEntityNullTest() {
-		new BulkOperationResultForTest().getReprocess(result -> JSON, null);
+		BulkOperationResultForTest.INSTANCE.getReprocess(result -> JSON, null);
 	}
 
 	// ── CcpBulkExecutor ───────────────────────────────────────────────────────
@@ -166,8 +166,7 @@ public class CcpBulkAopNullTest {
 	@SuppressWarnings("unchecked")
 	@Test(expected = CcpNullParameterException.class)
 	public void executeSelectUnionAllJsonNullTest() {
-		executeBulkOperation().executeSelectUnionAllThenExecuteBulkOperation(null, keys -> {
-		}, new CcpBulkHandlerCreate(ENTITY));
+		executeBulkOperation().executeSelectUnionAllThenExecuteBulkOperation(null, keys -> {}, new CcpBulkHandlerCreate(ENTITY));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -179,7 +178,6 @@ public class CcpBulkAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeSelectUnionAllHandlersNullTest() {
-		executeBulkOperation().executeSelectUnionAllThenExecuteBulkOperation(JSON, keys -> {
-		}, (CcpHandleWithSearchResultsInTheEntity<List<CcpBulkItem>>[]) null);
+		executeBulkOperation().executeSelectUnionAllThenExecuteBulkOperation(JSON, keys -> {}, (CcpHandleWithSearchResultsInTheEntity<List<CcpBulkItem>>[]) null);
 	}
 }

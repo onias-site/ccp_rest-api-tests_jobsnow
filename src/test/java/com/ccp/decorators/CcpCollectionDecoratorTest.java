@@ -22,12 +22,12 @@ import com.ccp.aop.CcpNullReturnException;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.jn.entities.JnEntityAsyncTask;
+import com.jn.entities.JnEntitySupportPendingCommand;
 import static com.ccp.decorators.JsonFieldNames.*;
 
 public class CcpCollectionDecoratorTest {
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test
@@ -151,7 +151,7 @@ public class CcpCollectionDecoratorTest {
 			assertTrue(assertion);
 		}
 		{
-			Collection<Object> content = Arrays.asList("onias", false, new Object(), JnEntityAsyncTask.ENTITY);
+			Collection<Object> content = Arrays.asList("onias", false, new Object(), JnEntitySupportPendingCommand.ENTITY);
 			CcpNumberDecorator size = new CcpCollectionDecorator(content).size();
 			boolean assertion = size.greaterThan(0d);
 			assertTrue(assertion);

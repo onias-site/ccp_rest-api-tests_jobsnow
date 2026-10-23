@@ -11,7 +11,7 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 public class CcpCacheDecoratorTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), CcpLocalCacheInstances.mock);
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpLocalCacheInstances.mock);
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────

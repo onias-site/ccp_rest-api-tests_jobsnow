@@ -16,7 +16,7 @@ import com.ccp.json.validations.global.enums.CcpJsonValidatorDefaults;
 public class CcpJsonValidatorAopNullTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static final CcpJsonRepresentation JSON = CcpOtherConstants.EMPTY_JSON;

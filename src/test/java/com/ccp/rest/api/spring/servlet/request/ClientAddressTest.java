@@ -28,7 +28,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ClientAddressTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	/** Keeps the body as it reaches the task. */
@@ -66,22 +66,7 @@ public class ClientAddressTest {
 			headers.put("Host", host);
 		}
 		return (HttpServletRequest) Proxy.newProxyInstance(ClientAddressTest.class.getClassLoader(),
-				new Class<?>[] { HttpServletRequest.class }, (proxy, m, args) -> {
-					switch (m.getName()) {
-					case "getContentType":
-						return "application/json";
-					case "getInputStream":
-						return servletInputStream;
-					case "getRequestURL":
-						return new StringBuffer("http://api.example.com/login/someone@example.com/token");
-					case "getRemoteAddr":
-						return remoteAddress;
-					case "getHeader":
-						return headers.get(args[0]);
-					default:
-						return null;
-					}
-				});
+				new Class<?>[] { HttpServletRequest.class }, new ClientAddressRequestHandler(servletInputStream, remoteAddress, headers));
 	}
 
 	private String ipSeenByTheTask(String remoteAddress, String host) throws IOException {

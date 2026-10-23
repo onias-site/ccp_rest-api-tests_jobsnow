@@ -99,14 +99,14 @@ public class SkillSuggestionThroughSupportBotTest {
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpElasticSearchQueryExecutor(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
 				telegram,
 				email
 		);
@@ -131,7 +131,7 @@ public class SkillSuggestionThroughSupportBotTest {
 	 */
 	@BeforeClass
 	public static void resaveBotConfiguration() {
-		List<CcpEntityConfigurator> configurators = Arrays.asList(new JbEntityBot(), new JnEntityBotCommand(), new JnEntityBotCommandStep(), new JnEntityBotCommandStepEndMessage(), new VisEntitySkillPending());
+		List<CcpEntityConfigurator> configurators = Arrays.asList(JbEntityBot.INSTANCE, JnEntityBotCommand.INSTANCE, JnEntityBotCommandStep.INSTANCE, JnEntityBotCommandStepEndMessage.INSTANCE, VisEntitySkillPending.INSTANCE);
 		for (CcpEntityConfigurator configurator : configurators) {
 			List<CcpBulkItem> records = configurator.getFirstRecordsToInsert();
 			for (CcpBulkItem record : records) {

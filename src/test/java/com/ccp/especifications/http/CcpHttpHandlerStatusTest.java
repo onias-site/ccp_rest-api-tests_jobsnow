@@ -25,9 +25,9 @@ public class CcpHttpHandlerStatusTest {
 
 	@Before
 	public void loadDependencies() {
-		CcpInstanceProvider<CcpHttpRequester> fakeRequester = () -> new RespondingRequester();
+		CcpInstanceProvider<CcpHttpRequester> fakeRequester = () -> RespondingRequester.INSTANCE;
 		CcpDependencyInjection.removeAllDependencies();
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), fakeRequester);
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, fakeRequester);
 	}
 
 	@Test
@@ -75,6 +75,10 @@ public class CcpHttpHandlerStatusTest {
 	}
 
 	static class RespondingRequester implements CcpHttpRequester {
+		/** The single instance: the class keeps no state. */
+		public final static RespondingRequester INSTANCE = new RespondingRequester();
+
+		private RespondingRequester() {}
 
 		public CcpHttpResponse executeHttpRequest(String url, CcpHttpMethods method, CcpJsonRepresentation headers, String body) {
 			CcpHttpResponse response = new CcpHttpResponse("{\"resultado\":\"ok\"}", responseStatus, "curl " + url);

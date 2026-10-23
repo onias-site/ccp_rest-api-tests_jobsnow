@@ -28,7 +28,4 @@ final class MensageriaReceiverForTest extends CcpMensageriaReceiver {
 		return null;
 	}
 
-	public CcpMensageriaReceiver executeProcessAndRecordOutcome(String processName, com.ccp.decorators.CcpJsonRepresentation json) {
-		return this;
-	}
 }

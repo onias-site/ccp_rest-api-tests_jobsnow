@@ -17,13 +17,13 @@ import com.jn.entities.JnEntityJobsnowError;
 public class CcpEntityConfiguratorAopNullTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private static final CcpEntity ENTITY = JnEntityJobsnowError.ENTITY;
 
 	private static CcpEntityConfigurator configurator() {
-		return new JnEntityJobsnowError();
+		return JnEntityJobsnowError.INSTANCE;
 	}
 
 	@Test(expected = CcpNullParameterException.class)

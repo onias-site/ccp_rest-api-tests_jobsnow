@@ -31,7 +31,7 @@ public abstract class JsServiceLoginTestTemplate {
 	}
 
 	/**
-	 * For a login business that is not an item of {@code JsServiceLogin} (such as {@code JnBusinessValidateLogin}).
+	 * For a login business that is not an item of {@code JsServiceLogin} (such as {@code JsBusinessValidateLogin}).
 	 * @param service the business under test
 	 */
 	protected JsServiceLoginTestTemplate(CcpBusiness service) {
@@ -47,15 +47,15 @@ public abstract class JsServiceLoginTestTemplate {
 		
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpGsonJsonHandler(),
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
 				CcpLocalInstances.email,
-				new CcpTelegramInstantMessenger(),
-				new CcpApacheMimeHttp()
+				CcpTelegramInstantMessenger.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE
 		);
 	}
 

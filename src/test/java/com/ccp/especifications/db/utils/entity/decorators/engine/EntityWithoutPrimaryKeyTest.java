@@ -20,12 +20,17 @@ import com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeString;
 public class EntityWithoutPrimaryKeyTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	/** An entity that forgot to declare its primary key. */
 	@CcpEntityFieldsValidator(FakeEntityWithoutKey.Fields.class)
 	public static class FakeEntityWithoutKey implements CcpEntityConfigurator {
+		/** The single instance: the class keeps no state. */
+		public final static FakeEntityWithoutKey INSTANCE = new FakeEntityWithoutKey();
+
+		private FakeEntityWithoutKey() {}
+
 		/** The fields, none of them the key. */
 		public static enum Fields implements CcpJsonFieldName {
 			/** A plain field. */

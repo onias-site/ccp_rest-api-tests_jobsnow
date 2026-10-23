@@ -16,21 +16,21 @@ import com.ccp.flow.CcpErrorFlowDisturb;
 import com.jn.business.messages.JnMessages.JnNotifyUserAboutLoginToken;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.js.entities.JsEntityLoginAnswers;
-import com.jn.entities.JnEntityLoginEmail;
-import com.jn.entities.JnEntityLoginPassword;
-import com.jn.entities.JnEntityLoginSessionConflict;
-import com.jn.entities.JnEntityLoginSessionValidation;
-import com.jn.entities.JnEntityLoginToken;
+import com.js.entities.JsEntityLoginEmail;
+import com.js.entities.JsEntityLoginPassword;
+import com.js.entities.JsEntityLoginSessionConflict;
+import com.js.entities.JsEntityLoginSessionValidation;
+import com.js.entities.JsEntityLoginToken;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.js.services.JsServiceLogin;
 
 public enum LoginActions implements CcpBusiness {
 	SaveAnswers(JsEntityLoginAnswers.ENTITY),
-	ExecuteLogin(JnEntityLoginSessionConflict.ENTITY, JnEntityLoginSessionValidation.ENTITY),
-	SavePassword(JnEntityLoginPassword.ENTITY),
-	ExecuteLogout(JnEntityLoginSessionValidation.ENTITY.getTwinEntity()),
-	CreateLoginToken(JnEntityLoginToken.ENTITY, JnEntityEmailMessageSent.ENTITY),
-	CreateLoginEmail(JnEntityLoginEmail.ENTITY),
+	ExecuteLogin(JsEntityLoginSessionConflict.ENTITY, JsEntityLoginSessionValidation.ENTITY),
+	SavePassword(JsEntityLoginPassword.ENTITY),
+	ExecuteLogout(JsEntityLoginSessionValidation.ENTITY.getTwinEntity()),
+	CreateLoginToken(JsEntityLoginToken.ENTITY, JnEntityEmailMessageSent.ENTITY),
+	CreateLoginEmail(JsEntityLoginEmail.ENTITY),
 	renameTokenField{
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			CcpJsonRepresentation jsonWithRenamedToken = json.renameField(JsonFieldNames.sessionToken, JsonFieldNames.token);

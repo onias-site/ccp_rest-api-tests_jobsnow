@@ -49,10 +49,10 @@ import com.vis.entities.VisEntitySkillPending;
 public class BotConfigurationSeedsIntegrityTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(),
-				new com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp(),
-				new com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest(),
-				new com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud(),
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE,
+				com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp.INSTANCE,
+				com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest.INSTANCE,
+				com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud.INSTANCE,
 				com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances.mock);
 	}
 
@@ -61,10 +61,10 @@ public class BotConfigurationSeedsIntegrityTest {
 
 	private List<CcpBulkItem> loadAllSeeds() {
 		List<CcpBulkItem> seeds = new ArrayList<>();
-		seeds.addAll(new JbEntityBot().getFirstRecordsToInsert());
-		seeds.addAll(new VisEntitySkillPending().getFirstRecordsToInsert());
-		seeds.addAll(new VisEntitySkillFixHierarchyPending().getFirstRecordsToInsert());
-		seeds.addAll(new VisEntityCommandNotAllowedToUser().getFirstRecordsToInsert());
+		seeds.addAll(JbEntityBot.INSTANCE.getFirstRecordsToInsert());
+		seeds.addAll(VisEntitySkillPending.INSTANCE.getFirstRecordsToInsert());
+		seeds.addAll(VisEntitySkillFixHierarchyPending.INSTANCE.getFirstRecordsToInsert());
+		seeds.addAll(VisEntityCommandNotAllowedToUser.INSTANCE.getFirstRecordsToInsert());
 		return seeds;
 	}
 

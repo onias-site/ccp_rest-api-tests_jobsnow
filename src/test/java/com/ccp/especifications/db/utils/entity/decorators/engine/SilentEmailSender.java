@@ -10,6 +10,10 @@ import com.ccp.especifications.http.CcpHttpContentType;
  * measures is the state of both indexes after {@code deleteAnyWhere}, not the message content.
  */
 public class SilentEmailSender implements CcpEmailSender {
+	/** The single instance: the class keeps no state. */
+	public final static SilentEmailSender INSTANCE = new SilentEmailSender();
+
+	private SilentEmailSender() {}
 
 	public CcpJsonRepresentation sendSimpleTextEmailMessage(String providerToken, String providerUrl, String templateId, String sender, String subject, String message, CcpHttpContentType contentType, String... recipients) {
 		return CcpOtherConstants.EMPTY_JSON;

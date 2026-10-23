@@ -27,13 +27,13 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 public class VersionablePurgeConflictsTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	/** Gives the other test classes back the real query executor. */
 	@After
 	public void restoreTheRealExecutor() {
-		CcpDependencyInjection.loadAllDependencies(new CcpElasticSearchQueryExecutor());
+		CcpDependencyInjection.loadAllDependencies(CcpElasticSearchQueryExecutor.INSTANCE);
 	}
 
 	/** Answers each delete with the next response and counts the deletes. */
@@ -41,13 +41,7 @@ public class VersionablePurgeConflictsTest {
 		LinkedList<String> pending = new LinkedList<>(Arrays.asList(responses));
 		AtomicInteger deletes = new AtomicInteger();
 		CcpQueryExecutor executor = (CcpQueryExecutor) Proxy.newProxyInstance(this.getClass().getClassLoader(),
-				new Class<?>[] { CcpQueryExecutor.class }, (proxy, method, args) -> {
-					if ("delete".equals(method.getName())) {
-						deletes.incrementAndGet();
-						return new CcpJsonRepresentation(pending.removeFirst());
-					}
-					throw new UnsupportedOperationException(method.getName());
-				});
+				new Class<?>[] { CcpQueryExecutor.class }, new VersionablePurgeDeleteHandler(pending, deletes));
 		CcpInstanceProvider<CcpQueryExecutor> provider = () -> executor;
 		CcpDependencyInjection.loadAllDependencies(provider);
 		return deletes;

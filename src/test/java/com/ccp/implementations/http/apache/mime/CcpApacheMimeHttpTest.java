@@ -16,7 +16,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class CcpApacheMimeHttpTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler(), new CcpApacheMimeHttp());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpApacheMimeHttp.INSTANCE);
 	}
 
 	private static CcpHttpRequester getHttp() {
@@ -27,12 +27,12 @@ public class CcpApacheMimeHttpTest {
 
 	@Test
 	public void constructorProviderTest() {
-		assertNotNull(new CcpApacheMimeHttp());
+		assertNotNull(CcpApacheMimeHttp.INSTANCE);
 	}
 
 	@Test
 	public void getInstanceTest() {
-		CcpHttpRequester instance = new CcpApacheMimeHttp().getInstance();
+		CcpHttpRequester instance = CcpApacheMimeHttp.INSTANCE.getInstance();
 		assertNotNull(instance);
 	}
 

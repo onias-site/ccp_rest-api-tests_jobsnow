@@ -13,29 +13,29 @@ import org.junit.Test;
 public class CcpBusinessTest {
 
 	{
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 
 
 	@Test
 	public void canBeSavedAsAsyncTaskDefaultTest() {
-		assertTrue(new NoopBusiness().canBeSavedAsAsyncTask());
+		assertTrue(NoopBusiness.INSTANCE.canBeSavedAsAsyncTask());
 	}
 
 	@Test
 	public void getJsonValidationClassDefaultTest() {
-		assertNotNull(new NoopBusiness().getJsonValidationClass());
+		assertNotNull(NoopBusiness.INSTANCE.getJsonValidationClass());
 	}
 
 	@Test
 	public void nameDefaultTest() {
-		assertNotNull(new NoopBusiness().name());
+		assertNotNull(NoopBusiness.INSTANCE.name());
 	}
 
 	@Test
 	public void executeWithoutValidationsTest() {
-		CcpJsonRepresentation result = new NoopBusiness().execute(CcpOtherConstants.EMPTY_JSON);
+		CcpJsonRepresentation result = NoopBusiness.INSTANCE.execute(CcpOtherConstants.EMPTY_JSON);
 		assertNotNull(result);
 	}
 
@@ -43,12 +43,12 @@ public class CcpBusinessTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullParamTest() {
-		new NoopBusiness().execute(null);
+		NoopBusiness.INSTANCE.execute(null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void executeNullParamTest() {
-		new NoopBusiness().execute(null);
+		NoopBusiness.INSTANCE.execute(null);
 	}
 
 	// ── null-return tests (AOP) ───────────────────────────────────────────────
@@ -57,6 +57,6 @@ public class CcpBusinessTest {
 
 	@org.junit.Test(expected = com.ccp.aop.CcpNullReturnException.class)
 	public void applyReturningNullTriggersAopTest() {
-		new ReturnsNullBusiness().execute(CcpOtherConstants.EMPTY_JSON);
+		ReturnsNullBusiness.INSTANCE.execute(CcpOtherConstants.EMPTY_JSON);
 	}
 }

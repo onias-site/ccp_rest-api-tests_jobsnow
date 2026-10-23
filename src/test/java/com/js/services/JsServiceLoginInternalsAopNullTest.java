@@ -13,7 +13,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class JsServiceLoginInternalsAopNullTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

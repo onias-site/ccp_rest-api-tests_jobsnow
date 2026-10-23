@@ -13,9 +13,6 @@
 			},
 			"linkedin": {
 				"type": "keyword"
-			},
-			"monthGroup": {
-				"type": "keyword"
 			}
 		}
 	}

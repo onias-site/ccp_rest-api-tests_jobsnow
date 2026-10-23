@@ -27,10 +27,10 @@ public class ElasticSearchBulkAopNullTest {
 
 	static {
 		CcpDependencyInjection.loadAllDependencies(
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
-				new CcpElasticSearchDbRequest(),
-				new CcpElasticSerchDbBulk(),
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpElasticSerchDbBulk.INSTANCE,
 				CcpLocalCacheInstances.mock);
 	}
 

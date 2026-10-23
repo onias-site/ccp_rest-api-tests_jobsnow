@@ -15,7 +15,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 public class SystemPropertiesAccessorsTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(new CcpGsonJsonHandler());
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE);
 	}
 
 	private final JnSystemProperties properties = JnSystemProperties.INSTANCE;

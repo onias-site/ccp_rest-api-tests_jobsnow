@@ -65,14 +65,14 @@ public class IgnoredUsersThroughSupportBotTest {
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
 				CcpLocalInstances.syncMensageriaListener,
-				new CcpElasticSearchDbRequest(),
-				new CcpMindrotPasswordHandler(),
+				CcpElasticSearchDbRequest.INSTANCE,
+				CcpMindrotPasswordHandler.INSTANCE,
 				CcpLocalCacheInstances.mock,
-				new CcpElasticSerchDbBulk(),
-				new CcpElasticSearchCrud(),
-				new CcpElasticSearchQueryExecutor(),
-				new CcpGsonJsonHandler(),
-				new CcpApacheMimeHttp(),
+				CcpElasticSerchDbBulk.INSTANCE,
+				CcpElasticSearchCrud.INSTANCE,
+				CcpElasticSearchQueryExecutor.INSTANCE,
+				CcpGsonJsonHandler.INSTANCE,
+				CcpApacheMimeHttp.INSTANCE,
 				telegram,
 				email
 		);
@@ -87,7 +87,7 @@ public class IgnoredUsersThroughSupportBotTest {
 	/** Saves the bot configuration and its texts again, so that the index follows what is declared in java. */
 	@BeforeClass
 	public static void resaveBotConfiguration() {
-		List<CcpEntityConfigurator> configurators = Arrays.asList(new JbEntityBot(), new JnEntityBotCommand(), new JnEntityBotCommandName(), new JnEntityBotCommandStep(), new JnEntityBotCommandStepEndMessage());
+		List<CcpEntityConfigurator> configurators = Arrays.asList(JbEntityBot.INSTANCE, JnEntityBotCommand.INSTANCE, JnEntityBotCommandName.INSTANCE, JnEntityBotCommandStep.INSTANCE, JnEntityBotCommandStepEndMessage.INSTANCE);
 		for (CcpEntityConfigurator configurator : configurators) {
 			List<CcpBulkItem> records = configurator.getFirstRecordsToInsert();
 			for (CcpBulkItem record : records) {

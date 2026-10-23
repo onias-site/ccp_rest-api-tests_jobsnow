@@ -9,60 +9,60 @@ import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponseType;
 import com.ccp.process.CcpProcessStatus;
 import com.js.entities.JsEntityLoginAnswers;
-import com.jn.entities.JnEntityLoginEmail;
-import com.jn.entities.JnEntityLoginPassword;
-import com.jn.entities.JnEntityLoginSessionConflict;
-import com.jn.entities.JnEntityLoginToken;
+import com.js.entities.JsEntityLoginEmail;
+import com.js.entities.JsEntityLoginPassword;
+import com.js.entities.JsEntityLoginSessionConflict;
+import com.js.entities.JsEntityLoginToken;
 import com.jn.rest.api.commons.JnTestTemplate;
 import com.jn.rest.api.commons.TestVariables;
-import com.jn.status.login.JnProcessStatusExecuteLogin;
-import com.jn.status.login.JnProcessStatusExistsLoginEmail;
+import com.js.status.login.JsProcessStatusExecuteLogin;
+import com.js.status.login.JsProcessStatusExistsLoginEmail;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 public class PasswordLoginScreen extends JnTestTemplate{
 
 	@Test
 	public void invalidEmail() {
-		this.executeLogin(TestVariables.INVALID_EMAIL, TestVariables.CORRECT_PASSWORD, JnProcessStatusExecuteLogin.invalidEmail);
+		this.executeLogin(TestVariables.INVALID_EMAIL, TestVariables.CORRECT_PASSWORD, JsProcessStatusExecuteLogin.invalidEmail);
 	}
 
 	@Test
 	public void lockedToken() {
 		TestVariables testVariables = new TestVariables();
-		CcpEntity mirrorEntity = JnEntityLoginToken.ENTITY.getTwinEntity();
+		CcpEntity mirrorEntity = JsEntityLoginToken.ENTITY.getTwinEntity();
 		mirrorEntity.save(testVariables.REQUEST_TO_LOGIN);
-		this.execute(testVariables, JnProcessStatusExecuteLogin.lockedToken, x -> TestVariables.CORRECT_PASSWORD);
+		this.execute(testVariables, JsProcessStatusExecuteLogin.lockedToken, x -> TestVariables.CORRECT_PASSWORD);
 	}
 
 	@Test
 	public void missingToken() {
 		TestVariables testVariables = new TestVariables();
-		this.execute(testVariables, JnProcessStatusExecuteLogin.missingSavingEmail, x -> TestVariables.CORRECT_PASSWORD);
+		this.execute(testVariables, JsProcessStatusExecuteLogin.missingSavingEmail, x -> TestVariables.CORRECT_PASSWORD);
 	}
 
 	@Test
 	public void missingPasswordRegistration() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
-		this.execute(testVariables, JnProcessStatusExecuteLogin.missingSavePassword, x-> TestVariables.CORRECT_PASSWORD);
+		this.execute(testVariables, JsProcessStatusExecuteLogin.missingSavePassword, x-> TestVariables.CORRECT_PASSWORD);
 	}
 
 	@Test
 	public void lockedPassword() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		CcpEntity mirrorEntity = JnEntityLoginPassword.ENTITY.getTwinEntity();
+		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		CcpEntity mirrorEntity = JsEntityLoginPassword.ENTITY.getTwinEntity();
 		mirrorEntity.save(testVariables.REQUEST_TO_LOGIN);
-		this.execute(testVariables, JnProcessStatusExecuteLogin.lockedPassword, x -> TestVariables.CORRECT_PASSWORD);
+		this.execute(testVariables, JsProcessStatusExecuteLogin.lockedPassword, x -> TestVariables.CORRECT_PASSWORD);
 	}
 
 	@Test
 	public void userAlreadyLoggedIn() {
 		TestVariables testVariables = new TestVariables();
-		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		JnEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		this.execute(testVariables, JnProcessStatusExecuteLogin.loginConflict, x -> TestVariables.CORRECT_PASSWORD);
+		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		this.execute(testVariables, JsProcessStatusExecuteLogin.loginConflict, x -> TestVariables.CORRECT_PASSWORD);
 	}
 
 	@Test
@@ -73,8 +73,8 @@ public class PasswordLoginScreen extends JnTestTemplate{
 
 	public String expectedFlow(TestVariables testVariables) {
 		new PasswordRegistrationScreen().expectedFlow(testVariables);;
-		JnEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
-		String result = this.execute(testVariables, JnProcessStatusExecuteLogin.expectedStatus, x -> TestVariables.CORRECT_PASSWORD);
+		JsEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
+		String result = this.execute(testVariables, JsProcessStatusExecuteLogin.expectedStatus, x -> TestVariables.CORRECT_PASSWORD);
 		return result;
 	}
  
@@ -84,38 +84,38 @@ public class PasswordLoginScreen extends JnTestTemplate{
 		TestVariables testVariables = new TestVariables();
 		PasswordRegistrationScreen passwordRegistrationScreen = new PasswordRegistrationScreen();
 		passwordRegistrationScreen.expectedFlow(testVariables);
-		JnEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
-		this.execute(testVariables, JnProcessStatusExecuteLogin.wrongPassword, x -> TestVariables.WRONG_PASSWORD);
-		this.execute(testVariables, JnProcessStatusExecuteLogin.wrongPassword, x -> TestVariables.WRONG_PASSWORD);
-		this.execute(testVariables, JnProcessStatusExecuteLogin.passwordLockedRecently, x -> TestVariables.WRONG_PASSWORD);
-		this.execute(testVariables, JnProcessStatusExecuteLogin.lockedPassword, x -> TestVariables.WRONG_PASSWORD);
+		JsEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
+		this.execute(testVariables, JsProcessStatusExecuteLogin.wrongPassword, x -> TestVariables.WRONG_PASSWORD);
+		this.execute(testVariables, JsProcessStatusExecuteLogin.wrongPassword, x -> TestVariables.WRONG_PASSWORD);
+		this.execute(testVariables, JsProcessStatusExecuteLogin.passwordLockedRecently, x -> TestVariables.WRONG_PASSWORD);
+		this.execute(testVariables, JsProcessStatusExecuteLogin.lockedPassword, x -> TestVariables.WRONG_PASSWORD);
 		EmailRequestScreen emailRequestScreen = new EmailRequestScreen();
-		emailRequestScreen.execute(testVariables, JnProcessStatusExistsLoginEmail.lockedPassword);
+		emailRequestScreen.execute(testVariables, JsProcessStatusExistsLoginEmail.lockedPassword);
 	}
 	
 	@Test
 	public void missPasswordThenGetItRight() {
 		TestVariables testVariables = new TestVariables();
 		new PasswordRegistrationScreen().expectedFlow(testVariables);
-		JnEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
 		
 		for(int k = 1; k < 3; k++) {
-			this.execute(testVariables, JnProcessStatusExecuteLogin.wrongPassword, x -> TestVariables.WRONG_PASSWORD);
+			this.execute(testVariables, JsProcessStatusExecuteLogin.wrongPassword, x -> TestVariables.WRONG_PASSWORD);
 		}
-		this.execute(testVariables, JnProcessStatusExecuteLogin.expectedStatus, x -> TestVariables.CORRECT_PASSWORD);
+		this.execute(testVariables, JsProcessStatusExecuteLogin.expectedStatus, x -> TestVariables.CORRECT_PASSWORD);
 	}
 	
 	@Test
 	public void recentlyLockedPassword() {
 		TestVariables testVariables = new TestVariables();
 		new PasswordRegistrationScreen().expectedFlow(testVariables);;
-		JnEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginSessionConflict.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
 		
 		for(int k = 1; k <= 2; k++) {
-			this.execute(testVariables, JnProcessStatusExecuteLogin.wrongPassword, x -> TestVariables.WRONG_PASSWORD);
+			this.execute(testVariables, JsProcessStatusExecuteLogin.wrongPassword, x -> TestVariables.WRONG_PASSWORD);
 		}
-		this.execute(testVariables, JnProcessStatusExecuteLogin.passwordLockedRecently, x -> TestVariables.WRONG_PASSWORD);
-		this.execute(testVariables, JnProcessStatusExecuteLogin.lockedPassword, x -> TestVariables.CORRECT_PASSWORD);
+		this.execute(testVariables, JsProcessStatusExecuteLogin.passwordLockedRecently, x -> TestVariables.WRONG_PASSWORD);
+		this.execute(testVariables, JsProcessStatusExecuteLogin.lockedPassword, x -> TestVariables.CORRECT_PASSWORD);
 	}
 
 	public String execute(TestVariables testVariables, CcpProcessStatus expectedStatus, Function<TestVariables, String> producer) {
