@@ -9,7 +9,7 @@ import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponseType;
 import com.ccp.process.CcpProcessStatus;
 import com.js.entities.JsEntityLoginAnswers;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 import com.js.entities.JsEntityLoginPassword;
 import com.js.entities.JsEntityLoginSessionConflict;
 import com.js.entities.JsEntityLoginToken;
@@ -39,7 +39,7 @@ public class PasswordRegistrationScreen extends JnTestTemplate{
 	public void missingToken() {
 		TestVariables testVariables = new TestVariables();
 		String token = this.getTokenToValidateLogin(testVariables);
-		JsEntityLoginEmail.ENTITY.delete( testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.delete( testVariables.REQUEST_TO_LOGIN);
 		this.execute(testVariables, JsProcessStatusUpdatePassword.missingEmail, x -> token);
 	}
 
@@ -88,7 +88,7 @@ public class PasswordRegistrationScreen extends JnTestTemplate{
 	 * e-mail hashed, which the validator (outside the transformer) rejected.
 	 */
 	private String getToken(TestVariables testVariables) {
-		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 
 		String token = JnJsonTransformersFieldsEntityDefault.getOriginalToken();
 		CcpJsonRepresentation jsonWithToken = testVariables.REQUEST_TO_LOGIN.put(LogoutScreenConstants.originalToken, token);
@@ -144,7 +144,7 @@ public class PasswordRegistrationScreen extends JnTestTemplate{
 
 	
 	private String getTokenToValidateLogin(TestVariables testVariables) {
-		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		return "12345678";
 

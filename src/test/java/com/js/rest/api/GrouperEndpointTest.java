@@ -33,7 +33,7 @@ import com.jn.entities.JnEntityGrouper;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.rest.api.commons.TestVariables;
 import com.jn.utils.JnGroupers;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 
 /**
  * Proves the endpoint of the groups of the js ({@code GET /grouper/{email}/{parentName}/{childName}/{parentId}}, port
@@ -100,7 +100,7 @@ public class GrouperEndpointTest {
 	public void createTheGroupOnBothSidesAndALogin() {
 		this.addChild(false, JsonFieldNames.filhoAtivo);
 		this.addChild(true, JsonFieldNames.filhoInativo);
-		JsEntityLoginEmail.ENTITY.save(this.testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(this.testVariables.REQUEST_TO_LOGIN);
 		this.testVariables.saveCurrentSession(SESSION_TOKEN);
 	}
 

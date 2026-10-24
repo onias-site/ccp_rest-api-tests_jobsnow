@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.process.CcpProcessStatusDefault;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 import com.js.entities.JsEntityLoginSessionConflict;
 import com.jn.rest.api.commons.TestVariables;
 import com.js.status.login.JsProcessStatusExecuteLogout;
@@ -33,7 +33,7 @@ public class ExecuteLogout extends JsServiceLoginTestTemplate {
 	}
 
 	public void expectedFlow(TestVariables testVariables) {
-		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		CcpJsonRepresentation withToken = testVariables.saveCurrentSession("12345678");
 		this.execute(withToken, JsProcessStatusExecuteLogout.expectedStatus);
 	}
@@ -45,7 +45,7 @@ public class ExecuteLogout extends JsServiceLoginTestTemplate {
 	@Test
 	public void replacedSessionDoesNotEndTheCurrentOne() {
 		TestVariables testVariables = new TestVariables();
-		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		CcpJsonRepresentation replacedSession = testVariables.saveCurrentSession("11111111");
 		CcpJsonRepresentation currentSession = testVariables.saveCurrentSession("22222222");
 

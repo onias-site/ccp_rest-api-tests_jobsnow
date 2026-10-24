@@ -18,7 +18,8 @@ public class JbEntityPendingTicketsDecoratorsTest extends EntityDecoratorTestTem
 		return this.com(JbEntityPendingTickets.Fields.botName, "bot" + this.unique)
 				.put(JbEntityPendingTickets.Fields.chatId, this.unique)
 				.put(JbEntityPendingTickets.Fields.ticket, "/solveLoginTokenTicket unlockToken " + this.email)
-				.put(JbEntityPendingTickets.Fields.timestamp, System.currentTimeMillis());
+				.put(JbEntityPendingTickets.Fields.timestamp, System.currentTimeMillis())
+				.put(JbEntityPendingTickets.Fields.priority, 1);
 	}
 
 	@Test
@@ -34,5 +35,6 @@ public class JbEntityPendingTicketsDecoratorsTest extends EntityDecoratorTestTem
 	@Test
 	public void validator() {
 		this.shouldRefuseInvalidRecord(this.validRecord().removeFields(JbEntityPendingTickets.Fields.timestamp));
+		this.shouldRefuseInvalidRecord(this.validRecord().removeFields(JbEntityPendingTickets.Fields.priority));
 	}
 }

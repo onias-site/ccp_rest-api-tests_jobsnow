@@ -11,7 +11,7 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatus;
 import com.js.entities.JsEntityLoginAnswers;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 import com.js.entities.JsEntityLoginToken;
 import com.jn.rest.api.commons.JnTestTemplate;
 import com.jn.rest.api.commons.TestVariables;
@@ -43,7 +43,7 @@ public class OnEnteringPasswordRegistrationScreen extends JnTestTemplate{
 	@Test
 	public void happyPath() {
 		TestVariables testVariables = new TestVariables();
-		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		this.execute(testVariables, JsProcessStatusCreateLoginToken.expectedStatus);
 	} 
@@ -54,13 +54,13 @@ public class OnEnteringPasswordRegistrationScreen extends JnTestTemplate{
 	@Test
 	public void theLanguageOfTheTokenRequestIsKeptInTheLoginEmail() {
 		TestVariables testVariables = new TestVariables();
-		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 
 		this.createLoginToken(testVariables.VALID_EMAIL, JsProcessStatusCreateLoginToken.expectedStatus, JnLanguage.english);
 
-		CcpJsonRepresentation loginEmail = JsEntityLoginEmail.ENTITY.getOneById(testVariables.REQUEST_TO_LOGIN);
-		assertEquals(loginEmail.toString(), JnLanguage.english.name(), loginEmail.getAsString(JsEntityLoginEmail.Fields.language));
+		CcpJsonRepresentation loginEmail = JnEntityLoginEmail.ENTITY.getOneById(testVariables.REQUEST_TO_LOGIN);
+		assertEquals(loginEmail.toString(), JnLanguage.english.name(), loginEmail.getAsString(JnEntityLoginEmail.Fields.language));
 	}
 
 	public String execute(TestVariables testVariables, CcpProcessStatus expectedStatus, Function<TestVariables, String> producer) {

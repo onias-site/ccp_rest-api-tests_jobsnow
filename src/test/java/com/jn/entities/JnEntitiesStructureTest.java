@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.js.entities.JsEntityLoginAnswers;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 import com.js.entities.JsEntityLoginPassword;
 import com.js.entities.JsEntityLoginPasswordAttempts;
 import com.js.entities.JsEntityLoginSessionConflict;
@@ -45,7 +45,7 @@ public class JnEntitiesStructureTest {
 	@Test public void jobsnowErrorEntityTest() { assertNotNull(JnEntityJobsnowError.ENTITY); }
 	@Test public void jobsnowWarningEntityTest() { assertNotNull(JnEntityJobsnowWarning.ENTITY); }
 	@Test public void loginAnswersEntityTest() { assertNotNull(JsEntityLoginAnswers.ENTITY); }
-	@Test public void loginEmailEntityTest() { assertNotNull(JsEntityLoginEmail.ENTITY); }
+	@Test public void loginEmailEntityTest() { assertNotNull(JnEntityLoginEmail.ENTITY); }
 	@Test public void loginPasswordEntityTest() { assertNotNull(JsEntityLoginPassword.ENTITY); }
 	@Test public void loginPasswordAttemptsEntityTest() { assertNotNull(JsEntityLoginPasswordAttempts.ENTITY); }
 	@Test public void loginSessionConflictEntityTest() { assertNotNull(JsEntityLoginSessionConflict.ENTITY); }
@@ -74,7 +74,7 @@ public class JnEntitiesStructureTest {
 	@Test public void instantMessengerTemplateMessageFieldsTest() { assertNotNull(JnEntityInstantMessengerTemplateMessage.Fields.values()); }
 	@Test public void jobsnowErrorFieldsTest() { assertNotNull(JnEntityJobsnowError.Fields.values()); }
 	@Test public void loginAnswersFieldsTest() { assertNotNull(JsEntityLoginAnswers.Fields.values()); }
-	@Test public void loginEmailFieldsTest() { assertNotNull(JsEntityLoginEmail.Fields.values()); }
+	@Test public void loginEmailFieldsTest() { assertNotNull(JnEntityLoginEmail.Fields.values()); }
 	@Test public void loginPasswordFieldsTest() { assertNotNull(JsEntityLoginPassword.Fields.values()); }
 	@Test public void loginPasswordAttemptsFieldsTest() { assertNotNull(JsEntityLoginPasswordAttempts.Fields.values()); }
 	@Test public void loginSessionConflictFieldsTest() { assertNotNull(JsEntityLoginSessionConflict.Fields.values()); }
@@ -90,7 +90,7 @@ public class JnEntitiesStructureTest {
 
 	// ── configurator constructors not null ───────────────────────────────────
 
-	@Test public void loginEmailCtorTest() { assertNotNull(JsEntityLoginEmail.INSTANCE); } 
+	@Test public void loginEmailCtorTest() { assertNotNull(JnEntityLoginEmail.INSTANCE); } 
 	@Test public void loginPasswordCtorTest() { assertNotNull(JsEntityLoginPassword.INSTANCE); }
 	@Test public void loginTokenCtorTest() { assertNotNull(JsEntityLoginToken.INSTANCE); }
 	@Test public void jobsnowErrorCtorTest() { assertNotNull(JnEntityJobsnowError.INSTANCE); }

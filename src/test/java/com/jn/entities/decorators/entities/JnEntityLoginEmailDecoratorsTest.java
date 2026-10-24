@@ -1,18 +1,18 @@
-package com.js.entities.decorators.entities;
+package com.jn.entities.decorators.entities;
 
 import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 import com.ccp.especifications.db.utils.entity.decorators.EntityDecoratorTestTemplate;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
-/** js_login_email: {@code @CcpEntityCache(3600)}, transformador e validador. */
-public class JsEntityLoginEmailDecoratorsTest extends EntityDecoratorTestTemplate {
+/** jn_login_email: {@code @CcpEntityCache(3600)}, transformador e validador. */
+public class JnEntityLoginEmailDecoratorsTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {
-		return JsEntityLoginEmail.ENTITY;
+		return JnEntityLoginEmail.ENTITY;
 	}
 
 	protected CcpJsonRepresentation validRecord() {

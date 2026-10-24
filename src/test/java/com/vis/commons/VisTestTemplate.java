@@ -29,7 +29,7 @@ import com.jn.business.messages.JnMessages.JnNotifyUserAboutLoginToken;
 import com.jn.db.bulk.JnExecuteBulkOperation;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.js.entities.JsEntityLoginAnswers;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 import com.js.entities.JsEntityLoginPassword;
 import com.js.entities.JsEntityLoginPasswordAttempts;
 import com.js.entities.JsEntityLoginSessionConflict;
@@ -173,7 +173,7 @@ public abstract class VisTestTemplate {
 				,JsEntityLoginPassword.ENTITY
 				,JsEntityLoginSessionConflict.ENTITY
 				,JsEntityLoginToken.ENTITY
-				,JsEntityLoginEmail.ENTITY
+				,JnEntityLoginEmail.ENTITY
 				,JsEntityLoginPasswordAttempts.ENTITY
 				,JsEntityLoginAnswers.ENTITY
 				,JsEntityLoginPassword.ENTITY.getTwinEntity()
@@ -206,7 +206,7 @@ public abstract class VisTestTemplate {
 		
 		String uri = this.getUri();
 		CcpJsonRepresentation responseFromEndpoint = this.getJsonResponseFromEndpoint(processStatus, scenarioName, body, uri, headers);
-		JsEntityLoginEmail.ENTITY.delete(body);
+		JnEntityLoginEmail.ENTITY.delete(body);
 		JsEntityLoginPassword.ENTITY.delete(body);
 		JsEntityLoginPasswordAttempts.ENTITY.delete(body);
 		JsEntityLoginAnswers.ENTITY.delete(body);

@@ -1,6 +1,9 @@
 package com.jb.business.bots.engine;
 
-import com.vis.business.bots.VisCommandNamesInPortuguese;
+import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
+import com.jn.json.fields.validation.JnTicketQuotaGroups;
+import com.jn.entities.JnEntityTicketDailyLimit;
+import com.jn.business.bots.JnCommandNamesInPortuguese;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -49,17 +52,16 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.vis.business.skill.VisBusinessSkillFixHierarchyIgnoreUser;
 import com.vis.business.skill.VisSkillWordsGroups;
-import com.vis.entities.VisEntityCommandNotAllowedToUser;
+import com.jn.entities.JnEntityCommandNotAllowedToUser;
 import com.vis.entities.VisEntityGroupPositionsBySkills;
 import com.vis.entities.VisEntitySkill;
 import com.vis.entities.VisEntitySkillFixHierarchyFulfiled;
 import com.vis.entities.VisEntitySkillFixHierarchyItemApproved;
 import com.vis.entities.VisEntitySkillFixHierarchyItemPending;
 import com.vis.entities.VisEntitySkillFixHierarchyPending;
-import com.vis.entities.VisEntitySkillFixHierarchyDailyLimit;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.json.fields.validation.VisSkillFixHierarchyTypes;
-import com.vis.json.fields.validation.VisUserRequestCommands;
+import com.jn.json.fields.validation.JnUserRequestCommands;
 import com.vis.messages.VisMessages;
 import com.vis.services.VisServiceSkillFixHierarchy;
 import com.vis.status.VisProcessStatusFixSkillHierarchy;
@@ -137,6 +139,11 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		for (CcpEntityConfigurator configurator : configurators) {
 			List<CcpBulkItem> records = configurator.getFirstRecordsToInsert();
 			for (CcpBulkItem record : records) {
+				// the subscribers of a write event are appended by a script, not written as a record
+				boolean scripted = record.operation != CcpBulkEntityOperationType.create;
+				if(scripted) {
+					continue;
+				}
 				record.entity.save(record.json);
 			}
 		}
@@ -528,16 +535,16 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 	/**
 	 * The operator ignores a user who only plays with the requests: the intention is confirmed (a "no" goes back
-	 * to the options), the user is recorded in vis_command_not_allowed_to_user with the request, the request and
+	 * to the options), the user is recorded in jn_command_not_allowed_to_user with the request, the request and
 	 * its items are discarded without any email, and the next request of the user reaches nobody.
 	 */
 	@Test
 	public void operatorIgnoresTheUser() {
 
 		CcpJsonRepresentation ignoredUser = CcpOtherConstants.EMPTY_JSON
-				.put(VisEntityCommandNotAllowedToUser.Fields.email, IGNORED_USER)
-				.put(VisEntityCommandNotAllowedToUser.Fields.commandName, VisUserRequestCommands.fixSkillHierarchy);
-		VisEntityCommandNotAllowedToUser.ENTITY.delete(ignoredUser);
+				.put(JnEntityCommandNotAllowedToUser.Fields.email, IGNORED_USER)
+				.put(JnEntityCommandNotAllowedToUser.Fields.commandName, JnUserRequestCommands.fixSkillHierarchy);
+		JnEntityCommandNotAllowedToUser.ENTITY.delete(ignoredUser);
 
 		this.openRequest(IGNORED_USER, VisSkillFixHierarchyTypes.add, "rust", "Palavrão e bobagem sem sentido", "blablabla", "blebleble");
 
@@ -554,15 +561,15 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		String canceled = this.operatorTypes("não");
 		assertTrue(canceled, canceled.startsWith("O usuário não será ignorado."));
 		assertTrue(canceled, canceled.contains("• um a um"));
-		assertFalse(VisEntityCommandNotAllowedToUser.ENTITY.exists(ignoredUser));
+		assertFalse(JnEntityCommandNotAllowedToUser.ENTITY.exists(ignoredUser));
 
 		this.operatorTypes("ignorar");
 		String ignored = this.operatorTypes("sim");
 		assertTrue(ignored, ignored.startsWith("O usuário " + IGNORED_USER + " foi ignorado pelo suporte, em todos os comandos."));
 
-		assertTrue(VisEntityCommandNotAllowedToUser.ENTITY.exists(ignoredUser));
-		CcpJsonRepresentation record = VisEntityCommandNotAllowedToUser.ENTITY.getOneById(ignoredUser);
-		CcpJsonRepresentation description = record.getInnerJson(VisEntityCommandNotAllowedToUser.Fields.description);
+		assertTrue(JnEntityCommandNotAllowedToUser.ENTITY.exists(ignoredUser));
+		CcpJsonRepresentation record = JnEntityCommandNotAllowedToUser.ENTITY.getOneById(ignoredUser);
+		CcpJsonRepresentation description = record.getInnerJson(JnEntityCommandNotAllowedToUser.Fields.description);
 		assertEquals("rust", description.getAsString(VisEntitySkillFixHierarchyPending.Fields.parent));
 		String requests = description.getAsJsonList(VisBusinessSkillFixHierarchyIgnoreUser.JsonFieldNames.requests).toString();
 		assertTrue(requests, requests.contains("Palavrão e bobagem sem sentido"));
@@ -598,18 +605,18 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 	/**
 	 * The operator undoes the decision with {@code /allowCommandToUser <email>}: the record leaves
-	 * vis_command_not_allowed_to_user and the next request of the user is saved and reaches the operator again.
+	 * jn_command_not_allowed_to_user and the next request of the user is saved and reaches the operator again.
 	 * Asking it again for the same user tells the operator that the user is not ignored.
 	 */
 	@Test
 	public void operatorStopsIgnoringTheUser() {
 
 		CcpJsonRepresentation ignoredUserKey = CcpOtherConstants.EMPTY_JSON
-				.put(VisEntityCommandNotAllowedToUser.Fields.email, UNIGNORED_USER)
-				.put(VisEntityCommandNotAllowedToUser.Fields.commandName, VisUserRequestCommands.fixSkillHierarchy);
+				.put(JnEntityCommandNotAllowedToUser.Fields.email, UNIGNORED_USER)
+				.put(JnEntityCommandNotAllowedToUser.Fields.commandName, JnUserRequestCommands.fixSkillHierarchy);
 		CcpJsonRepresentation ignoredDescription = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillFixHierarchyPending.Fields.parent, "go");
-		CcpJsonRepresentation ignoredUser = ignoredUserKey.put(VisEntityCommandNotAllowedToUser.Fields.description, ignoredDescription);
-		VisEntityCommandNotAllowedToUser.ENTITY.save(ignoredUser);
+		CcpJsonRepresentation ignoredUser = ignoredUserKey.put(JnEntityCommandNotAllowedToUser.Fields.description, ignoredDescription);
+		JnEntityCommandNotAllowedToUser.ENTITY.save(ignoredUser);
 
 		CcpJsonRepresentation requestKey = this.request(UNIGNORED_USER, VisSkillFixHierarchyTypes.add, "go");
 		CcpJsonRepresentation request = this.newRequest(requestKey, "Gin é framework web em go", "gin");
@@ -618,13 +625,13 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 		String allowed = this.operatorTypes("/allowCommandToUser " + UNIGNORED_USER);
 		assertEquals("O usuário " + UNIGNORED_USER + " não é mais ignorado pelo suporte: as próximas solicitações dele, em todos os comandos, voltarão a chegar ao suporte.", allowed);
-		assertFalse(VisEntityCommandNotAllowedToUser.ENTITY.exists(ignoredUserKey));
+		assertFalse(JnEntityCommandNotAllowedToUser.ENTITY.exists(ignoredUserKey));
 
 		// the record is kept in the twin, for control and tracking
-		CcpEntity reallowedUsers = VisEntityCommandNotAllowedToUser.ENTITY.getTwinEntity();
+		CcpEntity reallowedUsers = JnEntityCommandNotAllowedToUser.ENTITY.getTwinEntity();
 		assertTrue(reallowedUsers.exists(ignoredUserKey));
 		CcpJsonRepresentation reallowedUser = reallowedUsers.getOneById(ignoredUserKey);
-		CcpJsonRepresentation reallowedDescription = reallowedUser.getInnerJson(VisEntityCommandNotAllowedToUser.Fields.description);
+		CcpJsonRepresentation reallowedDescription = reallowedUser.getInnerJson(JnEntityCommandNotAllowedToUser.Fields.description);
 		assertEquals("go", reallowedDescription.getAsString(VisEntitySkillFixHierarchyPending.Fields.parent));
 
 		String notIgnored = this.operatorTypes("/allowCommandToUser " + UNIGNORED_USER);
@@ -654,15 +661,15 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		ElasticsearchLocal.refresh("vis_skill_fix_hierarchy_pending");
 
 		CcpJsonRepresentation ignoredUserKey = CcpOtherConstants.EMPTY_JSON
-				.put(VisEntityCommandNotAllowedToUser.Fields.email, BLOCKED_USER)
-				.put(VisEntityCommandNotAllowedToUser.Fields.commandName, VisUserRequestCommands.fixSkillHierarchy);
+				.put(JnEntityCommandNotAllowedToUser.Fields.email, BLOCKED_USER)
+				.put(JnEntityCommandNotAllowedToUser.Fields.commandName, JnUserRequestCommands.fixSkillHierarchy);
 		CcpJsonRepresentation ignoredDescription = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillFixHierarchyPending.Fields.parent, "outro termo");
-		CcpJsonRepresentation ignoredUser = ignoredUserKey.put(VisEntityCommandNotAllowedToUser.Fields.description, ignoredDescription);
-		VisEntityCommandNotAllowedToUser.ENTITY.save(ignoredUser);
+		CcpJsonRepresentation ignoredUser = ignoredUserKey.put(JnEntityCommandNotAllowedToUser.Fields.description, ignoredDescription);
+		JnEntityCommandNotAllowedToUser.ENTITY.save(ignoredUser);
 
 		String refused = this.operatorTypes("/fixSkillHierarchy add " + BLOCKED_USER + " elixir");
 		// the bot names the command in the operator's language (Portuguese by default); the canonical name still works
-		String allowCommandInPortuguese = VisCommandNamesInPortuguese.allowCommandToUser.getValue();
+		String allowCommandInPortuguese = JnCommandNamesInPortuguese.allowCommandToUser.getValue();
 		assertEquals("O usuário " + BLOCKED_USER + " está sendo ignorado pelo suporte e as solicitações dele não são atendidas em nenhum comando. "
 				+ "Para voltar a atendê-lo, use /" + allowCommandInPortuguese + " " + BLOCKED_USER, refused);
 
@@ -1063,8 +1070,8 @@ public class SkillFixHierarchyThroughSupportBotTest {
 	}
 
 	private void forgetTodaysRequest(String email) {
-		CcpJsonRepresentation dailyLimit = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillFixHierarchyDailyLimit.Fields.email, email);
-		VisEntitySkillFixHierarchyDailyLimit.ENTITY.delete(dailyLimit);
+		CcpJsonRepresentation dailyLimit = JnEntityTicketDailyLimit.getKey(email, JnTicketQuotaGroups.sharedTickets);
+		JnEntityTicketDailyLimit.ENTITY.delete(dailyLimit);
 	}
 
 	private static final String DAILY_LIMIT_USER = "limite.diario.hierarquia@teste.com";
@@ -1084,8 +1091,8 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		CcpJsonRepresentation secondRequest = this.clearRequest(DAILY_LIMIT_USER, VisSkillFixHierarchyTypes.remove, "rust", "Tokio é runtime de rust", "tokio");
 
 		VisServiceSkillFixHierarchy.FixSkillHierarchy.execute(firstRequest);
-		CcpJsonRepresentation dailyLimit = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillFixHierarchyDailyLimit.Fields.email, DAILY_LIMIT_USER);
-		assertTrue(VisEntitySkillFixHierarchyDailyLimit.ENTITY.exists(dailyLimit));
+		CcpJsonRepresentation dailyLimit = JnEntityTicketDailyLimit.getKey(DAILY_LIMIT_USER, JnTicketQuotaGroups.sharedTickets);
+		assertTrue(JnEntityTicketDailyLimit.ENTITY.exists(dailyLimit));
 
 		CcpErrorFlowDisturb repeated = this.refusalOf(firstRequest);
 		assertEquals(CcpProcessStatusDefault.CONFLICT, repeated.status);

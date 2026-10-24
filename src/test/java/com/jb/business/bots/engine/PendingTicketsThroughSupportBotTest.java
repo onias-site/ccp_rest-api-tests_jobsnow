@@ -263,7 +263,8 @@ public class PendingTicketsThroughSupportBotTest {
 	private void openSkillTicket() {
 		CcpJsonRepresentation sentMessageWithBotName = CcpOtherConstants.EMPTY_JSON.put(JnJsonInstantMessengerFields.botName, JbBotType.support);
 		CcpJsonRepresentation sentMessageWithChatId = sentMessageWithBotName.put(JnJsonInstantMessengerFields.chatId, SUPPORT_CHAT.doubleValue());
-		CcpJsonRepresentation sentMessage = sentMessageWithChatId.put(JnJsonCommonsFields.message, SKILL_TICKET + " ");
+		CcpJsonRepresentation sentMessageWithText = sentMessageWithChatId.put(JnJsonCommonsFields.message, SKILL_TICKET + " ");
+		CcpJsonRepresentation sentMessage = sentMessageWithText.put(JnJsonInstantMessengerFields.priority, 3);
 		// a later timestamp than the unlock ticket, so the order of the list is known
 		this.waitAMillisecond();
 		JnBusinessRegisterSupportPendingCommand.INSTANCE.execute(sentMessage);

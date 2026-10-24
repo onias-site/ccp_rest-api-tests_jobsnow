@@ -22,7 +22,8 @@ public class JnEntitySupportPendingCommandDecoratorsTest extends EntityDecorator
 		return this.com(JnEntitySupportPendingCommand.Fields.botName, "bot" + this.unique)
 				.put(JnEntitySupportPendingCommand.Fields.chatId, this.unique)
 				.put(JnEntitySupportPendingCommand.Fields.command, "/fixSkillHierarchy add " + this.email + " JVM")
-				.put(JnEntitySupportPendingCommand.Fields.timestamp, System.currentTimeMillis());
+				.put(JnEntitySupportPendingCommand.Fields.timestamp, System.currentTimeMillis())
+				.put(JnEntitySupportPendingCommand.Fields.priority, 3);
 	}
 
 	@Test
@@ -38,6 +39,7 @@ public class JnEntitySupportPendingCommandDecoratorsTest extends EntityDecorator
 	@Test
 	public void validator() {
 		this.shouldRefuseInvalidRecord(this.validRecord().removeFields(JnEntitySupportPendingCommand.Fields.timestamp));
+		this.shouldRefuseInvalidRecord(this.validRecord().removeFields(JnEntitySupportPendingCommand.Fields.priority));
 	}
 
 	@Test

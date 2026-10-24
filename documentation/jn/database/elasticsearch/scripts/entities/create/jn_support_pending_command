@@ -11,6 +11,9 @@
                  "command": {
                     "type": "keyword"
                 },
+                 "priority": {
+                     "type": "integer"
+                 },
                  "timestamp": {
                     "type": "long"
                 }

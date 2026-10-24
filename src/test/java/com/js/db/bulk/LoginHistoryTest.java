@@ -33,7 +33,7 @@ import com.jn.utils.JnDeleteKeysFromCache;
 import com.jn.utils.JnGroupers;
 import com.js.business.login.JsBusinessExecuteLogin;
 import com.js.business.login.JsBusinessExecuteLogout;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 import com.js.entities.JsEntityLoginSessionValidation;
 
 /**
@@ -72,16 +72,16 @@ public class LoginHistoryTest {
 		return new CcpStringDecorator(text).hash().asString(CcpHashAlgorithm.SHA1);
 	}
 
-	/** The parent id of the group of the e-mail: the id in {@code js_login_email} of the e-mail already transformed. */
+	/** The parent id of the group of the e-mail: the id in {@code jn_login_email} of the e-mail already transformed. */
 	private String parentId() {
 		String emailHash = sha1(this.testVariables.VALID_EMAIL);
-		CcpJsonRepresentation parentJson = CcpOtherConstants.EMPTY_JSON.put(JsEntityLoginEmail.Fields.email, emailHash);
-		String parentId = JsEntityLoginEmail.ENTITY.calculateId(parentJson);
+		CcpJsonRepresentation parentJson = CcpOtherConstants.EMPTY_JSON.put(JnEntityLoginEmail.Fields.email, emailHash);
+		String parentId = JnEntityLoginEmail.ENTITY.calculateId(parentJson);
 		return parentId;
 	}
 
 	private String parentName() {
-		return JsEntityLoginEmail.ENTITY.getEntityMetaData().entityName;
+		return JnEntityLoginEmail.ENTITY.getEntityMetaData().entityName;
 	}
 
 	private String childName() {

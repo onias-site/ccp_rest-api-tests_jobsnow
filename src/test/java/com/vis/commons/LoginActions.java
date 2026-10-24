@@ -16,7 +16,7 @@ import com.ccp.flow.CcpErrorFlowDisturb;
 import com.jn.business.messages.JnMessages.JnNotifyUserAboutLoginToken;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.js.entities.JsEntityLoginAnswers;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 import com.js.entities.JsEntityLoginPassword;
 import com.js.entities.JsEntityLoginSessionConflict;
 import com.js.entities.JsEntityLoginSessionValidation;
@@ -30,7 +30,7 @@ public enum LoginActions implements CcpBusiness {
 	SavePassword(JsEntityLoginPassword.ENTITY),
 	ExecuteLogout(JsEntityLoginSessionValidation.ENTITY.getTwinEntity()),
 	CreateLoginToken(JsEntityLoginToken.ENTITY, JnEntityEmailMessageSent.ENTITY),
-	CreateLoginEmail(JsEntityLoginEmail.ENTITY),
+	CreateLoginEmail(JnEntityLoginEmail.ENTITY),
 	renameTokenField{
 		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
 			CcpJsonRepresentation jsonWithRenamedToken = json.renameField(JsonFieldNames.sessionToken, JsonFieldNames.token);

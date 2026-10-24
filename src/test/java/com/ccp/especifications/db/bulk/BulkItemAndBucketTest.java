@@ -20,7 +20,7 @@ import com.ccp.especifications.file.bucket.CcpFileBucketOperation;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.jn.entities.JnEntitySupportPendingCommand;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 
 /**
  * Proves the identity and the text form of a {@link CcpBulkItem}, and the bucket operations of
@@ -40,7 +40,7 @@ public class BulkItemAndBucketTest {
 		CcpBulkItem create = new CcpBulkItem(this.json, CcpBulkEntityOperationType.create, JnEntitySupportPendingCommand.ENTITY, "1");
 		CcpBulkItem delete = new CcpBulkItem(create, CcpBulkEntityOperationType.delete);
 		CcpBulkItem otherId = new CcpBulkItem(this.json, CcpBulkEntityOperationType.create, JnEntitySupportPendingCommand.ENTITY, "2");
-		CcpBulkItem otherEntity = new CcpBulkItem(this.json, CcpBulkEntityOperationType.create, JsEntityLoginEmail.ENTITY, "1");
+		CcpBulkItem otherEntity = new CcpBulkItem(this.json, CcpBulkEntityOperationType.create, JnEntityLoginEmail.ENTITY, "1");
 
 		assertEquals(create, delete);
 		assertEquals(create.hashCode(), delete.hashCode());

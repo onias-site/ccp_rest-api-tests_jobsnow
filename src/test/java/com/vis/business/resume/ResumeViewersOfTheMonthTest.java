@@ -228,6 +228,34 @@ public class ResumeViewersOfTheMonthTest {
 	}
 
 	@Test
+	public void theNonProfessionalDomainsCountAsASingleFreelancer() {
+		this.saveResume();
+		this.saveView(this.recruiter("autonomo", "gmail.com"));
+		this.saveView(this.recruiter("consultor", "Hotmail.com"));
+		this.saveView(this.recruiter("avulso", "yahoo.com.br"));
+		this.saveView(this.recruiter("rh", "empresa.com.br"));
+
+		List<CcpJsonRepresentation> viewers = this.viewersOfTheCurrentMonth();
+
+		assertEquals(2, viewers.size());
+		assertViewer(viewers.get(0), "freelancer", 3);
+		assertViewer(viewers.get(1), "empresa.com.br", 1);
+	}
+
+	@Test
+	public void theLaterViewsOfTheSameFreelancerInTheMonthDoNotCount() {
+		this.saveResume();
+		String recruiter = this.recruiter("autonomo", "gmail.com");
+		this.saveView(recruiter);
+		this.saveView(recruiter);
+
+		List<CcpJsonRepresentation> viewers = this.viewersOfTheCurrentMonth();
+
+		assertEquals(1, viewers.size());
+		assertViewer(viewers.get(0), "freelancer", 1);
+	}
+
+	@Test
 	public void recruitersOfTheSameDomainViewingAtTheSameMomentAllCount() throws Exception {
 		this.saveResume();
 		CountDownLatch start = new CountDownLatch(1);

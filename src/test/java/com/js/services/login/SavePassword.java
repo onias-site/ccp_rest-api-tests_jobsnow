@@ -10,7 +10,7 @@ import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.js.entities.JsEntityLoginAnswers;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 import com.js.entities.JsEntityLoginPassword;
 import com.js.entities.JsEntityLoginSessionConflict;
 import com.js.entities.JsEntityLoginToken;
@@ -44,9 +44,9 @@ public class SavePassword extends JsServiceLoginTestTemplate {
 	@Test
 	public void missingToken() {
 		TestVariables testVariables = new TestVariables();
-		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
-		JsEntityLoginEmail.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.delete(testVariables.REQUEST_TO_LOGIN);
 		CcpJsonRepresentation body = testVariables.REQUEST_TO_LOGIN
 				.put(JnJsonCommonsFields.password, TestVariables.CORRECT_PASSWORD)
 				.put(JsEntityLoginToken.Fields.token, "12345678");
@@ -133,14 +133,14 @@ public class SavePassword extends JsServiceLoginTestTemplate {
 	 * transformers — would refuse.
 	 */
 	private String getToken(TestVariables testVariables) {
-		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginToken.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		String token = testVariables.REQUEST_TO_LOGIN.getAsString(JnJsonCommonsFields.originalToken);
 		return token;
 	}
 
 	private String getTokenToValidateLogin(TestVariables testVariables) {
-		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		return "12345678";
 	}

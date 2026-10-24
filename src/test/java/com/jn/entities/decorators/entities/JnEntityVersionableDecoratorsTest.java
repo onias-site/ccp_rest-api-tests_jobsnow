@@ -19,7 +19,7 @@ public class JnEntityVersionableDecoratorsTest extends EntityDecoratorTestTempla
 		return this.com(JnJsonCommonsFields.timestamp, this.unique)
 				.put(JnJsonCommonsFields.operation, "create")
 				.put(JnJsonCommonsFields.date, "27/09/2026 10:00:00.000")
-				.put(JnJsonCommonsFields.entity, "js_login_email")
+				.put(JnJsonCommonsFields.entity, "jn_login_email")
 				.put(JnJsonCommonsFields.id, "{\"email\":\"" + this.unique + "\"}")
 				.put(JnJsonCommonsFields.json, this.com(JnJsonCommonsFields.email, this.email));
 	}

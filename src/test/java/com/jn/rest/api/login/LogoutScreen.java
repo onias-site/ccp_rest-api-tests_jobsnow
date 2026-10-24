@@ -19,7 +19,7 @@ import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.process.CcpProcessStatus;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 import com.js.entities.JsEntityLoginSessionValidation;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.rest.api.commons.JnTestTemplate;
@@ -45,7 +45,7 @@ public class LogoutScreen extends JnTestTemplate {
 	@Test
 	public void happyPath() {
 		TestVariables testVariables = new TestVariables();
-		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		// saves the raw json: the token is chosen here, and the transformer stores its hash. Saving the
 		// pre-transformed json (email hashed) was rejected by the validator.
 		String token = "12345678";
@@ -62,7 +62,7 @@ public class LogoutScreen extends JnTestTemplate {
 	@Test
 	public void happyPathWithJsonBody() throws IOException, InterruptedException {
 		TestVariables testVariables = new TestVariables();
-		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		String token = "12345678";
 		CcpJsonRepresentation sessionJson = testVariables.saveCurrentSession(token);
 

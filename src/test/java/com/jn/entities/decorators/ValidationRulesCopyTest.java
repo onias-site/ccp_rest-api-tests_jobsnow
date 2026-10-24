@@ -40,7 +40,7 @@ import com.jn.entities.JnEntityInstantMessengerTemplateMessage;
 import com.jn.entities.JnEntityJobsnowError;
 import com.jn.entities.JnEntityJobsnowWarning;
 import com.js.entities.JsEntityLoginAnswers;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 import com.js.entities.JsEntityLoginPassword;
 import com.js.entities.JsEntityLoginPasswordAttempts;
 import com.js.entities.JsEntityLoginSessionConflict;
@@ -76,7 +76,7 @@ public class ValidationRulesCopyTest {
 			JnEntityInstantMessengerBotLocked.class, JnEntityInstantMessengerMessageSent.class,
 			JnEntityInstantMessengerParametersToSend.class, JnEntityInstantMessengerTemplateMessage.class,
 			JnEntityJobsnowError.class, JnEntityJobsnowWarning.class,
-			JsEntityLoginAnswers.class, JsEntityLoginEmail.class, JsEntityLoginPassword.class, JsEntityLoginPasswordAttempts.class,
+			JsEntityLoginAnswers.class, JnEntityLoginEmail.class, JsEntityLoginPassword.class, JsEntityLoginPasswordAttempts.class,
 			JsEntityLoginSessionConflict.class, JsEntityLoginSessionTokenAttempts.class, JsEntityLoginSessionValidation.class,
 			JsEntityLoginToken.class, JsEntityLoginTokenAttempts.class,
 			JsEntityLoginTokenRequestResend.class, JsEntityLoginTokenRequestUnlock.class, JnEntityMessageDidNotSent.class,

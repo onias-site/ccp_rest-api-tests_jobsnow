@@ -1,5 +1,6 @@
 package com.jb.business.bots.engine;
 
+import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -80,6 +81,11 @@ public class DefaultBotCommandsTest {
 		for (CcpEntityConfigurator configurator : configurators) {
 			List<CcpBulkItem> records = configurator.getFirstRecordsToInsert();
 			for (CcpBulkItem record : records) {
+				// the subscribers of a write event are appended by a script, not written as a record
+				boolean scripted = record.operation != CcpBulkEntityOperationType.create;
+				if(scripted) {
+					continue;
+				}
 				record.entity.save(record.json);
 			}
 		}
@@ -138,8 +144,8 @@ public class DefaultBotCommandsTest {
 		String answer = this.answerTo("/showAllCommands");
 
 		// the configured commands come in the alphabetical order of their canonical names (since 2026-10-15 they are found
-		// by botName, seeded by jb and vis), then the default ones
-		assertEquals("/permitirComandoAoUsuario, /ajustarHierarquiaDeHabilidades, /listarUsuariosIgnorados, /ticketsPendentes, "
+		// by botName, seeded by jb, vis and js), then the default ones
+		assertEquals("/permitirComandoAoUsuario, /responderFaleConosco, /ajustarHierarquiaDeHabilidades, /listarFaleConoscoIgnorados, /listarUsuariosIgnorados, /ticketsPendentes, "
 				+ "/avaliarSugestaoDeHabilidade, /solucionarTicketsDeTokenDeLogin, /idDoChat, /mostrarTodosOsComandos, /explicarEsteBot, /definirIdioma", answer);
 	}
 
@@ -163,7 +169,7 @@ public class DefaultBotCommandsTest {
 		assertEquals("Language set: English.", this.answerTo("/definirIdioma inglês"));
 
 		String commandsInEnglish = this.answerTo("/showAllCommands");
-		assertEquals("/allowCommandToUser, /fixSkillHierarchy, /ignoredUsers, /pendingTickets, "
+		assertEquals("/allowCommandToUser, /answerContactUs, /fixSkillHierarchy, /ignoredContactUs, /ignoredUsers, /pendingTickets, "
 				+ "/reviewSkillSuggestion, /solveLoginTokenTicket, /chatId, /showAllCommands, /explainThisBot, /setLanguage", commandsInEnglish);
 		assertTrue(this.answerTo("/explainThisBot").startsWith("Bot of administrative routines"));
 

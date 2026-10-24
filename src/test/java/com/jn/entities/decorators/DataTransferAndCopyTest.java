@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 import com.js.entities.JsEntityLoginSessionConflict;
 import com.jn.entities.JnEntityVersionable;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
@@ -23,7 +23,7 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 public class DataTransferAndCopyTest extends EntityDecoratorTestTemplate {
 
 	protected CcpEntity entityUnderTest() {
-		return JsEntityLoginEmail.ENTITY;
+		return JnEntityLoginEmail.ENTITY;
 	}
 
 	protected CcpJsonRepresentation validRecord() {
@@ -32,7 +32,7 @@ public class DataTransferAndCopyTest extends EntityDecoratorTestTemplate {
 
 	@Test
 	public void transferThroughInnerLayer() {
-		CcpEntity source = JsEntityLoginEmail.ENTITY;
+		CcpEntity source = JnEntityLoginEmail.ENTITY;
 		CcpEntity target = JsEntityLoginSessionConflict.ENTITY;
 		CcpJsonRepresentation record = this.validRecord();
 
@@ -46,7 +46,7 @@ public class DataTransferAndCopyTest extends EntityDecoratorTestTemplate {
 
 	@Test
 	public void copyThroughInnerLayer() {
-		CcpEntity source = JsEntityLoginEmail.ENTITY;
+		CcpEntity source = JnEntityLoginEmail.ENTITY;
 		CcpEntity target = JsEntityLoginSessionConflict.ENTITY;
 		CcpJsonRepresentation record = this.validRecord();
 
@@ -61,7 +61,7 @@ public class DataTransferAndCopyTest extends EntityDecoratorTestTemplate {
 	@Test
 	public void transferThroughDefaultDelegator() {
 		CcpEntity source = JsEntityLoginSessionConflict.ENTITY;
-		CcpEntity target = JsEntityLoginEmail.ENTITY;
+		CcpEntity target = JnEntityLoginEmail.ENTITY;
 		CcpJsonRepresentation record = this.validRecord();
 
 		source.save(record);
@@ -92,7 +92,7 @@ public class DataTransferAndCopyTest extends EntityDecoratorTestTemplate {
 
 	@Test
 	public void missingSourceCreatesNothingInTarget() {
-		CcpEntity source = JsEntityLoginEmail.ENTITY;
+		CcpEntity source = JnEntityLoginEmail.ENTITY;
 		CcpEntity target = JsEntityLoginSessionConflict.ENTITY;
 		CcpJsonRepresentation record = this.validRecord();
 
@@ -109,13 +109,13 @@ public class DataTransferAndCopyTest extends EntityDecoratorTestTemplate {
 		CcpJsonRepresentation record = this.com(JnJsonCommonsFields.timestamp, this.unique)
 				.put(JnJsonCommonsFields.operation, "create")
 				.put(JnJsonCommonsFields.date, "27/09/2026 10:00:00.000")
-				.put(JnJsonCommonsFields.entity, "js_login_email")
+				.put(JnJsonCommonsFields.entity, "jn_login_email")
 				.put(JnJsonCommonsFields.id, "{\"email\":\"" + this.unique + "\"}")
 				.put(JnJsonCommonsFields.json, this.com(JnJsonCommonsFields.email, this.email).asUgglyJson());
 		String id = source.calculateId(source.getHandledJson(record));
 		ElasticsearchLocal.save("jn_versionable", id, record);
 
-		boolean transferred = source.transferDataTo(record, JsEntityLoginEmail.ENTITY);
+		boolean transferred = source.transferDataTo(record, JnEntityLoginEmail.ENTITY);
 
 		assertFalse("read-only entity transferred", transferred);
 		assertTrue("read-only entity lost the record", source.exists(record));

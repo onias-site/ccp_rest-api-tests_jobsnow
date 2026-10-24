@@ -1,6 +1,9 @@
 package com.jb.business.bots.engine;
 
-import com.vis.business.bots.VisCommandNamesInPortuguese;
+import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
+import com.jn.json.fields.validation.JnTicketQuotaGroups;
+import com.jn.entities.JnEntityTicketDailyLimit;
+import com.jn.business.bots.JnCommandNamesInPortuguese;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -49,7 +52,7 @@ import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityInstantMessengerMessageSent;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
-import com.vis.entities.VisEntityCommandNotAllowedToUser;
+import com.jn.entities.JnEntityCommandNotAllowedToUser;
 import com.vis.entities.VisEntityGroupPositionsBySkills;
 import com.vis.entities.VisEntitySkill;
 import com.vis.entities.VisEntitySkillApproved;
@@ -58,12 +61,11 @@ import com.vis.entities.VisEntitySkillFixHierarchyPending;
 import com.vis.entities.VisEntitySkillPending;
 import com.vis.entities.VisEntitySkillRejected;
 import com.vis.entities.VisEntitySkillReviewed;
-import com.vis.entities.VisEntitySkillSuggestionDailyLimit;
 import com.vis.entities.VisEntitySkillSynonym;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.json.fields.validation.VisSkillFixHierarchyTypes;
-import com.vis.json.fields.validation.VisUserRequestCommands;
+import com.jn.json.fields.validation.JnUserRequestCommands;
 import com.vis.messages.VisMessages;
 import com.vis.services.VisServiceSkillFixHierarchy;
 import com.vis.services.VisServiceSkillSuggestion;
@@ -135,6 +137,11 @@ public class SkillSuggestionThroughSupportBotTest {
 		for (CcpEntityConfigurator configurator : configurators) {
 			List<CcpBulkItem> records = configurator.getFirstRecordsToInsert();
 			for (CcpBulkItem record : records) {
+				// the subscribers of a write event are appended by a script, not written as a record
+				boolean scripted = record.operation != CcpBulkEntityOperationType.create;
+				if(scripted) {
+					continue;
+				}
 				record.entity.save(record.json);
 			}
 		}
@@ -376,9 +383,9 @@ public class SkillSuggestionThroughSupportBotTest {
 		assertFalse(this.anyEmailSentTo(IGNORED_USER, VisMessages.VisNotifyUserAboutRejectedSkill.class));
 
 		// the email of the record is a hash; the readable one is in the description, for /ignoredUsers to list it
-		CcpJsonRepresentation ignoredUserKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityCommandNotAllowedToUser.Fields.email, IGNORED_USER);
-		CcpJsonRepresentation ignoredUser = VisEntityCommandNotAllowedToUser.ENTITY.getOneById(ignoredUserKey);
-		CcpJsonRepresentation ignoredUserDescription = ignoredUser.getInnerJson(VisEntityCommandNotAllowedToUser.Fields.description);
+		CcpJsonRepresentation ignoredUserKey = CcpOtherConstants.EMPTY_JSON.put(JnEntityCommandNotAllowedToUser.Fields.email, IGNORED_USER);
+		CcpJsonRepresentation ignoredUser = JnEntityCommandNotAllowedToUser.ENTITY.getOneById(ignoredUserKey);
+		CcpJsonRepresentation ignoredUserDescription = ignoredUser.getInnerJson(JnEntityCommandNotAllowedToUser.Fields.description);
 		assertEquals(IGNORED_USER, ignoredUserDescription.getAsString(JnJsonCommonsFields.email));
 		assertEquals(skill, ignoredUserDescription.getAsString(VisEntitySkillPending.Fields.skill));
 
@@ -399,7 +406,7 @@ public class SkillSuggestionThroughSupportBotTest {
 
 		String notAllowed = this.operatorTypes("/reviewSkillSuggestion " + IGNORED_USER + " " + skill);
 		// the bot names the command in the operator's language (Portuguese by default); the canonical name still works
-		String allowCommandInPortuguese = VisCommandNamesInPortuguese.allowCommandToUser.getValue();
+		String allowCommandInPortuguese = JnCommandNamesInPortuguese.allowCommandToUser.getValue();
 		assertTrue(notAllowed, notAllowed.contains("/" + allowCommandInPortuguese + " " + IGNORED_USER));
 
 		this.operatorTypes("/allowCommandToUser " + IGNORED_USER);
@@ -712,8 +719,8 @@ public class SkillSuggestionThroughSupportBotTest {
 
 
 	private void forgetTodaysSuggestion(String email) {
-		CcpJsonRepresentation dailyLimit = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillSuggestionDailyLimit.Fields.email, email);
-		VisEntitySkillSuggestionDailyLimit.ENTITY.delete(dailyLimit);
+		CcpJsonRepresentation dailyLimit = JnEntityTicketDailyLimit.getKey(email, JnTicketQuotaGroups.sharedTickets);
+		JnEntityTicketDailyLimit.ENTITY.delete(dailyLimit);
 	}
 
 	private static final String DAILY_LIMIT_USER = "limite.diario.sugestao@teste.com";
@@ -733,8 +740,8 @@ public class SkillSuggestionThroughSupportBotTest {
 		CcpJsonRepresentation secondSuggestion = this.clearSuggestion(DAILY_LIMIT_USER, secondSkill, "Segunda sugestão do dia");
 
 		VisServiceSkillSuggestion.SuggestSkill.execute(firstSuggestion);
-		CcpJsonRepresentation dailyLimit = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillSuggestionDailyLimit.Fields.email, DAILY_LIMIT_USER);
-		assertTrue(VisEntitySkillSuggestionDailyLimit.ENTITY.exists(dailyLimit));
+		CcpJsonRepresentation dailyLimit = JnEntityTicketDailyLimit.getKey(DAILY_LIMIT_USER, JnTicketQuotaGroups.sharedTickets);
+		assertTrue(JnEntityTicketDailyLimit.ENTITY.exists(dailyLimit));
 
 		CcpProcessStatus repeated = this.statusOf(() -> VisServiceSkillSuggestion.SuggestSkill.execute(firstSuggestion));
 		assertEquals(CcpProcessStatusDefault.CONFLICT, repeated);
@@ -863,9 +870,9 @@ public class SkillSuggestionThroughSupportBotTest {
 
 	private void allowCandidate(String email) {
 		CcpJsonRepresentation ignoredUser = CcpOtherConstants.EMPTY_JSON
-				.put(VisEntityCommandNotAllowedToUser.Fields.email, email)
-				.put(VisEntityCommandNotAllowedToUser.Fields.commandName, VisUserRequestCommands.reviewSkillSuggestion);
-		VisEntityCommandNotAllowedToUser.ENTITY.delete(ignoredUser);
+				.put(JnEntityCommandNotAllowedToUser.Fields.email, email)
+				.put(JnEntityCommandNotAllowedToUser.Fields.commandName, JnUserRequestCommands.reviewSkillSuggestion);
+		JnEntityCommandNotAllowedToUser.ENTITY.delete(ignoredUser);
 	}
 
 	private void deleteSkill(String skill) {

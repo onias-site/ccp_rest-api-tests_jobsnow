@@ -61,7 +61,7 @@ public class JnGroupersChildItemsTest {
 
 	@Test
 	public void theRemovalNeverCreatesTheGroup() {
-		JnGroupersRemoveChildItem removal = new JnGroupersRemoveChildItem(JnEntityGrouper.ENTITY, "resumeByHash", "vis_resume", this.childIdParams);
+		JnGroupersRemoveChildItem removal = new JnGroupersRemoveChildItem(JnEntityGrouper.ENTITY, "resumeByHash", "vis_resume", JnGroupers.Scripts.removeChild, this.childIdParams);
 
 		CcpBulkItem item = removal.apply(PARENT_ID);
 

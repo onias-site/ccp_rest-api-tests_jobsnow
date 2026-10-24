@@ -17,9 +17,7 @@ public class VisCommandNamesInPortugueseTest {
 	public void eachCommandHasItsPortugueseName() {
 		Map<VisCommandNamesInPortuguese, String> expected = new LinkedHashMap<>();
 		expected.put(VisCommandNamesInPortuguese.fixSkillHierarchy, "ajustarHierarquiaDeHabilidades");
-		expected.put(VisCommandNamesInPortuguese.allowCommandToUser, "permitirComandoAoUsuario");
 		expected.put(VisCommandNamesInPortuguese.reviewSkillSuggestion, "avaliarSugestaoDeHabilidade");
-		expected.put(VisCommandNamesInPortuguese.ignoredUsers, "listarUsuariosIgnorados");
 
 		Map<VisCommandNamesInPortuguese, String> actual = new LinkedHashMap<>();
 		for (VisCommandNamesInPortuguese command : VisCommandNamesInPortuguese.values()) {

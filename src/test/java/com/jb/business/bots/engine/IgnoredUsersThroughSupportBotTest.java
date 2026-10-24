@@ -1,5 +1,6 @@
 package com.jb.business.bots.engine;
 
+import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -39,9 +40,9 @@ import com.jb.entities.JbEntityBotCommandStepSession;
 import com.ccp.especifications.db.utils.entity.decorators.ElasticsearchLocal;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
-import com.vis.entities.VisEntityCommandNotAllowedToUser;
+import com.jn.entities.JnEntityCommandNotAllowedToUser;
 import com.vis.entities.VisEntitySkillPending;
-import com.vis.json.fields.validation.VisUserRequestCommands;
+import com.jn.json.fields.validation.JnUserRequestCommands;
 
 /**
  * Exercises the {@code /ignoredUsers} command ({@code /listarUsuariosIgnorados}), which goes through the users ignored
@@ -91,6 +92,11 @@ public class IgnoredUsersThroughSupportBotTest {
 		for (CcpEntityConfigurator configurator : configurators) {
 			List<CcpBulkItem> records = configurator.getFirstRecordsToInsert();
 			for (CcpBulkItem record : records) {
+				// the subscribers of a write event are appended by a script, not written as a record
+				boolean scripted = record.operation != CcpBulkEntityOperationType.create;
+				if(scripted) {
+					continue;
+				}
 				record.entity.save(record.json);
 			}
 		}
@@ -101,7 +107,7 @@ public class IgnoredUsersThroughSupportBotTest {
 		this.clearTheBotSession();
 		this.ignore(FIRST_USER, "TESTE IGNORADO A");
 		this.ignore(SECOND_USER, "TESTE IGNORADO B");
-		ElasticsearchLocal.refresh("vis_command_not_allowed_to_user");
+		ElasticsearchLocal.refresh("jn_command_not_allowed_to_user");
 		TELEGRAM.sentMessages.clear();
 	}
 
@@ -109,10 +115,10 @@ public class IgnoredUsersThroughSupportBotTest {
 	public void allowTheUsers() {
 		this.clearTheBotSession();
 		for (String email : Arrays.asList(FIRST_USER, SECOND_USER)) {
-			CcpJsonRepresentation ignoredUser = CcpOtherConstants.EMPTY_JSON.put(VisEntityCommandNotAllowedToUser.Fields.email, email);
-			VisEntityCommandNotAllowedToUser.ENTITY.delete(ignoredUser);
+			CcpJsonRepresentation ignoredUser = CcpOtherConstants.EMPTY_JSON.put(JnEntityCommandNotAllowedToUser.Fields.email, email);
+			JnEntityCommandNotAllowedToUser.ENTITY.delete(ignoredUser);
 		}
-		ElasticsearchLocal.refresh("vis_command_not_allowed_to_user");
+		ElasticsearchLocal.refresh("jn_command_not_allowed_to_user");
 	}
 
 	/**
@@ -139,9 +145,9 @@ public class IgnoredUsersThroughSupportBotTest {
 		List<String> replies = this.allMessages();
 		assertTrue(replies.toString(), replies.contains("Voltando a atender o usuário " + FIRST_USER));
 		assertTrue(replies.toString(), replies.stream().anyMatch(reply -> reply.startsWith("O usuário " + FIRST_USER + " não é mais ignorado pelo suporte")));
-		CcpJsonRepresentation firstUser = CcpOtherConstants.EMPTY_JSON.put(VisEntityCommandNotAllowedToUser.Fields.email, FIRST_USER);
-		assertFalse(VisEntityCommandNotAllowedToUser.ENTITY.exists(firstUser));
-		assertTrue(VisEntityCommandNotAllowedToUser.ENTITY.getTwinEntity().exists(firstUser));
+		CcpJsonRepresentation firstUser = CcpOtherConstants.EMPTY_JSON.put(JnEntityCommandNotAllowedToUser.Fields.email, FIRST_USER);
+		assertFalse(JnEntityCommandNotAllowedToUser.ENTITY.exists(firstUser));
+		assertTrue(JnEntityCommandNotAllowedToUser.ENTITY.getTwinEntity().exists(firstUser));
 
 		// the list is shown again, and the user just allowed is no longer in it
 		String listAgain = this.lastMessage();
@@ -195,13 +201,15 @@ public class IgnoredUsersThroughSupportBotTest {
 	private void ignore(String email, String skill) {
 		CcpJsonRepresentation description = CcpOtherConstants.EMPTY_JSON
 				.put(VisEntitySkillPending.Fields.skill, skill)
+				// what the list shows as the request, since 2026-10-23
+				.put(JnJsonCommonsFields.request, skill)
 				.put(VisEntitySkillPending.Fields.description, "Pedido que levou o operador a ignorar o usuário")
 				.put(JnJsonCommonsFields.email, email);
 		CcpJsonRepresentation ignoredUser = CcpOtherConstants.EMPTY_JSON
-				.put(VisEntityCommandNotAllowedToUser.Fields.email, email)
-				.put(VisEntityCommandNotAllowedToUser.Fields.commandName, VisUserRequestCommands.reviewSkillSuggestion)
-				.put(VisEntityCommandNotAllowedToUser.Fields.description, description);
-		VisEntityCommandNotAllowedToUser.ENTITY.save(ignoredUser);
+				.put(JnEntityCommandNotAllowedToUser.Fields.email, email)
+				.put(JnEntityCommandNotAllowedToUser.Fields.commandName, JnUserRequestCommands.reviewSkillSuggestion)
+				.put(JnEntityCommandNotAllowedToUser.Fields.description, description);
+		JnEntityCommandNotAllowedToUser.ENTITY.save(ignoredUser);
 	}
 
 	private void clearTheBotSession() {

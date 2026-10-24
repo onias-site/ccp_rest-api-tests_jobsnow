@@ -15,7 +15,7 @@ import com.js.services.JsServiceLogin;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.process.CcpProcessStatusDefault;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 import com.js.entities.JsEntityLoginPassword;
 import com.js.entities.JsEntityLoginSessionConflict;
 import com.js.entities.JsEntityLoginToken;
@@ -49,7 +49,7 @@ public class ExecuteLogin extends JsServiceLoginTestTemplate {
 	@Test
 	public void missingPasswordRegistration() {
 		TestVariables testVariables = new TestVariables();
-		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		com.js.entities.JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
 		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JsProcessStatusExecuteLogin.missingSavePassword);
 	}
@@ -57,7 +57,7 @@ public class ExecuteLogin extends JsServiceLoginTestTemplate {
 	@Test
 	public void lockedPassword() {
 		TestVariables testVariables = new TestVariables();
-		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		CcpEntity mirrorEntity = JsEntityLoginPassword.ENTITY.getTwinEntity();
 		mirrorEntity.save(testVariables.REQUEST_TO_LOGIN);
 		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JsProcessStatusExecuteLogin.lockedPassword);
@@ -66,7 +66,7 @@ public class ExecuteLogin extends JsServiceLoginTestTemplate {
 	@Test
 	public void userAlreadyLoggedIn() {
 		TestVariables testVariables = new TestVariables();
-		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		executeLogin(testVariables, TestVariables.CORRECT_PASSWORD, JsProcessStatusExecuteLogin.loginConflict);
 	}
@@ -78,7 +78,7 @@ public class ExecuteLogin extends JsServiceLoginTestTemplate {
 	@Test
 	public void refusedLoginDoesNotAnswerASessionToken() {
 		TestVariables testVariables = new TestVariables();
-		JsEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		CcpJsonRepresentation request = CcpOtherConstants.EMPTY_JSON
 				.put(JnJsonCommonsFields.email, testVariables.VALID_EMAIL)

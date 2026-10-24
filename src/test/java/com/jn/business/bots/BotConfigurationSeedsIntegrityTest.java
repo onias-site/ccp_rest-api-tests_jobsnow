@@ -32,10 +32,10 @@ import com.jn.messages.JnSystemMessage;
 import com.jn.utils.JnLanguage;
 import com.vis.business.bots.VisCommandNamesInPortuguese;
 import com.vis.business.bots.VisSupportBotCommands;
-import com.vis.business.bots.ignored.users.VisSupportIgnoredUsersMessages;
+import com.jn.business.bots.ignored.users.JnSupportIgnoredUsersMessages;
 import com.vis.business.bots.skill.hierarchy.VisSupportSkillFixHierarchyMessages;
 import com.vis.business.bots.skill.suggestion.VisSupportSkillSuggestionMessages;
-import com.vis.entities.VisEntityCommandNotAllowedToUser;
+import com.jn.entities.JnEntityCommandNotAllowedToUser;
 import com.vis.entities.VisEntitySkillFixHierarchyPending;
 import com.vis.entities.VisEntitySkillPending;
 
@@ -64,7 +64,7 @@ public class BotConfigurationSeedsIntegrityTest {
 		seeds.addAll(JbEntityBot.INSTANCE.getFirstRecordsToInsert());
 		seeds.addAll(VisEntitySkillPending.INSTANCE.getFirstRecordsToInsert());
 		seeds.addAll(VisEntitySkillFixHierarchyPending.INSTANCE.getFirstRecordsToInsert());
-		seeds.addAll(VisEntityCommandNotAllowedToUser.INSTANCE.getFirstRecordsToInsert());
+		seeds.addAll(JnEntityCommandNotAllowedToUser.INSTANCE.getFirstRecordsToInsert());
 		return seeds;
 	}
 
@@ -147,7 +147,7 @@ public class BotConfigurationSeedsIntegrityTest {
 		List<JnSystemMessage> texts = new ArrayList<>();
 		texts.addAll(java.util.Arrays.asList(VisSupportSkillSuggestionMessages.values()));
 		texts.addAll(java.util.Arrays.asList(VisSupportSkillFixHierarchyMessages.values()));
-		texts.addAll(java.util.Arrays.asList(VisSupportIgnoredUsersMessages.values()));
+		texts.addAll(java.util.Arrays.asList(JnSupportIgnoredUsersMessages.values()));
 		for (JnSystemMessage text : texts) {
 			String name = text.getSystemMessageName();
 			assertTrue(name + " in Portuguese", seededTexts.contains(name + "/" + JnLanguage.portuguese.name()));

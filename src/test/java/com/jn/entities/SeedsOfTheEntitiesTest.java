@@ -1,5 +1,7 @@
 package com.jn.entities;
 
+import com.js.entities.JsEntityContactUs;
+import com.jn.entities.JnEntityWriteEventSubscribers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -26,7 +28,7 @@ import com.jn.utils.JnLanguage;
 import com.js.business.login.JsBusinessValidateLogin;
 import com.js.entities.JsEntityLoginSessionValidation;
 import com.js.entities.JsEntityLoginTokenRequestUnlock;
-import com.vis.entities.VisEntityCommandNotAllowedToUser;
+import com.jn.entities.JnEntityCommandNotAllowedToUser;
 import com.vis.entities.VisEntitySkillFixHierarchyPending;
 import com.vis.entities.VisEntitySkillPending;
 
@@ -48,6 +50,12 @@ public class SeedsOfTheEntitiesTest {
 		List<CcpBulkItem> seeds = configurator.getFirstRecordsToInsert();
 		assertFalse(configurator.getClass().getSimpleName(), seeds.isEmpty());
 		for (CcpBulkItem seed : seeds) {
+			// the only seed that is not a create is the one that appends a subscriber to a write event
+			boolean scripted = seed.operation != CcpBulkEntityOperationType.create;
+			if(scripted) {
+				assertEquals(JnEntityWriteEventSubscribers.ENTITY.getEntityMetaData().entityName, seed.entity.getEntityMetaData().entityName);
+				continue;
+			}
 			assertEquals(CcpBulkEntityOperationType.create, seed.operation);
 		}
 		return seeds;
@@ -141,13 +149,16 @@ public class SeedsOfTheEntitiesTest {
 		List<String> jbCommands = this.commandsSeededBy(JbEntityBot.INSTANCE);
 		assertEquals(Arrays.asList("pendingTickets"), jbCommands);
 
-		List<String> jsCommands = this.commandsSeededBy(JsEntityLoginTokenRequestUnlock.INSTANCE);
-		assertEquals(Arrays.asList("solveLoginTokenTicket"), jsCommands);
+		List<String> jsCommands = new java.util.ArrayList<>();
+		jsCommands.addAll(this.commandsSeededBy(JsEntityLoginTokenRequestUnlock.INSTANCE));
+		jsCommands.addAll(this.commandsSeededBy(JsEntityContactUs.INSTANCE));
+		jsCommands.sort(null);
+		assertEquals(Arrays.asList("answerContactUs", "ignoredContactUs", "solveLoginTokenTicket"), jsCommands);
 
 		List<String> visCommands = new java.util.ArrayList<>();
 		visCommands.addAll(this.commandsSeededBy(VisEntitySkillPending.INSTANCE));
 		visCommands.addAll(this.commandsSeededBy(VisEntitySkillFixHierarchyPending.INSTANCE));
-		visCommands.addAll(this.commandsSeededBy(VisEntityCommandNotAllowedToUser.INSTANCE));
+		visCommands.addAll(this.commandsSeededBy(JnEntityCommandNotAllowedToUser.INSTANCE));
 		visCommands.sort(null);
 		assertEquals(Arrays.asList("allowCommandToUser", "fixSkillHierarchy", "ignoredUsers", "reviewSkillSuggestion"), visCommands);
 	}

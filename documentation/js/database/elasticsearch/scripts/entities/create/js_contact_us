@@ -1,0 +1,29 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"date": {
+				"type": "keyword"
+			},
+			"description": {
+				"type": "text"
+			},
+			"email": {
+				"type": "keyword"
+			},
+			"stackTrace": {
+				"type": "text",
+				"index": false
+			},
+			"supportResponse": {
+				"type": "text"
+			},
+			"title": {
+				"type": "text"
+			},
+			"type": {
+				"type": "keyword"
+			}
+		}
+	}
+}

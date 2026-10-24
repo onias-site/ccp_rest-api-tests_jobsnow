@@ -16,7 +16,7 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.js.entities.JsEntityLoginEmail;
+import com.jn.entities.JnEntityLoginEmail;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnLanguage;
 import com.jn.utils.JnSystemProperties;
@@ -48,7 +48,7 @@ public class ResetLanguageTest {
 
 	@After
 	public void deleteTheLoginEmail() {
-		JsEntityLoginEmail.ENTITY.delete(this.loginEmail);
+		JnEntityLoginEmail.ENTITY.delete(this.loginEmail);
 	}
 
 	private String languageOfTheReset() {
@@ -59,14 +59,14 @@ public class ResetLanguageTest {
 
 	@Test
 	public void theResetAnswersTheLanguageRecordedForTheUser() {
-		JsEntityLoginEmail.ENTITY.save(this.loginEmail.put(JnJsonCommonsFields.language, JnLanguage.english.name()));
+		JnEntityLoginEmail.ENTITY.save(this.loginEmail.put(JnJsonCommonsFields.language, JnLanguage.english.name()));
 
 		assertEquals(JnLanguage.english.name(), this.languageOfTheReset());
 	}
 
 	@Test
 	public void aLoginEmailWithoutLanguageFallsBackToTheLanguageOfTheSystem() {
-		JsEntityLoginEmail.ENTITY.save(this.loginEmail);
+		JnEntityLoginEmail.ENTITY.save(this.loginEmail);
 
 		assertEquals(JnSystemProperties.INSTANCE.supportLanguage(), this.languageOfTheReset());
 	}
