@@ -8,7 +8,7 @@ import com.ccp.aop.CcpNullParameterException;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
-import com.vis.entities.VisEntityGroupPositionsBySkills;
+import com.vis.business.skill.VisSkillWordsByInitials;
 import com.vis.json.transformers.VisJsonTransformerPutEmailHashAndDomainRecruiter;
 
 /**
@@ -26,7 +26,7 @@ public class VisRemainingAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void getWordStatusNullTest() {
-		VisEntityGroupPositionsBySkills.getWordStatus(null);
+		VisSkillWordsByInitials.getWordStatus(null);
 	}
 
 	// ── json/transformers ─────────────────────────────────────────────────────

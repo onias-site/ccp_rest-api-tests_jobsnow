@@ -5,10 +5,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.lang.reflect.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 
@@ -16,6 +19,10 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
+import com.ccp.dependency.injection.CcpInstanceProvider;
+import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
+import com.ccp.especifications.db.bulk.CcpBulkItem;
+import com.ccp.especifications.db.query.CcpQueryExecutor;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
@@ -27,14 +34,19 @@ import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.jn.entities.JnEntityGrouper;
+import com.jn.utils.JnGroupers;
 import com.vis.business.recruiter.VisBusinessLoadRecruitersFromHtmlFolder;
 import com.vis.business.recruiter.VisBusinessPrepareRecruiter;
+import com.vis.services.VisServiceCompany;
 
 /**
  * Proves the recruiters ({@code vis_recruiter}): the e-mail is kept as typed, the domain is the text after the
  * {@code @}, {@code professional} is false only for the non-professional domains of {@code jn_system_message}, and the
  * load of a folder of HTML files creates, with the source {@code telegram}, only the e-mails (without accents, in lower
- * case) that are neither in the entity nor in its twin.
+ * case) that are neither in the entity nor in its twin. Since 2026-10-27, also the groups of the first three letters of the
+ * domain in {@code jn_grouper} (a non-professional domain is in none), kept by the save, the delete, the seed and the
+ * folder load, and the search of companies that reads them.
  */
 public class RecruiterLoadsTest {
 
@@ -126,6 +138,9 @@ public class RecruiterLoadsTest {
 		assertEquals("telegram", created.getAsString(VisEntityRecruiter.Fields.source));
 		assertEquals("recrutadora.com.br", created.getAsString(VisEntityRecruiter.Fields.domain));
 		assertTrue(created.getAsBoolean(VisEntityRecruiter.Fields.professional));
+		// the bulk goes around the decorator, so the load itself puts the new recruiter in the group of its domain
+		String createdId = VisEntityRecruiter.ENTITY.calculateId(created);
+		assertTrue(this.recruitersInTheGroupOf(false, "recrutadora.com.br").contains(createdId));
 
 		CcpJsonRepresentation active = VisEntityRecruiter.ENTITY.getOneById(this.input(activeEmail, "telegram"));
 		assertEquals("legacy", active.getAsString(VisEntityRecruiter.Fields.source));
@@ -139,5 +154,105 @@ public class RecruiterLoadsTest {
 			VisEntityRecruiter.ENTITY.deleteAnyWhere(this.input(email, "telegram"));
 		}
 		twin.deleteAnyWhere(this.input(inactiveEmail, "telegram"));
+		assertFalse(this.recruitersInTheGroupOf(false, "recrutadora.com.br").contains(createdId));
+	}
+
+	@Test
+	public void theRecruiterFollowsTheGroupOfItsDomainWhenDeactivatedAndReactivated() {
+		String domain = "qzk" + this.now + ".com.br";
+		CcpJsonRepresentation recruiter = VisBusinessPrepareRecruiter.INSTANCE.execute(this.input("rh@" + domain, "login"));
+		String recruiterId = VisEntityRecruiter.ENTITY.calculateId(recruiter);
+		CcpEntity twin = VisEntityRecruiter.ENTITY.getTwinEntity();
+
+		VisEntityRecruiter.ENTITY.save(recruiter);
+		assertTrue(this.recruitersInTheGroupOf(false, domain).contains(recruiterId));
+		assertFalse(this.recruitersInTheGroupOf(true, domain).contains(recruiterId));
+
+		VisEntityRecruiter.ENTITY.delete(recruiter);
+		assertFalse(this.recruitersInTheGroupOf(false, domain).contains(recruiterId));
+		assertTrue(this.recruitersInTheGroupOf(true, domain).contains(recruiterId));
+
+		twin.delete(recruiter);
+		assertTrue(this.recruitersInTheGroupOf(false, domain).contains(recruiterId));
+		assertFalse(this.recruitersInTheGroupOf(true, domain).contains(recruiterId));
+
+		VisEntityRecruiter.ENTITY.deleteAnyWhere(recruiter);
+		assertFalse(this.recruitersInTheGroupOf(false, domain).contains(recruiterId));
+		assertFalse(this.recruitersInTheGroupOf(true, domain).contains(recruiterId));
+	}
+
+	@Test
+	public void aRecruiterOfANonProfessionalDomainIsInNoGroup() {
+		CcpJsonRepresentation recruiter = VisBusinessPrepareRecruiter.INSTANCE.execute(this.input("grupo" + this.now + "@gmail.com", "login"));
+		String recruiterId = VisEntityRecruiter.ENTITY.calculateId(recruiter);
+
+		VisEntityRecruiter.ENTITY.save(recruiter);
+		try {
+			assertFalse(this.recruitersInTheGroupOf(false, "gmail.com").contains(recruiterId));
+		} finally {
+			VisEntityRecruiter.ENTITY.deleteAnyWhere(recruiter);
+		}
+	}
+
+	@Test
+	public void theSeedPutsTheProfessionalRecruitersInTheGroupsOfTheirDomains() {
+		CcpQueryExecutor executor = (CcpQueryExecutor) Proxy.newProxyInstance(this.getClass().getClassLoader(),
+				new Class<?>[] { CcpQueryExecutor.class }, new LegacyRecruitersQueryHandler("ana@jobsnow.com", "bia@jobsbrasil.com.br", "caio@gmail.com", "davi@jobsnow.com"));
+		CcpInstanceProvider<CcpQueryExecutor> provider = () -> executor;
+		CcpDependencyInjection.loadAllDependencies(provider);
+		List<CcpBulkItem> seed;
+		try {
+			seed = VisEntityRecruiter.INSTANCE.getFirstRecordsToInsert();
+		} finally {
+			CcpDependencyInjection.loadAllDependencies(CcpElasticSearchQueryExecutor.INSTANCE);
+		}
+
+		String grouperName = JnEntityGrouper.ENTITY.getEntityMetaData().entityName;
+		List<CcpBulkItem> groups = seed.stream().filter(item -> grouperName.equals(item.entity.getEntityMetaData().entityName)).collect(Collectors.toList());
+		assertEquals(1, groups.size());
+		CcpJsonRepresentation group = groups.get(0).json;
+		assertEquals(CcpBulkEntityOperationType.create, groups.get(0).operation);
+		assertEquals(VisEntityVirtualRecruiterDomainInitialsGrouper.ENTITY.getEntityMetaData().entityName, group.getAsString(JnEntityGrouper.Fields.parentName));
+		assertEquals("JOB", group.getInnerJson(JnEntityGrouper.Fields.parentJson).getAsString(VisEntityVirtualRecruiterDomainInitialsGrouper.Fields.firstThreeInitials));
+		List<String> expectedChildren = Stream.of("ana@jobsnow.com", "bia@jobsbrasil.com.br", "davi@jobsnow.com")
+				.map(email -> VisEntityRecruiter.ENTITY.calculateId(this.input(email, "legacy"))).collect(Collectors.toList());
+		assertEquals(expectedChildren, group.getAsStringList(JnEntityGrouper.Fields.child));
+		assertEquals(Integer.valueOf(3), group.getAsIntegerNumber(JnEntityGrouper.Fields.childCount));
+	}
+
+	@Test
+	public void theCompanySearchSuggestsTheCompaniesOfTheRecruitersOfTheGroup() {
+		String techDomain = "qzw" + this.now + "tech.com.br";
+		String labsDomain = "qzw" + this.now + "labs.com";
+		CcpJsonRepresentation techRecruiter = VisBusinessPrepareRecruiter.INSTANCE.execute(this.input("rh@" + techDomain, "login"));
+		CcpJsonRepresentation labsRecruiter = VisBusinessPrepareRecruiter.INSTANCE.execute(this.input("rh@" + labsDomain, "login"));
+		VisEntityRecruiter.ENTITY.save(techRecruiter);
+		VisEntityRecruiter.ENTITY.save(labsRecruiter);
+		String techCompany = VisEntityVirtualRecruiterDomainInitialsGrouper.getCompanyName(techDomain);
+		String labsCompany = VisEntityVirtualRecruiterDomainInitialsGrouper.getCompanyName(labsDomain);
+		try {
+			assertEquals(List.of(labsCompany, techCompany), this.searchCompanies("qzw" + this.now));
+			assertEquals(List.of(techCompany), this.searchCompanies("QZW" + this.now + "T"));
+			assertTrue(this.searchCompanies("qzw").containsAll(List.of(labsCompany, techCompany)));
+			assertEquals(List.of("Qzw" + this.now + "Nada"), this.searchCompanies("Qzw" + this.now + "Nada"));
+		} finally {
+			VisEntityRecruiter.ENTITY.deleteAnyWhere(techRecruiter);
+			VisEntityRecruiter.ENTITY.deleteAnyWhere(labsRecruiter);
+		}
+		assertEquals(List.of("qzw" + this.now), this.searchCompanies("qzw" + this.now));
+	}
+
+	private List<String> searchCompanies(String search) {
+		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON.put(VisServiceCompany.FieldsToSearchCompaniesByTheirFirstThreeInitials.search, search);
+		CcpJsonRepresentation suggestions = VisServiceCompany.SearchCompaniesByTheirFirstThreeInitials.execute(input);
+		return suggestions.getAsStringList(VisServiceCompany.FieldsToSearchCompaniesByTheirFirstThreeInitials.companies);
+	}
+
+	/** The ids of the recruiters in the group of the first three letters of the domain, on one side of the grouper. */
+	private List<String> recruitersInTheGroupOf(boolean twinSide, String domain) {
+		String parentName = VisEntityVirtualRecruiterDomainInitialsGrouper.ENTITY.getEntityMetaData().entityName;
+		String childName = VisEntityRecruiter.ENTITY.getEntityMetaData().entityName;
+		String parentId = VisEntityVirtualRecruiterDomainInitialsGrouper.getParentId(domain);
+		return JnGroupers.getChildren(twinSide, parentName, childName, parentId);
 	}
 }

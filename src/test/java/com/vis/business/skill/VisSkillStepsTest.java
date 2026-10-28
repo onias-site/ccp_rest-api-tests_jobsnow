@@ -14,7 +14,6 @@ import org.junit.Test;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
-import com.ccp.especifications.cache.CcpCacheDecorator;
 import com.ccp.especifications.db.query.CcpQueryOptions;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
@@ -26,17 +25,19 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.vis.entities.VisEntityGroupPositionsBySkills;
+import com.jn.utils.JnGroupers;
 import com.vis.entities.VisEntitySkill;
 import com.vis.entities.VisEntitySkillFixHierarchyItemPending;
 import com.vis.entities.VisEntitySkillFixHierarchyPending;
+import com.vis.entities.VisEntityVirtualSkillInitialsGrouper;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
 
 /**
  * The steps of the skill suggestion and of the fix of the skill hierarchy run directly, each one over the json the
  * steps before it would hand over: {@link VisBusinessCollectPendingFixHierarchyRequest},
  * {@link VisBusinessAddMissingSynonymsToSkill}, {@link VisBusinessCreateApprovedSkill},
- * {@link VisBusinessChangeTheSkillAndTheLookup}, {@link VisBusinessChangeOnlyTheSkillLookup}, the rejection branch of
+ * {@link VisBusinessChangeTheSkillParents} (the groups of initials of the lookup follow the saved skill), the rejection
+ * branch of
  * {@link VisBusinessMoveFixHierarchyItem} and the orphan branch of {@link VisBusinessDeleteFixHierarchyItemIfOrphan}.
  * The steps that send messages or write the pending entities through the messaging are proved by
  * {@code SkillSuggestionThroughSupportBotTest} and {@code SkillFixHierarchyThroughSupportBotTest}.
@@ -71,25 +72,18 @@ public class VisSkillStepsTest {
 		return this.skillKey.addToItem(CcpEntity.JsonFieldNames._entities, VisEntitySkill.ENTITY, storedSkill);
 	}
 
-	private List<CcpJsonRepresentation> lookupItemsOfTheSkill() {
-		CcpJsonRepresentation groupKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityGroupPositionsBySkills.Fields.firstTwoInitials, SKILL.substring(0, 2));
-		String groupId = VisEntityGroupPositionsBySkills.ENTITY.calculateId(groupKey);
-		new CcpCacheDecorator(groupId).delete();
-		CcpJsonRepresentation group = VisEntityGroupPositionsBySkills.ENTITY.getEntityMetaData().getOneByIdOrHandleItIfThisIdWasNotFound(groupKey, notFound -> CcpOtherConstants.EMPTY_JSON);
-		List<CcpJsonRepresentation> items = group.getAsJsonList(VisEntityGroupPositionsBySkills.Fields.skill);
+	/** The items of the lookup whose skill is the test skill, among the words with the initials of the given word. */
+	private List<CcpJsonRepresentation> lookupItemsOfTheSkill(String wordWithTheInitials) {
+		List<CcpJsonRepresentation> items = VisSkillWordsByInitials.getItems(Arrays.asList(wordWithTheInitials));
 		return items.stream().filter(item -> SKILL.equals(item.getAsString(VisJsonCommonsFields.skill))).collect(Collectors.toList());
 	}
 
-	/** Takes the test skill out of the lookup, so that it does not stay in the real one. */
-	private void removeTheSkillFromTheLookup() {
-		CcpJsonRepresentation groupKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityGroupPositionsBySkills.Fields.firstTwoInitials, SKILL.substring(0, 2));
-		CcpJsonRepresentation group = VisEntityGroupPositionsBySkills.ENTITY.getEntityMetaData().getOneByIdOrHandleItIfThisIdWasNotFound(groupKey, notFound -> CcpOtherConstants.EMPTY_JSON);
-		List<CcpJsonRepresentation> items = group.getAsJsonList(VisEntityGroupPositionsBySkills.Fields.skill);
-		List<CcpJsonRepresentation> otherItems = items.stream().filter(item -> false == SKILL.equals(item.getAsString(VisJsonCommonsFields.skill))).collect(Collectors.toList());
-		CcpJsonRepresentation groupWithoutTheSkill = groupKey.put(VisEntityGroupPositionsBySkills.Fields.skill, otherItems);
-		VisEntityGroupPositionsBySkills.ENTITY.save(groupWithoutTheSkill);
-		String groupId = VisEntityGroupPositionsBySkills.ENTITY.calculateId(groupKey);
-		new CcpCacheDecorator(groupId).delete();
+	/** The ids of the skills in the group of the initials of the word. */
+	private List<String> skillsInTheGroupOf(String word) {
+		String parentName = VisEntityVirtualSkillInitialsGrouper.ENTITY.getEntityMetaData().entityName;
+		String childName = VisEntitySkill.ENTITY.getEntityMetaData().entityName;
+		String parentId = VisEntityVirtualSkillInitialsGrouper.getParentId(word);
+		return JnGroupers.getChildren(false, parentName, childName, parentId);
 	}
 
 	@Test
@@ -126,6 +120,8 @@ public class VisSkillStepsTest {
 			CcpJsonRepresentation skillRecord = VisEntitySkill.ENTITY.getOneById(this.skillKey);
 			assertEquals(Arrays.asList("TESTE ANTIGO", "TESTE COMUM", "TESTE NOVO"), skillRecord.getAsStringList(VisEntitySkill.Fields.synonym));
 			assertEquals(Long.valueOf(7), skillRecord.getAsLongNumber(VisEntitySkill.Fields.ranking));
+			List<String> words = this.lookupItemsOfTheSkill(SKILL).stream().map(item -> item.getAsString(VisJsonCommonsFields.word)).collect(Collectors.toList());
+			assertTrue(words.toString(), words.contains("TESTE NOVO"));
 		} finally {
 			VisEntitySkill.ENTITY.delete(this.skillKey);
 		}
@@ -156,38 +152,52 @@ public class VisSkillStepsTest {
 				.put(VisEntitySkill.Fields.synonym, Arrays.asList("TESTE SINONIMO DO PASSO"))
 				.put(VisEntitySkill.Fields.parent, Arrays.asList("TESTE PAI ANTIGO"))
 				.put(VisEntitySkill.Fields.ranking, 7);
-		VisSkillWordsGroups.addWord(SKILL, SKILL);
-		List<String> words = new ArrayList<>(Arrays.asList(SKILL));
 		try {
-			new VisBusinessChangeTheSkillAndTheLookup(SKILL, words, parents -> parents.add(PARENT)).execute(this.withTheStoredSkill(storedSkill));
+			new VisBusinessChangeTheSkillParents(parents -> parents.add(PARENT)).execute(this.withTheStoredSkill(storedSkill));
 
 			CcpJsonRepresentation skillRecord = VisEntitySkill.ENTITY.getOneById(this.skillKey);
-			assertEquals(Arrays.asList("TESTE PAI ANTIGO", PARENT), skillRecord.getAsStringList(VisEntitySkill.Fields.parent));
-			assertTrue("the synonyms join the words whose lookup changes", words.contains("TESTE SINONIMO DO PASSO"));
-			List<CcpJsonRepresentation> lookupItems = this.lookupItemsOfTheSkill();
-			assertEquals(1, lookupItems.size());
-			assertEquals(Arrays.asList(PARENT), lookupItems.get(0).getAsStringList(VisJsonCommonsFields.parent));
+			List<String> parents = Arrays.asList("TESTE PAI ANTIGO", PARENT);
+			assertEquals(parents, skillRecord.getAsStringList(VisEntitySkill.Fields.parent));
+			// the skill and its synonym, both under TE, carry the new parent
+			List<CcpJsonRepresentation> lookupItems = this.lookupItemsOfTheSkill(SKILL);
+			assertEquals(2, lookupItems.size());
+			for (CcpJsonRepresentation lookupItem : lookupItems) {
+				assertEquals(parents, lookupItem.getAsStringList(VisJsonCommonsFields.parent));
+				assertEquals(Arrays.asList("TESTE SINONIMO DO PASSO"), lookupItem.getAsStringList(VisJsonCommonsFields.synonym));
+			}
 		} finally {
 			VisEntitySkill.ENTITY.delete(this.skillKey);
-			this.removeTheSkillFromTheLookup();
 		}
 	}
 
 	@Test
-	public void withNoStoredSkillOnlyTheLookupGetsTheNewParent() {
-		VisSkillWordsGroups.addWord(SKILL, SKILL);
+	public void aParentWithOtherInitialsMovesTheSkillBetweenTheGroups() {
+		String parentWithOtherInitials = "QQ TESTE PAI DO PASSO";
+		CcpJsonRepresentation storedSkill = this.skillKey.put(VisEntitySkill.Fields.ranking, 7);
+		VisEntitySkill.ENTITY.save(storedSkill);
+		String skillId = VisEntitySkill.ENTITY.calculateId(this.skillKey);
 		try {
-			CcpJsonRepresentation skillNotFound = CcpOtherConstants.EMPTY_JSON;
-			CcpJsonRepresentation result = new VisBusinessChangeOnlyTheSkillLookup(SKILL, Arrays.asList(SKILL), parents -> parents.add(PARENT)).execute(skillNotFound);
+			assertFalse(this.skillsInTheGroupOf(parentWithOtherInitials).contains(skillId));
 
-			assertEquals(skillNotFound, result);
-			List<CcpJsonRepresentation> lookupItems = this.lookupItemsOfTheSkill();
-			assertEquals(1, lookupItems.size());
-			assertEquals(Arrays.asList(PARENT), lookupItems.get(0).getAsStringList(VisJsonCommonsFields.parent));
-			assertFalse(VisEntitySkill.ENTITY.exists(this.skillKey));
+			new VisBusinessChangeTheSkillParents(parents -> parents.add(parentWithOtherInitials)).execute(this.withTheStoredSkill(storedSkill));
+
+			assertTrue(this.skillsInTheGroupOf(SKILL).contains(skillId));
+			assertTrue(this.skillsInTheGroupOf(parentWithOtherInitials).contains(skillId));
+			CcpJsonRepresentation skillRecord = VisEntitySkill.ENTITY.getOneById(this.skillKey);
+			List<String> expectedGroups = Arrays.asList(VisEntityVirtualSkillInitialsGrouper.getParentId(SKILL), VisEntityVirtualSkillInitialsGrouper.getParentId(parentWithOtherInitials));
+			assertEquals(expectedGroups, skillRecord.getAsStringList(VisEntitySkill.Fields.initialsGroup));
+			// a parent that is no skill of its own is found as a skill by itself
+			List<CcpJsonRepresentation> parentItems = VisSkillWordsByInitials.getItems(Arrays.asList(parentWithOtherInitials));
+			assertTrue(parentItems.toString(), parentItems.stream().anyMatch(item -> parentWithOtherInitials.equals(item.getAsString(VisJsonCommonsFields.skill))));
+
+			new VisBusinessChangeTheSkillParents(parents -> parents.remove(parentWithOtherInitials)).execute(this.withTheStoredSkill(skillRecord));
+
+			assertTrue(this.skillsInTheGroupOf(SKILL).contains(skillId));
+			assertFalse(this.skillsInTheGroupOf(parentWithOtherInitials).contains(skillId));
 		} finally {
-			this.removeTheSkillFromTheLookup();
+			VisEntitySkill.ENTITY.delete(this.skillKey);
 		}
+		assertFalse("the delete takes the skill out of its groups", this.skillsInTheGroupOf(SKILL).contains(skillId));
 	}
 
 	private CcpJsonRepresentation itemKey() {

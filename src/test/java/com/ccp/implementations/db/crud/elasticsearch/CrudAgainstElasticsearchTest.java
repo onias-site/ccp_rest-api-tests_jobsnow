@@ -95,7 +95,7 @@ public class CrudAgainstElasticsearchTest {
 	public void theMultipleGetAsksForEveryIdInEveryEntity() {
 		ElasticSearchCrud elasticSearchCrud = ElasticSearchCrud.INSTANCE;
 
-		CcpJsonRepresentation body = elasticSearchCrud.getRequestBodyToMultipleGet(new LinkedHashSet<>(Arrays.asList("1", "2")),
+		CcpJsonRepresentation body = elasticSearchCrud.getRequestBodyToMultipleGetByIds(new LinkedHashSet<>(Arrays.asList("1", "2")),
 				JnEntitySupportPendingCommand.ENTITY, JnEntityLoginEmail.ENTITY);
 
 		List<CcpJsonRepresentation> docs = body.getAsJsonList(new CcpFieldName("docs"));

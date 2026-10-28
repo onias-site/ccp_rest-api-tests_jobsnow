@@ -14,8 +14,10 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
 import com.ccp.especifications.db.bulk.CcpBulkItem;
+import com.ccp.especifications.db.bulk.CcpBulkScriptedUpdateFields;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityGrouper;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.js.entities.JsEntityLoginSessionValidation;
@@ -65,8 +67,11 @@ public class JsBulkHandlerRegisterLogoutTest {
 
 		List<CcpBulkItem> historyItems = items.stream().filter(item -> nameOf(item.entity).equals(nameOf(inactiveGrouper))).collect(Collectors.toList());
 		assertEquals(descriptions.toString(), 1, historyItems.size());
-		// the logout only enters the inactive side of the history; the active side keeps the logins
-		assertTrue(descriptions.toString(), descriptions.stream().noneMatch(description -> description.startsWith(nameOf(JnEntityGrouper.ENTITY) + " ")));
+		// the logout only enters the inactive side of the history; the active side keeps the logins. The only item of the
+		// active side is the period of the terminated session in its group of records to purge (a disposable entity)
+		String copyName = nameOf(JnEntityDisposableRecord.ENTITY);
+		List<CcpBulkItem> activeGrouperItems = items.stream().filter(item -> nameOf(item.entity).equals(nameOf(JnEntityGrouper.ENTITY))).collect(Collectors.toList());
+		assertTrue(descriptions.toString(), activeGrouperItems.stream().allMatch(item -> copyName.equals(item.json.getInnerJson(CcpBulkScriptedUpdateFields.upsert).getAsString(JnEntityGrouper.Fields.childName))));
 	}
 
 	@Test

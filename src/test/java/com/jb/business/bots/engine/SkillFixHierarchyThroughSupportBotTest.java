@@ -10,7 +10,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -51,9 +50,8 @@ import com.ccp.especifications.db.utils.entity.decorators.ElasticsearchLocal;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.vis.business.skill.VisBusinessSkillFixHierarchyIgnoreUser;
-import com.vis.business.skill.VisSkillWordsGroups;
+import com.vis.business.skill.VisSkillWordsByInitials;
 import com.jn.entities.JnEntityCommandNotAllowedToUser;
-import com.vis.entities.VisEntityGroupPositionsBySkills;
 import com.vis.entities.VisEntitySkill;
 import com.vis.entities.VisEntitySkillFixHierarchyFulfiled;
 import com.vis.entities.VisEntitySkillFixHierarchyItemApproved;
@@ -245,7 +243,8 @@ public class SkillFixHierarchyThroughSupportBotTest {
 	/**
 	 * An approved association adds the parent to the {@code parent} array of the skill in {@link VisEntitySkill}; a
 	 * rejected one leaves the skill as it was. The lookup the resume screen reads changes too, in the item of the skill
-	 * and in the item of its synonym (another group, since the synonym starts with other letters).
+	 * and in the item of its synonym (another group, since the synonym starts with other letters): both come from the
+	 * saved skill.
 	 */
 	@Test
 	public void approvedAssociationAddsTheParentToTheSkill() {
@@ -253,9 +252,6 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		this.saveSkill("TESTE.SKILL.ASSOCIADA", "TESTE.PAI.ANTIGO");
 		this.saveSkill("TESTE.SKILL.REJEITADA", "TESTE.PAI.ANTIGO");
 		this.addSynonym("TESTE.SKILL.ASSOCIADA", "XTESTE.SINONIMO.ASSOCIADA");
-		this.putInTheWordsGroup("TESTE.SKILL.ASSOCIADA", "TESTE.SKILL.ASSOCIADA", "TESTE.PAI.ANTIGO");
-		this.putInTheWordsGroup("TESTE.SKILL.ASSOCIADA", "XTESTE.SINONIMO.ASSOCIADA", "TESTE.PAI.ANTIGO");
-		this.putInTheWordsGroup("TESTE.SKILL.REJEITADA", "TESTE.SKILL.REJEITADA", "TESTE.PAI.ANTIGO");
 
 		try {
 			this.openRequest(SKILL_PARENTS_USER, VisSkillFixHierarchyTypes.add, "TESTE.PAI", "As duas dependem de TESTE.PAI", "TESTE.SKILL.ASSOCIADA", "TESTE.SKILL.REJEITADA");
@@ -274,8 +270,8 @@ public class SkillFixHierarchyThroughSupportBotTest {
 			assertEquals(Arrays.asList("TESTE.PAI.ANTIGO"), this.wordParents("TESTE.SKILL.REJEITADA"));
 		} finally {
 			this.deleteSkill("TESTE.SKILL.ASSOCIADA");
+			// the delete also takes the skills out of the groups of the lookup
 			this.deleteSkill("TESTE.SKILL.REJEITADA");
-			this.removeFromTheWordsGroup("TESTE.SKILL.ASSOCIADA", "XTESTE.SINONIMO.ASSOCIADA", "TESTE.SKILL.REJEITADA");
 		}
 	}
 
@@ -307,50 +303,12 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		VisEntitySkill.ENTITY.save(skillRecord.put(VisEntitySkill.Fields.synonym, Arrays.asList(synonym)));
 	}
 
-	/**
-	 * Puts the word in the lookup with the given parents, as the initial load does for the known skills.
-	 */
-	private void putInTheWordsGroup(String skill, String word, String... parents) {
-		this.removeFromTheWordsGroup(word);
-		VisSkillWordsGroups.addWord(skill, word);
-		for (String parent : parents) {
-			VisSkillWordsGroups.changeParents(skill, Arrays.asList(word), wordParents -> wordParents.add(parent));
-		}
-	}
-
+	/** The parents of the skill the word means, as the lookup of the resume screen reads them. */
 	private List<String> wordParents(String word) {
-		List<CcpJsonRepresentation> items = this.wordsGroupItems(word);
+		List<CcpJsonRepresentation> items = VisSkillWordsByInitials.getItems(Arrays.asList(word));
 		CcpJsonRepresentation item = items.stream().filter(x -> word.equals(x.getAsString(VisJsonCommonsFields.word))).findFirst().get();
 		List<String> parents = item.getAsStringList(VisJsonCommonsFields.parent);
 		return parents;
-	}
-
-	private List<CcpJsonRepresentation> wordsGroupItems(String word) {
-		CcpJsonRepresentation groupKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityGroupPositionsBySkills.Fields.firstTwoInitials, word.substring(0, 2));
-		CcpJsonRepresentation group = VisEntityGroupPositionsBySkills.ENTITY.getEntityMetaData().getOneByIdOrHandleItIfThisIdWasNotFound(groupKey, notFound -> CcpOtherConstants.EMPTY_JSON);
-		List<CcpJsonRepresentation> items = group.getAsJsonList(VisEntityGroupPositionsBySkills.Fields.skill);
-		return items;
-	}
-
-	/**
-	 * Removes the test words from the lookup, so that they do not stay in the real lookup.
-	 */
-	private void removeFromTheWordsGroup(String... words) {
-		for (String word : words) {
-			CcpJsonRepresentation groupKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityGroupPositionsBySkills.Fields.firstTwoInitials, word.substring(0, 2));
-			List<CcpJsonRepresentation> items = this.wordsGroupItems(word);
-			List<CcpJsonRepresentation> otherItems = items.stream().filter(item -> false == word.equals(item.getAsString(VisJsonCommonsFields.word))).collect(Collectors.toList());
-			boolean nothingToRemove = otherItems.size() == items.size();
-			if(nothingToRemove) {
-				continue;
-			}
-			boolean groupWouldBeEmpty = otherItems.isEmpty();
-			if(groupWouldBeEmpty) {
-				VisEntityGroupPositionsBySkills.ENTITY.delete(groupKey);
-				continue;
-			}
-			VisEntityGroupPositionsBySkills.ENTITY.save(groupKey.put(VisEntityGroupPositionsBySkills.Fields.skill, otherItems));
-		}
 	}
 
 	/**

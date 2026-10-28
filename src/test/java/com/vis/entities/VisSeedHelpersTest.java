@@ -4,10 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
@@ -18,10 +16,13 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
+import com.vis.json.transformers.VisRecruiterDomainInitialsCombinations;
+import com.vis.json.transformers.VisSkillInitialsCombinations;
 
 /**
- * The pieces of the seeds of the vis entities: {@link VisCompanyNameGrouperByInitials},
- * {@link VisLegacyRecruiterEmailCollector}, {@link VisSkillWithResumesCount} and {@link VisSkillsGroupOfTheInitials}.
+ * The pieces of the seeds and of the groups of the vis entities: {@link VisRecruiterDomainInitialsCombinations},
+ * {@link VisEntityVirtualRecruiterDomainInitialsGrouper#getCompanyName}, {@link VisLegacyRecruiterEmailCollector},
+ * {@link VisSkillWithResumesCount} and {@link VisSkillInitialsCombinations}.
  */
 public class VisSeedHelpersTest {
 
@@ -34,28 +35,32 @@ public class VisSeedHelpersTest {
 	}
 
 	@Test
-	public void theCompanyOfTheDomainIsGroupedByItsFirstThreeLetters() {
-		Map<String, Set<String>> groupedCompanies = new LinkedHashMap<>();
-		VisCompanyNameGrouperByInitials grouper = new VisCompanyNameGrouperByInitials(groupedCompanies);
+	public void aProfessionalRecruiterIsInTheGroupOfTheFirstThreeLettersOfItsDomain() {
+		CcpJsonRepresentation recruiter = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityRecruiter.Fields.domain, "jobsnow.com.br")
+				.put(VisEntityRecruiter.Fields.professional, true);
 
-		grouper.accept(legacyRecruiter("ana@jobsnow.com"));
-		grouper.accept(legacyRecruiter("bia@jobsbrasil.com.br"));
-		grouper.accept(legacyRecruiter("caio@gmail.com"));
-		grouper.accept(legacyRecruiter("davi@jobsnow.com"));
+		List<CcpJsonRepresentation> combinations = VisRecruiterDomainInitialsCombinations.INSTANCE.apply(recruiter);
 
-		assertEquals(List.of("Jobsnow", "Jobsbrasil"), new ArrayList<>(groupedCompanies.get("JOB")));
-		assertEquals(List.of("Gmail"), new ArrayList<>(groupedCompanies.get("GMA")));
+		assertEquals(1, combinations.size());
+		assertEquals("JOB", combinations.get(0).getAsString(VisEntityVirtualRecruiterDomainInitialsGrouper.Fields.firstThreeInitials));
 	}
 
 	@Test
-	public void aTextThatIsNotAnEmailOrAShortCompanyIsLeftOut() {
-		Map<String, Set<String>> groupedCompanies = new LinkedHashMap<>();
-		VisCompanyNameGrouperByInitials grouper = new VisCompanyNameGrouperByInitials(groupedCompanies);
+	public void aNonProfessionalRecruiterIsInNoGroup() {
+		CcpJsonRepresentation recruiter = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityRecruiter.Fields.domain, "gmail.com")
+				.put(VisEntityRecruiter.Fields.professional, false);
 
-		grouper.accept(legacyRecruiter("not an email"));
-		grouper.accept(legacyRecruiter("ana@ab.com"));
+		List<CcpJsonRepresentation> combinations = VisRecruiterDomainInitialsCombinations.INSTANCE.apply(recruiter);
 
-		assertTrue(groupedCompanies.isEmpty());
+		assertTrue(combinations.isEmpty());
+	}
+
+	@Test
+	public void theCompanyIsTheFirstPartOfTheDomainCapitalized() {
+		assertEquals("Jobsnow", VisEntityVirtualRecruiterDomainInitialsGrouper.getCompanyName("jobsnow.com.br"));
+		assertEquals("Rh", VisEntityVirtualRecruiterDomainInitialsGrouper.getCompanyName("rh.empresa.com"));
 	}
 
 	@Test
@@ -82,15 +87,20 @@ public class VisSeedHelpersTest {
 	}
 
 	@Test
-	public void theGroupOfTheInitialsCarriesItsSkills() {
-		CcpJsonRepresentation skillJava = CcpOtherConstants.EMPTY_JSON.put(VisJsonCommonsFields.skill, "JAVA");
-		CcpJsonRepresentation groupedSkills = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("JA"), List.of(skillJava));
+	public void theSkillIsInTheGroupOfTheInitialsOfEachOfItsWords() {
+		CcpJsonRepresentation skill = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntitySkill.Fields.skill, "JAVA")
+				.put(VisEntitySkill.Fields.synonym, List.of("j2se", "JAKARTA"))
+				.put(VisEntitySkill.Fields.parent, List.of("PROGRAMMING LANGUAGE", "C"));
 
-		CcpJsonRepresentation group = new VisSkillsGroupOfTheInitials(groupedSkills).apply("JA");
+		List<CcpJsonRepresentation> combinations = VisSkillInitialsCombinations.INSTANCE.apply(skill);
 
-		assertEquals("JA", group.getAsString(VisEntityGroupPositionsBySkills.Fields.firstTwoInitials));
-		List<CcpJsonRepresentation> skills = group.getAsJsonList(VisJsonCommonsFields.skill);
-		assertEquals(1, skills.size());
-		assertEquals("JAVA", skills.get(0).getAsString(VisJsonCommonsFields.skill));
+		// JAVA and JAKARTA share JA, the synonym in lower case goes to J2 and the parent C is too short to have a group
+		List<String> initials = new ArrayList<>();
+		for (CcpJsonRepresentation combination : combinations) {
+			String firstTwoInitials = combination.getAsString(VisEntityVirtualSkillInitialsGrouper.Fields.firstTwoInitials);
+			initials.add(firstTwoInitials);
+		}
+		assertEquals(List.of("JA", "J2", "PR"), initials);
 	}
 }

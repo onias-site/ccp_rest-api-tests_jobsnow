@@ -48,12 +48,12 @@ public class ElasticSearchCrudInternalsAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void getRequestBodyToMultipleGetIdsNullTest() {
-		crud().getRequestBodyToMultipleGet((Set<String>) null, ENTITY);
+		crud().getRequestBodyToMultipleGetByIds((Set<String>) null, ENTITY);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void getRequestBodyToMultipleGetEntitiesNullTest() {
-		crud().getRequestBodyToMultipleGet(new HashSet<String>(Arrays.asList("id")), (CcpEntity[]) null);
+		crud().getRequestBodyToMultipleGetByIds(new HashSet<String>(Arrays.asList("id")), (CcpEntity[]) null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)

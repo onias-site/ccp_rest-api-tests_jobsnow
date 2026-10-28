@@ -2,6 +2,7 @@ package com.vis.entities;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -11,7 +12,9 @@ import org.junit.Test;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
+import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
 import com.ccp.especifications.db.bulk.CcpBulkItem;
+import com.ccp.especifications.db.bulk.CcpBulkScriptedUpdateFields;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityDecoratorOperationType;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
@@ -23,8 +26,10 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.jn.db.bulk.JnExecuteBulkOperation;
 import com.jn.entities.JnEntityWriteEventSubscribers;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
+import com.jn.utils.JnDeleteKeysFromCache;
 import com.js.entities.JsEntityLoginAnswers;
 import com.vis.business.recruiter.VisBusinessPrepareRecruiter;
 import com.vis.business.recruiter.VisBusinessSaveRecruiterFromLoginAnswers;
@@ -63,11 +68,15 @@ public class OnSavingTheSignUpAnswers {
 		return JnEntityWriteEventSubscribers.getSeeds(VisEntityRecruiter.ListenedEntities.js_login_answers, CcpEntityDecoratorOperationType.save, VisBusinessSaveRecruiterFromLoginAnswers.class);
 	}
 
-	/** The seed of vis, as {@code CcpCreateEntities} writes it. */
+	/**
+	 * The seed of vis, as {@code CcpCreateEntities} writes it: by bulk. Since 2026-10-24 the seed is a scripted update that
+	 * adds the subscriber to the ones already there, so its json is the script, not the record (until 2026-10-27 this test
+	 * saved that json as the record and every test failed on the validation of the entity).
+	 */
 	@Before
 	public void subscribe() {
-		CcpBulkItem subscription = this.getSubscriptionSeeds().get(0);
-		JnEntityWriteEventSubscribers.ENTITY.save(subscription.json);
+		List<CcpBulkItem> subscriptionSeeds = this.getSubscriptionSeeds();
+		JnExecuteBulkOperation.INSTANCE.executeBulk(subscriptionSeeds, JnDeleteKeysFromCache.INSTANCE);
 	}
 
 	private String email(String prefix) {
@@ -93,12 +102,18 @@ public class OnSavingTheSignUpAnswers {
 
 	@Test
 	public void theSeedSubscribesToTheSaveOfTheLoginAnswers() {
-		CcpJsonRepresentation seed = this.getSubscriptionSeeds().get(0).json;
+		CcpBulkItem seed = this.getSubscriptionSeeds().get(0);
+		assertEquals(CcpBulkEntityOperationType.scriptedUpdate, seed.operation);
 		CcpJsonRepresentation eventKey = JnEntityWriteEventSubscribers.getEventKey(JsEntityLoginAnswers.ENTITY, CcpEntityDecoratorOperationType.save);
-		assertEquals(eventKey.getAsString(JnEntityWriteEventSubscribers.Fields.entityName), seed.getAsString(JnEntityWriteEventSubscribers.Fields.entityName));
-		assertEquals("save", seed.getAsString(JnEntityWriteEventSubscribers.Fields.writeOperation));
-		List<String> subscribers = seed.getAsStringList(JnEntityWriteEventSubscribers.Fields.subscribers);
-		assertEquals(List.of(VisBusinessSaveRecruiterFromLoginAnswers.class.getName()), subscribers);
+		// the first seed of the event creates the record as the upsert has it
+		CcpJsonRepresentation upsert = seed.json.getInnerJson(CcpBulkScriptedUpdateFields.upsert);
+		assertEquals(eventKey.getAsString(JnEntityWriteEventSubscribers.Fields.entityName), upsert.getAsString(JnEntityWriteEventSubscribers.Fields.entityName));
+		assertEquals("save", upsert.getAsString(JnEntityWriteEventSubscribers.Fields.writeOperation));
+		assertEquals(List.of(VisBusinessSaveRecruiterFromLoginAnswers.class.getName()), upsert.getAsStringList(JnEntityWriteEventSubscribers.Fields.subscribers));
+		// written by the bulk of subscribe(): the stored record has the subscriber, along with any other of the event
+		CcpJsonRepresentation stored = JnEntityWriteEventSubscribers.ENTITY.getOneById(eventKey);
+		List<String> storedSubscribers = stored.getAsStringList(JnEntityWriteEventSubscribers.Fields.subscribers);
+		assertTrue(storedSubscribers.contains(VisBusinessSaveRecruiterFromLoginAnswers.class.getName()));
 	}
 
 	@Test

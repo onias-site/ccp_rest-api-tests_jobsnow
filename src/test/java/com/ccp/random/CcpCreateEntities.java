@@ -38,7 +38,8 @@ public class CcpCreateEntities {
 	}
 
 	// in the order the recreation must run: js, vis and jb seed into jn indices (message templates, the commands of the
-	// bots since 2026-10-15 and, from js, the session validator since 2026-10-22), so jn goes first
+	// bots since 2026-10-15, from js the session validator since 2026-10-22 and, from vis, the groups of initials of the
+	// skills and of the domains of the recruiters in jn_grouper since 2026-10-27), so jn goes first
 	private static final String[] COST_CENTERS = { "jn", "js", "vis", "jb" };
 
 	/**

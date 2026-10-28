@@ -69,24 +69,6 @@ public class VisJsonFieldRulesTest {
 	}
 
 	@Test
-	public void aGroupedSkillNeedsTheSkillAndTheWord() {
-		CcpJsonRepresentation groupedSkill = CcpOtherConstants.EMPTY_JSON
-				.put(VisJsonFieldsSkillsGroupedByTheirTwoFirstInitials.skill, "JAVA")
-				.put(VisJsonFieldsSkillsGroupedByTheirTwoFirstInitials.word, "JAVA");
-		this.accepts(VisJsonFieldsSkillsGroupedByTheirTwoFirstInitials.class, groupedSkill);
-		this.refuses(VisJsonFieldsSkillsGroupedByTheirTwoFirstInitials.class, groupedSkill.removeFields(VisJsonFieldsSkillsGroupedByTheirTwoFirstInitials.skill));
-		this.refuses(VisJsonFieldsSkillsGroupedByTheirTwoFirstInitials.class, groupedSkill.removeFields(VisJsonFieldsSkillsGroupedByTheirTwoFirstInitials.word));
-	}
-
-	@Test
-	public void aGroupedSkillRefusesASkillOfOneCharacter() {
-		CcpJsonRepresentation groupedSkill = CcpOtherConstants.EMPTY_JSON
-				.put(VisJsonFieldsSkillsGroupedByTheirTwoFirstInitials.skill, "J")
-				.put(VisJsonFieldsSkillsGroupedByTheirTwoFirstInitials.word, "J");
-		this.refuses(VisJsonFieldsSkillsGroupedByTheirTwoFirstInitials.class, groupedSkill);
-	}
-
-	@Test
 	public void thePositionStatisticsNeedTheRequiredFieldsAndAtLeastOneSalary() {
 		this.refuses(VisJsonFieldsPositionStatis.class, CcpOtherConstants.EMPTY_JSON);
 		CcpJsonRepresentation withoutSalary = CcpOtherConstants.EMPTY_JSON

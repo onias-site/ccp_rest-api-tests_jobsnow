@@ -30,7 +30,7 @@ public class JnEntityDisposableRecordDecoratorsTest extends EntityDecoratorTestT
 
 	@Test
 	public void chain() {
-		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "DecoratorReadOnlyEntity", "DecoratorFieldsTransformerEntity", "DefaultImplementationEntity");
+		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "DecoratorReadOnlyEntity", "JnGrouperChildEntityBeforeWrite", "DecoratorFieldsTransformerEntity", "JnGrouperChildEntityAfterWrite", "DefaultImplementationEntity");
 	}
 
 	@Test

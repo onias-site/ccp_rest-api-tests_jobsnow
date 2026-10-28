@@ -3,6 +3,9 @@ package com.js.rest.api;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -13,6 +16,7 @@ import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.ccp.constants.CcpOtherConstants;
@@ -81,6 +85,10 @@ public class GrouperEndpointTest {
 
 	private static final String SESSION_TOKEN = "12345678";
 
+	private static final String JS_API_HOST = "localhost";
+
+	private static final int JS_API_PORT = 8082;
+
 	private final String parentId = "grupoapi" + System.currentTimeMillis();
 
 	private final TestVariables testVariables = new TestVariables();
@@ -94,6 +102,20 @@ public class GrouperEndpointTest {
 		Map<String, CcpJsonRepresentation> parents = Map.of(this.parentId, parentJson);
 		String childIdText = childId.getValue();
 		JnGroupers.addChild(JnGroupers.getGrouper(twinSide), PARENT_NAME, CHILD_NAME, childIdText, parents);
+	}
+
+	/**
+	 * Stops the class with a clear message when the js API is down: until 2026-10-27 every test failed with a bare
+	 * {@code SoftException} of the connection refused.
+	 */
+	@BeforeClass
+	public static void theJsApiMustBeUp() {
+		try (Socket socket = new Socket()) {
+			InetSocketAddress jsApi = new InetSocketAddress(JS_API_HOST, JS_API_PORT);
+			socket.connect(jsApi, 2_000);
+		} catch (IOException e) {
+			throw new AssertionError("The js API is down on port " + JS_API_PORT + ": start JsRestApiSpringStarter before running " + GrouperEndpointTest.class.getSimpleName(), e);
+		}
 	}
 
 	@Before
@@ -110,7 +132,7 @@ public class GrouperEndpointTest {
 	}
 
 	private HttpResponse<String> get(String email, String sessionToken, String parentId, String query) throws Exception {
-		URI uri = URI.create("http://localhost:8082/grouper/" + email + "/" + PARENT_NAME + "/" + CHILD_NAME + "/" + parentId + query);
+		URI uri = URI.create("http://" + JS_API_HOST + ":" + JS_API_PORT + "/grouper/" + email + "/" + PARENT_NAME + "/" + CHILD_NAME + "/" + parentId + query);
 		// the session key holds the user agent, so the request repeats the one saved with the session
 		String userAgent = this.testVariables.REQUEST_TO_LOGIN.getAsString(JnJsonCommonsFields.userAgent);
 		String sessionTokenHeader = CcpJsonCommonsFields.sessionToken.getValue();

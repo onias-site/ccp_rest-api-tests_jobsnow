@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import com.ccp.decorators.CcpJsonRepresentation;
 
 /**
- * Behavior of the fake query executor of {@link SkillAndCompanySeedsDefectsTest}: {@code consumeQueryResult} hands the
+ * Behavior of the fake query executor of {@link RecruiterLoadsTest}: {@code consumeQueryResult} hands the
  * given ids (the e-mails of the legacy recruiters) to the consumer; any other call fails.
  */
 class LegacyRecruitersQueryHandler implements InvocationHandler {

@@ -81,6 +81,10 @@ public class SaveVersionConflictTest {
 		public CcpDbRequester createTables(String pathToCreateEntityScript, String pathToJavaClasses, String mappingJnEntitiesErrors, String insertResults) {
 			throw new UnsupportedOperationException();
 		}
+
+		public CcpJsonRepresentation backup(String bucketName, List<String> entityNamePatterns) {
+			throw new UnsupportedOperationException();
+		}
 	}
 
 	private ConflictingRequester elasticsearchAnswering409(int conflicts) {

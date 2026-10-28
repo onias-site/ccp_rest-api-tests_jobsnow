@@ -25,7 +25,7 @@ import com.vis.json.fields.validation.VisJsonCommonsFields;
 
 /**
  * Proves {@link VisServiceSkills#GetSkillsFromText} against the skill groups seeded in the local Elasticsearch
- * ({@code vis_group_positions_by_skills}): known skills are found, short words only as whole words, excluded skills
+ * (the groups of initials of {@code vis_skill} in {@code jn_grouper}): known skills are found, short words only as whole words, excluded skills
  * are left out and an empty text finds nothing.
  */
 public class SkillsFromTextTest {

@@ -114,7 +114,9 @@ public class InstantMessengerFailuresTest {
 	public void aCommandToTheSupportKeepsItsTicketWhenTheDeliveryFails() {
 		failure = new FailedDelivery();
 		String command = "/reviewSkillSuggestion delivery.failure@teste.com KIPREV";
-		CcpJsonRepresentation commandToTheSupport = this.message().put(JnJsonCommonsFields.message, command);
+		CcpJsonRepresentation commandWithoutPriority = this.message().put(JnJsonCommonsFields.message, command);
+		// every command to the support carries the priority of its ticket
+		CcpJsonRepresentation commandToTheSupport = commandWithoutPriority.put(JnJsonInstantMessengerFields.priority, 3);
 		CcpJsonRepresentation ticket = CcpOtherConstants.EMPTY_JSON
 				.put(JnEntitySupportPendingCommand.Fields.botName, "support")
 				.put(JnEntitySupportPendingCommand.Fields.chatId, this.chatId)

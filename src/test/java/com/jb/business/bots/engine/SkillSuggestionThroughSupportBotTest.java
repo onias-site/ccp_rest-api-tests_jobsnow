@@ -10,7 +10,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -21,7 +20,6 @@ import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
-import com.ccp.especifications.cache.CcpCacheDecorator;
 import com.ccp.especifications.db.bulk.CcpBulkItem;
 import com.ccp.especifications.db.utils.entity.decorators.interfaces.CcpEntityConfigurator;
 import com.ccp.especifications.email.CcpEmailSender;
@@ -53,7 +51,7 @@ import com.jn.entities.JnEntityInstantMessengerMessageSent;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.jn.entities.JnEntityCommandNotAllowedToUser;
-import com.vis.entities.VisEntityGroupPositionsBySkills;
+import com.vis.business.skill.VisSkillWordsByInitials;
 import com.vis.entities.VisEntitySkill;
 import com.vis.entities.VisEntitySkillApproved;
 import com.vis.entities.VisEntitySkillFixHierarchyItemPending;
@@ -63,7 +61,6 @@ import com.vis.entities.VisEntitySkillRejected;
 import com.vis.entities.VisEntitySkillReviewed;
 import com.vis.entities.VisEntitySkillSynonym;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
-import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.json.fields.validation.VisSkillFixHierarchyTypes;
 import com.jn.json.fields.validation.JnUserRequestCommands;
 import com.vis.messages.VisMessages;
@@ -219,8 +216,8 @@ public class SkillSuggestionThroughSupportBotTest {
 
 			// the skill and its synonyms enter the lookup used to read skills from a resume, so the approved skill is
 			// found in resumes and its synonyms can no longer be suggested as new skills
-			assertEquals(0, VisEntityGroupPositionsBySkills.getWordStatus(skill));
-			assertEquals(0, VisEntityGroupPositionsBySkills.getWordStatus("TESTE SINONIMO B"));
+			assertEquals(0, VisSkillWordsByInitials.getWordStatus(skill));
+			assertEquals(0, VisSkillWordsByInitials.getWordStatus("TESTE SINONIMO B"));
 
 			// another candidate who looks the same skill up sees the operator's decision
 			CcpJsonRepresentation decisionSeenByAnother = VisServiceSkillSuggestion.GetSkillSuggestion.execute(this.suggestion(SERVICE_USER, skill));
@@ -230,8 +227,8 @@ public class SkillSuggestionThroughSupportBotTest {
 			CcpProcessStatus synonymRefused = this.statusOf(() -> VisServiceSkillSuggestion.SuggestSkill.execute(synonymSuggestion));
 			assertEquals(VisProcessStatusSuggestSkill.skillAlreadyExists, synonymRefused);
 		} finally {
+			// the delete also takes the skill out of the groups of the lookup
 			this.deleteSkill(skill);
-			this.removeFromTheWordsGroup(skill, "TESTE SINONIMO A", "TESTE SINONIMO B");
 		}
 	}
 
@@ -254,24 +251,6 @@ public class SkillSuggestionThroughSupportBotTest {
 		this.openSuggestion(SERVICE_USER, "PRIMEFACE", "Só um pedaço de PRIMEFACES, que o servidor aceita");
 		assertTrue(VisEntitySkillPending.ENTITY.exists(this.suggestion(SERVICE_USER, "PRIMEFACE")));
 		VisServiceSkillSuggestion.DeleteSkillSuggestion.execute(this.suggestion(SERVICE_USER, "PRIMEFACE"));
-	}
-
-	/**
-	 * Removes the test words from the groups of the lookup, so that they do not stay in the real lookup.
-	 */
-	private void removeFromTheWordsGroup(String... words) {
-		for (String word : words) {
-			CcpJsonRepresentation groupKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityGroupPositionsBySkills.Fields.firstTwoInitials, word.substring(0, 2));
-			CcpJsonRepresentation group = VisEntityGroupPositionsBySkills.ENTITY.getEntityMetaData().getOneByIdOrHandleItIfThisIdWasNotFound(groupKey, notFound -> CcpOtherConstants.EMPTY_JSON);
-			List<CcpJsonRepresentation> items = group.getAsJsonList(VisEntityGroupPositionsBySkills.Fields.skill);
-			List<CcpJsonRepresentation> otherItems = items.stream().filter(item -> false == word.equals(item.getAsString(VisJsonCommonsFields.word))).collect(Collectors.toList());
-			boolean nothingToRemove = otherItems.size() == items.size();
-			if(nothingToRemove) {
-				continue;
-			}
-			VisEntityGroupPositionsBySkills.ENTITY.save(groupKey.put(VisEntityGroupPositionsBySkills.Fields.skill, otherItems));
-			new CcpCacheDecorator(VisEntityGroupPositionsBySkills.ENTITY.calculateId(groupKey)).delete();
-		}
 	}
 
 	/**
