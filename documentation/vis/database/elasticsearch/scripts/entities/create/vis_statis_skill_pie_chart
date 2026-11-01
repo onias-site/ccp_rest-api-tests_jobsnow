@@ -1,0 +1,19 @@
+{
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "ddd": {
+        "type": "integer"
+      },
+      "seniority": {
+        "type": "keyword"
+      },
+      "total": {
+        "type": "integer"
+      },
+      "yearMonth": {
+        "type": "keyword"
+      }
+    }
+  }
+}

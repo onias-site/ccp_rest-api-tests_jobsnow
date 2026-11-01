@@ -2,6 +2,9 @@
   "mappings": {
     "dynamic": "strict",
     "properties": {
+      "childOcurrences": {
+        "type": "integer"
+      },
       "initialsGroup": {
         "type": "keyword"
       },

@@ -11,11 +11,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
 import com.ccp.especifications.db.bulk.CcpBulkItem;
@@ -151,6 +153,9 @@ public class ResumesToRecruitersTest {
 	}
 
 	private static CcpJsonRepresentation sendTo(String... recruiters) {
+		// the e-mails go out only from Monday to Friday, and the process takes the day from the clock
+		CcpTimeDecorator now = new CcpTimeDecorator();
+		Assume.assumeFalse(now.isWeekend());
 		// the process queries what the test has just written
 		ElasticsearchLocal.refresh("jn_versionable", "vis_resume", "vis_recruiter", "vis_viewed_resume");
 		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON.put(VisRecruiterResumesFields.recruiters, Arrays.asList(recruiters));

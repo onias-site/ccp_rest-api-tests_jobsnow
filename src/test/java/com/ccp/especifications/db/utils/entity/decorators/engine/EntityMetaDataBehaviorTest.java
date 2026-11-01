@@ -51,7 +51,8 @@ public class EntityMetaDataBehaviorTest {
 				.put(JnEntitySupportPendingCommand.Fields.botName, "test")
 				.put(JnEntitySupportPendingCommand.Fields.chatId, 999L)
 				.put(JnEntitySupportPendingCommand.Fields.command, "/test " + UUID.randomUUID())
-				.put(JnEntitySupportPendingCommand.Fields.timestamp, System.currentTimeMillis());
+				.put(JnEntitySupportPendingCommand.Fields.timestamp, System.currentTimeMillis())
+				.put(JnEntitySupportPendingCommand.Fields.priority, 3);
 		return task;
 	}
 

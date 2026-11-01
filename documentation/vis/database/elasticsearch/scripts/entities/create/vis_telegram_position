@@ -1,0 +1,25 @@
+{
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "contact": {
+        "type": "keyword"
+      },
+      "ddd": {
+        "type": "integer"
+      },
+      "seniority": {
+        "type": "keyword"
+      },
+      "skill": {
+        "type": "keyword"
+      },
+      "statisSkillLineChart": {
+        "type": "keyword"
+      },
+      "yearMonth": {
+        "type": "keyword"
+      }
+    }
+  }
+}

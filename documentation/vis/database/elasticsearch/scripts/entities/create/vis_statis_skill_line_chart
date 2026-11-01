@@ -1,0 +1,22 @@
+{
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "ddd": {
+        "type": "integer"
+      },
+      "seniority": {
+        "type": "keyword"
+      },
+      "skill": {
+        "type": "keyword"
+      },
+      "total": {
+        "type": "integer"
+      },
+      "yearMonth": {
+        "type": "keyword"
+      }
+    }
+  }
+}

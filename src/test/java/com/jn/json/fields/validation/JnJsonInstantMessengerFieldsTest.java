@@ -13,8 +13,9 @@ public class JnJsonInstantMessengerFieldsTest {
 	public void valuesTest() {
 		JnJsonInstantMessengerFields[] values = JnJsonInstantMessengerFields.values();
 		assertNotNull(values);
-		// botReply, typedValueToRedirect and listToShowAgain came from jb on 2026-10-15
-		assertEquals(13, values.length);
+		// botReply, typedValueToRedirect and listToShowAgain came from jb on 2026-10-15; three more came with the support
+		// tickets on 2026-10-24
+		assertEquals(16, values.length);
 	}
 
 	@Test

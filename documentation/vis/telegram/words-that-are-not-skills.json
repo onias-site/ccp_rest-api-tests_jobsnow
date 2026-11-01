@@ -1,0 +1,10 @@
+{
+  "excludedSkill": [
+    {
+      "word": "TEMPO"
+    },
+    {
+      "word": "SERVER"
+    }
+  ]
+}
