@@ -16,13 +16,14 @@ import org.junit.Test;
 
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFieldName;
+import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
 import com.ccp.especifications.db.bulk.CcpBulkItem;
 import com.ccp.especifications.db.utils.entity.decorators.ElasticsearchLocal;
-import com.ccp.especifications.email.CcpEmailSender;
+import com.ccp.especifications.email.CcpEmailProvider;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
@@ -37,7 +38,10 @@ import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnLanguage;
 import com.vis.entities.VisEntityRecruiter;
+import com.vis.entities.VisEntityRecruiterFirstEmail;
+import com.vis.entities.VisEntityRecruiterQueueCursor;
 import com.vis.entities.VisEntityRecruiterResumes;
+import com.vis.entities.VisEntityRecruiterSignUpReturn;
 import com.vis.entities.VisEntityResume;
 import com.vis.entities.VisEntityViewedResume;
 import com.vis.services.VisServiceRecruiterResumes;
@@ -53,7 +57,7 @@ import com.vis.services.VisServiceRecruiterResumes;
 public class ResumesToRecruitersTest {
 
 	static {
-		CcpInstanceProvider<CcpEmailSender> email = () -> RecordingResumesEmailSender.INSTANCE;
+		CcpInstanceProvider<CcpEmailProvider> email = () -> RecordingResumesEmailSender.INSTANCE;
 
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
@@ -106,6 +110,8 @@ public class ResumesToRecruitersTest {
 			CcpJsonRepresentation key = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, email);
 			VisEntityRecruiter.ENTITY.deleteAnyWhere(key);
 			VisEntityRecruiterResumes.ENTITY.delete(key);
+			VisEntityRecruiterFirstEmail.ENTITY.delete(key);
+			VisEntityRecruiterSignUpReturn.ENTITY.delete(key);
 		}
 	}
 
@@ -141,11 +147,15 @@ public class ResumesToRecruitersTest {
 	}
 
 	private void saveRecruiter(String email) {
+		this.saveRecruiter(email, "test");
+	}
+
+	private void saveRecruiter(String email, String source) {
 		// the validator runs before the transformers: the domain and the kind of the e-mail go ready
 		String domain = email.substring(email.indexOf('@') + 1);
 		CcpJsonRepresentation recruiter = CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityRecruiter.Fields.email, email)
-				.put(VisEntityRecruiter.Fields.source, "test")
+				.put(VisEntityRecruiter.Fields.source, source)
 				.put(VisEntityRecruiter.Fields.domain, domain)
 				.put(VisEntityRecruiter.Fields.professional, false == domain.equals("gmail.com"));
 		VisEntityRecruiter.ENTITY.save(recruiter);
@@ -191,6 +201,27 @@ public class ResumesToRecruitersTest {
 				.put(JnJsonCommonsFields.email, recruiter)
 				.put(VisRecruiterResumesFields.resumeId, row.getAsString(VisRecruiterResumesFields.resumeId))
 				.put(VisRecruiterResumesFields.token, row.getAsString(VisRecruiterResumesFields.token));
+	}
+
+	@Test
+	public void theEmailEndsAskingToReportTroublesOnOpeningTheLinkedinOfTheCandidate() {
+		List<String> endings = new java.util.ArrayList<>();
+		for (CcpBulkItem seed : VisEntityRecruiterResumes.INSTANCE.getFirstRecordsToInsert()) {
+			boolean templateSeed = seed.json.containsAllFields(JnJsonCommonsFields.templateId, JnJsonCommonsFields.message);
+			if(false == templateSeed) {
+				continue;
+			}
+			String templateId = seed.json.getAsString(JnJsonCommonsFields.templateId);
+			boolean recruiterTemplate = templateId.endsWith("VisNotifyRecruiterAboutResumes");
+			if(false == recruiterTemplate) {
+				continue;
+			}
+			String message = seed.json.getAsString(JnJsonCommonsFields.message);
+			endings.add(message);
+		}
+		assertEquals(2, endings.size());
+		assertTrue(endings.stream().anyMatch(message -> message.endsWith("<p>Caso haja problemas em abrir o LinkedIn do candidato, nos avise.</p></body></html>")));
+		assertTrue(endings.stream().anyMatch(message -> message.endsWith("<p>If you have any trouble opening the candidate's LinkedIn, please let us know.</p></body></html>")));
 	}
 
 	@Test
@@ -355,7 +386,8 @@ public class ResumesToRecruitersTest {
 		assertTrue(message.contains("/recrutador/ver-curriculo?email="));
 		assertFalse("no placeholder is left unresolved", message.matches("(?s).*\\{[a-zA-Z]+\\}.*"));
 		CcpJsonRepresentation allowedRow = rowOf(professionalRows, allowedJob);
-		assertEquals("Sua última visualização: nunca", allowedRow.getAsString(VisRecruiterResumesFields.lastView));
+		assertEquals("Você nunca visualizou este currículo", allowedRow.getAsString(VisRecruiterResumesFields.lastView));
+		assertFalse("no red background on the line", message.contains("background-color: red"));
 		assertEquals("Ver currículo", allowedRow.getAsString(VisRecruiterResumesFields.viewLabel));
 		assertFalse(allowedRow.getAsBoolean(VisRecruiterResumesFields.viewed));
 	}
@@ -470,6 +502,360 @@ public class ResumesToRecruitersTest {
 		assertTrue(RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.containsKey(neverViewed));
 		CcpJsonRepresentation stoppedKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterResumes.Fields.email, stoppedViewing);
 		assertFalse("no list of \"see all\" either", VisEntityRecruiterResumes.ENTITY.exists(stoppedKey));
+
+		assertEquals(1, counters.getAsIntegerNumber(VisRecruiterResumesFields.recruitersInactivated).intValue());
+		CcpJsonRepresentation stoppedRecruiter = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, stoppedViewing);
+		assertFalse("inactivated", VisEntityRecruiter.ENTITY.exists(stoppedRecruiter));
+		assertTrue(VisEntityRecruiter.ENTITY.getTwinEntity().exists(stoppedRecruiter));
+		assertEquals("test", VisEntityRecruiter.ENTITY.getTwinEntity().getOneById(stoppedRecruiter).getAsString(VisEntityRecruiter.Fields.source));
+		for (String active : List.of(stillViewing, viewedLongAgoAndRecently, neverViewed)) {
+			CcpJsonRepresentation activeRecruiter = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, active);
+			assertTrue(VisEntityRecruiter.ENTITY.exists(activeRecruiter));
+		}
+	}
+
+	private static List<CcpJsonRepresentation> skillsNamed(String prefix, int howMany) {
+		List<CcpJsonRepresentation> skills = new java.util.ArrayList<>();
+		for (int index = 0; index < howMany; index++) {
+			skills.add(skill(prefix + index));
+		}
+		return skills;
+	}
+
+	private static CcpJsonRepresentation withRankings(CcpJsonRepresentation rankings, String prefix, int howMany, double ranking) {
+		CcpJsonRepresentation result = rankings;
+		for (int index = 0; index < howMany; index++) {
+			result = result.put(new CcpFieldName(prefix + index), ranking);
+		}
+		return result;
+	}
+
+	/** A resume as stored, with the given skills: what the process reads from {@code vis_resume}. */
+	private CcpJsonRepresentation storedResume(String who, String job, String skillPrefix, int skills) {
+		CcpJsonRepresentation resume = this.resume(who, job);
+		this.saveResume(resume);
+		CcpJsonRepresentation stored = VisEntityResume.ENTITY.getOneById(resume);
+		return stored.put(VisEntityResume.Fields.skill, skillsNamed(skillPrefix, skills));
+	}
+
+	/** The rows of the e-mail, not the sending: the order is proved on any day of the week. */
+	@Test
+	public void theResumesGoByEnoughSkillsThenByViewsThenByTheAverageRanking() {
+		CcpJsonRepresentation fewSkills = this.storedResume("few", "Poucas " + this.run, "FEW", 9);
+		CcpJsonRepresentation noViews = this.storedResume("noviews", "Sem views " + this.run, "BEST", 10);
+		CcpJsonRepresentation worseRanking = this.storedResume("worse", "Pior ranking " + this.run, "WORSE", 10);
+		CcpJsonRepresentation betterRanking = this.storedResume("better", "Melhor ranking " + this.run, "BETTER", 10);
+		CcpJsonRepresentation mostViewed = this.storedResume("most", "Mais visto " + this.run, "WORST", 10);
+		CcpJsonRepresentation rankings = CcpOtherConstants.EMPTY_JSON;
+		rankings = withRankings(rankings, "FEW", 9, 1d);
+		rankings = withRankings(rankings, "BEST", 10, 1d);
+		rankings = withRankings(rankings, "BETTER", 10, 2d);
+		rankings = withRankings(rankings, "WORSE", 10, 5d);
+		rankings = withRankings(rankings, "WORST", 10, 900d);
+		java.util.Map<String, Long> viewsByResume = new java.util.HashMap<>();
+		viewsByResume.put(VisBusinessSendResumesToRecruiters.getLinkedinHash(this.linkedin("few")), 50L);
+		viewsByResume.put(VisBusinessSendResumesToRecruiters.getLinkedinHash(this.linkedin("worse")), 1L);
+		viewsByResume.put(VisBusinessSendResumesToRecruiters.getLinkedinHash(this.linkedin("better")), 1L);
+		viewsByResume.put(VisBusinessSendResumesToRecruiters.getLinkedinHash(this.linkedin("most")), 3L);
+		List<CcpJsonRepresentation> resumes = Arrays.asList(fewSkills, noViews, worseRanking, betterRanking, mostViewed);
+
+		List<CcpJsonRepresentation> rows = VisBusinessSendResumesToRecruiters.getResumesOfTheEmail(resumes, rankings, new java.util.HashMap<>(), viewsByResume);
+
+		assertEquals(5, rows.size());
+		assertTrue(hasRowOf(rows.subList(0, 1), "Mais visto " + this.run));
+		assertTrue(hasRowOf(rows.subList(1, 2), "Melhor ranking " + this.run));
+		assertTrue(hasRowOf(rows.subList(2, 3), "Pior ranking " + this.run));
+		assertTrue(hasRowOf(rows.subList(3, 4), "Sem views " + this.run));
+		assertTrue(hasRowOf(rows.subList(4, 5), "Poucas " + this.run));
+	}
+
+	@Test
+	public void aRecruiterCountsOnceInTheViewsOfAResume() {
+		java.util.Map<String, Long> lastViewByPair = new java.util.HashMap<>();
+		lastViewByPair.put("recruiter1|resumeA", 10L);
+		lastViewByPair.put("recruiter2|resumeA", 20L);
+		lastViewByPair.put("recruiter1|resumeB", 30L);
+
+		java.util.Map<String, Long> viewsByResume = VisBusinessSendResumesToRecruiters.getViewsByResume(lastViewByPair);
+
+		assertEquals(Long.valueOf(2), viewsByResume.get("resumeA"));
+		assertEquals(Long.valueOf(1), viewsByResume.get("resumeB"));
+	}
+
+	/** An unknown skill has no number: it stays out of the sum and of the division. */
+	@Test
+	public void theAverageRankingCountsOnlyTheSkillsThatHaveARanking() {
+		CcpJsonRepresentation rankings = CcpOtherConstants.EMPTY_JSON
+				.put(new CcpFieldName("JAVA"), 2d)
+				.put(new CcpFieldName("SQL"), 4d);
+
+		double average = VisBusinessSendResumesToRecruiters.getAverageRanking(List.of("JAVA", "SQL", "UNKNOWN"), rankings);
+		double nothingRanked = VisBusinessSendResumesToRecruiters.getAverageRanking(List.of("UNKNOWN"), rankings);
+
+		assertEquals(3d, average, 0d);
+		assertEquals(Double.MAX_VALUE, nothingRanked, 0d);
+	}
+
+	/** A document of the legacy index, as the scroll hands it: numbers as texts, and most of the fields absent. */
+	private static CcpJsonRepresentation legacyCandidate(String email) {
+		return CcpOtherConstants.EMPTY_JSON
+				.put(VisBusinessBuildLegacyCandidateTable.Legacy.id, email)
+				.put(VisBusinessBuildLegacyCandidateTable.Legacy.tipoVaga, "2")
+				.put(VisBusinessBuildLegacyCandidateTable.Legacy.ddd, "11")
+				.put(VisBusinessBuildLegacyCandidateTable.Legacy.pretensaoClt, "8000")
+				.put(VisBusinessBuildLegacyCandidateTable.Legacy.ultimaProfissao, "Analista de Recrutamento");
+	}
+
+	private String legacyTable(CcpJsonRepresentation candidate) {
+		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON
+				.put(VisRecruiterResumesFields.legacyCandidate, candidate)
+				.put(JnJsonCommonsFields.email, candidate.getAsString(VisBusinessBuildLegacyCandidateTable.Legacy.id))
+				.put(VisRecruiterResumesFields.frontendUrl, "http://localhost:3000");
+		CcpJsonRepresentation withTable = VisBusinessBuildLegacyCandidateTable.INSTANCE.execute(input);
+		return withTable.getAsString(VisRecruiterResumesFields.resumesTable);
+	}
+
+	/** The candidate never informed these: the row of a stored resume would read the absence as "no". */
+	@Test
+	public void theInvitationShowsNothingTheCandidateDidNotInform() {
+		String html = this.legacyTable(legacyCandidate(this.candidate("legacy")));
+
+		assertEquals("one row besides the header", 3, html.split("<tr>").length);
+		assertTrue(html, html.contains("Pretensão Salarial CLT"));
+		assertTrue(html, html.contains("Analista de Recrutamento"));
+		assertFalse(html, html.contains("Experiência em anos"));
+		assertFalse(html, html.contains("negociáveis"));
+		assertFalse(html, html.contains("viagens"));
+		assertFalse(html, html.contains("temporárias"));
+		assertFalse(html, html.contains("imediata"));
+		assertFalse("the preview has no link", html.contains("recrutador/ver-curriculo"));
+		assertTrue(html, html.contains("<p>Ver currículo</p>"));
+	}
+
+	@Test
+	public void theInvitationShowsWhatTheCandidateInformed() {
+		CcpJsonRepresentation candidate = legacyCandidate(this.candidate("informed"))
+				.put(VisBusinessBuildLegacyCandidateTable.Legacy.experiencia, 2020d)
+				.put(VisBusinessBuildLegacyCandidateTable.Legacy.pretensaoNegociavel, true)
+				.put(VisBusinessBuildLegacyCandidateTable.Legacy.disponibilidade, "15");
+
+		String html = this.legacyTable(candidate);
+
+		assertTrue(html, html.contains("Experiência em anos"));
+		assertTrue(html, html.contains("Pretensões salariais negociáveis: Sim"));
+		assertTrue(html, html.contains("15 dias"));
+	}
+
+	/** Only the home office DDD when that is all the candidate accepts. */
+	@Test
+	public void aCandidateWhoAcceptsOnlyHomeOfficeHasNoRegion() {
+		CcpJsonRepresentation candidate = legacyCandidate(this.candidate("remote"))
+				.put(VisBusinessBuildLegacyCandidateTable.Legacy.ddd, "0")
+				.put(VisBusinessBuildLegacyCandidateTable.Legacy.homeoffice, true);
+
+		String html = this.legacyTable(candidate);
+
+		assertTrue(html, html.contains("Aceita somente homeoffice"));
+	}
+
+	/** Goes through the real template, and leaves the e-mail in target for a person to read. */
+	@Test
+	public void theInvitationGoesWithTheLinkOfTheFormAndTheTable() throws java.io.IOException {
+		List<CcpBulkItem> seeds = VisEntityRecruiterResumes.INSTANCE.getInvitationSeeds();
+		for (CcpBulkItem seed : seeds) {
+			seed.entity.save(seed.json);
+		}
+		String email = this.candidate("invited");
+		CcpJsonRepresentation candidate = legacyCandidate(email)
+				.put(VisBusinessBuildLegacyCandidateTable.Legacy.experiencia, 2019d)
+				.put(VisBusinessBuildLegacyCandidateTable.Legacy.pretensaoPj, "12000")
+				.put(VisBusinessBuildLegacyCandidateTable.Legacy.pretensaoNegociavel, true)
+				.put(VisBusinessBuildLegacyCandidateTable.Legacy.profissaoDesejada, "Tech Recruiter");
+		String table = this.legacyTable(candidate);
+
+		VisBusinessInviteLegacyCandidates.sendTheInvitation(email, table, "https://www.jobsnow.com.br/meus-dados/sobre-mim");
+
+		String message = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(email);
+		assertTrue(message.contains("https://www.jobsnow.com.br/meus-dados/sobre-mim"));
+		assertTrue(message.contains("Como o recrutador verá o seu currículo"));
+		assertTrue(message.contains("Tech Recruiter"));
+		assertFalse("no placeholder is left unresolved", message.matches("(?s).*\\{[a-zA-Z]+\\}.*"));
+		java.nio.file.Files.writeString(java.nio.file.Path.of("target", "convite-curriculo-exemplo.html"), message);
+	}
+
+	/** Reads the real index, so the read that precedes the sending is proved on any day of the week. */
+	@Test
+	public void everyRecruiterIsReadAndOrderedByTheQueuePosition() {
+		ElasticsearchLocal.refresh("vis_recruiter");
+
+		List<CcpJsonRepresentation> recruiters = VisBusinessSendResumesToRecruiters.getRecruiters();
+		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, new java.util.HashMap<>(), 0L, "", java.util.Set.of());
+
+		assertTrue(recruiters.size() > 1000);
+		assertEquals(recruiters.size(), inOrder.size());
+		List<String> positions = new java.util.ArrayList<>();
+		inOrder.forEach(recruiter -> positions.add(recruiter.getAsString(VisRecruiterResumesFields.queuePosition)));
+		List<String> sortedPositions = new java.util.ArrayList<>(positions);
+		java.util.Collections.sort(sortedPositions);
+		assertEquals(sortedPositions, positions);
+	}
+
+	/** A return by the sign-up gives another 35 days; an old return does not, and the recruiter is inactivated again. */
+	@Test
+	public void aRecentReturnByTheSignUpKeepsTheRecruiterAndAnOldOneDoesNot() {
+		String recentReturn = this.recruiter("voltou", "gmail.com");
+		String oldReturn = this.recruiter("voltouhatempos", "gmail.com");
+		this.saveRecruiter(recentReturn);
+		this.saveRecruiter(oldReturn);
+		this.saveResume(this.resume("retorno", "Analista do retorno " + this.run));
+		int limit = VisBusinessSendResumesToRecruiters.DAYS_WITHOUT_VIEWS;
+		this.viewedDaysAgo(recentReturn, this.linkedin("antigo"), limit + 10);
+		this.viewedDaysAgo(oldReturn, this.linkedin("antigo"), limit + 10);
+		long now = System.currentTimeMillis();
+		long oneDay = 24L * 60 * 60 * 1000;
+		CcpJsonRepresentation recentKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterSignUpReturn.Fields.email, recentReturn);
+		CcpJsonRepresentation oldKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterSignUpReturn.Fields.email, oldReturn);
+		VisEntityRecruiterSignUpReturn.ENTITY.save(recentKey.put(VisEntityRecruiterSignUpReturn.Fields.returnedAt, now - oneDay));
+		VisEntityRecruiterSignUpReturn.ENTITY.save(oldKey.put(VisEntityRecruiterSignUpReturn.Fields.returnedAt, now - (limit + 1) * oneDay));
+		ElasticsearchLocal.refresh("vis_recruiter_sign_up_return");
+
+		CcpJsonRepresentation counters = sendTo(recentReturn, oldReturn);
+
+		assertEquals(1, counters.getAsIntegerNumber(VisRecruiterResumesFields.emailsSent).intValue());
+		assertTrue(RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.containsKey(recentReturn));
+		assertFalse(RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.containsKey(oldReturn));
+		CcpJsonRepresentation stillActive = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, recentReturn);
+		CcpJsonRepresentation inactivated = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, oldReturn);
+		assertTrue(VisEntityRecruiter.ENTITY.exists(stillActive));
+		assertFalse(VisEntityRecruiter.ENTITY.exists(inactivated));
+	}
+
+	/** A recruiter of the sign-up leaves the waiting for the first e-mail only when it goes out. */
+	@Test
+	public void theFirstEmailOfARecruiterOfTheSignUpIsRecorded() {
+		String signedUp = this.recruiter("cadastro", "gmail.com");
+		String other = this.recruiter("legado", "gmail.com");
+		this.saveRecruiter(signedUp, VisEntityRecruiter.Sources.login.getValue());
+		this.saveRecruiter(other);
+		this.saveResume(this.resume("primeiro", "Analista do primeiro e-mail " + this.run));
+
+		CcpJsonRepresentation counters = sendTo(signedUp, other);
+
+		assertEquals(2, counters.getAsIntegerNumber(VisRecruiterResumesFields.emailsSent).intValue());
+		CcpJsonRepresentation signedUpKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterFirstEmail.Fields.email, signedUp);
+		CcpJsonRepresentation otherKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterFirstEmail.Fields.email, other);
+		assertTrue(VisEntityRecruiterFirstEmail.ENTITY.exists(signedUpKey));
+		assertFalse(VisEntityRecruiterFirstEmail.ENTITY.exists(otherKey));
+	}
+
+	/** Writes on the record the real run uses, and puts back what it found there. */
+	@Test
+	public void aRunRestrictedToSomeRecruitersDoesNotMoveTheQueueButAFullOneDoes() {
+		String positionBefore = VisBusinessSendResumesToRecruiters.getLastQueuePosition();
+		String newPosition = "1" + "a".repeat(40);
+		try {
+			VisBusinessSendResumesToRecruiters.saveLastQueuePosition(List.of("someone@jobsnow.com"), positionBefore, newPosition);
+			assertEquals(positionBefore, VisBusinessSendResumesToRecruiters.getLastQueuePosition());
+
+			VisBusinessSendResumesToRecruiters.saveLastQueuePosition(List.of(), positionBefore, newPosition);
+			assertEquals(newPosition, VisBusinessSendResumesToRecruiters.getLastQueuePosition());
+		} finally {
+			String cursorName = VisEntityRecruiterQueueCursor.CursorNames.resumesToRecruiters.getValue();
+			CcpJsonRepresentation cursorKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterQueueCursor.Fields.cursorName, cursorName);
+			if(positionBefore.isEmpty()) {
+				VisEntityRecruiterQueueCursor.ENTITY.delete(cursorKey);
+			} else {
+				VisEntityRecruiterQueueCursor.ENTITY.save(cursorKey.put(VisEntityRecruiterQueueCursor.Fields.lastPosition, positionBefore));
+			}
+		}
+	}
+
+	/** The view reaches the same record the unsubscribe moved to the twin, with the source it had. */
+	@Test
+	public void aViewMakesAnInactiveRecruiterActiveAgain() {
+		String recruiter = this.recruiter("inativo", "gmail.com");
+		this.saveRecruiter(recruiter);
+		CcpJsonRepresentation key = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, recruiter);
+		VisEntityRecruiter.ENTITY.delete(key);
+		assertFalse(VisEntityRecruiter.ENTITY.exists(key));
+		assertTrue(VisEntityRecruiter.ENTITY.getTwinEntity().exists(key));
+
+		CcpJsonRepresentation view = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityViewedResume.Fields.linkedin, this.linkedin("reativa"))
+				.put(VisEntityViewedResume.Fields.email, recruiter)
+				.put(VisEntityViewedResume.Fields.alias, "Candidato que reativou");
+		VisEntityViewedResume.ENTITY.save(view);
+
+		assertTrue(VisEntityRecruiter.ENTITY.exists(key));
+		assertFalse(VisEntityRecruiter.ENTITY.getTwinEntity().exists(key));
+		assertEquals("test", VisEntityRecruiter.ENTITY.getOneById(key).getAsString(VisEntityRecruiter.Fields.source));
+		VisEntityViewedResume.ENTITY.deleteAnyWhere(view);
+	}
+
+	/** A view of someone who is no recruiter creates no recruiter. */
+	@Test
+	public void aViewOfSomeoneWhoIsNotARecruiterChangesNoRecruiter() {
+		String someone = this.recruiter("ninguem", "gmail.com");
+		CcpJsonRepresentation view = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityViewedResume.Fields.linkedin, this.linkedin("ninguem"))
+				.put(VisEntityViewedResume.Fields.email, someone)
+				.put(VisEntityViewedResume.Fields.alias, "Candidato sem recrutador");
+
+		VisEntityViewedResume.ENTITY.save(view);
+
+		CcpJsonRepresentation key = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, someone);
+		assertFalse(VisEntityRecruiter.ENTITY.exists(key));
+		VisEntityViewedResume.ENTITY.deleteAnyWhere(view);
+	}
+
+	/** The table does not depend on the day: a resume never viewed has its line without any highlight. */
+	@Test
+	public void aResumeNeverViewedHasAPlainLine() {
+		String recruiter = this.recruiter("plain", "gmail.com");
+		CcpJsonRepresentation row = rowToSend("Você nunca visualizou este currículo");
+
+		CcpJsonRepresentation table = VisBusinessRenderResumesTable.INSTANCE.execute(CcpOtherConstants.EMPTY_JSON
+				.put(VisRecruiterResumesFields.resumes, Arrays.asList(row))
+				.put(JnJsonCommonsFields.email, recruiter)
+				.put(VisRecruiterResumesFields.frontendUrl, "http://localhost:3000")
+				.put(JnJsonCommonsFields.language, JnLanguage.portuguese));
+
+		String html = table.getAsString(VisRecruiterResumesFields.resumesTable);
+		assertTrue(html, html.contains("<p>Você nunca visualizou este currículo</p>"));
+		assertFalse(html, html.contains("background-color"));
+	}
+
+	private static CcpJsonRepresentation rowToSend(String lastView) {
+		return CcpOtherConstants.EMPTY_JSON
+				.put(VisRecruiterResumesFields.resumeId, "resume")
+				.put(VisRecruiterResumesFields.whatMatters, Arrays.asList("CLT: R$ 8.000,00"))
+				.put(VisRecruiterResumesFields.regions, Arrays.asList("São Paulo – SP"))
+				.put(VisRecruiterResumesFields.languagesAndSkills, Arrays.asList("JAVA"))
+				.put(VisRecruiterResumesFields.job, Arrays.asList("Desenvolvedor"))
+				.put(VisRecruiterResumesFields.otherInformation, Arrays.asList("PCD: não"))
+				.put(VisRecruiterResumesFields.lastView, lastView)
+				.put(VisRecruiterResumesFields.viewed, false)
+				.put(VisRecruiterResumesFields.viewLabel, "Ver currículo")
+				.put(VisRecruiterResumesFields.token, "token")
+				.put(VisRecruiterResumesFields.insertion, "hoje")
+				.put(VisRecruiterResumesFields.lastChange, "hoje");
+	}
+
+	/** Calls the e-mail directly: the process runs only from Monday to Friday, and this rule does not depend on the day. */
+	@Test
+	public void theEmailGoesWithTheOneClickUnsubscribeHeaders() {
+		String recruiter = this.recruiter("one+click", "gmail.com");
+		this.saveRecruiter(recruiter);
+		CcpJsonRepresentation row = rowToSend("Você nunca visualizou este currículo");
+
+		VisBusinessSendResumesToRecruiters.sendTheEmail(recruiter, Arrays.asList(row), "http://localhost:3000", "https://api.jobsnow.com");
+
+		CcpJsonRepresentation emailHeaders = RecordingResumesEmailSender.LAST_HEADERS_BY_RECIPIENT.get(recruiter);
+		String token = VisRecruiterLinks.unsubscribe.sign(recruiter);
+		String encodedRecruiter = recruiter.replace("+", "%2B").replace("@", "%40");
+		String expected = "<https://api.jobsnow.com/recruiter-email-link/one-click-unsubscribe?email=" + encodedRecruiter + "&token=" + token + ">";
+		assertEquals(expected, emailHeaders.getAsString(VisBusinessSendResumesToRecruiters.Constants.LIST_UNSUBSCRIBE));
+		assertEquals("List-Unsubscribe=One-Click", emailHeaders.getAsString(VisBusinessSendResumesToRecruiters.Constants.LIST_UNSUBSCRIBE_POST));
 	}
 
 	@Test

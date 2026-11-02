@@ -77,7 +77,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.ccp</groupId>
-			<artifactId>ccp_cache_gcp-memcache</artifactId>
+			<artifactId>ccp_cache_gcp-memory-store</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

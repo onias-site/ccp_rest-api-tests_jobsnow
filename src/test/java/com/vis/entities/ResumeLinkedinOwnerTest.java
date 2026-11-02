@@ -14,7 +14,7 @@ import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
 import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityMetaData;
-import com.ccp.especifications.email.CcpEmailSender;
+import com.ccp.especifications.email.CcpEmailProvider;
 import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
 import com.ccp.hash.CcpHashAlgorithm;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
@@ -37,7 +37,7 @@ public class ResumeLinkedinOwnerTest {
 
 	static {
 		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> CountingInstantMessenger.INSTANCE;
-		CcpInstanceProvider<CcpEmailSender> email = () -> RecordingEmailSender.INSTANCE;
+		CcpInstanceProvider<CcpEmailProvider> email = () -> RecordingEmailSender.INSTANCE;
 
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(

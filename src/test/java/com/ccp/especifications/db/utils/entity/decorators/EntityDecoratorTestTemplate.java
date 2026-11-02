@@ -28,7 +28,7 @@ import com.ccp.process.CcpProcessStatusDefault;
 import com.ccp.especifications.db.utils.entity.decorators.annotations.CcpEntityTwin;
 import com.ccp.especifications.db.utils.entity.decorators.engine.CcpEntityMetaData;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
-import com.ccp.especifications.email.CcpEmailSender;
+import com.ccp.especifications.email.CcpEmailProvider;
 import com.ccp.especifications.db.utils.entity.CcpEntityOperationType;
 import com.ccp.especifications.mensageria.sender.CcpMensageriaSender;
 import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
@@ -66,7 +66,7 @@ public abstract class EntityDecoratorTestTemplate {
 	@BeforeClass
 	public static void loadDependencies() {
 		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> CountingInstantMessenger.INSTANCE;
-		CcpInstanceProvider<CcpEmailSender> email = () -> CountingEmailSender.INSTANCE;
+		CcpInstanceProvider<CcpEmailProvider> email = () -> CountingEmailSender.INSTANCE;
 		CcpInstanceProvider<CcpMensageriaSender> mensageria = () -> CountingMensageriaSender.INSTANCE;
 
 		CcpDependencyInjection.removeAllDependencies();

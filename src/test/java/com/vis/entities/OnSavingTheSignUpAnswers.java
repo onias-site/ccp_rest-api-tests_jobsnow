@@ -33,6 +33,7 @@ import com.jn.utils.JnDeleteKeysFromCache;
 import com.js.entities.JsEntityLoginAnswers;
 import com.vis.business.recruiter.VisBusinessPrepareRecruiter;
 import com.vis.business.recruiter.VisBusinessSaveRecruiterFromLoginAnswers;
+import com.vis.entities.VisEntityRecruiterSignUpReturn;
 
 /**
  * Proves that the save of the sign-up answers ({@code js_login_answers}) reaches the recruiters ({@code vis_recruiter})
@@ -136,6 +137,21 @@ public class OnSavingTheSignUpAnswers {
 		CcpJsonRepresentation recruiter = VisEntityRecruiter.ENTITY.getOneById(this.recruiterKey(email));
 		assertEquals("telegram", recruiter.getAsString(VisEntityRecruiter.Fields.source));
 		assertFalse(this.twin.exists(this.recruiterKey(email)));
+		CcpJsonRepresentation returnKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterSignUpReturn.Fields.email, email);
+		CcpJsonRepresentation signUpReturn = VisEntityRecruiterSignUpReturn.ENTITY.getOneById(returnKey);
+		long returnedAt = signUpReturn.getAsLongNumber(VisEntityRecruiterSignUpReturn.Fields.returnedAt);
+		assertTrue("the moment of the return is kept", System.currentTimeMillis() - returnedAt < 60_000);
+		VisEntityRecruiterSignUpReturn.ENTITY.delete(returnKey);
+	}
+
+	@Test
+	public void theRecruitingGoalWritesNoReturnForANewRecruiter() {
+		String email = this.email("semretorno");
+
+		this.saveAnswers(email, "recruiting");
+
+		CcpJsonRepresentation returnKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterSignUpReturn.Fields.email, email);
+		assertFalse(VisEntityRecruiterSignUpReturn.ENTITY.exists(returnKey));
 	}
 
 	@Test

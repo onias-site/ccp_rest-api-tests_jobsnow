@@ -7,14 +7,15 @@ import java.util.List;
 
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.especifications.email.CcpEmailSender;
+import com.ccp.especifications.email.CcpEmailProvider;
+import com.ccp.especifications.email.CcpEmailSuppressionList;
 import com.ccp.especifications.http.CcpHttpContentType;
 
 /**
  * E-mail provider double that sends nothing, but keeps the recipients of each sending. It proves that the
  * decorator that sends to the user did (or did not) send the e-mail.
  */
-public class CountingEmailSender implements CcpEmailSender {
+public class CountingEmailSender implements CcpEmailProvider {
 	/** The single instance: the class keeps no state. */
 	public final static CountingEmailSender INSTANCE = new CountingEmailSender();
 
@@ -34,5 +35,13 @@ public class CountingEmailSender implements CcpEmailSender {
 			long howMany = sentRecipients.stream().filter(x -> recipient.equalsIgnoreCase(x)).count();
 			return howMany;
 		}
+	}
+
+	public List<CcpJsonRepresentation> getSuppressedEmails(String providerToken, String providerUrl, CcpEmailSuppressionList suppressionList) {
+		return new ArrayList<>();
+	}
+
+	public List<CcpJsonRepresentation> getSuppressedEmailsCreatedSince(String providerToken, String providerUrl, CcpEmailSuppressionList suppressionList, long startTimeInSeconds) {
+		return new ArrayList<>();
 	}
 }

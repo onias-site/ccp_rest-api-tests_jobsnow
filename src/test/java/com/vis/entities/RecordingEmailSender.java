@@ -6,11 +6,12 @@ import java.util.List;
 
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.especifications.email.CcpEmailSender;
+import com.ccp.especifications.email.CcpEmailProvider;
+import com.ccp.especifications.email.CcpEmailSuppressionList;
 import com.ccp.especifications.http.CcpHttpContentType;
 
 /** E-mail sender of the tests that sends nothing and keeps the recipients and the subject of every e-mail. */
-public class RecordingEmailSender implements CcpEmailSender {
+public class RecordingEmailSender implements CcpEmailProvider {
 	/** The single instance: the class keeps no state. */
 	public final static RecordingEmailSender INSTANCE = new RecordingEmailSender();
 
@@ -22,5 +23,13 @@ public class RecordingEmailSender implements CcpEmailSender {
 	public CcpJsonRepresentation sendSimpleTextEmailMessage(String providerToken, String providerUrl, String templateId, String sender, String subject, String message, CcpHttpContentType contentType, String... recipients) {
 		SENT.add(Arrays.toString(recipients) + " | " + subject);
 		return CcpOtherConstants.EMPTY_JSON;
+	}
+
+	public List<CcpJsonRepresentation> getSuppressedEmails(String providerToken, String providerUrl, CcpEmailSuppressionList suppressionList) {
+		return new ArrayList<>();
+	}
+
+	public List<CcpJsonRepresentation> getSuppressedEmailsCreatedSince(String providerToken, String providerUrl, CcpEmailSuppressionList suppressionList, long startTimeInSeconds) {
+		return new ArrayList<>();
 	}
 }

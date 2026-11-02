@@ -19,6 +19,7 @@ import com.ccp.especifications.db.bulk.CcpBulkItem;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.interfaces.CcpEntityConfigurator;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import com.jb.business.bots.engine.JbBusinessReceiveBotUpdate;
 import com.jb.entities.JbEntityBot;
 import com.jb.entities.JbEntityBotAllowedUser;
 import com.jb.entities.JbEntityBotExplanation;
@@ -171,6 +172,16 @@ public class SeedsOfTheEntitiesTest {
 		CcpJsonRepresentation validator = validators.get(0);
 		assertEquals("userSession", validator.getAsString(JnEntitySessionValidator.Fields.validatorName));
 		assertEquals(JsBusinessValidateLogin.class.getName(), validator.getAsString(JnEntitySessionValidator.Fields.business));
+	}
+
+	/** jb seeds the business that the webhook of the js API runs by class name, without importing jb. */
+	@Test
+	public void jbSeedsTheHandlerOfTheUpdatesOfTheSupportBot() {
+		List<CcpJsonRepresentation> handlers = this.seedsInto(JbEntityBot.INSTANCE, JnEntityBotUpdateHandler.ENTITY);
+		assertEquals(1, handlers.size());
+		CcpJsonRepresentation handler = handlers.get(0);
+		assertEquals("support", handler.getAsString(JnEntityBotUpdateHandler.Fields.botName));
+		assertEquals(JbBusinessReceiveBotUpdate.class.getName(), handler.getAsString(JnEntityBotUpdateHandler.Fields.business));
 	}
 
 	/** The records that the seeds of the configurator write into another entity. */

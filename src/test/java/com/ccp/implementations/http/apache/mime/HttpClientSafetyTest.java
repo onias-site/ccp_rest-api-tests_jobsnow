@@ -25,6 +25,7 @@ import com.ccp.especifications.http.CcpHttpBodyBinary;
 import com.ccp.especifications.http.CcpHttpContentType;
 import com.ccp.especifications.http.CcpHttpMethods;
 import com.ccp.especifications.http.CcpHttpResponse;
+import com.ccp.especifications.http.CcpHttpSecretMask;
 import com.sun.net.httpserver.HttpServer;
 
 /**
@@ -48,8 +49,19 @@ public class HttpClientSafetyTest {
 
 		assertFalse(curl, curl.contains("SG.secret-api-key"));
 		assertFalse(curl, curl.contains("ABCD1234"));
-		assertTrue(curl, curl.contains("Authorization: " + ApacheMimeHttpRequester.MASK));
+		assertTrue(curl, curl.contains("Authorization: " + CcpHttpSecretMask.Fields.MASK.getValue()));
 		assertTrue(curl, curl.contains("Accept: application/json"));
+	}
+
+	@Test
+	public void theCurlMasksTheSecretOfTheWebhookInTheBody() throws Exception {
+		HttpPost request = new HttpPost("http://localhost/setWebhook");
+		request.setEntity(new StringEntity("{\"url\":\"https://x\",\"secret_token\":\"theWebhookSecret\"}"));
+
+		String curl = this.requester.toCurl(request);
+
+		assertFalse(curl, curl.contains("theWebhookSecret"));
+		assertTrue(curl, curl.contains("https://x"));
 	}
 
 	@Test
@@ -59,7 +71,7 @@ public class HttpClientSafetyTest {
 		String curl = this.requester.toCurl(request);
 
 		assertFalse(curl, curl.contains("AAH-secret_token"));
-		assertTrue(curl, curl.contains("/bot" + ApacheMimeHttpRequester.MASK + "/getUpdates?offset=1"));
+		assertTrue(curl, curl.contains("/bot" + CcpHttpSecretMask.Fields.MASK.getValue() + "/getUpdates?offset=1"));
 	}
 
 	/**

@@ -18,6 +18,15 @@ import com.ccp.hash.CcpErrorHashAlgorithmNotFound;
 public class CcpHashDecoratorTest {
 
 	@Test
+	public void isTheSameSecretTest() {
+		CcpHashDecorator hash = new CcpStringDecorator("secret").hash();
+		assertTrue(hash.isTheSameSecret("secret"));
+		assertFalse(hash.isTheSameSecret("Secret"));
+		assertFalse(hash.isTheSameSecret("secret2"));
+		assertFalse(hash.isTheSameSecret(""));
+	}
+
+	@Test
 	public void md5DeterministicTest() {
 		String input = "teste";
 		CcpHashDecorator hash1 = new CcpStringDecorator(input).hash();

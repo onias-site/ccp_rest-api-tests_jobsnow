@@ -6,7 +6,8 @@ import java.util.List;
 
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.especifications.email.CcpEmailSender;
+import com.ccp.especifications.email.CcpEmailProvider;
+import com.ccp.especifications.email.CcpEmailSuppressionList;
 import com.ccp.especifications.http.CcpHttpContentType;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
@@ -15,7 +16,7 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
  * other tests use writes the body to a file, which would serve to check by hand but not for the test to read
  * back the token sent to the user.
  */
-class FakeEmailSender implements CcpEmailSender {
+class FakeEmailSender implements CcpEmailProvider {
 
 	final List<CcpJsonRepresentation> sentEmails = new ArrayList<>();
 
@@ -32,5 +33,13 @@ class FakeEmailSender implements CcpEmailSender {
 		this.sentEmails.add(enviado);
 
 		return CcpOtherConstants.EMPTY_JSON;
+	}
+
+	public List<CcpJsonRepresentation> getSuppressedEmails(String providerToken, String providerUrl, CcpEmailSuppressionList suppressionList) {
+		return new ArrayList<>();
+	}
+
+	public List<CcpJsonRepresentation> getSuppressedEmailsCreatedSince(String providerToken, String providerUrl, CcpEmailSuppressionList suppressionList, long startTimeInSeconds) {
+		return new ArrayList<>();
 	}
 }

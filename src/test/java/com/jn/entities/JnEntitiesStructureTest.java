@@ -33,7 +33,8 @@ public class JnEntitiesStructureTest {
 	@Test public void disposableRecordEntityTest() { assertNotNull(JnEntityDisposableRecord.ENTITY); }
 	@Test public void emailMessageSentEntityTest() { assertNotNull(JnEntityEmailMessageSent.ENTITY); }
 	@Test public void emailParametersToSendEntityTest() { assertNotNull(JnEntityEmailParametersToSend.ENTITY); }
-	@Test public void emailReportedAsSpamEntityTest() { assertNotNull(JnEntityEmailReportedAsSpam.ENTITY); }
+	@Test public void emailSuppressedEntityTest() { assertNotNull(JnEntityEmailSuppressed.ENTITY); }
+	@Test public void emailTemporarilyBlockedEntityTest() { assertNotNull(JnEntityEmailTemporarilyBlocked.ENTITY); }
 	@Test public void emailTemplateMessageEntityTest() { assertNotNull(JnEntityEmailTemplateMessage.ENTITY); }
 	@Test public void httpApiErrorClientEntityTest() { assertNotNull(JnEntityHttpApiErrorClient.ENTITY); }
 	@Test public void httpApiErrorServerEntityTest() { assertNotNull(JnEntityHttpApiErrorServer.ENTITY); }
@@ -56,6 +57,7 @@ public class JnEntitiesStructureTest {
 	@Test public void loginTokenRequestResendEntityTest() { assertNotNull(JsEntityLoginTokenRequestResend.ENTITY); }
 	@Test public void loginTokenRequestUnlockEntityTest() { assertNotNull(JsEntityLoginTokenRequestUnlock.ENTITY); }
 	@Test public void sessionValidatorEntityTest() { assertNotNull(JnEntitySessionValidator.ENTITY); }
+	@Test public void botUpdateHandlerEntityTest() { assertNotNull(JnEntityBotUpdateHandler.ENTITY); }
 	@Test public void recordToReprocessEntityTest() { assertNotNull(JnEntityRecordToReprocess.ENTITY); }
 	@Test public void systemMessageEntityTest() { assertNotNull(JnEntitySystemMessage.ENTITY); }
 	@Test public void versionableEntityTest() { assertNotNull(JnEntityVersionable.ENTITY); }
@@ -85,6 +87,7 @@ public class JnEntitiesStructureTest {
 	@Test public void loginTokenRequestResendFieldsTest() { assertNotNull(JsEntityLoginTokenRequestResend.Fields.values()); }
 	@Test public void loginTokenRequestUnlockFieldsTest() { assertNotNull(JsEntityLoginTokenRequestUnlock.Fields.values()); }
 	@Test public void sessionValidatorFieldsTest() { assertNotNull(JnEntitySessionValidator.Fields.values()); }
+	@Test public void botUpdateHandlerFieldsTest() { assertNotNull(JnEntityBotUpdateHandler.Fields.values()); }
 	@Test public void recordToReprocessFieldsTest() { assertNotNull(JnEntityRecordToReprocess.Fields.values()); }
 	@Test public void versionableFieldsTest() { assertNotNull(JnEntityVersionable.Fields.values()); }
 

@@ -46,10 +46,14 @@ public class RequestHeadersTest {
 	/** Keeps the URL and the headers of the last request and answers an empty JSON. */
 	static class CapturingRequester implements CcpHttpRequester {
 		String lastUrl = "";
+		String lastBody = "";
+		CcpHttpMethods lastMethod = CcpHttpMethods.GET;
 		CcpJsonRepresentation lastHeaders = CcpOtherConstants.EMPTY_JSON;
 
 		public CcpHttpResponse executeHttpRequest(String url, CcpHttpMethods method, CcpJsonRepresentation headers, String body) {
 			this.lastUrl = url;
+			this.lastBody = body;
+			this.lastMethod = method;
 			this.lastHeaders = headers;
 			return new CcpHttpResponse("{}", 200, "");
 		}
@@ -62,6 +66,29 @@ public class RequestHeadersTest {
 	@After
 	public void restoreTheRealHttp() {
 		CcpDependencyInjection.loadAllDependencies(CcpApacheMimeHttp.INSTANCE);
+	}
+
+	@Test
+	public void theRefreshGoesWithoutABody() {
+		CapturingRequester requester = new CapturingRequester();
+		CcpDependencyInjection.loadAllDependencies(() -> requester);
+		CcpDbRequester db = CcpElasticSearchDbRequest.INSTANCE.getInstance();
+
+		db.refresh("any_entity");
+
+		assertTrue(requester.lastUrl, requester.lastUrl.endsWith("/any_entity/_refresh"));
+		assertEquals(CcpHttpMethods.POST, requester.lastMethod);
+		assertEquals("", requester.lastBody);
+	}
+
+	/** Elasticsearch 9 answers 400 to a refresh with a body, so only the real database proves the request. */
+	@Test
+	public void theRealDatabaseAcceptsTheRefresh() {
+		CcpDependencyInjection.loadAllDependencies(CcpApacheMimeHttp.INSTANCE);
+		CcpDbRequester db = CcpElasticSearchDbRequest.INSTANCE.getInstance();
+		String entityName = JnEntitySupportPendingCommand.ENTITY.getEntityMetaData().entityName;
+
+		db.refresh(entityName);
 	}
 
 	@Test

@@ -258,7 +258,7 @@ public class DailyDatabaseMaintenanceTest {
 	}
 
 	private static void refresh() {
-		database().executeHttpRequest("refreshOfTheTest", "/_refresh", CcpHttpMethods.POST, 200, CcpOtherConstants.EMPTY_JSON, CcpHttpResponseType.singleRecord);
+		database().executeHttpRequest("refreshOfTheTest", "/_refresh", CcpHttpMethods.POST, 200, "", CcpOtherConstants.EMPTY_JSON, CcpHttpResponseType.singleRecord);
 	}
 
 	/** Sleeps past the end of the current second, so a record written by the second has expired. */

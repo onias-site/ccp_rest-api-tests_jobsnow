@@ -5,11 +5,11 @@ import com.ccp.decorators.CcpFileDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
-import com.ccp.implementations.cache.gcp.memcache.CcpGcpMemCache;
+import com.ccp.implementations.cache.gcp.memorystore.CcpGcpMemoryStore;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
-import com.ccp.implementations.email.sendgrid.CcpSendGridEmailSender;
+import com.ccp.implementations.email.sendgrid.CcpSendGridEmailProvider;
 import com.ccp.implementations.file.bucket.gcp.CcpGcpFileBucket;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
@@ -45,8 +45,8 @@ public class BaseTest {
 				CcpMindrotPasswordHandler.INSTANCE,
 				CcpElasticSearchDbRequest.INSTANCE,
 				localEnvironment ? CcpLocalInstances.bucket : CcpGcpFileBucket.INSTANCE,
-			    localEnvironment ? CcpLocalCacheInstances.map : CcpGcpMemCache.INSTANCE,
-	    		localEnvironment ? CcpLocalInstances.email : CcpSendGridEmailSender.INSTANCE,
+			    localEnvironment ? CcpLocalCacheInstances.map : CcpGcpMemoryStore.INSTANCE,
+	    		localEnvironment ? CcpLocalInstances.email : CcpSendGridEmailProvider.INSTANCE,
 				localEnvironment ? CcpLocalInstances.syncMensageriaListener : CcpGcpPubSubMensageriaSender.INSTANCE
 				);	
 		

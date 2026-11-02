@@ -6,34 +6,34 @@ import org.junit.Test;
 
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.dependency.injection.CcpDependencyInjection;
-import com.ccp.especifications.email.CcpEmailSender;
+import com.ccp.especifications.email.CcpEmailProvider;
 import com.ccp.especifications.http.CcpHttpContentType;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
-public class CcpSendGridEmailSenderTest {
+public class CcpSendGridEmailProviderTest {
 
 	static {
-		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpSendGridEmailSender.INSTANCE);
+		CcpDependencyInjection.loadAllDependencies(CcpGsonJsonHandler.INSTANCE, CcpSendGridEmailProvider.INSTANCE);
 	}
 
-	private static CcpEmailSender getSender() {
-		return CcpDependencyInjection.getDependency(CcpEmailSender.class);
+	private static CcpEmailProvider getSender() {
+		return CcpDependencyInjection.getDependency(CcpEmailProvider.class);
 	}
 
 	// ── provider ──────────────────────────────────────────────────────────────
 
 	@Test
 	public void constructorProviderTest() {
-		assertNotNull(CcpSendGridEmailSender.INSTANCE);
+		assertNotNull(CcpSendGridEmailProvider.INSTANCE);
 	}
 
 	@Test
 	public void getInstanceTest() {
-		CcpEmailSender instance = CcpSendGridEmailSender.INSTANCE.getInstance();
+		CcpEmailProvider instance = CcpSendGridEmailProvider.INSTANCE.getInstance();
 		assertNotNull(instance);
 	}
 
-	// ── null-parameter tests (AOP) — SendGridEmailSender via interface ────────
+	// ── null-parameter tests (AOP) — SendGridEmailProvider via interface ────────
 
 	@Test(expected = CcpNullParameterException.class)
 	public void sendSimpleTextEmailMessageTokenNullTest() {

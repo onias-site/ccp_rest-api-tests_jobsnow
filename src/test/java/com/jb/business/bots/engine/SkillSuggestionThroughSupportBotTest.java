@@ -22,7 +22,7 @@ import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
 import com.ccp.especifications.db.bulk.CcpBulkItem;
 import com.ccp.especifications.db.utils.entity.decorators.interfaces.CcpEntityConfigurator;
-import com.ccp.especifications.email.CcpEmailSender;
+import com.ccp.especifications.email.CcpEmailProvider;
 import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
@@ -93,7 +93,7 @@ public class SkillSuggestionThroughSupportBotTest {
 
 	static {
 		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> TELEGRAM;
-		CcpInstanceProvider<CcpEmailSender> email = () -> EMAIL_INBOX;
+		CcpInstanceProvider<CcpEmailProvider> email = () -> EMAIL_INBOX;
 
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(

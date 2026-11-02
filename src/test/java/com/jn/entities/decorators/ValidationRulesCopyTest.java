@@ -28,7 +28,8 @@ import com.jn.business.messages.JnInstantMessageType;
 import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityEmailMessageSent;
 import com.jn.entities.JnEntityEmailParametersToSend;
-import com.jn.entities.JnEntityEmailReportedAsSpam;
+import com.jn.entities.JnEntityEmailSuppressed;
+import com.jn.entities.JnEntityEmailTemporarilyBlocked;
 import com.jn.entities.JnEntityEmailTemplateMessage;
 import com.jn.entities.JnEntityHttpApiErrorClient;
 import com.jn.entities.JnEntityHttpApiErrorServer;
@@ -71,7 +72,7 @@ public class ValidationRulesCopyTest {
 			JnEntityBotCommandStepExplanation.class, JbEntityBotCommandStepSession.class, JnEntityBotCommandStepStartMessage.class,
 			JbEntityBotExplanation.class, JbEntityBotUpdateId.class, JbEntityBotChatLanguage.class,
 			JnEntityDisposableRecord.class, JnEntityEmailMessageSent.class,
-			JnEntityEmailParametersToSend.class, JnEntityEmailReportedAsSpam.class, JnEntityEmailTemplateMessage.class,
+			JnEntityEmailParametersToSend.class, JnEntityEmailSuppressed.class, JnEntityEmailTemporarilyBlocked.class, JnEntityEmailTemplateMessage.class,
 			JnEntityHttpApiErrorClient.class, JnEntityHttpApiErrorServer.class, JnEntityHttpApiRetrySendRequest.class,
 			JnEntityInstantMessengerBotLocked.class, JnEntityInstantMessengerMessageSent.class,
 			JnEntityInstantMessengerParametersToSend.class, JnEntityInstantMessengerTemplateMessage.class,

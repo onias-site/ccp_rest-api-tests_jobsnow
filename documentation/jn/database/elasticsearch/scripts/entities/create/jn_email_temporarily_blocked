@@ -5,15 +5,15 @@
                 "email": {
                     "type": "keyword"
                 },
-                "subject": {
+                "created": {
+                    "type": "long"
+                },
+                "reason": {
                     "type": "text"
                 },
-                "subjectType": {
+                "status": {
                     "type": "keyword"
-                },
-                "sender": {
-                    "type": "keyword"
-                }               
+                }
             }
         }
 }

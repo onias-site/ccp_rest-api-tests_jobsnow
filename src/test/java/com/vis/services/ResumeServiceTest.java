@@ -17,7 +17,7 @@ import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
 import com.ccp.especifications.db.utils.entity.decorators.engine.SilentEmailSender;
 import com.ccp.especifications.db.utils.entity.decorators.engine.SilentInstantMessenger;
-import com.ccp.especifications.email.CcpEmailSender;
+import com.ccp.especifications.email.CcpEmailProvider;
 import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
@@ -42,7 +42,7 @@ public class ResumeServiceTest {
 
 	static {
 		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> SilentInstantMessenger.INSTANCE;
-		CcpInstanceProvider<CcpEmailSender> email = () -> SilentEmailSender.INSTANCE;
+		CcpInstanceProvider<CcpEmailProvider> email = () -> SilentEmailSender.INSTANCE;
 
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(

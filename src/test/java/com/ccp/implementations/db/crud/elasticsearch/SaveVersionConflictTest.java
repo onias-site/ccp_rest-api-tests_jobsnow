@@ -82,6 +82,9 @@ public class SaveVersionConflictTest {
 			throw new UnsupportedOperationException();
 		}
 
+		public void refresh(String entityName) {
+		}
+
 		public CcpJsonRepresentation backup(String bucketName, List<String> entityNamePatterns) {
 			throw new UnsupportedOperationException();
 		}

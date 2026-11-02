@@ -26,7 +26,7 @@ public class JnEntityVersionableDecoratorsTest extends EntityDecoratorTestTempla
 
 	@Test
 	public void chain() {
-		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "DecoratorReadOnlyEntity", "DecoratorFieldsTransformerEntity", "DefaultImplementationEntity");
+		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "DecoratorReadOnlyEntity", "DecoratorFieldsTransformerEntity", "DecoratorCacheEntity", "DefaultImplementationEntity");
 	}
 
 	@Test

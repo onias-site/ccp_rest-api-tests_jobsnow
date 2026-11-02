@@ -1,6 +1,8 @@
 package com.ccp.implementations.json.gson;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -29,6 +31,27 @@ public class CcpGsonJsonHandlerTest {
 	public void getInstanceTest() {
 		CcpJsonHandler instance = CcpGsonJsonHandler.INSTANCE.getInstance();
 		assertNotNull(instance);
+	}
+
+	// ── what counts as a JSON object ──────────────────────────────────────────
+
+	@Test
+	public void anObjectIsValidJson() {
+		assertTrue(getHandler().isValidJson("{}"));
+		assertTrue(getHandler().isValidJson("{\"a\":1}"));
+	}
+
+	/** Gson reads these as maps, and {@code fromJson} gives a list for them: the cast of the caller used to blow up. */
+	@Test
+	public void anArrayIsNotValidJson() {
+		assertFalse(getHandler().isValidJson("[]"));
+		assertFalse(getHandler().isValidJson("[[\"a\",1]]"));
+		assertFalse(getHandler().isValidJson("[{\"a\":1}]"));
+	}
+
+	@Test
+	public void anEmptyArrayIsAValidList() {
+		assertTrue(getHandler().isValidJsonList("[]"));
 	}
 
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────

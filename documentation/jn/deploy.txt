@@ -1,0 +1,14 @@
+A) Separar limite no cartao
+B) Acionar conta do cloud
+C) Fazer deploy do cloud run
+D) Variável de ambiente
+E) Ligar domínio ao cloud run
+F) Fazer deploy da mensageria
+G) Fazer deploy do agendamento
+H) Fazer deploy do frontend
+I) Configurar telegram
+J) Configurar sendgrid 
+K) Elasticsearch
+K) Migrar dados
+L) Grupos do telegram
+M) Backup do banco

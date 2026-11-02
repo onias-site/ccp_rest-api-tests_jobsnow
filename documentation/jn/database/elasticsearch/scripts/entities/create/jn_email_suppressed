@@ -1,0 +1,25 @@
+{
+    "mappings": {
+            "dynamic": "strict",
+			"properties": {
+                "email": {
+                    "type": "keyword"
+                },
+                "suppressionList": {
+                    "type": "keyword"
+                },
+                "created": {
+                    "type": "long"
+                },
+                "reason": {
+                    "type": "text"
+                },
+                "status": {
+                    "type": "keyword"
+                },
+                "ip": {
+                    "type": "keyword"
+                }
+            }
+        }
+}
