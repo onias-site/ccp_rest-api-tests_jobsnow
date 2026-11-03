@@ -92,11 +92,14 @@ public class SeedsOfTheEntitiesTest {
 	}
 
 	@Test
-	public void theSupportBotSettingsSendToTheSupportChatWithTenTries() {
+	public void theSupportBotSettingsSendWithTenTriesAndOnlyErrorsAndWarningsGoToTheStackTracesGroup() {
 		List<CcpJsonRepresentation> seeds = this.jsonsOf(JnEntityInstantMessengerParametersToSend.INSTANCE);
 
 		for (CcpJsonRepresentation seed : seeds) {
-			assertEquals(751717896L, (long) seed.getAsLongNumber(JnJsonInstantMessengerFields.chatId));
+			String templateId = seed.getAsString(JnJsonCommonsFields.templateId);
+			boolean stackTrace = templateId.endsWith("JnNotifySupportAboutAnError") || templateId.endsWith("JnNotifySupportAboutWaring");
+			long expectedChat = stackTrace ? -1004489667665L : 751717896L;
+			assertEquals(expectedChat, (long) seed.getAsLongNumber(JnJsonInstantMessengerFields.chatId));
 			assertEquals("support", seed.getAsString(JnJsonInstantMessengerFields.botName));
 			CcpJsonRepresentation moreParameters = seed.getInnerJson(JnJsonCommonsFields.moreParameters);
 			assertEquals(10, (int) moreParameters.getAsIntegerNumber(JnJsonCommonsFields.maxTriesToSendMessage));

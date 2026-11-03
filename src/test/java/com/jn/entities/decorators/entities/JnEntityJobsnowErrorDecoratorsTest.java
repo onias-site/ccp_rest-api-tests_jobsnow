@@ -31,7 +31,7 @@ public class JnEntityJobsnowErrorDecoratorsTest extends EntityDecoratorTestTempl
 
 	@Test
 	public void chain() {
-		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "JnAsyncWriterEntity", "DecoratorFieldsTransformerEntity", "DecoratorWriteSideEffectEntity", "DecoratorCacheEntity", "JnDisposableEntity", "DefaultImplementationEntity");
+		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "JnAsyncWriterEntity", "DecoratorFieldsTransformerEntity", "DecoratorWriteSideEffectEntity", "DecoratorWriteSideEffectEntity", "DecoratorCacheEntity", "JnDisposableEntity", "DefaultImplementationEntity");
 	}
 
 	@Test

@@ -11,6 +11,9 @@
 			"message": {
 				"type": "text"
 			},
+			"origin": {
+				"type": "keyword"
+			},
 			"stackTraceHash": {
 				"type": "keyword"
 			},

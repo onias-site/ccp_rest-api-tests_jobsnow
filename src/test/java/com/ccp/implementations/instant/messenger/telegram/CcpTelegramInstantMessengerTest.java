@@ -1,8 +1,10 @@
 package com.ccp.implementations.instant.messenger.telegram;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -138,5 +140,43 @@ public class CcpTelegramInstantMessengerTest {
 
 		assertNull(telegram.getText("reply_to_message_id"));
 		assertEquals("1", telegram.getText("chat_id"));
+	}
+
+	@Test
+	public void aFileSentToATopicCarriesTheTopic() {
+		CapturingHttpRequester telegram = telegramReplaced();
+
+		getMessenger().sendFile(FakeBot.BOT_A, "tok", -1004489667665L, 4L, 0L, "file", "cap", new Byte[] { 0 });
+
+		assertEquals("4", telegram.getText("message_thread_id"));
+		assertEquals("-1004489667665", telegram.getText("chat_id"));
+	}
+
+	@Test
+	public void aFileSentWithoutTopicCarriesNoTopic() {
+		CapturingHttpRequester telegram = telegramReplaced();
+
+		getMessenger().sendFile(FakeBot.BOT_A, "tok", 1L, 0L, "file", "cap", new Byte[] { 0 });
+
+		assertNull(telegram.getText("message_thread_id"));
+	}
+
+	@Test
+	public void aTextSentToATopicCarriesTheTopic() {
+		CapturingHttpRequester telegram = telegramReplaced();
+
+		getMessenger().sendTextMessage(FakeBot.BOT_A, "tok", -1004428777693L, 8L, 0L, "msg");
+
+		assertTrue(telegram.lastBody, telegram.lastBody.contains("message_thread_id"));
+		assertTrue(telegram.lastBody, telegram.lastBody.contains("-1004428777693"));
+	}
+
+	@Test
+	public void aTextSentWithoutTopicCarriesNoTopic() {
+		CapturingHttpRequester telegram = telegramReplaced();
+
+		getMessenger().sendTextMessage(FakeBot.BOT_A, "tok", 1L, 0L, "msg");
+
+		assertFalse(telegram.lastBody, telegram.lastBody.contains("message_thread_id"));
 	}
 }

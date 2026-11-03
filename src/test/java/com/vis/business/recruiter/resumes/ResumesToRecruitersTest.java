@@ -204,7 +204,7 @@ public class ResumesToRecruitersTest {
 	}
 
 	@Test
-	public void theEmailEndsAskingToReportTroublesOnOpeningTheLinkedinOfTheCandidate() {
+	public void theEmailEndsAskingToReportTroublesOnOpeningTheLinkedinOfTheCandidateThenTheFooter() {
 		List<String> endings = new java.util.ArrayList<>();
 		for (CcpBulkItem seed : VisEntityRecruiterResumes.INSTANCE.getFirstRecordsToInsert()) {
 			boolean templateSeed = seed.json.containsAllFields(JnJsonCommonsFields.templateId, JnJsonCommonsFields.message);
@@ -220,8 +220,8 @@ public class ResumesToRecruitersTest {
 			endings.add(message);
 		}
 		assertEquals(2, endings.size());
-		assertTrue(endings.stream().anyMatch(message -> message.endsWith("<p>Caso haja problemas em abrir o LinkedIn do candidato, nos avise.</p></body></html>")));
-		assertTrue(endings.stream().anyMatch(message -> message.endsWith("<p>If you have any trouble opening the candidate's LinkedIn, please let us know.</p></body></html>")));
+		assertTrue(endings.stream().anyMatch(message -> message.endsWith("<p>Caso haja problemas em abrir o LinkedIn do candidato, nos avise.</p>" + com.jn.business.messages.JnEmailFooter.portuguese.getValue() + "</body></html>")));
+		assertTrue(endings.stream().anyMatch(message -> message.endsWith("<p>If you have any trouble opening the candidate's LinkedIn, please let us know.</p>" + com.jn.business.messages.JnEmailFooter.english.getValue() + "</body></html>")));
 	}
 
 	@Test

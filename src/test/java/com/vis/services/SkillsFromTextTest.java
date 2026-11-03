@@ -111,6 +111,40 @@ public class SkillsFromTextTest {
 		assertFalse(this.skillNames(response).contains("SQL"));
 	}
 
+	/** "/" is not a delimiter, but each side of a slashed word is also a word: SCRUM/KANBAN finds SCRUM and KANBAM. */
+	@Test
+	public void eachSideOfASlashedWordIsAWord() {
+		CcpJsonRepresentation response = this.find("SCRUM/KANBAN, REST/SOAP e JAVA/ANGULAR", Arrays.asList());
+
+		List<String> names = this.skillNames(response);
+		for (String skill : Arrays.asList("SCRUM", "KANBAM", "REST", "SOAP", "JAVA", "ANGULAR")) {
+			assertTrue(names.toString(), names.contains(skill));
+		}
+	}
+
+	/** A slashed skill word stays whole, and its sides are not skills of their own unless they also stand alone. */
+	@Test
+	public void aSlashedSkillWordKeepsItsSidesOut() {
+		List<String> slashedOnly = this.skillNames(this.find("PL/SQL e CI/CD", Arrays.asList()));
+		assertTrue(slashedOnly.toString(), slashedOnly.contains("PLSQL"));
+		assertTrue(slashedOnly.toString(), slashedOnly.contains("DEVOPS"));
+		assertFalse(slashedOnly.toString(), slashedOnly.contains("SQL"));
+
+		List<String> withTheSideAlone = this.skillNames(this.find("PL/SQL e SQL", Arrays.asList()));
+		assertTrue(withTheSideAlone.toString(), withTheSideAlone.contains("PLSQL"));
+		assertTrue(withTheSideAlone.toString(), withTheSideAlone.contains("SQL"));
+	}
+
+	/** Words of 2 characters are found as whole words. */
+	@Test
+	public void twoCharacterWordsAreFound() {
+		List<String> names = this.skillNames(this.find("Dev C# com QA, UX e AWS S3", Arrays.asList()));
+
+		for (String skill : Arrays.asList("CSHARP", "QA", "UX", "S3")) {
+			assertTrue(names.toString(), names.contains(skill));
+		}
+	}
+
 	@Test
 	public void anEmptyTextFindsNothing() {
 		CcpJsonRepresentation response = this.find("   ", Arrays.asList());

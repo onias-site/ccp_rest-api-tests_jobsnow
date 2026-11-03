@@ -20,7 +20,10 @@ class CapturingHttpRequester implements CcpHttpRequester {
 
 	final List<CcpHttpBodyText> lastTexts = new ArrayList<>();
 
+	String lastBody = "";
+
 	public CcpHttpResponse executeHttpRequest(String url, CcpHttpMethods method, CcpJsonRepresentation headers, String body) {
+		this.lastBody = body;
 		CcpHttpResponse response = new CcpHttpResponse(SENT_MESSAGE, 200, "");
 		return response;
 	}

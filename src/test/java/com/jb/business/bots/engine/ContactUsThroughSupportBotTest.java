@@ -85,6 +85,7 @@ public class ContactUsThroughSupportBotTest {
 	}
 
 	private static final Long SUPPORT_CHAT = 751717896L;
+	private static final Long CONTACT_US_GROUP = -1004428777693L;
 
 	private static final String ANSWERED_USER = "faleconosco.respondido@teste.com";
 
@@ -141,7 +142,7 @@ public class ContactUsThroughSupportBotTest {
 	}
 
 	/**
-	 * A bug goes to the operator as {@code /answerContactUs reportBug <email>}, with priority 0, and the user gets the
+	 * A bug goes to the operator as {@code /answerContactUs reportBug <email>}, with priority 1, and the user gets the
 	 * e-mail of the opening; the operator answers it, the ticket moves to {@code js_contact_us_solved} with the answer
 	 * and the user gets it by e-mail.
 	 */
@@ -151,11 +152,11 @@ public class ContactUsThroughSupportBotTest {
 		this.openTicket(ANSWERED_USER, JsContactUsTypes.reportBug, "Erro ao salvar", "A tela de currículo trava ao clicar em salvar");
 
 		String ticket = "/answerContactUs reportBug " + ANSWERED_USER;
-		String notice = TELEGRAM.lastMessageFor(SUPPORT_CHAT).getAsString(JnJsonCommonsFields.message);
+		String notice = TELEGRAM.lastMessageFor(CONTACT_US_GROUP).getAsString(JnJsonCommonsFields.message);
 		assertEquals(ticket, notice);
 		assertTrue(this.isPendingTicket(ticket));
 		CcpJsonRepresentation pendingCommand = JnEntitySupportPendingCommand.ENTITY.getOneById(this.pendingCommand(ticket));
-		assertEquals(0, pendingCommand.getAsIntegerNumber(JnEntitySupportPendingCommand.Fields.priority).intValue());
+		assertEquals(1, pendingCommand.getAsIntegerNumber(JnEntitySupportPendingCommand.Fields.priority).intValue());
 		this.emailSentTo(ANSWERED_USER, JsNotifySupportAndUserAboutContactUs.class);
 
 		String request = this.operatorTypes(ticket);
