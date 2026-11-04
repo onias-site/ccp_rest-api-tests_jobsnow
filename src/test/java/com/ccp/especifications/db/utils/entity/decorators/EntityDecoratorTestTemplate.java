@@ -429,6 +429,7 @@ public abstract class EntityDecoratorTestTemplate {
 
 		long beforeSave = System.currentTimeMillis();
 		entityUnderTest.save(record);
+		long afterSave = System.currentTimeMillis();
 
 		String disposableCopyId = this.disposableCopyId(record);
 		CcpJsonRepresentation disposableCopy = ElasticsearchLocal.document("jn_disposable_record", disposableCopyId);
@@ -438,6 +439,10 @@ public abstract class EntityDecoratorTestTemplate {
 		assertTrue("copy of " + this.name() + " was already expired when created", expiration > beforeSave);
 		// exactly one period after the write: a record written at 19:59:17 with hourly lives until 20:59:17
 		Long writtenAt = disposableCopy.getAsLongNumber(JnEntityDisposableRecord.Fields.trueTimestamp);
+		// the moment of the save itself: until 2026-11-03 the second build of the bulk items took the expiration of the
+		// first one as the moment of the write, and an entity without its own timestamp lived two periods
+		boolean writtenDuringTheSave = writtenAt >= beforeSave && writtenAt <= afterSave;
+		assertTrue("trueTimestamp of the copy of " + this.name() + " is not the moment of the save: " + (writtenAt - beforeSave) + " ms after it", writtenDuringTheSave);
 		Long expectedExpiration = deadline.getNextTimeStamp(writtenAt);
 		assertEquals("deadline of the copy of " + this.name(), expectedExpiration, expiration);
 

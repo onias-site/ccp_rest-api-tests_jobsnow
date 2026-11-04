@@ -62,6 +62,24 @@ public class CcpRestApiExceptionHandlerSpringTest {
 		new CcpRestApiExceptionHandlerSpring().unreadableBody();
 	}
 
+	/**
+	 * A path variable or parameter of the wrong type (a text where a number goes) answers 400 through its own handler,
+	 * and not 500 through the one of {@code Throwable}: until 2026-11-03 it was recorded as a system error.
+	 */
+	@Test
+	public void typeMismatchAnswers400Test() throws NoSuchMethodException {
+		Method typeMismatch = CcpRestApiExceptionHandlerSpring.class.getMethod("typeMismatch");
+		ExceptionHandler exceptionHandler = typeMismatch.getAnnotation(ExceptionHandler.class);
+		List<Class<? extends Throwable>> handledExceptions = Arrays.asList(exceptionHandler.value());
+		assertTrue(handledExceptions.contains(org.springframework.beans.TypeMismatchException.class));
+		boolean coversTheArgumentsOfTheControllers = org.springframework.beans.TypeMismatchException.class
+				.isAssignableFrom(org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class);
+		assertTrue(coversTheArgumentsOfTheControllers);
+		ResponseStatus responseStatus = typeMismatch.getAnnotation(ResponseStatus.class);
+		assertEquals(HttpStatus.BAD_REQUEST, responseStatus.code());
+		new CcpRestApiExceptionHandlerSpring().typeMismatch();
+	}
+
 	// ── null-parameter tests (AOP) ────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)

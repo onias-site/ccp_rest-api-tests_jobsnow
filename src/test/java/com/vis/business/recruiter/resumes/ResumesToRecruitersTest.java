@@ -825,6 +825,30 @@ public class ResumesToRecruitersTest {
 		assertFalse(html, html.contains("background-color"));
 	}
 
+	/** The column of languages and skills shows only its first 15 lines, in the order of the row; the row keeps them all. */
+	@Test
+	public void theEmailShowsOnlyTheFirst15LinesOfLanguagesAndSkills() {
+		String recruiter = this.recruiter("fifteenskills", "gmail.com");
+		java.util.List<String> languagesAndSkills = new java.util.ArrayList<>();
+		for (int position = 1; position <= 17; position++) {
+			languagesAndSkills.add("SKILL" + position + "X");
+		}
+		CcpJsonRepresentation row = rowToSend("Você nunca visualizou este currículo")
+				.put(VisRecruiterResumesFields.languagesAndSkills, languagesAndSkills);
+
+		CcpJsonRepresentation table = VisBusinessRenderResumesTable.INSTANCE.execute(CcpOtherConstants.EMPTY_JSON
+				.put(VisRecruiterResumesFields.resumes, Arrays.asList(row))
+				.put(JnJsonCommonsFields.email, recruiter)
+				.put(VisRecruiterResumesFields.frontendUrl, "http://localhost:3000")
+				.put(JnJsonCommonsFields.language, JnLanguage.portuguese));
+
+		String html = table.getAsString(VisRecruiterResumesFields.resumesTable);
+		assertTrue(html, html.contains("<p>SKILL1X</p>"));
+		assertTrue(html, html.contains("<p>SKILL15X</p>"));
+		assertFalse(html, html.contains("<p>SKILL16X</p>"));
+		assertFalse(html, html.contains("<p>SKILL17X</p>"));
+	}
+
 	private static CcpJsonRepresentation rowToSend(String lastView) {
 		return CcpOtherConstants.EMPTY_JSON
 				.put(VisRecruiterResumesFields.resumeId, "resume")

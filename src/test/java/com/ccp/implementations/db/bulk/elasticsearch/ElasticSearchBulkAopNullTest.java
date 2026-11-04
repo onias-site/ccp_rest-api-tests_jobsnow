@@ -65,12 +65,12 @@ public class ElasticSearchBulkAopNullTest {
 
 	@Test(expected = CcpNullParameterException.class)
 	public void bulkOperationResultConstructorItemNullTest() {
-		new ElasticSearchBulkOperationResult(null, new ArrayList<CcpJsonRepresentation>(Arrays.asList(JSON)));
+		new ElasticSearchBulkOperationResult(null, new ArrayList<CcpJsonRepresentation>(Arrays.asList(JSON)), 0);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void bulkOperationResultConstructorResultNullTest() {
-		new ElasticSearchBulkOperationResult(ccpBulkItem(), null);
+		new ElasticSearchBulkOperationResult(ccpBulkItem(), null, 0);
 	}
 
 	// ── ElasticSerchDbBulkExecutor ────────────────────────────────────────────

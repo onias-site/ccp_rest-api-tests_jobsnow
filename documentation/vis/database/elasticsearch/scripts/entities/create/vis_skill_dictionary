@@ -1,0 +1,17 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"dictionaryName": {
+				"type": "keyword"
+			},
+			"version": {
+				"type": "long"
+			},
+			"skillIds": {
+				"type": "keyword",
+				"index": false
+			}
+		}
+	}
+}

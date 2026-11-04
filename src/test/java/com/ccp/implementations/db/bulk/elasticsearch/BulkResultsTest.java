@@ -46,10 +46,10 @@ public class BulkResultsTest {
 	}
 
 	@Test
-	public void eachItemFindsItsLineByIdAndEntity() {
+	public void eachItemReadsTheLineAtItsPosition() {
 		List<CcpJsonRepresentation> answer = Arrays.asList(this.line("jn_login_email", "abc", 409), this.line("jn_support_pending_command", "abc", 201));
 
-		ElasticSearchBulkOperationResult result = new ElasticSearchBulkOperationResult(this.item, answer);
+		ElasticSearchBulkOperationResult result = new ElasticSearchBulkOperationResult(this.item, answer, 1);
 
 		assertEquals(201, result.status());
 		assertEquals(this.item, result.getBulkItem());
@@ -61,9 +61,10 @@ public class BulkResultsTest {
 	public void anItemWithoutItsLineIsAnError() {
 		for (List<CcpJsonRepresentation> answer : Arrays.asList(
 				Arrays.asList(this.line("jn_support_pending_command", "other", 201)),
-				Arrays.asList(this.line("jn_login_email", "abc", 201)))) {
+				Arrays.asList(this.line("jn_login_email", "abc", 201)),
+				Arrays.<CcpJsonRepresentation>asList())) {
 			try {
-				new ElasticSearchBulkOperationResult(this.item, answer);
+				new ElasticSearchBulkOperationResult(this.item, answer, 0);
 				fail("the answer has no line for the item");
 			} catch (RuntimeException e) {
 				assertTrue(e.getClass().getName(), e.getClass().getName().endsWith("CcpErrorBulkItemNotFound"));
