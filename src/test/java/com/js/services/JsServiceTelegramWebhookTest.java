@@ -27,7 +27,10 @@ import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
-import com.ccp.local.testings.implementations.CcpLocalInstances;
+import com.ccp.dependency.injection.CcpInstanceProvider;
+import com.ccp.especifications.db.utils.entity.decorators.CountingMensageriaSender;
+import com.ccp.especifications.mensageria.sender.CcpMensageriaSender;
+import com.jn.business.bots.JnBusinessHandleBotUpdate;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jb.business.bots.engine.JbBusinessReceiveBotUpdate;
 import com.jb.entities.JbEntityBotUpdateId;
@@ -40,13 +43,16 @@ import com.js.status.telegram.JsProcessStatusTelegramWebhook;
 /**
  * Only a request with the secret of the bot reaches the bot, through the business that jb seeds and js does not import.
  * An update without message is used so that nothing goes out to Telegram: it proves the way up to the offset of the bot.
+ * The messaging counts what is published (and runs it at once, as the synchronous messaging does), which proves that
+ * the update goes to the queue and not straight to the bot (OQL, since 2026-11-04).
  */
 public class JsServiceTelegramWebhookTest {
 
 	static {
 		CcpDependencyInjection.removeAllDependencies();
+		CcpInstanceProvider<CcpMensageriaSender> countingMensageria = () -> CountingMensageriaSender.INSTANCE;
 		CcpDependencyInjection.loadAllDependencies(
-				CcpLocalInstances.syncMensageriaListener,
+				countingMensageria,
 				CcpElasticSearchQueryExecutor.INSTANCE,
 				CcpElasticSearchDbRequest.INSTANCE,
 				CcpLocalCacheInstances.mock,
@@ -85,7 +91,16 @@ public class JsServiceTelegramWebhookTest {
 		return request.content;
 	}
 
+	/** How many updates have been published to the topic of the bot so far. */
+	private long publishedUpdates() {
+		String topic = JnBusinessHandleBotUpdate.class.getName();
+		String noOperation = CcpOtherConstants.EMPTY_STRING.getValue();
+		long howMany = CountingMensageriaSender.howMany(topic, noOperation);
+		return howMany;
+	}
+
 	private void assertRefused(Map<String, Object> request) {
+		long publishedBefore = this.publishedUpdates();
 		try {
 			JsServiceTelegramWebhook.ReceiveTelegramUpdate.execute(request);
 			fail("the request was accepted");
@@ -94,15 +109,18 @@ public class JsServiceTelegramWebhookTest {
 			assertEquals(401, e.status.asNumber());
 		}
 		assertFalse("a refused request reached the bot", JbEntityBotUpdateId.ENTITY.exists(this.offsetKey()));
+		assertEquals("a refused request reached the queue", publishedBefore, this.publishedUpdates());
 	}
 
 	@Test
 	public void theSecretOfTheBotLetsTheUpdateThroughToTheSeededHandler() {
 		String secret = JsTelegramWebhookSecret.INSTANCE.getSecret(SUPPORT);
+		long publishedBefore = this.publishedUpdates();
 
 		Map<String, Object> answer = JsServiceTelegramWebhook.ReceiveTelegramUpdate.execute(this.request(SUPPORT, secret));
 
 		assertTrue(answer.isEmpty());
+		assertEquals("the update did not go through the queue", publishedBefore + 1, this.publishedUpdates());
 		CcpJsonRepresentation offset = JbEntityBotUpdateId.ENTITY.getOneById(this.offsetKey());
 		assertEquals(UPDATE_ID + 1, offset.getAsLongNumber(JbEntityBotUpdateId.Fields.updateId).longValue());
 	}

@@ -29,6 +29,7 @@ import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
+import com.ccp.local.testings.implementations.CcpLocalMensageriaRunningMarks;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jb.business.bots.engine.JbBusinessReceiveBotUpdate;
 import com.jb.entities.JbEntityBotUpdateId;
@@ -83,6 +84,12 @@ public class JsRestApiTelegramWebhookTest {
 
 	private static final int JS_API_PORT = 8082;
 
+	/** The longest wait for the bot to run in the consumer, in milliseconds. */
+	private static final long MAX_WAIT_FOR_THE_BOT = 30_000L;
+
+	/** The pause between two looks at the running tasks, in milliseconds. */
+	private static final long PAUSE_WHILE_THE_BOT_RUNS = 100L;
+
 	@BeforeClass
 	public static void theJsApiMustBeUpAndTheBotHasItsHandler() {
 		try (Socket socket = new Socket()) {
@@ -123,8 +130,28 @@ public class JsRestApiTelegramWebhookTest {
 		HttpRequest.Builder builderWithSecret = noSecret ? builder : builder.header(JsonFieldNames.X_Telegram_Bot_Api_Secret_Token.getValue(), secret);
 		HttpRequest request = builderWithSecret.build();
 		HttpClient client = HttpClient.newHttpClient();
+		long requestStart = System.currentTimeMillis();
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+		this.waitForTheBot(requestStart);
 		return response;
+	}
+
+	/**
+	 * Since 2026-11-04 the webhook only publishes the update, and the bot runs in the consumer of the messaging (in the
+	 * local API, a thread of the asynchronous mensageria): the offset is saved after the answer. Waits for the tasks
+	 * published by the request, as {@code JnTestTemplate.waitForTheAsynchronousWrites} does.
+	 * @param requestStart when the request was sent
+	 */
+	private void waitForTheBot(long requestStart) throws InterruptedException {
+		long deadline = requestStart + MAX_WAIT_FOR_THE_BOT;
+		while (System.currentTimeMillis() < deadline) {
+			boolean theBotIsRunning = CcpLocalMensageriaRunningMarks.isAnyRunningPublishedAfter(requestStart);
+			if (false == theBotIsRunning) {
+				return;
+			}
+			Thread.sleep(PAUSE_WHILE_THE_BOT_RUNS);
+		}
+		throw new AssertionError("The bot did not end in " + MAX_WAIT_FOR_THE_BOT + " ms");
 	}
 
 	private long savedOffset() {

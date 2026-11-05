@@ -28,6 +28,16 @@ public class CcpUrlDecoratorTest {
 	}
 
 	@Test
+	public void pathDecodeKeepsThePlusSignTest() {
+		CcpUrlDecorator raw = new CcpStringDecorator("/contact-us/onias85+x@gmail.com").url();
+		assertEquals("/contact-us/onias85+x@gmail.com", raw.asPathDecoded());
+		CcpUrlDecorator encoded = new CcpStringDecorator("/contact-us/onias85%2Bx%40gmail.com").url();
+		assertEquals("/contact-us/onias85+x@gmail.com", encoded.asPathDecoded());
+		CcpUrlDecorator space = new CcpStringDecorator("/a%20b").url();
+		assertEquals("/a b", space.asPathDecoded());
+	}
+
+	@Test
 	public void roundtripEncodeDecodeTest() {
 		String original = "e-mail: usuario@exemplo.com & cargo=dev";
 		CcpUrlDecorator url = new CcpStringDecorator(original).url();

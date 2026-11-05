@@ -161,7 +161,22 @@ public class CcpEmailDecoratorTest {
 
     @Test
     public void findFirstEmailWithPlusTest() {
+    	// an alias is part of the address: until 2026-11-04 only the piece after the + was kept (someone else's address)
     	CcpEmailDecorator processor = new CcpEmailDecorator("nome+teste@example.com");
+        CcpEmailDecorator result = processor.findFirst("\\s+");
+        assertEquals("nome+teste@example.com", result.content);
+    }
+
+    @Test
+    public void findFirstEmailInTheDecodedPathOfARequestTest() {
+    	CcpEmailDecorator processor = new CcpEmailDecorator("https://login.onias.site/contact-us/onias85+fale-20261104@gmail.com");
+        CcpEmailDecorator result = processor.findFirst("/");
+        assertEquals("onias85+fale-20261104@gmail.com", result.content);
+    }
+
+    @Test
+    public void findFirstEmailAfterAPlusWhenTheWholeWordIsNotAnEmailTest() {
+    	CcpEmailDecorator processor = new CcpEmailDecorator("@@+teste@example.com");
         CcpEmailDecorator result = processor.findFirst("\\s+");
         assertEquals("teste@example.com", result.content);
     }

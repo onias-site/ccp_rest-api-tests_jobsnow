@@ -1,11 +1,14 @@
 package com.jb.business.bots.engine;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -29,10 +32,16 @@ import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
-import com.ccp.local.testings.implementations.CcpLocalInstances;
+import com.ccp.decorators.CcpFileDecorator;
+import com.ccp.decorators.CcpStringDecorator;
+import com.ccp.especifications.db.utils.entity.decorators.CountingMensageriaSender;
+import com.ccp.especifications.mensageria.receiver.CcpMensageriaReceiver;
+import com.ccp.especifications.mensageria.sender.CcpMensageriaSender;
+import com.jn.business.bots.JnBusinessHandleBotUpdate;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jb.entities.JbEntityBot;
 import com.jb.entities.JbEntityBotExplanation;
+import com.jb.entities.JbEntityBotCommandStepSession;
 import com.jb.entities.JbEntityBotUpdateId;
 import com.jb.instant.messenger.reader.JbInstantMessengerMessageReader;
 import com.jn.entities.JnEntityBotCommandExplanation;
@@ -54,9 +63,12 @@ public class JbBusinessReceiveBotUpdateTest {
 		CcpInstanceProvider<CcpInstantMessenger> telegram = () -> TELEGRAM;
 		CcpInstanceProvider<CcpEmailProvider> email = () -> EMAIL_INBOX;
 
+		// counts what is published and runs it at once, as the synchronous messaging does: it proves the queue of the command
+		CcpInstanceProvider<CcpMensageriaSender> countingMensageria = () -> CountingMensageriaSender.INSTANCE;
+
 		CcpDependencyInjection.removeAllDependencies();
 		CcpDependencyInjection.loadAllDependencies(
-				CcpLocalInstances.syncMensageriaListener,
+				countingMensageria,
 				CcpElasticSearchQueryExecutor.INSTANCE,
 				CcpElasticSearchDbRequest.INSTANCE,
 				CcpMindrotPasswordHandler.INSTANCE,
@@ -71,6 +83,12 @@ public class JbBusinessReceiveBotUpdateTest {
 	}
 
 	private static final Long SUPPORT_CHAT = 751717896L;
+
+	/** The queues of production, relative to this module. */
+	private static final String TOPICS_FILE = "../documentation/deploy/topicos.tsv";
+
+	/** The ack deadline of the queues of the bot, in seconds: a command may run a complex query. */
+	private static final int ACK_DEADLINE_OF_A_COMMAND = 600;
 
 	private static final String SUPPORT = JbBotType.support.name();
 
@@ -216,6 +234,75 @@ public class JbBusinessReceiveBotUpdateTest {
 
 		Long offsetOfThePolling = JbInstantMessengerMessageReader.INSTANCE.getOffset(SUPPORT);
 		assertEquals(4501L, offsetOfThePolling.longValue());
+	}
+
+	/** How many messages went to the queue of the command so far. */
+	private long publishedToTheQueueOf(String commandName) {
+		String topic = CcpMensageriaReceiver.getQualifiedTopic(JbBusinessRunBotCommand.class, commandName);
+		String noOperation = CcpOtherConstants.EMPTY_STRING.getValue();
+		long howMany = CountingMensageriaSender.howMany(topic, noOperation);
+		return howMany;
+	}
+
+	/** Since 2026-11-04 the update only chooses the queue: the bot runs in the queue of the command typed. */
+	@Test
+	public void theMessageGoesToTheQueueOfItsCommand() {
+		String chatId = JbDefaultBotCommandStep.chatId.name();
+		long publishedBefore = this.publishedToTheQueueOf(chatId);
+
+		JbBusinessReceiveBotUpdate.INSTANCE.execute(this.updateWithMessage(6000L, "/chatId"));
+
+		assertEquals(publishedBefore + 1, this.publishedToTheQueueOf(chatId));
+		assertEquals(1, TELEGRAM.sentMessages.size());
+	}
+
+	/** A text that is no command, in a chat without session, goes to the queue of the list of commands. */
+	@Test
+	public void aTextWithoutSessionGoesToTheQueueOfTheListOfCommands() {
+		JbEntityBotCommandStepSession.ENTITY.delete(this.sessionKey());
+		String showAllCommands = JbDefaultBotCommandStep.showAllCommands.name();
+		long publishedBefore = this.publishedToTheQueueOf(showAllCommands);
+
+		JbBusinessReceiveBotUpdate.INSTANCE.execute(this.updateWithMessage(6100L, "hello"));
+
+		assertEquals(publishedBefore + 1, this.publishedToTheQueueOf(showAllCommands));
+	}
+
+	private CcpJsonRepresentation sessionKey() {
+		CcpJsonRepresentation sessionKey = CcpOtherConstants.EMPTY_JSON
+				.put(JnJsonInstantMessengerFields.botName, SUPPORT)
+				.put(JnJsonInstantMessengerFields.chatId, SUPPORT_CHAT);
+		return sessionKey;
+	}
+
+	/**
+	 * Every command of the engine needs its queue in production: a message to a topic that does not exist fails in the
+	 * dispatcher, which has a single thread, and holds every update of the bots behind it. Each queue has one thread.
+	 */
+	@Test
+	public void everyCommandHasItsQueueWithOneThreadInTopicos() {
+		CcpStringDecorator topicsPath = new CcpStringDecorator(TOPICS_FILE);
+		CcpFileDecorator topicsFile = topicsPath.file();
+		List<String> lines = topicsFile.getLines();
+		Set<String> commandNames = JbBotEngine.INSTANCE.allCommands.keySet();
+		assertFalse(commandNames.isEmpty());
+		List<String> missingLines = new ArrayList<>();
+		for (String commandName : commandNames) {
+			// a command record without name: the dispatcher sends a session without command to showAllCommands
+			boolean withoutName = commandName.isEmpty();
+			if (withoutName) {
+				continue;
+			}
+			String topic = CcpMensageriaReceiver.getQualifiedTopic(JbBusinessRunBotCommand.class, commandName);
+			String expectedLine = topic + "\t1\t" + ACK_DEADLINE_OF_A_COMMAND;
+			boolean missing = false == lines.contains(expectedLine);
+			if (missing) {
+				missingLines.add(expectedLine);
+			}
+		}
+		assertTrue("missing in topicos.tsv: " + missingLines, missingLines.isEmpty());
+		String dispatcher = JnBusinessHandleBotUpdate.class.getName() + "\t1\t" + ACK_DEADLINE_OF_A_COMMAND;
+		assertTrue("missing in topicos.tsv: " + dispatcher, lines.contains(dispatcher));
 	}
 
 	@Test(expected = CcpNullParameterException.class)

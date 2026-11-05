@@ -23,7 +23,7 @@ public class JnEntityEmailParametersToSendDecoratorsTest extends EntityDecorator
 	protected CcpJsonRepresentation validRecord() {
 		return this.com(JnJsonCommonsFields.templateId, this.getClass().getName())
 				.put(JnJsonCommonsFields.email, this.email)
-				.put(JnJsonCommonsFields.sender, "devs.jobsnow@gmail.com")
+				.put(JnJsonCommonsFields.sender, "curriculos@onias.site")
 				.put(JnJsonCommonsFields.subjectType, "teste");
 	}
 

@@ -20,7 +20,7 @@ public class JnEntityEmailMessageSentDecoratorsTest extends EntityDecoratorTestT
 		return this.com(JnJsonCommonsFields.subjectType, "login")
 				.put(JnJsonCommonsFields.email, this.email)
 				.put(JnJsonCommonsFields.subject, "assunto de teste")
-				.put(JnJsonCommonsFields.sender, "devs.jobsnow@gmail.com");
+				.put(JnJsonCommonsFields.sender, "curriculos@onias.site");
 	}
 
 	@Test
