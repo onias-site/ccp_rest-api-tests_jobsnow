@@ -1,2 +1,5 @@
 Centralizar enums
 vis_skill_dictionary para JnEntitySystemMessage
+para que serve JnEntitySessionValidator.getSeeds?
+priorizar primeiros recrutadores.
+mensagem no memo do curriculo

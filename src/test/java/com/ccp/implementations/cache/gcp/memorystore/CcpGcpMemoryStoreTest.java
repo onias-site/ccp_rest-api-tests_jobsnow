@@ -18,10 +18,12 @@ import org.junit.Test;
 
 import com.ccp.aop.CcpNullParameterException;
 import com.ccp.constants.CcpOtherConstants;
+import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.cache.CcpCache;
+import com.ccp.especifications.db.utils.CcpDbCallsOfTheThread;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 
 import redis.clients.jedis.JedisPooled;
@@ -76,6 +78,48 @@ public class CcpGcpMemoryStoreTest {
 	}
 
 	// ── reads and writes ──────────────────────────────────────────────────────
+
+	/**
+	 * Inside a unit (request or message) each command is counted for the column of the cache hits of the panel of the
+	 * requests: reads as hits or misses, in total and per entity of the key, writes and deletes as writes.
+	 */
+	@Test
+	public void insideAUnitTheHitsAndMissesAreCountedPerEntityTest() {
+		this.cache.put("records.entity.jn_login.id.1", "value", 60);
+		CcpDbCallsOfTheThread.start(CcpDbCallsOfTheThread.newTraceId());
+		try {
+			this.cache.get("records.entity.jn_login.id.1");
+			this.cache.get("records.entity.jn_login.id.2");
+			this.cache.get("records.entity.vis_resume.id.3");
+			this.cache.get("a1b2c3");
+			this.cache.put("records.entity.jn_login.id.2", "value", 60);
+			this.cache.deleteAll(Arrays.asList("first", "second"));
+		} finally {
+			CcpJsonRepresentation summary = CcpDbCallsOfTheThread.finish();
+			assertEquals(1, summary.getAsIntegerNumber(CcpDbCallsOfTheThread.Fields.cacheHits).intValue());
+			assertEquals(3, summary.getAsIntegerNumber(CcpDbCallsOfTheThread.Fields.cacheMisses).intValue());
+			assertEquals(2, summary.getAsIntegerNumber(CcpDbCallsOfTheThread.Fields.cacheWrites).intValue());
+			assertEquals(6, summary.getAsIntegerNumber(CcpDbCallsOfTheThread.Fields.cacheCallsCount).intValue());
+			assertTrue(summary.getAsDoubleNumber(CcpDbCallsOfTheThread.Fields.cacheClientMs) >= 0);
+			CcpJsonRepresentation byEntity = summary.getInnerJson(CcpDbCallsOfTheThread.Fields.cacheByEntity);
+			CcpJsonRepresentation login = byEntity.getInnerJson(new CcpFieldName("jn_login"));
+			assertEquals(1, login.getAsIntegerNumber(CcpDbCallsOfTheThread.Fields.hits).intValue());
+			assertEquals(1, login.getAsIntegerNumber(CcpDbCallsOfTheThread.Fields.misses).intValue());
+			CcpJsonRepresentation resume = byEntity.getInnerJson(new CcpFieldName("vis_resume"));
+			assertFalse(resume.toString(), resume.containsAllFields(CcpDbCallsOfTheThread.Fields.hits));
+			assertEquals(1, resume.getAsIntegerNumber(CcpDbCallsOfTheThread.Fields.misses).intValue());
+			CcpJsonRepresentation noEntity = byEntity.getInnerJson(new CcpFieldName(""));
+			assertEquals(1, noEntity.getAsIntegerNumber(CcpDbCallsOfTheThread.Fields.misses).intValue());
+		}
+	}
+
+	/** Outside a unit nothing is counted. */
+	@Test
+	public void outsideAUnitNothingIsCountedTest() {
+		this.cache.get("records.entity.jn_login.id.1");
+		CcpJsonRepresentation summary = CcpDbCallsOfTheThread.finish();
+		assertEquals(0, summary.getAsIntegerNumber(CcpDbCallsOfTheThread.Fields.cacheCallsCount).intValue());
+	}
 
 	@Test
 	public void missIsNullTest() {

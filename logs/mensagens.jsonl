@@ -1,0 +1,4 @@
+{"durationMs":0.0,"message_id":"","result":"ok","startedAt":"2026-11-05 12:05:54.465","topic":"com.ccp.topic.consumer.pubsub.pull.PullReceiverTest$EchoTask","waitMs":1.793891154465E12}
+{"durationMs":0.0,"errorClass":"com.ccp.decorators.CcpErrorJsonInvalid","errorMessage":"The following json is an invalid json: {not json","message_id":"","result":"error","startedAt":"2026-11-05 12:05:54.494","topic":"pullTestTopic","waitMs":1.793891154494E12}
+{"durationMs":0.0,"message_id":"","result":"ok","startedAt":"2026-11-05 12:05:54.496","topic":"pullTestTopic","waitMs":1.793891154496E12}
+{"durationMs":0.0,"errorClass":"java.lang.IllegalStateException","errorMessage":"the task failed","message_id":"","result":"error","startedAt":"2026-11-05 12:05:54.496","topic":"pullTestTopic","waitMs":1.793891154496E12}

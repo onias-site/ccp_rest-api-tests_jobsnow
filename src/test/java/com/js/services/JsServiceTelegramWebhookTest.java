@@ -31,6 +31,7 @@ import com.ccp.dependency.injection.CcpInstanceProvider;
 import com.ccp.especifications.db.utils.entity.decorators.CountingMensageriaSender;
 import com.ccp.especifications.mensageria.sender.CcpMensageriaSender;
 import com.jn.business.bots.JnBusinessHandleBotUpdate;
+import com.ccp.especifications.mensageria.receiver.CcpMensageriaReceiver;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jb.business.bots.engine.JbBusinessReceiveBotUpdate;
 import com.jb.entities.JbEntityBotUpdateId;
@@ -93,7 +94,7 @@ public class JsServiceTelegramWebhookTest {
 
 	/** How many updates have been published to the topic of the bot so far. */
 	private long publishedUpdates() {
-		String topic = JnBusinessHandleBotUpdate.class.getName();
+		String topic = CcpMensageriaReceiver.getQualifiedTopic(JnBusinessHandleBotUpdate.class, SUPPORT);
 		String noOperation = CcpOtherConstants.EMPTY_STRING.getValue();
 		long howMany = CountingMensageriaSender.howMany(topic, noOperation);
 		return howMany;

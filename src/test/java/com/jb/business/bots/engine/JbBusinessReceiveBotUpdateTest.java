@@ -90,6 +90,14 @@ public class JbBusinessReceiveBotUpdateTest {
 	/** The ack deadline of the queues of the bot, in seconds: a command may run a complex query. */
 	private static final int ACK_DEADLINE_OF_A_COMMAND = 600;
 
+	/** The provider of the sender of the consumers of the bots, in the column {@code senderClass} of {@code topicos.tsv}. */
+	private static final String PUB_SUB_SENDER = "com.ccp.implementations.mensageria.sender.gcp.pubsub.CcpGcpPubSubMensageriaSender";
+
+	/** The threads of the consumer of each command, by bot. */
+	private static final CcpJsonRepresentation THREADS_OF_THE_COMMANDS = CcpOtherConstants.EMPTY_JSON
+			.put(JbBotType.support, 1)
+			.put(JbBotType.user, 4);
+
 	private static final String SUPPORT = JbBotType.support.name();
 
 	/** The answers of the default commands are seeds: they are saved again so that the index follows the java. */
@@ -238,7 +246,7 @@ public class JbBusinessReceiveBotUpdateTest {
 
 	/** How many messages went to the queue of the command so far. */
 	private long publishedToTheQueueOf(String commandName) {
-		String topic = CcpMensageriaReceiver.getQualifiedTopic(JbBusinessRunBotCommand.class, commandName);
+		String topic = CcpMensageriaReceiver.getQualifiedTopic(JbBusinessRunBotCommand.class, SUPPORT, commandName);
 		String noOperation = CcpOtherConstants.EMPTY_STRING.getValue();
 		long howMany = CountingMensageriaSender.howMany(topic, noOperation);
 		return howMany;
@@ -276,33 +284,58 @@ public class JbBusinessReceiveBotUpdateTest {
 	}
 
 	/**
-	 * Every command of the engine needs its queue in production: a message to a topic that does not exist fails in the
-	 * dispatcher, which has a single thread, and holds every update of the bots behind it. Each queue has one thread.
+	 * Every command of every bot needs its queue in production: a message to a topic that does not exist fails in the
+	 * dispatcher. Only the queue of each bot (the dispatcher) names the Pub/Sub sender, without which it would run the
+	 * command in its own thread; the commands keep the synchronous one (decided on 2026-11-05). Threads: 1 in
+	 * each command of the support bot, 4 in each one of the user bot, 1 in the queue of each bot (decided on 2026-11-05).
 	 */
 	@Test
-	public void everyCommandHasItsQueueWithOneThreadInTopicos() {
+	public void everyCommandOfEveryBotHasItsQueueInTopicos() {
 		CcpStringDecorator topicsPath = new CcpStringDecorator(TOPICS_FILE);
 		CcpFileDecorator topicsFile = topicsPath.file();
 		List<String> lines = topicsFile.getLines();
-		Set<String> commandNames = JbBotEngine.INSTANCE.allCommands.keySet();
-		assertFalse(commandNames.isEmpty());
 		List<String> missingLines = new ArrayList<>();
-		for (String commandName : commandNames) {
-			// a command record without name: the dispatcher sends a session without command to showAllCommands
-			boolean withoutName = commandName.isEmpty();
-			if (withoutName) {
-				continue;
+		for (JbBotType bot : JbBotType.values()) {
+			List<String> commandNames = this.commandsOf(bot);
+			assertFalse(commandNames.isEmpty());
+			String botName = bot.name();
+			int threads = THREADS_OF_THE_COMMANDS.getAsIntegerNumber(bot);
+			for (String commandName : commandNames) {
+				String topic = CcpMensageriaReceiver.getQualifiedTopic(JbBusinessRunBotCommand.class, botName, commandName);
+				// no senderClass: the command keeps the synchronous sender, and what it publishes runs in its own thread
+				String expectedLine = topic + "\t" + threads + "\t" + ACK_DEADLINE_OF_A_COMMAND;
+				boolean missing = false == lines.contains(expectedLine);
+				if (missing) {
+					missingLines.add(expectedLine);
+				}
 			}
-			String topic = CcpMensageriaReceiver.getQualifiedTopic(JbBusinessRunBotCommand.class, commandName);
-			String expectedLine = topic + "\t1\t" + ACK_DEADLINE_OF_A_COMMAND;
-			boolean missing = false == lines.contains(expectedLine);
-			if (missing) {
-				missingLines.add(expectedLine);
+			String queueOfTheBot = CcpMensageriaReceiver.getQualifiedTopic(JnBusinessHandleBotUpdate.class, botName);
+			String dispatcher = queueOfTheBot + "\t1\t" + ACK_DEADLINE_OF_A_COMMAND + "\t" + PUB_SUB_SENDER;
+			boolean dispatcherMissing = false == lines.contains(dispatcher);
+			if (dispatcherMissing) {
+				missingLines.add(dispatcher);
 			}
 		}
 		assertTrue("missing in topicos.tsv: " + missingLines, missingLines.isEmpty());
-		String dispatcher = JnBusinessHandleBotUpdate.class.getName() + "\t1\t" + ACK_DEADLINE_OF_A_COMMAND;
-		assertTrue("missing in topicos.tsv: " + dispatcher, lines.contains(dispatcher));
+	}
+
+	/**
+	 * The commands of a bot: the configured ones (records of {@code JnEntityBotCommand} with its name) and the default
+	 * ones, which every bot has. A command record without name is skipped: a session without command goes to
+	 * {@code showAllCommands}.
+	 */
+	private List<String> commandsOf(JbBotType bot) {
+		List<String> commandNames = new ArrayList<>(bot.getConfiguredCommands());
+		Set<String> engineCommands = JbBotEngine.INSTANCE.allCommands.keySet();
+		for (JbDefaultBotCommandStep defaultCommand : JbDefaultBotCommandStep.values()) {
+			String defaultCommandName = defaultCommand.name();
+			boolean isCommand = engineCommands.contains(defaultCommandName);
+			if (isCommand) {
+				commandNames.add(defaultCommandName);
+			}
+		}
+		commandNames.removeIf(String::isEmpty);
+		return commandNames;
 	}
 
 	@Test(expected = CcpNullParameterException.class)
