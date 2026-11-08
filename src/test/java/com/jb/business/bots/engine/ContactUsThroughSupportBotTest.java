@@ -251,8 +251,8 @@ public class ContactUsThroughSupportBotTest {
 	}
 
 	/**
-	 * The kinds other than the bug and the question share one ticket a day (with the skill suggestion and the skill
-	 * hierarchy fix); the question has its own quota; the bug has none.
+	 * The kinds other than the bug, the question and the criticism share one ticket a day (with the skill suggestion
+	 * and the skill hierarchy fix); the question and the criticism have a quota of their own each; the bug has none.
 	 */
 	@Test
 	public void dailyQuotasOfTheTicketKinds() {
@@ -260,11 +260,19 @@ public class ContactUsThroughSupportBotTest {
 		this.openTicket(QUOTA_USER, JsContactUsTypes.makeCompliment, "Parabéns", "Gostei muito do sistema de vocês");
 		assertTrue(JnEntityTicketDailyLimit.ENTITY.exists(JnEntityTicketDailyLimit.getKey(QUOTA_USER, JnTicketQuotaGroups.sharedTickets)));
 
-		this.discardTicket(QUOTA_USER, JsContactUsTypes.makeCriticism);
-		CcpJsonRepresentation criticism = this.newTicket(QUOTA_USER, JsContactUsTypes.makeCriticism, "Crítica", "A tela de vagas está lenta demais");
-		CcpProcessStatus sharedRefusal = this.statusOf(() -> JsServiceContactUs.SaveContactUs.execute(criticism));
+		this.discardTicket(QUOTA_USER, JsContactUsTypes.makeSuggestion);
+		CcpJsonRepresentation suggestion = this.newTicket(QUOTA_USER, JsContactUsTypes.makeSuggestion, "Sugestão", "Coloquem um filtro por cidade nas vagas");
+		CcpProcessStatus sharedRefusal = this.statusOf(() -> JsServiceContactUs.SaveContactUs.execute(suggestion));
 		assertEquals(JsProcessStatusSaveContactUs.dailyLimitReached, sharedRefusal);
-		assertFalse(JsEntityContactUs.ENTITY.exists(this.ticketKey(QUOTA_USER, JsContactUsTypes.makeCriticism)));
+		assertFalse(JsEntityContactUs.ENTITY.exists(this.ticketKey(QUOTA_USER, JsContactUsTypes.makeSuggestion)));
+
+		// the criticism has its own quota: the shared one already spent does not refuse it
+		this.openTicket(QUOTA_USER, JsContactUsTypes.makeCriticism, "Crítica", "A tela de vagas está lenta demais");
+		assertTrue(JnEntityTicketDailyLimit.ENTITY.exists(JnEntityTicketDailyLimit.getKey(QUOTA_USER, JnTicketQuotaGroups.makeCriticism)));
+		this.discardTicket(QUOTA_USER, JsContactUsTypes.makeCriticism);
+		CcpJsonRepresentation secondCriticism = this.newTicket(QUOTA_USER, JsContactUsTypes.makeCriticism, "Outra crítica", "O botão de salvar some no celular");
+		CcpProcessStatus criticismRefusal = this.statusOf(() -> JsServiceContactUs.SaveContactUs.execute(secondCriticism));
+		assertEquals(JsProcessStatusSaveContactUs.dailyLimitReached, criticismRefusal);
 
 		// the question has its own quota: the shared one already spent does not refuse it
 		this.openTicket(QUOTA_USER, JsContactUsTypes.clarifyDoubts, "Dúvida", "Como faço para mudar o meu e-mail?");

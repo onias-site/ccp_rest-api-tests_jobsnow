@@ -53,6 +53,29 @@ public class ClientErrorStatusTest {
 		assertNotEquals("POST without body caused a system error", 500, status);
 	}
 
+	/**
+	 * Jetty rejects the protected paths before any controller and dispatches to {@code /error} with no status: until
+	 * 2026-11-08 Spring answered status 999 and Jetty turned it into 500 (a URL scan got it for {@code /WEB-INF/web.xml}).
+	 */
+	@Test
+	public void protectedPathsOfTheServletContainerReturn404() throws Exception {
+		for (String path : new String[] {"WEB-INF/web.xml", "WEB-INF/", "META-INF/MANIFEST.MF", "error"}) {
+			HttpRequest request = HttpRequest.newBuilder(URI.create(API + path)).GET().build();
+			int status = this.client.send(request, BodyHandlers.discarding()).statusCode();
+			assertEquals(path, 404, status);
+		}
+	}
+
+	/** Until 2026-11-08 the actuator answered 200 in {@code /actuator} and {@code /actuator/health}; nothing used it. */
+	@Test
+	public void theActuatorIsNotExposed() throws Exception {
+		for (String path : new String[] {"actuator", "actuator/health", "actuator/info"}) {
+			HttpRequest request = HttpRequest.newBuilder(URI.create(API + path)).GET().build();
+			int status = this.client.send(request, BodyHandlers.discarding()).statusCode();
+			assertEquals(path, 404, status);
+		}
+	}
+
 	@Test
 	public void unsupportedContentTypeReturns415() throws Exception {
 		HttpRequest request = HttpRequest.newBuilder(URI.create(API + "login/teste@teste.com/token"))

@@ -42,8 +42,10 @@ public class VisResumesToTheRecruiterSenderTest {
 
 	private final String[] lastQueuePosition = {""};
 
+	private final String[] lastLegacyQueuePosition = {""};
+
 	private VisResumesToTheRecruiterSender sender(List<String> restrictedTo, List<CcpJsonRepresentation> resumes) {
-		return new VisResumesToTheRecruiterSender(restrictedTo, resumes, new HashMap<>(), new HashMap<>(), "http://localhost", "http://localhost:8081", this.emailsSent, this.lastQueuePosition);
+		return new VisResumesToTheRecruiterSender(restrictedTo, resumes, new HashMap<>(), new HashMap<>(), "http://localhost", "http://localhost:8081", this.emailsSent, this.lastQueuePosition, this.lastLegacyQueuePosition);
 	}
 
 	private static List<String> emailsOf(List<CcpJsonRepresentation> recruiters) {
@@ -77,7 +79,7 @@ public class VisResumesToTheRecruiterSenderTest {
 		recruiters.add(recruiterOf("antigo@empresa.com.br"));
 		recruiters.add(recruiterOf("recente@empresa.com.br"));
 
-		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, lastViewByRecruiter, VIEWS_SINCE, "", Set.of());
+		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, lastViewByRecruiter, VIEWS_SINCE, "", Set.of(), 0L, "");
 
 		Comparator<String> byHash = Comparator.comparing(email -> hashOf(email));
 		tiedViewers.sort(byHash);
@@ -102,7 +104,7 @@ public class VisResumesToTheRecruiterSenderTest {
 		recruiters.add(recruiterOf(viewer));
 		String positionOfTheSecond = "1" + hashOf(queue.get(1));
 
-		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, lastViewByRecruiter, VIEWS_SINCE, positionOfTheSecond, Set.of());
+		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, lastViewByRecruiter, VIEWS_SINCE, positionOfTheSecond, Set.of(), 0L, "");
 
 		assertEquals(List.of(viewer, queue.get(2), queue.get(3), queue.get(0), queue.get(1)), emailsOf(inOrder));
 	}
@@ -118,7 +120,7 @@ public class VisResumesToTheRecruiterSenderTest {
 
 		Set<String> withFirstEmail = Set.of(hashOf("signedup@empresa.com.br"));
 
-		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(List.of(signedUp, first), new HashMap<>(), VIEWS_SINCE, lastPosition, withFirstEmail);
+		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(List.of(signedUp, first), new HashMap<>(), VIEWS_SINCE, lastPosition, withFirstEmail, 0L, "");
 
 		assertEquals(List.of("first@empresa.com.br", "signedup@empresa.com.br"), emailsOf(inOrder));
 	}
@@ -135,7 +137,7 @@ public class VisResumesToTheRecruiterSenderTest {
 		lastViewByRecruiter.put(hashOf("viewer@empresa.com.br"), VIEWS_SINCE);
 		String cursorAlreadyInTheOthers = "1" + "0".repeat(40);
 
-		List<CcpJsonRepresentation> waiting = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(List.of(other, signedUp, viewer), lastViewByRecruiter, VIEWS_SINCE, cursorAlreadyInTheOthers, Set.of());
+		List<CcpJsonRepresentation> waiting = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(List.of(other, signedUp, viewer), lastViewByRecruiter, VIEWS_SINCE, cursorAlreadyInTheOthers, Set.of(), 0L, "");
 
 		assertEquals(List.of("viewer@empresa.com.br", "signedup@empresa.com.br", "other@empresa.com.br"), emailsOf(waiting));
 		CcpJsonRepresentation waitingRecruiter = waiting.get(1);
@@ -143,7 +145,7 @@ public class VisResumesToTheRecruiterSenderTest {
 		assertFalse("the queue stays where it was", waitingRecruiter.containsField(VisRecruiterResumesFields.queuePosition));
 
 		Set<String> withFirstEmail = Set.of(hashOf("signedup@empresa.com.br"));
-		List<CcpJsonRepresentation> afterTheFirstEmail = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(List.of(other, signedUp, viewer), lastViewByRecruiter, VIEWS_SINCE, cursorAlreadyInTheOthers, withFirstEmail);
+		List<CcpJsonRepresentation> afterTheFirstEmail = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(List.of(other, signedUp, viewer), lastViewByRecruiter, VIEWS_SINCE, cursorAlreadyInTheOthers, withFirstEmail, 0L, "");
 
 		assertEquals(List.of("viewer@empresa.com.br", "other@empresa.com.br", "signedup@empresa.com.br"), emailsOf(afterTheFirstEmail));
 		assertFalse(afterTheFirstEmail.get(2).containsField(VisRecruiterResumesFields.firstEmail));
@@ -189,9 +191,95 @@ public class VisResumesToTheRecruiterSenderTest {
 		Map<String, Long> lastViewByRecruiter = new HashMap<>();
 		lastViewByRecruiter.put(hashOf("signedup@empresa.com.br"), VIEWS_SINCE - 1);
 
-		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(List.of(signedUp), lastViewByRecruiter, VIEWS_SINCE, "", Set.of());
+		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(List.of(signedUp), lastViewByRecruiter, VIEWS_SINCE, "", Set.of(), 0L, "");
 
 		assertTrue(inOrder.isEmpty());
+	}
+
+	private static final long TELEGRAM_SINCE = 5_000L;
+
+	private static CcpJsonRepresentation fromTelegram(String email, long appearance) {
+		return recruiterOf(email).put(VisEntityRecruiter.Fields.lastTelegramAppearance, appearance);
+	}
+
+	private static CcpJsonRepresentation fromTheLegacy(String email, long lastLegacyView) {
+		return recruiterOf(email).put(VisEntityRecruiter.Fields.lastLegacyView, lastLegacyView);
+	}
+
+	/**
+	 * First who appeared on Telegram in the last six months, the most recent first; then who viewed on the legacy, the most
+	 * recent view first (an old appearance on Telegram counts as none); then the recent viewers and the queue.
+	 */
+	@Test
+	public void telegramAndTheLegacyViewsComeBeforeTheOtherGroups() {
+		String viewer = "viewer@empresa.com.br";
+		Map<String, Long> lastViewByRecruiter = new HashMap<>();
+		lastViewByRecruiter.put(hashOf(viewer), VIEWS_SINCE);
+		List<CcpJsonRepresentation> recruiters = List.of(
+				recruiterOf("other@empresa.com.br"),
+				recruiterOf(viewer),
+				fromTheLegacy("legacy-old@empresa.com.br", 100L),
+				fromTelegram("telegram-old@empresa.com.br", TELEGRAM_SINCE - 1).put(VisEntityRecruiter.Fields.lastLegacyView, 200L),
+				fromTelegram("telegram-old-only@empresa.com.br", TELEGRAM_SINCE - 1),
+				fromTheLegacy("legacy-recent@empresa.com.br", 300L),
+				fromTelegram("telegram-limit@empresa.com.br", TELEGRAM_SINCE),
+				fromTelegram("telegram-recent@empresa.com.br", TELEGRAM_SINCE + 10).put(VisEntityRecruiter.Fields.lastLegacyView, 999L));
+
+		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, lastViewByRecruiter, VIEWS_SINCE, "", Set.of(), TELEGRAM_SINCE, "");
+
+		List<String> expectedQueue = new ArrayList<>(List.of("other@empresa.com.br", "telegram-old-only@empresa.com.br"));
+		expectedQueue.sort(Comparator.comparing(email -> hashOf(email)));
+		List<String> expected = new ArrayList<>(List.of("telegram-recent@empresa.com.br", "telegram-limit@empresa.com.br",
+				"legacy-recent@empresa.com.br", "telegram-old@empresa.com.br", "legacy-old@empresa.com.br", viewer));
+		expected.addAll(expectedQueue);
+		assertEquals(expected, emailsOf(inOrder));
+		assertFalse("Telegram has no turns", inOrder.get(0).containsField(VisRecruiterResumesFields.legacyQueuePosition));
+		assertTrue(inOrder.get(2).containsField(VisRecruiterResumesFields.legacyQueuePosition));
+		assertFalse(inOrder.get(2).containsField(VisRecruiterResumesFields.queuePosition));
+	}
+
+	/** The queue of the legacy views goes on after its last position and starts over at its end. */
+	@Test
+	public void theQueueOfTheLegacyViewsContinuesFromItsLastPosition() {
+		List<CcpJsonRepresentation> recruiters = List.of(fromTheLegacy("l1@empresa.com.br", 300L), fromTheLegacy("l2@empresa.com.br", 200L), fromTheLegacy("l3@empresa.com.br", 100L));
+		List<CcpJsonRepresentation> firstRun = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, new HashMap<>(), VIEWS_SINCE, "", Set.of(), TELEGRAM_SINCE, "");
+		String positionOfTheSecond = firstRun.get(1).getAsString(VisRecruiterResumesFields.legacyQueuePosition);
+
+		List<CcpJsonRepresentation> nextRun = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, new HashMap<>(), VIEWS_SINCE, "", Set.of(), TELEGRAM_SINCE, positionOfTheSecond);
+
+		assertEquals(List.of("l1@empresa.com.br", "l2@empresa.com.br", "l3@empresa.com.br"), emailsOf(firstRun));
+		assertTrue(positionOfTheSecond, positionOfTheSecond.startsWith("9999999999799"));
+		assertEquals(List.of("l3@empresa.com.br", "l1@empresa.com.br", "l2@empresa.com.br"), emailsOf(nextRun));
+	}
+
+	/** Who stopped viewing in the JobsNow is inactivated, and Telegram or the legacy do not bring them back to the e-mail. */
+	@Test
+	public void whoStoppedViewingIsLeftOutWhateverTelegramOrTheLegacySay() {
+		Map<String, Long> lastViewByRecruiter = new HashMap<>();
+		lastViewByRecruiter.put(hashOf("t@empresa.com.br"), VIEWS_SINCE - 1);
+		lastViewByRecruiter.put(hashOf("l@empresa.com.br"), VIEWS_SINCE - 1);
+		List<CcpJsonRepresentation> recruiters = List.of(fromTelegram("t@empresa.com.br", TELEGRAM_SINCE), fromTheLegacy("l@empresa.com.br", 100L));
+
+		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, lastViewByRecruiter, VIEWS_SINCE, "", Set.of(), TELEGRAM_SINCE, "");
+
+		assertTrue(inOrder.isEmpty());
+	}
+
+	/** Each queue keeps its own last position; a recruiter of Telegram moves none of them. */
+	@Test
+	public void theSenderKeepsTheLastPositionOfEachQueue() {
+		// an address that is not valid stops right after the positions, before the rows of the e-mail
+		CcpJsonRepresentation notAnAddress = recruiterOf("not an address");
+		CcpJsonRepresentation ofTheLegacy = notAnAddress.put(VisRecruiterResumesFields.legacyQueuePosition, "9abc");
+
+		this.sender(List.of(), List.of()).accept(ofTheLegacy);
+		assertEquals("9abc", this.lastLegacyQueuePosition[0]);
+		assertEquals("", this.lastQueuePosition[0]);
+
+		CcpJsonRepresentation ofTelegram = notAnAddress.put(VisEntityRecruiter.Fields.lastTelegramAppearance, TELEGRAM_SINCE);
+		this.sender(List.of(), List.of()).accept(ofTelegram);
+		assertEquals("9abc", this.lastLegacyQueuePosition[0]);
+		assertEquals("", this.lastQueuePosition[0]);
 	}
 
 	/** Who is skipped had their turn, so the queue goes past them; who is out of the run or after the limit did not. */
@@ -225,7 +313,7 @@ public class VisResumesToTheRecruiterSenderTest {
 		Map<String, Long> lastViewByRecruiter = new HashMap<>();
 		lastViewByRecruiter.put(hashOf("viewer@empresa.com.br"), VIEWS_SINCE);
 
-		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(List.of(other, signedUp, viewerOfTheSignUp), lastViewByRecruiter, VIEWS_SINCE, "", Set.of());
+		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(List.of(other, signedUp, viewerOfTheSignUp), lastViewByRecruiter, VIEWS_SINCE, "", Set.of(), 0L, "");
 
 		assertEquals(List.of("viewer@empresa.com.br", "signedup@empresa.com.br", "other@empresa.com.br"), emailsOf(inOrder));
 	}
@@ -235,7 +323,7 @@ public class VisResumesToTheRecruiterSenderTest {
 	public void anInvalidAddressKeepsItsPlaceInTheOrder() {
 		List<CcpJsonRepresentation> recruiters = List.of(recruiterOf("not an address"), recruiterOf(RECRUITER));
 
-		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, new HashMap<>(), VIEWS_SINCE, "", Set.of());
+		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, new HashMap<>(), VIEWS_SINCE, "", Set.of(), 0L, "");
 
 		assertEquals(2, inOrder.size());
 	}

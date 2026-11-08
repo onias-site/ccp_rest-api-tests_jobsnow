@@ -8,6 +8,12 @@
 			"email": {
 				"type": "keyword"
 			},
+			"lastLegacyView": {
+				"type": "long"
+			},
+			"lastTelegramAppearance": {
+				"type": "long"
+			},
 			"professional": {
 				"type": "boolean"
 			},

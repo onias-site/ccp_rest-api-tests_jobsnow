@@ -20,8 +20,12 @@ public class RecordingEmailSender implements CcpEmailProvider {
 	/** Every e-mail "sent", as "recipients | subject", in order. */
 	public static final List<String> SENT = new ArrayList<>();
 
+	/** The body of every e-mail "sent", as "recipients | message", in the order of {@link #SENT}. */
+	public static final List<String> MESSAGES = new ArrayList<>();
+
 	public CcpJsonRepresentation sendSimpleTextEmailMessage(String providerToken, String providerUrl, String templateId, String sender, String subject, String message, CcpHttpContentType contentType, String... recipients) {
 		SENT.add(Arrays.toString(recipients) + " | " + subject);
+		MESSAGES.add(Arrays.toString(recipients) + " | " + message);
 		return CcpOtherConstants.EMPTY_JSON;
 	}
 

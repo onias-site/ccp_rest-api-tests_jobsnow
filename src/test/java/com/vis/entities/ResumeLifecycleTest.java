@@ -160,6 +160,7 @@ public class ResumeLifecycleTest {
 	@Test
 	public void theWholeLifeCycleKeepsTheGroupsAndTellsTheOwner() {
 		RecordingEmailSender.SENT.clear();
+		RecordingEmailSender.MESSAGES.clear();
 		CcpJsonRepresentation resume = this.resume(4);
 		// languages: none, English 2, English 1; skills: none, the unique one, JVM, SPRING (PYTHON is excluded); the rest has one value
 		assertEquals(12, VisResumeHashCombinations.INSTANCE.countCombinations(resume));
@@ -219,6 +220,12 @@ public class ResumeLifecycleTest {
 		assertTrue(VisEntityResume.ENTITY.exists(this.key()));
 		this.assertOnlyIn(MAIN_GROUPER, inactiveHashes, resumeId);
 		assertEquals(4, this.noticesToTheOwner().size());
+		// the reactivation e-mail shows the resume as the recruiter will see it, as the e-mail of the save does
+		List<String> messagesToTheOwner = RecordingEmailSender.MESSAGES.stream().filter(sent -> sent.contains(this.email)).collect(Collectors.toList());
+		String reactivationMessage = messagesToTheOwner.get(3);
+		assertTrue(reactivationMessage, reactivationMessage.contains("reativou seus dados") || reactivationMessage.contains("reactivated your data"));
+		assertTrue(reactivationMessage, reactivationMessage.contains(this.uniqueSkill));
+		assertFalse(reactivationMessage, reactivationMessage.contains("{resumesTable}"));
 
 		// delete everywhere: leaves the groups of both sides for good
 		VisEntityResume.ENTITY.deleteAnyWhere(this.key());

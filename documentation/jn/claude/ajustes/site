@@ -1,0 +1,15 @@
+Telas que requerem login de primeira nao devem ser exibidas se o usuario não possuir login
+Avaliar o tamanho do cache do navegador
+
+Cruzar skills do currículo com skills dos grupos de vagas do telegram, deixando claro qual usuário está logado
+Nas estatisticas de telegram, o correto é ver distribuição por habilidades e não por vagas
+
+No logout que não estiver presente substitua por "Expirou"
+
+Aviso inicial ao usuário quando ele está fazendo algo nas hierarquias ou fale conosco que nao seja bug
+fale conosco de crítica deveria ter uma quota indvidualizada
+um cache de navegador pra registros de tickets de 24 horas pra evitar ir ao backend
+
+Na listagem de tickets do usuário, dar a opção de clicar e expandir tudo o que o operador respondeu, o mesmo vale para a descrição do ticket
+
+priorizar primeiros recrutadores.

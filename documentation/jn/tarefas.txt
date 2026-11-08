@@ -1,5 +1,21 @@
-Centralizar enums
+Revisar controle de cotas (sharedTickets)
+
+O registro guardado em versionable é o mais atual possível? Se não, tem que ser, o VisBusinessSendResumesToRecruiters.getRecordsChangedSince nao precisa fazer duas queries
+Criar aviso pro caso no dia não haver curriculos a enviar
+Evita o OR CcpTimeDecorator:130
+
+A vm pode ser vista do mundo exterior?
 vis_skill_dictionary para JnEntitySystemMessage
 para que serve JnEntitySessionValidator.getSeeds?
-priorizar primeiros recrutadores.
-mensagem no memo do curriculo
+Centralizar enums
+
+Mudar o menu para: Código Fonte -> Backend -> Relatórios -> (Cobertura de Testes, Classes Business)
+Mudar o menu para: Código Fonte -> Backend -> Conceitos...
+Botão consultar na tela de entidades
+Multi checkbox em combobox d efiltros em várias telas
+Listar todos os serviços e todos os endpoints e dar a opção de multi checkbox
+Totais gerais nos gráficos de pizza
+Nos grids colocar coluna indentificadora do indice da linha
+Grid do pubsub tem que ter a opção de ocultar e de mostrar.
+
+

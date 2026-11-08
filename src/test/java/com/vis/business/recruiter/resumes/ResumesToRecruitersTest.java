@@ -255,7 +255,7 @@ public class ResumesToRecruitersTest {
 	}
 
 	@Test
-	public void theEmailFoldsTheRegionsBeyondTheThirdOne() {
+	public void theEmailLinksTheRegionsBeyondTheThirdOne() {
 		String recruiter = this.recruiter("regions", "gmail.com");
 		this.saveRecruiter(recruiter);
 		String job = "Analista de cinco regioes " + this.run;
@@ -264,10 +264,21 @@ public class ResumesToRecruitersTest {
 
 		sendTo(recruiter);
 
-		String message = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(recruiter);
-		assertTrue("the regions beyond the third one are folded: " + message, message.contains("<details>"));
-		CcpJsonRepresentation row = rowOf(rowsOf(recruiter), job);
+		List<CcpJsonRepresentation> rows = rowsOf(recruiter);
+		CcpJsonRepresentation row = rowOf(rows, job);
 		assertEquals(5, row.getAsStringList(VisRecruiterResumesFields.regions).size());
+
+		// the e-mail of the process shows only the first 40 resumes of the week, and the local database may hold more
+		// than 40 ahead of this one: the folding is checked in an e-mail with this row alone, sent to another recruiter
+		// (jn_email_message_sent lets one e-mail of the kind go to each recipient per day)
+		String readerOfTheRow = this.recruiter("regions-row", "gmail.com");
+		this.saveRecruiter(readerOfTheRow);
+		List<CcpJsonRepresentation> onlyThisRow = Arrays.asList(row);
+		VisBusinessSendResumesToRecruiters.sendTheEmail(readerOfTheRow, onlyThisRow, "http://localhost:3000", "https://api.jobsnow.com");
+		String message = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(readerOfTheRow);
+		assertTrue("the regions beyond the third one are counted by a link: " + message, message.contains("+2 regiões</a>"));
+		assertFalse("the regions beyond the third one are not lines of the e-mail: " + message, message.contains("<p>Porto Alegre – RS</p>"));
+		assertTrue("the regions beyond the third one are in the title of the link: " + message, message.contains("title=\"Curitiba – PR, Porto Alegre – RS\""));
 	}
 
 	@Test
@@ -379,9 +390,19 @@ public class ResumesToRecruitersTest {
 		List<CcpJsonRepresentation> personalRows = rowsOf(personal);
 		assertTrue("the company forbidden is not the one of a personal e-mail", hasRowOf(personalRows, forbiddingJob));
 
-		String message = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(professional);
+		String messageOfTheProcess = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(professional);
+		assertFalse(messageOfTheProcess.contains(forbiddingJob));
+
+		// the e-mail of the process shows only the first 40 resumes of the week, and the local database may hold more
+		// than 40 ahead of the allowed one: its row is checked in an e-mail with the rows of this test alone, sent to
+		// another recruiter of the same company (jn_email_message_sent lets one e-mail of the kind go to each recipient per day)
+		String colleague = this.recruiter("pro-row", "empresaproibida" + this.run + ".com.br");
+		this.saveRecruiter(colleague);
+		CcpJsonRepresentation rowOfTheAllowedJob = rowOf(professionalRows, allowedJob);
+		List<CcpJsonRepresentation> rowsOfThisTest = Arrays.asList(rowOfTheAllowedJob);
+		VisBusinessSendResumesToRecruiters.sendTheEmail(colleague, rowsOfThisTest, "http://localhost:3000", "https://api.jobsnow.com");
+		String message = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(colleague);
 		assertTrue(message.contains(allowedJob));
-		assertFalse(message.contains(forbiddingJob));
 		assertTrue(message.contains("/recrutador/descadastrar?email="));
 		assertTrue(message.contains("/recrutador/ver-curriculo?email="));
 		assertFalse("no placeholder is left unresolved", message.matches("(?s).*\\{[a-zA-Z]+\\}.*"));
@@ -689,12 +710,13 @@ public class ResumesToRecruitersTest {
 		ElasticsearchLocal.refresh("vis_recruiter");
 
 		List<CcpJsonRepresentation> recruiters = VisBusinessSendResumesToRecruiters.getRecruiters();
-		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, new java.util.HashMap<>(), 0L, "", java.util.Set.of());
+		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, new java.util.HashMap<>(), 0L, "", java.util.Set.of(), 0L, "");
 
 		assertTrue(recruiters.size() > 1000);
 		assertEquals(recruiters.size(), inOrder.size());
 		List<String> positions = new java.util.ArrayList<>();
-		inOrder.forEach(recruiter -> positions.add(recruiter.getAsString(VisRecruiterResumesFields.queuePosition)));
+		// the recruiters of Telegram and of the legacy views go before the queue and have no position in it
+		inOrder.stream().filter(recruiter -> recruiter.containsAllFields(VisRecruiterResumesFields.queuePosition)).forEach(recruiter -> positions.add(recruiter.getAsString(VisRecruiterResumesFields.queuePosition)));
 		List<String> sortedPositions = new java.util.ArrayList<>(positions);
 		java.util.Collections.sort(sortedPositions);
 		assertEquals(sortedPositions, positions);
@@ -748,19 +770,23 @@ public class ResumesToRecruitersTest {
 		assertFalse(VisEntityRecruiterFirstEmail.ENTITY.exists(otherKey));
 	}
 
-	/** Writes on the record the real run uses, and puts back what it found there. */
+	/** Writes on the records the real run uses, one per queue, and puts back what it found there. */
 	@Test
 	public void aRunRestrictedToSomeRecruitersDoesNotMoveTheQueueButAFullOneDoes() {
-		String positionBefore = VisBusinessSendResumesToRecruiters.getLastQueuePosition();
-		String newPosition = "1" + "a".repeat(40);
-		try {
-			VisBusinessSendResumesToRecruiters.saveLastQueuePosition(List.of("someone@jobsnow.com"), positionBefore, newPosition);
-			assertEquals(positionBefore, VisBusinessSendResumesToRecruiters.getLastQueuePosition());
+		this.restrictedRunDoesNotMoveTheQueue(VisEntityRecruiterQueueCursor.CursorNames.resumesToRecruiters, "1" + "a".repeat(40));
+		this.restrictedRunDoesNotMoveTheQueue(VisEntityRecruiterQueueCursor.CursorNames.legacyViewersOfResumesToRecruiters, "8".repeat(13) + "a".repeat(40));
+	}
 
-			VisBusinessSendResumesToRecruiters.saveLastQueuePosition(List.of(), positionBefore, newPosition);
-			assertEquals(newPosition, VisBusinessSendResumesToRecruiters.getLastQueuePosition());
+	private void restrictedRunDoesNotMoveTheQueue(VisEntityRecruiterQueueCursor.CursorNames queue, String newPosition) {
+		String positionBefore = VisBusinessSendResumesToRecruiters.getLastQueuePosition(queue);
+		try {
+			VisBusinessSendResumesToRecruiters.saveLastQueuePosition(queue, List.of("someone@jobsnow.com"), positionBefore, newPosition);
+			assertEquals(positionBefore, VisBusinessSendResumesToRecruiters.getLastQueuePosition(queue));
+
+			VisBusinessSendResumesToRecruiters.saveLastQueuePosition(queue, List.of(), positionBefore, newPosition);
+			assertEquals(newPosition, VisBusinessSendResumesToRecruiters.getLastQueuePosition(queue));
 		} finally {
-			String cursorName = VisEntityRecruiterQueueCursor.CursorNames.resumesToRecruiters.getValue();
+			String cursorName = queue.getValue();
 			CcpJsonRepresentation cursorKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterQueueCursor.Fields.cursorName, cursorName);
 			if(positionBefore.isEmpty()) {
 				VisEntityRecruiterQueueCursor.ENTITY.delete(cursorKey);
@@ -825,9 +851,9 @@ public class ResumesToRecruitersTest {
 		assertFalse(html, html.contains("background-color"));
 	}
 
-	/** The column of languages and skills shows only its first 15 lines, in the order of the row; the row keeps them all. */
+	/** The column of languages and skills shows its first 15 lines, in the order of the row; the others go to the title of a link to the resume. */
 	@Test
-	public void theEmailShowsOnlyTheFirst15LinesOfLanguagesAndSkills() {
+	public void theEmailLinksTheLanguagesAndSkillsAfterTheFirst15() {
 		String recruiter = this.recruiter("fifteenskills", "gmail.com");
 		java.util.List<String> languagesAndSkills = new java.util.ArrayList<>();
 		for (int position = 1; position <= 17; position++) {
@@ -847,6 +873,14 @@ public class ResumesToRecruitersTest {
 		assertTrue(html, html.contains("<p>SKILL15X</p>"));
 		assertFalse(html, html.contains("<p>SKILL16X</p>"));
 		assertFalse(html, html.contains("<p>SKILL17X</p>"));
+		assertTrue("the skills left out are in the title of the link: " + html, html.contains("title=\"SKILL16X, SKILL17X\""));
+		assertFalse("Gmail drops <details>, the list would show open: " + html, html.contains("<details>"));
+		String resumeLink = "http://localhost:3000/recrutador/ver-curriculo?email=";
+		int moreLinkStart = html.indexOf("ver as outras 2 habilidades</a>");
+		assertTrue(html, moreLinkStart > 0);
+		String beforeTheMoreLink = html.substring(0, moreLinkStart);
+		int hrefStart = beforeTheMoreLink.lastIndexOf("href=\"");
+		assertTrue(html, beforeTheMoreLink.startsWith(resumeLink, hrefStart + 6));
 	}
 
 	private static CcpJsonRepresentation rowToSend(String lastView) {

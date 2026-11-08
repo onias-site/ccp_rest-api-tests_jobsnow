@@ -32,6 +32,7 @@ import com.ccp.process.CcpProcessStatusDefault;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.vis.entities.VisEntityResume;
+import com.vis.status.VisProcessStatusResumeDailyAction;
 
 /**
  * Proves the items of {@link VisServiceResume} that take only the key of the resume ({@code GetData}, {@code Delete},
@@ -103,8 +104,10 @@ public class ResumeServiceTest {
 		assertTrue(reactivated.toString(), this.foundIn(reactivated, "vis_resume"));
 		assertFalse(reactivated.toString(), this.foundIn(reactivated, "vis_inactive_resume"));
 
+		// a second deactivation in the same day is refused (since 2026-11-07, one of each action a day)
+		this.assertDailyLimitReached(() -> VisServiceResume.ChangeStatus.execute(this.key()));
+
 		// the delete removes it for good, active or inactive
-		VisServiceResume.ChangeStatus.execute(this.key());
 		VisServiceResume.Delete.execute(this.key());
 		CcpJsonRepresentation afterDelete = VisServiceResume.GetData.execute(this.key());
 		assertFalse(afterDelete.toString(), this.foundIn(afterDelete, "vis_resume"));
@@ -117,6 +120,57 @@ public class ResumeServiceTest {
 		} catch (CcpErrorFlowDisturb e) {
 			assertTrue(e.toString(), e.status.equals(CcpProcessStatusDefault.NOT_FOUND));
 		}
+	}
+
+	private void assertDailyLimitReached(Runnable action) {
+		try {
+			action.run();
+			fail("the second run of the action in the same day was accepted");
+		} catch (CcpErrorFlowDisturb e) {
+			assertEquals(e.toString(), VisProcessStatusResumeDailyAction.dailyLimitReached, e.status);
+		}
+	}
+
+	private CcpJsonRepresentation storedResume() {
+		CcpJsonRepresentation data = VisServiceResume.GetData.execute(this.key());
+		CcpJsonRepresentation storedResume = data.getInnerJson(new CcpFieldName("vis_resume"));
+		return storedResume;
+	}
+
+	/**
+	 * Inserting a resume has no limit; the first update of the day is saved and the second is refused, without saving.
+	 * Since 2026-11-07.
+	 */
+	@Test
+	public void onlyOneUpdateADay() {
+		VisServiceResume.Save.execute(this.resume());
+		VisServiceResume.Save.execute(this.resume().put(VisEntityResume.Fields.desiredJob, "architect"));
+		assertEquals("architect", this.storedResume().getAsString(VisEntityResume.Fields.desiredJob));
+
+		this.assertDailyLimitReached(() -> VisServiceResume.Save.execute(this.resume().put(VisEntityResume.Fields.desiredJob, "tester")));
+		assertEquals("architect", this.storedResume().getAsString(VisEntityResume.Fields.desiredJob));
+		VisServiceResume.Delete.execute(this.key());
+	}
+
+	/** Deactivation and reactivation are independent: one of each a day. Since 2026-11-07. */
+	@Test
+	public void onlyOneInactivationAndOneReactivationADay() {
+		VisServiceResume.Save.execute(this.resume());
+		VisServiceResume.ChangeStatus.execute(this.key());
+		VisServiceResume.ChangeStatus.execute(this.key());
+		this.assertDailyLimitReached(() -> VisServiceResume.ChangeStatus.execute(this.key()));
+		assertFalse(this.storedResume().isEmpty());
+		VisServiceResume.Delete.execute(this.key());
+	}
+
+	/** Deleting, inserting again and deleting again in the same day: the insertion is free, the second deletion is refused. Since 2026-11-07. */
+	@Test
+	public void onlyOneExclusionADayEvenAfterInsertingAgain() {
+		VisServiceResume.Save.execute(this.resume());
+		VisServiceResume.Delete.execute(this.key());
+		VisServiceResume.Save.execute(this.resume());
+		this.assertDailyLimitReached(() -> VisServiceResume.Delete.execute(this.key()));
+		assertFalse(this.storedResume().isEmpty());
 	}
 
 	/** The answers carry only the fields of the resume: until 2026-10-14 they echoed the session values. */
