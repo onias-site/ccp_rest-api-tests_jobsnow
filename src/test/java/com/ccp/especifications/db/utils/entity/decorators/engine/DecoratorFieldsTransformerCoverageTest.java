@@ -43,6 +43,9 @@ public class DecoratorFieldsTransformerCoverageTest {
 	 * originates inside the very methods this decorator forwards.</li>
 	 * <li>{@code getIdToSearchDisposableRecord} — its implementors call {@code getJsonWithHandledPrimaryKey} on their
 	 * own before building the id.</li>
+	 * <li>{@code getRecordToSave} — only joins the stored record (already transformed in the database) with the record
+	 * of a bulk save (transformed by whoever built the bulk items, as in {@code toBulkItems}); transforming here would
+	 * hash the sensitive fields twice.</li>
 	 * <li>{@code toBulkItems} — <b>this is not a comfortable exemption.</b> Whoever builds bulk items
 	 * must transform the json beforehand, from the outside, and nothing enforces it. It is here so the
 	 * test reflects what the code does today, not to say it is right.</li>
@@ -51,6 +54,7 @@ public class DecoratorFieldsTransformerCoverageTest {
 	private static final List<String> EXEMPT = Arrays.asList(
 			"calculateId(CcpJsonRepresentation)",
 			"getIdToSearchDisposableRecord(CcpJsonRepresentation)",
+			"getRecordToSave(CcpJsonRepresentation, CcpJsonRepresentation)",
 			"toBulkItems(CcpJsonRepresentation, CcpBulkEntityOperationType)",
 			"validateJson(CcpJsonRepresentation)"
 	);

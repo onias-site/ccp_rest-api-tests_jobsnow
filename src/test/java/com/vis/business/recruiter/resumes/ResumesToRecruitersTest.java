@@ -8,7 +8,11 @@ import static org.junit.Assert.fail;
 
 import java.time.Year;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.After;
 import org.junit.Assume;
@@ -296,8 +300,15 @@ public class ResumesToRecruitersTest {
 		assertTrue("the screen \"see all\" has every resume: " + rows.size(), rows.size() >= resumesOfTheTest);
 		String message = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(recruiter);
 		assertTrue(message.contains("/meu-recrutamento/curriculos-da-semana"));
-		int linksToResumes = message.split("/recrutador/ver-curriculo\\?email=", -1).length - 1;
-		assertEquals(VisBusinessSendResumesToRecruiters.RESUMES_IN_THE_EMAIL, linksToResumes);
+		// distinct resumes, not links: "+N regiões" and "ver as outras N habilidades" also link to the resume, so a resume
+		// of the local base with many regions or skills has more than one link (until 2026-11-10 the test counted links
+		// and failed with 50 once the roteiros left such resumes among the first 40)
+		Set<String> linkedResumes = new HashSet<>();
+		Matcher resumeLink = Pattern.compile("/recrutador/ver-curriculo\\?email=[^\"]*?resume=([^&\"]+)").matcher(message);
+		while (resumeLink.find()) {
+			linkedResumes.add(resumeLink.group(1));
+		}
+		assertEquals(VisBusinessSendResumesToRecruiters.RESUMES_IN_THE_EMAIL, linkedResumes.size());
 	}
 
 	@Test
@@ -665,6 +676,18 @@ public class ResumesToRecruitersTest {
 		assertTrue(html, html.contains("Experiência em anos"));
 		assertTrue(html, html.contains("Pretensões salariais negociáveis: Sim"));
 		assertTrue(html, html.contains("15 dias"));
+	}
+
+	/** One day of availability in the singular (until 2026-11-10 it came out as "em 1 dias", defect R11-1). */
+	@Test
+	public void oneDayOfAvailabilityIsSingular() {
+		CcpJsonRepresentation candidate = legacyCandidate(this.candidate("oneDay"))
+				.put(VisBusinessBuildLegacyCandidateTable.Legacy.disponibilidade, "1");
+
+		String html = this.legacyTable(candidate);
+
+		assertTrue(html, html.contains("em 1 dia<"));
+		assertFalse(html, html.contains("1 dias"));
 	}
 
 	/** Only the home office DDD when that is all the candidate accepts. */

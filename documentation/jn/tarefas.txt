@@ -4,9 +4,15 @@ O registro guardado em versionable é o mais atual possível? Se não, tem que s
 Criar aviso pro caso no dia não haver curriculos a enviar
 Evita o OR CcpTimeDecorator:130
 
-A vm pode ser vista do mundo exterior?
+arrancar bucket e oauth dos repositorios
+atualizar jacoco
+Quantos endpoints e filas haviam no legado
+
+uma dependencia externa por pom.xml
+verificar as dependencias dos springs js e vis
+pra que serve o dependency-reduced-pom.xml?
+
 vis_skill_dictionary para JnEntitySystemMessage
-para que serve JnEntitySessionValidator.getSeeds?
 Centralizar enums
 
 Mudar o menu para: Código Fonte -> Backend -> Relatórios -> (Cobertura de Testes, Classes Business)
@@ -17,5 +23,9 @@ Listar todos os serviços e todos os endpoints e dar a opção de multi checkbox
 Totais gerais nos gráficos de pizza
 Nos grids colocar coluna indentificadora do indice da linha
 Grid do pubsub tem que ter a opção de ocultar e de mostrar.
+Gráficos expansíveis
+No dashboard de entidades, colocar entidades escolhidas alem das que já estão, exemplo: jn_grouper
+Relatorios de faturamento
+
 
 

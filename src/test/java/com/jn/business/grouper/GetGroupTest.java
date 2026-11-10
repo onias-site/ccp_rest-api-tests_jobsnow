@@ -1,5 +1,6 @@
 package com.jn.business.grouper;
 
+import com.jn.entities.JnEntityLoginEmail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -155,11 +156,20 @@ public class GetGroupTest {
 		JnBusinessGetGroup.INSTANCE.execute(withNoParentId);
 	}
 
+	/**
+	 * Since 2026-11-10 the service of the endpoint serves only the groups of the logged-in user: a group of another parent
+	 * answers 404 even when it exists (the positive path, through HTTP, is in {@code GrouperEndpointTest}).
+	 */
 	@Test
-	public void theServiceOfTheEndpointAnswersTheGroup() {
-		CcpJsonRepresentation group = JsServiceGrouper.GetGroup.execute(this.groupKey());
-
-		assertEquals(Arrays.asList("filhoAtivo"), group.getAsStringList(JnEntityGrouper.Fields.child));
+	public void theServiceOfTheEndpointDoesNotServeTheGroupOfAnotherOwner() {
+		CcpJsonRepresentation groupKeyWithAnEmail = this.groupKey().put(JnEntityLoginEmail.Fields.email, "dono" + this.parentId + "@teste.com");
+		try {
+			JsServiceGrouper.GetGroup.execute(groupKeyWithAnEmail);
+		} catch (CcpErrorFlowDisturb e) {
+			assertEquals(CcpProcessStatusDefault.NOT_FOUND, e.status);
+			return;
+		}
+		throw new AssertionError("the group of another owner was served");
 	}
 
 	@Test

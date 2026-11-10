@@ -157,6 +157,34 @@ public class ResumeLifecycleTest {
 		return RecordingEmailSender.SENT.stream().filter(sent -> sent.contains(this.email)).collect(Collectors.toList());
 	}
 
+	/**
+	 * R09-1 (2026-11-10): the resume is written whole ({@code @CcpEntityReplacedOnSave}). Saved again without {@code clt}
+	 * and {@code lastJob}, the stored record must lose them; until then the update merged and kept the old values.
+	 */
+	@Test
+	public void savingAgainWithoutAnOptionalFieldRemovesIt() {
+		CcpJsonRepresentation withCltAndLastJob = this.resume(4)
+				.put(VisEntityResume.Fields.clt, 5_000)
+				.put(VisEntityResume.Fields.lastJob, "Analista de sistemas");
+		VisEntityResume.ENTITY.save(withCltAndLastJob);
+		String resumeEntityName = VisEntityResume.ENTITY.getEntityMetaData().entityName;
+		// the id comes from the stored record: the e-mail is transformed on the way in
+		CcpJsonRepresentation stored = VisEntityResume.ENTITY.getOneById(this.key());
+		String resumeId = VisEntityResume.ENTITY.calculateId(stored);
+		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
+		CcpJsonRepresentation first = crud.getOneById(resumeEntityName, resumeId);
+		assertTrue(first.containsAllFields(VisEntityResume.Fields.clt, VisEntityResume.Fields.lastJob));
+
+		VisEntityResume.ENTITY.save(this.resume(4));
+		CcpJsonRepresentation second = crud.getOneById(resumeEntityName, resumeId);
+		assertFalse(second.toString(), second.containsField(VisEntityResume.Fields.clt));
+		assertFalse(second.toString(), second.containsField(VisEntityResume.Fields.lastJob));
+		assertEquals(9_000, second.getAsIntegerNumber(VisEntityResume.Fields.pj).intValue());
+		// the fields the decorators write (the hashes of the groups) are still there
+		assertFalse(second.getAsStringList(VisEntityResume.Fields.hash).isEmpty());
+		VisEntityResume.ENTITY.deleteAnyWhere(this.key());
+	}
+
 	@Test
 	public void theWholeLifeCycleKeepsTheGroupsAndTellsTheOwner() {
 		RecordingEmailSender.SENT.clear();
@@ -194,6 +222,12 @@ public class ResumeLifecycleTest {
 		assertTrue(VisEntityResume.ENTITY.getTwinEntity().exists(this.key()));
 		this.assertOnlyIn(TWIN_GROUPER, newHashes, resumeId);
 		assertEquals(3, this.noticesToTheOwner().size());
+		// the deactivation e-mail shows the resume as the recruiters saw it, as the e-mails of the save and of the reactivation do
+		List<String> messagesAfterDeactivation = RecordingEmailSender.MESSAGES.stream().filter(sent -> sent.contains(this.email)).collect(Collectors.toList());
+		String deactivationMessage = messagesAfterDeactivation.get(2);
+		assertTrue(deactivationMessage, deactivationMessage.contains("inativou seus dados") || deactivationMessage.contains("deactivated your data"));
+		assertTrue(deactivationMessage, deactivationMessage.contains(this.uniqueSkill));
+		assertFalse(deactivationMessage, deactivationMessage.contains("{resumesTable}"));
 		// the group is only on the twin side: reading it on the main side by getOneById redirects, JnGroupers does not
 		String twinOnlyHash = this.hashOfTheUniqueSkill(TWIN_GROUPER, newHashes);
 		CcpJsonRepresentation twinOnlyGroupKey = this.groupKey(twinOnlyHash);

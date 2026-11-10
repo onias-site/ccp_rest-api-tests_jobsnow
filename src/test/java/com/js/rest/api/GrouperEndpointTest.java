@@ -22,6 +22,8 @@ import org.junit.Test;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.decorators.CcpStringDecorator;
+import com.ccp.hash.CcpHashAlgorithm;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
@@ -79,7 +81,8 @@ public class GrouperEndpointTest {
 		);
 	}
 
-	private static final String PARENT_NAME = "zz_test_parent";
+	/** The group of the logged-in user: since 2026-11-10 the endpoint serves no other ({@code JsBusinessOnlyTheGroupsOfTheSessionOwner}). */
+	private static final String PARENT_NAME = "jn_login_email";
 
 	private static final String CHILD_NAME = "zz_test_child";
 
@@ -89,9 +92,17 @@ public class GrouperEndpointTest {
 
 	private static final int JS_API_PORT = 8082;
 
-	private final String parentId = "grupoapi" + System.currentTimeMillis();
-
 	private final TestVariables testVariables = new TestVariables();
+
+	private final String parentId = ownerParentId(this.testVariables);
+
+	private static String ownerParentId(TestVariables user) {
+		CcpStringDecorator email = new CcpStringDecorator(user.VALID_EMAIL);
+		String emailHash = email.hash().asString(CcpHashAlgorithm.SHA1);
+		CcpJsonRepresentation parentJson = CcpOtherConstants.EMPTY_JSON.put(JnEntityLoginEmail.Fields.email, emailHash);
+		String parentId = JnEntityLoginEmail.ENTITY.calculateId(parentJson);
+		return parentId;
+	}
 
 	private CcpJsonRepresentation groupKey() {
 		return JnGroupers.getGroupKey(PARENT_NAME, CHILD_NAME, this.parentId);

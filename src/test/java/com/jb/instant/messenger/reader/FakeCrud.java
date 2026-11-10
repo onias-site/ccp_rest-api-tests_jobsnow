@@ -51,6 +51,12 @@ class FakeCrud implements CcpCrud {
 		return response;
 	}
 
+	/** This double already keeps only the last json saved: replacing is saving. */
+	public CcpJsonRepresentation replace(String entityName, CcpJsonRepresentation json, String id) {
+		CcpJsonRepresentation response = this.save(entityName, json, id);
+		return response;
+	}
+
 	public boolean isInsertedDocument(CcpJsonRepresentation saveResponse) {
 		boolean inserted = saveResponse.getAsBoolean(JsonFieldNames.inserted);
 		return inserted;
