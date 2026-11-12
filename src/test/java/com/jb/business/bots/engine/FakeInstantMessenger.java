@@ -17,6 +17,10 @@ import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
  */
 class FakeInstantMessenger implements CcpInstantMessenger {
 
+	enum Fields implements CcpJsonFieldName {
+		fileContent,
+	}
+
 	final List<CcpJsonRepresentation> sentMessages = new ArrayList<>();
 
 	public CcpJsonRepresentation sendTextMessage(CcpJsonFieldName botType, String botToken, Long chatId, Long replyTo, String message) {
@@ -26,6 +30,16 @@ class FakeInstantMessenger implements CcpInstantMessenger {
 
 	public CcpJsonRepresentation sendFile(CcpJsonFieldName botType, String botToken, Long chatId, Long replyTo, String fileName, String caption, Byte[] fileContent) {
 		this.store(botType, chatId, caption);
+		// the content of the file (the stack trace of an error) helps to diagnose a failing test
+		byte[] bytes = new byte[fileContent.length];
+		for (int index = 0; index < bytes.length; index++) {
+			bytes[index] = fileContent[index];
+		}
+		String content = new String(bytes, java.nio.charset.StandardCharsets.UTF_8);
+		int last = this.sentMessages.size() - 1;
+		CcpJsonRepresentation stored = this.sentMessages.get(last);
+		CcpJsonRepresentation storedWithTheFile = stored.put(Fields.fileContent, content);
+		this.sentMessages.set(last, storedWithTheFile);
 		return CcpOtherConstants.EMPTY_JSON;
 	}
 

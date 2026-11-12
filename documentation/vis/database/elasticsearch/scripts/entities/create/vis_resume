@@ -56,6 +56,12 @@
       "insertionDate": {
         "type": "keyword"
       },
+      "invalidLinkedinAddress": {
+        "type": "boolean"
+      },
+      "chatId": {
+        "type": "long"
+      },
       "spokenLanguage": {
         "dynamic": "strict",
         "properties": {

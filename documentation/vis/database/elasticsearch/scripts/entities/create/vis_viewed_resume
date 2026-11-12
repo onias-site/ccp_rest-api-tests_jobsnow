@@ -5,6 +5,9 @@
 			"alias": {
 				"type": "keyword"
 			},
+			"comment": {
+				"type": "keyword"
+			},
 			"date": {
 				"type": "keyword"
 			},

@@ -661,6 +661,23 @@ public class ResumesToRecruitersTest {
 		}
 	}
 
+	/** A resume whose LinkedIn address the support confirmed as invalid no longer goes to any recruiter (since 2026-11-12). */
+	@Test
+	public void aResumeWithTheLinkedinConfirmedAsInvalidGoesToNoRecruiter() {
+		String recruiter = this.recruiter("linkedin-invalido", "gmail.com");
+		this.saveRecruiter(recruiter);
+		String job = "Analista de LinkedIn invalido " + this.run;
+		String otherJob = "Analista de LinkedIn valido " + this.run;
+		this.saveResume(this.resume("linkedin-invalido", job).put(VisEntityResume.Fields.invalidLinkedinAddress, true));
+		this.saveResume(this.resume("linkedin-valido", otherJob));
+
+		sendTo(recruiter);
+
+		List<CcpJsonRepresentation> rows = rowsOf(recruiter);
+		assertFalse(hasRowOf(rows, job));
+		assertTrue(hasRowOf(rows, otherJob));
+	}
+
 	@Test
 	public void aLinkSignedForAnotherRecruiterIsRefused() {
 		String recruiter = this.recruiter("signed", "gmail.com");

@@ -1,0 +1,16 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"chatId": {
+				"type": "long"
+			},
+			"message": {
+				"type": "keyword"
+			},
+			"messageType": {
+				"type": "keyword"
+			}
+		}
+	}
+}

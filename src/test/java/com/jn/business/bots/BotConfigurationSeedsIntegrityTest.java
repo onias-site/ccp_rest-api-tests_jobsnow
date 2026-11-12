@@ -65,6 +65,7 @@ public class BotConfigurationSeedsIntegrityTest {
 		seeds.addAll(VisEntitySkillPending.INSTANCE.getFirstRecordsToInsert());
 		seeds.addAll(VisEntitySkillFixHierarchyPending.INSTANCE.getFirstRecordsToInsert());
 		seeds.addAll(JnEntityCommandNotAllowedToUser.INSTANCE.getFirstRecordsToInsert());
+		seeds.addAll(com.vis.entities.VisEntityResumeMessage.INSTANCE.getFirstRecordsToInsert());
 		return seeds;
 	}
 
@@ -148,6 +149,7 @@ public class BotConfigurationSeedsIntegrityTest {
 		texts.addAll(java.util.Arrays.asList(VisSupportSkillSuggestionMessages.values()));
 		texts.addAll(java.util.Arrays.asList(VisSupportSkillFixHierarchyMessages.values()));
 		texts.addAll(java.util.Arrays.asList(JnSupportIgnoredUsersMessages.values()));
+		texts.addAll(java.util.Arrays.asList(com.vis.business.bots.linkedin.VisSupportVerifyLinkedinMessages.values()));
 		for (JnSystemMessage text : texts) {
 			String name = text.getSystemMessageName();
 			assertTrue(name + " in Portuguese", seededTexts.contains(name + "/" + JnLanguage.portuguese.name()));

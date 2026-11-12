@@ -146,7 +146,7 @@ public class DefaultBotCommandsTest {
 		// the configured commands come in the alphabetical order of their canonical names (since 2026-10-15 they are found
 		// by botName, seeded by jb, vis and js), then the default ones
 		assertEquals("/permitirComandoAoUsuario, /responderFaleConosco, /ajustarHierarquiaDeHabilidades, /listarFaleConoscoIgnorados, /listarUsuariosIgnorados, /ticketsPendentes, "
-				+ "/avaliarSugestaoDeHabilidade, /solucionarTicketsDeTokenDeLogin, /resolverStackTrace, /idDoChat, /mostrarTodosOsComandos, /explicarEsteBot, /definirIdioma", answer);
+				+ "/avaliarSugestaoDeHabilidade, /solucionarTicketsDeTokenDeLogin, /resolverStackTrace, /verificarEnderecoDoLinkedin, /idDoChat, /mostrarTodosOsComandos, /explicarEsteBot, /definirIdioma", answer);
 	}
 
 	/** The name in Portuguese runs the command, and the canonical one keeps working. */
@@ -170,7 +170,7 @@ public class DefaultBotCommandsTest {
 
 		String commandsInEnglish = this.answerTo("/showAllCommands");
 		assertEquals("/allowCommandToUser, /answerContactUs, /fixSkillHierarchy, /ignoredContactUs, /ignoredUsers, /pendingTickets, "
-				+ "/reviewSkillSuggestion, /solveLoginTokenTicket, /solveStackTrace, /chatId, /showAllCommands, /explainThisBot, /setLanguage", commandsInEnglish);
+				+ "/reviewSkillSuggestion, /solveLoginTokenTicket, /solveStackTrace, /verifyLinkedinAddress, /chatId, /showAllCommands, /explainThisBot, /setLanguage", commandsInEnglish);
 		assertTrue(this.answerTo("/explainThisBot").startsWith("Bot of administrative routines"));
 
 		assertEquals("Idioma definido: português.", this.answerTo("/setLanguage Portugues"));
