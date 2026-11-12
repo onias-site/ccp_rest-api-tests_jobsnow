@@ -14,8 +14,8 @@ import com.jn.rest.api.commons.TestVariables;
 /**
  * Every route that reads or writes data of a user refuses the request with no session and with a forged one. The list
  * is every mapping of the controllers of the vis (8081) and of the js (8082) under the session filter, plus the root of
- * the resume; a new route under {@code /resume}, {@code /recruiter}, {@code /recruiters}, {@code /login} or
- * {@code /grouper} must be added here.
+ * the resume; a new route under {@code /resume}, {@code /recruiter}, {@code /recruiters}, {@code /login},
+ * {@code /grouper} or {@code /contact-us} must be added here.
  */
 public class EveryRouteOfTheUserRefusesARequestWithoutSession {
 
@@ -49,6 +49,7 @@ public class EveryRouteOfTheUserRefusesARequestWithoutSession {
 			{"8081", "POST", "recruiter/" + email + "/viewed-resumes/202611/details"},
 			{"8082", "GET", "grouper/" + email + "/jn_login_email/js_login_session_validation/x"},
 			{"8082", "GET", "grouper/" + email + "/jn_login_email/js_login_session_validation/x/bothSides"},
+			{"8082", "POST", "contact-us/" + email},
 		};
 	}
 

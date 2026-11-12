@@ -41,11 +41,11 @@ public class PreRegistrationScreen  extends JnTestTemplate{
 	}
 
 	@Test
-	public void userAlreadyLoggedIn() {
+	public void openSessionIsToldOnlyByThePasswordLogin() {
 		TestVariables testVariables = new TestVariables();
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		this.execute(testVariables, JsProcessStatusSaveAnswers.loginConflict);
+		this.execute(testVariables, JsProcessStatusSaveAnswers.missingPassword);
 	}
 
 	@Test

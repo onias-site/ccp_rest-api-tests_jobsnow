@@ -230,8 +230,9 @@ public class RecruiterLoadsTest {
 		CcpJsonRepresentation labsRecruiter = VisBusinessPrepareRecruiter.INSTANCE.execute(this.input("rh@" + labsDomain, "login"));
 		VisEntityRecruiter.ENTITY.save(techRecruiter);
 		VisEntityRecruiter.ENTITY.save(labsRecruiter);
-		String techCompany = VisEntityVirtualRecruiterDomainInitialsGrouper.getCompanyName(techDomain);
-		String labsCompany = VisEntityVirtualRecruiterDomainInitialsGrouper.getCompanyName(labsDomain);
+		// since 2026-11-11 the suggestion is the domain itself (notAllowedCompany takes only domains)
+		String techCompany = techDomain;
+		String labsCompany = labsDomain;
 		try {
 			assertEquals(List.of(labsCompany, techCompany), this.searchCompanies("qzw" + this.now));
 			assertEquals(List.of(techCompany), this.searchCompanies("QZW" + this.now + "T"));

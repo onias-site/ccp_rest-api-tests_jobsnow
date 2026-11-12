@@ -10,7 +10,8 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
  * js_login_password: twin of js_login_password_locked (locked password), {@code @CcpEntityCache(3600)},
- * versionable, transformer (hash of the e-mail and BCrypt of the password) and validator (password strength).
+ * versionable, transformer (hash of the e-mail and BCrypt of the password) and validator (password strength); each
+ * insertion deletes the record of js_login_token_resent_without_password (side effect).
  */
 public class JsEntityLoginPasswordDecoratorsTest extends EntityDecoratorTestTemplate {
 
@@ -27,7 +28,7 @@ public class JsEntityLoginPasswordDecoratorsTest extends EntityDecoratorTestTemp
 
 	@Test
 	public void chain() {
-		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "JnVersionablePurgeEntity", "DecoratorTwinEntity", "DecoratorCacheEntity", "JnVersionableEntity", "DefaultImplementationEntity");
+		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "DecoratorFieldsTransformerEntity", "JnVersionablePurgeEntity", "DecoratorWriteSideEffectEntity", "DecoratorTwinEntity", "DecoratorCacheEntity", "JnVersionableEntity", "DefaultImplementationEntity");
 	}
 
 	@Test

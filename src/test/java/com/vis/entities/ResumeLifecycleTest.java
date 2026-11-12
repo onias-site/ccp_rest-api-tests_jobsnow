@@ -11,6 +11,11 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
+import com.ccp.decorators.CcpTimeDecorator;
+import com.jn.json.fields.validation.JnJsonCommonsFields;
+import com.ccp.decorators.CcpFieldName;
+
+
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
@@ -30,10 +35,14 @@ import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.db.bulk.JnExecuteBulkOperation;
 import com.jn.entities.JnEntityGrouper;
+import com.jn.entities.JnEntityRecordsCount;
+import com.ccp.especifications.db.query.CcpQueryOptions;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.utils.JnDeleteKeysFromCache;
 import com.jn.utils.JnGroupers;
+import com.vis.json.fields.validation.VisJsonCommonsFields;
+import com.vis.json.transformers.VisResumeExcludedSkillCounterKeys;
 import com.vis.json.transformers.VisResumeHashCombinations;
 
 /**
@@ -265,5 +274,213 @@ public class ResumeLifecycleTest {
 		VisEntityResume.ENTITY.deleteAnyWhere(this.key());
 		this.assertInNone(inactiveHashes, resumeId);
 		assertEquals(5, this.noticesToTheOwner().size());
+	}
+
+	private static final String DDD_PARENT_NAME = VisEntityVirtualDddGrouper.ENTITY.getEntityMetaData().entityName;
+
+	/** The children of this resume in the group of a ddd, on one side: the JSON texts that carry its id. */
+	private List<CcpJsonRepresentation> childrenInTheDddGroup(boolean twinSide, int ddd, String resumeId) {
+		String childName = VisEntityResume.ENTITY.getEntityMetaData().entityName;
+		CcpJsonRepresentation combination = CcpOtherConstants.EMPTY_JSON.put(VisEntityVirtualDddGrouper.Fields.ddd, ddd);
+		String parentId = VisEntityVirtualDddGrouper.ENTITY.calculateId(combination);
+		CcpJsonRepresentation group = JnGroupers.getGroup(twinSide, DDD_PARENT_NAME, childName, parentId);
+		if (group.isEmpty()) {
+			return Arrays.asList();
+		}
+		return group.getAsStringList(JnEntityGrouper.Fields.child).stream()
+				.map(CcpJsonRepresentation::new)
+				.filter(child -> resumeId.equals(child.getAsString(VisJsonCommonsFields.id)))
+				.collect(Collectors.toList());
+	}
+
+	/** The resume is once in the group of each ddd on one side, in none of them on the other side, and returns that child. */
+	private CcpJsonRepresentation assertOnlyInTheDddGroups(boolean twinSide, List<Integer> ddds, String resumeId) {
+		CcpJsonRepresentation lastChild = CcpOtherConstants.EMPTY_JSON;
+		for (Integer ddd : ddds) {
+			List<CcpJsonRepresentation> children = this.childrenInTheDddGroup(twinSide, ddd, resumeId);
+			assertEquals("ddd " + ddd, 1, children.size());
+			assertTrue("ddd " + ddd, this.childrenInTheDddGroup(false == twinSide, ddd, resumeId).isEmpty());
+			lastChild = children.get(0);
+		}
+		return lastChild;
+	}
+
+	private void assertInNoDddGroup(List<Integer> ddds, String resumeId) {
+		for (Integer ddd : ddds) {
+			assertTrue("ddd " + ddd, this.childrenInTheDddGroup(MAIN_GROUPER, ddd, resumeId).isEmpty());
+			assertTrue("ddd " + ddd, this.childrenInTheDddGroup(TWIN_GROUPER, ddd, resumeId).isEmpty());
+		}
+	}
+
+	/**
+	 * 2026-11-12: the resume is a child of the group of each of its ddds, as a JSON text with btc, clt, disponibility,
+	 * experience, spokenLanguage, pcd, pj, resumeType, temporallyJobTime, travel and its id; the child follows the save,
+	 * the deactivation, the reactivation and the delete everywhere.
+	 */
+	@Test
+	public void theResumeIsAChildOfTheGroupOfEachDdd() {
+		VisEntityResume.ENTITY.save(this.resume(4).put(VisEntityResume.Fields.ddd, Arrays.asList(11, 21)).put(VisEntityResume.Fields.clt, 5_000));
+		CcpJsonRepresentation stored = VisEntityResume.ENTITY.getOneById(this.key());
+		String resumeId = VisEntityResume.ENTITY.calculateId(stored);
+		CcpJsonRepresentation child = this.assertOnlyInTheDddGroups(MAIN_GROUPER, Arrays.asList(11, 21), resumeId);
+		List<String> expectedFields = Arrays.asList("btc", "clt", "disponibility", "experience", "spokenLanguage", "pcd", "pj", "resumeType", "temporallyJobTime", "travel", "skill", "id");
+		assertTrue(child.toString(), expectedFields.containsAll(child.fieldSet()));
+		assertEquals(stored.getAsIntegerNumber(VisEntityResume.Fields.experience), child.getAsIntegerNumber(VisEntityResume.Fields.experience));
+		assertEquals(5_000, child.getAsIntegerNumber(VisEntityResume.Fields.clt).intValue());
+		assertEquals(9_000, child.getAsIntegerNumber(VisEntityResume.Fields.pj).intValue());
+		// spokenLanguage is kept whole, a list with every item as stored (the id the front end sends is dropped on the way in)
+		assertEquals(stored.getAsJsonList(VisEntityResume.Fields.spokenLanguage), child.getAsJsonList(VisEntityResume.Fields.spokenLanguage));
+		assertEquals("English", child.getAsJsonList(VisEntityResume.Fields.spokenLanguage).get(0).getAsString(new com.ccp.decorators.CcpFieldName("name")));
+		// only the skills of the resume itself (type skillsFromResume), by name; the excluded PYTHON is left out
+		assertEquals(Arrays.asList(this.uniqueSkill, "SPRING"), child.getAsStringList(VisEntityResume.Fields.skill));
+		System.out.println("DDD CHILD: " + child);
+		assertFalse(child.toString(), child.containsField(VisEntityResume.Fields.email));
+		assertFalse(child.toString(), child.containsField(VisEntityResume.Fields.desiredJob));
+
+		// saved again with other ddds and without clt: leaves 21, enters 31 and the child of 11 is the new version
+		VisEntityResume.ENTITY.save(this.resume(4).put(VisEntityResume.Fields.ddd, Arrays.asList(11, 31)));
+		this.assertInNoDddGroup(Arrays.asList(21), resumeId);
+		CcpJsonRepresentation newChild = this.assertOnlyInTheDddGroups(MAIN_GROUPER, Arrays.asList(11, 31), resumeId);
+		assertFalse(newChild.toString(), newChild.containsField(VisEntityResume.Fields.clt));
+
+		// deactivation and reactivation move the child between the sides
+		VisEntityResume.ENTITY.delete(this.key());
+		this.assertOnlyInTheDddGroups(TWIN_GROUPER, Arrays.asList(11, 31), resumeId);
+		VisEntityResume.ENTITY.getTwinEntity().delete(this.key());
+		this.assertOnlyInTheDddGroups(MAIN_GROUPER, Arrays.asList(11, 31), resumeId);
+
+		// delete everywhere: out of the groups of both sides
+		VisEntityResume.ENTITY.deleteAnyWhere(this.key());
+		this.assertInNoDddGroup(Arrays.asList(11, 21, 31), resumeId);
+	}
+
+	private static final String EXCLUDED_SKILL_PARENT_NAME = VisEntityVirtualExcludedSkillCounter.ENTITY.getEntityMetaData().entityName;
+
+	/** How many active resumes exclude the skill, as its group of counters tells (0 when the group does not exist). */
+	private int resumesExcluding(String skill) {
+		String childName = VisEntityResume.ENTITY.getEntityMetaData().entityName;
+		CcpJsonRepresentation combination = CcpOtherConstants.EMPTY_JSON.put(VisEntityVirtualExcludedSkillCounter.Fields.skill, skill);
+		String parentId = VisEntityVirtualExcludedSkillCounter.ENTITY.calculateId(combination);
+		CcpJsonRepresentation counters = JnGroupers.getCounters(EXCLUDED_SKILL_PARENT_NAME, childName, parentId);
+		boolean absent = false == counters.containsAllFields(VisResumeExcludedSkillCounterKeys.Keys.resumes);
+		if (absent) {
+			return 0;
+		}
+		return counters.getAsIntegerNumber(VisResumeExcludedSkillCounterKeys.Keys.resumes);
+	}
+
+	private CcpJsonRepresentation resumeExcluding(String... excludedSkills) {
+		CcpJsonRepresentation java = new CcpJsonRepresentation("{\"skill\":\"" + this.uniqueSkill + "\",\"word\":\"" + this.uniqueSkill + "\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\"}");
+		List<CcpJsonRepresentation> skills = new java.util.ArrayList<>(Arrays.asList(java));
+		for (int index = 0; index < excludedSkills.length; index++) {
+			String excludedSkill = excludedSkills[index];
+			// the same skill may come from two words of the text
+			skills.add(new CcpJsonRepresentation("{\"skill\":\"" + excludedSkill + "\",\"word\":\"W" + index + excludedSkill + "\",\"type\":\"excludedSkills\",\"category\":\"excludedSkills\"}"));
+		}
+		return this.resume(4).put(VisEntityResume.Fields.skill, skills);
+	}
+
+	/**
+	 * 2026-11-12: the group of each skill the owner excluded counts how many active resumes exclude it now; a skill no
+	 * longer excluded, the deactivation and the delete everywhere subtract, the reactivation adds back.
+	 */
+	@Test
+	public void theExcludedSkillsAreCountedOnePerGroup() {
+		String first = "EXCLA" + System.currentTimeMillis();
+		String second = "EXCLB" + System.currentTimeMillis();
+		String third = "EXCLC" + System.currentTimeMillis();
+
+		VisEntityResume.ENTITY.save(this.resumeExcluding(first, second, second));
+		assertEquals(1, this.resumesExcluding(first));
+		assertEquals("the same skill twice counts once", 1, this.resumesExcluding(second));
+		assertEquals("a skill found is not counted", 0, this.resumesExcluding(this.uniqueSkill));
+
+		VisEntityResume.ENTITY.save(this.resumeExcluding(second, third));
+		assertEquals(0, this.resumesExcluding(first));
+		assertEquals(1, this.resumesExcluding(second));
+		assertEquals(1, this.resumesExcluding(third));
+
+		VisEntityResume.ENTITY.delete(this.key());
+		assertEquals(0, this.resumesExcluding(second));
+		assertEquals(0, this.resumesExcluding(third));
+
+		VisEntityResume.ENTITY.getTwinEntity().delete(this.key());
+		assertEquals(1, this.resumesExcluding(second));
+		assertEquals(1, this.resumesExcluding(third));
+
+		VisEntityResume.ENTITY.deleteAnyWhere(this.key());
+		assertEquals(0, this.resumesExcluding(second));
+		assertEquals(0, this.resumesExcluding(third));
+	}
+	private CcpJsonRepresentation storedCount() {
+		CcpJsonRepresentation key = CcpOtherConstants.EMPTY_JSON.put(JnEntityRecordsCount.Fields.entityName, "vis_resume");
+		return JnEntityRecordsCount.ENTITY.getOneById(key);
+	}
+
+	private void assertCounts(long expectedMain, long expectedTwin) {
+		CcpJsonRepresentation count = this.storedCount();
+		long realMain = CcpQueryOptions.INSTANCE.matchAll().selectFrom("vis_resume").total();
+		long realTwin = CcpQueryOptions.INSTANCE.matchAll().selectFrom("vis_inactive_resume").total();
+		assertEquals(expectedMain, realMain);
+		assertEquals(expectedTwin, realTwin);
+		assertEquals(realMain, count.getAsLongNumber(JnEntityRecordsCount.Fields.mainRecords).longValue());
+		assertEquals(realTwin, count.getAsLongNumber(JnEntityRecordsCount.Fields.twinRecords).longValue());
+		assertEquals("vis_inactive_resume", count.getAsString(JnEntityRecordsCount.Fields.twinEntityName));
+	}
+
+	@Test
+	public void theActiveAndInactiveResumesAreCountedOnEveryWrite() {
+		// a first save counts what is already in the database, whatever it is
+		VisEntityResume.ENTITY.save(this.resume(3));
+		long main = CcpQueryOptions.INSTANCE.matchAll().selectFrom("vis_resume").total();
+		long twin = CcpQueryOptions.INSTANCE.matchAll().selectFrom("vis_inactive_resume").total();
+		this.assertCounts(main, twin);
+
+		VisEntityResume.ENTITY.save(this.resume(4));
+		this.assertCounts(main, twin);
+
+		VisEntityResume.ENTITY.delete(this.key());
+		this.assertCounts(main - 1, twin + 1);
+
+		VisEntityResume.ENTITY.getTwinEntity().delete(this.key());
+		this.assertCounts(main, twin);
+
+		VisEntityResume.ENTITY.deleteAnyWhere(this.key());
+		this.assertCounts(main - 1, twin);
+	}
+	private static int insertedThisMonth(String childName) {
+		String parentName = VisEntityVirtualInsertionMonthCounter.ENTITY.getEntityMetaData().entityName;
+		String parentId = VisEntityVirtualInsertionMonthCounter.getParentId();
+		CcpJsonRepresentation counters = JnGroupers.getCounters(parentName, childName, parentId);
+		String yearMonth = new CcpTimeDecorator().getFormattedDateTime("yyyyMM");
+		CcpFieldName key = new CcpFieldName(yearMonth);
+		return counters.containsAllFields(key) ? counters.getAsIntegerNumber(key) : 0;
+	}
+
+	@Test
+	public void theResumesAreCountedByTheMonthOfTheirInsertion() {
+		String childName = VisEntityResume.ENTITY.getEntityMetaData().entityName;
+		int before = insertedThisMonth(childName);
+
+		VisEntityResume.ENTITY.save(this.resume(3));
+		assertEquals("the insertion adds 1", before + 1, insertedThisMonth(childName));
+		String insertionDate = VisEntityResume.ENTITY.getOneById(this.key()).getAsString(JnJsonCommonsFields.insertionDate);
+		assertEquals(19, insertionDate.length());
+
+		// the input never sets the moment of the insertion, and an update keeps the stored one
+		VisEntityResume.ENTITY.save(this.resume(4).put(JnJsonCommonsFields.insertionDate, "01/01/2016 10:00:00"));
+		assertEquals(insertionDate, VisEntityResume.ENTITY.getOneById(this.key()).getAsString(JnJsonCommonsFields.insertionDate));
+		assertEquals("an update counts nothing", before + 1, insertedThisMonth(childName));
+
+		VisEntityResume.ENTITY.delete(this.key());
+		assertEquals("the deactivation subtracts 1", before, insertedThisMonth(childName));
+		assertEquals(insertionDate, VisEntityResume.ENTITY.getTwinEntity().getOneById(this.key()).getAsString(JnJsonCommonsFields.insertionDate));
+
+		VisEntityResume.ENTITY.getTwinEntity().delete(this.key());
+		assertEquals("the reactivation adds 1", before + 1, insertedThisMonth(childName));
+		assertEquals(insertionDate, VisEntityResume.ENTITY.getOneById(this.key()).getAsString(JnJsonCommonsFields.insertionDate));
+
+		VisEntityResume.ENTITY.deleteAnyWhere(this.key());
+		assertEquals("the delete subtracts 1", before, insertedThisMonth(childName));
 	}
 }

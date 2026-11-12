@@ -272,8 +272,8 @@ public class ResumesToRecruitersTest {
 		CcpJsonRepresentation row = rowOf(rows, job);
 		assertEquals(5, row.getAsStringList(VisRecruiterResumesFields.regions).size());
 
-		// the e-mail of the process shows only the first 40 resumes of the week, and the local database may hold more
-		// than 40 ahead of this one: the folding is checked in an e-mail with this row alone, sent to another recruiter
+		// the e-mail of the process shows only the first 30 resumes of the week, and the local database may hold more
+		// than 30 ahead of this one: the folding is checked in an e-mail with this row alone, sent to another recruiter
 		// (jn_email_message_sent lets one e-mail of the kind go to each recipient per day)
 		String readerOfTheRow = this.recruiter("regions-row", "gmail.com");
 		this.saveRecruiter(readerOfTheRow);
@@ -285,8 +285,86 @@ public class ResumesToRecruitersTest {
 		assertTrue("the regions beyond the third one are in the title of the link: " + message, message.contains("title=\"Curitiba – PR, Porto Alegre – RS\""));
 	}
 
+	/**
+	 * Bug of 2026-11-12: with 40 rows the e-mail reached 107 KB and Gmail, which clips a message beyond 102 KB, hid its
+	 * end. The e-mail shows 30.
+	 */
 	@Test
-	public void theEmailShowsTheFirst40ResumesAndLinksToTheScreenWithAllOfThem() {
+	public void theEmailShowsAtMost30ResumesSoGmailDoesNotClipIt() {
+		assertEquals(30, VisBusinessSendResumesToRecruiters.RESUMES_IN_THE_EMAIL);
+	}
+
+	/**
+	 * Bugs of 2026-11-12: the total of the subject and of the text did not match what the recruiter could see, and the
+	 * screen "see all" opened empty. The subject, the opening text and the paragraph "see all" count every resume left
+	 * after the filters, the table shows the first {@code RESUMES_IN_THE_EMAIL}, and the screen "see all" (the service
+	 * the front end calls) answers all of them, in the order of the e-mail, with the same signed links.
+	 */
+	@Test
+	public void theSubjectTheTextAndTheScreenSeeAllCountTheSameResumes() {
+		int beyondTheTable = 5;
+		int resumesOfTheList = VisBusinessSendResumesToRecruiters.RESUMES_IN_THE_EMAIL + beyondTheTable;
+		String source = this.recruiter("count-source", "gmail.com");
+		this.saveRecruiter(source);
+		for (int index = 0; index < resumesOfTheList; index++) {
+			this.saveResume(this.resume("contagem" + index, "Analista contado " + index + " " + this.run));
+		}
+
+		sendTo(source);
+
+		// the whole process: the subject counts the list the screen "see all" shows
+		List<CcpJsonRepresentation> rowsOfTheProcess = rowsOf(source);
+		String messageOfTheProcess = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(source);
+		assertTrue("the subject counts the list of the screen \"see all\" (" + rowsOfTheProcess.size() + "): " + messageOfTheProcess.substring(0, 80),
+				messageOfTheProcess.startsWith(rowsOfTheProcess.size() + " currículos de "));
+		assertTrue(messageOfTheProcess.contains("(" + rowsOfTheProcess.size() + " no total)"));
+
+		// a list of a known size, as the e-mail to a recruiter whose resumes passed every filter
+		List<CcpJsonRepresentation> list = rowsOfTheProcess.subList(0, resumesOfTheList);
+		String reader = this.recruiter("count-reader", "gmail.com");
+		this.saveRecruiter(reader);
+		VisBusinessSendResumesToRecruiters.sendTheEmail(reader, list, "http://localhost:3000", "https://api.jobsnow.com");
+		String message = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(reader);
+
+		assertTrue("the subject counts the whole list: " + message.substring(0, 80), message.startsWith(resumesOfTheList + " currículos de "));
+		assertTrue("the opening text counts the whole list", message.contains("(" + resumesOfTheList + " no total)"));
+		int shown = VisBusinessSendResumesToRecruiters.RESUMES_IN_THE_EMAIL;
+		assertTrue("the paragraph \"see all\" counts the table and the list", message.contains("Estes são os " + shown + " primeiros de " + resumesOfTheList + " currículos."));
+		// the link carries the recipient: with another account logged in, the screen asks for the login of the recipient
+		// instead of reading the list of the wrong account (bug of 2026-11-12)
+		String encodedReader = java.net.URLEncoder.encode(reader, java.nio.charset.StandardCharsets.UTF_8);
+		assertTrue("the link \"see all\" carries the recipient", message.contains("/meu-recrutamento/curriculos-da-semana?email=" + encodedReader + "\""));
+		List<String> linkedResumes = new java.util.ArrayList<>();
+		Matcher resumeLink = Pattern.compile("/recrutador/ver-curriculo\\?email=[^\"]*?resume=([^&\"]+)").matcher(message);
+		while (resumeLink.find()) {
+			String resumeId = resumeLink.group(1);
+			if(false == linkedResumes.contains(resumeId)) {
+				linkedResumes.add(resumeId);
+			}
+		}
+		assertEquals("the table shows the first ones", shown, linkedResumes.size());
+
+		// the screen "see all": every resume of the list, in the order of the e-mail
+		CcpJsonRepresentation request = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.email, reader);
+		CcpJsonRepresentation screen = VisServiceRecruiterResumes.GetResumesOfTheWeek.execute(request);
+		List<CcpJsonRepresentation> screenRows = screen.getAsJsonList(VisEntityRecruiterResumes.Fields.resumes);
+		assertEquals("the screen \"see all\" has the whole list", resumesOfTheList, screenRows.size());
+		for (int index = 0; index < resumesOfTheList; index++) {
+			String expectedId = list.get(index).getAsString(VisRecruiterResumesFields.resumeId);
+			String screenId = screenRows.get(index).getAsString(VisRecruiterResumesFields.resumeId);
+			assertEquals("the order of the e-mail, row " + index, expectedId, screenId);
+			String expectedToken = list.get(index).getAsString(VisRecruiterResumesFields.token);
+			String screenToken = screenRows.get(index).getAsString(VisRecruiterResumesFields.token);
+			assertEquals("the same signed link, row " + index, expectedToken, screenToken);
+		}
+		for (int index = 0; index < shown; index++) {
+			String screenId = screenRows.get(index).getAsString(VisRecruiterResumesFields.resumeId);
+			assertEquals("the table of the e-mail is the beginning of the screen, row " + index, screenId, linkedResumes.get(index));
+		}
+	}
+
+	@Test
+	public void theEmailShowsOnlyTheFirstResumesAndLinksToTheScreenWithAllOfThem() {
 		String recruiter = this.recruiter("many", "gmail.com");
 		this.saveRecruiter(recruiter);
 		int resumesOfTheTest = VisBusinessSendResumesToRecruiters.RESUMES_IN_THE_EMAIL + 1;
@@ -372,6 +450,74 @@ public class ResumesToRecruitersTest {
 				row.getAsString(VisRecruiterResumesFields.defaultAlias));
 	}
 
+	/**
+	 * Decision of 2026-11-12: with every other key tied (skills, views, rankings, type, CLT and PJ), the most experienced
+	 * resume comes first. Until then the least experienced came first.
+	 */
+	@Test
+	public void withEveryOtherKeyTiedTheMostExperiencedComeFirst() {
+		CcpJsonRepresentation rankings = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("JAVA"), 5);
+		CcpJsonRepresentation junior = this.storedResumeWithExperience("junior", 2);
+		CcpJsonRepresentation senior = this.storedResumeWithExperience("senior", 15);
+		CcpJsonRepresentation middle = this.storedResumeWithExperience("pleno", 6);
+		List<CcpJsonRepresentation> resumes = Arrays.asList(junior, senior, middle);
+
+		List<CcpJsonRepresentation> rows = VisBusinessSendResumesToRecruiters.getResumesOfTheEmail(resumes, rankings, new java.util.HashMap<>(), new java.util.HashMap<>());
+
+		List<String> expectedOrder = List.of("senior", "pleno", "junior");
+		List<String> jobsInOrder = new java.util.ArrayList<>();
+		for (CcpJsonRepresentation row : rows) {
+			String job = row.getAsStringList(VisRecruiterResumesFields.job).toString();
+			for (String who : expectedOrder) {
+				boolean thisOne = job.contains("Desenvolvedor " + who);
+				if(thisOne) {
+					jobsInOrder.add(who);
+					break;
+				}
+			}
+		}
+		assertEquals(expectedOrder, jobsInOrder);
+	}
+
+	/** A resume as it is stored (the experience is the year it began), equal to the others but in the experience. */
+	private CcpJsonRepresentation storedResumeWithExperience(String who, int years) {
+		return CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityResume.Fields.email, "hash" + who + this.run)
+				.put(VisEntityResume.Fields.linkedinAddress, this.linkedin(who))
+				.put(VisEntityResume.Fields.ddd, Arrays.asList(11d))
+				.put(VisEntityResume.Fields.desiredJob, "Desenvolvedor " + who)
+				.put(VisEntityResume.Fields.disponibility, 5d)
+				.put(VisEntityResume.Fields.experience, (double) (this.currentYear - years))
+				.put(VisEntityResume.Fields.resumeType, 1d)
+				.put(VisEntityResume.Fields.temporallyJobTime, 0d)
+				.put(VisEntityResume.Fields.clt, 9_000d)
+				.put(VisEntityResume.Fields.skill, Arrays.asList(skill("JAVA")));
+	}
+
+	@Test
+	public void theFluentEnglishAndSpanishComeFirstInTheSubjectWithoutCountingAndTheOtherLanguagesStayOut() {
+		CcpJsonRepresentation rankings = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("JAVA"), 5).put(new CcpFieldName("SQL"), 1);
+		CcpJsonRepresentation firstInput = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityResume.Fields.spokenLanguage, Arrays.asList(spokenLanguage("Francês", 2), spokenLanguage("Inglês", 2)));
+		CcpJsonRepresentation secondInput = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityResume.Fields.spokenLanguage, Arrays.asList(spokenLanguage("Espanhol", 1)));
+		List<String> firstSkills = List.of("SQL", "JAVA", "S03", "S04", "S05", "S06", "S07", "S08", "S09", "S10", "S11");
+		List<CcpJsonRepresentation> firstItems = VisBusinessSendResumesToRecruiters.getSubjectItems(firstInput, firstSkills, rankings);
+		List<CcpJsonRepresentation> secondItems = VisBusinessSendResumesToRecruiters.getSubjectItems(secondInput, List.of("JAVA"), rankings);
+		CcpJsonRepresentation firstRow = CcpOtherConstants.EMPTY_JSON.put(VisRecruiterResumesFields.subjectItems, firstItems);
+		CcpJsonRepresentation secondRow = CcpOtherConstants.EMPTY_JSON.put(VisRecruiterResumesFields.subjectItems, secondItems);
+
+		CcpJsonRepresentation subjectValues = VisBusinessSendResumesToRecruiters.getSubjectValues(List.of(firstRow, secondRow));
+
+		String topSkills = subjectValues.getAsString(VisRecruiterResumesFields.topSkills);
+		List<String> named = Arrays.asList(topSkills.split(", "));
+		assertEquals("the fluent English first, then the best ranked skills", List.of("Inglês fluente", "SQL", "JAVA"), named.subList(0, 3));
+		assertEquals("the fluent English plus the 10 skills", 11, named.size());
+		assertFalse("another language is not in the subject", topSkills.contains("Francês"));
+		assertFalse("a language that is not fluent is not in the subject", topSkills.contains("Espanhol"));
+		assertEquals("only the eleventh skill is left; the language does not count", 1, subjectValues.getAsIntegerNumber(VisRecruiterResumesFields.otherSkills).intValue());
+	}
+
 	@Test
 	public void aResumeOnlyOfTheDdd10AcceptsOnlyHomeOffice() {
 		CcpJsonRepresentation stored = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.ddd, Arrays.asList(10d));
@@ -389,7 +535,7 @@ public class ResumesToRecruitersTest {
 		String forbiddingJob = "Engenheiro restrito " + this.run;
 		this.saveResume(this.resume("liberado", allowedJob));
 		CcpJsonRepresentation forbidding = this.resume("restrito", forbiddingJob)
-				.put(VisEntityResume.Fields.notAllowedCompany, Arrays.asList("Empresa Proibida " + this.run));
+				.put(VisEntityResume.Fields.notAllowedCompany, Arrays.asList("empresaproibida" + this.run + ".com.br"));
 		this.saveResume(forbidding);
 
 		CcpJsonRepresentation counters = sendTo(professional, personal);
@@ -404,8 +550,8 @@ public class ResumesToRecruitersTest {
 		String messageOfTheProcess = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(professional);
 		assertFalse(messageOfTheProcess.contains(forbiddingJob));
 
-		// the e-mail of the process shows only the first 40 resumes of the week, and the local database may hold more
-		// than 40 ahead of the allowed one: its row is checked in an e-mail with the rows of this test alone, sent to
+		// the e-mail of the process shows only the first 30 resumes of the week, and the local database may hold more
+		// than 30 ahead of the allowed one: its row is checked in an e-mail with the rows of this test alone, sent to
 		// another recruiter of the same company (jn_email_message_sent lets one e-mail of the kind go to each recipient per day)
 		String colleague = this.recruiter("pro-row", "empresaproibida" + this.run + ".com.br");
 		this.saveRecruiter(colleague);
@@ -442,6 +588,22 @@ public class ResumesToRecruitersTest {
 		VisServiceRecruiterResumes.SaveResumeAliasFromEmail.execute(renamed);
 		CcpJsonRepresentation reopened = VisServiceRecruiterResumes.ViewResumeFromEmail.execute(link);
 		assertEquals("opening again keeps the alias", "Meu analista preferido", reopened.getAsString(VisEntityViewedResume.Fields.alias));
+		// the view is in the group of views of each ddd of the resume, with the fields of the resume and the id of the view
+		CcpJsonRepresentation storedView = VisEntityViewedResume.ENTITY.getOneById(CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityViewedResume.Fields.linkedin, this.linkedin("visto"))
+				.put(VisEntityViewedResume.Fields.email, recruiter));
+		String viewId = VisEntityViewedResume.ENTITY.calculateId(storedView);
+		List<Object> viewDdds = storedView.getAsObjectList(VisEntityViewedResume.Fields.ddd);
+		assertFalse(viewDdds.isEmpty());
+		for (Object viewDdd : viewDdds) {
+			int ddd = ((Number) viewDdd).intValue();
+			String parentId = com.vis.entities.VisEntityVirtualViewedResumeDddGrouper.ENTITY.calculateId(CcpOtherConstants.EMPTY_JSON.put(com.vis.entities.VisEntityVirtualViewedResumeDddGrouper.Fields.ddd, ddd));
+			List<String> children = com.jn.utils.JnGroupers.getChildren(false, "vis_virtual_viewed_resume_ddd_grouper", "vis_viewed_resume", parentId);
+			long childrenOfTheView = children.stream().filter(child -> child.contains("\"id\":\"" + viewId + "\"")).count();
+			assertEquals("ddd " + ddd, 1, childrenOfTheView);
+			String childOfTheView = children.stream().filter(child -> child.contains("\"id\":\"" + viewId + "\"")).findFirst().get();
+			assertTrue(childOfTheView, childOfTheView.contains("\"experience\""));
+		}
 
 		sendTo(recruiter);
 		CcpJsonRepresentation viewedRow = rowOf(rowsOf(recruiter), job);
@@ -472,6 +634,80 @@ public class ResumesToRecruitersTest {
 			fail("a link of another recruiter was accepted");
 		} catch (CcpErrorFlowDisturb expected) {
 			assertEquals(CcpProcessStatusDefault.UNHAUTHORIZED, expected.status);
+		}
+	}
+
+	/** The company is taken from the e-mail of the recruiter; a personal e-mail has no company to forbid. */
+	@Test
+	public void theCompanyOfTheRecruiterIsTakenFromTheirEmail() {
+		List<String> forbidding = List.of("Consultoria Exemplo");
+		assertTrue(VisBusinessSendResumesToRecruiters.isTheCompanyOfTheRecruiterForbidden("ana@consultoriaexemplo.com.br", forbidding));
+		assertTrue(VisBusinessSendResumesToRecruiters.isTheCompanyOfTheRecruiterForbidden("ana@rh.consultoria-exemplo.com.br", forbidding));
+		assertFalse(VisBusinessSendResumesToRecruiters.isTheCompanyOfTheRecruiterForbidden("ana@outraempresa.com.br", forbidding));
+		assertFalse("a personal e-mail has no company", VisBusinessSendResumesToRecruiters.isTheCompanyOfTheRecruiterForbidden("consultoriaexemplo@gmail.com", List.of("Gmail")));
+		assertFalse(VisBusinessSendResumesToRecruiters.isTheCompanyOfTheRecruiterForbidden("ana@consultoriaexemplo.com.br", List.of()));
+	}
+
+	private void assertTheLinkIsClosed(CcpJsonRepresentation link) {
+		try {
+			VisServiceRecruiterResumes.ViewResumeFromEmail.execute(link);
+			fail("a company forbidden after the e-mail opened the resume");
+		} catch (CcpErrorFlowDisturb expected) {
+			assertEquals("the same answer of a resume no longer active", CcpProcessStatusDefault.NOT_FOUND, expected.status);
+		}
+		try {
+			CcpJsonRepresentation renamed = link.put(VisEntityViewedResume.Fields.alias, "Apelido proibido");
+			VisServiceRecruiterResumes.SaveResumeAliasFromEmail.execute(renamed);
+			fail("a company forbidden after the e-mail gave an alias to the resume");
+		} catch (CcpErrorFlowDisturb expected) {
+			assertEquals(CcpProcessStatusDefault.NOT_FOUND, expected.status);
+		}
+	}
+
+	/**
+	 * The candidate allowed the company, the e-mail went to its recruiters and then the candidate forbade the company:
+	 * the links already sent stop opening the resume (no LinkedIn, no view saved), while a recruiter of another company
+	 * and one of a personal e-mail still open it.
+	 */
+	@Test
+	public void aCompanyForbiddenAfterTheEmailCanNoLongerOpenTheResume() {
+		String forbiddenRecruiter = this.recruiter("depois", "consultoria" + this.run + ".com.br");
+		String colleague = this.recruiter("depois-colega", "consultoria" + this.run + ".com.br");
+		String otherCompany = this.recruiter("depois-outra", "outraempresa" + this.run + ".com.br");
+		String personal = this.recruiter("depois-pessoal", "gmail.com");
+		this.saveRecruiter(forbiddenRecruiter);
+		this.saveRecruiter(colleague);
+		this.saveRecruiter(otherCompany);
+		this.saveRecruiter(personal);
+		String job = "Analista proibido depois " + this.run;
+		CcpJsonRepresentation resume = this.resume("proibidodepois", job);
+		this.saveResume(resume);
+
+		sendTo(forbiddenRecruiter, colleague, otherCompany, personal);
+		CcpJsonRepresentation linkOfTheForbidden = linkOf(forbiddenRecruiter, rowOf(rowsOf(forbiddenRecruiter), job));
+		CcpJsonRepresentation linkOfTheColleague = linkOf(colleague, rowOf(rowsOf(colleague), job));
+		CcpJsonRepresentation linkOfTheOtherCompany = linkOf(otherCompany, rowOf(rowsOf(otherCompany), job));
+		CcpJsonRepresentation linkOfThePersonal = linkOf(personal, rowOf(rowsOf(personal), job));
+
+		CcpJsonRepresentation forbidding = resume.put(VisEntityResume.Fields.notAllowedCompany, Arrays.asList("consultoria" + this.run + ".com.br"));
+		VisEntityResume.ENTITY.save(forbidding);
+
+		this.assertTheLinkIsClosed(linkOfTheForbidden);
+		this.assertTheLinkIsClosed(linkOfTheColleague);
+		CcpJsonRepresentation viewOfTheForbidden = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityViewedResume.Fields.linkedin, this.linkedin("proibidodepois"))
+				.put(VisEntityViewedResume.Fields.email, forbiddenRecruiter);
+		assertFalse("no view is saved", VisEntityViewedResume.ENTITY.exists(viewOfTheForbidden));
+
+		CcpJsonRepresentation openedByTheOtherCompany = VisServiceRecruiterResumes.ViewResumeFromEmail.execute(linkOfTheOtherCompany);
+		CcpJsonRepresentation openedByThePersonal = VisServiceRecruiterResumes.ViewResumeFromEmail.execute(linkOfThePersonal);
+		assertEquals(this.linkedin("proibidodepois"), openedByTheOtherCompany.getAsString(VisEntityResume.Fields.linkedinAddress));
+		assertEquals(this.linkedin("proibidodepois"), openedByThePersonal.getAsString(VisEntityResume.Fields.linkedinAddress));
+		for (String recruiter : List.of(otherCompany, personal)) {
+			CcpJsonRepresentation viewKey = CcpOtherConstants.EMPTY_JSON
+					.put(VisEntityViewedResume.Fields.linkedin, this.linkedin("proibidodepois"))
+					.put(VisEntityViewedResume.Fields.email, recruiter);
+			VisEntityViewedResume.ENTITY.deleteAnyWhere(viewKey);
 		}
 	}
 
@@ -738,7 +974,7 @@ public class ResumesToRecruitersTest {
 		assertTrue(recruiters.size() > 1000);
 		assertEquals(recruiters.size(), inOrder.size());
 		List<String> positions = new java.util.ArrayList<>();
-		// the recruiters of Telegram and of the legacy views go before the queue and have no position in it
+		// the recent viewers, the first e-mails, Telegram and the legacy views go before the queue and have no position in it
 		inOrder.stream().filter(recruiter -> recruiter.containsAllFields(VisRecruiterResumesFields.queuePosition)).forEach(recruiter -> positions.add(recruiter.getAsString(VisRecruiterResumesFields.queuePosition)));
 		List<String> sortedPositions = new java.util.ArrayList<>(positions);
 		java.util.Collections.sort(sortedPositions);

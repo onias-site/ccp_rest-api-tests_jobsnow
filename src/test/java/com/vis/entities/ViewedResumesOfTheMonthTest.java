@@ -31,13 +31,14 @@ import com.jn.entities.JnEntityGrouper;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnGroupers;
 import com.vis.business.recruiter.resumes.VisBusinessViewedResumesOfTheMonth;
+import com.vis.business.recruiter.resumes.VisRecruiterResumesFields;
 import com.vis.services.VisServiceRecruiterResumes;
 
 /**
  * Proves the views of the month of a recruiter: every save of {@code vis_viewed_resume} keeps, in the group of the
  * recruiter in the current month ({@code jn_grouper}, parent {@code vis_viewed_resumes_of_the_month}), one JSON text per
  * resume with the LinkedIn as it came, the alias and the date of the last view; {@code VisBusinessViewedResumesOfTheMonth}
- * reads it by id from the e-mail and the month.
+ * reads it by id from the e-mail and the month and answers the hash of the LinkedIn in its place, never the LinkedIn.
  */
 public class ViewedResumesOfTheMonthTest {
 
@@ -129,7 +130,7 @@ public class ViewedResumesOfTheMonthTest {
 	}
 
 	@Test
-	public void theViewIsListedWithTheLinkedinAsItCameTheAliasAndTheDate() {
+	public void theViewIsListedWithTheHashOfTheLinkedinTheAliasAndTheDate() {
 		String linkedin = this.linkedin("candidato");
 		this.save(linkedin, "Dev Java sênior");
 
@@ -137,10 +138,12 @@ public class ViewedResumesOfTheMonthTest {
 
 		assertEquals(1, views.size());
 		CcpJsonRepresentation view = views.get(0);
-		assertEquals(linkedin, view.getAsString(VisEntityViewedResume.Fields.linkedin));
+		assertFalse("the LinkedIn never leaves in the list", view.containsAllFields(VisEntityViewedResume.Fields.linkedin));
+		assertFalse(view.toString().contains(linkedin));
+		assertFalse(view.getAsString(VisRecruiterResumesFields.linkedinHash).isEmpty());
 		assertEquals("Dev Java sênior", view.getAsString(VisEntityViewedResume.Fields.alias));
 		assertTrue(view.getAsString(VisEntityViewedResume.Fields.date).matches(DATE_REGEX));
-		assertEquals("only linkedin, alias and date", 3, view.fieldSet().size());
+		assertEquals("only linkedinHash, alias and date", 3, view.fieldSet().size());
 	}
 
 	@Test
@@ -166,11 +169,11 @@ public class ViewedResumesOfTheMonthTest {
 		List<CcpJsonRepresentation> views = this.viewedResumesOf(this.currentMonth);
 
 		assertEquals(2, views.size());
-		List<String> linkedins = new ArrayList<>();
+		List<String> linkedinHashes = new ArrayList<>();
 		for (CcpJsonRepresentation view : views) {
-			linkedins.add(view.getAsString(VisEntityViewedResume.Fields.linkedin));
+			linkedinHashes.add(view.getAsString(VisRecruiterResumesFields.linkedinHash));
 		}
-		assertTrue(linkedins.containsAll(Arrays.asList(first, second)));
+		assertEquals("one hash per LinkedIn", 2, new java.util.HashSet<>(linkedinHashes).size());
 	}
 
 	@Test
@@ -230,7 +233,8 @@ public class ViewedResumesOfTheMonthTest {
 
 		List<String> texts = response.getAsStringList(VisEntityViewedResumesOfTheMonth.Fields.viewedResume);
 		assertEquals(1, texts.size());
-		assertTrue(texts.get(0).contains(linkedin));
+		assertFalse("the LinkedIn never leaves in the list", texts.get(0).contains(linkedin));
+		assertTrue(texts.get(0).contains(VisRecruiterResumesFields.linkedinHash.name()));
 	}
 
 	@Test(expected = CcpJsonValidationError.class)

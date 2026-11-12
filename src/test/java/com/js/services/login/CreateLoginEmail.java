@@ -39,11 +39,11 @@ public class CreateLoginEmail extends JsServiceLoginTestTemplate {
 	}
 
 	@Test
-	public void userAlreadyLoggedIn() {
+	public void openSessionIsToldOnlyByThePasswordLogin() {
 		TestVariables testVariables = new TestVariables();
 		JsEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		this.execute(testVariables.REQUEST_TO_LOGIN, JsProcessStatusCreateLoginEmail.loginConflict);
+		this.execute(testVariables.REQUEST_TO_LOGIN, JsProcessStatusCreateLoginEmail.missingSaveAnswers);
 	}
 
 	@Test

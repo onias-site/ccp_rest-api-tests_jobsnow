@@ -40,6 +40,11 @@ import com.jn.entities.JnEntityBotCommand;
 import com.jn.entities.JnEntityBotCommandStep;
 import com.jn.entities.JnEntityBotCommandStepEndMessage;
 import com.jn.entities.JnEntityCommandNotAllowedToUser;
+import com.jn.entities.JnEntityEmailSuppressed;
+import com.jn.entities.JnEntityMessageDidNotSent;
+import com.jn.entities.JnEntityMessageDidNotSent.JnReasonDetails;
+import com.jn.messages.JnMustNotSendMessage;
+import com.ccp.especifications.email.CcpEmailSuppressionList;
 import com.jn.entities.JnEntitySupportPendingCommand;
 import com.jn.entities.JnEntityTicketDailyLimit;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
@@ -95,6 +100,8 @@ public class ContactUsThroughSupportBotTest {
 
 	private static final String QUOTA_USER = "faleconosco.cota@teste.com";
 
+	private static final String SUPPRESSED_USER = "faleconosco.suprimido@teste.com";
+
 	/**
 	 * Saves the bot, its commands, their steps, their end messages and the message templates of the contact us again
 	 * so that the index follows what is declared in java (the create operation of the initial records does not
@@ -132,7 +139,7 @@ public class ContactUsThroughSupportBotTest {
 	 */
 	@After
 	public void discardTheTicketsOfTheTest() {
-		for (String email : Arrays.asList(ANSWERED_USER, SKIPPED_USER, IGNORED_USER, QUOTA_USER)) {
+		for (String email : Arrays.asList(ANSWERED_USER, SKIPPED_USER, IGNORED_USER, QUOTA_USER, SUPPRESSED_USER)) {
 			for (JsContactUsTypes type : JsContactUsTypes.values()) {
 				this.discardTicket(email, type);
 				CcpJsonRepresentation pendingCommand = this.pendingCommand("/answerContactUs " + type + " " + email);
@@ -179,6 +186,46 @@ public class ContactUsThroughSupportBotTest {
 		CcpJsonRepresentation solved = JsEntityContactUs.ENTITY.getTwinEntity().getOneById(ticketKey);
 		assertEquals("o defeito foi corrigido, tente novamente", solved.getAsString(JsEntityContactUs.Fields.supportResponse));
 		this.emailSentTo(ANSWERED_USER, JsNotifyUserAboutAnsweredContactUs.class);
+	}
+
+	/**
+	 * A ticket of an address suppressed by the e-mail provider: the e-mail to the user is refused and recorded in
+	 * {@code jn_message_did_not_sent}, but the opening succeeds and the operator gets the notice. Up to 2026-11-12 the
+	 * refusal was thrown (the e-mail goes with {@code THROWS}): the service failed after saving the ticket and the notice
+	 * to the operator, the next channel, was never sent.
+	 */
+	@Test
+	public void ticketOfASuppressedAddressStillReachesTheOperator() {
+
+		CcpJsonRepresentation suppression = CcpOtherConstants.EMPTY_JSON
+				.put(JnEntityEmailSuppressed.Fields.email, SUPPRESSED_USER)
+				.put(JnEntityEmailSuppressed.Fields.suppressionList, CcpEmailSuppressionList.bounces)
+				.put(JnEntityEmailSuppressed.Fields.created, System.currentTimeMillis() / 1000);
+		CcpJsonRepresentation diagnosis = CcpOtherConstants.EMPTY_JSON
+				.put(JnEntityMessageDidNotSent.Fields.subjectType, JsNotifySupportAndUserAboutContactUs.class.getName())
+				.put(JnEntityMessageDidNotSent.Fields.email, SUPPRESSED_USER)
+				.put(JnEntityMessageDidNotSent.Fields.reasonType, JnEntityEmailSuppressed.ENTITY.getEntityMetaData().entityName)
+				.put(JnEntityMessageDidNotSent.Fields.reasonDescription, JnMustNotSendMessage.blockEntities)
+				.put(JnEntityMessageDidNotSent.Fields.reasonDetails, JnReasonDetails.isPresentInThisUnionAll);
+		JnEntityMessageDidNotSent.ENTITY.delete(diagnosis);
+		JnEntityEmailSuppressed.ENTITY.save(suppression);
+
+		try {
+			this.openTicket(SUPPRESSED_USER, JsContactUsTypes.makeCriticism, "Teste", "Critica de um endereco suprimido");
+
+			assertTrue(JsEntityContactUs.ENTITY.exists(this.ticketKey(SUPPRESSED_USER, JsContactUsTypes.makeCriticism)));
+			String ticket = "/answerContactUs makeCriticism " + SUPPRESSED_USER;
+			String notice = TELEGRAM.lastMessageFor(CONTACT_US_GROUP).getAsString(JnJsonCommonsFields.message);
+			assertEquals(ticket, notice);
+			assertTrue(this.isPendingTicket(ticket));
+			assertTrue(EMAIL_INBOX.sentEmails.toString(), EMAIL_INBOX.sentEmails.isEmpty());
+			assertTrue(JnEntityMessageDidNotSent.ENTITY.exists(diagnosis));
+		} finally {
+			JnEntityEmailSuppressed.ENTITY.delete(suppression);
+			JnEntityMessageDidNotSent.ENTITY.delete(diagnosis);
+			CcpJsonRepresentation dailyLimit = JnEntityTicketDailyLimit.getKey(SUPPRESSED_USER, JsContactUsTypes.makeCriticism.quotaGroup);
+			JnEntityTicketDailyLimit.ENTITY.delete(dailyLimit);
+		}
 	}
 
 	/**

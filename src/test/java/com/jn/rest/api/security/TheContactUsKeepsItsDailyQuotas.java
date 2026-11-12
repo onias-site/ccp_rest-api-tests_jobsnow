@@ -5,17 +5,21 @@ import static org.junit.Assert.assertTrue;
 
 import java.net.http.HttpResponse;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.jn.entities.JnEntityLoginEmail;
 import com.jn.rest.api.commons.TestVariables;
 
 /**
- * The contact us takes no session ({@code POST /contact-us/{email}} on the js, 8082), so its only brake against a flood
- * is the daily quota by group of ticket kinds ({@code JnEntityTicketDailyLimit}): the second ticket of the same group on
- * the same day answers 429, through the API, the way a script would send it.
+ * Even a logged-in user ({@code POST /contact-us/{email}} on the js, 8082, requires a session since 2026-11-11) is
+ * braked against a flood by the daily quota by group of ticket kinds ({@code JnEntityTicketDailyLimit}): the second
+ * ticket of the same group on the same day answers 429, through the API, the way a script would send it.
  */
 public class TheContactUsKeepsItsDailyQuotas {
+
+	private static final String SESSION_TOKEN = SecurityHttp.token();
 
 	private final TestVariables user = new TestVariables();
 
@@ -25,10 +29,16 @@ public class TheContactUsKeepsItsDailyQuotas {
 		SecurityHttp.theApiMustBeUp(SecurityHttp.JS);
 	}
 
+	@Before
+	public void theUserLogsIn() {
+		JnEntityLoginEmail.ENTITY.save(this.user.REQUEST_TO_LOGIN);
+		this.user.saveCurrentSession(SESSION_TOKEN);
+	}
+
 	private int open(String type, int sequence) {
 		String body = "{\"type\":\"" + type + "\",\"title\":\"Teste de cota " + sequence + "\",\"description\":\"Texto do teste de seguranca numero " + sequence + "\"}";
 		String path = "contact-us/" + this.user.VALID_EMAIL;
-		HttpResponse<String> response = SecurityHttp.send(SecurityHttp.JS, "POST", path, body, this.user, "");
+		HttpResponse<String> response = SecurityHttp.send(SecurityHttp.JS, "POST", path, body, this.user, SESSION_TOKEN);
 		return response.statusCode();
 	}
 

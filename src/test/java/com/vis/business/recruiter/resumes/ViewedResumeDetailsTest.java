@@ -82,6 +82,10 @@ public class ViewedResumeDetailsTest {
 	}
 
 	private void saveResume() {
+		this.saveResume(List.of());
+	}
+
+	private void saveResume(List<String> notAllowedCompanies) {
 		CcpJsonRepresentation skill = new CcpJsonRepresentation("{\"skill\":\"JAVA\",\"word\":\"JAVA\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\",\"parent\":[]}");
 		CcpJsonRepresentation english = new CcpJsonRepresentation("{\"name\":\"Inglês\",\"level\":2,\"id\":0}");
 		CcpJsonRepresentation resume = CcpOtherConstants.EMPTY_JSON
@@ -97,7 +101,9 @@ public class ViewedResumeDetailsTest {
 				.put(VisEntityResume.Fields.pj, 12_000)
 				.put(VisEntityResume.Fields.skill, Arrays.asList(skill))
 				.put(VisEntityResume.Fields.spokenLanguage, Arrays.asList(english));
-		VisEntityResume.ENTITY.save(resume);
+		boolean forbidsCompanies = false == notAllowedCompanies.isEmpty();
+		CcpJsonRepresentation resumeToSave = forbidsCompanies ? resume.put(VisEntityResume.Fields.notAllowedCompany, notAllowedCompanies) : resume;
+		VisEntityResume.ENTITY.save(resumeToSave);
 	}
 
 	private void saveView() {
@@ -113,7 +119,7 @@ public class ViewedResumeDetailsTest {
 		return CcpOtherConstants.EMPTY_JSON
 				.put(VisBusinessViewedResumeDetails.Fields.email, this.recruiter)
 				.put(VisBusinessViewedResumeDetails.Fields.month, month)
-				.put(VisBusinessViewedResumeDetails.Fields.linkedin, linkedin);
+				.put(VisBusinessViewedResumeDetails.Fields.linkedinHash, VisBusinessSendResumesToRecruiters.getLinkedinHash(linkedin));
 	}
 
 	private CcpJsonRepresentation details(String month) {
@@ -127,7 +133,8 @@ public class ViewedResumeDetailsTest {
 
 		CcpJsonRepresentation details = this.details(this.currentMonth);
 
-		assertEquals(this.linkedin, details.getAsString(VisBusinessViewedResumeDetails.Fields.linkedin));
+		assertEquals(this.linkedin, details.getAsString(VisEntityViewedResume.Fields.linkedin));
+		assertEquals(VisBusinessSendResumesToRecruiters.getLinkedinHash(this.linkedin), details.getAsString(VisBusinessViewedResumeDetails.Fields.linkedinHash));
 		List<CcpJsonRepresentation> rows = details.getAsJsonList(VisRecruiterResumesFields.resumes);
 		assertEquals(1, rows.size());
 		CcpJsonRepresentation row = rows.get(0);
@@ -139,6 +146,20 @@ public class ViewedResumeDetailsTest {
 		assertFalse("no history read online", row.containsAllFields(VisRecruiterResumesFields.insertion));
 		assertFalse("no history read online", row.containsAllFields(VisRecruiterResumesFields.lastChange));
 		assertFalse(row.containsAllFields(VisRecruiterResumesFields.sortKeys));
+	}
+
+	/** The candidate forbade the company of the recruiter after the view: the details no longer show the resume. */
+	@Test
+	public void aResumeThatNowForbidsTheCompanyOfTheRecruiterHasNoRow() {
+		this.saveResume();
+		this.saveView();
+		this.saveResume(List.of("empresa.com.br"));
+
+		CcpJsonRepresentation details = this.details(this.currentMonth);
+
+		assertTrue(details.getAsJsonList(VisRecruiterResumesFields.resumes).isEmpty());
+		assertFalse("the LinkedIn is not answered", details.containsAllFields(VisEntityViewedResume.Fields.linkedin));
+		assertFalse(details.toString().contains(this.linkedin));
 	}
 
 	@Test
@@ -186,10 +207,12 @@ public class ViewedResumeDetailsTest {
 		CcpJsonRepresentation details = this.details(this.currentMonth);
 
 		assertTrue(details.getAsJsonList(VisRecruiterResumesFields.resumes).isEmpty());
+		assertFalse("the LinkedIn is not answered", details.containsAllFields(VisEntityViewedResume.Fields.linkedin));
 	}
 
 	@Test(expected = CcpJsonValidationError.class)
-	public void anAddressThatIsNotALinkedinProfileIsRefused() {
-		VisBusinessViewedResumeDetails.INSTANCE.execute(this.input(this.currentMonth, "https://example.com/perfil"));
+	public void theDetailsWithoutTheHashOfTheLinkedinAreRefused() {
+		CcpJsonRepresentation withoutHash = this.input(this.currentMonth, this.linkedin).removeFields(VisBusinessViewedResumeDetails.Fields.linkedinHash);
+		VisBusinessViewedResumeDetails.INSTANCE.execute(withoutHash);
 	}
 }

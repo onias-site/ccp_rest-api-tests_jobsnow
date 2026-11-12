@@ -1,0 +1,19 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"entityName": {
+				"type": "keyword"
+			},
+			"twinEntityName": {
+				"type": "keyword"
+			},
+			"mainRecords": {
+				"type": "long"
+			},
+			"twinRecords": {
+				"type": "long"
+			}
+		}
+	}
+}

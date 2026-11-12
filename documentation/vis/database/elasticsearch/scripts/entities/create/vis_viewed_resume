@@ -11,6 +11,9 @@
 			"email": {
 				"type": "keyword"
 			},
+			"insertionDate": {
+				"type": "keyword"
+			},
 			"linkedin": {
 				"type": "keyword"
 			}

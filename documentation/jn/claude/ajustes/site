@@ -1,1 +1,19 @@
-priorizar primeiros recrutadores.
+Na página https://onias.site/recrutador/ver-curriculo criar um botão com label "Linkedin Inválido" que exibe um diálogo de confirmação que quando confirmado abre um ticket pro suporte /verifyInvalidLinkedin {emailDoRecrutador} {emailSha1DoCandidato} {linkedinDoCandidato}
+Criar comando no módulo jb chamado verifyInvalidLinkedin que ao ser digitado corretamente com todos os três parâmetros pedirá por confirmação e ao ser confirmado executará as seguintes ações:
+1) Excluirá a visualização daquele recrutador naquele currículo como se ela nunca tivesse acontecido.
+2) Excluirá dados da tabela associativa entre currículo e linkedin
+3) Salvará dados em um jn_grouper de "pendencias de curriculo"
+
+Na página https://onias.site/recrutador/ver-curriculo criar um botão com label "Reportar Linkedin Inválido" que abre um ticket novo 
+Lógica da skill indesejada
+Estatisticas e currículos (P(Status), P(Skills), P(Senioridade), P(Language), P(Tipo), P(PCD), P(Travel), P(Disponibility), P(TemporallyJob), P(PJ), P(CLT), L(Entradas))
+
+Estatisticas de consultorias rejeitadas
+Versao das skills na tela de estatisticas do telegram
+Trazer dados de produção
+
+Bot de notificações no telegram
+Trava de uso de comandos de usuário no telegram
+
+Oferta e demanda (Curriculo, Visualizações e vagas)
+Rejeitados

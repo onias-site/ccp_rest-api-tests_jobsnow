@@ -36,6 +36,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.ccp</groupId>
+			<artifactId>ccp_http-request-log_gcp-logging</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ccp</groupId>
 			<artifactId>ccp_db-utils_elasticsearch</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

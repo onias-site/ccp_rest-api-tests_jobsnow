@@ -36,11 +36,11 @@ public class SaveAnswers extends JsServiceLoginTestTemplate {
 	}
 
 	@Test
-	public void userAlreadyLoggedIn() {
+	public void openSessionIsToldOnlyByThePasswordLogin() {
 		TestVariables testVariables = new TestVariables();
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		this.execute(testVariables.ANSWERS_JSON, JsProcessStatusSaveAnswers.loginConflict);
+		this.execute(testVariables.ANSWERS_JSON, JsProcessStatusSaveAnswers.missingPassword);
 	}
 
 	@Test

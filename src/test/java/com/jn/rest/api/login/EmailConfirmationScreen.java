@@ -42,11 +42,11 @@ public class EmailConfirmationScreen  extends JnTestTemplate{
 	}
 	
 	@Test
-	public void userAlreadyLoggedIn() {
+	public void openSessionIsToldOnlyByThePasswordLogin() {
 		TestVariables testVariables = new TestVariables();
 		JsEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		this.execute(testVariables, JsProcessStatusCreateLoginEmail.loginConflict);
+		this.execute(testVariables, JsProcessStatusCreateLoginEmail.missingSaveAnswers);
 	}
 	
 	@Test

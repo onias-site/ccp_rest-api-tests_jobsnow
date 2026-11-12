@@ -207,16 +207,23 @@ public class VisResumesToTheRecruiterSenderTest {
 	}
 
 	/**
-	 * First who appeared on Telegram in the last six months, the most recent first; then who viewed on the legacy, the most
-	 * recent view first (an old appearance on Telegram counts as none); then the recent viewers and the queue.
+	 * First the recent viewers (even the ones who appeared on Telegram); then the sign-up waiting for the first e-mail (even
+	 * the ones who appeared on Telegram); then who appeared on Telegram in the last six months, the most recent first; then
+	 * who viewed on the legacy, the most recent view first (an old appearance on Telegram counts as none); then the queue.
 	 */
 	@Test
-	public void telegramAndTheLegacyViewsComeBeforeTheOtherGroups() {
+	public void theRecentViewersAndTheFirstEmailComeBeforeTelegramAndTheLegacyViews() {
 		String viewer = "viewer@empresa.com.br";
+		String viewerOfTelegram = "viewer-telegram@empresa.com.br";
+		String signedUp = "signedup-telegram@empresa.com.br";
+		String login = VisEntityRecruiter.Sources.login.getValue();
 		Map<String, Long> lastViewByRecruiter = new HashMap<>();
-		lastViewByRecruiter.put(hashOf(viewer), VIEWS_SINCE);
+		lastViewByRecruiter.put(hashOf(viewer), VIEWS_SINCE + 1);
+		lastViewByRecruiter.put(hashOf(viewerOfTelegram), VIEWS_SINCE);
 		List<CcpJsonRepresentation> recruiters = List.of(
 				recruiterOf("other@empresa.com.br"),
+				fromTelegram(signedUp, TELEGRAM_SINCE + 20).put(VisEntityRecruiter.Fields.source, login),
+				fromTelegram(viewerOfTelegram, TELEGRAM_SINCE + 30),
 				recruiterOf(viewer),
 				fromTheLegacy("legacy-old@empresa.com.br", 100L),
 				fromTelegram("telegram-old@empresa.com.br", TELEGRAM_SINCE - 1).put(VisEntityRecruiter.Fields.lastLegacyView, 200L),
@@ -229,13 +236,14 @@ public class VisResumesToTheRecruiterSenderTest {
 
 		List<String> expectedQueue = new ArrayList<>(List.of("other@empresa.com.br", "telegram-old-only@empresa.com.br"));
 		expectedQueue.sort(Comparator.comparing(email -> hashOf(email)));
-		List<String> expected = new ArrayList<>(List.of("telegram-recent@empresa.com.br", "telegram-limit@empresa.com.br",
-				"legacy-recent@empresa.com.br", "telegram-old@empresa.com.br", "legacy-old@empresa.com.br", viewer));
+		List<String> expected = new ArrayList<>(List.of(viewer, viewerOfTelegram, signedUp, "telegram-recent@empresa.com.br", "telegram-limit@empresa.com.br",
+				"legacy-recent@empresa.com.br", "telegram-old@empresa.com.br", "legacy-old@empresa.com.br"));
 		expected.addAll(expectedQueue);
 		assertEquals(expected, emailsOf(inOrder));
-		assertFalse("Telegram has no turns", inOrder.get(0).containsField(VisRecruiterResumesFields.legacyQueuePosition));
-		assertTrue(inOrder.get(2).containsField(VisRecruiterResumesFields.legacyQueuePosition));
-		assertFalse(inOrder.get(2).containsField(VisRecruiterResumesFields.queuePosition));
+		assertTrue(inOrder.get(2).containsField(VisRecruiterResumesFields.firstEmail));
+		assertFalse("Telegram has no turns", inOrder.get(3).containsField(VisRecruiterResumesFields.legacyQueuePosition));
+		assertTrue(inOrder.get(5).containsField(VisRecruiterResumesFields.legacyQueuePosition));
+		assertFalse(inOrder.get(5).containsField(VisRecruiterResumesFields.queuePosition));
 	}
 
 	/** The queue of the legacy views goes on after its last position and starts over at its end. */

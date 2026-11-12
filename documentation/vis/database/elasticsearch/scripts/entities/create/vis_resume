@@ -53,6 +53,9 @@
       "hash": {
         "type": "keyword"
       },
+      "insertionDate": {
+        "type": "keyword"
+      },
       "spokenLanguage": {
         "dynamic": "strict",
         "properties": {

@@ -47,11 +47,11 @@ public class EmailRequestScreen extends JnTestTemplate{
 	}
 	
 	@Test
-	public void userAlreadyLoggedIn() {
+	public void openSessionIsToldOnlyByThePasswordLogin() {
 		TestVariables testVariables = new TestVariables();
 		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
 		JsEntityLoginSessionConflict.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
-		this.execute(testVariables, JsProcessStatusExistsLoginEmail.loginConflict);		
+		this.execute(testVariables, JsProcessStatusExistsLoginEmail.missingAnswers);		
 	}
 	
 	@Test

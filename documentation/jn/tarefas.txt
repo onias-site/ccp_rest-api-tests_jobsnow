@@ -27,5 +27,7 @@ Gráficos expansíveis
 No dashboard de entidades, colocar entidades escolhidas alem das que já estão, exemplo: jn_grouper
 Relatorios de faturamento
 
-
+Encontrar gargalos de performance
+Enviar Currículos para si mesmo
+Acionar scheduller
 
