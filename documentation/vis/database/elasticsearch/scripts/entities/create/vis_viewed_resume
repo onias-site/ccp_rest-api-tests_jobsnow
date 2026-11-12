@@ -8,6 +8,9 @@
 			"date": {
 				"type": "keyword"
 			},
+			"ddd": {
+				"type": "integer"
+			},
 			"email": {
 				"type": "keyword"
 			},

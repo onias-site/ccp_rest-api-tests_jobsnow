@@ -620,6 +620,47 @@ public class ResumesToRecruitersTest {
 		VisEntityViewedResume.ENTITY.deleteAnyWhere(viewKey);
 	}
 
+	/**
+	 * Deleting the view moves it to the twin {@code vis_inactive_viewed_resume}, and the next e-mail no longer sends the
+	 * resume to that recruiter, while another recruiter still receives it; opening the resume again brings the view back
+	 * and the resume returns to the e-mail.
+	 */
+	@Test
+	public void aResumeWhoseViewIsInTheTwinNoLongerGoesToThatRecruiter() {
+		String recruiter = this.recruiter("gemea", "gmail.com");
+		String otherRecruiter = this.recruiter("gemea-outro", "gmail.com");
+		this.saveRecruiter(recruiter);
+		this.saveRecruiter(otherRecruiter);
+		String job = "Analista da gemea " + this.run;
+		String otherJob = "Analista que segue " + this.run;
+		this.saveResume(this.resume("gemea", job));
+		this.saveResume(this.resume("segue", otherJob));
+		sendTo(recruiter, otherRecruiter);
+		CcpJsonRepresentation link = linkOf(recruiter, rowOf(rowsOf(recruiter), job));
+		VisServiceRecruiterResumes.ViewResumeFromEmail.execute(link);
+		CcpJsonRepresentation viewKey = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityViewedResume.Fields.linkedin, this.linkedin("gemea"))
+				.put(VisEntityViewedResume.Fields.email, recruiter);
+		try {
+			VisEntityViewedResume.ENTITY.delete(viewKey);
+			assertFalse(VisEntityViewedResume.ENTITY.exists(viewKey));
+			assertTrue("the delete moves the view to the twin", VisEntityViewedResume.ENTITY.getTwinEntity().exists(viewKey));
+
+			sendTo(recruiter, otherRecruiter);
+			List<CcpJsonRepresentation> rowsOfTheRecruiter = rowsOf(recruiter);
+			assertFalse("the resume of the twin no longer goes to the recruiter", hasRowOf(rowsOfTheRecruiter, job));
+			assertTrue("the other resumes still go", hasRowOf(rowsOfTheRecruiter, otherJob));
+			assertTrue("another recruiter still receives it", hasRowOf(rowsOf(otherRecruiter), job));
+
+			VisServiceRecruiterResumes.ViewResumeFromEmail.execute(link);
+			assertFalse("a new view leaves the twin", VisEntityViewedResume.ENTITY.getTwinEntity().exists(viewKey));
+			sendTo(recruiter);
+			assertTrue("the resume goes again", hasRowOf(rowsOf(recruiter), job));
+		} finally {
+			VisEntityViewedResume.ENTITY.deleteAnyWhere(viewKey);
+		}
+	}
+
 	@Test
 	public void aLinkSignedForAnotherRecruiterIsRefused() {
 		String recruiter = this.recruiter("signed", "gmail.com");

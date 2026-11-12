@@ -45,7 +45,7 @@ public class VisResumesToTheRecruiterSenderTest {
 	private final String[] lastLegacyQueuePosition = {""};
 
 	private VisResumesToTheRecruiterSender sender(List<String> restrictedTo, List<CcpJsonRepresentation> resumes) {
-		return new VisResumesToTheRecruiterSender(restrictedTo, resumes, new HashMap<>(), new HashMap<>(), "http://localhost", "http://localhost:8081", this.emailsSent, this.lastQueuePosition, this.lastLegacyQueuePosition);
+		return new VisResumesToTheRecruiterSender(restrictedTo, resumes, new HashMap<>(), new HashMap<>(), Set.of(), "http://localhost", "http://localhost:8081", this.emailsSent, this.lastQueuePosition, this.lastLegacyQueuePosition);
 	}
 
 	private static List<String> emailsOf(List<CcpJsonRepresentation> recruiters) {
