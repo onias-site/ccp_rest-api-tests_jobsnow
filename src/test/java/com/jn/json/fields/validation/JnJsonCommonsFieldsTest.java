@@ -12,7 +12,7 @@ public class JnJsonCommonsFieldsTest {
 	public void valuesTest() {
 		JnJsonCommonsFields[] values = JnJsonCommonsFields.values();
 		assertNotNull(values);
-		assertEquals(54, values.length);
+		assertEquals(55, values.length);
 	}
 
 	@Test

@@ -29,6 +29,7 @@ import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.especifications.db.utils.entity.decorators.engine.SilentEmailSender;
 import com.ccp.especifications.db.utils.entity.decorators.engine.SilentInstantMessenger;
+import com.vis.business.resume.VisBusinessSaveResumeAndSpendTheUpdate;
 import com.vis.services.VisServiceResume;
 
 /**
@@ -118,6 +119,26 @@ public class ResumeRestrictionTest {
 
 		assertFalse(VisEntityResumeRestriction.ENTITY.exists(this.key()));
 		assertFalse(VisEntityResume.ENTITY.exists(this.key()));
+	}
+
+	/**
+	 * The form saves an inactive resume through the main entity ({@code VisBusinessSaveResumeAndSpendTheUpdate}), as the
+	 * owner who corrects the field of the inactive resume does: the restriction goes away too.
+	 */
+	@Test
+	public void theFormSaveOfTheInactiveResumeReleasesTheRestriction() {
+		VisEntityResume.ENTITY.save(this.resume("Inativo pelo formulario"));
+		VisEntityResume.ENTITY.delete(this.key());
+		this.saveTheRestriction();
+		CcpEntity inactiveResumes = VisEntityResume.ENTITY.getTwinEntity();
+		CcpJsonRepresentation storedResume = inactiveResumes.getOneById(this.key());
+		CcpJsonRepresentation foundRecords = CcpOtherConstants.EMPTY_JSON.put(inactiveResumes, storedResume);
+		CcpJsonRepresentation jsonAfterTheSteps = this.key().put(CcpEntity.JsonFieldNames._entities, foundRecords);
+		CcpJsonRepresentation correctedResume = this.resume("Inativo corrigido no form");
+
+		new VisBusinessSaveResumeAndSpendTheUpdate(correctedResume).execute(jsonAfterTheSteps);
+
+		assertFalse(VisEntityResumeRestriction.ENTITY.exists(this.key()));
 	}
 
 	/** The insertion of a resume releases nothing: only an update proves the correction. */

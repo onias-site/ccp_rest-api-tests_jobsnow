@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
+import com.vis.business.recruiter.resumes.VisBusinessViewedResumeDetails;
 import com.vis.business.recruiter.resumes.VisRecruiterLinks;
 import com.vis.business.recruiter.resumes.VisRecruiterResumesFields;
 import com.vis.entities.VisEntityResume;
@@ -200,7 +201,8 @@ public class VisRestApiRecruiterResumesTest extends VisRestApiTestTemplate {
 	public void theDetailsOfAResumeNotViewedInTheMonthAreNotFound() {
 		this.login();
 		String path = this.recruiterPath("/viewed-resumes/202501/details");
-		CcpJsonRepresentation body = CcpOtherConstants.EMPTY_JSON.put(VisEntityViewedResume.Fields.linkedin, "https://www.linkedin.com/in/ninguem-viu");
+		String linkedinHash = "hash-de-linkedin-que-ninguem-viu";
+		CcpJsonRepresentation body = CcpOtherConstants.EMPTY_JSON.put(VisBusinessViewedResumeDetails.Fields.linkedinHash, linkedinHash);
 
 		HttpResponse<String> response = this.sendWithTheSession(Fields.POST, path, body);
 
