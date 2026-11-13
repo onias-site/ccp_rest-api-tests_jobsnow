@@ -45,7 +45,7 @@ import com.vis.json.fields.validation.VisResumeMessageTypes;
 import com.vis.services.VisServiceRecruiterResumes;
 
 /**
- * The message to the owner of a resume about a new view (since 2026-11-12): every save of {@code vis_viewed_resume}
+ * The message to the owner of a resume about a new view (since 2026-11-12): every insertion in {@code vis_viewed_resume}
  * saves, for each owner of the viewed LinkedIn address with a chat, a record {@code newViewInYourResume} in
  * {@code vis_resume_message}, sent through the user bot: the moment of the view and the domain of the recruiter, or the
  * text of the freelancer.
@@ -152,6 +152,23 @@ public class NewViewMessageToTheOwnerTest {
 		this.view(linkedinAddress, "recrutadora.semchat" + this.run + "@empresa-exemplo.com.br");
 
 		CcpJsonRepresentation key = this.messageKey(0L);
+		assertFalse(VisEntityResumeMessage.ENTITY.exists(key));
+		assertTrue(TELEGRAM.sentMessages.toString(), TELEGRAM.sentMessages.isEmpty());
+	}
+
+	/** Only the insertion of the view tells the owner: opening the same resume again updates the view and tells nothing. */
+	@Test
+	public void openingTheResumeAgainTellsNothing() {
+		String linkedinAddress = this.saveResume("reaberto", OWNER_CHAT);
+		String recruiter = "recrutadora.reaberto" + this.run + "@empresa-exemplo.com.br";
+		this.view(linkedinAddress, recruiter);
+		CcpJsonRepresentation key = this.messageKey(OWNER_CHAT);
+		assertTrue(VisEntityResumeMessage.ENTITY.exists(key));
+		this.deleteTheMessageOfTheOwner();
+		TELEGRAM.sentMessages.clear();
+
+		this.view(linkedinAddress, recruiter);
+
 		assertFalse(VisEntityResumeMessage.ENTITY.exists(key));
 		assertTrue(TELEGRAM.sentMessages.toString(), TELEGRAM.sentMessages.isEmpty());
 	}
