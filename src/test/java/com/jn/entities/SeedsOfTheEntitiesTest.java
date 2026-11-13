@@ -26,6 +26,7 @@ import com.jb.entities.JbEntityBotExplanation;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.jn.utils.JnLanguage;
+import com.js.business.login.JsBusinessCheckTypedLoginToken;
 import com.js.business.login.JsBusinessValidateLogin;
 import com.js.entities.JsEntityLoginSessionValidation;
 import com.js.entities.JsEntityLoginTokenRequestUnlock;
@@ -167,14 +168,20 @@ public class SeedsOfTheEntitiesTest {
 		assertEquals(Arrays.asList("allowCommandToUser", "fixSkillHierarchy", "ignoredUsers", "reviewSkillSuggestion"), visCommands);
 	}
 
-	/** js seeds the validator of the session that the vis API runs by class name, without importing js (2026-10-22). */
+	/**
+	 * js seeds the validator of the session that the vis API runs by class name, without importing js (2026-10-22), and
+	 * the checker of the login token typed in the user bot, run the same way by vis (2026-11-12).
+	 */
 	@Test
 	public void jsSeedsTheValidatorOfTheSession() {
 		List<CcpJsonRepresentation> validators = this.seedsInto(JsEntityLoginSessionValidation.INSTANCE, JnEntitySessionValidator.ENTITY);
-		assertEquals(1, validators.size());
+		assertEquals(2, validators.size());
 		CcpJsonRepresentation validator = validators.get(0);
 		assertEquals("userSession", validator.getAsString(JnEntitySessionValidator.Fields.validatorName));
 		assertEquals(JsBusinessValidateLogin.class.getName(), validator.getAsString(JnEntitySessionValidator.Fields.business));
+		CcpJsonRepresentation tokenChecker = validators.get(1);
+		assertEquals("loginToken", tokenChecker.getAsString(JnEntitySessionValidator.Fields.validatorName));
+		assertEquals(JsBusinessCheckTypedLoginToken.class.getName(), tokenChecker.getAsString(JnEntitySessionValidator.Fields.business));
 	}
 
 	/** jb seeds the business that the webhook of the js API runs by class name, without importing jb. */
