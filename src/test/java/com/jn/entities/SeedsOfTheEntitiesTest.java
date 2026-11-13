@@ -184,14 +184,19 @@ public class SeedsOfTheEntitiesTest {
 		assertEquals(JsBusinessCheckTypedLoginToken.class.getName(), tokenChecker.getAsString(JnEntitySessionValidator.Fields.business));
 	}
 
-	/** jb seeds the business that the webhook of the js API runs by class name, without importing jb. */
+	/**
+	 * jb seeds the business that the webhook of the js API runs by class name, without importing jb, for every bot: the
+	 * user bot also receives its updates through the webhook in production (2026-11-13).
+	 */
 	@Test
-	public void jbSeedsTheHandlerOfTheUpdatesOfTheSupportBot() {
+	public void jbSeedsTheHandlerOfTheUpdatesOfEveryBot() {
 		List<CcpJsonRepresentation> handlers = this.seedsInto(JbEntityBot.INSTANCE, JnEntityBotUpdateHandler.ENTITY);
-		assertEquals(1, handlers.size());
-		CcpJsonRepresentation handler = handlers.get(0);
-		assertEquals("support", handler.getAsString(JnEntityBotUpdateHandler.Fields.botName));
-		assertEquals(JbBusinessReceiveBotUpdate.class.getName(), handler.getAsString(JnEntityBotUpdateHandler.Fields.business));
+		List<String> bots = handlers.stream()
+				.map(handler -> handler.getAsString(JnEntityBotUpdateHandler.Fields.botName)).sorted().collect(Collectors.toList());
+		assertEquals(Arrays.asList("support", "user"), bots);
+		for (CcpJsonRepresentation handler : handlers) {
+			assertEquals(JbBusinessReceiveBotUpdate.class.getName(), handler.getAsString(JnEntityBotUpdateHandler.Fields.business));
+		}
 	}
 
 	/** The records that the seeds of the configurator write into another entity. */
