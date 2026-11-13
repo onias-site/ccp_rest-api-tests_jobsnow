@@ -47,6 +47,7 @@ import com.vis.entities.VisEntityRecruiterQueueCursor;
 import com.vis.entities.VisEntityRecruiterResumes;
 import com.vis.entities.VisEntityRecruiterSignUpReturn;
 import com.vis.entities.VisEntityResume;
+import com.vis.entities.VisEntityResumeRestriction;
 import com.vis.entities.VisEntityViewedResume;
 import com.vis.services.VisServiceRecruiterResumes;
 
@@ -676,6 +677,44 @@ public class ResumesToRecruitersTest {
 		List<CcpJsonRepresentation> rows = rowsOf(recruiter);
 		assertFalse(hasRowOf(rows, job));
 		assertTrue(hasRowOf(rows, otherJob));
+	}
+
+	/**
+	 * A resume whose owner must correct it ({@code vis_resume_restriction}) goes to no recruiter, and the link of an e-mail
+	 * sent before the restriction opens nothing (404, the answer of a resume no longer active) (since 2026-11-12).
+	 */
+	@Test
+	public void aResumeWithARestrictionGoesToNoRecruiterNorOpens() {
+		String recruiter = this.recruiter("restricao", "gmail.com");
+		this.saveRecruiter(recruiter);
+		String job = "Analista com restricao " + this.run;
+		String otherJob = "Analista sem restricao " + this.run;
+		CcpJsonRepresentation restrictedResume = this.resume("restricao", job);
+		this.saveResume(restrictedResume);
+		this.saveResume(this.resume("sem-restricao", otherJob));
+		sendTo(recruiter);
+		CcpJsonRepresentation linkSentBefore = linkOf(recruiter, rowOf(rowsOf(recruiter), job));
+		CcpJsonRepresentation restriction = restrictedResume.getJsonPiece(VisEntityResume.Fields.email)
+				.put(VisEntityResumeRestriction.Fields.message, List.of("Corrija o campo das empresas que não podem receber o seu currículo"));
+		VisEntityResumeRestriction.ENTITY.save(restriction);
+		try {
+			String otherRecruiter = this.recruiter("restricao-outro", "gmail.com");
+			this.saveRecruiter(otherRecruiter);
+
+			sendTo(otherRecruiter);
+
+			List<CcpJsonRepresentation> rows = rowsOf(otherRecruiter);
+			assertFalse(hasRowOf(rows, job));
+			assertTrue(hasRowOf(rows, otherJob));
+			try {
+				VisServiceRecruiterResumes.ViewResumeFromEmail.execute(linkSentBefore);
+				fail("the link of a resume with a restriction opened it");
+			} catch (CcpErrorFlowDisturb expected) {
+				assertEquals(CcpProcessStatusDefault.NOT_FOUND, expected.status);
+			}
+		} finally {
+			VisEntityResumeRestriction.ENTITY.delete(restriction);
+		}
 	}
 
 	@Test
