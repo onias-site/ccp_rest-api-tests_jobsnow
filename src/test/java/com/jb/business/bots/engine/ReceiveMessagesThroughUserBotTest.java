@@ -34,9 +34,11 @@ import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jb.entities.JbEntityBot;
 import com.jb.entities.JbEntityBotCommandStepSession;
+import com.ccp.especifications.db.utils.entity.decorators.ElasticsearchLocal;
 import com.jn.entities.JnEntityBotCommand;
 import com.jn.entities.JnEntityBotCommandStep;
 import com.jn.entities.JnEntityBotCommandStepEndMessage;
+import com.jn.entities.JnEntityInstantMessengerUser;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.js.entities.JsEntityLoginSessionValidation;
@@ -47,7 +49,9 @@ import com.vis.entities.VisEntityResume;
 
 /**
  * The commands {@code /receiveMessages <email>} (vis) and {@code /resendLoginToken <email>} (js) of the user bot (since
- * 2026-11-12): the right token saves the chat in the resume of the e-mail, active or inactive; a wrong one is counted in
+ * 2026-11-12): the right token saves the chat of the e-mail in {@code jn_instant_messenger_user} (since 2026-11-13; until
+ * then in the resume) once the e-mail has a resume, active or inactive, deleting the record of the chat under a previous
+ * e-mail; an e-mail already registered with the chat ends the command; a wrong token is counted in
  * {@code vis_login_token_attempts} and, at the third, blocks the chat; the resending answers as the login screen.
  */
 public class ReceiveMessagesThroughUserBotTest {
@@ -113,13 +117,15 @@ public class ReceiveMessagesThroughUserBotTest {
 		this.deleteTheSessionAndTheAttempts();
 		for (String resumeEmail : this.resumeEmails) {
 			VisEntityResume.ENTITY.deleteAnyWhere(CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, resumeEmail));
+			JnEntityInstantMessengerUser.ENTITY.delete(this.instantMessengerUserKey(resumeEmail));
 		}
+		JnEntityInstantMessengerUser.ENTITY.delete(this.instantMessengerUserKey(this.email));
 		CcpJsonRepresentation tokenKey = CcpOtherConstants.EMPTY_JSON.put(JsEntityLoginToken.Fields.email, this.email);
 		JsEntityLoginToken.ENTITY.deleteAnyWhere(tokenKey);
 		JsEntityLoginTokenRequestResend.ENTITY.deleteAnyWhere(tokenKey);
 	}
 
-	/** The right token saves the chat in the active resume and clears the wrong tokens typed before. */
+	/** The right token saves the chat of the e-mail, not in the resume, and clears the wrong tokens typed before. */
 	@Test
 	public void theRightTokenSavesTheChatInTheResume() {
 		this.saveTheLoginToken();
@@ -134,12 +140,13 @@ public class ReceiveMessagesThroughUserBotTest {
 		String saved = this.userTypes(TOKEN);
 
 		assertEquals("Pronto! A partir de agora você receberá por aqui as mensagens do Onias.Site sobre o seu currículo.", saved);
+		assertEquals(USER_CHAT, this.chatOf(this.email));
 		CcpJsonRepresentation resume = VisEntityResume.ENTITY.getOneById(this.resumeKey(this.email));
-		assertEquals(USER_CHAT, resume.getAsLongNumber(VisEntityResume.Fields.chatId));
+		assertFalse(resume.containsField(VisEntityResume.Fields.chatId));
 		assertFalse(VisEntityLoginTokenAttempts.ENTITY.exists(this.attemptsKey()));
 	}
 
-	/** An inactive resume also counts: the chat is saved on the inactive side, and the resume stays inactive. */
+	/** An inactive resume also counts: the chat of the e-mail is saved, and the resume stays inactive. */
 	@Test
 	public void theChatGoesToTheInactiveResume() {
 		this.saveTheLoginToken();
@@ -153,8 +160,55 @@ public class ReceiveMessagesThroughUserBotTest {
 
 		assertTrue(saved, saved.startsWith("Pronto!"));
 		assertFalse(VisEntityResume.ENTITY.exists(this.resumeKey(this.email)));
-		CcpJsonRepresentation resume = inactiveResumes.getOneById(this.resumeKey(this.email));
-		assertEquals(USER_CHAT, resume.getAsLongNumber(VisEntityResume.Fields.chatId));
+		assertTrue(inactiveResumes.exists(this.resumeKey(this.email)));
+		assertEquals(USER_CHAT, this.chatOf(this.email));
+	}
+
+	/** The e-mail already registered with this chat ends the command with that notice, before asking the token. */
+	@Test
+	public void anEmailAlreadyRegisteredWithTheChatEndsTheCommand() {
+		this.saveTheLoginToken();
+		this.saveResume(this.email);
+		this.saveTheChat(this.email, USER_CHAT);
+
+		String answer = this.userTypes("/receiveMessages " + this.email);
+
+		assertEquals("O e-mail " + this.email + " já está cadastrado para receber por aqui as mensagens do Onias.Site sobre o seu currículo. Não é preciso fazer mais nada.", answer);
+		String afterTheEnd = this.userTypes(TOKEN);
+		assertFalse(afterTheEnd, afterTheEnd.startsWith("Pronto!"));
+		assertEquals(USER_CHAT, this.chatOf(this.email));
+	}
+
+	/** The e-mail registered with another chat is not a repetition: the right token moves it to this chat. */
+	@Test
+	public void theRightTokenMovesTheEmailFromAnotherChat() {
+		this.saveTheLoginToken();
+		this.saveResume(this.email);
+		this.saveTheChat(this.email, USER_CHAT + 1);
+
+		String askToken = this.userTypes("/receiveMessages " + this.email);
+		assertTrue(askToken, askToken.startsWith("Digite o token de login"));
+		String saved = this.userTypes(TOKEN);
+
+		assertTrue(saved, saved.startsWith("Pronto!"));
+		assertEquals(USER_CHAT, this.chatOf(this.email));
+	}
+
+	/** A chat answers for one e-mail: registering another e-mail deletes the record of the previous one. */
+	@Test
+	public void changingTheEmailDeletesThePreviousOne() {
+		String previousEmail = "receber.mensagens.anterior" + this.run + "@teste.com";
+		this.saveResume(previousEmail);
+		this.saveTheChat(previousEmail, USER_CHAT);
+		this.saveTheLoginToken();
+		this.saveResume(this.email);
+
+		this.userTypes("/receiveMessages " + this.email);
+		String saved = this.userTypes(TOKEN);
+
+		assertTrue(saved, saved.startsWith("Pronto!"));
+		assertEquals(USER_CHAT, this.chatOf(this.email));
+		assertFalse(JnEntityInstantMessengerUser.ENTITY.exists(this.instantMessengerUserKey(previousEmail)));
 	}
 
 	/** Without a resume, active or inactive, the user is asked to register one. */
@@ -194,8 +248,7 @@ public class ReceiveMessagesThroughUserBotTest {
 		assertEquals(blocked, again);
 		String token = this.userTypes(TOKEN);
 		assertFalse(token, token.startsWith("Pronto!"));
-		CcpJsonRepresentation resume = VisEntityResume.ENTITY.getOneById(this.resumeKey(this.email));
-		assertFalse(resume.containsField(VisEntityResume.Fields.chatId) && USER_CHAT.equals(resume.getAsLongNumber(VisEntityResume.Fields.chatId)));
+		assertFalse(JnEntityInstantMessengerUser.ENTITY.exists(this.instantMessengerUserKey(this.email)));
 	}
 
 	/** An invalid e-mail ends the command before asking the token. */
@@ -251,6 +304,22 @@ public class ReceiveMessagesThroughUserBotTest {
 
 	private CcpJsonRepresentation resumeKey(String owner) {
 		return CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, owner);
+	}
+
+	private CcpJsonRepresentation instantMessengerUserKey(String owner) {
+		return CcpOtherConstants.EMPTY_JSON.put(JnEntityInstantMessengerUser.Fields.email, owner);
+	}
+
+	/** Saves the chat of the e-mail and makes it visible to the search by chat right away. */
+	private void saveTheChat(String owner, Long chatId) {
+		CcpJsonRepresentation instantMessengerUser = this.instantMessengerUserKey(owner).put(JnEntityInstantMessengerUser.Fields.chatId, chatId);
+		JnEntityInstantMessengerUser.ENTITY.save(instantMessengerUser);
+		ElasticsearchLocal.refresh("jn_instant_messenger_user");
+	}
+
+	private Long chatOf(String owner) {
+		CcpJsonRepresentation stored = JnEntityInstantMessengerUser.ENTITY.getOneById(this.instantMessengerUserKey(owner));
+		return stored.getAsLongNumber(JnEntityInstantMessengerUser.Fields.chatId);
 	}
 
 	private CcpJsonRepresentation attemptsKey() {

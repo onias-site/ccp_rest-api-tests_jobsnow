@@ -31,6 +31,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.jn.entities.JnEntityInstantMessengerUser;
 import com.jn.business.messages.JnMessageType;
 import com.jn.business.messages.JnMessageType.InstantMessengerApiFields;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
@@ -111,6 +112,7 @@ public class NewViewMessageToTheOwnerTest {
 	public void deleteWhatTheTestCreated() {
 		for (String owner : this.owners) {
 			VisEntityResume.ENTITY.deleteAnyWhere(CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, owner));
+			JnEntityInstantMessengerUser.ENTITY.delete(CcpOtherConstants.EMPTY_JSON.put(JnEntityInstantMessengerUser.Fields.email, owner));
 		}
 		for (CcpJsonRepresentation view : this.views) {
 			VisEntityViewedResume.ENTITY.deleteAnyWhere(view);
@@ -144,7 +146,7 @@ public class NewViewMessageToTheOwnerTest {
 		this.assertSentThroughTheUserBot(message);
 	}
 
-	/** An owner with no chat (0) gets no message. */
+	/** An owner whose e-mail has no chat in jn_instant_messenger_user gets no message. */
 	@Test
 	public void anOwnerWithoutChatGetsNoMessage() {
 		String linkedinAddress = this.saveResume("semchat", 0L);
@@ -203,7 +205,10 @@ public class NewViewMessageToTheOwnerTest {
 		}
 	}
 
-	/** Saves a resume of its own LinkedIn address, with the chat given. */
+	/**
+	 * Saves a resume of its own LinkedIn address and, when the chat is greater than zero, the chat of its e-mail in
+	 * jn_instant_messenger_user (since 2026-11-13 the chat is no longer kept in the resume).
+	 */
 	private String saveResume(String who, Long chatId) {
 		String owner = "dono.visto." + who + this.run + "@teste.com";
 		String linkedinAddress = "https://www.linkedin.com/in/dono-visto-" + who + "-" + this.run;
@@ -218,11 +223,18 @@ public class NewViewMessageToTheOwnerTest {
 				.put(VisEntityResume.Fields.temporallyJobTime, 0)
 				.put(VisEntityResume.Fields.clt, 8_000)
 				.put(VisEntityResume.Fields.pj, 12_000)
-				.put(VisEntityResume.Fields.chatId, chatId)
 				.put(VisEntityResume.Fields.skill, Arrays.asList(new CcpJsonRepresentation("{\"skill\":\"JAVA\",\"word\":\"JAVA\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\",\"parent\":[]}")))
 				.put(VisEntityResume.Fields.spokenLanguage, Arrays.asList(new CcpJsonRepresentation("{\"name\":\"Inglês\",\"level\":2,\"id\":0}")));
 		VisEntityResume.ENTITY.save(resume);
 		this.owners.add(owner);
+		boolean withoutChat = chatId <= 0;
+		if(withoutChat) {
+			return linkedinAddress;
+		}
+		CcpJsonRepresentation instantMessengerUser = CcpOtherConstants.EMPTY_JSON
+				.put(JnEntityInstantMessengerUser.Fields.email, owner)
+				.put(JnEntityInstantMessengerUser.Fields.chatId, chatId);
+		JnEntityInstantMessengerUser.ENTITY.save(instantMessengerUser);
 		return linkedinAddress;
 	}
 
