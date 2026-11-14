@@ -199,6 +199,9 @@ public class ResumeStatisticsOfTheRegionTest {
 		assertAdded("30 days", 1, before, after, VisResumeStatisticsCharts.disponibility, "notImmediate");
 		assertAdded("0 months", 1, before, after, VisResumeStatisticsCharts.temporallyJob, "doesNotAccept");
 		assertAdded("6 months", 1, before, after, VisResumeStatisticsCharts.temporallyJob, "accepts");
+		assertAdded("one skill each (the excluded one does not count)", 2, before, after, VisResumeStatisticsCharts.skillsCount, "upTo5");
+		assertAdded("clt and pj", 1, before, after, VisResumeStatisticsCharts.contractType, "both");
+		assertAdded("clt only", 1, before, after, VisResumeStatisticsCharts.contractType, "onlyClt");
 	}
 
 	@Test
