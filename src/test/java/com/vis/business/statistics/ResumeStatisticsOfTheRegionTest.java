@@ -140,36 +140,55 @@ public class ResumeStatisticsOfTheRegionTest {
 				.put(VisEntityViewedResume.Fields.email, this.recruiterEmail));
 	}
 
+	private static long totalOf(VisResumeTotalsCounters counter, VisResumeStatisticsSources source, Object key) {
+		CcpJsonRepresentation totals = VisBusinessResumeTotals.INSTANCE.execute(CcpOtherConstants.EMPTY_JSON).getInnerJson(counter).getInnerJson(source);
+		CcpFieldName keyField = new CcpFieldName(String.valueOf(key));
+		return totals.containsAllFields(keyField) ? totals.getAsLongNumber(keyField) : 0L;
+	}
+
 	private static long totalOf(VisResumeStatisticsSources source, int ddd) {
-		CcpJsonRepresentation totals = VisBusinessResumeTotalsByRegion.INSTANCE.execute(CcpOtherConstants.EMPTY_JSON).getInnerJson(source);
-		CcpFieldName dddField = new CcpFieldName(String.valueOf(ddd));
-		return totals.containsAllFields(dddField) ? totals.getAsLongNumber(dddField) : 0L;
+		return totalOf(VisResumeTotalsCounters.byRegion, source, ddd);
 	}
 
 	/**
 	 * 2026-11-14: the totals of the folders of the screen come from a counter by ddd in jn_grouper, one per entity: the
 	 * insertion adds 1 to each ddd of the record, a save that changes the ddds moves the count, the delete subtracts it.
+	 * The same request brings the counters by day and by month of insertion (the line chart), which also count the
+	 * active records only.
 	 */
 	@Test
 	public void theTotalsByRegionFollowTheResumesAndTheViews() {
 		int otherDdd = 21;
+		String today = new CcpTimeDecorator().getFormattedDateTime("yyyyMMdd");
+		String thisMonth = today.substring(0, 6);
 		long resumesBefore = totalOf(VisResumeStatisticsSources.resumes, DDD);
 		long otherResumesBefore = totalOf(VisResumeStatisticsSources.resumes, otherDdd);
 		long viewsBefore = totalOf(VisResumeStatisticsSources.viewedResumes, DDD);
+		long resumesTodayBefore = totalOf(VisResumeTotalsCounters.byDay, VisResumeStatisticsSources.resumes, today);
+		long viewsTodayBefore = totalOf(VisResumeTotalsCounters.byDay, VisResumeStatisticsSources.viewedResumes, today);
+		long resumesThisMonthBefore = totalOf(VisResumeTotalsCounters.byMonth, VisResumeStatisticsSources.resumes, thisMonth);
+		long viewsThisMonthBefore = totalOf(VisResumeTotalsCounters.byMonth, VisResumeStatisticsSources.viewedResumes, thisMonth);
 
 		CcpJsonRepresentation resume = this.resume(this.firstEmail, 3, Arrays.asList(language("English", 2)), 0, 0).put(VisEntityResume.Fields.clt, 8_500);
 		VisEntityResume.ENTITY.save(resume);
 		VisEntityViewedResume.ENTITY.save(this.view());
 		assertEquals("the resume in its ddd", resumesBefore + 1, totalOf(VisResumeStatisticsSources.resumes, DDD));
 		assertEquals("the view in the ddd of the resume", viewsBefore + 1, totalOf(VisResumeStatisticsSources.viewedResumes, DDD));
+		assertEquals("the resume inserted today", resumesTodayBefore + 1, totalOf(VisResumeTotalsCounters.byDay, VisResumeStatisticsSources.resumes, today));
+		assertEquals("the view made today", viewsTodayBefore + 1, totalOf(VisResumeTotalsCounters.byDay, VisResumeStatisticsSources.viewedResumes, today));
+		assertEquals("the resume in this month", resumesThisMonthBefore + 1, totalOf(VisResumeTotalsCounters.byMonth, VisResumeStatisticsSources.resumes, thisMonth));
+		assertEquals("the view in this month", viewsThisMonthBefore + 1, totalOf(VisResumeTotalsCounters.byMonth, VisResumeStatisticsSources.viewedResumes, thisMonth));
 
 		VisEntityResume.ENTITY.save(resume.put(VisEntityResume.Fields.ddd, Arrays.asList(otherDdd)));
 		assertEquals("the resume left its ddd", resumesBefore, totalOf(VisResumeStatisticsSources.resumes, DDD));
 		assertEquals("and went to the new one", otherResumesBefore + 1, totalOf(VisResumeStatisticsSources.resumes, otherDdd));
+		assertEquals("a save again is not a new insertion", resumesTodayBefore + 1, totalOf(VisResumeTotalsCounters.byDay, VisResumeStatisticsSources.resumes, today));
 
 		this.deleteTheResumes();
 		assertEquals(otherResumesBefore, totalOf(VisResumeStatisticsSources.resumes, otherDdd));
 		assertEquals(viewsBefore, totalOf(VisResumeStatisticsSources.viewedResumes, DDD));
+		assertEquals(resumesTodayBefore, totalOf(VisResumeTotalsCounters.byDay, VisResumeStatisticsSources.resumes, today));
+		assertEquals(viewsTodayBefore, totalOf(VisResumeTotalsCounters.byDay, VisResumeStatisticsSources.viewedResumes, today));
 	}
 
 	/**
