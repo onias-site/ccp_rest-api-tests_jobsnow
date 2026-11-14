@@ -28,6 +28,8 @@ import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.db.bulk.JnExecuteBulkOperation;
 import com.jn.utils.JnDeleteKeysFromCache;
+import com.jn.business.grouper.JnBusinessGetGrouperCharts;
+import com.jn.json.fields.validation.JnGrouperChartsScreens;
 import com.jn.utils.JnGroupers;
 import com.vis.entities.RecordingEmailSender;
 import com.vis.entities.VisEntityResume;
@@ -144,6 +146,43 @@ public class ResumeStatisticsOfTheRegionTest {
 		CcpJsonRepresentation totals = VisBusinessResumeTotals.INSTANCE.execute(CcpOtherConstants.EMPTY_JSON).getInnerJson(counter).getInnerJson(source);
 		CcpFieldName keyField = new CcpFieldName(String.valueOf(key));
 		return totals.containsAllFields(keyField) ? totals.getAsLongNumber(keyField) : 0L;
+	}
+
+	private static long curiosity(VisBusinessCuriositiesCharts.Fields chart, String key) {
+		String screen = JnGrouperChartsScreens.curiosities.name();
+		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON.put(JnBusinessGetGrouperCharts.Fields.screen, screen);
+		CcpJsonRepresentation charts = JnBusinessGetGrouperCharts.INSTANCE.execute(input);
+		CcpJsonRepresentation slices = charts.containsAllFields(chart) ? charts.getInnerJson(chart) : CcpOtherConstants.EMPTY_JSON;
+		CcpFieldName keyField = new CcpFieldName(key);
+		return slices.containsAllFields(keyField) ? slices.getAsLongNumber(keyField) : 0L;
+	}
+
+	/**
+	 * 2026-11-14: the charts of vis in the screen Curiosities (read with the ones of js, by id, through the providers
+	 * seeded in jn_grouper_charts_providers): the skill a resume excludes counts in the single group of the avoided
+	 * skills while the resume is active, and the resume moves between the slices active and inactive.
+	 */
+	@Test
+	public void theCuriositiesFollowTheResumes() {
+		String cobol = "COBOL";
+		String active = VisBusinessCuriositiesCharts.Fields.active.name();
+		String inactive = VisBusinessCuriositiesCharts.Fields.inactive.name();
+		long avoidedBefore = curiosity(VisBusinessCuriositiesCharts.Fields.avoidedSkills, cobol);
+		long activeBefore = curiosity(VisBusinessCuriositiesCharts.Fields.resumeSituation, active);
+		long inactiveBefore = curiosity(VisBusinessCuriositiesCharts.Fields.resumeSituation, inactive);
+
+		CcpJsonRepresentation resume = this.resume(this.firstEmail, 3, Arrays.asList(language("English", 2)), 0, 0).put(VisEntityResume.Fields.clt, 8_500);
+		VisEntityResume.ENTITY.save(resume);
+		assertEquals("the skill the resume excludes", avoidedBefore + 1, curiosity(VisBusinessCuriositiesCharts.Fields.avoidedSkills, cobol));
+		assertEquals("one more active resume", activeBefore + 1, curiosity(VisBusinessCuriositiesCharts.Fields.resumeSituation, active));
+
+		VisEntityResume.ENTITY.delete(resume);
+		assertEquals("an inactive resume avoids nothing", avoidedBefore, curiosity(VisBusinessCuriositiesCharts.Fields.avoidedSkills, cobol));
+		assertEquals("the resume left the active ones", activeBefore, curiosity(VisBusinessCuriositiesCharts.Fields.resumeSituation, active));
+		assertEquals("and went to the inactive ones", inactiveBefore + 1, curiosity(VisBusinessCuriositiesCharts.Fields.resumeSituation, inactive));
+
+		this.deleteTheResumes();
+		assertEquals(inactiveBefore, curiosity(VisBusinessCuriositiesCharts.Fields.resumeSituation, inactive));
 	}
 
 	private static long totalOf(VisResumeStatisticsSources source, int ddd) {
