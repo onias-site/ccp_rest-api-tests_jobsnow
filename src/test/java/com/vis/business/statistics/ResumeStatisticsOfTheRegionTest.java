@@ -242,6 +242,7 @@ public class ResumeStatisticsOfTheRegionTest {
 		assertAdded("fluent English", 1, before, after, VisResumeStatisticsCharts.spokenLanguage, "English|2");
 		assertAdded("intermediate English is another slice", 1, before, after, VisResumeStatisticsCharts.spokenLanguage, "English|1");
 		assertAdded("fluent Spanish", 1, before, after, VisResumeStatisticsCharts.spokenLanguage, "Spanish|2");
+		assertAdded("both speak some language", 0, before, after, VisResumeStatisticsCharts.spokenLanguage, "none");
 		assertAdded("the skill both declare", 2, before, after, VisResumeStatisticsCharts.skill, this.uniqueSkill);
 		assertAdded("an excluded skill is not a skill of the resume", 0, before, after, VisResumeStatisticsCharts.skill, "COBOL");
 		assertAdded("3 years", 1, before, after, VisResumeStatisticsCharts.seniority, "pleno");
@@ -253,6 +254,15 @@ public class ResumeStatisticsOfTheRegionTest {
 		assertAdded("one skill each (the excluded one does not count)", 2, before, after, VisResumeStatisticsCharts.skillsCount, "upTo5");
 		assertAdded("clt and pj", 1, before, after, VisResumeStatisticsCharts.contractType, "both");
 		assertAdded("clt only", 1, before, after, VisResumeStatisticsCharts.contractType, "onlyClt");
+	}
+
+	/** 2026-11-14: a resume that speaks no language goes to the slice "none" of the languages (the legend "Nenhum"). */
+	@Test
+	public void aResumeWithNoLanguageGoesToTheSliceNone() {
+		CcpJsonRepresentation before = statistics();
+		VisEntityResume.ENTITY.save(this.resume(this.firstEmail, 3, Arrays.asList(), 0, 0).put(VisEntityResume.Fields.clt, 8_500));
+		CcpJsonRepresentation after = statistics();
+		assertAdded("no language", 1, before, after, VisResumeStatisticsCharts.spokenLanguage, "none");
 	}
 
 	@Test
