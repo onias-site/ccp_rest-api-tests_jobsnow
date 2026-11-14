@@ -160,7 +160,8 @@ public class ResumeStatisticsOfTheRegionTest {
 	/**
 	 * 2026-11-14: the charts of vis in the screen Curiosities (read with the ones of js, by id, through the providers
 	 * seeded in jn_grouper_charts_providers): the skill a resume excludes counts in the single group of the avoided
-	 * skills while the resume is active, and the resume moves between the slices active and inactive.
+	 * skills while the resume is active, and the resume moves between the slices active and inactive; its area
+	 * (resumeType) counts while it is active, and the domain of the recruiter counts every view ever made (a history).
 	 */
 	@Test
 	public void theCuriositiesFollowTheResumes() {
@@ -170,19 +171,31 @@ public class ResumeStatisticsOfTheRegionTest {
 		long avoidedBefore = curiosity(VisBusinessCuriositiesCharts.Fields.avoidedSkills, cobol);
 		long activeBefore = curiosity(VisBusinessCuriositiesCharts.Fields.resumeSituation, active);
 		long inactiveBefore = curiosity(VisBusinessCuriositiesCharts.Fields.resumeSituation, inactive);
+		String informationTechnology = "1";
+		String domain = "empresa.com.br";
+		long areaBefore = curiosity(VisBusinessCuriositiesCharts.Fields.resumeTypes, informationTechnology);
+		long domainBefore = curiosity(VisBusinessCuriositiesCharts.Fields.viewerDomains, domain);
 
 		CcpJsonRepresentation resume = this.resume(this.firstEmail, 3, Arrays.asList(language("English", 2)), 0, 0).put(VisEntityResume.Fields.clt, 8_500);
 		VisEntityResume.ENTITY.save(resume);
 		assertEquals("the skill the resume excludes", avoidedBefore + 1, curiosity(VisBusinessCuriositiesCharts.Fields.avoidedSkills, cobol));
 		assertEquals("one more active resume", activeBefore + 1, curiosity(VisBusinessCuriositiesCharts.Fields.resumeSituation, active));
+		assertEquals("one more resume of the area", areaBefore + 1, curiosity(VisBusinessCuriositiesCharts.Fields.resumeTypes, informationTechnology));
+
+		VisEntityViewedResume.ENTITY.save(this.view());
+		assertEquals("the view counts for the domain of the recruiter", domainBefore + 1, curiosity(VisBusinessCuriositiesCharts.Fields.viewerDomains, domain));
+		VisEntityViewedResume.ENTITY.save(this.view());
+		assertEquals("a new save of the same view is not a new view", domainBefore + 1, curiosity(VisBusinessCuriositiesCharts.Fields.viewerDomains, domain));
 
 		VisEntityResume.ENTITY.delete(resume);
 		assertEquals("an inactive resume avoids nothing", avoidedBefore, curiosity(VisBusinessCuriositiesCharts.Fields.avoidedSkills, cobol));
 		assertEquals("the resume left the active ones", activeBefore, curiosity(VisBusinessCuriositiesCharts.Fields.resumeSituation, active));
 		assertEquals("and went to the inactive ones", inactiveBefore + 1, curiosity(VisBusinessCuriositiesCharts.Fields.resumeSituation, inactive));
+		assertEquals("an inactive resume leaves its area", areaBefore, curiosity(VisBusinessCuriositiesCharts.Fields.resumeTypes, informationTechnology));
 
 		this.deleteTheResumes();
 		assertEquals(inactiveBefore, curiosity(VisBusinessCuriositiesCharts.Fields.resumeSituation, inactive));
+		assertEquals("the views ever made are not subtracted", domainBefore + 1, curiosity(VisBusinessCuriositiesCharts.Fields.viewerDomains, domain));
 	}
 
 	private static long totalOf(VisResumeStatisticsSources source, int ddd) {
