@@ -1066,7 +1066,7 @@ public class ResumesToRecruitersTest {
 		ElasticsearchLocal.refresh("vis_recruiter");
 
 		List<CcpJsonRepresentation> recruiters = VisBusinessSendResumesToRecruiters.getRecruiters();
-		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, new java.util.HashMap<>(), 0L, "", java.util.Set.of(), 0L, "");
+		List<CcpJsonRepresentation> inOrder = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, new java.util.HashMap<>(), 0L, "", java.util.Set.of(), 0L, "", "");
 
 		assertTrue(recruiters.size() > 1000);
 		assertEquals(recruiters.size(), inOrder.size());
@@ -1131,6 +1131,7 @@ public class ResumesToRecruitersTest {
 	public void aRunRestrictedToSomeRecruitersDoesNotMoveTheQueueButAFullOneDoes() {
 		this.restrictedRunDoesNotMoveTheQueue(VisEntityRecruiterQueueCursor.CursorNames.resumesToRecruiters, "1" + "a".repeat(40));
 		this.restrictedRunDoesNotMoveTheQueue(VisEntityRecruiterQueueCursor.CursorNames.legacyViewersOfResumesToRecruiters, "8".repeat(13) + "a".repeat(40));
+		this.restrictedRunDoesNotMoveTheQueue(VisEntityRecruiterQueueCursor.CursorNames.nonProfessionalRecruitersOfResumesToRecruiters, "a".repeat(40));
 	}
 
 	private void restrictedRunDoesNotMoveTheQueue(VisEntityRecruiterQueueCursor.CursorNames queue, String newPosition) {
