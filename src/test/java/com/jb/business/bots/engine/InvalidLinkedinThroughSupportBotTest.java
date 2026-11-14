@@ -329,9 +329,11 @@ public class InvalidLinkedinThroughSupportBotTest {
 		assertEquals(resumeId, storedReport.getAsString(VisEntityInvalidLinkedinReport.Fields.resumeEmailSha1));
 		CcpJsonRepresentation pendingCommand = JnEntitySupportPendingCommand.ENTITY.getOneById(this.pendingCommand(ticket));
 		assertEquals(2L, (long) pendingCommand.getAsLongNumber(JnEntitySupportPendingCommand.Fields.priority));
-		// the view goes to the twin at once, before the support decides
+		// the view goes to the twin at once, before the support decides, with the comment and its alias, in the same write
 		assertFalse(VisEntityViewedResume.ENTITY.exists(this.viewKey()));
-		assertTrue(VisEntityViewedResume.ENTITY.getTwinEntity().exists(this.viewKey()));
+		CcpJsonRepresentation inactiveView = VisEntityViewedResume.ENTITY.getTwinEntity().getOneById(this.viewKey());
+		assertEquals("O endereço de linkedin deste currículo não pôde ser aberto por este recrutador", inactiveView.getAsString(VisEntityViewedResume.Fields.comment));
+		assertEquals("Analista LinkedIn " + this.run, inactiveView.getAsString(VisEntityViewedResume.Fields.alias));
 		// reporting it again while it waits opens no second ticket
 		TELEGRAM.sentMessages.clear();
 		VisServiceRecruiterResumes.ReportInvalidLinkedinFromEmail.execute(link);
