@@ -35,8 +35,7 @@ import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.db.bulk.JnExecuteBulkOperation;
 import com.jn.entities.JnEntityGrouper;
-import com.jn.entities.JnEntityRecordsCount;
-import com.ccp.especifications.db.query.CcpQueryOptions;
+import com.jn.entities.JnEntityVirtualRecordsTotal;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.utils.JnDeleteKeysFromCache;
@@ -412,41 +411,50 @@ public class ResumeLifecycleTest {
 		assertEquals(0, this.resumesExcluding(second));
 		assertEquals(0, this.resumesExcluding(third));
 	}
-	private CcpJsonRepresentation storedCount() {
-		CcpJsonRepresentation key = CcpOtherConstants.EMPTY_JSON.put(JnEntityRecordsCount.Fields.entityName, "vis_resume");
-		return JnEntityRecordsCount.ENTITY.getOneById(key);
+	private static long[] totals() {
+		long main = JnEntityVirtualRecordsTotal.getTotal(false, "vis_resume");
+		long twin = JnEntityVirtualRecordsTotal.getTotal(true, "vis_resume");
+		return new long[] {main, twin};
 	}
 
-	private void assertCounts(long expectedMain, long expectedTwin) {
-		CcpJsonRepresentation count = this.storedCount();
-		long realMain = CcpQueryOptions.INSTANCE.matchAll().selectFrom("vis_resume").total();
-		long realTwin = CcpQueryOptions.INSTANCE.matchAll().selectFrom("vis_inactive_resume").total();
-		assertEquals(expectedMain, realMain);
-		assertEquals(expectedTwin, realTwin);
-		assertEquals(realMain, count.getAsLongNumber(JnEntityRecordsCount.Fields.mainRecords).longValue());
-		assertEquals(realTwin, count.getAsLongNumber(JnEntityRecordsCount.Fields.twinRecords).longValue());
-		assertEquals("vis_inactive_resume", count.getAsString(JnEntityRecordsCount.Fields.twinEntityName));
+	private static void assertTotals(String message, long expectedMain, long expectedTwin) {
+		long[] totals = totals();
+		assertEquals(message + " (active)", expectedMain, totals[0]);
+		assertEquals(message + " (inactive)", expectedTwin, totals[1]);
 	}
 
 	@Test
-	public void theActiveAndInactiveResumesAreCountedOnEveryWrite() {
-		// a first save counts what is already in the database, whatever it is
+	public void theActiveAndInactiveResumesAreTotaledInTheGrouper() {
+		long[] before = totals();
+		long main = before[0];
+		long twin = before[1];
+
 		VisEntityResume.ENTITY.save(this.resume(3));
-		long main = CcpQueryOptions.INSTANCE.matchAll().selectFrom("vis_resume").total();
-		long twin = CcpQueryOptions.INSTANCE.matchAll().selectFrom("vis_inactive_resume").total();
-		this.assertCounts(main, twin);
+		assertTotals("the insertion adds 1 to the active ones", main + 1, twin);
 
 		VisEntityResume.ENTITY.save(this.resume(4));
-		this.assertCounts(main, twin);
+		assertTotals("an update changes nothing", main + 1, twin);
 
 		VisEntityResume.ENTITY.delete(this.key());
-		this.assertCounts(main - 1, twin + 1);
+		assertTotals("the deactivation moves 1 to the inactive ones", main, twin + 1);
 
 		VisEntityResume.ENTITY.getTwinEntity().delete(this.key());
-		this.assertCounts(main, twin);
+		assertTotals("the reactivation moves it back", main + 1, twin);
 
+		VisEntityResume.ENTITY.delete(this.key());
+		VisEntityResume.ENTITY.save(this.resume(5));
+		assertTotals("saving an inactive resume reactivates it", main + 1, twin);
+
+		VisEntityResume.ENTITY.delete(this.key());
+		VisEntityResume.ENTITY.getTwinEntity().deleteAnyWhere(this.key());
+		assertTotals("the delete everywhere of an inactive resume subtracts 1 from the inactive ones", main, twin);
+
+		VisEntityResume.ENTITY.save(this.resume(3));
 		VisEntityResume.ENTITY.deleteAnyWhere(this.key());
-		this.assertCounts(main - 1, twin);
+		assertTotals("the delete everywhere of an active resume subtracts 1 from the active ones", main, twin);
+
+		VisEntityResume.ENTITY.delete(this.key());
+		assertTotals("deleting a resume that does not exist changes nothing", main, twin);
 	}
 	private static int insertedThisMonth(String childName) {
 		String parentName = VisEntityVirtualInsertionMonthCounter.ENTITY.getEntityMetaData().entityName;
