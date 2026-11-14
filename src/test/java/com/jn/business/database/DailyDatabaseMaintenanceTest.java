@@ -34,6 +34,7 @@ import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityVirtualDisposableRecordToPurge;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnGroupers;
+import com.vis.business.scheduled.VisBusinessDailyScheduledProcess;
 
 /**
  * Proves the daily maintenance of the database (2026-10-28): every write of a disposable entity whose expired records are
@@ -235,6 +236,31 @@ public class DailyDatabaseMaintenanceTest {
 		refresh();
 		CcpJsonRepresentation result = JnBusinessDailyDatabaseMaintenance.INSTANCE.execute(input);
 
+		CcpJsonRepresentation purge = result.getInnerJson(JnBusinessDailyDatabaseMaintenance.Fields.purge);
+		assertTrue(purge.getAsLongNumber(JnBusinessPurgeExpiredDisposableRecords.Fields.purgedDocuments) >= 1);
+		assertFalse(documentExists(JnEntityTestPurgedEverySecond.ENTITY, id));
+		CcpJsonRepresentation backup = result.getInnerJson(JnBusinessBackupTheDatabase.Fields.backup);
+		assertEquals("SUCCESS", backup.getAsString(new CcpFieldName("state")));
+	}
+
+	@Test
+	public void theDailyProcessWithTheLockedEmailPurgesAndBacksUpButSendsNoResumeToTheRecruiters() {
+		CcpJsonRepresentation record = this.record();
+		waitForTheStartOfASecond();
+		JnEntityTestPurgedEverySecond.ENTITY.save(record);
+		String id = JnEntityTestPurgedEverySecond.ENTITY.calculateId(record);
+		String entityName = JnEntityTestPurgedEverySecond.ENTITY.getEntityMetaData().entityName;
+		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON
+				.put(JnBusinessBackupTheDatabase.Fields.bucketName, TEST_BUCKET)
+				.put(JnBusinessBackupTheDatabase.Fields.entityNamePatterns, List.of(entityName))
+				.put(VisBusinessDailyScheduledProcess.Fields.resumesToRecruitersLocked, true);
+
+		waitForTheTurnOfTheSecond();
+		refresh();
+		CcpJsonRepresentation result = VisBusinessDailyScheduledProcess.INSTANCE.execute(input);
+
+		CcpJsonRepresentation resumesToRecruiters = result.getInnerJson(VisBusinessDailyScheduledProcess.Fields.resumesToRecruiters);
+		assertEquals(CcpOtherConstants.EMPTY_JSON.put(VisBusinessDailyScheduledProcess.Fields.locked, true).asUgglyJson(), resumesToRecruiters.asUgglyJson());
 		CcpJsonRepresentation purge = result.getInnerJson(JnBusinessDailyDatabaseMaintenance.Fields.purge);
 		assertTrue(purge.getAsLongNumber(JnBusinessPurgeExpiredDisposableRecords.Fields.purgedDocuments) >= 1);
 		assertFalse(documentExists(JnEntityTestPurgedEverySecond.ENTITY, id));
