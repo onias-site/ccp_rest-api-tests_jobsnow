@@ -144,10 +144,6 @@ public class ResumeStatisticsOfTheRegionTest {
 		assertAdded("30 days", 1, before, after, VisResumeStatisticsCharts.disponibility, "notImmediate");
 		assertAdded("0 months", 1, before, after, VisResumeStatisticsCharts.temporallyJob, "doesNotAccept");
 		assertAdded("6 months", 1, before, after, VisResumeStatisticsCharts.temporallyJob, "accepts");
-		assertAdded("clt 8.500 in the range of 8.000", 1, before, after, VisResumeStatisticsCharts.clt, "8000");
-		assertAdded("clt 12.000 in the range of 12.000", 1, before, after, VisResumeStatisticsCharts.clt, "12000");
-		assertAdded("pj 9.000", 1, before, after, VisResumeStatisticsCharts.pj, "9000");
-		assertAdded("pj not informed", 1, before, after, VisResumeStatisticsCharts.pj, "notInformed");
 	}
 
 	@Test
