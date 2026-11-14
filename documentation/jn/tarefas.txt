@@ -31,3 +31,7 @@ Encontrar gargalos de performance
 Enviar Currículos para si mesmo
 Acionar scheduller
 
+Estatisticas
+Monitoria
+Arquitetura
+Vagas
