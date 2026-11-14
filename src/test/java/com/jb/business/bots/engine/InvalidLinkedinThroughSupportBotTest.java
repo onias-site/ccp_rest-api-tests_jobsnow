@@ -36,6 +36,7 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jb.entities.JbEntityBot;
 import com.jb.entities.JbEntityBotCommandStepSession;
 import com.jb.entities.JbEntityPendingTickets;
+import com.jn.entities.JnEntityInstantMessengerUser;
 import com.jn.entities.JnEntityBotCommand;
 import com.jn.entities.JnEntityBotCommandStep;
 import com.jn.entities.JnEntityBotCommandStepEndMessage;
@@ -59,6 +60,7 @@ import com.vis.messages.VisMessages;
 import com.vis.services.VisServiceRecruiterResumes;
 import com.vis.services.VisServiceResume;
 import com.vis.status.VisProcessStatusInvalidLinkedin;
+import com.vis.status.VisProcessStatusViewedResume;
 
 /**
  * The LinkedIn address reported as invalid (since 2026-11-12): the recruiter reports it on the page of a resume of the
@@ -140,6 +142,7 @@ public class InvalidLinkedinThroughSupportBotTest {
 	@After
 	public void deleteWhatTheTestCreated() {
 		VisEntityResume.ENTITY.deleteAnyWhere(CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, this.owner));
+		JnEntityInstantMessengerUser.ENTITY.delete(CcpOtherConstants.EMPTY_JSON.put(JnEntityInstantMessengerUser.Fields.email, this.owner));
 		VisEntityViewedResume.ENTITY.deleteAnyWhere(this.viewKey());
 		VisEntityInvalidLinkedinReport.ENTITY.deleteAnyWhere(this.reportKey());
 		CcpJsonRepresentation resumeMessage = CcpOtherConstants.EMPTY_JSON
@@ -252,23 +255,23 @@ public class InvalidLinkedinThroughSupportBotTest {
 	}
 
 	/**
-	 * The save of the owner replaces the whole record: the chat and the mark are kept, unless the owner changed the
-	 * LinkedIn address, which takes the mark away.
+	 * The save of the owner replaces the whole record: the mark is kept, unless the owner changed the LinkedIn address,
+	 * which takes the mark away. The chat is no longer kept (since 2026-11-13 it lives in jn_instant_messenger_user).
 	 */
 	@Test
-	public void theSaveOfTheOwnerKeepsTheChatAndTheMarkWhileTheAddressIsTheSame() {
+	public void theSaveOfTheOwnerKeepsTheMarkWhileTheAddressIsTheSame() {
 		CcpJsonRepresentation stored = CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityResume.Fields.linkedinAddress, this.linkedinAddress)
 				.put(VisEntityResume.Fields.chatId, OWNER_CHAT)
 				.put(VisEntityResume.Fields.invalidLinkedinAddress, true);
 		CcpJsonRepresentation sameAddress = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.linkedinAddress, this.linkedinAddress);
 		CcpJsonRepresentation kept = VisBusinessSaveResumeAndSpendTheUpdate.getResumeWithKeptFields(sameAddress, stored);
-		assertEquals(OWNER_CHAT, kept.getAsLongNumber(VisEntityResume.Fields.chatId));
+		assertFalse(kept.containsField(VisEntityResume.Fields.chatId));
 		assertTrue(kept.getAsBoolean(VisEntityResume.Fields.invalidLinkedinAddress));
 
 		CcpJsonRepresentation newAddress = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.linkedinAddress, this.linkedinAddress + "-novo");
 		CcpJsonRepresentation fixed = VisBusinessSaveResumeAndSpendTheUpdate.getResumeWithKeptFields(newAddress, stored);
-		assertEquals(OWNER_CHAT, fixed.getAsLongNumber(VisEntityResume.Fields.chatId));
+		assertFalse(fixed.containsField(VisEntityResume.Fields.chatId));
 		assertFalse(fixed.getAsBoolean(VisEntityResume.Fields.invalidLinkedinAddress));
 	}
 
@@ -282,7 +285,7 @@ public class InvalidLinkedinThroughSupportBotTest {
 		assertFalse(english, english.contains("{linkedinAddress}"));
 	}
 
-	/** Saves the resume of the owner (with a chat), opens it from the e-mail as the recruiter and reports the LinkedIn. */
+	/** Saves the resume of the owner and the chat of its e-mail (jn_instant_messenger_user), opens it from the e-mail as the recruiter and reports the LinkedIn. */
 	private CcpJsonRepresentation openTheResumeAndReport() {
 		CcpJsonRepresentation resume = CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityResume.Fields.email, this.owner)
@@ -295,10 +298,13 @@ public class InvalidLinkedinThroughSupportBotTest {
 				.put(VisEntityResume.Fields.temporallyJobTime, 0)
 				.put(VisEntityResume.Fields.clt, 8_000)
 				.put(VisEntityResume.Fields.pj, 12_000)
-				.put(VisEntityResume.Fields.chatId, OWNER_CHAT)
 				.put(VisEntityResume.Fields.skill, Arrays.asList(new CcpJsonRepresentation("{\"skill\":\"JAVA\",\"word\":\"JAVA\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\",\"parent\":[]}")))
 				.put(VisEntityResume.Fields.spokenLanguage, Arrays.asList(new CcpJsonRepresentation("{\"name\":\"Inglês\",\"level\":2,\"id\":0}")));
 		VisEntityResume.ENTITY.save(resume);
+		CcpJsonRepresentation instantMessengerUser = CcpOtherConstants.EMPTY_JSON
+				.put(JnEntityInstantMessengerUser.Fields.email, this.owner)
+				.put(JnEntityInstantMessengerUser.Fields.chatId, OWNER_CHAT);
+		JnEntityInstantMessengerUser.ENTITY.save(instantMessengerUser);
 		CcpJsonRepresentation storedResume = VisEntityResume.ENTITY.getOneById(this.resumeKey());
 		this.resumeId = VisEntityResume.ENTITY.calculateId(storedResume);
 		String resumeId = this.resumeId;
@@ -307,7 +313,10 @@ public class InvalidLinkedinThroughSupportBotTest {
 				.put(JnJsonCommonsFields.email, this.recruiter)
 				.put(VisRecruiterResumesFields.resumeId, resumeId)
 				.put(VisRecruiterResumesFields.token, token);
-		VisServiceRecruiterResumes.ViewResumeFromEmail.execute(link);
+		CcpJsonRepresentation opened = VisServiceRecruiterResumes.ViewResumeFromEmail.execute(link);
+		assertFalse(opened.getAsBoolean(VisRecruiterResumesFields.inactiveView));
+		CcpJsonRepresentation aliasToSave = link.put(VisEntityViewedResume.Fields.alias, "Analista LinkedIn " + this.run);
+		VisServiceRecruiterResumes.SaveResumeAliasFromEmail.execute(aliasToSave);
 		assertTrue(VisEntityViewedResume.ENTITY.exists(this.viewKey()));
 
 		CcpJsonRepresentation reported = VisServiceRecruiterResumes.ReportInvalidLinkedinFromEmail.execute(link);
@@ -320,10 +329,25 @@ public class InvalidLinkedinThroughSupportBotTest {
 		assertEquals(resumeId, storedReport.getAsString(VisEntityInvalidLinkedinReport.Fields.resumeEmailSha1));
 		CcpJsonRepresentation pendingCommand = JnEntitySupportPendingCommand.ENTITY.getOneById(this.pendingCommand(ticket));
 		assertEquals(2L, (long) pendingCommand.getAsLongNumber(JnEntitySupportPendingCommand.Fields.priority));
+		// the view goes to the twin at once, before the support decides
+		assertFalse(VisEntityViewedResume.ENTITY.exists(this.viewKey()));
+		assertTrue(VisEntityViewedResume.ENTITY.getTwinEntity().exists(this.viewKey()));
 		// reporting it again while it waits opens no second ticket
 		TELEGRAM.sentMessages.clear();
 		VisServiceRecruiterResumes.ReportInvalidLinkedinFromEmail.execute(link);
 		assertTrue(TELEGRAM.sentMessages.toString(), TELEGRAM.sentMessages.isEmpty());
+		// opening it again keeps the view in the twin, with its alias, and tells the page that it can not be saved
+		CcpJsonRepresentation reopened = VisServiceRecruiterResumes.ViewResumeFromEmail.execute(link);
+		assertTrue(reopened.getAsBoolean(VisRecruiterResumesFields.inactiveView));
+		assertEquals("Analista LinkedIn " + this.run, reopened.getAsString(VisEntityViewedResume.Fields.alias));
+		assertFalse(VisEntityViewedResume.ENTITY.exists(this.viewKey()));
+		try {
+			VisServiceRecruiterResumes.SaveResumeAliasFromEmail.execute(aliasToSave);
+			fail("a view in the twin was saved");
+		} catch (CcpErrorFlowDisturb expected) {
+			assertEquals(VisProcessStatusViewedResume.inactiveView, expected.status);
+		}
+		assertFalse(VisEntityViewedResume.ENTITY.exists(this.viewKey()));
 		TELEGRAM.sentMessages.clear();
 		EMAIL_INBOX.sentEmails.clear();
 		return link;

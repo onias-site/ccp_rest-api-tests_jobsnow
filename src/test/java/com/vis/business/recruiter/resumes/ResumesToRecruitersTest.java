@@ -623,8 +623,8 @@ public class ResumesToRecruitersTest {
 
 	/**
 	 * Deleting the view moves it to the twin {@code vis_inactive_viewed_resume}, and the next e-mail no longer sends the
-	 * resume to that recruiter, while another recruiter still receives it; opening the resume again brings the view back
-	 * and the resume returns to the e-mail.
+	 * resume to that recruiter, while another recruiter still receives it; opening the resume again keeps the view in the
+	 * twin (since 2026-11-13; until then it brought the view back), so the resume does not return to the e-mail.
 	 */
 	@Test
 	public void aResumeWhoseViewIsInTheTwinNoLongerGoesToThatRecruiter() {
@@ -653,10 +653,12 @@ public class ResumesToRecruitersTest {
 			assertTrue("the other resumes still go", hasRowOf(rowsOfTheRecruiter, otherJob));
 			assertTrue("another recruiter still receives it", hasRowOf(rowsOf(otherRecruiter), job));
 
-			VisServiceRecruiterResumes.ViewResumeFromEmail.execute(link);
-			assertFalse("a new view leaves the twin", VisEntityViewedResume.ENTITY.getTwinEntity().exists(viewKey));
+			CcpJsonRepresentation reopened = VisServiceRecruiterResumes.ViewResumeFromEmail.execute(link);
+			assertTrue("the page is told that the view is inactive", reopened.getAsBoolean(VisRecruiterResumesFields.inactiveView));
+			assertTrue("opening it again keeps the view in the twin", VisEntityViewedResume.ENTITY.getTwinEntity().exists(viewKey));
+			assertFalse(VisEntityViewedResume.ENTITY.exists(viewKey));
 			sendTo(recruiter);
-			assertTrue("the resume goes again", hasRowOf(rowsOf(recruiter), job));
+			assertFalse("the resume still does not go", hasRowOf(rowsOf(recruiter), job));
 		} finally {
 			VisEntityViewedResume.ENTITY.deleteAnyWhere(viewKey);
 		}
