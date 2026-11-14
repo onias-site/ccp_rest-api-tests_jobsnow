@@ -159,14 +159,17 @@ public class ResumeStatisticsOfTheRegionTest {
 		String parentId = VisEntityVirtualDddGrouper.ENTITY.calculateId(CcpOtherConstants.EMPTY_JSON.put(VisEntityVirtualDddGrouper.Fields.ddd, DDD));
 		List<String> children = JnGroupers.getChildren(false, VisEntityVirtualDddGrouper.ENTITY.getEntityMetaData().entityName, VisEntityResume.ENTITY.getEntityMetaData().entityName, parentId);
 		int currentYear = new CcpTimeDecorator().getYear();
-		double cltSum = 0, plenoCltSum = 0;
-		long cltCount = 0, plenoCount = 0, plenoCltCount = 0;
+		double cltSum = 0, plenoCltSum = 0, yearsSum = 0, plenoYearsSum = 0;
+		long cltCount = 0, plenoCount = 0, plenoCltCount = 0, yearsCount = 0;
 		for (String child : children) {
 			CcpJsonRepresentation resume = new CcpJsonRepresentation(child);
 			double clt = resume.containsAllFields(VisEntityResume.Fields.clt) ? resume.getAsDoubleNumber(VisEntityResume.Fields.clt) : 0;
-			int years = currentYear - resume.getAsIntegerNumber(VisEntityResume.Fields.experience);
+			int years = Math.max(0, currentYear - resume.getAsIntegerNumber(VisEntityResume.Fields.experience));
 			boolean pleno = years >= 3 && years < 5;
 			plenoCount += pleno ? 1 : 0;
+			yearsSum += years;
+			yearsCount++;
+			plenoYearsSum += pleno ? years : 0;
 			if (clt > 0) {
 				cltSum += clt;
 				cltCount++;
@@ -182,6 +185,9 @@ public class ResumeStatisticsOfTheRegionTest {
 		assertEquals(Math.round(cltSum / cltCount), all.getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.clt).longValue());
 		assertEquals(plenoCount, pleno.getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.resumes).longValue());
 		assertEquals(Math.round(plenoCltSum / plenoCltCount), pleno.getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.clt).longValue());
+		// the years of experience, with one decimal place
+		assertEquals(Math.round(yearsSum * 10 / yearsCount) / 10d, all.getAsDoubleNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.experience), 0.0001);
+		assertEquals(Math.round(plenoYearsSum * 10 / plenoCount) / 10d, pleno.getAsDoubleNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.experience), 0.0001);
 		// every seniority is there, even with no resume, and all of them together
 		assertEquals(new java.util.HashSet<>(Arrays.asList("estag", "junior", "pleno", "senior", "especialista", "all")), averages.fieldSet());
 	}
