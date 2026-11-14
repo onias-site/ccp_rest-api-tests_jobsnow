@@ -43,6 +43,7 @@ public class JnEntitiesStructureTest {
 	@Test public void instantMessengerMessageSentEntityTest() { assertNotNull(JnEntityInstantMessengerMessageSent.ENTITY); }
 	@Test public void instantMessengerParametersToSendEntityTest() { assertNotNull(JnEntityInstantMessengerParametersToSend.ENTITY); }
 	@Test public void instantMessengerTemplateMessageEntityTest() { assertNotNull(JnEntityInstantMessengerTemplateMessage.ENTITY); }
+	@Test public void instantMessengerUserEntityTest() { assertNotNull(JnEntityInstantMessengerUser.ENTITY); }
 	@Test public void jobsnowErrorEntityTest() { assertNotNull(JnEntityJobsnowError.ENTITY); }
 	@Test public void jobsnowWarningEntityTest() { assertNotNull(JnEntityJobsnowWarning.ENTITY); }
 	@Test public void loginAnswersEntityTest() { assertNotNull(JsEntityLoginAnswers.ENTITY); }
@@ -74,6 +75,7 @@ public class JnEntitiesStructureTest {
 	@Test public void instantMessengerMessageSentFieldsTest() { assertNotNull(JnEntityInstantMessengerMessageSent.Fields.values()); }
 	@Test public void instantMessengerParametersToSendFieldsTest() { assertNotNull(JnEntityInstantMessengerParametersToSend.Fields.values()); }
 	@Test public void instantMessengerTemplateMessageFieldsTest() { assertNotNull(JnEntityInstantMessengerTemplateMessage.Fields.values()); }
+	@Test public void instantMessengerUserFieldsTest() { assertNotNull(JnEntityInstantMessengerUser.Fields.values()); }
 	@Test public void jobsnowErrorFieldsTest() { assertNotNull(JnEntityJobsnowError.Fields.values()); }
 	@Test public void loginAnswersFieldsTest() { assertNotNull(JsEntityLoginAnswers.Fields.values()); }
 	@Test public void loginEmailFieldsTest() { assertNotNull(JnEntityLoginEmail.Fields.values()); }
@@ -97,4 +99,5 @@ public class JnEntitiesStructureTest {
 	@Test public void loginPasswordCtorTest() { assertNotNull(JsEntityLoginPassword.INSTANCE); }
 	@Test public void loginTokenCtorTest() { assertNotNull(JsEntityLoginToken.INSTANCE); }
 	@Test public void jobsnowErrorCtorTest() { assertNotNull(JnEntityJobsnowError.INSTANCE); }
+	@Test public void instantMessengerUserCtorTest() { assertNotNull(JnEntityInstantMessengerUser.INSTANCE); }
 }
