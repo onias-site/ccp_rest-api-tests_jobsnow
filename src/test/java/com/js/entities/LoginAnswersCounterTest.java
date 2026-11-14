@@ -1,6 +1,7 @@
 package com.js.entities;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
@@ -87,6 +89,42 @@ public class LoginAnswersCounterTest {
 
 	private static long channels(String channel) {
 		return countOf(JsEntityVirtualLoginChannelCounter.ENTITY, JsEntityVirtualLoginChannelCounter.getCombination(), channel);
+	}
+
+	private static long days(String day) {
+		return countOf(JsEntityVirtualInsertionDayCounter.ENTITY, JsEntityVirtualInsertionDayCounter.getCombination(), day);
+	}
+
+	private static long months(String month) {
+		return countOf(JsEntityVirtualInsertionMonthCounter.ENTITY, JsEntityVirtualInsertionMonthCounter.getCombination(), month);
+	}
+
+	/**
+	 * 2026-11-14: the answers keep the moment of their insertion and are counted by the day and by the month of it; a new
+	 * save keeps the date and counts nothing, the delete subtracts.
+	 */
+	@Test
+	public void theAnswersAreCountedByTheDayAndTheMonthOfTheirInsertion() {
+		String today = new CcpTimeDecorator().getFormattedDateTime("yyyyMMdd");
+		String thisMonth = today.substring(0, 6);
+		long todayBefore = days(today);
+		long thisMonthBefore = months(thisMonth);
+
+		JsEntityLoginAnswers.ENTITY.save(this.answers("jobs", "telegram"));
+		assertEquals("the answers inserted today", todayBefore + 1, days(today));
+		assertEquals("the answers inserted this month", thisMonthBefore + 1, months(thisMonth));
+		CcpJsonRepresentation stored = JsEntityLoginAnswers.ENTITY.getOneById(this.answers("jobs", "telegram"));
+		String insertionDate = stored.getAsString(JsEntityLoginAnswers.Fields.insertionDate);
+		assertFalse("the moment of the insertion is kept", insertionDate.isEmpty());
+
+		JsEntityLoginAnswers.ENTITY.save(this.answers("jobs", "friends"));
+		assertEquals("a save again is not a new insertion", todayBefore + 1, days(today));
+		CcpJsonRepresentation savedAgain = JsEntityLoginAnswers.ENTITY.getOneById(this.answers("jobs", "friends"));
+		assertEquals("the date of the insertion stays", insertionDate, savedAgain.getAsString(JsEntityLoginAnswers.Fields.insertionDate));
+
+		JsEntityLoginAnswers.ENTITY.delete(this.answers("jobs", "friends"));
+		assertEquals(todayBefore, days(today));
+		assertEquals(thisMonthBefore, months(thisMonth));
 	}
 
 	@After
