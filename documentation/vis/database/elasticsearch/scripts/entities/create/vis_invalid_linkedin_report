@@ -1,0 +1,22 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"date": {
+				"type": "keyword"
+			},
+			"email": {
+				"type": "keyword"
+			},
+			"linkedinAddress": {
+				"type": "keyword"
+			},
+			"resumeEmailSha1": {
+				"type": "keyword"
+			},
+			"supportResponse": {
+				"type": "text"
+			}
+		}
+	}
+}

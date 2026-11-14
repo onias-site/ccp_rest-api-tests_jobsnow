@@ -50,6 +50,7 @@ import com.vis.business.bots.linkedin.VisSupportVerifyLinkedinConfirmInvalid;
 import com.vis.business.recruiter.resumes.VisRecruiterLinks;
 import com.vis.business.recruiter.resumes.VisRecruiterResumesFields;
 import com.vis.business.resume.VisBusinessSaveResumeAndSpendTheUpdate;
+import com.vis.entities.VisEntityInvalidLinkedinReport;
 import com.vis.entities.VisEntityResume;
 import com.vis.entities.VisEntityResumeMessage;
 import com.vis.entities.VisEntityViewedResume;
@@ -140,6 +141,7 @@ public class InvalidLinkedinThroughSupportBotTest {
 	public void deleteWhatTheTestCreated() {
 		VisEntityResume.ENTITY.deleteAnyWhere(CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, this.owner));
 		VisEntityViewedResume.ENTITY.deleteAnyWhere(this.viewKey());
+		VisEntityInvalidLinkedinReport.ENTITY.deleteAnyWhere(this.reportKey());
 		CcpJsonRepresentation resumeMessage = CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityResumeMessage.Fields.chatId, OWNER_CHAT)
 				.put(VisEntityResumeMessage.Fields.messageType, VisResumeMessageTypes.invalidLinkedinAddress);
@@ -170,6 +172,8 @@ public class InvalidLinkedinThroughSupportBotTest {
 		String confirmed = this.operatorTypes(" Sim ");
 		assertTrue(confirmed, confirmed.startsWith("O endereço " + this.linkedinAddress + " foi marcado como inválido"));
 		assertFalse(this.isPendingTicket(ticket));
+		String supportResponse = this.solvedReportResponse();
+		assertTrue(supportResponse, supportResponse.startsWith("Confirmamos que o LinkedIn " + this.linkedinAddress + " não abre"));
 
 		CcpJsonRepresentation resume = VisEntityResume.ENTITY.getOneById(this.resumeKey());
 		assertTrue(resume.getAsBoolean(VisEntityResume.Fields.invalidLinkedinAddress));
@@ -220,6 +224,8 @@ public class InvalidLinkedinThroughSupportBotTest {
 		String answered = this.operatorTypes("não");
 		assertTrue(answered, answered.startsWith("O recrutador " + this.recruiter + " foi avisado por e-mail"));
 		assertFalse(this.isPendingTicket(ticket));
+		String supportResponse = this.solvedReportResponse();
+		assertTrue(supportResponse, supportResponse.startsWith("O perfil " + this.linkedinAddress + " existe no LinkedIn"));
 
 		CcpJsonRepresentation resume = VisEntityResume.ENTITY.getOneById(this.resumeKey());
 		assertFalse(resume.getOrDefault(VisEntityResume.Fields.invalidLinkedinAddress, () -> false));
@@ -309,6 +315,15 @@ public class InvalidLinkedinThroughSupportBotTest {
 		String ticket = this.ticketText();
 		assertEquals(ticket, TELEGRAM.lastMessageFor(SUPPORT_CHAT).getAsString(JnJsonCommonsFields.message));
 		assertTrue(this.isPendingTicket(ticket));
+		// the report is a ticket of the recruiter while it waits, with the priority of the user who cannot go on (2)
+		CcpJsonRepresentation storedReport = VisEntityInvalidLinkedinReport.ENTITY.getOneById(this.reportKey());
+		assertEquals(resumeId, storedReport.getAsString(VisEntityInvalidLinkedinReport.Fields.resumeEmailSha1));
+		CcpJsonRepresentation pendingCommand = JnEntitySupportPendingCommand.ENTITY.getOneById(this.pendingCommand(ticket));
+		assertEquals(2L, (long) pendingCommand.getAsLongNumber(JnEntitySupportPendingCommand.Fields.priority));
+		// reporting it again while it waits opens no second ticket
+		TELEGRAM.sentMessages.clear();
+		VisServiceRecruiterResumes.ReportInvalidLinkedinFromEmail.execute(link);
+		assertTrue(TELEGRAM.sentMessages.toString(), TELEGRAM.sentMessages.isEmpty());
 		TELEGRAM.sentMessages.clear();
 		EMAIL_INBOX.sentEmails.clear();
 		return link;
@@ -323,6 +338,20 @@ public class InvalidLinkedinThroughSupportBotTest {
 
 	private String resumeId() {
 		return this.resumeId;
+	}
+
+	private CcpJsonRepresentation reportKey() {
+		return CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityInvalidLinkedinReport.Fields.email, this.recruiter)
+				.put(VisEntityInvalidLinkedinReport.Fields.linkedinAddress, this.linkedinAddress);
+	}
+
+	/** The report left the open side for the solved one, with the answer of the support. */
+	private String solvedReportResponse() {
+		assertFalse(VisEntityInvalidLinkedinReport.ENTITY.exists(this.reportKey()));
+		CcpJsonRepresentation solvedReport = VisEntityInvalidLinkedinReport.ENTITY.getTwinEntity().getOneById(this.reportKey());
+		String supportResponse = solvedReport.getAsString(VisEntityInvalidLinkedinReport.Fields.supportResponse);
+		return supportResponse;
 	}
 
 	private CcpJsonRepresentation viewKey() {
