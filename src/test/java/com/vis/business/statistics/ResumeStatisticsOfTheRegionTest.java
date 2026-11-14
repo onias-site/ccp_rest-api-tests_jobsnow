@@ -31,6 +31,7 @@ import com.jn.utils.JnDeleteKeysFromCache;
 import com.jn.utils.JnGroupers;
 import com.vis.entities.RecordingEmailSender;
 import com.vis.entities.VisEntityResume;
+import com.vis.entities.VisEntityViewedResume;
 import com.vis.entities.VisEntityVirtualDddGrouper;
 
 /**
@@ -93,8 +94,13 @@ public class ResumeStatisticsOfTheRegionTest {
 	}
 
 	private static CcpJsonRepresentation statistics() {
+		return statistics(VisResumeStatisticsSources.resumes);
+	}
+
+	private static CcpJsonRepresentation statistics(VisResumeStatisticsSources source) {
 		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON.put(VisBusinessResumeStatisticsOfTheRegion.Fields.ddd, DDD);
-		return VisBusinessResumeStatisticsOfTheRegion.INSTANCE.execute(input);
+		CcpJsonRepresentation statistics = VisBusinessResumeStatisticsOfTheRegion.INSTANCE.execute(input);
+		return statistics.getInnerJson(source);
 	}
 
 	private static long slice(CcpJsonRepresentation statistics, VisResumeStatisticsCharts chart, String key) {
@@ -109,10 +115,59 @@ public class ResumeStatisticsOfTheRegionTest {
 		assertEquals(message, expected, added);
 	}
 
+	private final String recruiterEmail = "statisticsRecruiter" + this.now + "@empresa.com.br";
+
+	private final String viewedLinkedin = "https://www.linkedin.com/in/statistics-view-" + this.now;
+
+	/** A view of a resume of the region, with the fields of the resume handed over to the group of views of the ddd. */
+	private CcpJsonRepresentation view() {
+		return this.resume(this.firstEmail, 7, Arrays.asList(language("English", 2)), 0, 6)
+				.removeFields(VisEntityResume.Fields.email, VisEntityResume.Fields.linkedinAddress, VisEntityResume.Fields.desiredJob)
+				.put(VisEntityResume.Fields.pj, 9_000)
+				// the view carries the resume as stored: the year the experience started, not the years
+				.put(VisEntityResume.Fields.experience, new CcpTimeDecorator().getYear() - 7)
+				.put(VisEntityViewedResume.Fields.linkedin, this.viewedLinkedin)
+				.put(VisEntityViewedResume.Fields.email, this.recruiterEmail)
+				.put(VisEntityViewedResume.Fields.alias, "Statistics view");
+	}
+
 	@After
 	public void deleteTheResumes() {
 		VisEntityResume.ENTITY.deleteAnyWhere(CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, this.firstEmail));
 		VisEntityResume.ENTITY.deleteAnyWhere(CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, this.secondEmail));
+		VisEntityViewedResume.ENTITY.deleteAnyWhere(CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityViewedResume.Fields.linkedin, this.viewedLinkedin)
+				.put(VisEntityViewedResume.Fields.email, this.recruiterEmail));
+	}
+
+	/**
+	 * 2026-11-14: the same region read in the same request gives the statistics of the views of its resumes, from the group
+	 * of views of the ddd: a view counts in the slices of the resume as it was at the view, and not among the resumes.
+	 */
+	@Test
+	public void theViewsOfTheRegionHaveTheirOwnStatistics() {
+		CcpJsonRepresentation viewsBefore = statistics(VisResumeStatisticsSources.viewedResumes);
+		CcpJsonRepresentation resumesBefore = statistics();
+
+		VisEntityViewedResume.ENTITY.save(this.view());
+
+		CcpJsonRepresentation viewsAfter = statistics(VisResumeStatisticsSources.viewedResumes);
+		CcpJsonRepresentation resumesAfter = statistics();
+		long viewsTotalBefore = viewsBefore.getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.total);
+		long viewsTotalAfter = viewsAfter.getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.total);
+		assertEquals("one more view", viewsTotalBefore + 1, viewsTotalAfter);
+		long resumesTotalBefore = resumesBefore.getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.total);
+		long resumesTotalAfter = resumesAfter.getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.total);
+		assertEquals("a view is not a resume", resumesTotalBefore, resumesTotalAfter);
+
+		assertAdded("the skill of the viewed resume", 1, viewsBefore, viewsAfter, VisResumeStatisticsCharts.skill, this.uniqueSkill);
+		assertAdded("fluent English", 1, viewsBefore, viewsAfter, VisResumeStatisticsCharts.spokenLanguage, "English|2");
+		assertAdded("7 years", 1, viewsBefore, viewsAfter, VisResumeStatisticsCharts.seniority, "senior");
+		assertAdded("6 months", 1, viewsBefore, viewsAfter, VisResumeStatisticsCharts.temporallyJob, "accepts");
+
+		CcpJsonRepresentation averages = viewsAfter.getInnerJson(VisBusinessResumeStatisticsOfTheRegion.Fields.averages);
+		CcpJsonRepresentation all = averages.getInnerJson(VisBusinessResumeStatisticsOfTheRegion.Fields.all);
+		assertEquals(viewsTotalAfter, all.getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.resumes).longValue());
 	}
 
 	@Test
