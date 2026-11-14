@@ -173,6 +173,19 @@ public class OnResendingTheLoginTokenToWhoNeverCreatedAPassword {
 	}
 
 	@Test
+	public void aFailureOfTheEmailProviderDoesNotStopTheResending() {
+		String withoutPassword = this.email("falhasendgrid");
+		this.createTheToken(withoutPassword);
+		this.requestLog.requests.add(this.logRequest(withoutPassword));
+		this.emailProvider.failure = new IllegalStateException("provider failure " + this.now);
+
+		CcpJsonRepresentation result = this.run();
+
+		assertTrue(JsEntityLoginTokenRequestResend.ENTITY.exists(this.key(withoutPassword)));
+		assertEquals(1, this.counter(result, JsBusinessResendLoginTokenToUsersWithoutPassword.JsonFieldNames.resendRequested));
+	}
+
+	@Test
 	public void requestsOfOtherUrlsOrWithoutTheClientAreLeftOut() {
 		CcpJsonRepresentation otherUrl = this.logRequest(this.email("outra")).put(CcpHttpRequestLog.Fields.url, "https://login.onias.site/login/x@teste.com/token");
 		CcpJsonRepresentation withoutIp = this.logRequest(this.email("semip")).removeFields(CcpHttpRequestLog.Fields.ip);
