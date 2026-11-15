@@ -187,6 +187,10 @@ public class ResumeStatisticsOfTheRegionTest {
 		assertEquals("the view counts for the domain of the recruiter", domainBefore + 1, curiosity(VisBusinessCuriositiesCharts.Fields.viewerDomains, domain));
 		VisEntityViewedResume.ENTITY.save(this.view());
 		assertEquals("a new save of the same view is not a new view", domainBefore + 1, curiosity(VisBusinessCuriositiesCharts.Fields.viewerDomains, domain));
+		// the delete moves the view to vis_inactive_viewed_resume; viewing the resume again brings it back (since 2026-11-14)
+		VisEntityViewedResume.ENTITY.delete(this.view());
+		VisEntityViewedResume.ENTITY.save(this.view());
+		assertEquals("a view brought back from the twin is not a new view", domainBefore + 1, curiosity(VisBusinessCuriositiesCharts.Fields.viewerDomains, domain));
 
 		VisEntityResume.ENTITY.delete(resume);
 		assertEquals("an inactive resume avoids nothing", avoidedBefore, curiosity(VisBusinessCuriositiesCharts.Fields.avoidedSkills, cobol));
