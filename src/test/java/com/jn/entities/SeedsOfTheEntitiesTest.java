@@ -52,10 +52,13 @@ public class SeedsOfTheEntitiesTest {
 		List<CcpBulkItem> seeds = configurator.getFirstRecordsToInsert();
 		assertFalse(configurator.getClass().getSimpleName(), seeds.isEmpty());
 		for (CcpBulkItem seed : seeds) {
-			// the only seed that is not a create is the one that appends a subscriber to a write event
+			// the only seeds that are not a create append to a record that several cost centers fill: a subscriber to a
+			// write event and, since 2026-11-14, the providers of the charts of a screen
 			boolean scripted = seed.operation != CcpBulkEntityOperationType.create;
 			if(scripted) {
-				assertEquals(JnEntityWriteEventSubscribers.ENTITY.getEntityMetaData().entityName, seed.entity.getEntityMetaData().entityName);
+				List<String> appendedEntities = Arrays.asList(JnEntityWriteEventSubscribers.ENTITY.getEntityMetaData().entityName, JnEntityGrouperChartsProviders.ENTITY.getEntityMetaData().entityName);
+				String seedEntityName = seed.entity.getEntityMetaData().entityName;
+				assertTrue(seedEntityName, appendedEntities.contains(seedEntityName));
 				continue;
 			}
 			assertEquals(CcpBulkEntityOperationType.create, seed.operation);

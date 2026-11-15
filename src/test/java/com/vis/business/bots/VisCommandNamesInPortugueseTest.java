@@ -19,6 +19,7 @@ public class VisCommandNamesInPortugueseTest {
 		expected.put(VisCommandNamesInPortuguese.fixSkillHierarchy, "ajustarHierarquiaDeHabilidades");
 		expected.put(VisCommandNamesInPortuguese.reviewSkillSuggestion, "avaliarSugestaoDeHabilidade");
 		expected.put(VisCommandNamesInPortuguese.verifyLinkedinAddress, "verificarEnderecoDoLinkedin");
+		expected.put(VisCommandNamesInPortuguese.saveRecruiter, "salvarRecrutador");
 		expected.put(VisCommandNamesInPortuguese.receiveMessages, "receberMensagens");
 
 		Map<VisCommandNamesInPortuguese, String> actual = new LinkedHashMap<>();
