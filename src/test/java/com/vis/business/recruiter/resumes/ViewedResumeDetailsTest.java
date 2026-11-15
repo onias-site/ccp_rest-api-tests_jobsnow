@@ -148,6 +148,27 @@ public class ViewedResumeDetailsTest {
 		assertFalse(row.containsAllFields(VisRecruiterResumesFields.sortKeys));
 	}
 
+	/** The row carries the fields of the preview of the resume, without the e-mail, the forbidden companies and the hashes. */
+	@Test
+	public void theRowCarriesThePreviewOfTheResume() {
+		this.saveResume(List.of("outraempresa.com.br"));
+		this.saveView();
+
+		CcpJsonRepresentation details = this.details(this.currentMonth);
+
+		CcpJsonRepresentation row = details.getAsJsonList(VisRecruiterResumesFields.resumes).get(0);
+		CcpJsonRepresentation preview = row.getInnerJson(VisRecruiterResumesFields.preview);
+		assertEquals("Desenvolvedor Java", preview.getAsString(VisEntityResume.Fields.desiredJob));
+		assertEquals(this.linkedin, preview.getAsString(VisEntityResume.Fields.linkedinAddress));
+		assertEquals(List.of("JAVA"), preview.getAsStringList(VisEntityResume.Fields.skill));
+		assertEquals(2, preview.getAsObjectList(VisEntityResume.Fields.ddd).size());
+		assertFalse(preview.containsAllFields(VisEntityResume.Fields.email));
+		assertFalse(preview.containsAllFields(VisEntityResume.Fields.notAllowedCompany));
+		assertFalse(preview.containsAllFields(VisEntityResume.Fields.hash));
+		assertFalse(preview.toString().contains(this.candidate));
+		assertFalse(preview.toString().contains("outraempresa.com.br"));
+	}
+
 	/** The candidate forbade the company of the recruiter after the view: the details no longer show the resume. */
 	@Test
 	public void aResumeThatNowForbidsTheCompanyOfTheRecruiterHasNoRow() {
