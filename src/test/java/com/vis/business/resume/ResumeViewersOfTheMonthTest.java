@@ -6,7 +6,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -47,8 +49,9 @@ import com.vis.services.VisServiceResume;
  * Proves the views of the month of a resume (the screen "Quem me viu"): every save of {@code vis_viewed_resume} counts
  * the domain of the recruiter in the group of counters of the resume in the month ({@code jn_grouper}, parent
  * {@code vis_resume_views_of_the_month}, {@code @CcpEntityGrouperChildCounter}); each recruiter counts once per month;
- * recruiters of the same domain viewing at the same moment all count; and the screen reads the month by id
- * ({@code VisBusinessResumeViewersOfTheMonth}).
+ * recruiters of the same domain viewing at the same moment all count; a view brought back from the twin does not count
+ * again in the month; the delete everywhere of the resume deletes the groups of every month, and its deactivation keeps
+ * them; and the screen reads the month by id ({@code VisBusinessResumeViewersOfTheMonth}).
  */
 public class ResumeViewersOfTheMonthTest {
 
@@ -73,6 +76,9 @@ public class ResumeViewersOfTheMonthTest {
 	/** How many recruiters of the same domain view the resume at the same moment. */
 	private static final int SIMULTANEOUS_RECRUITERS = 10;
 
+	/** The first month of the counting by domain. */
+	private static final String FIRST_MONTH = "202610";
+
 	private final long run = System.currentTimeMillis();
 
 	private final String candidate = "candidatoquemmeviu" + this.run + "@jobsnow.com";
@@ -92,6 +98,8 @@ public class ResumeViewersOfTheMonthTest {
 		}
 		CcpJsonRepresentation groupKey = this.groupKeyOfTheMonth();
 		JnEntityGrouper.ENTITY.deleteAnyWhere(groupKey);
+		CcpJsonRepresentation firstMonthGroupKey = this.groupKeyOf(FIRST_MONTH);
+		JnEntityGrouper.ENTITY.deleteAnyWhere(firstMonthGroupKey);
 	}
 
 	private void saveResume() {
@@ -139,13 +147,32 @@ public class ResumeViewersOfTheMonthTest {
 	}
 
 	private CcpJsonRepresentation groupKeyOfTheMonth() {
-		CcpJsonRepresentation parentJson = CcpOtherConstants.EMPTY_JSON
+		return this.groupKeyOf(this.currentMonth);
+	}
+
+	private CcpJsonRepresentation parentJsonOf(String month) {
+		return CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityResumeViewsOfTheMonth.Fields.email, sha1(this.candidate))
-				.put(VisEntityResumeViewsOfTheMonth.Fields.monthYear, this.currentMonth);
+				.put(VisEntityResumeViewsOfTheMonth.Fields.monthYear, month);
+	}
+
+	private CcpJsonRepresentation groupKeyOf(String month) {
+		CcpJsonRepresentation parentJson = this.parentJsonOf(month);
 		String parentId = VisEntityResumeViewsOfTheMonth.ENTITY.calculateId(parentJson);
 		String parentName = VisEntityResumeViewsOfTheMonth.ENTITY.getEntityMetaData().entityName;
 		String childName = VisEntityViewedResume.ENTITY.getEntityMetaData().entityName;
 		return JnGroupers.getGroupKey(parentName, childName, parentId);
+	}
+
+	/** Counts a view of the domain in the group of the candidate in the month, as the decorator does. */
+	private void countAViewIn(String month, String domain) {
+		CcpJsonRepresentation parentJson = this.parentJsonOf(month);
+		String parentId = VisEntityResumeViewsOfTheMonth.ENTITY.calculateId(parentJson);
+		Map<String, CcpJsonRepresentation> parents = new LinkedHashMap<>();
+		parents.put(parentId, parentJson);
+		String parentName = VisEntityResumeViewsOfTheMonth.ENTITY.getEntityMetaData().entityName;
+		String childName = VisEntityViewedResume.ENTITY.getEntityMetaData().entityName;
+		JnGroupers.incrementCounter(JnGroupers.getGrouper(false), parentName, childName, domain, parents);
 	}
 
 	private CcpJsonRepresentation viewersOf(String month) {
@@ -325,6 +352,93 @@ public class ResumeViewersOfTheMonthTest {
 		List<CcpJsonRepresentation> viewers = this.viewersOfTheCurrentMonth();
 		assertEquals(1, viewers.size());
 		assertViewer(viewers.get(0), "empresa.com.br", 1);
+	}
+
+	@Test
+	public void viewingAgainAViewThatWentToTheTwinDoesNotCountAgainInTheMonth() {
+		this.saveResume();
+		String recruiter = this.recruiter("rh", "consultoria.com");
+		CcpJsonRepresentation view = this.saveView(recruiter);
+		// the delete moves the view to vis_inactive_viewed_resume
+		VisEntityViewedResume.ENTITY.delete(view);
+		assertFalse(VisEntityViewedResume.ENTITY.exists(VisEntityViewedResume.ENTITY.getJsonWithHandledPrimaryKey(view)));
+
+		this.saveView(recruiter);
+
+		List<CcpJsonRepresentation> viewers = this.viewersOfTheCurrentMonth();
+		assertEquals(1, viewers.size());
+		assertViewer(viewers.get(0), "consultoria.com", 1);
+	}
+
+	@Test
+	public void aViewThatWentToTheTwinInAnotherMonthCountsAgain() {
+		this.saveResume();
+		String recruiter = this.recruiter("rh", "consultoria.com");
+		CcpJsonRepresentation view = this.saveView(recruiter);
+		VisEntityViewedResume.ENTITY.delete(view);
+		// the view in the twin goes back to january of 2000, as if it had been deleted then
+		CcpEntityMetaData twinDetails = VisEntityViewedResume.ENTITY.getTwinEntity().getEntityMetaData();
+		CcpJsonRepresentation viewWithHashedKey = VisEntityViewedResume.ENTITY.getJsonWithHandledPrimaryKey(view);
+		CcpJsonRepresentation viewKey = twinDetails.getOnlyExistingFields(viewWithHashedKey);
+		String viewId = VisEntityViewedResume.ENTITY.calculateId(viewKey);
+		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
+		CcpJsonRepresentation storedInTheTwin = crud.getOneById(twinDetails.entityName, viewId);
+		CcpJsonRepresentation storedInAnotherMonth = storedInTheTwin.put(VisEntityViewedResume.Fields.date, "15/01/2000 10:00:00");
+		crud.save(twinDetails.entityName, storedInAnotherMonth, viewId);
+
+		this.saveView(recruiter);
+
+		List<CcpJsonRepresentation> viewers = this.viewersOfTheCurrentMonth();
+		assertEquals(1, viewers.size());
+		assertViewer(viewers.get(0), "consultoria.com", 2);
+	}
+
+	@Test
+	public void deletingTheResumeEverywhereDeletesTheGroupsOfEveryMonth() {
+		this.saveResume();
+		this.saveView(this.recruiter("rh", "empresa.com.br"));
+		this.countAViewIn(FIRST_MONTH, "consultoria.com");
+		assertTrue(JnEntityGrouper.ENTITY.exists(this.groupKeyOfTheMonth()));
+		assertTrue(JnEntityGrouper.ENTITY.exists(this.groupKeyOf(FIRST_MONTH)));
+
+		CcpJsonRepresentation resumeKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, this.candidate);
+		VisEntityResume.ENTITY.deleteAnyWhere(resumeKey);
+
+		assertFalse(JnEntityGrouper.ENTITY.exists(this.groupKeyOfTheMonth()));
+		assertFalse(JnEntityGrouper.ENTITY.exists(this.groupKeyOf(FIRST_MONTH)));
+		assertTrue(this.viewersOfTheCurrentMonth().isEmpty());
+		assertTrue(this.viewersOf(FIRST_MONTH).getAsJsonList(VisBusinessResumeViewersOfTheMonth.ResponseFields.viewers).isEmpty());
+	}
+
+	@Test
+	public void deactivatingTheResumeKeepsTheCounters() {
+		this.saveResume();
+		this.saveView(this.recruiter("rh", "empresa.com.br"));
+
+		CcpJsonRepresentation resumeKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, this.candidate);
+		VisEntityResume.ENTITY.delete(resumeKey);
+
+		List<CcpJsonRepresentation> viewers = this.viewersOfTheCurrentMonth();
+		assertEquals(1, viewers.size());
+		assertViewer(viewers.get(0), "empresa.com.br", 1);
+	}
+
+	@Test
+	public void theMonthsOfTheCountingGoFromTheFirstToTheCurrentOne() {
+		List<String> months = VisBusinessDeleteTheViewersOfTheDeletedResume.getMonths();
+
+		assertEquals(FIRST_MONTH, months.get(0));
+		assertEquals(this.currentMonth, months.get(months.size() - 1));
+		assertEquals("202611", months.get(1));
+		for (String month : months) {
+			int monthOfTheYear = Integer.parseInt(month.substring(4));
+			assertTrue(month, monthOfTheYear >= 1 && monthOfTheYear <= 12);
+		}
+		boolean crossesTheYear = months.size() > 3;
+		if (crossesTheYear) {
+			assertEquals("202612", months.get(2));
+			assertEquals("202701", months.get(3));
+		}
 	}
 
 	@Test
