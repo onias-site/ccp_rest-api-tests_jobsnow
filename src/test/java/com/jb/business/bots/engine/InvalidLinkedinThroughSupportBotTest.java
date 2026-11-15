@@ -180,8 +180,10 @@ public class InvalidLinkedinThroughSupportBotTest {
 
 		CcpJsonRepresentation resume = VisEntityResume.ENTITY.getOneById(this.resumeKey());
 		assertTrue(resume.getAsBoolean(VisEntityResume.Fields.invalidLinkedinAddress));
+		// since 2026-11-15 the view is kept in the twin (tab "Indesejados"), with its alias and comment
 		assertFalse(VisEntityViewedResume.ENTITY.exists(this.viewKey()));
-		assertFalse(VisEntityViewedResume.ENTITY.getTwinEntity().exists(this.viewKey()));
+		CcpJsonRepresentation keptView = VisEntityViewedResume.ENTITY.getTwinEntity().getOneById(this.viewKey());
+		assertEquals("Analista LinkedIn " + this.run, keptView.getAsString(VisEntityViewedResume.Fields.alias));
 
 		CcpJsonRepresentation resumeMessage = CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityResumeMessage.Fields.chatId, OWNER_CHAT)

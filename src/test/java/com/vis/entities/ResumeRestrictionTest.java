@@ -122,8 +122,9 @@ public class ResumeRestrictionTest {
 	}
 
 	/**
-	 * The form saves an inactive resume through the main entity ({@code VisBusinessSaveResumeAndSpendTheUpdate}), as the
-	 * owner who corrects the field of the inactive resume does: the restriction goes away too.
+	 * The form saves an inactive resume ({@code VisBusinessSaveResumeAndSpendTheUpdate}), as the
+	 * owner who corrects the field of the inactive resume does: the restriction goes away too and, since 2026-11-15, the
+	 * resume stays inactive (saved in the twin).
 	 */
 	@Test
 	public void theFormSaveOfTheInactiveResumeReleasesTheRestriction() {
@@ -139,6 +140,9 @@ public class ResumeRestrictionTest {
 		new VisBusinessSaveResumeAndSpendTheUpdate(correctedResume).execute(jsonAfterTheSteps);
 
 		assertFalse(VisEntityResumeRestriction.ENTITY.exists(this.key()));
+		// since 2026-11-15 the inactive resume stays inactive, saved in the twin with the correction
+		assertTrue(inactiveResumes.exists(this.key()));
+		assertFalse(VisEntityResume.ENTITY.exists(this.key()));
 	}
 
 	/** The insertion of a resume releases nothing: only an update proves the correction. */
