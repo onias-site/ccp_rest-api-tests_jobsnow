@@ -39,6 +39,8 @@ import com.vis.services.VisServiceRecruiterResumes;
  * recruiter in the current month ({@code jn_grouper}, parent {@code vis_viewed_resumes_of_the_month}), one JSON text per
  * resume with the LinkedIn as it came, the alias and the date of the last view; {@code VisBusinessViewedResumesOfTheMonth}
  * reads it by id from the e-mail and the month and answers the hash of the LinkedIn in its place, never the LinkedIn.
+ * Since 2026-11-15 the group follows the sides of the entity: a view moved to the twin goes to the group of the same
+ * month in {@code jn_inactive_grouper}, answered in {@code unwantedResume} (the tab "Indesejados").
  */
 public class ViewedResumesOfTheMonthTest {
 
@@ -100,6 +102,15 @@ public class ViewedResumesOfTheMonthTest {
 
 	private List<CcpJsonRepresentation> viewedResumesOf(String month) {
 		List<String> texts = this.viewsOf(month).getAsStringList(VisEntityViewedResumesOfTheMonth.Fields.viewedResume);
+		return parse(texts);
+	}
+
+	private List<CcpJsonRepresentation> unwantedResumesOf(String month) {
+		List<String> texts = this.viewsOf(month).getAsStringList(VisRecruiterResumesFields.unwantedResume);
+		return parse(texts);
+	}
+
+	private static List<CcpJsonRepresentation> parse(List<String> texts) {
 		List<CcpJsonRepresentation> views = new ArrayList<>();
 		for (String text : texts) {
 			views.add(new CcpJsonRepresentation(text));
@@ -184,6 +195,7 @@ public class ViewedResumesOfTheMonthTest {
 
 		assertEquals("200001", views.getAsString(VisBusinessViewedResumesOfTheMonth.Fields.month));
 		assertTrue(views.getAsStringList(VisEntityViewedResumesOfTheMonth.Fields.viewedResume).isEmpty());
+		assertTrue(views.getAsStringList(VisRecruiterResumesFields.unwantedResume).isEmpty());
 	}
 
 	@Test
@@ -213,12 +225,75 @@ public class ViewedResumesOfTheMonthTest {
 	}
 
 	@Test
-	public void deletingTheViewKeepsTheHistoryOfTheMonth() {
+	public void theViewMovedToTheTwinLeavesTheViewedListAndEntersTheUnwantedOne() {
+		String linkedin = this.linkedin("candidato");
+		CcpJsonRepresentation view = this.save(linkedin, "Dev Java sênior");
+		CcpJsonRepresentation before = this.viewedResumesOf(this.currentMonth).get(0);
+
+		VisEntityViewedResume.ENTITY.delete(view.put(VisEntityViewedResume.Fields.comment, "Comentário da inativação"));
+
+		assertTrue(this.viewedResumesOf(this.currentMonth).isEmpty());
+		List<CcpJsonRepresentation> unwanted = this.unwantedResumesOf(this.currentMonth);
+		assertEquals(1, unwanted.size());
+		CcpJsonRepresentation moved = unwanted.get(0);
+		assertEquals(before.getAsString(VisRecruiterResumesFields.linkedinHash), moved.getAsString(VisRecruiterResumesFields.linkedinHash));
+		assertEquals("Dev Java sênior", moved.getAsString(VisEntityViewedResume.Fields.alias));
+		assertEquals("the moved view keeps the date of the last view", before.getAsString(VisEntityViewedResume.Fields.date), moved.getAsString(VisEntityViewedResume.Fields.date));
+		assertEquals("Comentário da inativação", moved.getAsString(VisEntityViewedResume.Fields.comment));
+		assertFalse("the LinkedIn never leaves in the list", moved.toString().contains(linkedin));
+		assertFalse("only the fields the main group had, plus the comment", moved.containsAllFields(VisEntityViewedResume.Fields.insertionDate));
+	}
+
+	@Test
+	public void theViewSavedAgainLeavesTheUnwantedListAndReturnsToTheViewedOne() {
+		String linkedin = this.linkedin("candidato");
+		CcpJsonRepresentation view = this.save(linkedin, "Dev Java sênior");
+		VisEntityViewedResume.ENTITY.delete(view);
+
+		this.save(linkedin, "Dev Java de novo");
+
+		assertTrue(this.unwantedResumesOf(this.currentMonth).isEmpty());
+		List<CcpJsonRepresentation> viewed = this.viewedResumesOf(this.currentMonth);
+		assertEquals(1, viewed.size());
+		assertEquals("Dev Java de novo", viewed.get(0).getAsString(VisEntityViewedResume.Fields.alias));
+	}
+
+	@Test
+	public void theViewReactivatedFromTheTwinReturnsToTheViewedList() {
 		CcpJsonRepresentation view = this.save(this.linkedin("candidato"), "Dev Java sênior");
+		VisEntityViewedResume.ENTITY.delete(view);
 
-		VisEntityViewedResume.ENTITY.deleteAnyWhere(view);
+		VisEntityViewedResume.ENTITY.getTwinEntity().delete(view);
 
+		assertTrue(this.unwantedResumesOf(this.currentMonth).isEmpty());
 		assertEquals(1, this.viewedResumesOf(this.currentMonth).size());
+	}
+
+	@Test
+	public void theViewDeletedFromBothSidesLeavesBothLists() {
+		CcpJsonRepresentation active = this.save(this.linkedin("ativo"), "Ativo");
+		CcpJsonRepresentation inactive = this.save(this.linkedin("inativo"), "Inativo");
+		VisEntityViewedResume.ENTITY.delete(inactive);
+
+		VisEntityViewedResume.ENTITY.deleteAnyWhere(active);
+		VisEntityViewedResume.ENTITY.deleteAnyWhere(inactive);
+
+		assertTrue(this.viewedResumesOf(this.currentMonth).isEmpty());
+		assertTrue(this.unwantedResumesOf(this.currentMonth).isEmpty());
+	}
+
+	@Test
+	public void eachListHasOnlyTheViewsOfItsSide() {
+		this.save(this.linkedin("primeiro"), "Primeiro");
+		CcpJsonRepresentation second = this.save(this.linkedin("segundo"), "Segundo");
+		this.save(this.linkedin("terceiro"), "Terceiro");
+
+		VisEntityViewedResume.ENTITY.delete(second);
+
+		assertEquals(2, this.viewedResumesOf(this.currentMonth).size());
+		List<CcpJsonRepresentation> unwanted = this.unwantedResumesOf(this.currentMonth);
+		assertEquals(1, unwanted.size());
+		assertEquals("Segundo", unwanted.get(0).getAsString(VisEntityViewedResume.Fields.alias));
 	}
 
 	@Test

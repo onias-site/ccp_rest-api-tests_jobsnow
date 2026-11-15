@@ -183,6 +183,22 @@ public class ViewedResumeDetailsTest {
 		assertFalse(details.toString().contains(this.linkedin));
 	}
 
+	/** A view moved to the twin (tab "Indesejados") still opens its details. */
+	@Test
+	public void theDetailsOfAViewMovedToTheTwinAreAnswered() {
+		this.saveResume();
+		this.saveView();
+		CcpJsonRepresentation viewKey = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityViewedResume.Fields.linkedin, this.linkedin)
+				.put(VisEntityViewedResume.Fields.email, this.recruiter);
+		VisEntityViewedResume.ENTITY.delete(viewKey);
+
+		CcpJsonRepresentation details = this.details(this.currentMonth);
+
+		assertEquals(this.linkedin, details.getAsString(VisEntityViewedResume.Fields.linkedin));
+		assertEquals(1, details.getAsJsonList(VisRecruiterResumesFields.resumes).size());
+	}
+
 	@Test
 	public void theServiceAnswersTheDetails() {
 		this.saveResume();
