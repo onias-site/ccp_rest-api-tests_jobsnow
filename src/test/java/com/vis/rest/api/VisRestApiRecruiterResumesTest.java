@@ -188,6 +188,28 @@ public class VisRestApiRecruiterResumesTest extends VisRestApiTestTemplate {
 	}
 
 	@Test
+	public void theViewedResumesOfEveryMonthComeEvenWhenNoneWasViewed() {
+		this.login();
+		String path = this.recruiterPath("/viewed-resumes/all");
+
+		HttpResponse<String> response = this.sendWithTheSession(Fields.GET, path, CcpOtherConstants.EMPTY_JSON);
+
+		this.assertStatus(200, response);
+	}
+
+	@Test
+	public void theDetailsOfAResumeNeverViewedAreNotFound() {
+		this.login();
+		String path = this.recruiterPath("/viewed-resumes/all/details");
+		String linkedinHash = "hash-de-linkedin-que-ninguem-viu";
+		CcpJsonRepresentation body = CcpOtherConstants.EMPTY_JSON.put(VisBusinessViewedResumeDetails.Fields.linkedinHash, linkedinHash);
+
+		HttpResponse<String> response = this.sendWithTheSession(Fields.POST, path, body);
+
+		this.assertStatus(404, response);
+	}
+
+	@Test
 	public void theViewedResumesOfAMonthOutOfTheFormatAreAValidationError() {
 		this.login();
 		String path = this.recruiterPath("/viewed-resumes/2025");

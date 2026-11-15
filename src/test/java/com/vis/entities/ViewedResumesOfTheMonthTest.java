@@ -40,7 +40,9 @@ import com.vis.services.VisServiceRecruiterResumes;
  * resume with the LinkedIn as it came, the alias and the date of the last view; {@code VisBusinessViewedResumesOfTheMonth}
  * reads it by id from the e-mail and the month and answers the hash of the LinkedIn in its place, never the LinkedIn.
  * Since 2026-11-15 the group follows the sides of the entity: a view moved to the twin goes to the group of the same
- * month in {@code jn_inactive_grouper}, answered in {@code unwantedResume} (the tab "Indesejados").
+ * month in {@code jn_inactive_grouper}, answered in {@code unwantedResume} (the tab "Indesejados"). Also since
+ * 2026-11-15 the month {@code all} (the option "Listar todos") reads the group of every view of the recruiter, whatever
+ * the month (parent {@code vis_viewed_resumes_of_the_recruiter}), kept by the same saves.
  */
 public class ViewedResumesOfTheMonthTest {
 
@@ -68,6 +70,13 @@ public class ViewedResumesOfTheMonthTest {
 	private final String email = "recrutador" + this.now + "@empresa.com.br";
 
 	private final String currentMonth = CcpEntityExpurgableOptions.monthly.getFormattedDate();
+
+	private static final String ALL_MONTHS = "all";
+
+	/** A date of a past month, given to the save as the date of the view (the decorator keeps a date given by the caller). */
+	private static final String DATE_OF_A_PAST_MONTH = "15/10/2025 10:00:00";
+
+	private static final String PAST_MONTH = "202510";
 
 	private final List<CcpJsonRepresentation> savedViews = new ArrayList<>();
 
@@ -132,12 +141,104 @@ public class ViewedResumesOfTheMonthTest {
 		return JnGroupers.getGroupKey(parentName, childName, this.groupIdOfTheMonth(this.currentMonth));
 	}
 
+	/** The id of the group of every view of the recruiter, calculated as the writer does it: the SHA-1 of the e-mail only. */
+	private String groupIdOfTheRecruiter() {
+		CcpJsonRepresentation key = CcpOtherConstants.EMPTY_JSON.put(VisEntityViewedResumesOfTheRecruiter.Fields.email, sha1(this.email));
+		return VisEntityViewedResumesOfTheRecruiter.ENTITY.calculateId(key);
+	}
+
+	private CcpJsonRepresentation groupKeyOfTheRecruiter() {
+		String parentName = VisEntityViewedResumesOfTheRecruiter.ENTITY.getEntityMetaData().entityName;
+		String childName = VisEntityViewedResume.ENTITY.getEntityMetaData().entityName;
+		return JnGroupers.getGroupKey(parentName, childName, this.groupIdOfTheRecruiter());
+	}
+
+	private CcpJsonRepresentation groupKeyOfThePastMonth() {
+		String parentName = VisEntityViewedResumesOfTheMonth.ENTITY.getEntityMetaData().entityName;
+		String childName = VisEntityViewedResume.ENTITY.getEntityMetaData().entityName;
+		return JnGroupers.getGroupKey(parentName, childName, this.groupIdOfTheMonth(PAST_MONTH));
+	}
+
+	private CcpJsonRepresentation saveInThePastMonth(String linkedin, String alias) {
+		CcpJsonRepresentation view = this.view(linkedin, alias).put(VisEntityViewedResume.Fields.date, DATE_OF_A_PAST_MONTH);
+		VisEntityViewedResume.ENTITY.save(view);
+		this.savedViews.add(view);
+		return view;
+	}
+
 	@After
 	public void removeTheViewsAndTheGroup() {
 		for (CcpJsonRepresentation view : this.savedViews) {
 			VisEntityViewedResume.ENTITY.deleteAnyWhere(view);
 		}
 		JnEntityGrouper.ENTITY.deleteAnyWhere(this.groupKey());
+		JnEntityGrouper.ENTITY.deleteAnyWhere(this.groupKeyOfTheRecruiter());
+		JnEntityGrouper.ENTITY.deleteAnyWhere(this.groupKeyOfThePastMonth());
+	}
+
+	@Test
+	public void everyMonthListsTheViewsOfEveryMonth() {
+		this.save(this.linkedin("deste-mes"), "Deste mês");
+		this.saveInThePastMonth(this.linkedin("mes-passado"), "Do mês passado");
+
+		List<CcpJsonRepresentation> currentMonthViews = this.viewedResumesOf(this.currentMonth);
+		List<CcpJsonRepresentation> pastMonthViews = this.viewedResumesOf(PAST_MONTH);
+		List<CcpJsonRepresentation> everyView = this.viewedResumesOf(ALL_MONTHS);
+
+		assertEquals(1, currentMonthViews.size());
+		assertEquals("Deste mês", currentMonthViews.get(0).getAsString(VisEntityViewedResume.Fields.alias));
+		assertEquals(1, pastMonthViews.size());
+		assertEquals("Do mês passado", pastMonthViews.get(0).getAsString(VisEntityViewedResume.Fields.alias));
+		assertEquals(2, everyView.size());
+		assertEquals(ALL_MONTHS, this.viewsOf(ALL_MONTHS).getAsString(VisBusinessViewedResumesOfTheMonth.Fields.month));
+	}
+
+	@Test
+	public void everyMonthKeepsOneItemPerResumeWithTheLastView() {
+		String linkedin = this.linkedin("candidato");
+		this.saveInThePastMonth(linkedin, "Primeira visualização");
+		this.save(linkedin, "Visualização deste mês");
+
+		List<CcpJsonRepresentation> everyView = this.viewedResumesOf(ALL_MONTHS);
+
+		assertEquals(1, everyView.size());
+		CcpJsonRepresentation view = everyView.get(0);
+		assertEquals("Visualização deste mês", view.getAsString(VisEntityViewedResume.Fields.alias));
+		assertFalse("the date of the last view", DATE_OF_A_PAST_MONTH.equals(view.getAsString(VisEntityViewedResume.Fields.date)));
+		assertFalse("the LinkedIn never leaves in the list", view.toString().contains(linkedin));
+	}
+
+	@Test
+	public void aViewMadeUnwantedInAPastMonthStaysInTheUnwantedOfEveryMonth() {
+		CcpJsonRepresentation view = this.saveInThePastMonth(this.linkedin("indesejado"), "Indesejado");
+		this.save(this.linkedin("desejado"), "Desejado");
+
+		VisEntityViewedResume.ENTITY.delete(view);
+
+		assertTrue("the current month does not see the view of the past month", this.unwantedResumesOf(this.currentMonth).isEmpty());
+		List<CcpJsonRepresentation> unwanted = this.unwantedResumesOf(ALL_MONTHS);
+		assertEquals(1, unwanted.size());
+		assertEquals("Indesejado", unwanted.get(0).getAsString(VisEntityViewedResume.Fields.alias));
+		List<CcpJsonRepresentation> viewed = this.viewedResumesOf(ALL_MONTHS);
+		assertEquals(1, viewed.size());
+		assertEquals("Desejado", viewed.get(0).getAsString(VisEntityViewedResume.Fields.alias));
+	}
+
+	@Test
+	public void theGroupOfEveryMonthKeepsOnlyTheHashOfTheEmail() {
+		this.save(this.linkedin("candidato"), "Dev Java sênior");
+
+		CcpJsonRepresentation group = JnEntityGrouper.ENTITY.getOneById(this.groupKeyOfTheRecruiter());
+
+		CcpJsonRepresentation parentJson = group.getInnerJson(JnEntityGrouper.Fields.parentJson);
+		assertEquals(sha1(this.email), parentJson.getAsString(VisEntityViewedResumesOfTheRecruiter.Fields.email));
+		assertEquals("only the e-mail: no period", 1, parentJson.fieldSet().size());
+		assertFalse(group.toString().contains(this.email));
+	}
+
+	@Test(expected = CcpJsonValidationError.class)
+	public void aWordOtherThanAllIsRefused() {
+		this.viewsOf("todos");
 	}
 
 	@Test
