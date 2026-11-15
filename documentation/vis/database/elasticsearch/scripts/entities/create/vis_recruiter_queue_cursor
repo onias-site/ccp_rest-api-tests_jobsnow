@@ -6,7 +6,7 @@
 				"type": "keyword"
 			},
 			"lastPosition": {
-				"type": "keyword"
+				"type": "text"
 			}
 		}
 	}

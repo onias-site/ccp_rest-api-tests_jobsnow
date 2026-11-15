@@ -12,7 +12,7 @@
                     "type": "keyword"
                 },
                 "insertionDate": {
-                    "type": "keyword"
+                    "type": "text"
                 }
             }
         }

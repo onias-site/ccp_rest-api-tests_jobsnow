@@ -9,7 +9,7 @@
 				"type": "keyword"
 			},
 			"url": {
-				"type": "keyword"
+				"type": "text"
 			},
 			"attempts":{
 				"type": "integer"

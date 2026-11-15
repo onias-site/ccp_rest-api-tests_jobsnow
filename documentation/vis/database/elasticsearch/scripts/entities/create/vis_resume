@@ -54,7 +54,7 @@
         "type": "keyword"
       },
       "insertionDate": {
-        "type": "keyword"
+        "type": "text"
       },
       "invalidLinkedinAddress": {
         "type": "boolean"
@@ -83,7 +83,7 @@
         "type": "boolean"
       },
       "notAllowedCompany": {
-        "type": "keyword"
+        "type": "text"
       },
       "pcd": {
         "type": "boolean"

@@ -6,7 +6,7 @@
 				"type": "long"
 			},
 			"message": {
-				"type": "keyword"
+				"type": "text"
 			},
 			"messageType": {
 				"type": "keyword"

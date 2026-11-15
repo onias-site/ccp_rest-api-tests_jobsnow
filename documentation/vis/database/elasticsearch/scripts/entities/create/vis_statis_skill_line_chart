@@ -15,7 +15,7 @@
         "type": "integer"
       },
       "yearMonth": {
-        "type": "keyword"
+        "type": "text"
       }
     }
   }

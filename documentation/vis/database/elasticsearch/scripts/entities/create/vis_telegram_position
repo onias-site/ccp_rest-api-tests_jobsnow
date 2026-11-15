@@ -3,7 +3,7 @@
     "dynamic": "strict",
     "properties": {
       "contact": {
-        "type": "keyword"
+        "type": "text"
       },
       "ddd": {
         "type": "integer"
@@ -12,13 +12,13 @@
         "type": "keyword"
       },
       "skill": {
-        "type": "keyword"
+        "type": "text"
       },
       "statisSkillLineChart": {
-        "type": "keyword"
+        "type": "text"
       },
       "yearMonth": {
-        "type": "keyword"
+        "type": "text"
       }
     }
   }
