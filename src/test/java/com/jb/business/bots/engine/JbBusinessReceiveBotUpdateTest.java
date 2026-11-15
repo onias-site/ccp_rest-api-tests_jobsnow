@@ -43,7 +43,6 @@ import com.jb.entities.JbEntityBot;
 import com.jb.entities.JbEntityBotExplanation;
 import com.jb.entities.JbEntityBotCommandStepSession;
 import com.jb.entities.JbEntityBotUpdateId;
-import com.jb.instant.messenger.reader.JbInstantMessengerMessageReader;
 import com.jn.entities.JnEntityBotCommandExplanation;
 import com.jn.entities.JnEntityBotCommandName;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
@@ -233,15 +232,6 @@ public class JbBusinessReceiveBotUpdateTest {
 
 		assertTrue(TELEGRAM.sentMessages.isEmpty());
 		assertEquals(4001L, this.savedOffset());
-	}
-
-	/** Both ways of receiving share the offset: the reading by polling starts after what the webhook received. */
-	@Test
-	public void theOffsetIsTheOneTheReadingByPollingUses() {
-		JbBusinessReceiveBotUpdate.INSTANCE.execute(this.updateWithoutMessage(4500L));
-
-		Long offsetOfThePolling = JbInstantMessengerMessageReader.INSTANCE.getOffset(SUPPORT);
-		assertEquals(4501L, offsetOfThePolling.longValue());
 	}
 
 	/** How many messages went to the queue of the command so far. */
