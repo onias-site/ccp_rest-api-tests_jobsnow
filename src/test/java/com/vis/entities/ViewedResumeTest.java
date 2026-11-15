@@ -177,7 +177,7 @@ public class ViewedResumeTest {
 			List<CcpJsonRepresentation> children = this.viewsInTheDddGroup(ddd, viewId);
 			assertEquals("ddd " + ddd, 1, children.size());
 			CcpJsonRepresentation child = children.get(0);
-			List<String> expectedFields = Arrays.asList("btc", "clt", "disponibility", "experience", "spokenLanguage", "pcd", "pj", "resumeType", "temporallyJobTime", "travel", "skill", "id");
+			List<String> expectedFields = Arrays.asList("btc", "clt", "disponibility", "experience", "spokenLanguage", "negotiableClaim", "pcd", "pj", "resumeType", "temporallyJobTime", "travel", "skill", "id");
 			assertTrue(child.toString(), expectedFields.containsAll(child.fieldSet()));
 			assertEquals(2018, child.getAsIntegerNumber(VisEntityResume.Fields.experience).intValue());
 			assertEquals("English", child.getAsJsonList(VisEntityResume.Fields.spokenLanguage).get(0).getAsString(new com.ccp.decorators.CcpFieldName("name")));

@@ -126,6 +126,7 @@ public class ResumeStatisticsOfTheRegionTest {
 		return this.resume(this.firstEmail, 7, Arrays.asList(language("English", 2)), 0, 6)
 				.removeFields(VisEntityResume.Fields.email, VisEntityResume.Fields.linkedinAddress, VisEntityResume.Fields.desiredJob)
 				.put(VisEntityResume.Fields.pj, 9_000)
+				.put(VisEntityResume.Fields.negotiableClaim, true)
 				// the view carries the resume as stored: the year the experience started, not the years
 				.put(VisEntityResume.Fields.experience, new CcpTimeDecorator().getYear() - 7)
 				.put(VisEntityViewedResume.Fields.linkedin, this.viewedLinkedin)
@@ -267,6 +268,7 @@ public class ResumeStatisticsOfTheRegionTest {
 		assertAdded("fluent English", 1, viewsBefore, viewsAfter, VisResumeStatisticsCharts.spokenLanguage, "English|2");
 		assertAdded("7 years", 1, viewsBefore, viewsAfter, VisResumeStatisticsCharts.seniority, "senior");
 		assertAdded("6 months", 1, viewsBefore, viewsAfter, VisResumeStatisticsCharts.temporallyJob, "accepts");
+		assertAdded("negotiates the salary", 1, viewsBefore, viewsAfter, VisResumeStatisticsCharts.negotiableClaim, "true");
 
 		CcpJsonRepresentation averages = viewsAfter.getInnerJson(VisBusinessResumeStatisticsOfTheRegion.Fields.averages);
 		CcpJsonRepresentation all = averages.getInnerJson(VisBusinessResumeStatisticsOfTheRegion.Fields.all);
@@ -280,10 +282,12 @@ public class ResumeStatisticsOfTheRegionTest {
 		// 3 years (pleno), clt 8.500, pj 9.000, fluent English, immediately available, no temporary job
 		VisEntityResume.ENTITY.save(this.resume(this.firstEmail, 3, Arrays.asList(language("English", 2)), 0, 0)
 				.put(VisEntityResume.Fields.clt, 8_500)
-				.put(VisEntityResume.Fields.pj, 9_000));
+				.put(VisEntityResume.Fields.pj, 9_000)
+				.put(VisEntityResume.Fields.negotiableClaim, true));
 		// 7 years (senior), clt 12.000, no pj, intermediate English and fluent Spanish, in 30 days, temporary jobs of 6 months
 		VisEntityResume.ENTITY.save(this.resume(this.secondEmail, 7, Arrays.asList(language("English", 1), language("Spanish", 2)), 30, 6)
-				.put(VisEntityResume.Fields.clt, 12_000));
+				.put(VisEntityResume.Fields.clt, 12_000)
+				.put(VisEntityResume.Fields.negotiableClaim, false));
 
 		CcpJsonRepresentation after = statistics();
 		long totalBefore = before.getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.total);
@@ -306,6 +310,8 @@ public class ResumeStatisticsOfTheRegionTest {
 		assertAdded("one skill each (the excluded one does not count)", 2, before, after, VisResumeStatisticsCharts.skillsCount, "upTo5");
 		assertAdded("clt and pj", 1, before, after, VisResumeStatisticsCharts.contractType, "both");
 		assertAdded("clt only", 1, before, after, VisResumeStatisticsCharts.contractType, "onlyClt");
+		assertAdded("negotiates the salary", 1, before, after, VisResumeStatisticsCharts.negotiableClaim, "true");
+		assertAdded("does not negotiate the salary", 1, before, after, VisResumeStatisticsCharts.negotiableClaim, "false");
 	}
 
 	/** 2026-11-14: a resume that speaks no language goes to the slice "none" of the languages (the legend "Nenhum"). */

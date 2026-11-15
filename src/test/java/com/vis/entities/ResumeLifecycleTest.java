@@ -313,7 +313,7 @@ public class ResumeLifecycleTest {
 
 	/**
 	 * 2026-11-12: the resume is a child of the group of each of its ddds, as a JSON text with btc, clt, disponibility,
-	 * experience, spokenLanguage, pcd, pj, resumeType, temporallyJobTime, travel and its id; the child follows the save,
+	 * experience, spokenLanguage, negotiableClaim (since 2026-11-14), pcd, pj, resumeType, temporallyJobTime, travel and its id; the child follows the save,
 	 * the deactivation, the reactivation and the delete everywhere.
 	 */
 	@Test
@@ -322,7 +322,7 @@ public class ResumeLifecycleTest {
 		CcpJsonRepresentation stored = VisEntityResume.ENTITY.getOneById(this.key());
 		String resumeId = VisEntityResume.ENTITY.calculateId(stored);
 		CcpJsonRepresentation child = this.assertOnlyInTheDddGroups(MAIN_GROUPER, Arrays.asList(11, 21), resumeId);
-		List<String> expectedFields = Arrays.asList("btc", "clt", "disponibility", "experience", "spokenLanguage", "pcd", "pj", "resumeType", "temporallyJobTime", "travel", "skill", "id");
+		List<String> expectedFields = Arrays.asList("btc", "clt", "disponibility", "experience", "spokenLanguage", "negotiableClaim", "pcd", "pj", "resumeType", "temporallyJobTime", "travel", "skill", "id");
 		assertTrue(child.toString(), expectedFields.containsAll(child.fieldSet()));
 		assertEquals(stored.getAsIntegerNumber(VisEntityResume.Fields.experience), child.getAsIntegerNumber(VisEntityResume.Fields.experience));
 		assertEquals(5_000, child.getAsIntegerNumber(VisEntityResume.Fields.clt).intValue());
