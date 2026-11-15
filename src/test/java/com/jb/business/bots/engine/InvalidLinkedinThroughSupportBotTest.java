@@ -245,6 +245,29 @@ public class InvalidLinkedinThroughSupportBotTest {
 		assertTrue(TELEGRAM.sentMessages.stream().noneMatch(sent -> OWNER_CHAT.equals(sent.getAsLongNumber(JnJsonInstantMessengerFields.chatId))));
 	}
 
+	/**
+	 * A ticket opened before 2026-11-13 finds the view still in the main entity: "Não" moves it to the twin without writing
+	 * a comment, since no decision of the operator writes in the comment of the view (since 2026-11-15).
+	 */
+	@Test
+	public void operatorSaysThatTheLinkedinIsValidInAnOldTicketWithoutCommentingTheView() {
+		this.openTheResumeAndReport();
+		String ticket = this.ticketText();
+		// as before 2026-11-13: the report did not move the view, which is in the main entity with no comment
+		VisEntityViewedResume.ENTITY.deleteAnyWhere(this.viewKey());
+		CcpJsonRepresentation oldView = this.viewKey().put(VisEntityViewedResume.Fields.alias, "Analista LinkedIn " + this.run);
+		VisEntityViewedResume.ENTITY.save(oldView);
+		assertTrue(VisEntityViewedResume.ENTITY.exists(this.viewKey()));
+
+		this.operatorTypes(ticket);
+		this.operatorTypes("não");
+
+		assertFalse(VisEntityViewedResume.ENTITY.exists(this.viewKey()));
+		CcpJsonRepresentation twinView = VisEntityViewedResume.ENTITY.getTwinEntity().getOneById(this.viewKey());
+		assertFalse(twinView.toString(), twinView.containsField(VisEntityViewedResume.Fields.comment));
+		assertEquals("Analista LinkedIn " + this.run, twinView.getAsString(VisEntityViewedResume.Fields.alias));
+	}
+
 	/** A resume that no longer exists ends the ticket with that notice. */
 	@Test
 	public void theTicketOfAResumeThatNoLongerExists() {
