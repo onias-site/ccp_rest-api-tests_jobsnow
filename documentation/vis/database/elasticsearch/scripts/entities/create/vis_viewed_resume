@@ -6,7 +6,7 @@
 				"type": "keyword"
 			},
 			"comment": {
-				"type": "keyword"
+				"type": "text"
 			},
 			"date": {
 				"type": "keyword"
