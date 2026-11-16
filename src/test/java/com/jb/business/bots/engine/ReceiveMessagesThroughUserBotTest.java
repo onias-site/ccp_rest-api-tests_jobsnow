@@ -132,7 +132,7 @@ public class ReceiveMessagesThroughUserBotTest {
 		this.saveResume(this.email);
 
 		String askToken = this.userTypes("/receiveMessages " + this.email);
-		assertEquals("Digite o token de login que enviamos ao e-mail " + this.email + ".", askToken);
+		assertEquals("Digite o token de login que enviamos ao e-mail " + this.email + " \nCaso tenha esquecido ou não saiba onde está o token, execute o comando \n/reenviarTokenDeLogin " + this.email, askToken);
 		String wrong = this.userTypes("ERRADO00");
 		assertTrue(wrong, wrong.startsWith("O token informado está errado. Restam 2 tentativa(s)."));
 		assertTrue(VisEntityLoginTokenAttempts.ENTITY.exists(this.attemptsKey()));
