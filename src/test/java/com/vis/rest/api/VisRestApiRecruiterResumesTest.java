@@ -89,6 +89,11 @@ public class VisRestApiRecruiterResumesTest extends VisRestApiTestTemplate {
 			this.assertStatus(200, opened);
 			CcpJsonRepresentation view = this.bodyOf(opened);
 			assertEquals(view.toString(), "https://www.linkedin.com/in/candidato-do-link", view.getAsString(VisEntityResume.Fields.linkedinAddress));
+			// the preview shown in the modal before the form that saves the view (since 2026-11-15), without the e-mail
+			CcpJsonRepresentation preview = view.getInnerJson(VisRecruiterResumesFields.preview);
+			assertEquals(preview.toString(), "developer", preview.getAsString(VisEntityResume.Fields.desiredJob));
+			assertEquals(preview.toString(), "https://www.linkedin.com/in/candidato-do-link", preview.getAsString(VisEntityResume.Fields.linkedinAddress));
+			assertTrue(preview.toString(), false == preview.containsField(VisEntityResume.Fields.email));
 
 			CcpJsonRepresentation linkWithAlias = link.put(VisEntityViewedResume.Fields.alias, "Desenvolvedor do link");
 			this.assertStatus(200, this.post("alias", linkWithAlias));
