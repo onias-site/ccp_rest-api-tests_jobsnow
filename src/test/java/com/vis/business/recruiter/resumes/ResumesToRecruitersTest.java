@@ -887,6 +887,23 @@ public class ResumesToRecruitersTest {
 		assertTrue(VisEntityRecruiter.ENTITY.getTwinEntity().exists(neverViewedRecruiter));
 	}
 
+	/** Since 2026-11-16 the e-mail of resumes is repeatable: a second run on the same day sends it again. */
+	@Test
+	public void theEmailOfResumesGoesAgainToTheSameRecruiterOnTheSameDay() {
+		String recruiter = this.recruiter("repete", "gmail.com");
+		this.saveRecruiter(recruiter);
+		String job = "Analista repetido " + this.run;
+		this.saveResume(this.resume("repete", job));
+		sendTo(recruiter);
+		CcpJsonRepresentation row = rowOf(rowsOf(recruiter), job);
+		List<CcpJsonRepresentation> onlyThisRow = Arrays.asList(row);
+		RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.remove(recruiter);
+
+		VisBusinessSendResumesToRecruiters.sendTheEmail(recruiter, onlyThisRow, "http://localhost:3000", "https://api.jobsnow.com");
+
+		assertTrue("sent again on the same day", RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.containsKey(recruiter));
+	}
+
 	@Test
 	public void theRecipientWhoNeverViewedIsInactivatedAndComesBackOnViewing() {
 		String recruiter = this.recruiter("semvisita", "gmail.com");
