@@ -211,7 +211,19 @@ public class RecruiterLoadsTest {
 		}
 
 		String grouperName = JnEntityGrouper.ENTITY.getEntityMetaData().entityName;
-		List<CcpBulkItem> groups = seed.stream().filter(item -> grouperName.equals(item.entity.getEntityMetaData().entityName)).collect(Collectors.toList());
+		String domainGroupName = VisEntityVirtualRecruiterDomainInitialsGrouper.ENTITY.getEntityMetaData().entityName;
+		String sourceCounterName = VisEntityVirtualRecruiterSourceCounter.ENTITY.getEntityMetaData().entityName;
+		List<CcpBulkItem> grouperItems = seed.stream().filter(item -> grouperName.equals(item.entity.getEntityMetaData().entityName)).collect(Collectors.toList());
+		List<CcpBulkItem> groups = grouperItems.stream().filter(item -> domainGroupName.equals(item.json.getAsString(JnEntityGrouper.Fields.parentName))).collect(Collectors.toList());
+		List<CcpBulkItem> sourceCounters = grouperItems.stream().filter(item -> sourceCounterName.equals(item.json.getAsString(JnEntityGrouper.Fields.parentName))).collect(Collectors.toList());
+		assertEquals("the domain group and the counter of the sources (since 2026-11-17)", 2, grouperItems.size());
+		// the bulk goes around the decorator: the seed creates the counter of the sources whole, with every legacy recruiter
+		assertEquals(1, sourceCounters.size());
+		List<String> sourceCounterChildren = sourceCounters.get(0).json.getAsStringList(JnEntityGrouper.Fields.child);
+		assertEquals(1, sourceCounterChildren.size());
+		// the JSON keeps numbers as decimals ("4.0"); the script of the counters reads only the digits and rewrites integers
+		CcpJsonRepresentation sourceCounter = new CcpJsonRepresentation(sourceCounterChildren.get(0));
+		assertEquals(Long.valueOf(4), sourceCounter.getAsLongNumber(new CcpFieldName("legacy")));
 		assertEquals(1, groups.size());
 		CcpJsonRepresentation group = groups.get(0).json;
 		assertEquals(CcpBulkEntityOperationType.create, groups.get(0).operation);
