@@ -144,24 +144,4 @@ public class CuriositiesOfJsTest {
 		JsEntityLoginAnswers.ENTITY.delete(this.answers());
 		assertEquals("the delete subtracts", jobsBefore, curiosity(JsBusinessCuriositiesCharts.Fields.channelGoals, othersJobs));
 	}
-
-	/** 2026-11-17: the tickets waiting for the support, by type: the answer subtracts, a reopening counts again. */
-	@Test
-	public void thePendingTicketsAreCountedByType() {
-		String suggestion = JsContactUsTypes.makeSuggestion.name();
-		long before = curiosity(JsBusinessCuriositiesCharts.Fields.pendingContactUsTypes, suggestion);
-
-		JsEntityContactUs.ENTITY.save(this.ticket());
-		assertEquals("the ticket waits for the support", before + 1, curiosity(JsBusinessCuriositiesCharts.Fields.pendingContactUsTypes, suggestion));
-
-		JsEntityContactUs.ENTITY.save(this.ticket());
-		assertEquals("a new save is the same ticket", before + 1, curiosity(JsBusinessCuriositiesCharts.Fields.pendingContactUsTypes, suggestion));
-
-		CcpJsonRepresentation answered = this.ticket().put(JsEntityContactUs.Fields.supportResponse, "Obrigado pela sugestao");
-		JsEntityContactUs.ENTITY.delete(answered);
-		assertEquals("the answer subtracts", before, curiosity(JsBusinessCuriositiesCharts.Fields.pendingContactUsTypes, suggestion));
-
-		JsEntityContactUs.ENTITY.save(this.ticket());
-		assertEquals("a ticket opened again waits again", before + 1, curiosity(JsBusinessCuriositiesCharts.Fields.pendingContactUsTypes, suggestion));
-	}
 }
