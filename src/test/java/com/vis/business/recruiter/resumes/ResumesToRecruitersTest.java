@@ -41,6 +41,7 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnLanguage;
+import com.vis.business.recruiter.VisBusinessReactivateRecruiterWhoViewed;
 import com.vis.entities.VisEntityRecruiter;
 import com.vis.entities.VisEntityRecruiterFirstEmail;
 import com.vis.entities.VisEntityRecruiterQueueCursor;
@@ -875,10 +876,37 @@ public class ResumesToRecruitersTest {
 		assertFalse("inactivated", VisEntityRecruiter.ENTITY.exists(stoppedRecruiter));
 		assertTrue(VisEntityRecruiter.ENTITY.getTwinEntity().exists(stoppedRecruiter));
 		assertEquals("test", VisEntityRecruiter.ENTITY.getTwinEntity().getOneById(stoppedRecruiter).getAsString(VisEntityRecruiter.Fields.source));
-		for (String active : List.of(stillViewing, viewedLongAgoAndRecently, neverViewed)) {
+		for (String active : List.of(stillViewing, viewedLongAgoAndRecently)) {
 			CcpJsonRepresentation activeRecruiter = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, active);
 			assertTrue(VisEntityRecruiter.ENTITY.exists(activeRecruiter));
 		}
+		// since 2026-11-16 who received the e-mail and never viewed a resume is inactivated right after the sending
+		assertEquals(1, counters.getAsIntegerNumber(VisRecruiterResumesFields.recipientsWhoNeverViewedInactivated).intValue());
+		CcpJsonRepresentation neverViewedRecruiter = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, neverViewed);
+		assertFalse("inactivated after the sending", VisEntityRecruiter.ENTITY.exists(neverViewedRecruiter));
+		assertTrue(VisEntityRecruiter.ENTITY.getTwinEntity().exists(neverViewedRecruiter));
+	}
+
+	@Test
+	public void theRecipientWhoNeverViewedIsInactivatedAndComesBackOnViewing() {
+		String recruiter = this.recruiter("semvisita", "gmail.com");
+		this.saveRecruiter(recruiter);
+		this.saveResume(this.resume("semvisita", "Analista sem visita " + this.run));
+
+		CcpJsonRepresentation counters = sendTo(recruiter);
+
+		assertEquals(1, counters.getAsIntegerNumber(VisRecruiterResumesFields.emailsSent).intValue());
+		assertEquals(1, counters.getAsIntegerNumber(VisRecruiterResumesFields.recipientsWhoNeverViewedInactivated).intValue());
+		CcpJsonRepresentation recruiterKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, recruiter);
+		assertFalse("inactivated after the sending", VisEntityRecruiter.ENTITY.exists(recruiterKey));
+		assertTrue(VisEntityRecruiter.ENTITY.getTwinEntity().exists(recruiterKey));
+		CcpJsonRepresentation recruiterResumes = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterResumes.Fields.email, recruiter);
+		assertTrue("the list of \"see all\" stays", VisEntityRecruiterResumes.ENTITY.exists(recruiterResumes));
+
+		// what the save of a view runs after it: viewing a resume of the e-mail brings the recruiter back
+		VisBusinessReactivateRecruiterWhoViewed.INSTANCE.execute(recruiterKey);
+		assertTrue("active again", VisEntityRecruiter.ENTITY.exists(recruiterKey));
+		assertFalse(VisEntityRecruiter.ENTITY.getTwinEntity().exists(recruiterKey));
 	}
 
 	private static List<CcpJsonRepresentation> skillsNamed(String prefix, int howMany) {
