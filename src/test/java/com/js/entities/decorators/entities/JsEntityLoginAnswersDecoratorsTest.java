@@ -27,7 +27,7 @@ public class JsEntityLoginAnswersDecoratorsTest extends EntityDecoratorTestTempl
 	@Test
 	public void chain() {
 		// the 4 counters of the screen Curiosities (new users by day, month, goal and channel) and the insertion date
-		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "JnGrouperChildCurrentCounterEntityBeforeWrite", "JnGrouperChildCurrentCounterEntityBeforeWrite", "JnGrouperChildCurrentCounterEntityBeforeWrite", "JnGrouperChildCurrentCounterEntityBeforeWrite", "JnInsertionDateEntity", "DecoratorFieldsTransformerEntity", "JnVersionablePurgeEntity", "DecoratorWriteSideEffectEntity", "DecoratorCacheEntity", "JnVersionableEntity", "DefaultImplementationEntity");
+		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "JnGrouperChildCurrentCounterEntityBeforeWrite", "JnGrouperChildCurrentCounterEntityBeforeWrite", "JnGrouperChildCurrentCounterEntityBeforeWrite", "JnGrouperChildCurrentCounterEntityBeforeWrite", "JnGrouperChildCurrentCounterEntityBeforeWrite", "JnInsertionDateEntity", "DecoratorFieldsTransformerEntity", "JnVersionablePurgeEntity", "DecoratorWriteSideEffectEntity", "DecoratorCacheEntity", "JnVersionableEntity", "DefaultImplementationEntity");
 	}
 
 	@Test

@@ -125,4 +125,43 @@ public class CuriositiesOfJsTest {
 		assertEquals(recruitingBefore + 1, curiosity(JsBusinessCuriositiesCharts.Fields.goals, "recruiting"));
 		assertEquals(othersBefore + 1, curiosity(JsBusinessCuriositiesCharts.Fields.channels, "others"));
 	}
+
+	/** 2026-11-17: the channel crossed with the goal; a save that changes the goal moves the count, the delete subtracts it. */
+	@Test
+	public void theChannelIsCrossedWithTheGoal() {
+		String othersRecruiting = "others|recruiting";
+		String othersJobs = "others|jobs";
+		long recruitingBefore = curiosity(JsBusinessCuriositiesCharts.Fields.channelGoals, othersRecruiting);
+		long jobsBefore = curiosity(JsBusinessCuriositiesCharts.Fields.channelGoals, othersJobs);
+
+		JsEntityLoginAnswers.ENTITY.save(this.answers());
+		assertEquals("the new user", recruitingBefore + 1, curiosity(JsBusinessCuriositiesCharts.Fields.channelGoals, othersRecruiting));
+
+		JsEntityLoginAnswers.ENTITY.save(this.answers().put(JsEntityLoginAnswers.Fields.goal, "jobs"));
+		assertEquals("the goal changed: it left the old key", recruitingBefore, curiosity(JsBusinessCuriositiesCharts.Fields.channelGoals, othersRecruiting));
+		assertEquals("and went to the new one", jobsBefore + 1, curiosity(JsBusinessCuriositiesCharts.Fields.channelGoals, othersJobs));
+
+		JsEntityLoginAnswers.ENTITY.delete(this.answers());
+		assertEquals("the delete subtracts", jobsBefore, curiosity(JsBusinessCuriositiesCharts.Fields.channelGoals, othersJobs));
+	}
+
+	/** 2026-11-17: the tickets waiting for the support, by type: the answer subtracts, a reopening counts again. */
+	@Test
+	public void thePendingTicketsAreCountedByType() {
+		String suggestion = JsContactUsTypes.makeSuggestion.name();
+		long before = curiosity(JsBusinessCuriositiesCharts.Fields.pendingContactUsTypes, suggestion);
+
+		JsEntityContactUs.ENTITY.save(this.ticket());
+		assertEquals("the ticket waits for the support", before + 1, curiosity(JsBusinessCuriositiesCharts.Fields.pendingContactUsTypes, suggestion));
+
+		JsEntityContactUs.ENTITY.save(this.ticket());
+		assertEquals("a new save is the same ticket", before + 1, curiosity(JsBusinessCuriositiesCharts.Fields.pendingContactUsTypes, suggestion));
+
+		CcpJsonRepresentation answered = this.ticket().put(JsEntityContactUs.Fields.supportResponse, "Obrigado pela sugestao");
+		JsEntityContactUs.ENTITY.delete(answered);
+		assertEquals("the answer subtracts", before, curiosity(JsBusinessCuriositiesCharts.Fields.pendingContactUsTypes, suggestion));
+
+		JsEntityContactUs.ENTITY.save(this.ticket());
+		assertEquals("a ticket opened again waits again", before + 1, curiosity(JsBusinessCuriositiesCharts.Fields.pendingContactUsTypes, suggestion));
+	}
 }
