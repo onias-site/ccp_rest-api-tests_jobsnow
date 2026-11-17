@@ -156,6 +156,36 @@ public class VisResumesToTheRecruiterSenderTest {
 		assertFalse(afterTheFirstEmail.get(2).containsField(VisRecruiterResumesFields.firstEmail));
 	}
 
+	/** Since 2026-11-17 who was saved by the support waits for the first e-mail tied with the sign-up: both by the hash. */
+	@Test
+	public void aRecruiterSavedByTheSupportWaitsForTheFirstEmailTiedWithTheSignUp() {
+		String login = VisEntityRecruiter.Sources.login.getValue();
+		String support = VisEntityRecruiter.Sources.support.getValue();
+		String legacy = VisEntityRecruiter.Sources.legacy.getValue();
+		CcpJsonRepresentation signedUp = recruiterOf("signedup@empresa.com.br").put(VisEntityRecruiter.Fields.source, login);
+		CcpJsonRepresentation savedBySupport = recruiterOf("support@empresa.com.br").put(VisEntityRecruiter.Fields.source, support);
+		CcpJsonRepresentation other = recruiterOf("other@empresa.com.br").put(VisEntityRecruiter.Fields.source, legacy);
+		List<CcpJsonRepresentation> recruiters = List.of(other, savedBySupport, signedUp);
+
+		List<CcpJsonRepresentation> waiting = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, new HashMap<>(), VIEWS_SINCE, "", Set.of(), 0L, "", "", "");
+
+		String signedUpHash = hashOf("signedup@empresa.com.br");
+		String supportHash = hashOf("support@empresa.com.br");
+		boolean signedUpFirst = signedUpHash.compareTo(supportHash) < 0;
+		List<String> tiedByTheHash = signedUpFirst ? List.of("signedup@empresa.com.br", "support@empresa.com.br") : List.of("support@empresa.com.br", "signedup@empresa.com.br");
+		assertEquals(tiedByTheHash, emailsOf(waiting).subList(0, 2));
+		assertTrue(waiting.get(0).containsField(VisRecruiterResumesFields.firstEmail));
+		assertTrue(waiting.get(1).containsField(VisRecruiterResumesFields.firstEmail));
+		assertEquals("other@empresa.com.br", emailsOf(waiting).get(2));
+
+		Set<String> withFirstEmail = Set.of(supportHash);
+		List<CcpJsonRepresentation> afterTheFirstEmail = VisBusinessSendResumesToRecruiters.getRecruitersInOrder(recruiters, new HashMap<>(), VIEWS_SINCE, "", withFirstEmail, 0L, "", "", "");
+
+		assertEquals("signedup@empresa.com.br", emailsOf(afterTheFirstEmail).get(0));
+		CcpJsonRepresentation supportAfter = afterTheFirstEmail.stream().filter(recruiter -> recruiter.getAsString(VisEntityRecruiter.Fields.email).equals("support@empresa.com.br")).findFirst().get();
+		assertFalse("after the first e-mail, follows the queue", supportAfter.containsField(VisRecruiterResumesFields.firstEmail));
+	}
+
 	/** Only who viewed before the limit is inactivated, never who never viewed; a restricted run touches only its recruiters. */
 	@Test
 	public void onlyWhoStoppedViewingIsInactivatedAndARestrictedRunTouchesOnlyItsRecruiters() {
