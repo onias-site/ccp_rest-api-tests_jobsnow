@@ -244,7 +244,8 @@ public class DailyDatabaseMaintenanceTest {
 	}
 
 	@Test
-	public void theDailyProcessWithTheLockedEmailPurgesAndBacksUpButSendsNoResumeToTheRecruiters() {
+	public void theDailyProcessWithTheLockedEmailBacksUpWithoutPurgingAndSendsNoResumeToTheRecruiters() {
+		// since 2026-11-17 the daily process only backs up: the purge runs every hour, in the process of the login token
 		CcpJsonRepresentation record = this.record();
 		waitForTheStartOfASecond();
 		JnEntityTestPurgedEverySecond.ENTITY.save(record);
@@ -261,9 +262,8 @@ public class DailyDatabaseMaintenanceTest {
 
 		CcpJsonRepresentation resumesToRecruiters = result.getInnerJson(VisBusinessDailyScheduledProcess.Fields.resumesToRecruiters);
 		assertEquals(CcpOtherConstants.EMPTY_JSON.put(VisBusinessDailyScheduledProcess.Fields.locked, true).asUgglyJson(), resumesToRecruiters.asUgglyJson());
-		CcpJsonRepresentation purge = result.getInnerJson(JnBusinessDailyDatabaseMaintenance.Fields.purge);
-		assertTrue(purge.getAsLongNumber(JnBusinessPurgeExpiredDisposableRecords.Fields.purgedDocuments) >= 1);
-		assertFalse(documentExists(JnEntityTestPurgedEverySecond.ENTITY, id));
+		assertFalse("no purge in the daily process", result.containsField(JnBusinessDailyDatabaseMaintenance.Fields.purge));
+		assertTrue("the expired record waits for the hourly purge", documentExists(JnEntityTestPurgedEverySecond.ENTITY, id));
 		CcpJsonRepresentation backup = result.getInnerJson(JnBusinessBackupTheDatabase.Fields.backup);
 		assertEquals("SUCCESS", backup.getAsString(new CcpFieldName("state")));
 	}

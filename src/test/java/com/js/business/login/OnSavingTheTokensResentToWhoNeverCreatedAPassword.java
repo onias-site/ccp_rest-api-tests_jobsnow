@@ -29,6 +29,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.jn.business.database.JnBusinessPurgeExpiredDisposableRecords;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.js.entities.JsEntityLoginPassword;
 import com.js.entities.JsEntityLoginTokenRequestResend;
@@ -169,5 +170,8 @@ public class OnSavingTheTokensResentToWhoNeverCreatedAPassword {
 		assertTrue(result.containsField(JsBusinessResendLoginTokenToUsersWithoutPassword.JsonFieldNames.resendRequested));
 		assertTrue(result.containsField(JsBusinessSaveTokensResentWithoutPassword.JsonFieldNames.savedWithoutPassword));
 		assertTrue(this.withoutPassword.exists(this.key(email)));
+		// since 2026-11-17 the hourly process also purges the expired disposable records
+		CcpJsonRepresentation purge = result.getInnerJson(JsBusinessDailyLoginTokenProcess.Fields.purge);
+		assertTrue(purge.containsField(JnBusinessPurgeExpiredDisposableRecords.Fields.groupsRead));
 	}
 }
