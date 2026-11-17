@@ -25,8 +25,12 @@ public class RecordingResumesEmailSender implements CcpEmailProvider {
 	/** The custom headers of the last message of each recipient. */
 	public static final Map<String, CcpJsonRepresentation> LAST_HEADERS_BY_RECIPIENT = new LinkedHashMap<>();
 
+	/** What a test runs once, when the e-mail goes to a recipient: something the recipient does while the sending goes on. */
+	public static final Map<String, Runnable> ON_SENDING_TO = new LinkedHashMap<>();
+
 	public CcpJsonRepresentation sendSimpleTextEmailMessage(String providerToken, String providerUrl, String templateId, String sender, String subject, String message, CcpHttpContentType contentType, String... recipients) {
 		Arrays.stream(recipients).forEach(recipient -> LAST_MESSAGE_BY_RECIPIENT.put(recipient, subject + "\n" + message));
+		Arrays.stream(recipients).filter(ON_SENDING_TO::containsKey).map(ON_SENDING_TO::remove).forEach(Runnable::run);
 		return CcpOtherConstants.EMPTY_JSON;
 	}
 

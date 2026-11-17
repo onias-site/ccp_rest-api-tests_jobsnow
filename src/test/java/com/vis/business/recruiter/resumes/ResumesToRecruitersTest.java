@@ -926,6 +926,43 @@ public class ResumesToRecruitersTest {
 		assertFalse(VisEntityRecruiter.ENTITY.getTwinEntity().exists(recruiterKey));
 	}
 
+	/**
+	 * The sending takes minutes in production (2026-11-17: 5 recruiters viewed a resume between 00:16 and 00:21 and were
+	 * inactivated at 00:24): who views while the e-mails go out is not inactivated.
+	 */
+	@Test
+	public void theRecipientWhoViewsWhileTheEmailsGoOutIsNotInactivated() {
+		String viewsDuringTheSending = this.recruiter("durante", "gmail.com");
+		String neverViewed = this.recruiter("nuncaviu", "gmail.com");
+		for (String recruiter : List.of(viewsDuringTheSending, neverViewed)) {
+			this.saveRecruiter(recruiter);
+		}
+		this.saveResume(this.resume("durante", "Analista visto no envio " + this.run));
+		String linkedinAddress = this.linkedin("durante");
+		RecordingResumesEmailSender.ON_SENDING_TO.put(viewsDuringTheSending, () -> this.viewedNow(viewsDuringTheSending, linkedinAddress));
+
+		CcpJsonRepresentation counters;
+		try {
+			counters = sendTo(viewsDuringTheSending, neverViewed);
+		} finally {
+			RecordingResumesEmailSender.ON_SENDING_TO.clear();
+		}
+
+		assertEquals(2, counters.getAsIntegerNumber(VisRecruiterResumesFields.emailsSent).intValue());
+		assertEquals(1, counters.getAsIntegerNumber(VisRecruiterResumesFields.recipientsWhoNeverViewedInactivated).intValue());
+		CcpJsonRepresentation viewerKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, viewsDuringTheSending);
+		assertTrue("viewed during the sending: stays active", VisEntityRecruiter.ENTITY.exists(viewerKey));
+		assertFalse(VisEntityRecruiter.ENTITY.getTwinEntity().exists(viewerKey));
+		CcpJsonRepresentation neverViewedKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, neverViewed);
+		assertFalse("never viewed: inactivated", VisEntityRecruiter.ENTITY.exists(neverViewedKey));
+	}
+
+	/** A view made now, already visible to the queries of the process. */
+	private void viewedNow(String recruiter, String linkedinAddress) {
+		this.viewedDaysAgo(recruiter, linkedinAddress, 0);
+		ElasticsearchLocal.refresh("jn_versionable");
+	}
+
 	private static List<CcpJsonRepresentation> skillsNamed(String prefix, int howMany) {
 		List<CcpJsonRepresentation> skills = new java.util.ArrayList<>();
 		for (int index = 0; index < howMany; index++) {
