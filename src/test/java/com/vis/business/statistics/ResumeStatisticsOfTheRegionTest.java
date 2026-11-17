@@ -316,6 +316,23 @@ public class ResumeStatisticsOfTheRegionTest {
 		assertAdded("clt only", 1, before, after, VisResumeStatisticsCharts.contractType, "onlyClt");
 		assertAdded("negotiates the salary", 1, before, after, VisResumeStatisticsCharts.negotiableClaim, "true");
 		assertAdded("does not negotiate the salary", 1, before, after, VisResumeStatisticsCharts.negotiableClaim, "false");
+		// 2026-11-17: seniority x hiring and the ranges of the salary expectations
+		assertAdded("pleno accepting both", 1, before, after, VisResumeStatisticsCharts.seniorityContract, "pleno|both");
+		assertAdded("senior accepting clt only", 1, before, after, VisResumeStatisticsCharts.seniorityContract, "senior|onlyClt");
+		assertAdded("clt 8.500", 1, before, after, VisResumeStatisticsCharts.cltRange, "from6kTo10k");
+		assertAdded("clt 12.000", 1, before, after, VisResumeStatisticsCharts.cltRange, "from10kTo15k");
+		assertAdded("pj 9.000 of the first", 1, before, after, VisResumeStatisticsCharts.pjRange, "from6kTo10k");
+		assertEquals("the second informed no pj: it counts in no pj range", sumOf(before, VisResumeStatisticsCharts.pjRange) + 1, sumOf(after, VisResumeStatisticsCharts.pjRange));
+		assertEquals("both in some clt range", sumOf(before, VisResumeStatisticsCharts.cltRange) + 2, sumOf(after, VisResumeStatisticsCharts.cltRange));
+	}
+
+	private static long sumOf(CcpJsonRepresentation statistics, VisResumeStatisticsCharts chart) {
+		CcpJsonRepresentation slices = statistics.getInnerJson(VisBusinessResumeStatisticsOfTheRegion.Fields.charts).getInnerJson(chart);
+		long sum = 0;
+		for (String key : slices.fieldSet()) {
+			sum += slices.getAsLongNumber(new CcpFieldName(key));
+		}
+		return sum;
 	}
 
 	/** 2026-11-14: a resume that speaks no language goes to the slice "none" of the languages (the legend "Nenhum"). */
