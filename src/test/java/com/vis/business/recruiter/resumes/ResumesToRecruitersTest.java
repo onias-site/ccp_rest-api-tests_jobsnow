@@ -26,6 +26,7 @@ import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
 import com.ccp.especifications.db.bulk.CcpBulkItem;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.ElasticsearchLocal;
 import com.ccp.especifications.email.CcpEmailProvider;
 import com.ccp.flow.CcpErrorFlowDisturb;
@@ -47,6 +48,7 @@ import com.vis.entities.VisEntityRecruiterFirstEmail;
 import com.vis.entities.VisEntityRecruiterQueueCursor;
 import com.vis.entities.VisEntityRecruiterResumes;
 import com.vis.entities.VisEntityRecruiterSignUpReturn;
+import com.vis.entities.VisEntityRecruiterUnsubscribed;
 import com.vis.entities.VisEntityResume;
 import com.vis.entities.VisEntityResumeRestriction;
 import com.vis.entities.VisEntityViewedResume;
@@ -118,6 +120,7 @@ public class ResumesToRecruitersTest {
 			VisEntityRecruiterResumes.ENTITY.delete(key);
 			VisEntityRecruiterFirstEmail.ENTITY.delete(key);
 			VisEntityRecruiterSignUpReturn.ENTITY.delete(key);
+			VisEntityRecruiterUnsubscribed.ENTITY.delete(key);
 		}
 	}
 
@@ -1372,7 +1375,29 @@ public class ResumesToRecruitersTest {
 
 		CcpJsonRepresentation key = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, recruiter);
 		assertFalse(VisEntityRecruiter.ENTITY.exists(key));
+		assertTrue(VisEntityRecruiterUnsubscribed.ENTITY.exists(key));
 		CcpJsonRepresentation counters = sendTo(recruiter);
 		assertEquals(0, counters.getAsIntegerNumber(VisRecruiterResumesFields.emailsSent).intValue());
+	}
+
+	/** The recruiter already inactivated by the daily process who clicks the link is recorded as unsubscribed too, and stays inactive. */
+	@Test
+	public void unsubscribingAnInactiveRecruiterRecordsTheUnsubscription() {
+		String recruiter = this.recruiter("inactiveleaving", "gmail.com");
+		this.saveRecruiter(recruiter);
+		CcpJsonRepresentation key = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, recruiter);
+		VisEntityRecruiter.ENTITY.delete(key);
+		CcpEntity twinEntity = VisEntityRecruiter.ENTITY.getTwinEntity();
+		assertTrue(twinEntity.exists(key));
+		assertFalse(VisEntityRecruiterUnsubscribed.ENTITY.exists(key));
+		CcpJsonRepresentation unsubscribe = CcpOtherConstants.EMPTY_JSON
+				.put(JnJsonCommonsFields.email, recruiter)
+				.put(VisRecruiterResumesFields.token, VisRecruiterLinks.unsubscribe.sign(recruiter));
+
+		VisServiceRecruiterResumes.UnsubscribeFromResumesEmail.execute(unsubscribe);
+
+		assertTrue(VisEntityRecruiterUnsubscribed.ENTITY.exists(key));
+		assertFalse(VisEntityRecruiter.ENTITY.exists(key));
+		assertTrue(twinEntity.exists(key));
 	}
 }
