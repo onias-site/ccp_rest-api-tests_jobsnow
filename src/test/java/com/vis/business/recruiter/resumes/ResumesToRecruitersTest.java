@@ -1263,6 +1263,50 @@ public class ResumesToRecruitersTest {
 		VisEntityViewedResume.ENTITY.deleteAnyWhere(view);
 	}
 
+	/** The recruiter who unsubscribed and then views a resume becomes active again and leaves the unsubscribed ones. */
+	@Test
+	public void aViewTakesTheUnsubscribedRecruiterOutOfTheUnsubscribedOnes() {
+		String recruiter = this.recruiter("unsubscribedviewer", "gmail.com");
+		this.saveRecruiter(recruiter);
+		CcpJsonRepresentation unsubscribe = CcpOtherConstants.EMPTY_JSON
+				.put(JnJsonCommonsFields.email, recruiter)
+				.put(VisRecruiterResumesFields.token, VisRecruiterLinks.unsubscribe.sign(recruiter));
+		VisServiceRecruiterResumes.UnsubscribeFromResumesEmail.execute(unsubscribe);
+		CcpJsonRepresentation key = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, recruiter);
+		assertTrue(VisEntityRecruiterUnsubscribed.ENTITY.exists(key));
+		assertFalse(VisEntityRecruiter.ENTITY.exists(key));
+
+		CcpJsonRepresentation view = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityViewedResume.Fields.linkedin, this.linkedin("desistiudodescadastro"))
+				.put(VisEntityViewedResume.Fields.email, recruiter)
+				.put(VisEntityViewedResume.Fields.alias, "Candidato que trouxe de volta");
+		VisEntityViewedResume.ENTITY.save(view);
+
+		assertFalse(VisEntityRecruiterUnsubscribed.ENTITY.exists(key));
+		assertTrue(VisEntityRecruiter.ENTITY.exists(key));
+		VisEntityViewedResume.ENTITY.deleteAnyWhere(view);
+	}
+
+	/** An active recruiter found among the unsubscribed ones (no twin record) also leaves them on viewing a resume. */
+	@Test
+	public void aViewOfAnActiveRecruiterAlsoRemovesTheUnsubscription() {
+		String recruiter = this.recruiter("activeunsubscribed", "gmail.com");
+		this.saveRecruiter(recruiter);
+		CcpJsonRepresentation key = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, recruiter);
+		VisEntityRecruiterUnsubscribed.ENTITY.save(key);
+		assertTrue(VisEntityRecruiter.ENTITY.exists(key));
+
+		CcpJsonRepresentation view = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityViewedResume.Fields.linkedin, this.linkedin("ativodescadastrado"))
+				.put(VisEntityViewedResume.Fields.email, recruiter)
+				.put(VisEntityViewedResume.Fields.alias, "Candidato de quem estava ativo");
+		VisEntityViewedResume.ENTITY.save(view);
+
+		assertFalse(VisEntityRecruiterUnsubscribed.ENTITY.exists(key));
+		assertTrue(VisEntityRecruiter.ENTITY.exists(key));
+		VisEntityViewedResume.ENTITY.deleteAnyWhere(view);
+	}
+
 	/** A view of someone who is no recruiter creates no recruiter. */
 	@Test
 	public void aViewOfSomeoneWhoIsNotARecruiterChangesNoRecruiter() {
