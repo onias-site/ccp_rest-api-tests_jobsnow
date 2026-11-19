@@ -46,7 +46,8 @@ import com.vis.entities.VisEntityRecruiterSignUpReturn;
 /**
  * {@code /saveRecruiter <email>} of the support bot (since 2026-11-14): the operator saves an e-mail as a recruiter in
  * {@code vis_recruiter}, normalized and with the source {@code support}; an invalid address writes nothing, a recruiter
- * already active is only reported and an inactive one goes back to the recruiters.
+ * already active is only reported and an inactive one goes back to the recruiters, with the source {@code support}, only
+ * after the operator confirms it (since 2026-11-19).
  */
 public class SaveRecruiterThroughSupportBotTest {
 
@@ -154,23 +155,73 @@ public class SaveRecruiterThroughSupportBotTest {
 		assertEquals(VisEntityRecruiter.Sources.login.name(), stored.getAsString(VisEntityRecruiter.Fields.source));
 	}
 
-	/** An inactive recruiter goes back to the recruiters, with the record they had, and the return is kept. */
+	/**
+	 * An inactive recruiter is not reactivated at once: the operator is asked to confirm; "Sim" brings them back, with the
+	 * record they had but the source support, and the return is kept.
+	 */
 	@Test
-	public void anInactiveRecruiterIsReactivated() {
+	public void anInactiveRecruiterIsReactivatedAfterTheConfirmation() {
+		this.saveAnInactiveRecruiterFromLogin();
+
+		String question = this.operatorTypes("/saveRecruiter " + this.recruiter);
+
+		assertEquals(this.confirmationQuestion(), question);
+		assertTrue("nothing is written before the answer", VisEntityRecruiter.ENTITY.getTwinEntity().exists(this.recruiterKey()));
+		assertFalse(VisEntityRecruiter.ENTITY.exists(this.recruiterKey()));
+
+		String reply = this.operatorTypes("Sim");
+
+		assertEquals("O recrutador " + this.recruiter + " estava inativo e foi reativado, agora com a origem support.", reply);
+		assertTrue(VisEntityRecruiter.ENTITY.exists(this.recruiterKey()));
+		assertFalse(VisEntityRecruiter.ENTITY.getTwinEntity().exists(this.recruiterKey()));
+		CcpJsonRepresentation stored = VisEntityRecruiter.ENTITY.getOneById(this.recruiterKey());
+		assertEquals(VisEntityRecruiter.Sources.support.name(), stored.getAsString(VisEntityRecruiter.Fields.source));
+		CcpJsonRepresentation signUpReturn = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterSignUpReturn.Fields.email, this.recruiter);
+		assertTrue(VisEntityRecruiterSignUpReturn.ENTITY.exists(signUpReturn));
+	}
+
+	/** "Não" keeps the recruiter inactive, with the source they had. */
+	@Test
+	public void anInactiveRecruiterStaysInactiveWhenTheOperatorSaysNo() {
+		this.saveAnInactiveRecruiterFromLogin();
+		this.operatorTypes("/saveRecruiter " + this.recruiter);
+
+		String reply = this.operatorTypes("Não");
+
+		assertEquals("O recrutador " + this.recruiter + " continua inativo. Nada foi gravado.", reply);
+		assertFalse(VisEntityRecruiter.ENTITY.exists(this.recruiterKey()));
+		CcpJsonRepresentation stored = VisEntityRecruiter.ENTITY.getTwinEntity().getOneById(this.recruiterKey());
+		assertEquals(VisEntityRecruiter.Sources.login.name(), stored.getAsString(VisEntityRecruiter.Fields.source));
+		CcpJsonRepresentation signUpReturn = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterSignUpReturn.Fields.email, this.recruiter);
+		assertFalse(VisEntityRecruiterSignUpReturn.ENTITY.exists(signUpReturn));
+	}
+
+	/** An answer not understood repeats the question; the next answer is still handled. */
+	@Test
+	public void anAnswerNotUnderstoodRepeatsTheQuestion() {
+		this.saveAnInactiveRecruiterFromLogin();
+		this.operatorTypes("/saveRecruiter " + this.recruiter);
+
+		String reply = this.operatorTypes("talvez");
+
+		assertEquals("Não entendi a resposta.\n\nDigite \"Sim\" ou \"Não\"", reply);
+		assertFalse(VisEntityRecruiter.ENTITY.exists(this.recruiterKey()));
+
+		String secondReply = this.operatorTypes("sim");
+
+		assertEquals("O recrutador " + this.recruiter + " estava inativo e foi reativado, agora com a origem support.", secondReply);
+		assertTrue(VisEntityRecruiter.ENTITY.exists(this.recruiterKey()));
+	}
+
+	private void saveAnInactiveRecruiterFromLogin() {
 		CcpJsonRepresentation loginRecruiter = this.recruiterKey().put(VisEntityRecruiter.Fields.source, VisEntityRecruiter.Sources.login.name());
 		VisEntityRecruiter.ENTITY.save(VisBusinessPrepareRecruiter.INSTANCE.execute(loginRecruiter));
 		VisEntityRecruiter.ENTITY.delete(this.recruiterKey());
 		assertTrue(VisEntityRecruiter.ENTITY.getTwinEntity().exists(this.recruiterKey()));
+	}
 
-		String reply = this.operatorTypes("/saveRecruiter " + this.recruiter);
-
-		assertEquals("O recrutador " + this.recruiter + " estava inativo e foi reativado.", reply);
-		assertTrue(VisEntityRecruiter.ENTITY.exists(this.recruiterKey()));
-		assertFalse(VisEntityRecruiter.ENTITY.getTwinEntity().exists(this.recruiterKey()));
-		CcpJsonRepresentation stored = VisEntityRecruiter.ENTITY.getOneById(this.recruiterKey());
-		assertEquals(VisEntityRecruiter.Sources.login.name(), stored.getAsString(VisEntityRecruiter.Fields.source));
-		CcpJsonRepresentation signUpReturn = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterSignUpReturn.Fields.email, this.recruiter);
-		assertTrue(VisEntityRecruiterSignUpReturn.ENTITY.exists(signUpReturn));
+	private String confirmationQuestion() {
+		return "O e-mail " + this.recruiter + " é de um recrutador inativo. Quer mesmo reativar este recrutador? Se sim, a origem dele passa a ser support.\n\nDigite \"Sim\" ou \"Não\"";
 	}
 
 	/** An address that is not valid writes nothing. */
