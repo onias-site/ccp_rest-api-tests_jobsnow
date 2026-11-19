@@ -216,6 +216,21 @@ public class SaveRecruiterThroughSupportBotTest {
 		assertTrue(VisEntityRecruiterSignUpReturn.ENTITY.exists(signUpReturn));
 	}
 
+	/** The reactivation of an unsubscribed recruiter also takes them out of the unsubscribed ones. */
+	@Test
+	public void theReactivationRemovesTheUnsubscription() {
+		this.saveAnInactiveRecruiterFromLogin();
+		VisEntityRecruiterUnsubscribed.ENTITY.save(this.unsubscribedKey());
+		assertTrue(VisEntityRecruiterUnsubscribed.ENTITY.exists(this.unsubscribedKey()));
+		this.operatorTypes("/saveRecruiter " + this.recruiter);
+
+		String reply = this.operatorTypes("Sim");
+
+		assertEquals("O recrutador " + this.recruiter + " estava inativo e foi reativado, agora com a origem support.", reply);
+		assertTrue(VisEntityRecruiter.ENTITY.exists(this.recruiterKey()));
+		assertFalse(VisEntityRecruiterUnsubscribed.ENTITY.exists(this.unsubscribedKey()));
+	}
+
 	/** "Não" keeps the recruiter inactive, with the source they had. */
 	@Test
 	public void anInactiveRecruiterStaysInactiveWhenTheOperatorSaysNo() {
