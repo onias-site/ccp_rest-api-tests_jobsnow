@@ -42,12 +42,13 @@ import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.vis.business.recruiter.VisBusinessPrepareRecruiter;
 import com.vis.entities.VisEntityRecruiter;
 import com.vis.entities.VisEntityRecruiterSignUpReturn;
+import com.vis.entities.VisEntityRecruiterUnsubscribed;
 
 /**
  * {@code /saveRecruiter <email>} of the support bot (since 2026-11-14): the operator saves an e-mail as a recruiter in
- * {@code vis_recruiter}, normalized and with the source {@code support}; an invalid address writes nothing, a recruiter
- * already active is only reported and an inactive one goes back to the recruiters, with the source {@code support}, only
- * after the operator confirms it (since 2026-11-19).
+ * {@code vis_recruiter}, normalized and with the source {@code support}; an invalid address writes nothing. Since
+ * 2026-11-19 a recruiter already there changes only after the operator confirms it: an active one is inactivated and
+ * recorded as unsubscribed, an inactive one goes back to the recruiters with the source {@code support}.
  */
 public class SaveRecruiterThroughSupportBotTest {
 
@@ -114,6 +115,7 @@ public class SaveRecruiterThroughSupportBotTest {
 		VisEntityRecruiter.ENTITY.deleteAnyWhere(this.recruiterKey());
 		CcpJsonRepresentation signUpReturn = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterSignUpReturn.Fields.email, this.recruiter);
 		VisEntityRecruiterSignUpReturn.ENTITY.delete(signUpReturn);
+		VisEntityRecruiterUnsubscribed.ENTITY.delete(this.unsubscribedKey());
 	}
 
 	private CcpJsonRepresentation recruiterKey() {
@@ -142,17 +144,51 @@ public class SaveRecruiterThroughSupportBotTest {
 		assertTrue(VisEntityRecruiter.ENTITY.exists(this.recruiterKey()));
 	}
 
-	/** A recruiter already active is only reported: the record keeps its source. */
+	/**
+	 * An active recruiter is not changed at once: the operator is asked whether to inactivate them; "Sim" moves them to
+	 * the inactive recruiters and records the unsubscription.
+	 */
 	@Test
-	public void anActiveRecruiterIsOnlyReported() {
+	public void anActiveRecruiterIsInactivatedAndUnsubscribedAfterTheConfirmation() {
+		this.saveAnActiveRecruiterFromLogin();
+
+		String question = this.operatorTypes("/saveRecruiter " + this.recruiter);
+
+		assertEquals("O e-mail " + this.recruiter + " é de um recrutador ativo. Deseja inativar este recrutador? Se sim, ele também fica marcado como descadastrado e para de receber o e-mail de currículos.\n\nDigite \"Sim\" ou \"Não\"", question);
+		assertTrue("nothing is written before the answer", VisEntityRecruiter.ENTITY.exists(this.recruiterKey()));
+		assertFalse(VisEntityRecruiterUnsubscribed.ENTITY.exists(this.unsubscribedKey()));
+
+		String reply = this.operatorTypes("Sim");
+
+		assertEquals("O recrutador " + this.recruiter + " foi inativado e marcado como descadastrado.", reply);
+		assertFalse(VisEntityRecruiter.ENTITY.exists(this.recruiterKey()));
+		CcpJsonRepresentation inactive = VisEntityRecruiter.ENTITY.getTwinEntity().getOneById(this.recruiterKey());
+		assertEquals(VisEntityRecruiter.Sources.login.name(), inactive.getAsString(VisEntityRecruiter.Fields.source));
+		assertTrue(VisEntityRecruiterUnsubscribed.ENTITY.exists(this.unsubscribedKey()));
+	}
+
+	/** "Não" keeps the recruiter active and records no unsubscription. */
+	@Test
+	public void anActiveRecruiterStaysActiveWhenTheOperatorSaysNo() {
+		this.saveAnActiveRecruiterFromLogin();
+		this.operatorTypes("/saveRecruiter " + this.recruiter);
+
+		String reply = this.operatorTypes("não");
+
+		assertEquals("O recrutador " + this.recruiter + " continua ativo. Nada foi gravado.", reply);
+		assertTrue(VisEntityRecruiter.ENTITY.exists(this.recruiterKey()));
+		assertFalse(VisEntityRecruiter.ENTITY.getTwinEntity().exists(this.recruiterKey()));
+		assertFalse(VisEntityRecruiterUnsubscribed.ENTITY.exists(this.unsubscribedKey()));
+	}
+
+	private void saveAnActiveRecruiterFromLogin() {
 		CcpJsonRepresentation loginRecruiter = this.recruiterKey().put(VisEntityRecruiter.Fields.source, VisEntityRecruiter.Sources.login.name());
 		VisEntityRecruiter.ENTITY.save(VisBusinessPrepareRecruiter.INSTANCE.execute(loginRecruiter));
+		assertTrue(VisEntityRecruiter.ENTITY.exists(this.recruiterKey()));
+	}
 
-		String reply = this.operatorTypes("/saveRecruiter " + this.recruiter);
-
-		assertEquals("O e-mail " + this.recruiter + " já está cadastrado como recrutador.", reply);
-		CcpJsonRepresentation stored = VisEntityRecruiter.ENTITY.getOneById(this.recruiterKey());
-		assertEquals(VisEntityRecruiter.Sources.login.name(), stored.getAsString(VisEntityRecruiter.Fields.source));
+	private CcpJsonRepresentation unsubscribedKey() {
+		return CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterUnsubscribed.Fields.email, this.recruiter);
 	}
 
 	/**
