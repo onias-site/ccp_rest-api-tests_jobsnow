@@ -321,8 +321,8 @@ public class ResumesToRecruitersTest {
 		List<CcpJsonRepresentation> rowsOfTheProcess = rowsOf(source);
 		String messageOfTheProcess = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(source);
 		assertTrue("the subject counts the list of the screen \"see all\" (" + rowsOfTheProcess.size() + "): " + messageOfTheProcess.substring(0, 80),
-				messageOfTheProcess.startsWith(rowsOfTheProcess.size() + " currículos de "));
-		assertTrue(messageOfTheProcess.contains("(" + rowsOfTheProcess.size() + " no total)"));
+				messageOfTheProcess.startsWith("[DE GRAÇA!!!] " + rowsOfTheProcess.size() + " currículos de "));
+		assertTrue(messageOfTheProcess.contains("dos últimos 7 dias " + rowsOfTheProcess.size() + " no total ("));
 
 		// a list of a known size, as the e-mail to a recruiter whose resumes passed every filter
 		List<CcpJsonRepresentation> list = rowsOfTheProcess.subList(0, resumesOfTheList);
@@ -331,8 +331,11 @@ public class ResumesToRecruitersTest {
 		VisBusinessSendResumesToRecruiters.sendTheEmail(reader, list, "http://localhost:3000", "https://api.jobsnow.com");
 		String message = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(reader);
 
-		assertTrue("the subject counts the whole list: " + message.substring(0, 80), message.startsWith(resumesOfTheList + " currículos de "));
-		assertTrue("the opening text counts the whole list", message.contains("(" + resumesOfTheList + " no total)"));
+		assertTrue("the subject counts the whole list: " + message.substring(0, 80), message.startsWith("[DE GRAÇA!!!] " + resumesOfTheList + " currículos de "));
+		assertTrue("the opening text counts the whole list", message.contains("dos últimos 7 dias " + resumesOfTheList + " no total ("));
+		assertTrue("the opening text links onias.site", message.contains("<a href=\"http://localhost:3000\" target=\"_blank\">onias.site</a>"));
+		assertTrue("the opening text links the screen \"see all\"", message.contains("no total (<a href=\"http://localhost:3000/meu-recrutamento/curriculos-da-semana?email="));
+		assertTrue("the last sentence before the table asks to tell the candidate", message.contains("sempre lhe diga que o encontrou aqui"));
 		int shown = VisBusinessSendResumesToRecruiters.RESUMES_IN_THE_EMAIL;
 		assertTrue("the paragraph \"see all\" counts the table and the list", message.contains("Estes são os " + shown + " primeiros de " + resumesOfTheList + " currículos."));
 		// the link carries the recipient: with another account logged in, the screen asks for the login of the recipient
