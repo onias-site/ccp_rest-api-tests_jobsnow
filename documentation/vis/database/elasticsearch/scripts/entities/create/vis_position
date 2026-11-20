@@ -18,8 +18,8 @@
 				"type": "text"
 			},
 			"desiredSkill": {
-				"dynamic": "true",
-				"properties": {}
+				"type": "object",
+				"enabled": false
 			},
 			"disponibility": {
 				"type": "long"

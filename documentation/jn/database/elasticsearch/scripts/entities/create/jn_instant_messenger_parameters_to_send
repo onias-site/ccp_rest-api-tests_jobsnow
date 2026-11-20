@@ -24,8 +24,8 @@
 				"type": "text"
 			},
 			"moreParameters": {
-				"dynamic": "true",
-					"properties": {}
+				"type": "object",
+				"enabled": false
 			}
 		}
 	}

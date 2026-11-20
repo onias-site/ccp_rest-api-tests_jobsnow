@@ -18,8 +18,8 @@
 				"type": "keyword"
 			},
 			"moreParameters": {
-				"dynamic": "true",
-					"properties": {}
+				"type": "object",
+				"enabled": false
 			}
 		}
 	}

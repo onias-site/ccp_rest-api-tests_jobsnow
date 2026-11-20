@@ -15,8 +15,8 @@
 				"type": "keyword"
 			},
 			"json": {
-				"dynamic": "true",
-				"properties": {}
+				"type": "object",
+				"enabled": false
 			},
 			"language": {
 				"type": "keyword"
