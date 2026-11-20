@@ -1,5 +1,7 @@
 package com.vis.business.recruiter.resumes;
 
+import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -41,6 +43,8 @@ import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
+import com.jn.entities.JnEntityGrouper;
+import com.jn.utils.JnVersionableHistory;
 import com.jn.utils.JnLanguage;
 import com.vis.business.recruiter.VisBusinessReactivateRecruiterWhoViewed;
 import com.vis.entities.VisEntityRecruiter;
@@ -84,6 +88,10 @@ public class ResumesToRecruitersTest {
 		);
 		List<CcpBulkItem> seeds = VisEntityRecruiterResumes.INSTANCE.getFirstRecordsToInsert();
 		for (CcpBulkItem seed : seeds) {
+			// the version of the history (a scripted update of jn_grouper) is written by the save itself
+			if(seed.operation == CcpBulkEntityOperationType.scriptedUpdate) {
+				continue;
+			}
 			seed.entity.save(seed.json);
 		}
 	}
@@ -176,7 +184,7 @@ public class ResumesToRecruitersTest {
 		CcpTimeDecorator now = new CcpTimeDecorator();
 		Assume.assumeFalse(now.isWeekend());
 		// the process queries what the test has just written
-		ElasticsearchLocal.refresh("jn_versionable", "vis_resume", "vis_recruiter", "vis_viewed_resume");
+		ElasticsearchLocal.refresh("jn_grouper", "vis_resume", "vis_recruiter", "vis_viewed_resume");
 		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON.put(VisRecruiterResumesFields.recruiters, Arrays.asList(recruiters));
 		CcpJsonRepresentation counters = VisBusinessSendResumesToRecruiters.INSTANCE.execute(input);
 		return counters;
@@ -831,22 +839,31 @@ public class ResumesToRecruitersTest {
 				.put(VisEntityViewedResume.Fields.linkedin, linkedinHash)
 				.put(VisEntityViewedResume.Fields.alias, "Visto faz tempo");
 		long timestamp = System.currentTimeMillis() - days * 24L * 60 * 60 * 1000;
-		CcpJsonRepresentation historyRow = CcpOtherConstants.EMPTY_JSON
-				.put(JnJsonCommonsFields.entity, VisEntityViewedResume.ENTITY.getEntityMetaData().entityName)
-				.put(JnJsonCommonsFields.id, view.removeFields(VisEntityViewedResume.Fields.alias).asUgglyJson())
-				.put(JnJsonCommonsFields.json, view.asPrettyJson())
+		CcpJsonRepresentation version = CcpOtherConstants.EMPTY_JSON
+				.put(JnJsonCommonsFields.json, view)
 				.put(JnJsonCommonsFields.operation, "create")
 				.put(JnJsonCommonsFields.date, "forjado pelo teste")
 				.put(JnJsonCommonsFields.timestamp, timestamp);
-		String historyId = "forged-view-" + days + "-" + emailHash;
-		ElasticsearchLocal.save("jn_versionable", historyId, historyRow);
-		this.forgedViews.add(historyId);
+		String entityName = VisEntityViewedResume.ENTITY.getEntityMetaData().entityName;
+		String recordId = "forged-view-" + days + "-" + emailHash;
+		CcpJsonRepresentation groupKey = JnVersionableHistory.getGroupKey(entityName, recordId);
+		CcpJsonRepresentation parentJson = CcpOtherConstants.EMPTY_JSON
+				.put(JnJsonCommonsFields.entity, entityName)
+				.put(JnJsonCommonsFields.id, recordId)
+				.put(JnVersionableHistory.Fields.primaryKey, view.removeFields(VisEntityViewedResume.Fields.alias));
+		CcpJsonRepresentation group = groupKey
+				.put(JnEntityGrouper.Fields.parentJson, parentJson)
+				.put(JnEntityGrouper.Fields.child, List.of(version.asUgglyJson()))
+				.put(JnEntityGrouper.Fields.childCount, 1);
+		String groupId = JnEntityGrouper.ENTITY.calculateId(groupKey);
+		ElasticsearchLocal.save("jn_grouper", groupId, group);
+		this.forgedViews.add(groupId);
 	}
 
 	@After
 	public void deleteTheForgedViews() {
 		for (String historyId : this.forgedViews) {
-			ElasticsearchLocal.delete("jn_versionable", historyId);
+			ElasticsearchLocal.delete("jn_grouper", historyId);
 		}
 	}
 
@@ -966,7 +983,7 @@ public class ResumesToRecruitersTest {
 	/** A view made now, already visible to the queries of the process. */
 	private void viewedNow(String recruiter, String linkedinAddress) {
 		this.viewedDaysAgo(recruiter, linkedinAddress, 0);
-		ElasticsearchLocal.refresh("jn_versionable");
+		ElasticsearchLocal.refresh("jn_grouper");
 	}
 
 	private static List<CcpJsonRepresentation> skillsNamed(String prefix, int howMany) {
@@ -1130,6 +1147,10 @@ public class ResumesToRecruitersTest {
 	public void theInvitationGoesWithTheLinkOfTheFormAndTheTable() throws java.io.IOException {
 		List<CcpBulkItem> seeds = VisEntityRecruiterResumes.INSTANCE.getInvitationSeeds();
 		for (CcpBulkItem seed : seeds) {
+			// the version of the history (a scripted update of jn_grouper) is written by the save itself
+			if(seed.operation == CcpBulkEntityOperationType.scriptedUpdate) {
+				continue;
+			}
 			seed.entity.save(seed.json);
 		}
 		String email = this.candidate("invited");

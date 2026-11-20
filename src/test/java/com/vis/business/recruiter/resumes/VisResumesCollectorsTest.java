@@ -34,10 +34,10 @@ public class VisResumesCollectorsTest {
 
 	private static final String SEPARATOR = "|";
 
-	/** A row of {@code jn_versionable}: the record as text and the time of the change. */
+	/** A version of the history (a child of its group in {@code jn_grouper}, parsed): the record and the time of the change. */
 	private static CcpJsonRepresentation historyRow(CcpJsonRepresentation record, long timestamp) {
 		return CcpOtherConstants.EMPTY_JSON
-				.put(JnJsonCommonsFields.json, record.asUgglyJson())
+				.put(JnJsonCommonsFields.json, record)
 				.put(JnJsonCommonsFields.timestamp, timestamp);
 	}
 

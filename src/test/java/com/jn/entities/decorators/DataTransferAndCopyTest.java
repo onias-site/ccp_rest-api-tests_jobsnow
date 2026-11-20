@@ -11,7 +11,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.jn.entities.JnEntityLoginEmail;
 import com.js.entities.JsEntityLoginSessionConflict;
-import com.jn.entities.JnEntityVersionable;
+import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
@@ -85,11 +85,6 @@ public class DataTransferAndCopyTest extends EntityDecoratorTestTemplate {
 		disposable.delete(record);
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
-	public void aVersionableEntityDoesNotReadAnyWhere() {
-		com.jn.entities.JnEntityEmailParametersToSend.ENTITY.getOneByIdAnyWhere(this.validRecord());
-	}
-
 	@Test
 	public void missingSourceCreatesNothingInTarget() {
 		CcpEntity source = JnEntityLoginEmail.ENTITY;
@@ -105,20 +100,22 @@ public class DataTransferAndCopyTest extends EntityDecoratorTestTemplate {
 	/** The record is put into the read-only entity from outside, because it refuses to save through the API. */
 	@Test
 	public void readOnlyEntityDoesNotTransfer() {
-		CcpEntity source = JnEntityVersionable.ENTITY;
-		CcpJsonRepresentation record = this.com(JnJsonCommonsFields.timestamp, this.unique)
-				.put(JnJsonCommonsFields.operation, "create")
+		CcpEntity source = JnEntityDisposableRecord.ENTITY;
+		long now = System.currentTimeMillis();
+		CcpJsonRepresentation record = this.com(JnJsonCommonsFields.timestamp, now + 3_600_000L)
+				.put(JnEntityDisposableRecord.Fields.trueTimestamp, now)
+				.put(JnEntityDisposableRecord.Fields.format, "ddMMyyyy HH")
 				.put(JnJsonCommonsFields.date, "27/09/2026 10:00:00.000")
 				.put(JnJsonCommonsFields.entity, "jn_login_email")
 				.put(JnJsonCommonsFields.id, "{\"email\":\"" + this.unique + "\"}")
-				.put(JnJsonCommonsFields.json, this.com(JnJsonCommonsFields.email, this.email).asUgglyJson());
+				.put(JnJsonCommonsFields.json, this.com(JnJsonCommonsFields.email, this.email));
 		String id = source.calculateId(source.getHandledJson(record));
-		ElasticsearchLocal.save("jn_versionable", id, record);
+		ElasticsearchLocal.save("jn_disposable_record", id, record);
 
 		boolean transferred = source.transferDataTo(record, JnEntityLoginEmail.ENTITY);
 
 		assertFalse("read-only entity transferred", transferred);
 		assertTrue("read-only entity lost the record", source.exists(record));
-		ElasticsearchLocal.delete("jn_versionable", id);
+		ElasticsearchLocal.delete("jn_disposable_record", id);
 	}
 }

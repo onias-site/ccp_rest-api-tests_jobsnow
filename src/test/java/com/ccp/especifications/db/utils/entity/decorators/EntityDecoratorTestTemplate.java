@@ -14,6 +14,8 @@ import java.util.Optional;
 import org.junit.BeforeClass;
 
 import com.ccp.constants.CcpOtherConstants;
+import com.jn.entities.JnEntityGrouper;
+import com.jn.utils.JnVersionableHistory;
 import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
@@ -350,11 +352,11 @@ public abstract class EntityDecoratorTestTemplate {
 
 	// ── @CcpEntityVersionable ──────────────────────────────────────────────────
 
-	/** Each write through the entity adds exactly one history line to jn_versionable. */
+	/** Each write through the entity adds exactly one version to the history of the record (its group in jn_grouper). */
 	protected void shouldRecordHistoryOnEachWrite() {
 		CcpEntity entityUnderTest = this.entityUnderTest();
 		CcpJsonRepresentation record = this.validRecord();
-		String primaryKey = this.serializedPrimaryKey(record);
+		String primaryKey = this.idInTheDatabase(record);
 
 		long before = this.historyLines(primaryKey);
 
@@ -378,8 +380,13 @@ public abstract class EntityDecoratorTestTemplate {
 		return lines;
 	}
 
-	private long historyLines(String entityName, String primaryKey) {
-		long lines = ElasticsearchLocal.count("jn_versionable", "entity", entityName, "id", primaryKey);
+	/** How many versions the history of the record has under the given name: the children of its group in jn_grouper. */
+	private long historyLines(String entityName, String recordId) {
+		CcpJsonRepresentation groupKey = JnVersionableHistory.getGroupKey(entityName, recordId);
+		String groupId = JnEntityGrouper.ENTITY.calculateId(groupKey);
+		CcpJsonRepresentation group = ElasticsearchLocal.document("jn_grouper", groupId);
+		List<String> versions = group.getAsStringList(JnEntityGrouper.Fields.child);
+		long lines = versions.size();
 		return lines;
 	}
 
@@ -391,7 +398,7 @@ public abstract class EntityDecoratorTestTemplate {
 	protected void shouldPurgeHistoryOnDeleteAnyWhere() {
 		CcpEntity entityUnderTest = this.entityUnderTest();
 		CcpJsonRepresentation record = this.validRecord();
-		String primaryKey = this.serializedPrimaryKey(record);
+		String primaryKey = this.idInTheDatabase(record);
 		boolean isTwin = entityUnderTest.getEntityMetaData().configurationClass.isAnnotationPresent(CcpEntityTwin.class);
 
 		entityUnderTest.save(record);
@@ -602,7 +609,7 @@ public abstract class EntityDecoratorTestTemplate {
 		return id;
 	}
 
-	/** The serialized primary key, which is how jn_versionable and jn_disposable_record point to the record. */
+	/** The serialized primary key, which is how jn_disposable_record points to the record. */
 	protected String serializedPrimaryKey(CcpJsonRepresentation record) {
 		CcpEntity entityUnderTest = this.entityUnderTest();
 		CcpJsonRepresentation transformedRecord = entityUnderTest.getHandledJson(record);

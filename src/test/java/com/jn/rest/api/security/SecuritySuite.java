@@ -18,6 +18,7 @@ import com.vis.rest.api.VisSessionFilterPathsTest;
 @RunWith(Suite.class)
 @SuiteClasses({
 	ACandidateCannotReadTheDataOfAnother.class,
+	TheVersionableHistoryIsReadOnlyByItsOwner.class,
 	EveryRouteOfTheUserRefusesARequestWithoutSession.class,
 	AnEndedSessionNoLongerOpensAnything.class,
 	TheContactUsKeepsItsDailyQuotas.class,

@@ -54,7 +54,6 @@ import com.js.entities.JsEntityLoginTokenRequestUnlock;
 import com.jn.entities.JnEntityMessageDidNotSent;
 import com.jn.entities.JnEntityRecordToReprocess;
 import com.jn.entities.JnEntitySystemMessage;
-import com.jn.entities.JnEntityVersionable;
 
 /**
  * Guards against a validation rule silently lost. {@code @CcpJsonCopyFieldValidationsFrom(X.class)}
@@ -81,7 +80,7 @@ public class ValidationRulesCopyTest {
 			JsEntityLoginSessionConflict.class, JsEntityLoginSessionTokenAttempts.class, JsEntityLoginSessionValidation.class,
 			JsEntityLoginToken.class, JsEntityLoginTokenAttempts.class,
 			JsEntityLoginTokenRequestResend.class, JsEntityLoginTokenRequestUnlock.class, JnEntityMessageDidNotSent.class,
-			JnEntityRecordToReprocess.class, JnEntitySystemMessage.class, JnEntityVersionable.class
+			JnEntityRecordToReprocess.class, JnEntitySystemMessage.class
 	);
 
 	@Test

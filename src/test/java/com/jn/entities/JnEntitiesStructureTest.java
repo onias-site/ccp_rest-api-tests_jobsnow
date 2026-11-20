@@ -61,7 +61,7 @@ public class JnEntitiesStructureTest {
 	@Test public void botUpdateHandlerEntityTest() { assertNotNull(JnEntityBotUpdateHandler.ENTITY); }
 	@Test public void recordToReprocessEntityTest() { assertNotNull(JnEntityRecordToReprocess.ENTITY); }
 	@Test public void systemMessageEntityTest() { assertNotNull(JnEntitySystemMessage.ENTITY); }
-	@Test public void versionableEntityTest() { assertNotNull(JnEntityVersionable.ENTITY); }
+	@Test public void versionableHistoryEntityTest() { assertNotNull(JnEntityVirtualVersionableHistory.ENTITY); }
 
 	// ── Fields.values() not null ─────────────────────────────────────────────
 
@@ -91,7 +91,7 @@ public class JnEntitiesStructureTest {
 	@Test public void sessionValidatorFieldsTest() { assertNotNull(JnEntitySessionValidator.Fields.values()); }
 	@Test public void botUpdateHandlerFieldsTest() { assertNotNull(JnEntityBotUpdateHandler.Fields.values()); }
 	@Test public void recordToReprocessFieldsTest() { assertNotNull(JnEntityRecordToReprocess.Fields.values()); }
-	@Test public void versionableFieldsTest() { assertNotNull(JnEntityVersionable.Fields.values()); }
+	@Test public void versionableHistoryFieldsTest() { assertNotNull(JnEntityVirtualVersionableHistory.Fields.values()); }
 
 	// ── configurator constructors not null ───────────────────────────────────
 

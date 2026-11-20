@@ -1,5 +1,7 @@
 package com.jb.business.bots.engine;
 
+import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -351,6 +353,10 @@ public class PendingTicketsThroughSupportBotTest {
 		JnEntityInstantMessengerTemplateMessage configurator = JnEntityInstantMessengerTemplateMessage.INSTANCE;
 		List<CcpBulkItem> templates = configurator.getFirstRecordsToInsert();
 		for (CcpBulkItem template : templates) {
+			// the version of the history (a scripted update of jn_grouper) is written by the save itself
+			if(template.operation == CcpBulkEntityOperationType.scriptedUpdate) {
+				continue;
+			}
 			template.entity.save(template.json);
 		}
 	}

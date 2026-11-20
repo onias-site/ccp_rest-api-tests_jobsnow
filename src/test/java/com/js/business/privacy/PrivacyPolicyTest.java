@@ -1,5 +1,7 @@
 package com.js.business.privacy;
 
+import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -52,6 +54,10 @@ public class PrivacyPolicyTest {
 	public static void resaveThePrivacyPolicy() {
 		List<CcpBulkItem> seeds = JsPrivacyPolicyMessages.getSeeds();
 		for (CcpBulkItem seed : seeds) {
+			// the version of the history (a scripted update of jn_grouper) is written by the save itself
+			if(seed.operation == CcpBulkEntityOperationType.scriptedUpdate) {
+				continue;
+			}
 			seed.entity.save(seed.json);
 		}
 	}
