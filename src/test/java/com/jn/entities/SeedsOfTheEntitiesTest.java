@@ -25,7 +25,6 @@ import com.jb.entities.JbEntityBotAllowedUser;
 import com.jb.entities.JbEntityBotExplanation;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
-import com.jn.utils.JnLanguage;
 import com.js.business.login.JsBusinessCheckTypedLoginToken;
 import com.js.business.login.JsBusinessValidateLogin;
 import com.js.entities.JsEntityLoginSessionValidation;
@@ -53,10 +52,11 @@ public class SeedsOfTheEntitiesTest {
 		assertFalse(configurator.getClass().getSimpleName(), seeds.isEmpty());
 		for (CcpBulkItem seed : seeds) {
 			// the only seeds that are not a create append to a record that several cost centers fill: a subscriber to a
-			// write event and, since 2026-11-14, the providers of the charts of a screen
+			// write event, since 2026-11-14, the providers of the charts of a screen and, since 2026-11-20, the version of a
+			// versionable seed appended to its group of history in jn_grouper
 			boolean scripted = seed.operation != CcpBulkEntityOperationType.create;
 			if(scripted) {
-				List<String> appendedEntities = Arrays.asList(JnEntityWriteEventSubscribers.ENTITY.getEntityMetaData().entityName, JnEntityGrouperChartsProviders.ENTITY.getEntityMetaData().entityName);
+				List<String> appendedEntities = Arrays.asList(JnEntityWriteEventSubscribers.ENTITY.getEntityMetaData().entityName, JnEntityGrouperChartsProviders.ENTITY.getEntityMetaData().entityName, JnEntityGrouper.ENTITY.getEntityMetaData().entityName);
 				String seedEntityName = seed.entity.getEntityMetaData().entityName;
 				assertTrue(seedEntityName, appendedEntities.contains(seedEntityName));
 				continue;
@@ -85,11 +85,12 @@ public class SeedsOfTheEntitiesTest {
 	}
 
 	@Test
-	public void theNonProfessionalDomainsAreSeededInPortuguese() {
-		List<CcpJsonRepresentation> seeds = this.jsonsOf(JnEntitySystemMessage.INSTANCE);
+	public void theNonProfessionalDomainsAreSeededWithoutLanguage() {
+		List<CcpJsonRepresentation> seeds = this.jsonsOf(JnEntitySystemParameter.INSTANCE);
 
 		CcpJsonRepresentation domains = seeds.get(0);
-		assertEquals(JnLanguage.portuguese.name(), domains.getAsString(JnJsonCommonsFields.language));
+		assertEquals(JnEntitySystemParameter.NON_PROFESSIONAL_DOMAINS, domains.getAsString(JnEntitySystemParameter.Fields.systemMessageName));
+		assertFalse(domains.containsAllFields(JnJsonCommonsFields.language));
 		String text = domains.getAsStringList(JnJsonCommonsFields.message).toString();
 		assertTrue(text, text.contains("gmail.com"));
 		assertTrue(text, text.contains("hotmail.com"));

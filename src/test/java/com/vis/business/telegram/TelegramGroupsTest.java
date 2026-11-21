@@ -20,11 +20,11 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.jn.entities.JnEntitySystemMessage;
+import com.jn.entities.JnEntitySystemParameter;
 import com.vis.entities.VisEntityStatisSkillPieChart;
 import com.vis.services.VisServiceSkillStatistics;
 
-/** The links of the Telegram groups are a record of {@code jn_system_message}, seeded by the vis and read by id. */
+/** The links of the Telegram groups are a record of {@code jn_system_parameter}, seeded by the vis and read by id. */
 public class TelegramGroupsTest {
 
 	static {
@@ -40,22 +40,22 @@ public class TelegramGroupsTest {
 	}
 
 	@Test
-	public void theEntityOfTheMessagesIsCacheable() {
-		assertTrue(JnEntitySystemMessage.class.isAnnotationPresent(CcpEntityCache.class));
+	public void theEntityOfTheParametersIsCacheable() {
+		assertTrue(JnEntitySystemParameter.class.isAnnotationPresent(CcpEntityCache.class));
 	}
 
 	@Test
 	public void theLinksAreSeededByTheEntityOfTheChart() {
 		List<CcpBulkItem> seeds = VisEntityStatisSkillPieChart.INSTANCE.getFirstRecordsToInsert();
 
-		String expectedId = JnEntitySystemMessage.ENTITY.calculateId(VisTelegramSystemMessages.getGroupsRecord());
+		String expectedId = JnEntitySystemParameter.ENTITY.calculateId(VisTelegramSystemParameters.getGroupsRecord());
 		assertEquals(1, seeds.size());
 		assertEquals(expectedId, seeds.get(0).id);
 	}
 
 	@Test
 	public void theServiceListsEveryLinkOfTheRecord() {
-		JnEntitySystemMessage.ENTITY.save(VisTelegramSystemMessages.getGroupsRecord());
+		JnEntitySystemParameter.ENTITY.save(VisTelegramSystemParameters.getGroupsRecord());
 
 		var response = VisServiceSkillStatistics.GetTelegramGroups.execute(CcpOtherConstants.EMPTY_JSON.content);
 

@@ -61,6 +61,7 @@ public class JnEntitiesStructureTest {
 	@Test public void botUpdateHandlerEntityTest() { assertNotNull(JnEntityBotUpdateHandler.ENTITY); }
 	@Test public void recordToReprocessEntityTest() { assertNotNull(JnEntityRecordToReprocess.ENTITY); }
 	@Test public void systemMessageEntityTest() { assertNotNull(JnEntitySystemMessage.ENTITY); }
+	@Test public void systemParameterEntityTest() { assertNotNull(JnEntitySystemParameter.ENTITY); }
 	@Test public void versionableHistoryEntityTest() { assertNotNull(JnEntityVirtualVersionableHistory.ENTITY); }
 
 	// ── Fields.values() not null ─────────────────────────────────────────────

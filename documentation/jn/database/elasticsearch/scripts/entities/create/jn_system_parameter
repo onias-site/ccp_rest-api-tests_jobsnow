@@ -1,0 +1,14 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"systemMessageName": {
+				"type": "keyword"
+			},
+			"message": {
+				"type": "text"
+			}
+		}
+	}
+}
+	

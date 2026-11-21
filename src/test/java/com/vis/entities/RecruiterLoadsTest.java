@@ -213,7 +213,8 @@ public class RecruiterLoadsTest {
 		String grouperName = JnEntityGrouper.ENTITY.getEntityMetaData().entityName;
 		String domainGroupName = VisEntityVirtualRecruiterDomainInitialsGrouper.ENTITY.getEntityMetaData().entityName;
 		String sourceCounterName = VisEntityVirtualRecruiterSourceCounter.ENTITY.getEntityMetaData().entityName;
-		List<CcpBulkItem> grouperItems = seed.stream().filter(item -> grouperName.equals(item.entity.getEntityMetaData().entityName)).collect(Collectors.toList());
+		// since 2026-11-20 the versions of the history of each recruiter also go to jn_grouper, appended by script
+		List<CcpBulkItem> grouperItems = seed.stream().filter(item -> grouperName.equals(item.entity.getEntityMetaData().entityName)).filter(item -> item.operation == CcpBulkEntityOperationType.create).collect(Collectors.toList());
 		List<CcpBulkItem> groups = grouperItems.stream().filter(item -> domainGroupName.equals(item.json.getAsString(JnEntityGrouper.Fields.parentName))).collect(Collectors.toList());
 		List<CcpBulkItem> sourceCounters = grouperItems.stream().filter(item -> sourceCounterName.equals(item.json.getAsString(JnEntityGrouper.Fields.parentName))).collect(Collectors.toList());
 		assertEquals("the domain group and the counter of the sources (since 2026-11-17)", 2, grouperItems.size());
