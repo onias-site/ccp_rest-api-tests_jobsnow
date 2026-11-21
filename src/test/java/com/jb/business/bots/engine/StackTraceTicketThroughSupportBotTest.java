@@ -39,6 +39,8 @@ import com.jn.entities.JnEntityBotCommandStepEndMessage;
 import com.jn.entities.JnEntityInstantMessengerParametersToSend;
 import com.jn.entities.JnEntityInstantMessengerTemplateMessage;
 import com.jn.entities.JnEntityJobsnowError;
+import com.jn.utils.JnDeleteKeysFromCache;
+import com.jn.db.bulk.JnExecuteBulkOperation;
 import com.jn.entities.JnEntitySupportPendingCommand;
 import com.jn.json.fields.validation.JnApiOrigins;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
@@ -127,7 +129,11 @@ public class StackTraceTicketThroughSupportBotTest {
 		String errorId = JnEntityJobsnowError.ENTITY.calculateId(error);
 		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
 		String entityName = JnEntityJobsnowError.ENTITY.name();
+		String twinName = JnEntityJobsnowError.ENTITY.getTwinEntity().name();
 		crud.delete(entityName, errorId);
+		crud.delete(twinName, errorId);
+		crud.delete(entityName, this.pastPeriodErrorId());
+		crud.delete(twinName, this.pastPeriodErrorId());
 	}
 
 	/**
@@ -161,8 +167,8 @@ public class StackTraceTicketThroughSupportBotTest {
 	}
 
 	/**
-	 * The operator sees the error, an answer not understood is asked again, and solving it closes the ticket and keeps
-	 * the record.
+	 * The operator sees the error, an answer not understood is asked again, and solving it closes the ticket and moves
+	 * the record to the twin {@code jn_jobsnow_error_solved}, with the same id and fields.
 	 */
 	@Test
 	public void operatorSolvesTheError() {
@@ -188,7 +194,38 @@ public class StackTraceTicketThroughSupportBotTest {
 		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
 		String errorId = JnEntityJobsnowError.ENTITY.calculateId(this.error());
 		String entityName = JnEntityJobsnowError.ENTITY.name();
-		assertTrue(crud.exists(entityName, errorId));
+		String twinName = JnEntityJobsnowError.ENTITY.getTwinEntity().name();
+		assertEquals("jn_jobsnow_error_solved", twinName);
+		assertFalse(crud.exists(entityName, errorId));
+		CcpJsonRepresentation solvedError = crud.getOneById(twinName, errorId);
+		assertEquals(ERROR_TEXT + " " + this.unique, solvedError.getAsString(JnEntityJobsnowError.Fields.message));
+		assertEquals(ERROR_TYPE, solvedError.getAsString(JnEntityJobsnowError.Fields.type));
+		assertEquals(this.unique, solvedError.getAsString(JnEntityJobsnowError.Fields.stackTraceHash));
+	}
+
+	/**
+	 * The id of a disposable record depends on the period it was written in: an error of a past period, whose id the
+	 * entity would no longer calculate, is moved by the id of the command.
+	 */
+	@Test
+	public void anErrorOfAPastPeriodIsMovedByTheIdOfTheCommand() {
+		String errorId = this.pastPeriodErrorId();
+		CcpBulkItem pastPeriodError = new CcpBulkItem(this.error(), CcpBulkEntityOperationType.create, JnEntityJobsnowError.ENTITY, errorId);
+		JnExecuteBulkOperation.INSTANCE.executeBulk(Arrays.asList(pastPeriodError), JnDeleteKeysFromCache.INSTANCE);
+
+		this.operatorTypes("/solveStackTrace " + errorId);
+		String solved = this.operatorTypes("1");
+		assertTrue(solved, solved.contains("foi marcado como resolvido"));
+
+		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
+		String entityName = JnEntityJobsnowError.ENTITY.name();
+		String twinName = JnEntityJobsnowError.ENTITY.getTwinEntity().name();
+		assertFalse(crud.exists(entityName, errorId));
+		assertTrue(crud.exists(twinName, errorId));
+	}
+
+	private String pastPeriodErrorId() {
+		return "pastperiod" + this.unique;
 	}
 
 	/**
