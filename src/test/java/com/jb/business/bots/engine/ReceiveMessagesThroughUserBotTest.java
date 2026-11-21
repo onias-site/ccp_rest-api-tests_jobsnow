@@ -141,8 +141,6 @@ public class ReceiveMessagesThroughUserBotTest {
 
 		assertEquals("Pronto! A partir de agora você receberá por aqui as mensagens do Onias.Site sobre o seu currículo.", saved);
 		assertEquals(USER_CHAT, this.chatOf(this.email));
-		CcpJsonRepresentation resume = VisEntityResume.ENTITY.getOneById(this.resumeKey(this.email));
-		assertFalse(resume.containsField(VisEntityResume.Fields.chatId));
 		assertFalse(VisEntityLoginTokenAttempts.ENTITY.exists(this.attemptsKey()));
 	}
 

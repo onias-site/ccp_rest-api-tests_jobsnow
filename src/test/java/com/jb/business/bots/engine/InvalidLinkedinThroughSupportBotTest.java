@@ -281,22 +281,19 @@ public class InvalidLinkedinThroughSupportBotTest {
 
 	/**
 	 * The save of the owner replaces the whole record: the mark is kept, unless the owner changed the LinkedIn address,
-	 * which takes the mark away. The chat is no longer kept (since 2026-11-13 it lives in jn_instant_messenger_user).
+	 * which takes the mark away.
 	 */
 	@Test
 	public void theSaveOfTheOwnerKeepsTheMarkWhileTheAddressIsTheSame() {
 		CcpJsonRepresentation stored = CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityResume.Fields.linkedinAddress, this.linkedinAddress)
-				.put(VisEntityResume.Fields.chatId, OWNER_CHAT)
 				.put(VisEntityResume.Fields.invalidLinkedinAddress, true);
 		CcpJsonRepresentation sameAddress = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.linkedinAddress, this.linkedinAddress);
 		CcpJsonRepresentation kept = VisBusinessSaveResumeAndSpendTheUpdate.getResumeWithKeptFields(sameAddress, stored);
-		assertFalse(kept.containsField(VisEntityResume.Fields.chatId));
 		assertTrue(kept.getAsBoolean(VisEntityResume.Fields.invalidLinkedinAddress));
 
 		CcpJsonRepresentation newAddress = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.linkedinAddress, this.linkedinAddress + "-novo");
 		CcpJsonRepresentation fixed = VisBusinessSaveResumeAndSpendTheUpdate.getResumeWithKeptFields(newAddress, stored);
-		assertFalse(fixed.containsField(VisEntityResume.Fields.chatId));
 		assertFalse(fixed.getAsBoolean(VisEntityResume.Fields.invalidLinkedinAddress));
 	}
 
