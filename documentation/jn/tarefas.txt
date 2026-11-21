@@ -35,3 +35,8 @@ Estatisticas
 Monitoria
 Arquitetura
 Vagas
+
+
+skills aprovadas vs reprovadas
+hierarquias aprovadas vs reprovadas
+Conserto dos DDDs
