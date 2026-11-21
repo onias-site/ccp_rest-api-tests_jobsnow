@@ -31,7 +31,7 @@ public class JnEntityJobsnowErrorDecoratorsTest extends EntityDecoratorTestTempl
 
 	@Test
 	public void chain() {
-		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "JnAsyncWriterEntity", "DecoratorFieldsTransformerEntity", "DecoratorWriteSideEffectEntity", "DecoratorWriteSideEffectEntity", "DecoratorCacheEntity", "JnDisposableEntity", "DefaultImplementationEntity");
+		this.shouldHaveChain("DecoratorFieldsValidatorEntity", "JnAsyncWriterEntity", "DecoratorFieldsTransformerEntity", "DecoratorWriteSideEffectEntity", "DecoratorWriteSideEffectEntity", "DecoratorTwinEntity", "DecoratorCacheEntity", "JnDisposableEntity", "DefaultImplementationEntity");
 	}
 
 	@Test
@@ -52,6 +52,16 @@ public class JnEntityJobsnowErrorDecoratorsTest extends EntityDecoratorTestTempl
 	@Test
 	public void typeValidator() {
 		this.shouldRefuseInvalidRecord(this.validRecord().put(JnEntityJobsnowError.Fields.type, ""));
+	}
+
+	@Test
+	public void twin() {
+		this.shouldSaveOnMainAndTransferToTwinOnDelete("jn_jobsnow_error_solved");
+	}
+
+	@Test
+	public void redirectToTwin() {
+		this.shouldRedirectOnGetOneByIdWhenRecordMovedToTwin();
 	}
 
 	@Test
