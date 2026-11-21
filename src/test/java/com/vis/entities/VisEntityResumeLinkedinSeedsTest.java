@@ -16,6 +16,7 @@ import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
 import com.ccp.especifications.db.bulk.CcpBulkItem;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import com.jn.entities.JnEntityGrouper;
 import com.jn.entities.JnEntityInstantMessengerParametersToSend;
 import com.jn.entities.JnEntityInstantMessengerTemplateMessage;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
@@ -52,8 +53,16 @@ public class VisEntityResumeLinkedinSeedsTest {
 
 	@Test
 	public void everySeedIsACreate() {
+		String grouperName = JnEntityGrouper.ENTITY.getEntityMetaData().entityName;
 		for (CcpBulkItem seed : this.seeds) {
-			assertEquals(CcpBulkEntityOperationType.create, seed.operation);
+			// since 2026-11-20 the version of each versionable template is appended by script to its group of history in jn_grouper
+			String seedEntityName = seed.entity.getEntityMetaData().entityName;
+			boolean versionAppendedToHistory = grouperName.equals(seedEntityName);
+			if(versionAppendedToHistory) {
+				continue;
+			}
+			String seedAsText = seed.toString();
+			assertEquals(seedAsText, CcpBulkEntityOperationType.create, seed.operation);
 		}
 	}
 

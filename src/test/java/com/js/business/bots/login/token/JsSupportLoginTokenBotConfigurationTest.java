@@ -19,6 +19,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.entities.JnEntityBotCommand;
 import com.jn.entities.JnEntityBotCommandStep;
+import com.jn.entities.JnEntityGrouper;
 import com.jn.entities.JnEntityInstantMessengerTemplateMessage;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
@@ -46,7 +47,14 @@ public class JsSupportLoginTokenBotConfigurationTest {
 
 	@Test
 	public void everySeedIsACreate() {
+		String grouperName = JnEntityGrouper.ENTITY.getEntityMetaData().entityName;
 		for (CcpBulkItem seed : this.seeds) {
+			// since 2026-11-20 the version of each versionable template is appended by script to its group of history in jn_grouper
+			String seedEntityName = seed.entity.getEntityMetaData().entityName;
+			boolean versionAppendedToHistory = grouperName.equals(seedEntityName);
+			if(versionAppendedToHistory) {
+				continue;
+			}
 			assertEquals(seed.toString(), CcpBulkEntityOperationType.create, seed.operation);
 		}
 	}
