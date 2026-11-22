@@ -42,6 +42,8 @@ import com.jn.utils.JnGroupers;
 import com.vis.entities.VisEntityResume;
 import com.vis.entities.VisEntityResumeViewsOfTheMonth;
 import com.vis.entities.VisEntityViewedResume;
+import com.vis.entities.VisEntityVirtualResumeViewsCounter;
+import com.vis.json.transformers.VisResumeViewsCounterKeys;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.services.VisServiceResume;
 
@@ -100,6 +102,33 @@ public class ResumeViewersOfTheMonthTest {
 		JnEntityGrouper.ENTITY.deleteAnyWhere(groupKey);
 		CcpJsonRepresentation firstMonthGroupKey = this.groupKeyOf(FIRST_MONTH);
 		JnEntityGrouper.ENTITY.deleteAnyWhere(firstMonthGroupKey);
+		CcpJsonRepresentation totalGroupKey = this.groupKeyOfTheTotalOfViews();
+		JnEntityGrouper.ENTITY.deleteAnyWhere(totalGroupKey);
+	}
+
+	private String parentIdOfTheTotalOfViews() {
+		CcpJsonRepresentation parentJson = CcpOtherConstants.EMPTY_JSON.put(VisEntityVirtualResumeViewsCounter.Fields.email, sha1(this.candidate));
+		return VisEntityVirtualResumeViewsCounter.ENTITY.calculateId(parentJson);
+	}
+
+	private CcpJsonRepresentation groupKeyOfTheTotalOfViews() {
+		String parentId = this.parentIdOfTheTotalOfViews();
+		String parentName = VisEntityVirtualResumeViewsCounter.ENTITY.getEntityMetaData().entityName;
+		String childName = VisEntityViewedResume.ENTITY.getEntityMetaData().entityName;
+		return JnGroupers.getGroupKey(parentName, childName, parentId);
+	}
+
+	/** The total of views of the resume, read by id from its group; 0 when the group does not exist. */
+	private int totalOfViews() {
+		String parentId = this.parentIdOfTheTotalOfViews();
+		String parentName = VisEntityVirtualResumeViewsCounter.ENTITY.getEntityMetaData().entityName;
+		String childName = VisEntityViewedResume.ENTITY.getEntityMetaData().entityName;
+		CcpJsonRepresentation counters = JnGroupers.getCounters(parentName, childName, parentId);
+		boolean noViews = false == counters.containsAllFields(VisResumeViewsCounterKeys.Keys.views);
+		if (noViews) {
+			return 0;
+		}
+		return counters.getAsIntegerNumber(VisResumeViewsCounterKeys.Keys.views);
 	}
 
 	private void saveResume() {
@@ -421,6 +450,56 @@ public class ResumeViewersOfTheMonthTest {
 		List<CcpJsonRepresentation> viewers = this.viewersOfTheCurrentMonth();
 		assertEquals(1, viewers.size());
 		assertViewer(viewers.get(0), "empresa.com.br", 1);
+	}
+
+	@Test
+	public void eachRecruiterCountsOnceInTheTotalOfViewsOfTheResume() {
+		this.saveResume();
+		String recruiter = this.recruiter("rh", "empresa.com.br");
+		this.saveView(recruiter);
+		this.saveView(recruiter);
+		this.saveView(this.recruiter("ti", "empresa.com.br"));
+		this.saveView(this.recruiter("rh", "consultoria.com"));
+
+		assertEquals(3, this.totalOfViews());
+	}
+
+	@Test
+	public void theIdOfTheGroupOfTheTotalOfViewsIsTheIdOfTheResume() {
+		CcpJsonRepresentation resumeKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, this.candidate);
+		CcpJsonRepresentation resumeWithHashedEmail = VisEntityResume.ENTITY.getJsonWithHandledPrimaryKey(resumeKey);
+		CcpJsonRepresentation resumePrimaryKey = VisEntityResume.ENTITY.getEntityMetaData().getOnlyExistingFields(resumeWithHashedEmail);
+		String resumeId = VisEntityResume.ENTITY.calculateId(resumePrimaryKey);
+
+		assertEquals(resumeId, this.parentIdOfTheTotalOfViews());
+	}
+
+	@Test
+	public void theTotalOfViewsIsAHistory() {
+		this.saveResume();
+		String recruiter = this.recruiter("rh", "consultoria.com");
+		CcpJsonRepresentation view = this.saveView(recruiter);
+		VisEntityViewedResume.ENTITY.delete(view);
+		this.saveView(recruiter);
+		CcpJsonRepresentation otherView = this.saveView(this.recruiter("ti", "empresa.com.br"));
+		VisEntityViewedResume.ENTITY.deleteAnyWhere(otherView);
+		CcpJsonRepresentation resumeKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, this.candidate);
+		VisEntityResume.ENTITY.delete(resumeKey);
+
+		assertEquals(2, this.totalOfViews());
+	}
+
+	@Test
+	public void deletingTheResumeEverywhereDeletesTheTotalOfViews() {
+		this.saveResume();
+		this.saveView(this.recruiter("rh", "empresa.com.br"));
+		assertTrue(JnEntityGrouper.ENTITY.exists(this.groupKeyOfTheTotalOfViews()));
+
+		CcpJsonRepresentation resumeKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, this.candidate);
+		VisEntityResume.ENTITY.deleteAnyWhere(resumeKey);
+
+		assertFalse(JnEntityGrouper.ENTITY.exists(this.groupKeyOfTheTotalOfViews()));
+		assertEquals(0, this.totalOfViews());
 	}
 
 	@Test
