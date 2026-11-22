@@ -96,6 +96,7 @@ public class PositionSaveDefaultValuesTest {
 			CcpJsonRepresentation saved = VisEntityPosition.ENTITY.getOneById(position);
 			assertTrue(saved.getAsBoolean(VisEntityPosition.Fields.mustSendInGroups));
 			assertTrue(saved.getAsBoolean(VisEntityPosition.Fields.mustSendToResumes));
+			assertTrue(saved.getAsBoolean(VisEntityPosition.Fields.visibleToCandidates));
 			assertEquals("daily", saved.getAsString(VisEntityPosition.Fields.frequencyType));
 			List<String> hashes = saved.getAsStringList(VisEntityPosition.Fields.hash);
 			assertFalse("the save did not fill the hashes", hashes.isEmpty());
