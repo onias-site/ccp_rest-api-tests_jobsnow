@@ -132,6 +132,21 @@ public class ResumesOfTheDddsTest {
 	}
 
 	@Test
+	public void withNoDddEveryDddComes() {
+		CcpJsonRepresentation resume = this.resume();
+		VisEntityResume.ENTITY.save(resume);
+		CcpJsonRepresentation stored = VisEntityResume.ENTITY.getOneById(resume);
+		String resumeId = VisEntityResume.ENTITY.calculateId(stored);
+
+		CcpJsonRepresentation response = VisServicePosition.GetResumesOfTheDdds.execute(CcpOtherConstants.EMPTY_JSON);
+		CcpJsonRepresentation resumesByDdd = response.getInnerJson(VisBusinessResumesOfTheDdds.Fields.resumes);
+
+		assertEquals("one key per allowed ddd: the 67 regions and home office", 68, resumesByDdd.fieldSet().size());
+		assertTrue("the resume comes in each of its ddds", hasTheResume(resumesOf(resumesByDdd, 11), resumeId) && hasTheResume(resumesOf(resumesByDdd, 21), resumeId));
+		assertTrue("home office is one of them", resumesByDdd.fieldSet().contains("10"));
+	}
+
+	@Test
 	public void anUnknownDddIsRefused() {
 		try {
 			ask(10, 1);
