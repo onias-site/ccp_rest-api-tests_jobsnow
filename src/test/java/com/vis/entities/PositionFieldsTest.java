@@ -2,6 +2,8 @@ package com.vis.entities;
 
 import com.vis.json.fields.validation.VisJsonFieldsNewExpirationRange;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
@@ -20,6 +22,7 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine;
 import com.vis.business.position.VisBusinessPutPositionDefaultValues;
+import com.vis.business.position.VisPositionOfTheRecruiterFields;
 import com.vis.json.transformers.VisPositionHashCombinations;
 import com.vis.json.transformers.VisResumeHashCombinations;
 
@@ -94,6 +97,33 @@ public class PositionFieldsTest {
 
 	@Test
 	public void aCompletePositionIsAccepted() {
+		this.validate(this.position());
+	}
+
+	/** What the screen sends: the position with the e-mail of the session in place of the recruiter. */
+	private CcpJsonRepresentation input(CcpJsonRepresentation position) {
+		CcpJsonRepresentation input = position.removeFields(VisEntityPosition.Fields.recruiter).put(VisPositionOfTheRecruiterFields.email, "onias@jobsnow.com");
+		return input;
+	}
+
+	private boolean acceptedAsInput(CcpJsonRepresentation position) {
+		CcpJsonRepresentation input = this.input(position);
+		try {
+			CcpJsonValidatorEngine.INSTANCE.validateJson(VisPositionOfTheRecruiterFields.class, input, "position");
+			return true;
+		} catch (CcpJsonValidationError e) {
+			return false;
+		}
+	}
+
+	@Test
+	public void theEmailOfTheResumesIsRequiredUnlessTheFrequencyIsNone() {
+		CcpJsonRepresentation withTheEmail = this.position().put(VisEntityPosition.Fields.resumesEmail, "rh@jobsnow.com");
+		assertTrue("daily by default, with the e-mail", this.acceptedAsInput(withTheEmail));
+		assertFalse("daily by default, no e-mail", this.acceptedAsInput(this.position()));
+		assertFalse("instantly, no e-mail", this.acceptedAsInput(this.position().put(VisEntityPosition.Fields.frequencyType, "instantly")));
+		assertTrue("none needs no e-mail", this.acceptedAsInput(this.position().put(VisEntityPosition.Fields.frequencyType, "none")));
+		assertFalse("an invalid e-mail", this.acceptedAsInput(this.position().put(VisEntityPosition.Fields.resumesEmail, "not an e-mail")));
 		this.validate(this.position());
 	}
 

@@ -104,7 +104,8 @@ public class PositionsOfTheRecruiterActionsTest {
 				.put(VisEntityPosition.Fields.expiration, range(daysAhead(0), daysAhead(30)))
 				.put(VisEntityPosition.Fields.description, description)
 				.put(VisEntityPosition.Fields.sort, Arrays.asList(new CcpJsonRepresentation("{\"type\":\"asc\",\"field\":[\"clt\"]}")))
-				.put(VisEntityPosition.Fields.contact, Arrays.asList(new CcpJsonRepresentation("{\"type\":\"whatsapp\",\"value\":\"+5511999998888\"}")));
+				.put(VisEntityPosition.Fields.contact, Arrays.asList(new CcpJsonRepresentation("{\"type\":\"whatsapp\",\"value\":\"+5511999998888\"}")))
+				.put(VisEntityPosition.Fields.resumesEmail, this.userEmail);
 		// as the request body arrives: parsed from the text
 		return new CcpJsonRepresentation(input.asUgglyJson());
 	}
@@ -164,6 +165,7 @@ public class PositionsOfTheRecruiterActionsTest {
 		CcpJsonRepresentation created = this.theOnlyActivePosition();
 		assertEquals(this.title, created.getAsString(VisEntityPosition.Fields.title));
 		assertEquals("the default value", "daily", created.getAsString(VisEntityPosition.Fields.frequencyType));
+		assertEquals("the e-mail that receives the resumes", this.userEmail, created.getAsString(VisEntityPosition.Fields.resumesEmail));
 		assertStatus(CcpProcessStatusDefault.CONFLICT, () -> VisServicePosition.CreatePosition.execute(this.input(DESCRIPTION)));
 
 		VisServicePosition.EditPosition.execute(this.input(OTHER_DESCRIPTION));
