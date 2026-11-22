@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.After;
 import org.junit.Test;
@@ -36,8 +37,20 @@ import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.jn.db.bulk.JnExecuteBulkOperation;
 import com.jn.entities.JnEntityGrouper;
 import com.jn.utils.JnDeleteKeysFromCache;
+import com.vis.business.recruiter.resumes.VisBusinessResumesOfThePositionFilters;
+import com.vis.business.recruiter.resumes.VisRecruiterLinks;
+import com.vis.business.recruiter.resumes.VisRecruiterResumesFields;
+import com.vis.business.resume.VisBusinessRefreshResumeDddResumeTypeGroups;
 import com.vis.entities.VisEntityResume;
+import com.vis.entities.VisEntityResumeRestriction;
+import com.vis.entities.VisEntityVirtualDddResumeTypeGrouper;
+import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
+import com.ccp.especifications.db.bulk.CcpBulkItem;
+import com.jn.db.bulk.JnExecuteBulkOperation;
+import com.jn.utils.JnDeleteKeysFromCache;
+import com.jn.utils.JnGroupers;
 import com.vis.services.VisServicePosition;
+import com.vis.services.VisServiceRecruiterResumes;
 
 /**
  * Proves the endpoint of the filters of the position form: the resumes of the area in the regions asked (every region
@@ -103,17 +116,128 @@ public class ResumesOfTheFiltersTest {
 				.put(VisEntityResume.Fields.skill, Arrays.asList(skill));
 	}
 
-	/** Saves the resume and answers its id, calculated from the stored record (the e-mail is transformed on the way in). */
+	/**
+	 * Saves the resume and answers the id the filters return: the e-mail as stored, already hashed (the key that reads the
+	 * resume back). Finding it by this id also proves the group keeps the hash, never the e-mail as typed.
+	 */
 	private String save(CcpJsonRepresentation resume) {
 		VisEntityResume.ENTITY.save(resume);
 		this.savedResumes.add(resume);
-		// the search of the groups is near real time: the group saved now is seen after the refresh of the index
+		refreshTheGroups();
+		CcpJsonRepresentation stored = VisEntityResume.ENTITY.getOneById(resume);
+		String emailHash = stored.getAsString(VisEntityResume.Fields.email);
+		return emailHash;
+	}
+
+	/** The search of the groups is near real time: a group written now is seen after the refresh of the index. */
+	private static void refreshTheGroups() {
 		CcpEntityMetaData grouperDetails = JnEntityGrouper.ENTITY.getEntityMetaData();
 		CcpDbRequester requester = CcpDependencyInjection.getDependency(CcpDbRequester.class);
 		requester.refresh(grouperDetails.entityName);
+	}
+
+	@Test
+	public void aRestrictedResumeIsNotCountedUntilTheOwnerCorrectsIt() {
+		CcpJsonRepresentation resume = this.resume("filtersRestricted");
+		String emailHash = this.save(resume);
+		assertTrue("counted before the restriction", finds(filters(), emailHash));
+
+		String email = resume.getAsString(VisEntityResume.Fields.email);
+		CcpJsonRepresentation restrictionKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityResumeRestriction.Fields.email, email);
+		CcpJsonRepresentation restriction = restrictionKey.put(VisEntityResumeRestriction.Fields.message, Arrays.asList("Corrija as empresas que voce nao quer"));
+		VisEntityResumeRestriction.ENTITY.save(restriction);
+		refreshTheGroups();
+		assertFalse("the restriction takes the resume out of the groups", finds(filters(), emailHash));
+		assertTrue("the list does not show it either", rowsOf(Arrays.asList(emailHash), "recrutadora" + this.now + "@gmail.com").getAsJsonList(VisBusinessResumesOfThePositionFilters.Fields.resumes).isEmpty());
+
+		// the owner corrects the resume: the update deletes the restriction, whose delete puts the resume back
+		this.save(resume.put(VisEntityResume.Fields.desiredJob, "developer java"));
+		assertFalse("the update released the restriction", VisEntityResumeRestriction.ENTITY.exists(restrictionKey));
+		assertTrue("counted again after the correction", finds(filters(), emailHash));
+		assertEquals("only once in each of its two groups (ddds 11 and 21)", 2, childrenOfTheResume(emailHash));
+	}
+
+	@Test
+	public void aResumeWithAnInvalidLinkedinIsNotCounted() {
+		CcpJsonRepresentation resume = this.resume("filtersInvalidLinkedin");
+		String emailHash = this.save(resume);
+		assertTrue("counted before the confirmation", finds(filters(), emailHash));
+
+		// as /verifyLinkedinAddress does: the mark by a partial update, which no decorator sees, then the groups
 		CcpJsonRepresentation stored = VisEntityResume.ENTITY.getOneById(resume);
 		String resumeId = VisEntityResume.ENTITY.calculateId(stored);
-		return resumeId;
+		CcpJsonRepresentation invalidAddress = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.invalidLinkedinAddress, true);
+		CcpBulkItem item = new CcpBulkItem(invalidAddress, CcpBulkEntityOperationType.update, VisEntityResume.ENTITY, resumeId);
+		JnExecuteBulkOperation.INSTANCE.executeBulk(List.of(item), JnDeleteKeysFromCache.INSTANCE);
+		CcpJsonRepresentation marked = VisEntityResume.ENTITY.getOneById(resume);
+		VisBusinessRefreshResumeDddResumeTypeGroups.refresh(marked, false);
+		refreshTheGroups();
+		assertFalse("the confirmation takes the resume out of the groups", finds(filters(), emailHash));
+		assertEquals("in no group", 0, childrenOfTheResume(emailHash));
+
+		// a save with the mark keeps it out (the combinations of the groups ask for the mark)
+		this.save(resume.put(VisEntityResume.Fields.invalidLinkedinAddress, true));
+		assertFalse("a save with the mark does not put it back", finds(filters(), emailHash));
+	}
+
+	/** How many children of the resume the groups of ddd 11 and of ddd 21 of information technology hold, together. */
+	private static int childrenOfTheResume(String emailHash) {
+		int children = 0;
+		for (Integer ddd : Arrays.asList(11, 21)) {
+			CcpJsonRepresentation combination = CcpOtherConstants.EMPTY_JSON
+					.put(VisEntityVirtualDddResumeTypeGrouper.Fields.ddd, ddd)
+					.put(VisEntityVirtualDddResumeTypeGrouper.Fields.resumeType, 1);
+			String parentId = VisEntityVirtualDddResumeTypeGrouper.ENTITY.calculateId(combination);
+			String parentName = VisEntityVirtualDddResumeTypeGrouper.ENTITY.getEntityMetaData().entityName;
+			String childName = VisEntityResume.ENTITY.getEntityMetaData().entityName;
+			List<String> groupChildren = JnGroupers.getChildren(false, parentName, childName, parentId);
+			children += (int) groupChildren.stream().filter(child -> child.contains("\"" + emailHash + "\"")).count();
+		}
+		return children;
+	}
+
+	/** The rows the recruiter of this e-mail sees for these ids (link "Ver quais são estes currículos"). */
+	private static CcpJsonRepresentation rowsOf(List<String> ids, String recruiterEmail) {
+		CcpJsonRepresentation withTheRecruiter = CcpOtherConstants.EMPTY_JSON
+				.put(VisBusinessResumesOfThePositionFilters.Fields.ids, ids)
+				.put(VisBusinessResumesOfThePositionFilters.Fields.email, recruiterEmail);
+		CcpJsonRepresentation parsed = new CcpJsonRepresentation(withTheRecruiter.asUgglyJson());
+		CcpJsonRepresentation response = VisServiceRecruiterResumes.GetResumesOfThePositionFilters.execute(parsed);
+		return response;
+	}
+
+	private static List<CcpJsonRepresentation> rowsOfTheResume(List<CcpJsonRepresentation> rows, String resumeId) {
+		return rows.stream().filter(row -> resumeId.equals(row.getAsString(VisRecruiterResumesFields.resumeId))).collect(Collectors.toList());
+	}
+
+	@Test
+	public void theRecruiterSeesTheRowsOfTheResumesFound() {
+		CcpJsonRepresentation resume = this.resume("filtersRows");
+		String emailHash = this.save(resume);
+		CcpJsonRepresentation stored = VisEntityResume.ENTITY.getOneById(resume);
+		String resumeId = VisEntityResume.ENTITY.calculateId(stored);
+		String recruiterEmail = "recrutadora" + this.now + "@gmail.com";
+
+		// as linhas vêm dos ids que a contagem devolveu
+		List<String> ids = ask(filters()).getAsStringList(VisBusinessResumesOfTheFilters.Fields.ids);
+		assertTrue("the count returns the resume", ids.contains(emailHash));
+		CcpJsonRepresentation response = rowsOf(ids, recruiterEmail);
+		List<CcpJsonRepresentation> rows = rowsOfTheResume(response.getAsJsonList(VisBusinessResumesOfThePositionFilters.Fields.resumes), resumeId);
+		assertEquals("the resume found is a row", 1, rows.size());
+		CcpJsonRepresentation row = rows.get(0);
+		assertFalse("never viewed by this recruiter", row.getAsBoolean(VisRecruiterResumesFields.viewed));
+		assertEquals("the link of a resume never viewed", "Ver currículo", row.getAsString(VisRecruiterResumesFields.viewLabel));
+		assertEquals("the link is signed for this recruiter and this resume", VisRecruiterLinks.view.sign(recruiterEmail, resumeId), row.getAsString(VisRecruiterResumesFields.token));
+		assertTrue("the columns of the resume are there", row.containsAllFields(VisRecruiterResumesFields.whatMatters, VisRecruiterResumesFields.languagesAndSkills));
+		assertFalse("the keys of the order do not go to the screen", row.containsAllFields(VisRecruiterResumesFields.sortKeys));
+		assertTrue("nothing unwanted", rowsOfTheResume(response.getAsJsonList(VisBusinessResumesOfThePositionFilters.Fields.unwantedResumes), resumeId).isEmpty());
+
+		CcpJsonRepresentation unknownId = rowsOf(Arrays.asList("123abc"), recruiterEmail);
+		assertTrue("an id of no resume is no row", unknownId.getAsJsonList(VisBusinessResumesOfThePositionFilters.Fields.resumes).isEmpty());
+
+		String forbiddenRecruiter = "rh" + this.now + "@empresa-proibida.com.br";
+		CcpJsonRepresentation forbidden = rowsOf(ids, forbiddenRecruiter);
+		assertTrue("the company forbidden by the resume does not see it, even with its id", rowsOfTheResume(forbidden.getAsJsonList(VisBusinessResumesOfThePositionFilters.Fields.resumes), resumeId).isEmpty());
 	}
 
 	@After
