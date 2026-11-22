@@ -38,8 +38,9 @@ import com.vis.services.VisServicePosition;
 
 /**
  * Proves the endpoint of the tab "Opções" of the position form: for each ddd asked, the active resumes of its group in
- * jn_grouper, with part of the resume and its id and never a contact; a resume of two ddds comes in both, a ddd with no
- * resume comes as an empty list, and an unknown or repeated ddd is refused.
+ * jn_grouper, only of the area asked (resumeType), with part of the resume and its id and never a contact; a resume of two
+ * ddds comes in both, a ddd with no resume comes as an empty list, a resume that changes its area changes its groups, and
+ * an unknown or repeated ddd, an unknown area or no area is refused.
  */
 public class ResumesOfTheDddsTest {
 
@@ -85,7 +86,14 @@ public class ResumesOfTheDddsTest {
 	}
 
 	private static CcpJsonRepresentation ask(Object... ddds) {
-		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON.put(VisBusinessResumesOfTheDdds.Fields.ddd, Arrays.asList(ddds));
+		CcpJsonRepresentation resumes = askOfTheArea(1, ddds);
+		return resumes;
+	}
+
+	private static CcpJsonRepresentation askOfTheArea(int resumeType, Object... ddds) {
+		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON
+				.put(VisBusinessResumesOfTheDdds.Fields.resumeType, resumeType)
+				.put(VisBusinessResumesOfTheDdds.Fields.ddd, Arrays.asList(ddds));
 		// como numa requisição HTTP: os números chegam do texto JSON
 		CcpJsonRepresentation parsed = new CcpJsonRepresentation(input.asUgglyJson());
 		CcpJsonRepresentation response = VisServicePosition.GetResumesOfTheDdds.execute(parsed);
@@ -138,12 +146,29 @@ public class ResumesOfTheDddsTest {
 		CcpJsonRepresentation stored = VisEntityResume.ENTITY.getOneById(resume);
 		String resumeId = VisEntityResume.ENTITY.calculateId(stored);
 
-		CcpJsonRepresentation response = VisServicePosition.GetResumesOfTheDdds.execute(CcpOtherConstants.EMPTY_JSON);
+		CcpJsonRepresentation onlyTheArea = CcpOtherConstants.EMPTY_JSON.put(VisBusinessResumesOfTheDdds.Fields.resumeType, 1);
+		CcpJsonRepresentation response = VisServicePosition.GetResumesOfTheDdds.execute(onlyTheArea);
 		CcpJsonRepresentation resumesByDdd = response.getInnerJson(VisBusinessResumesOfTheDdds.Fields.resumes);
 
 		assertEquals("one key per allowed ddd: the 67 regions and home office", 68, resumesByDdd.fieldSet().size());
 		assertTrue("the resume comes in each of its ddds", hasTheResume(resumesOf(resumesByDdd, 11), resumeId) && hasTheResume(resumesOf(resumesByDdd, 21), resumeId));
 		assertTrue("home office is one of them", resumesByDdd.fieldSet().contains("10"));
+	}
+
+	@Test
+	public void onlyTheResumesOfTheAreaAsked() {
+		CcpJsonRepresentation resume = this.resume();
+		VisEntityResume.ENTITY.save(resume);
+		CcpJsonRepresentation stored = VisEntityResume.ENTITY.getOneById(resume);
+		String resumeId = VisEntityResume.ENTITY.calculateId(stored);
+
+		assertTrue("the resume of information technology comes to its area", hasTheResume(resumesOf(askOfTheArea(1, 11), 11), resumeId));
+		assertFalse("and not to another area", hasTheResume(resumesOf(askOfTheArea(2, 11), 11), resumeId));
+
+		CcpJsonRepresentation ofAnotherArea = resume.put(VisEntityResume.Fields.resumeType, 2);
+		VisEntityResume.ENTITY.save(ofAnotherArea);
+		assertFalse("the change of area takes the resume out of the groups of the old area", hasTheResume(resumesOf(askOfTheArea(1, 11), 11), resumeId));
+		assertTrue("and puts it in the groups of the new one", hasTheResume(resumesOf(askOfTheArea(2, 11), 11), resumeId));
 	}
 
 	@Test
@@ -161,6 +186,16 @@ public class ResumesOfTheDddsTest {
 		try {
 			ask(11, 11);
 			fail("a repeated ddd");
+		} catch (CcpJsonValidationError expected) {
+		}
+		try {
+			askOfTheArea(5, 11);
+			fail("area 5 does not exist");
+		} catch (CcpJsonValidationError expected) {
+		}
+		try {
+			VisServicePosition.GetResumesOfTheDdds.execute(CcpOtherConstants.EMPTY_JSON);
+			fail("the area is required");
 		} catch (CcpJsonValidationError expected) {
 		}
 	}
