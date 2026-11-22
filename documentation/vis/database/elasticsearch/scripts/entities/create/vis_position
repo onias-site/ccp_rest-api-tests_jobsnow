@@ -2,75 +2,136 @@
 	"mappings": {
 		"dynamic": "strict",
 		"properties": {
-			"channel": {
-				"type": "keyword"
-			},
-			"contactChannel": {
-				"type": "keyword"
-			},
-			"date": {
-				"type": "text"
-			},
-			"ddd": {
-				"type": "long"
-			},
-			"description": {
-				"type": "text"
-			},
-			"desiredSkill": {
-				"type": "object",
-				"enabled": false
+			"clt": {
+				"dynamic": "strict",
+				"properties": {
+					"min": {
+						"type": "long"
+					},
+					"max": {
+						"type": "long"
+					}
+				}
 			},
 			"disponibility": {
 				"type": "long"
 			},
-			"email": {
-				"type": "keyword"
-			},
-			"expireDate": {
+			"ddd": {
 				"type": "long"
 			},
-			"frequency": {
-				"type": "keyword"
-			},
-			"pcd": {
-				"type": "boolean"
-			},
-			"requiredSkill": {
+			"recruiter": {
 				"type": "keyword"
 			},
 			"seniority": {
 				"type": "keyword"
 			},
-			"sortFields": {
+			"hash": {
 				"type": "keyword"
 			},
-			"timestamp": {
+			"skill": {
+				"dynamic": "strict",
+				"properties": {
+					"associated": {
+						"type": "keyword"
+					},
+					"category": {
+						"type": "keyword"
+					},
+					"parent": {
+						"type": "keyword"
+					},
+					"skill": {
+						"type": "keyword"
+					},
+					"type": {
+						"type": "keyword"
+					},
+					"word": {
+						"type": "keyword"
+					}
+				}
+			},
+			"spokenLanguage": {
+				"dynamic": "strict",
+				"properties": {
+					"name": {
+						"type": "keyword"
+					},
+					"level": {
+						"type": "integer"
+					}
+				}
+			},
+			"negotiableClaim": {
+				"type": "boolean"
+			},
+			"pcd": {
+				"type": "boolean"
+			},
+			"pj": {
+				"dynamic": "strict",
+				"properties": {
+					"min": {
+						"type": "long"
+					},
+					"max": {
+						"type": "long"
+					}
+				}
+			},
+			"temporallyJobTime": {
 				"type": "long"
+			},
+			"travel": {
+				"type": "boolean"
 			},
 			"title": {
 				"type": "text"
 			},
-			"showSalaryExpectation": {
+			"expiration": {
+				"dynamic": "strict",
+				"properties": {
+					"min": {
+						"type": "long"
+					},
+					"max": {
+						"type": "long"
+					}
+				}
+			},
+			"description": {
+				"type": "text"
+			},
+			"sort": {
+				"dynamic": "strict",
+				"properties": {
+					"type": {
+						"type": "keyword"
+					},
+					"field": {
+						"type": "keyword"
+					}
+				}
+			},
+			"mustSendInGroups": {
 				"type": "boolean"
 			},
-			"minBtc": {
-				"type": "long"
+			"mustSendToResumes": {
+				"type": "boolean"
 			},
-			"maxBtc": {
-				"type": "long"
+			"frequencyType": {
+				"type": "keyword"
 			},
-			"minClt": {
-				"type": "long"
-			},
-			"maxClt": {
-				"type": "long"
-			},
-			"minPj": {
-				"type": "long"
-			},
-			"maxPj": {
-				"type": "long"
+			"contact": {
+				"dynamic": "strict",
+				"properties": {
+					"type": {
+						"type": "keyword"
+					},
+					"value": {
+						"type": "keyword"
+					}
+				}
 			}
 		}
 	}

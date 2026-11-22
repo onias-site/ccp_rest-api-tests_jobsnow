@@ -8,6 +8,7 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import com.ccp.constants.CcpOtherConstants;
+import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
@@ -119,21 +120,23 @@ public class DeleteAnyWhereOnTwinEntitiesTest {
 
 	@Test
 	public void position() {
-		CcpJsonRepresentation record = this.withEmail()
-				.put(VisEntityPosition.Fields.channel, Arrays.asList("email"))
-				.put(VisEntityPosition.Fields.contactChannel, "selecao@jobsnow.com")
+		CcpJsonRepresentation salaryRange = new CcpJsonRepresentation("{\"min\":2000,\"max\":9000}");
+		CcpJsonRepresentation expiration = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("min"), this.daysAhead(1)).put(new CcpFieldName("max"), this.daysAhead(30));
+		CcpJsonRepresentation sort = new CcpJsonRepresentation("{\"type\":\"desc\",\"field\":[\"clt\"]}");
+		CcpJsonRepresentation contact = new CcpJsonRepresentation("{\"type\":\"email\",\"value\":\"selecao@jobsnow.com\"}");
+		String description = "position used to test deleteAnyWhere, with a description long enough to pass the minimum of one hundred characters";
+		CcpJsonRepresentation record = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityPosition.Fields.recruiter, this.email)
+				.put(VisEntityPosition.Fields.clt, salaryRange)
 				.put(VisEntityPosition.Fields.ddd, Arrays.asList(11))
-				.put(VisEntityPosition.Fields.description, "position used to test deleteAnyWhere")
+				.put(VisEntityPosition.Fields.description, description)
 				.put(VisEntityPosition.Fields.disponibility, 5)
-				.put(VisEntityPosition.Fields.expireDate, this.daysAgo(30))
-				.put(VisEntityPosition.Fields.frequency, "daily")
-				.put(VisEntityPosition.Fields.requiredSkill, Arrays.asList("java"))
-				.put(VisEntityPosition.Fields.seniority, "SR")
-				.put(VisEntityPosition.Fields.sortFields, Arrays.asList("seniority"))
-				.put(VisEntityPosition.Fields.title, "test position to exercise delete any where")
-				.put(VisEntityPosition.Fields.showSalaryExpectation, true)
-				.put(VisEntityPosition.Fields.minClt, 2_000)
-				.put(VisEntityPosition.Fields.maxClt, 9_000);
+				.put(VisEntityPosition.Fields.expiration, expiration)
+				.put(VisEntityPosition.Fields.seniority, "senior")
+				.put(VisEntityPosition.Fields.sort, Arrays.asList(sort))
+				.put(VisEntityPosition.Fields.contact, Arrays.asList(contact))
+				.put(VisEntityPosition.Fields.temporallyJobTime, 0)
+				.put(VisEntityPosition.Fields.title, "test position to exercise delete any where");
 
 		this.shouldDeleteFromBothIndexes(VisEntityPosition.ENTITY, record);
 	}
@@ -197,17 +200,17 @@ public class DeleteAnyWhereOnTwinEntitiesTest {
 	}
 
 	/**
-	 * Timestamp of that many days ago. The time validations of these entities ask for a moment earlier
-	 * than now, within a window measured in years.
+	 * Timestamp of that many days ahead. The expiration of the position asks for moments from the current
+	 * date on.
 	 *
 	 * <p>It goes as text because the validation requires the value to be a long integer, and a number
 	 * put in the json reaches it as a {@code Double} — in scientific notation, which it does not
 	 * recognize.
 	 */
-	private String daysAgo(int daysBack) {
+	private String daysAhead(int daysAhead) {
 		long oneDayInMillis = 24L * 60L * 60L * 1000L;
 		long now = System.currentTimeMillis();
-		long instant = now - (daysBack * oneDayInMillis);
+		long instant = now + (daysAhead * oneDayInMillis);
 		String instantAsText = String.valueOf(instant);
 		return instantAsText;
 	}

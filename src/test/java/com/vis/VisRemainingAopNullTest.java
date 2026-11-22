@@ -9,7 +9,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.vis.business.skill.VisSkillWordsByInitials;
-import com.vis.json.transformers.VisJsonTransformerPutEmailHashAndDomainRecruiter;
+import com.vis.json.transformers.VisJsonTransformerRecruiterHash;
 
 /**
  * Coverage of {@code CcpNullParameterAspect} over the methods of {@code vis_business_jobsnow} that
@@ -32,8 +32,8 @@ public class VisRemainingAopNullTest {
 	// ── json/transformers ─────────────────────────────────────────────────────
 
 	@Test(expected = CcpNullParameterException.class)
-	public void putEmailHashAndDomainRecruiterApplyNullTest() {
-		VisJsonTransformerPutEmailHashAndDomainRecruiter.INSTANCE.execute(null);
+	public void recruiterHashApplyNullTest() {
+		VisJsonTransformerRecruiterHash.INSTANCE.execute(null);
 	}
 
 	/** Ensures that the auxiliary list used in the tests above is not null (null-return). */
