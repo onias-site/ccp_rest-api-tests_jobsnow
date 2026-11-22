@@ -32,6 +32,7 @@ import com.jn.business.grouper.JnBusinessGetGrouperCharts;
 import com.jn.json.fields.validation.JnGrouperChartsScreens;
 import com.jn.utils.JnGroupers;
 import com.vis.entities.RecordingEmailSender;
+import com.vis.entities.VisEntityPosition;
 import com.vis.entities.VisEntityResume;
 import com.vis.entities.VisEntityViewedResume;
 import com.vis.entities.VisEntityVirtualDddGrouper;
@@ -134,8 +135,76 @@ public class ResumeStatisticsOfTheRegionTest {
 				.put(VisEntityViewedResume.Fields.alias, "Statistics view");
 	}
 
+	private final String positionRecruiter = "statisticsPosition" + this.now + "@empresa.com.br";
+
+	private static String daysAhead(int days) {
+		long instant = System.currentTimeMillis() + days * 24L * 60L * 60L * 1000L;
+		return String.valueOf(instant);
+	}
+
+	/** An active position of the region: senior, clt 8.000 to 12.000 (middle 10.000), fluent English, the unique skill. */
+	private CcpJsonRepresentation position() {
+		CcpJsonRepresentation unique = new CcpJsonRepresentation("{\"skill\":\"" + this.uniqueSkill + "\",\"word\":\"" + this.uniqueSkill + "\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\"}");
+		CcpJsonRepresentation desired = new CcpJsonRepresentation("{\"skill\":\"DOCKER\",\"word\":\"DOCKER\",\"type\":\"shouldSkills\",\"category\":\"shouldSkills\"}");
+		CcpJsonRepresentation expiration = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("min"), daysAhead(1)).put(new CcpFieldName("max"), daysAhead(30));
+		return CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityPosition.Fields.recruiter, this.positionRecruiter)
+				.put(VisEntityPosition.Fields.title, "statistics position " + this.now)
+				.put(VisEntityPosition.Fields.resumeType, 1)
+				.put(VisEntityPosition.Fields.seniority, "senior")
+				.put(VisEntityPosition.Fields.clt, new CcpJsonRepresentation("{\"min\":8000,\"max\":12000}"))
+				.put(VisEntityPosition.Fields.ddd, Arrays.asList(DDD))
+				.put(VisEntityPosition.Fields.disponibility, 0)
+				.put(VisEntityPosition.Fields.temporallyJobTime, 0)
+				.put(VisEntityPosition.Fields.spokenLanguage, Arrays.asList(language("English", 2)))
+				.put(VisEntityPosition.Fields.skill, Arrays.asList(unique, desired))
+				.put(VisEntityPosition.Fields.expiration, expiration)
+				.put(VisEntityPosition.Fields.description, "position used to test the statistics of the region, with a description long enough to pass the minimum of one hundred characters")
+				.put(VisEntityPosition.Fields.sort, Arrays.asList(new CcpJsonRepresentation("{\"type\":\"desc\",\"field\":[\"clt\"]}")))
+				.put(VisEntityPosition.Fields.contact, Arrays.asList(new CcpJsonRepresentation("{\"type\":\"email\",\"value\":\"rh@empresa.com.br\"}")));
+	}
+
+	/**
+	 * 2026-11-21: the active positions are the third source of the screen Supply X Demand. A position counts in the group
+	 * of its ddd (the seniority it asks for, the middle of its salary range, its required skills only) and in the
+	 * counters by ddd, by day and by month of insertion; the deactivation takes it out of all of them.
+	 */
+	@Test
+	public void thePositionsAreTheThirdSource() {
+		String today = new CcpTimeDecorator().getFormattedDateTime("yyyyMMdd");
+		String thisMonth = today.substring(0, 6);
+		CcpJsonRepresentation before = statistics(VisResumeStatisticsSources.vacancies);
+		long byRegionBefore = totalOf(VisResumeStatisticsSources.vacancies, DDD);
+		long todayBefore = totalOf(VisResumeTotalsCounters.byDay, VisResumeStatisticsSources.vacancies, today);
+		long thisMonthBefore = totalOf(VisResumeTotalsCounters.byMonth, VisResumeStatisticsSources.vacancies, thisMonth);
+		long resumesBefore = statistics().getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.total);
+
+		VisEntityPosition.ENTITY.save(this.position());
+
+		CcpJsonRepresentation after = statistics(VisResumeStatisticsSources.vacancies);
+		long totalBefore = before.getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.total);
+		assertEquals("one more position", totalBefore + 1, after.getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.total).longValue());
+		assertEquals("a position is not a resume", resumesBefore, statistics().getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.total).longValue());
+		assertAdded("the seniority it asks for", 1, before, after, VisResumeStatisticsCharts.seniority, "senior");
+		assertAdded("the middle of 8.000 and 12.000", 1, before, after, VisResumeStatisticsCharts.cltRange, "from6kTo10k");
+		assertAdded("clt only", 1, before, after, VisResumeStatisticsCharts.contractType, "onlyClt");
+		assertAdded("the required skill", 1, before, after, VisResumeStatisticsCharts.skill, this.uniqueSkill);
+		assertAdded("a desired skill is not required", 0, before, after, VisResumeStatisticsCharts.skill, "DOCKER");
+		assertAdded("fluent English", 1, before, after, VisResumeStatisticsCharts.spokenLanguage, "English|2");
+		assertAdded("the area", 1, before, after, VisResumeStatisticsCharts.resumeType, "1");
+		assertEquals("the position in its ddd", byRegionBefore + 1, totalOf(VisResumeStatisticsSources.vacancies, DDD));
+		assertEquals("the position inserted today", todayBefore + 1, totalOf(VisResumeTotalsCounters.byDay, VisResumeStatisticsSources.vacancies, today));
+		assertEquals("the position in this month", thisMonthBefore + 1, totalOf(VisResumeTotalsCounters.byMonth, VisResumeStatisticsSources.vacancies, thisMonth));
+
+		VisEntityPosition.ENTITY.delete(this.position());
+		assertEquals("an inactive position leaves the group of the ddd", totalBefore, statistics(VisResumeStatisticsSources.vacancies).getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.total).longValue());
+		assertEquals("and the counter by ddd", byRegionBefore, totalOf(VisResumeStatisticsSources.vacancies, DDD));
+		assertEquals("and the counter by day", todayBefore, totalOf(VisResumeTotalsCounters.byDay, VisResumeStatisticsSources.vacancies, today));
+	}
+
 	@After
 	public void deleteTheResumes() {
+		VisEntityPosition.ENTITY.deleteAnyWhere(this.position());
 		VisEntityResume.ENTITY.deleteAnyWhere(CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, this.firstEmail));
 		VisEntityResume.ENTITY.deleteAnyWhere(CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, this.secondEmail));
 		VisEntityViewedResume.ENTITY.deleteAnyWhere(CcpOtherConstants.EMPTY_JSON

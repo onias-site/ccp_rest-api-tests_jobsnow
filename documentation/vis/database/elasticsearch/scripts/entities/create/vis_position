@@ -116,6 +116,9 @@
 					}
 				}
 			},
+			"insertionDate": {
+				"type": "text"
+			},
 			"mustSendInGroups": {
 				"type": "boolean"
 			},
