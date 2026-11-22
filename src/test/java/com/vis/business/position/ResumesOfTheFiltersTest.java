@@ -324,6 +324,36 @@ public class ResumesOfTheFiltersTest {
 		assertFalse("no French", finds(filters().put(VisBusinessResumesOfTheFilters.Fields.spokenLanguage, Arrays.asList(language("Francês", 1))), resumeId));
 	}
 
+	/**
+	 * Both budgets filled: (no PJ claim or PJ inside) and (no CLT claim or CLT inside) and at least one claim informed.
+	 */
+	@Test
+	public void withBothBudgetsEachClaimInformedMustFitItsBudget() {
+		String cltOnly = this.save(this.resume("budgetsCltOnly"));
+		CcpJsonRepresentation pjOnlyResume = this.resume("budgetsPjOnly").removeFields(VisEntityResume.Fields.clt).put(VisEntityResume.Fields.pj, 88000);
+		String pjOnly = this.save(pjOnlyResume);
+		String both = this.save(this.resume("budgetsBoth").put(VisEntityResume.Fields.pj, 88000));
+		// a resume with no claim at all does not exist: the resume requires CLT or PJ
+
+		CcpJsonRepresentation bothInside = filters()
+				.put(VisBusinessResumesOfTheFilters.Fields.clt, range(99000, 100000))
+				.put(VisBusinessResumesOfTheFilters.Fields.pj, range(87000, 89000));
+		assertTrue("CLT only, inside the CLT budget", finds(bothInside, cltOnly));
+		assertTrue("PJ only, inside the PJ budget", finds(bothInside, pjOnly));
+		assertTrue("both claims, each inside its budget", finds(bothInside, both));
+
+		CcpJsonRepresentation pjOutside = filters()
+				.put(VisBusinessResumesOfTheFilters.Fields.clt, range(99000, 100000))
+				.put(VisBusinessResumesOfTheFilters.Fields.pj, range(1000, 2000));
+		assertTrue("CLT only: the PJ budget does not concern it", finds(pjOutside, cltOnly));
+		assertFalse("PJ only, outside the PJ budget", finds(pjOutside, pjOnly));
+		assertFalse("both claims, the PJ one outside its budget", finds(pjOutside, both));
+
+		CcpJsonRepresentation onlyClt = filters().put(VisBusinessResumesOfTheFilters.Fields.clt, range(99000, 100000));
+		assertFalse("one budget only: the PJ only resume has no claim of that type", finds(onlyClt, pjOnly));
+		assertTrue("one budget only: the resume of both, CLT inside", finds(onlyClt, both));
+	}
+
 	@Test
 	public void aRequiredSkillIsFoundBelowItInTheHierarchy() {
 		String resumeId = this.save(this.resume("filtersSkills"));
