@@ -22,6 +22,9 @@
 			"recruiter": {
 				"type": "keyword"
 			},
+			"resumeType": {
+				"type": "integer"
+			},
 			"seniority": {
 				"type": "keyword"
 			},

@@ -1,6 +1,7 @@
 package com.vis.entities;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
 import java.util.Arrays;
@@ -17,6 +18,7 @@ import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.json.validations.global.engine.CcpJsonValidatorEngine;
+import com.vis.business.position.VisBusinessPutPositionDefaultValues;
 import com.vis.json.transformers.VisPositionHashCombinations;
 import com.vis.json.transformers.VisResumeHashCombinations;
 
@@ -63,6 +65,7 @@ public class PositionFieldsTest {
 				.put(VisEntityPosition.Fields.clt, this.range(2_000, 9_000))
 				.put(VisEntityPosition.Fields.disponibility, 5)
 				.put(VisEntityPosition.Fields.ddd, Arrays.asList(11))
+				.put(VisEntityPosition.Fields.resumeType, 1)
 				.put(VisEntityPosition.Fields.seniority, "senior")
 				.put(VisEntityPosition.Fields.skill, Arrays.asList(java, docker))
 				.put(VisEntityPosition.Fields.spokenLanguage, Arrays.asList(english))
@@ -141,12 +144,39 @@ public class PositionFieldsTest {
 	}
 
 	@Test
+	public void theResumeTypeIsRequiredAndTheTitleIsPartOfTheKey() {
+		this.refused(this.position().removeFields(VisEntityPosition.Fields.resumeType), "a position with no resumeType");
+		this.refused(this.position().put(VisEntityPosition.Fields.resumeType, 5), "a resumeType out of 1 to 4");
+		this.refused(this.position().removeFields(VisEntityPosition.Fields.title), "a position with no title");
+		CcpJsonRepresentation otherTitle = this.position().put(VisEntityPosition.Fields.title, "Desenvolvedor Python");
+		String id = VisEntityPosition.ENTITY.calculateId(this.position());
+		String otherId = VisEntityPosition.ENTITY.calculateId(otherTitle);
+		assertNotEquals(id, otherId);
+	}
+
+	@Test
+	public void theBeforeSaveFillsOnlyTheAbsentDefaultValues() {
+		CcpJsonRepresentation withDefaults = VisBusinessPutPositionDefaultValues.INSTANCE.execute(this.position());
+		assertEquals(true, withDefaults.getAsBoolean(VisEntityPosition.Fields.mustSendInGroups));
+		assertEquals(true, withDefaults.getAsBoolean(VisEntityPosition.Fields.mustSendToResumes));
+		assertEquals("daily", withDefaults.getAsString(VisEntityPosition.Fields.frequencyType));
+
+		CcpJsonRepresentation informed = this.position()
+				.put(VisEntityPosition.Fields.mustSendInGroups, false)
+				.put(VisEntityPosition.Fields.frequencyType, "weekly");
+		CcpJsonRepresentation keptValues = VisBusinessPutPositionDefaultValues.INSTANCE.execute(informed);
+		assertEquals(false, keptValues.getAsBoolean(VisEntityPosition.Fields.mustSendInGroups));
+		assertEquals(true, keptValues.getAsBoolean(VisEntityPosition.Fields.mustSendToResumes));
+		assertEquals("weekly", keptValues.getAsString(VisEntityPosition.Fields.frequencyType));
+	}
+
+	@Test
 	public void theHashesOfThePositionSearchOnItsOwnSide() {
 		List<CcpJsonRepresentation> combinations = VisPositionHashCombinations.INSTANCE.apply(this.position());
 
-		// areas: the 4 (the position declares none); languages: none, Ingles 2, Ingles 1; skills: none, JAVA, JVM (DOCKER is
-		// a shouldSkill, out of the hash); pcd true searches {1}, the absent flags (false) search {1, 2}; one seniority
-		assertEquals(4 * 3 * 3 * 1 * 2 * 2 * 1, combinations.size());
+		// area 1; languages: none, Ingles 2, Ingles 1; skills: none, JAVA, JVM (DOCKER is a shouldSkill, out of the hash);
+		// pcd true searches {1}, the absent flags (false) search {1, 2}; one seniority
+		assertEquals(1 * 3 * 3 * 1 * 2 * 2 * 1, combinations.size());
 		Set<String> seniorities = new TreeSet<>();
 		Set<String> skills = new TreeSet<>();
 		for (CcpJsonRepresentation combination : combinations) {
@@ -154,6 +184,7 @@ public class PositionFieldsTest {
 			seniorities.add(combination.getAsString(VisEntityVirtualHashGrouper.Fields.seniority));
 			skills.add(combination.getAsString(VisEntityVirtualHashGrouper.Fields.skillName));
 			assertEquals(1, combination.getAsIntegerNumber(VisEntityVirtualHashGrouper.Fields.pcd).intValue());
+			assertEquals(1, combination.getAsIntegerNumber(VisEntityVirtualHashGrouper.Fields.resumeType).intValue());
 		}
 		assertEquals(new TreeSet<>(Arrays.asList("senior")), seniorities);
 		assertEquals(new TreeSet<>(Arrays.asList("JAVA", "JVM", "none")), skills);

@@ -132,6 +132,7 @@ public class DeleteAnyWhereOnTwinEntitiesTest {
 				.put(VisEntityPosition.Fields.description, description)
 				.put(VisEntityPosition.Fields.disponibility, 5)
 				.put(VisEntityPosition.Fields.expiration, expiration)
+				.put(VisEntityPosition.Fields.resumeType, 1)
 				.put(VisEntityPosition.Fields.seniority, "senior")
 				.put(VisEntityPosition.Fields.sort, Arrays.asList(sort))
 				.put(VisEntityPosition.Fields.contact, Arrays.asList(contact))
