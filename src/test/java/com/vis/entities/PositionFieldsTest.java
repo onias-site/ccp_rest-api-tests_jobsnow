@@ -1,5 +1,6 @@
 package com.vis.entities;
 
+import com.vis.json.fields.validation.VisJsonFieldsNewExpirationRange;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
@@ -111,10 +112,20 @@ public class PositionFieldsTest {
 		this.refused(this.position().put(VisEntityPosition.Fields.clt, CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("min"), 2_000)), "a range with no max");
 	}
 
+	/**
+	 * Since 2026-11-21 the stored position keeps only the order of the expiration (the inactivation puts the max one minute
+	 * before now, an old position keeps its min); a new position starts and ends from the current date on.
+	 */
 	@Test
-	public void theExpirationStartsTodayAndDoesNotGoBack() {
-		this.refused(this.position().put(VisEntityPosition.Fields.expiration, this.range(this.daysAhead(-3), this.daysAhead(30))), "a min in the past");
+	public void theExpirationOfANewPositionStartsTodayAndTheStoredOneKeepsTheOrder() {
+		this.validate(this.position().put(VisEntityPosition.Fields.expiration, this.range(this.daysAhead(-3), this.daysAhead(-1))));
 		this.refused(this.position().put(VisEntityPosition.Fields.expiration, this.range(this.daysAhead(30), this.daysAhead(5))), "a max before the min");
+		CcpJsonValidatorEngine.INSTANCE.validateJson(VisJsonFieldsNewExpirationRange.class, this.range(this.daysAhead(1), this.daysAhead(30)), "expiration");
+		try {
+			CcpJsonValidatorEngine.INSTANCE.validateJson(VisJsonFieldsNewExpirationRange.class, this.range(this.daysAhead(-3), this.daysAhead(30)), "expiration");
+			fail("a new position with a min in the past was accepted");
+		} catch (CcpJsonValidationError e) {
+		}
 	}
 
 	@Test
