@@ -325,10 +325,10 @@ public class ResumesOfTheFiltersTest {
 	}
 
 	/**
-	 * Both budgets filled: (no PJ claim or PJ inside) and (no CLT claim or CLT inside) and at least one claim informed.
+	 * Both budgets filled: the resume enters when at least one claim informed fits the budget of its type.
 	 */
 	@Test
-	public void withBothBudgetsEachClaimInformedMustFitItsBudget() {
+	public void withBothBudgetsOneClaimInsideItsBudgetIsEnough() {
 		String cltOnly = this.save(this.resume("budgetsCltOnly"));
 		CcpJsonRepresentation pjOnlyResume = this.resume("budgetsPjOnly").removeFields(VisEntityResume.Fields.clt).put(VisEntityResume.Fields.pj, 88000);
 		String pjOnly = this.save(pjOnlyResume);
@@ -347,7 +347,12 @@ public class ResumesOfTheFiltersTest {
 				.put(VisBusinessResumesOfTheFilters.Fields.pj, range(1000, 2000));
 		assertTrue("CLT only: the PJ budget does not concern it", finds(pjOutside, cltOnly));
 		assertFalse("PJ only, outside the PJ budget", finds(pjOutside, pjOnly));
-		assertFalse("both claims, the PJ one outside its budget", finds(pjOutside, both));
+		assertTrue("both claims, the PJ one outside its budget: the CLT one is inside", finds(pjOutside, both));
+
+		CcpJsonRepresentation bothOutside = filters()
+				.put(VisBusinessResumesOfTheFilters.Fields.clt, range(1000, 2000))
+				.put(VisBusinessResumesOfTheFilters.Fields.pj, range(1000, 2000));
+		assertFalse("both claims, both outside", finds(bothOutside, both));
 
 		CcpJsonRepresentation onlyClt = filters().put(VisBusinessResumesOfTheFilters.Fields.clt, range(99000, 100000));
 		assertFalse("one budget only: the PJ only resume has no claim of that type", finds(onlyClt, pjOnly));
