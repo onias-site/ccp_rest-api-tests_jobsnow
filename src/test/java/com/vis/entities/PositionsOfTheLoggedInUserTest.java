@@ -85,7 +85,7 @@ public class PositionsOfTheLoggedInUserTest {
 				.put(VisEntityPosition.Fields.recruiter, this.userEmail)
 				.put(VisEntityPosition.Fields.title, this.title)
 				.put(VisEntityPosition.Fields.resumeType, 1)
-				.put(VisEntityPosition.Fields.seniority, "pleno")
+				.put(VisEntityPosition.Fields.seniority, List.of("pleno"))
 				.put(VisEntityPosition.Fields.pj, new CcpJsonRepresentation("{\"min\":9000,\"max\":13000}"))
 				.put(VisEntityPosition.Fields.ddd, Arrays.asList(11, 21))
 				.put(VisEntityPosition.Fields.disponibility, 0)
@@ -143,7 +143,7 @@ public class PositionsOfTheLoggedInUserTest {
 		CcpJsonRepresentation child = active.get(0);
 		assertEquals(this.title, child.getAsString(VisEntityPosition.Fields.title));
 		assertEquals(FIRST_DESCRIPTION, child.getAsString(VisEntityPosition.Fields.description));
-		assertEquals("pleno", child.getAsString(VisEntityPosition.Fields.seniority));
+		assertEquals(List.of("pleno"), child.getAsStringList(VisEntityPosition.Fields.seniority));
 		assertEquals("the default value", "daily", child.getAsString(VisEntityPosition.Fields.frequencyType));
 		assertTrue("the id of the position", child.containsAllFields(new CcpFieldName("id")));
 		assertTrue("no hash of the searches", false == child.containsAllFields(VisEntityPosition.Fields.hash));

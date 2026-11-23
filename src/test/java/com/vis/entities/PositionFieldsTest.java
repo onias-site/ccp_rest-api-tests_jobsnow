@@ -25,6 +25,7 @@ import com.vis.business.position.VisBusinessPutPositionDefaultValues;
 import com.vis.business.position.VisPositionOfTheRecruiterFields;
 import com.vis.json.transformers.VisPositionHashCombinations;
 import com.vis.json.transformers.VisResumeHashCombinations;
+import com.vis.json.transformers.VisSeniorityType;
 
 /**
  * The fields of the position (2026-11-21): the validations of the salary ranges, the expiration, the contacts, the
@@ -70,7 +71,7 @@ public class PositionFieldsTest {
 				.put(VisEntityPosition.Fields.disponibility, 5)
 				.put(VisEntityPosition.Fields.ddd, Arrays.asList(11))
 				.put(VisEntityPosition.Fields.resumeType, 1)
-				.put(VisEntityPosition.Fields.seniority, "senior")
+				.put(VisEntityPosition.Fields.seniority, List.of("senior"))
 				.put(VisEntityPosition.Fields.skill, Arrays.asList(java, docker))
 				.put(VisEntityPosition.Fields.spokenLanguage, Arrays.asList(english))
 				.put(VisEntityPosition.Fields.pcd, true)
@@ -181,7 +182,7 @@ public class PositionFieldsTest {
 		CcpJsonRepresentation badSort = new CcpJsonRepresentation("{\"type\":\"up\",\"field\":[\"clt\"]}");
 		this.refused(this.position().put(VisEntityPosition.Fields.sort, Arrays.asList(badSort)), "a sort type out of the enum");
 		this.refused(this.position().put(VisEntityPosition.Fields.frequencyType, "monthly"), "a frequency out of the enum");
-		this.refused(this.position().put(VisEntityPosition.Fields.seniority, "SR"), "a seniority out of VisSeniorityType");
+		this.refused(this.position().put(VisEntityPosition.Fields.seniority, List.of("SR")), "a seniority out of VisSeniorityType");
 	}
 
 	@Test
@@ -229,6 +230,38 @@ public class PositionFieldsTest {
 		}
 		assertEquals(new TreeSet<>(Arrays.asList("senior")), seniorities);
 		assertEquals(new TreeSet<>(Arrays.asList("JAVA", "JVM", "none")), skills);
+	}
+
+	@Test
+	public void theSenioritiesAreAListOfOneToSix() {
+		this.refused(this.position().put(VisEntityPosition.Fields.seniority, List.of()), "no seniority");
+		this.refused(this.position().put(VisEntityPosition.Fields.seniority, List.of("pleno", "SR")), "one seniority out of VisSeniorityType");
+		CcpJsonRepresentation several = this.position().put(VisEntityPosition.Fields.seniority, List.of("junior", "pleno", "senior"));
+		CcpJsonValidatorEngine.INSTANCE.validateJson(VisEntityPosition.Fields.class, several, "position");
+	}
+
+	@Test
+	public void eachSeniorityOfThePositionIsASearchOfItsOwn() {
+		CcpJsonRepresentation several = this.position().put(VisEntityPosition.Fields.seniority, List.of("junior", "pleno"));
+		List<CcpJsonRepresentation> combinations = VisPositionHashCombinations.INSTANCE.apply(several);
+
+		// the same combinations of the position of one seniority, once per seniority
+		assertEquals(1 * 3 * 3 * 1 * 2 * 2 * 2, combinations.size());
+		Set<String> seniorities = new TreeSet<>();
+		for (CcpJsonRepresentation combination : combinations) {
+			seniorities.add(combination.getAsString(VisEntityVirtualHashGrouper.Fields.seniority));
+		}
+		assertEquals(new TreeSet<>(Arrays.asList("junior", "pleno")), seniorities);
+	}
+
+	@Test
+	public void aPositionSavedBeforeTheListKeepsItsSingleSeniority() {
+		// until 2026-11-22 the seniority of the position was a single text: it is read as a list of one
+		CcpJsonRepresentation savedBefore = this.position().put(VisEntityPosition.Fields.seniority, "pleno");
+		List<VisSeniorityType> seniorities = VisSeniorityType.listOf(savedBefore, VisEntityPosition.Fields.seniority);
+		assertEquals(List.of(VisSeniorityType.pleno), seniorities);
+		List<CcpJsonRepresentation> combinations = VisPositionHashCombinations.INSTANCE.apply(savedBefore);
+		assertEquals(1 * 3 * 3 * 1 * 2 * 2 * 1, combinations.size());
 	}
 
 	@Test

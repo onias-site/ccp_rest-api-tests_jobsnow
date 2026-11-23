@@ -142,7 +142,7 @@ public class ResumeStatisticsOfTheRegionTest {
 		return String.valueOf(instant);
 	}
 
-	/** An active position of the region: senior, clt 8.000 to 12.000 (middle 10.000), fluent English, the unique skill. */
+	/** An active position of the region: senior or especialista, clt 8.000 to 12.000 (middle 10.000), fluent English, the unique skill. */
 	private CcpJsonRepresentation position() {
 		CcpJsonRepresentation unique = new CcpJsonRepresentation("{\"skill\":\"" + this.uniqueSkill + "\",\"word\":\"" + this.uniqueSkill + "\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\"}");
 		CcpJsonRepresentation desired = new CcpJsonRepresentation("{\"skill\":\"DOCKER\",\"word\":\"DOCKER\",\"type\":\"shouldSkills\",\"category\":\"shouldSkills\"}");
@@ -151,7 +151,7 @@ public class ResumeStatisticsOfTheRegionTest {
 				.put(VisEntityPosition.Fields.recruiter, this.positionRecruiter)
 				.put(VisEntityPosition.Fields.title, "statistics position " + this.now)
 				.put(VisEntityPosition.Fields.resumeType, 1)
-				.put(VisEntityPosition.Fields.seniority, "senior")
+				.put(VisEntityPosition.Fields.seniority, List.of("senior", "especialista"))
 				.put(VisEntityPosition.Fields.clt, new CcpJsonRepresentation("{\"min\":8000,\"max\":12000}"))
 				.put(VisEntityPosition.Fields.ddd, Arrays.asList(DDD))
 				.put(VisEntityPosition.Fields.disponibility, 0)
@@ -185,7 +185,10 @@ public class ResumeStatisticsOfTheRegionTest {
 		long totalBefore = before.getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.total);
 		assertEquals("one more position", totalBefore + 1, after.getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.total).longValue());
 		assertEquals("a position is not a resume", resumesBefore, statistics().getAsLongNumber(VisBusinessResumeStatisticsOfTheRegion.Fields.total).longValue());
-		assertAdded("the seniority it asks for", 1, before, after, VisResumeStatisticsCharts.seniority, "senior");
+		// 2026-11-23: a position of several seniorities counts in each one
+		assertAdded("a seniority it asks for", 1, before, after, VisResumeStatisticsCharts.seniority, "senior");
+		assertAdded("the other seniority it asks for", 1, before, after, VisResumeStatisticsCharts.seniority, "especialista");
+		assertAdded("and in the heat map of each one", 1, before, after, VisResumeStatisticsCharts.seniorityContract, "especialista|onlyClt");
 		assertAdded("the middle of 8.000 and 12.000", 1, before, after, VisResumeStatisticsCharts.cltRange, "from6kTo10k");
 		assertAdded("clt only", 1, before, after, VisResumeStatisticsCharts.contractType, "onlyClt");
 		assertAdded("the required skill", 1, before, after, VisResumeStatisticsCharts.skill, this.uniqueSkill);

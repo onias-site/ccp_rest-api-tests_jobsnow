@@ -95,7 +95,7 @@ public class PositionsOfTheRecruiterActionsTest {
 				.put(VisPositionKeyFields.email, this.userEmail)
 				.put(VisEntityPosition.Fields.title, this.title)
 				.put(VisEntityPosition.Fields.resumeType, 1)
-				.put(VisEntityPosition.Fields.seniority, "junior")
+				.put(VisEntityPosition.Fields.seniority, List.of("junior"))
 				.put(VisEntityPosition.Fields.clt, new CcpJsonRepresentation("{\"min\":3000,\"max\":5000}"))
 				.put(VisEntityPosition.Fields.ddd, Arrays.asList(11))
 				.put(VisEntityPosition.Fields.disponibility, 0)

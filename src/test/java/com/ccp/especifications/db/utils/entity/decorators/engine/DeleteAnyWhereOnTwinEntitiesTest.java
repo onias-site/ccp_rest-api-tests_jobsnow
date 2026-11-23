@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -133,7 +134,7 @@ public class DeleteAnyWhereOnTwinEntitiesTest {
 				.put(VisEntityPosition.Fields.disponibility, 5)
 				.put(VisEntityPosition.Fields.expiration, expiration)
 				.put(VisEntityPosition.Fields.resumeType, 1)
-				.put(VisEntityPosition.Fields.seniority, "senior")
+				.put(VisEntityPosition.Fields.seniority, List.of("senior"))
 				.put(VisEntityPosition.Fields.sort, Arrays.asList(sort))
 				.put(VisEntityPosition.Fields.contact, Arrays.asList(contact))
 				.put(VisEntityPosition.Fields.temporallyJobTime, 0)

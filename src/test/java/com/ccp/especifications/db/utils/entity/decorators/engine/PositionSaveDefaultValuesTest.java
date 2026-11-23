@@ -79,7 +79,7 @@ public class PositionSaveDefaultValuesTest {
 				.put(VisEntityPosition.Fields.description, description)
 				.put(VisEntityPosition.Fields.disponibility, 5)
 				.put(VisEntityPosition.Fields.expiration, expiration)
-				.put(VisEntityPosition.Fields.seniority, "senior")
+				.put(VisEntityPosition.Fields.seniority, List.of("senior"))
 				.put(VisEntityPosition.Fields.skill, Arrays.asList(java))
 				.put(VisEntityPosition.Fields.sort, Arrays.asList(sort))
 				.put(VisEntityPosition.Fields.contact, Arrays.asList(contact))

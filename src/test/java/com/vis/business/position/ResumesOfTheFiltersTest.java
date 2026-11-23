@@ -302,8 +302,10 @@ public class ResumesOfTheFiltersTest {
 		assertFalse("accepts 6 months of temporary job, the position has 3", finds(filters().put(VisBusinessResumesOfTheFilters.Fields.temporallyJobTime, 3), resumeId));
 		assertTrue("the position has 12 months", finds(filters().put(VisBusinessResumesOfTheFilters.Fields.temporallyJobTime, 12), resumeId));
 
-		assertTrue("4 years of experience is pleno", finds(filters().put(VisBusinessResumesOfTheFilters.Fields.seniority, "pleno"), resumeId));
-		assertFalse("and not senior", finds(filters().put(VisBusinessResumesOfTheFilters.Fields.seniority, "senior"), resumeId));
+		assertTrue("4 years of experience is pleno", finds(filters().put(VisBusinessResumesOfTheFilters.Fields.seniority, List.of("pleno")), resumeId));
+		assertFalse("and not senior", finds(filters().put(VisBusinessResumesOfTheFilters.Fields.seniority, List.of("senior")), resumeId));
+		assertTrue("any of the seniorities: junior or pleno", finds(filters().put(VisBusinessResumesOfTheFilters.Fields.seniority, List.of("junior", "pleno")), resumeId));
+		assertFalse("none of the seniorities: estag or senior", finds(filters().put(VisBusinessResumesOfTheFilters.Fields.seniority, List.of("estag", "senior")), resumeId));
 
 		assertFalse("does not negotiate the claim", finds(filters().put(VisBusinessResumesOfTheFilters.Fields.negotiableClaim, true), resumeId));
 		assertFalse("is not pcd", finds(filters().put(VisBusinessResumesOfTheFilters.Fields.pcd, true), resumeId));
@@ -410,7 +412,7 @@ public class ResumesOfTheFiltersTest {
 		} catch (CcpJsonValidationError expected) {
 		}
 		try {
-			ask(filters().put(VisBusinessResumesOfTheFilters.Fields.seniority, "guru"));
+			ask(filters().put(VisBusinessResumesOfTheFilters.Fields.seniority, List.of("guru")));
 			fail("an unknown seniority");
 		} catch (CcpJsonValidationError expected) {
 		}
