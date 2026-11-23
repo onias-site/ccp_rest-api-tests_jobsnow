@@ -120,7 +120,13 @@ public class SkillFixHierarchyThroughSupportBotTest {
 
 	private static final String REJECT_ALL_USER = "revisao.rejeitar.tudo@teste.com";
 
-	private static final String SKILL_PARENTS_USER = "revisao.altera.parents@teste.com";
+	private static final String DENY_ALL_USER = "revisao.negar.tudo@teste.com";
+
+	private static final String DENY_ONE_USER = "revisao.negar.um@teste.com";
+
+	private static final String DENY_DISSOCIATION_USER = "revisao.negar.desassociacao@teste.com";
+
+	private static final String SKILL_PARENTS_USER ="revisao.altera.parents@teste.com";
 
 	private static final String WITHDRAWN_REQUEST_USER = "desistiu.da.solicitacao@teste.com";
 
@@ -383,6 +389,86 @@ public class SkillFixHierarchyThroughSupportBotTest {
 		String body = email.getAsString(JnJsonCommonsFields.message);
 		assertTrue(body, body.contains("<li><b>ktor</b>: já estão associados a kotlin</li>"));
 		assertFalse(body, body.contains("Itens aprovados"));
+	}
+
+	/**
+	 * Denying an association does what rejecting everything does, with the standard justification: the parent would
+	 * become a prerequisite of every pending skill.
+	 */
+	@Test
+	public void operatorDeniesEverything() {
+
+		this.openRequest(DENY_ALL_USER, VisSkillFixHierarchyTypes.add, "rust", "Tokio e Actix são de rust", "tokio", "actix");
+
+		String request = this.operatorTypes("/fixSkillHierarchy add " + DENY_ALL_USER + " rust");
+		assertTrue(request, request.contains("• negar"));
+		String summary = this.operatorTypes("negar");
+		assertTrue(summary, summary.contains("Aprovados: -"));
+		assertTrue(summary, summary.contains("Reprovados: tokio, actix"));
+
+		CcpEntity rejectedItems = VisEntitySkillFixHierarchyItemPending.ENTITY.getTwinEntity();
+		CcpJsonRepresentation tokio = this.item(DENY_ALL_USER, VisSkillFixHierarchyTypes.add, "rust", "tokio");
+		CcpJsonRepresentation actix = this.item(DENY_ALL_USER, VisSkillFixHierarchyTypes.add, "rust", "actix");
+		assertTrue(rejectedItems.exists(tokio));
+		assertTrue(rejectedItems.exists(actix));
+		assertFalse(VisEntitySkillFixHierarchyItemApproved.ENTITY.exists(tokio));
+
+		CcpJsonRepresentation requestKey = this.request(DENY_ALL_USER, VisSkillFixHierarchyTypes.add, "rust");
+		assertFalse(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
+		assertTrue(VisEntitySkillFixHierarchyFulfiled.ENTITY.exists(requestKey));
+
+		String denial = "Não podemos aprovar essa sugestão, pois, isso implicaria que para saber tokio, actix teria que ser necessário saber primeiro rust";
+		CcpJsonRepresentation email = this.emailSentTo(DENY_ALL_USER, VisMessages.VisNotifyUserAboutFulfiledSkillHierarchy.class);
+		String body = email.getAsString(JnJsonCommonsFields.message);
+		assertTrue(body, body.contains("<li><b>tokio</b>: " + denial + "</li>"));
+		assertTrue(body, body.contains("<li><b>actix</b>: " + denial + "</li>"));
+		assertFalse(body, body.contains("Itens aprovados"));
+	}
+
+	/**
+	 * Denying one item rejects only it, with the standard justification naming only its skill.
+	 */
+	@Test
+	public void operatorDeniesOneItem() {
+
+		this.openRequest(DENY_ONE_USER, VisSkillFixHierarchyTypes.add, "go", "Gin e Cobra são de go", "gin", "cobra");
+
+		this.operatorTypes("/fixSkillHierarchy add " + DENY_ONE_USER + " go");
+		String firstItem = this.operatorTypes("um a um");
+		assertTrue(firstItem, firstItem.contains("negar"));
+		this.operatorTypes("aprovar gin é framework go");
+		String summary = this.operatorTypes("negar");
+		assertTrue(summary, summary.contains("Aprovados: gin"));
+		assertTrue(summary, summary.contains("Reprovados: cobra"));
+
+		CcpJsonRepresentation cobra = this.item(DENY_ONE_USER, VisSkillFixHierarchyTypes.add, "go", "cobra");
+		CcpEntity rejectedItems = VisEntitySkillFixHierarchyItemPending.ENTITY.getTwinEntity();
+		assertTrue(rejectedItems.exists(cobra));
+
+		CcpJsonRepresentation email = this.emailSentTo(DENY_ONE_USER, VisMessages.VisNotifyUserAboutFulfiledSkillHierarchy.class);
+		String body = email.getAsString(JnJsonCommonsFields.message);
+		assertTrue(body, body.contains("Itens reprovados:</p><ul><li><b>cobra</b>: Não podemos aprovar essa sugestão, pois, isso implicaria que para saber cobra teria que ser necessário saber primeiro go</li></ul>"));
+		assertTrue(body, body.contains("<li><b>gin</b>: gin é framework go</li>"));
+	}
+
+	/**
+	 * Denying is only for an association: in a dissociation request it is not understood and the options are asked
+	 * again, with nothing decided.
+	 */
+	@Test
+	public void denyingADissociationIsNotUnderstood() {
+
+		this.openRequest(DENY_DISSOCIATION_USER, VisSkillFixHierarchyTypes.remove, "ruby", "Rails não é ruby puro", "rails");
+
+		this.operatorTypes("/fixSkillHierarchy remove " + DENY_DISSOCIATION_USER + " ruby");
+		String answer = this.operatorTypes("negar");
+		assertTrue(answer, answer.startsWith("Não entendi a resposta"));
+
+		CcpJsonRepresentation rails = this.item(DENY_DISSOCIATION_USER, VisSkillFixHierarchyTypes.remove, "ruby", "rails");
+		assertTrue(VisEntitySkillFixHierarchyItemPending.ENTITY.exists(rails));
+
+		CcpJsonRepresentation requestKey = this.request(DENY_DISSOCIATION_USER, VisSkillFixHierarchyTypes.remove, "ruby");
+		assertTrue(VisEntitySkillFixHierarchyPending.ENTITY.exists(requestKey));
 	}
 
 	/**

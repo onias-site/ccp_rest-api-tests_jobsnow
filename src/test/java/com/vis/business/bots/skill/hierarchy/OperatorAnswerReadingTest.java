@@ -7,10 +7,13 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.ccp.constants.CcpOtherConstants;
+import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.vis.business.skill.VisSkillFixHierarchyDecisions;
+import com.vis.entities.VisEntitySkillFixHierarchyPending;
+import com.vis.json.fields.validation.VisSkillFixHierarchyTypes;
 
 /**
  * Proves how {@link VisSupportSkillFixHierarchyAnswer} reads what the operator typed in the {@code fixSkillHierarchy}
@@ -61,6 +64,19 @@ public class OperatorAnswerReadingTest {
 		assertEquals(VisSkillFixHierarchyDecisions.rejected, this.read("rejeitar no evidence").getDecision());
 		assertEquals(VisSkillFixHierarchyDecisions.rejected, this.read("reprovar no evidence").getDecision());
 		assertEquals(VisSkillFixHierarchyDecisions.rejected, this.read("Reject no evidence").getDecision());
+	}
+
+	@Test
+	public void denialIsReadInBothLanguagesOnlyInAnAssociation() {
+		CcpJsonRepresentation association = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillFixHierarchyPending.Fields.type, VisSkillFixHierarchyTypes.add);
+		CcpJsonRepresentation dissociation = CcpOtherConstants.EMPTY_JSON.put(VisEntitySkillFixHierarchyPending.Fields.type, VisSkillFixHierarchyTypes.remove);
+
+		assertTrue(VisSupportSkillFixHierarchyAnswer.read(association.put(JnJsonCommonsFields.typedValue, "negar")).isDenial());
+		assertTrue(VisSupportSkillFixHierarchyAnswer.read(association.put(JnJsonCommonsFields.typedValue, " Deny ")).isDenial());
+		assertFalse(VisSupportSkillFixHierarchyAnswer.read(dissociation.put(JnJsonCommonsFields.typedValue, "negar")).isDenial());
+		// a denial is not one of the decisions with justification, which the skill suggestion command also reads
+		assertFalse(VisSupportSkillFixHierarchyAnswer.read(association.put(JnJsonCommonsFields.typedValue, "negar")).isDecisionWithJustification());
+		assertFalse(this.read("negar").isDenial());
 	}
 
 	@Test
