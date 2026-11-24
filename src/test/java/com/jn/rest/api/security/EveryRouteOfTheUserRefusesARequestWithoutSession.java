@@ -45,6 +45,7 @@ public class EveryRouteOfTheUserRefusesARequestWithoutSession {
 			{"8081", "DELETE", "resume/" + email + "/skills/suggestion"},
 			{"8081", "POST", "resume/" + email + "/skills/suggestion/search"},
 			{"8081", "GET", "recruiter/" + email + "/resumes-of-the-week"},
+			{"8081", "GET", "resume/" + email + "/positions"},
 			{"8081", "GET", "recruiter/" + email + "/resumes-of-the-position?title=x"},
 			{"8081", "GET", "recruiter/" + email + "/viewed-resumes/202611"},
 			{"8081", "POST", "recruiter/" + email + "/viewed-resumes/202611/details"},

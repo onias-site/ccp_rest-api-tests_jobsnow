@@ -112,6 +112,15 @@ public class VisRestApiResumeTest extends VisRestApiTestTemplate {
 	}
 
 	@Test
+	public void theCandidateWithNoResumeHasNoPositions() {
+		String path = this.resumePath("/positions");
+
+		HttpResponse<String> response = this.sendWithTheSession(Fields.GET, path, CcpOtherConstants.EMPTY_JSON);
+
+		this.assertStatus(404, response);
+	}
+
+	@Test
 	public void theViewersOfAMonthComeEvenWhenNobodyViewed() {
 		String path = this.resumePath("/viewers/202501");
 
