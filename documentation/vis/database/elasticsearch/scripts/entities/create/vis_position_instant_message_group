@@ -1,0 +1,22 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"seniority": {
+				"type": "keyword"
+			},
+			"resumeType": {
+				"type": "integer"
+			},
+			"ddd": {
+				"type": "long"
+			},
+			"chatId": {
+				"type": "long"
+			},
+			"botType": {
+				"type": "keyword"
+			}
+		}
+	}
+}
