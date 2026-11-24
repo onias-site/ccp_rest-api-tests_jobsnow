@@ -124,6 +124,9 @@ public class PositionFieldsTest {
 		assertFalse("daily by default, no e-mail", this.acceptedAsInput(this.position()));
 		assertFalse("instantly, no e-mail", this.acceptedAsInput(this.position().put(VisEntityPosition.Fields.frequencyType, "instantly")));
 		assertTrue("none needs no e-mail", this.acceptedAsInput(this.position().put(VisEntityPosition.Fields.frequencyType, "none")));
+		assertFalse("by the candidates, no e-mail", this.acceptedAsInput(this.position().put(VisEntityPosition.Fields.frequencyType, "byTheCandidates")));
+		CcpJsonRepresentation byTheCandidates = withTheEmail.put(VisEntityPosition.Fields.frequencyType, "byTheCandidates");
+		assertTrue("by the candidates, with the e-mail", this.acceptedAsInput(byTheCandidates));
 		assertFalse("an invalid e-mail", this.acceptedAsInput(this.position().put(VisEntityPosition.Fields.resumesEmail, "not an e-mail")));
 		this.validate(this.position());
 	}
@@ -200,7 +203,6 @@ public class PositionFieldsTest {
 	public void theBeforeSaveFillsOnlyTheAbsentDefaultValues() {
 		CcpJsonRepresentation withDefaults = VisBusinessPutPositionDefaultValues.INSTANCE.execute(this.position());
 		assertEquals(true, withDefaults.getAsBoolean(VisEntityPosition.Fields.mustSendInGroups));
-		assertEquals(true, withDefaults.getAsBoolean(VisEntityPosition.Fields.mustSendToResumes));
 		assertEquals("daily", withDefaults.getAsString(VisEntityPosition.Fields.frequencyType));
 
 		CcpJsonRepresentation informed = this.position()
@@ -208,7 +210,6 @@ public class PositionFieldsTest {
 				.put(VisEntityPosition.Fields.frequencyType, "weekly");
 		CcpJsonRepresentation keptValues = VisBusinessPutPositionDefaultValues.INSTANCE.execute(informed);
 		assertEquals(false, keptValues.getAsBoolean(VisEntityPosition.Fields.mustSendInGroups));
-		assertEquals(true, keptValues.getAsBoolean(VisEntityPosition.Fields.mustSendToResumes));
 		assertEquals("weekly", keptValues.getAsString(VisEntityPosition.Fields.frequencyType));
 	}
 

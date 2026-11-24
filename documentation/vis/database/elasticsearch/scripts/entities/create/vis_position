@@ -122,12 +122,6 @@
 			"mustSendInGroups": {
 				"type": "boolean"
 			},
-			"mustSendToResumes": {
-				"type": "boolean"
-			},
-			"visibleToCandidates": {
-				"type": "boolean"
-			},
 			"resumesEmail": {
 				"type": "keyword"
 			},
