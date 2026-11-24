@@ -377,7 +377,8 @@ public class ResumesOfTheFiltersTest {
 		String firstId = this.save(this.resume("filtersAverageA"));
 		CcpJsonRepresentation second = this.resume("filtersAverageB")
 				.put(VisEntityResume.Fields.clt, 99900)
-				.put(VisEntityResume.Fields.pj, 99000);
+				.put(VisEntityResume.Fields.pj, 99000)
+				.put(VisEntityResume.Fields.experience, 8);
 		String secondId = this.save(second);
 
 		CcpJsonRepresentation onlyTheseTwo = filters().put(VisBusinessResumesOfTheFilters.Fields.clt, range(99400, 100000));
@@ -388,10 +389,13 @@ public class ResumesOfTheFiltersTest {
 		assertEquals(2, response.getAsIntegerNumber(VisBusinessResumesOfTheFilters.Fields.resumes).intValue());
 		assertEquals("the average CLT of both", 99700.0, response.getAsDoubleNumber(VisBusinessResumesOfTheFilters.Fields.cltAverage), 0.001);
 		assertEquals("the average PJ of the one that informed it", 99000.0, response.getAsDoubleNumber(VisBusinessResumesOfTheFilters.Fields.pjAverage), 0.001);
+		// 2026-11-23: 4 and 8 years of experience
+		assertEquals("the average years of experience of both", 6.0, response.getAsDoubleNumber(VisBusinessResumesOfTheFilters.Fields.experienceAverage), 0.001);
 
 		CcpJsonRepresentation nobody = ask(filters().put(VisBusinessResumesOfTheFilters.Fields.clt, range(1000, 1001)));
 		assertEquals("no resume found", 0, nobody.getAsIntegerNumber(VisBusinessResumesOfTheFilters.Fields.resumes).intValue());
 		assertFalse("no average without resumes", nobody.containsAllFields(VisBusinessResumesOfTheFilters.Fields.cltAverage));
+		assertFalse("nor of the experience", nobody.containsAllFields(VisBusinessResumesOfTheFilters.Fields.experienceAverage));
 	}
 
 	@Test
