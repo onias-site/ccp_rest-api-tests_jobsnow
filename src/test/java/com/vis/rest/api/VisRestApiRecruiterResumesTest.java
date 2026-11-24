@@ -14,6 +14,7 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.vis.business.recruiter.resumes.VisBusinessViewedResumeDetails;
 import com.vis.business.recruiter.resumes.VisRecruiterLinks;
 import com.vis.business.recruiter.resumes.VisRecruiterResumesFields;
+import com.vis.entities.VisEntityPositionResumes;
 import com.vis.entities.VisEntityResume;
 import com.vis.entities.VisEntityViewedResume;
 import com.vis.services.VisServiceResume;
@@ -180,6 +181,38 @@ public class VisRestApiRecruiterResumesTest extends VisRestApiTestTemplate {
 		HttpResponse<String> response = this.sendWithTheSession(Fields.GET, path, CcpOtherConstants.EMPTY_JSON);
 
 		this.assertStatus(404, response);
+	}
+
+	@Test
+	public void aPositionWithNoEmailOfResumesHasNoResumesOfThePosition() {
+		this.login();
+		String path = this.recruiterPath("/resumes-of-the-position?title=vaga-sem-envio");
+
+		HttpResponse<String> response = this.sendWithTheSession(Fields.GET, path, CcpOtherConstants.EMPTY_JSON);
+
+		this.assertStatus(404, response);
+	}
+
+	@Test
+	public void theResumesOfThePositionComeFromTheListOfItsLastEmail() {
+		this.login();
+		String title = "vaga-com-envio-" + System.currentTimeMillis();
+		CcpJsonRepresentation row = CcpOtherConstants.EMPTY_JSON.put(VisRecruiterResumesFields.resumeId, "curriculo-da-lista");
+		CcpJsonRepresentation list = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityPositionResumes.Fields.email, this.recruiter())
+				.put(VisEntityPositionResumes.Fields.title, title)
+				.put(VisEntityPositionResumes.Fields.resumes, Arrays.asList(row));
+		VisEntityPositionResumes.ENTITY.save(list);
+		try {
+			String path = this.recruiterPath("/resumes-of-the-position?title=" + title);
+
+			HttpResponse<String> response = this.sendWithTheSession(Fields.GET, path, CcpOtherConstants.EMPTY_JSON);
+
+			this.assertStatus(200, response);
+			assertTrue(response.body(), response.body().contains("curriculo-da-lista"));
+		} finally {
+			VisEntityPositionResumes.ENTITY.delete(list);
+		}
 	}
 
 	@Test
