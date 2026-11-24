@@ -113,6 +113,9 @@
 					},
 					"field": {
 						"type": "keyword"
+					},
+					"value": {
+						"type": "keyword"
 					}
 				}
 			},

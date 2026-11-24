@@ -184,8 +184,23 @@ public class PositionFieldsTest {
 		this.refused(this.position().put(VisEntityPosition.Fields.description, "short"), "a short description");
 		CcpJsonRepresentation badSort = new CcpJsonRepresentation("{\"type\":\"up\",\"field\":[\"clt\"]}");
 		this.refused(this.position().put(VisEntityPosition.Fields.sort, Arrays.asList(badSort)), "a sort type out of the enum");
+		CcpJsonRepresentation emptyValue = new CcpJsonRepresentation("{\"type\":\"desc\",\"field\":[\"skill\"],\"value\":\"\"}");
+		this.refused(this.position().put(VisEntityPosition.Fields.sort, Arrays.asList(emptyValue)), "a sort with an empty value");
 		this.refused(this.position().put(VisEntityPosition.Fields.frequencyType, "monthly"), "a frequency out of the enum");
 		this.refused(this.position().put(VisEntityPosition.Fields.seniority, List.of("SR")), "a seniority out of VisSeniorityType");
+	}
+
+	/** 2026-11-23: one criterion per item, the language and the skill named in the value of the item. */
+	@Test
+	public void theSortingHasOneCriterionPerItemWithTheLanguageOrTheSkillInTheValue() {
+		List<CcpJsonRepresentation> sort = Arrays.asList(
+				new CcpJsonRepresentation("{\"type\":\"asc\",\"field\":[\"clt\"]}"),
+				new CcpJsonRepresentation("{\"type\":\"desc\",\"field\":[\"spokenLanguage\"],\"value\":\"Inglês\"}"),
+				new CcpJsonRepresentation("{\"type\":\"asc\",\"field\":[\"skillsTotal\"]}"),
+				new CcpJsonRepresentation("{\"type\":\"asc\",\"field\":[\"disponibility\"]}"),
+				new CcpJsonRepresentation("{\"type\":\"asc\",\"field\":[\"temporallyJobTime\"]}"),
+				new CcpJsonRepresentation("{\"type\":\"desc\",\"field\":[\"skill\"],\"value\":\"Java\"}"));
+		this.validate(this.position().put(VisEntityPosition.Fields.sort, sort));
 	}
 
 	@Test
