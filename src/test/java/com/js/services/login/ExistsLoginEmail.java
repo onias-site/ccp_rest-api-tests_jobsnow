@@ -2,10 +2,13 @@ package com.js.services.login;
 
 import org.junit.Test;
 
+import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.json.validations.global.engine.CcpJsonValidationError;
 import com.ccp.process.CcpProcessStatus;
 import com.ccp.process.CcpProcessStatusDefault;
+import com.ccp.especifications.email.CcpEmailSuppressionList;
+import com.jn.entities.JnEntityEmailSuppressed;
 import com.js.entities.JsEntityLoginAnswers;
 import com.jn.entities.JnEntityLoginEmail;
 import com.js.entities.JsEntityLoginPassword;
@@ -28,6 +31,24 @@ public class ExistsLoginEmail extends JsServiceLoginTestTemplate {
 		CcpEntity mirrorEntity = JsEntityLoginToken.ENTITY.getTwinEntity();
 		mirrorEntity.save(testVariables.REQUEST_TO_LOGIN);
 		this.execute(testVariables.REQUEST_TO_LOGIN, JsProcessStatusExistsLoginEmail.lockedToken);
+	}
+
+	/** 2026-11-23: an address the e-mail provider suppresses never receives the login token, even with a complete login. */
+	@Test
+	public void suppressedEmail() {
+		TestVariables testVariables = new TestVariables();
+		JnEntityLoginEmail.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		JsEntityLoginAnswers.ENTITY.save(testVariables.ANSWERS_JSON);
+		JsEntityLoginPassword.ENTITY.save(testVariables.REQUEST_TO_LOGIN);
+		CcpJsonRepresentation suppression = testVariables.REQUEST_TO_LOGIN.getJsonPiece(JnEntityEmailSuppressed.Fields.email)
+				.put(JnEntityEmailSuppressed.Fields.suppressionList, CcpEmailSuppressionList.bounces.name())
+				.put(JnEntityEmailSuppressed.Fields.created, 1700000000L);
+		JnEntityEmailSuppressed.ENTITY.save(suppression);
+		try {
+			this.execute(testVariables.REQUEST_TO_LOGIN, JsProcessStatusExistsLoginEmail.suppressedEmail);
+		} finally {
+			JnEntityEmailSuppressed.ENTITY.delete(suppression);
+		}
 	}
 
 	@Test

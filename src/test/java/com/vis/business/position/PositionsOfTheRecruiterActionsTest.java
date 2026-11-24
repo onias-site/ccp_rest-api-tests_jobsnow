@@ -19,6 +19,9 @@ import com.ccp.dependency.injection.CcpInstanceProvider;
 import com.ccp.especifications.db.utils.entity.decorators.engine.SilentEmailSender;
 import com.ccp.especifications.db.utils.entity.decorators.engine.SilentInstantMessenger;
 import com.ccp.especifications.email.CcpEmailProvider;
+import com.ccp.especifications.email.CcpEmailSuppressionList;
+import com.jn.entities.JnEntityEmailSuppressed;
+import com.vis.status.VisProcessStatusSavePosition;
 import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
 import com.ccp.flow.CcpErrorFlowDisturb;
 import com.ccp.hash.CcpHashAlgorithm;
@@ -202,6 +205,37 @@ public class PositionsOfTheRecruiterActionsTest {
 			VisServicePosition.ReactivatePosition.execute(this.key().put(VisBusinessReactivatePosition.Fields.max, daysAhead(-2)));
 			fail("a reactivation that ends in the past was accepted");
 		} catch (CcpJsonValidationError expected) {
+		}
+	}
+
+	/**
+	 * 2026-11-23: an e-mail suppressed by the e-mail provider never receives the resumes, so the creation and the edition
+	 * refuse it as the e-mail of the resumes (410); without the e-mail (frequency none) there is nothing to check.
+	 */
+	@Test
+	public void aSuppressedEmailDoesNotReceiveTheResumes() {
+		String suppressedEmail = "suppressed" + this.now + "@empresa.com.br";
+		CcpJsonRepresentation suppression = CcpOtherConstants.EMPTY_JSON
+				.put(JnEntityEmailSuppressed.Fields.email, suppressedEmail)
+				.put(JnEntityEmailSuppressed.Fields.suppressionList, CcpEmailSuppressionList.bounces.name())
+				.put(JnEntityEmailSuppressed.Fields.created, 1700000000L);
+		JnEntityEmailSuppressed.ENTITY.save(suppression);
+		try {
+			CcpJsonRepresentation toTheSuppressed = this.input(DESCRIPTION).put(VisEntityPosition.Fields.resumesEmail, suppressedEmail);
+			assertStatus(VisProcessStatusSavePosition.suppressedEmail, () -> VisServicePosition.CreatePosition.execute(toTheSuppressed));
+			assertEquals("refused: not saved", 0, this.positionsOnThe("mainEntity").size());
+
+			CcpJsonRepresentation noResumes = this.input(DESCRIPTION)
+					.removeFields(VisEntityPosition.Fields.resumesEmail)
+					.put(VisEntityPosition.Fields.frequencyType, "none");
+			VisServicePosition.CreatePosition.execute(noResumes);
+			assertEquals("none", this.theOnlyActivePosition().getAsString(VisEntityPosition.Fields.frequencyType));
+
+			assertStatus(VisProcessStatusSavePosition.suppressedEmail, () -> VisServicePosition.EditPosition.execute(toTheSuppressed));
+			VisServicePosition.EditPosition.execute(this.input(OTHER_DESCRIPTION));
+			assertEquals(this.userEmail, this.theOnlyActivePosition().getAsString(VisEntityPosition.Fields.resumesEmail));
+		} finally {
+			JnEntityEmailSuppressed.ENTITY.delete(suppression);
 		}
 	}
 
