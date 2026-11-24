@@ -10,6 +10,9 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
+
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
@@ -118,6 +121,10 @@ public class VisRestApiResumeTest extends VisRestApiTestTemplate {
 		HttpResponse<String> response = this.sendWithTheSession(Fields.GET, path, CcpOtherConstants.EMPTY_JSON);
 
 		this.assertStatus(404, response);
+		// the browser never keeps a business status (a cached 301 outlived the reactivation of a resume)
+		String cacheControl = response.headers().firstValue(HttpHeaders.CACHE_CONTROL).orElse("");
+		String noStore = CacheControl.noStore().getHeaderValue();
+		assertEquals(noStore, cacheControl);
 	}
 
 	@Test
