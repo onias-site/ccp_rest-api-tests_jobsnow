@@ -190,6 +190,27 @@ public class PositionFieldsTest {
 		this.refused(this.position().put(VisEntityPosition.Fields.seniority, List.of("SR")), "a seniority out of VisSeniorityType");
 	}
 
+	/**
+	 * 2026-11-24: the simplified position of the screen goes with every ddd plus the home office (68), every seniority, no
+	 * language and the candidates sending their resumes themselves.
+	 */
+	@Test
+	public void theSimplifiedPositionTakesEveryDddPlusTheHomeOffice() throws Exception {
+		java.lang.reflect.Field allowedValuesField = com.vis.json.fields.validation.VisJsonCommonsFields.class.getField("ddd");
+		long[] allDdds = allowedValuesField.getAnnotation(com.ccp.json.validations.fields.annotations.type.CcpJsonFieldTypeNumberUnsigned.class).allowedValues();
+		List<Long> ddds = java.util.stream.LongStream.of(allDdds).boxed().collect(java.util.stream.Collectors.toList());
+		assertEquals("every ddd plus the home office", 68, ddds.size());
+		CcpJsonRepresentation simplified = this.position()
+				.put(VisEntityPosition.Fields.ddd, ddds)
+				.put(VisEntityPosition.Fields.seniority, List.of("estag", "junior", "pleno", "senior", "especialista"))
+				.put(VisEntityPosition.Fields.spokenLanguage, List.of())
+				.put(VisEntityPosition.Fields.frequencyType, "byTheCandidates");
+		this.validate(simplified);
+		List<Long> oneTooMany = new java.util.ArrayList<>(ddds);
+		oneTooMany.add(11L);
+		this.refused(this.position().put(VisEntityPosition.Fields.ddd, oneTooMany), "69 ddds");
+	}
+
 	/** 2026-11-23: one criterion per item, the language and the skill named in the value of the item. */
 	@Test
 	public void theSortingHasOneCriterionPerItemWithTheLanguageOrTheSkillInTheValue() {
