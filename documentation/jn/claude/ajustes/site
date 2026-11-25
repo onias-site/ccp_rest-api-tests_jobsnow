@@ -1,0 +1,8 @@
+Alterações na tela de "meu-recrutamento/vagas":
+1) Adicionar aba de vagas excluídas com um grid que listem as vagas presentes na gemea de vis_position
+2) Adicionar ação de restaurar em cada vaga excluída, cada vaga exluída terá os mesmos botões de ação de uma vaga comum (registro em vis_position)
+3) Adicionar explicação no modal de escolha de tipo de cadastro de vaga, a respeito da diferença entre vaga simplificada e vaga completa
+4) Nos modais de cadastro de vagas fazer o combobox de resumeType obrigatório e sem valor padrão escolhido
+5) Nos modais de cadastro de vagas, alterar data de expiração padrão, deixar 1 semana
+6) Nos modais de cadastro de vagas, quando se vai listar curriculos dos critérios escolhidos para a vaga fazer aparecer um spinning quando estiver carregando currículos, pois este carregamento é lento.
+7) Nos modais de cadastro de vagas, adicionar ordenação por DDD
