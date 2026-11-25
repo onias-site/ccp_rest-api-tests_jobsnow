@@ -1,0 +1,19 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"position": {
+				"type": "keyword"
+			},
+			"email": {
+				"type": "keyword"
+			},
+			"resumeId": {
+				"type": "keyword"
+			},
+			"sendingHour": {
+				"type": "keyword"
+			}
+		}
+	}
+}
