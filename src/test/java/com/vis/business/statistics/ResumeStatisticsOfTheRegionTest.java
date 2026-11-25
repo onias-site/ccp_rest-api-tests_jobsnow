@@ -31,6 +31,7 @@ import com.jn.utils.JnDeleteKeysFromCache;
 import com.jn.business.grouper.JnBusinessGetGrouperCharts;
 import com.jn.json.fields.validation.JnGrouperChartsScreens;
 import com.jn.utils.JnGroupers;
+import com.vis.business.position.VisPositionOfTheRecruiter;
 import com.vis.entities.RecordingEmailSender;
 import com.vis.entities.VisEntityPosition;
 import com.vis.entities.VisEntityResume;
@@ -150,6 +151,7 @@ public class ResumeStatisticsOfTheRegionTest {
 		return CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityPosition.Fields.recruiter, this.positionRecruiter)
 				.put(VisEntityPosition.Fields.title, "statistics position " + this.now)
+				.put(VisEntityPosition.Fields.yearMonth, VisPositionOfTheRecruiter.getCurrentYearMonth())
 				.put(VisEntityPosition.Fields.resumeType, 1)
 				.put(VisEntityPosition.Fields.seniority, List.of("senior", "especialista"))
 				.put(VisEntityPosition.Fields.clt, new CcpJsonRepresentation("{\"min\":8000,\"max\":12000}"))
