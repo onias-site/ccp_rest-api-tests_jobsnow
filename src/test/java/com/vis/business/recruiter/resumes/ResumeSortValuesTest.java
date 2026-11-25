@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.time.Year;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -12,6 +13,7 @@ import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.vis.entities.VisEntityResume;
+import com.vis.json.fields.validation.VisPositionSortFieldTypes;
 
 /**
  * 2026-11-24: each row of the tab "Currículos aderentes" brings the raw values by which the screen sorts the list in the
@@ -40,5 +42,20 @@ public class ResumeSortValuesTest {
 		assertEquals(2, values.getInnerJson(VisEntityResume.Fields.spokenLanguage).getAsIntegerNumber(() -> "Inglês").intValue());
 		assertEquals(List.of("Spring Boot"), values.getAsStringList(VisEntityResume.Fields.skill));
 		assertEquals(List.of("Java"), values.getAsStringList(VisBusinessResumeSortValues.Fields.parentSkill));
+		assertFalse("no ddd, no ddd value", values.containsAllFields(VisEntityResume.Fields.ddd));
+	}
+
+	/** 2026-11-24: the criterion "DDD" sorts by the lowest ddd of the resume, the home office (10) left out. */
+	@Test
+	public void theLowestDddOtherThanTheHomeOffice() {
+		CcpJsonRepresentation severalDdds = new CcpJsonRepresentation("{\"experience\":" + Year.now().getValue() + ",\"ddd\":[10,21,11,61]}");
+		CcpJsonRepresentation values = VisBusinessResumeSortValues.INSTANCE.execute(severalDdds);
+		assertEquals(11, values.getAsIntegerNumber(VisEntityResume.Fields.ddd).intValue());
+		assertEquals(11d, VisPositionSortFieldTypes.ddd.getValue(values, "", Set.of()), 0);
+
+		CcpJsonRepresentation onlyHomeOffice = new CcpJsonRepresentation("{\"experience\":" + Year.now().getValue() + ",\"ddd\":[10]}");
+		CcpJsonRepresentation homeOfficeValues = VisBusinessResumeSortValues.INSTANCE.execute(onlyHomeOffice);
+		assertFalse("only the home office: no ddd value", homeOfficeValues.containsAllFields(VisEntityResume.Fields.ddd));
+		assertEquals("goes to the end", VisPositionSortFieldTypes.MISSING, VisPositionSortFieldTypes.ddd.getValue(homeOfficeValues, "", Set.of()), 0);
 	}
 }

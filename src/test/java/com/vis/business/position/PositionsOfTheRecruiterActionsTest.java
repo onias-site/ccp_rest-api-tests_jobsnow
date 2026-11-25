@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import org.junit.After;
@@ -14,6 +15,8 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
+import com.ccp.decorators.CcpTimeDecorator;
+import com.ccp.especifications.db.crud.CcpCrud;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
 import com.ccp.especifications.db.utils.entity.decorators.engine.SilentEmailSender;
@@ -123,6 +126,28 @@ public class PositionsOfTheRecruiterActionsTest {
 	public void deleteThePosition() {
 		CcpJsonRepresentation position = this.input(DESCRIPTION).removeFields(VisPositionKeyFields.email).put(VisEntityPosition.Fields.recruiter, this.userEmail);
 		VisEntityPosition.ENTITY.deleteAnyWhere(position);
+		// the numbered copy of the restoration of a taken title
+		CcpJsonRepresentation numbered = position.put(VisEntityPosition.Fields.title, this.title + " 2");
+		VisEntityPosition.ENTITY.deleteAnyWhere(numbered);
+	}
+
+	private static long minOf(CcpJsonRepresentation position) {
+		CcpJsonRepresentation expiration = position.getInnerJson(VisEntityPosition.Fields.expiration);
+		return expiration.getAsDoubleNumber(new CcpFieldName("min")).longValue();
+	}
+
+	/** The midnight of the current day and the last millisecond of the day one week later, America/Sao_Paulo. */
+	private static long[] oneWeekFromToday() {
+		Long midnight = new CcpTimeDecorator().getMidnight();
+		Calendar calendar = new CcpTimeDecorator(midnight).getBrazilianCalendar();
+		calendar.add(Calendar.DAY_OF_MONTH, 8);
+		return new long[] {midnight, calendar.getTimeInMillis() - 1};
+	}
+
+	private void assertValidForOneWeekFromToday(CcpJsonRepresentation position) {
+		long[] expected = oneWeekFromToday();
+		assertEquals("from the beginning of the current day", expected[0], minOf(position));
+		assertEquals("until the end of the day one week later", expected[1], maxOf(position));
 	}
 
 	private List<CcpJsonRepresentation> positionsOnThe(String side) {
@@ -190,6 +215,54 @@ public class PositionsOfTheRecruiterActionsTest {
 		assertEquals("in the twin groups", 1, this.positionsOnThe("twinEntity").size());
 		assertStatus(CcpProcessStatusDefault.NOT_FOUND, () -> VisServicePosition.EditPosition.execute(this.input(DESCRIPTION)));
 		assertStatus(CcpProcessStatusDefault.NOT_FOUND, () -> VisServicePosition.InactivatePosition.execute(this.key()));
+	}
+
+	/**
+	 * 2026-11-24: "Restaurar" in the tab of the deleted positions brings an expired deleted position back to the tab of
+	 * the positions not expired, valid from today until the end of the day one week later; a title not deleted answers 404.
+	 */
+	@Test
+	public void theUserRestoresADeletedPositionValidForOneWeek() {
+		VisServicePosition.CreatePosition.execute(this.input(DESCRIPTION));
+		VisServicePosition.InactivatePosition.execute(this.key());
+		assertStatus(CcpProcessStatusDefault.NOT_FOUND, () -> VisServicePosition.RestorePosition.execute(this.key()));
+		VisServicePosition.DeletePosition.execute(this.key());
+
+		CcpJsonRepresentation restored = VisServicePosition.RestorePosition.execute(this.key());
+		assertEquals("the same title", this.title, restored.getAsString(VisEntityPosition.Fields.title));
+		this.assertValidForOneWeekFromToday(restored);
+		CcpJsonRepresentation active = this.theOnlyActivePosition();
+		this.assertValidForOneWeekFromToday(active);
+		assertEquals("the fields were kept", DESCRIPTION, active.getAsString(VisEntityPosition.Fields.description));
+		assertEquals("out of the twin groups", 0, this.positionsOnThe("twinEntity").size());
+		assertStatus(CcpProcessStatusDefault.NOT_FOUND, () -> VisServicePosition.RestorePosition.execute(this.key()));
+	}
+
+	/**
+	 * 2026-11-24: when the title of the deleted position is taken by a position not deleted (a state the screen cannot
+	 * produce, because saving a title deletes it from the twin, so it is built straight in the index), the restored one gets
+	 * "title 2" and the deleted one leaves the twin.
+	 */
+	@Test
+	public void theRestorationOfATakenTitleGetsTheNextNumber() {
+		VisServicePosition.CreatePosition.execute(this.input(DESCRIPTION));
+		VisServicePosition.DeletePosition.execute(this.key());
+		// the id of the index: the recruiter as stored, the SHA-1 of the e-mail
+		String recruiterHash = new CcpStringDecorator(this.userEmail).hash().asString(CcpHashAlgorithm.SHA1);
+		CcpJsonRepresentation storedKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityPosition.Fields.recruiter, recruiterHash).put(VisEntityPosition.Fields.title, this.title);
+		String id = VisEntityPosition.ENTITY.calculateId(storedKey);
+		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
+		CcpJsonRepresentation deleted = crud.getOneById("vis_inactive_position", id);
+		crud.save("vis_position", deleted.put(VisEntityPosition.Fields.description, OTHER_DESCRIPTION), id);
+
+		CcpJsonRepresentation restored = VisServicePosition.RestorePosition.execute(this.key());
+		assertEquals(this.title + " 2", restored.getAsString(VisEntityPosition.Fields.title));
+		this.assertValidForOneWeekFromToday(restored);
+		assertTrue("the deleted one left the twin", false == crud.exists("vis_inactive_position", id));
+		assertTrue("the position not deleted stays", crud.exists("vis_position", id));
+		List<CcpJsonRepresentation> active = this.positionsOnThe("mainEntity");
+		assertTrue("the restored one is in the list", active.stream().anyMatch(position -> (this.title + " 2").equals(position.getAsString(VisEntityPosition.Fields.title))));
+		assertEquals("out of the twin groups", 0, this.positionsOnThe("twinEntity").size());
 	}
 
 	@Test
