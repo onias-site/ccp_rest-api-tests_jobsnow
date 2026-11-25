@@ -329,7 +329,7 @@ public class ResumesToRecruitersTest {
 		List<CcpJsonRepresentation> rowsOfTheProcess = rowsOf(source);
 		String messageOfTheProcess = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(source);
 		assertTrue("the subject counts the list of the screen \"see all\" (" + rowsOfTheProcess.size() + "): " + messageOfTheProcess.substring(0, 80),
-				messageOfTheProcess.startsWith("[DE GRAÇA!!!] " + rowsOfTheProcess.size() + " currículos de "));
+				messageOfTheProcess.startsWith(rowsOfTheProcess.size() + " currículos de "));
 		assertTrue(messageOfTheProcess.contains("dos últimos 7 dias " + rowsOfTheProcess.size() + " no total ("));
 
 		// a list of a known size, as the e-mail to a recruiter whose resumes passed every filter
@@ -339,7 +339,7 @@ public class ResumesToRecruitersTest {
 		VisBusinessSendResumesToRecruiters.sendTheEmail(reader, list, "http://localhost:3000", "https://api.jobsnow.com");
 		String message = RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.get(reader);
 
-		assertTrue("the subject counts the whole list: " + message.substring(0, 80), message.startsWith("[DE GRAÇA!!!] " + resumesOfTheList + " currículos de "));
+		assertTrue("the subject counts the whole list: " + message.substring(0, 80), message.startsWith(resumesOfTheList + " currículos de "));
 		assertTrue("the opening text counts the whole list", message.contains("dos últimos 7 dias " + resumesOfTheList + " no total ("));
 		assertTrue("the opening text links onias.site", message.contains("<a href=\"http://localhost:3000\" target=\"_blank\">onias.site</a>"));
 		assertTrue("the opening text links the screen \"see all\"", message.contains("no total (<a href=\"http://localhost:3000/meu-recrutamento/curriculos-da-semana?email="));
