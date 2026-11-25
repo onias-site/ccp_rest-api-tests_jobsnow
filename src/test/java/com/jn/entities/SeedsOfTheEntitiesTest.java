@@ -96,6 +96,22 @@ public class SeedsOfTheEntitiesTest {
 		assertTrue(text, text.contains("hotmail.com"));
 	}
 
+	/** Since 2026-11-24 the limit of the daily e-mail of resumes to the recruiters is a parameter, seeded with 2000. */
+	@Test
+	public void theRecruitersPerDayAreSeededAsASystemParameterWith2000() {
+		List<CcpBulkItem> seeds = this.seedsOf(com.vis.entities.VisEntityRecruiterResumes.INSTANCE);
+		String systemMessageName = com.vis.business.recruiter.resumes.VisRecruiterResumesSystemParameters.recruitersPerDay.getSystemMessageName();
+		String parameterEntityName = JnEntitySystemParameter.ENTITY.getEntityMetaData().entityName;
+		List<CcpJsonRepresentation> parameters = seeds.stream()
+				.filter(seed -> seed.entity.getEntityMetaData().entityName.equals(parameterEntityName))
+				.map(seed -> seed.json).collect(Collectors.toList());
+
+		assertEquals(1, parameters.size());
+		CcpJsonRepresentation parameter = parameters.get(0);
+		assertEquals(systemMessageName, parameter.getAsString(JnEntitySystemParameter.Fields.systemMessageName));
+		assertEquals(List.of("2000"), parameter.getAsStringList(JnJsonCommonsFields.message));
+	}
+
 	@Test
 	public void theSupportBotSettingsSendWithTenTriesAndOnlyErrorsAndWarningsGoToTheStackTracesGroup() {
 		List<CcpJsonRepresentation> seeds = this.jsonsOf(JnEntityInstantMessengerParametersToSend.INSTANCE);
