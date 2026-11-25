@@ -1,5 +1,6 @@
 package com.ccp.especifications.db.utils.entity.decorators.engine;
 
+import com.vis.business.position.VisPositionOfTheRecruiter;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -138,6 +139,7 @@ public class DeleteAnyWhereOnTwinEntitiesTest {
 				.put(VisEntityPosition.Fields.sort, Arrays.asList(sort))
 				.put(VisEntityPosition.Fields.contact, Arrays.asList(contact))
 				.put(VisEntityPosition.Fields.temporallyJobTime, 0)
+				.put(VisEntityPosition.Fields.yearMonth, VisPositionOfTheRecruiter.getCurrentYearMonth())
 				.put(VisEntityPosition.Fields.title, "test position to exercise delete any where");
 
 		this.shouldDeleteFromBothIndexes(VisEntityPosition.ENTITY, record);

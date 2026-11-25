@@ -1,5 +1,6 @@
 package com.vis.business.recruiter.resumes;
 
+import com.vis.business.position.VisPositionOfTheRecruiter;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -94,6 +95,7 @@ public class ResumesOfThePositionsSendingTest {
 		String description = "position used to test the sending of its resumes, with a description long enough to pass the minimum of one hundred characters";
 		CcpJsonRepresentation position = CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityPosition.Fields.recruiter, this.resumesEmail)
+				.put(VisEntityPosition.Fields.yearMonth, VisPositionOfTheRecruiter.getCurrentYearMonth())
 				.put(VisEntityPosition.Fields.title, title)
 				.put(VisEntityPosition.Fields.resumeType, 1)
 				.put(VisEntityPosition.Fields.clt, new CcpJsonRepresentation("{\"min\":99000,\"max\":100000}"))
@@ -180,6 +182,7 @@ public class ResumesOfThePositionsSendingTest {
 		assertEquals(counters.toString() + RecordingEmailSender.SENT, 1, ofThePosition.size());
 		CcpJsonRepresentation listKey = CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityPositionResumes.Fields.email, this.resumesEmail)
+				.put(VisEntityPositionResumes.Fields.yearMonth, VisPositionOfTheRecruiter.getCurrentYearMonth())
 				.put(VisEntityPositionResumes.Fields.title, title);
 		CcpJsonRepresentation list = VisEntityPositionResumes.ENTITY.getOneById(listKey);
 		int total = list.getAsJsonList(VisEntityPositionResumes.Fields.resumes).size();

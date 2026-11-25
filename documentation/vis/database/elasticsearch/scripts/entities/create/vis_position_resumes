@@ -8,6 +8,9 @@
 			"title": {
 				"type": "keyword"
 			},
+			"yearMonth": {
+				"type": "keyword"
+			},
 			"resumes": {
 				"type": "object",
 				"enabled": false

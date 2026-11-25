@@ -84,6 +84,7 @@ public class PositionsOfTheResumeTest {
 		String description = "position used to test the positions of the resume, with a description long enough to pass the minimum of one hundred characters";
 		CcpJsonRepresentation position = CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityPosition.Fields.recruiter, this.recruiter)
+				.put(VisEntityPosition.Fields.yearMonth, VisPositionOfTheRecruiter.getCurrentYearMonth())
 				.put(VisEntityPosition.Fields.title, title)
 				.put(VisEntityPosition.Fields.resumeType, 1)
 				.put(VisEntityPosition.Fields.clt, new CcpJsonRepresentation("{\"min\":99000,\"max\":100000}"))

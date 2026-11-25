@@ -1,5 +1,6 @@
 package com.vis.entities;
 
+import com.vis.business.position.VisPositionOfTheRecruiter;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -83,6 +84,7 @@ public class PositionsOfTheLoggedInUserTest {
 		CcpJsonRepresentation expiration = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("min"), daysAhead(1)).put(new CcpFieldName("max"), daysAhead(30));
 		return CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityPosition.Fields.recruiter, this.userEmail)
+				.put(VisEntityPosition.Fields.yearMonth, VisPositionOfTheRecruiter.getCurrentYearMonth())
 				.put(VisEntityPosition.Fields.title, this.title)
 				.put(VisEntityPosition.Fields.resumeType, 1)
 				.put(VisEntityPosition.Fields.seniority, List.of("pleno"))

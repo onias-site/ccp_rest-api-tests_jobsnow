@@ -1,5 +1,6 @@
 package com.ccp.especifications.db.utils.entity.decorators.engine;
 
+import com.vis.business.position.VisPositionOfTheRecruiter;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -72,6 +73,7 @@ public class PositionSaveDefaultValuesTest {
 		String description = "position used to test the default values, with a description long enough to pass the minimum of one hundred characters";
 		CcpJsonRepresentation position = CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityPosition.Fields.recruiter, this.recruiter)
+				.put(VisEntityPosition.Fields.yearMonth, VisPositionOfTheRecruiter.getCurrentYearMonth())
 				.put(VisEntityPosition.Fields.title, title)
 				.put(VisEntityPosition.Fields.resumeType, 1)
 				.put(VisEntityPosition.Fields.clt, salaryRange)

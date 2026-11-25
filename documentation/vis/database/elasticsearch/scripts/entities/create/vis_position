@@ -91,6 +91,9 @@
 			"title": {
 				"type": "text"
 			},
+			"yearMonth": {
+				"type": "keyword"
+			},
 			"expiration": {
 				"dynamic": "strict",
 				"properties": {

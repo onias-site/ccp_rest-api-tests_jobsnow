@@ -1,5 +1,6 @@
 package com.vis.entities;
 
+import com.vis.business.position.VisPositionOfTheRecruiter;
 import com.vis.json.fields.validation.VisJsonFieldsNewExpirationRange;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -76,6 +77,7 @@ public class PositionFieldsTest {
 				.put(VisEntityPosition.Fields.spokenLanguage, Arrays.asList(english))
 				.put(VisEntityPosition.Fields.pcd, true)
 				.put(VisEntityPosition.Fields.temporallyJobTime, 0)
+				.put(VisEntityPosition.Fields.yearMonth, VisPositionOfTheRecruiter.getCurrentYearMonth())
 				.put(VisEntityPosition.Fields.title, "Desenvolvedor Java")
 				.put(VisEntityPosition.Fields.expiration, this.range(this.daysAhead(1), this.daysAhead(30)))
 				.put(VisEntityPosition.Fields.description, description.toString())

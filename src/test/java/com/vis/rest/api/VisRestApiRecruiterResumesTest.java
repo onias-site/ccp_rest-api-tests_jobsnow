@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
+import com.vis.business.position.VisPositionOfTheRecruiter;
 import com.vis.business.recruiter.resumes.VisBusinessViewedResumeDetails;
 import com.vis.business.recruiter.resumes.VisRecruiterLinks;
 import com.vis.business.recruiter.resumes.VisRecruiterResumesFields;
@@ -186,7 +187,7 @@ public class VisRestApiRecruiterResumesTest extends VisRestApiTestTemplate {
 	@Test
 	public void aPositionWithNoEmailOfResumesHasNoResumesOfThePosition() {
 		this.login();
-		String path = this.recruiterPath("/resumes-of-the-position?title=vaga-sem-envio");
+		String path = this.recruiterPath("/resumes-of-the-position?title=vaga-sem-envio&yearMonth=" + VisPositionOfTheRecruiter.getCurrentYearMonth());
 
 		HttpResponse<String> response = this.sendWithTheSession(Fields.GET, path, CcpOtherConstants.EMPTY_JSON);
 
@@ -201,10 +202,11 @@ public class VisRestApiRecruiterResumesTest extends VisRestApiTestTemplate {
 		CcpJsonRepresentation list = CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityPositionResumes.Fields.email, this.recruiter())
 				.put(VisEntityPositionResumes.Fields.title, title)
+				.put(VisEntityPositionResumes.Fields.yearMonth, VisPositionOfTheRecruiter.getCurrentYearMonth())
 				.put(VisEntityPositionResumes.Fields.resumes, Arrays.asList(row));
 		VisEntityPositionResumes.ENTITY.save(list);
 		try {
-			String path = this.recruiterPath("/resumes-of-the-position?title=" + title);
+			String path = this.recruiterPath("/resumes-of-the-position?title=" + title + "&yearMonth=" + VisPositionOfTheRecruiter.getCurrentYearMonth());
 
 			HttpResponse<String> response = this.sendWithTheSession(Fields.GET, path, CcpOtherConstants.EMPTY_JSON);
 

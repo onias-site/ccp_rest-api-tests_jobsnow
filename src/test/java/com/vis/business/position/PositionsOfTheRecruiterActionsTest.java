@@ -45,6 +45,8 @@ import com.jn.entities.JnEntityGrouper;
 import com.jn.entities.JnEntityLoginEmail;
 import com.js.services.JsServiceGrouper;
 import com.vis.entities.VisEntityPosition;
+import com.vis.entities.VisEntityPositionInterest;
+import com.vis.entities.VisEntityPositionResumeSent;
 import com.vis.services.VisServicePosition;
 
 /**
@@ -99,6 +101,7 @@ public class PositionsOfTheRecruiterActionsTest {
 		CcpJsonRepresentation java = new CcpJsonRepresentation("{\"skill\":\"JAVA\",\"word\":\"JAVA\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\"}");
 		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON
 				.put(VisPositionKeyFields.email, this.userEmail)
+				.put(VisEntityPosition.Fields.yearMonth, VisPositionOfTheRecruiter.getCurrentYearMonth())
 				.put(VisEntityPosition.Fields.title, this.title)
 				.put(VisEntityPosition.Fields.resumeType, 1)
 				.put(VisEntityPosition.Fields.seniority, List.of("junior"))
@@ -119,6 +122,7 @@ public class PositionsOfTheRecruiterActionsTest {
 	private CcpJsonRepresentation key() {
 		return CcpOtherConstants.EMPTY_JSON
 				.put(VisPositionKeyFields.email, this.userEmail)
+				.put(VisPositionKeyFields.yearMonth, VisPositionOfTheRecruiter.getCurrentYearMonth())
 				.put(VisPositionKeyFields.title, this.title);
 	}
 
@@ -129,6 +133,109 @@ public class PositionsOfTheRecruiterActionsTest {
 		// the numbered copy of the restoration of a taken title
 		CcpJsonRepresentation numbered = position.put(VisEntityPosition.Fields.title, this.title + " 2");
 		VisEntityPosition.ENTITY.deleteAnyWhere(numbered);
+		// the new title of the renaming
+		CcpJsonRepresentation renamed = position.put(VisEntityPosition.Fields.title, this.renamedTitle);
+		VisEntityPosition.ENTITY.deleteAnyWhere(renamed);
+	}
+
+	private final String renamedTitle = "renamed position of the actions " + this.now;
+
+	/** The id of a position of the user in the current month, as the other entities keep it. */
+	private String positionId(String positionTitle) {
+		String recruiterHash = new CcpStringDecorator(this.userEmail).hash().asString(CcpHashAlgorithm.SHA1);
+		CcpJsonRepresentation storedKey = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityPosition.Fields.recruiter, recruiterHash)
+				.put(VisEntityPosition.Fields.title, positionTitle)
+				.put(VisEntityPosition.Fields.yearMonth, VisPositionOfTheRecruiter.getCurrentYearMonth());
+		return VisEntityPosition.ENTITY.calculateId(storedKey);
+	}
+
+	private CcpJsonRepresentation titleInUse(String positionTitle) {
+		CcpJsonRepresentation asked = CcpOtherConstants.EMPTY_JSON
+				.put(VisBusinessPositionTitleInUse.Fields.email, this.userEmail)
+				.put(VisBusinessPositionTitleInUse.Fields.title, positionTitle);
+		return VisServicePosition.PositionTitleInUse.execute(asked);
+	}
+
+	/**
+	 * 2026-11-24: the key of the position is the recruiter, the title and the month of the creation. The form asks by id
+	 * whether the title typed is in use (200) or free (404); the edition that changes the title makes the position of the
+	 * old title disappear without a trace and creates the one of the new title, in the same month, with the resumes already
+	 * sent; a new title of another position of the month answers 409 and an unknown old title 404.
+	 */
+	@Test
+	public void theRenamingReplacesThePositionAndCarriesTheResumesAlreadySent() {
+		VisServicePosition.CreatePosition.execute(this.input(DESCRIPTION));
+		CcpJsonRepresentation created = this.theOnlyActivePosition();
+		assertEquals("the month of the creation", VisPositionOfTheRecruiter.getCurrentYearMonth(), created.getAsString(VisEntityPosition.Fields.yearMonth));
+		this.titleInUse(this.title);
+		assertStatus(CcpProcessStatusDefault.NOT_FOUND, () -> this.titleInUse(this.renamedTitle));
+
+		String oldId = this.positionId(this.title);
+		String newId = this.positionId(this.renamedTitle);
+		String resumeHash = "resume-sent-" + this.now;
+		CcpJsonRepresentation oldPair = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityPositionResumeSent.Fields.position, oldId)
+				.put(VisEntityPositionResumeSent.Fields.resume, resumeHash);
+		CcpJsonRepresentation newPair = oldPair.put(VisEntityPositionResumeSent.Fields.position, newId);
+		VisEntityPositionResumeSent.ENTITY.save(oldPair);
+		try {
+			CcpJsonRepresentation renaming = this.input(OTHER_DESCRIPTION)
+					.put(VisEntityPosition.Fields.title, this.renamedTitle)
+					.put(VisPositionOfTheRecruiterFields.oldTitle, this.title);
+			VisServicePosition.EditPosition.execute(renaming);
+
+			CcpJsonRepresentation renamed = this.theOnlyActivePosition();
+			assertEquals(this.renamedTitle, renamed.getAsString(VisEntityPosition.Fields.title));
+			assertEquals("the edition was saved", OTHER_DESCRIPTION, renamed.getAsString(VisEntityPosition.Fields.description));
+			assertEquals("the month is kept", VisPositionOfTheRecruiter.getCurrentYearMonth(), renamed.getAsString(VisEntityPosition.Fields.yearMonth));
+			assertEquals("the old one disappears without a trace", 0, this.positionsOnThe("twinEntity").size());
+			assertStatus(CcpProcessStatusDefault.NOT_FOUND, () -> this.titleInUse(this.title));
+			this.titleInUse(this.renamedTitle);
+			assertTrue("the resume sent goes to the new title", VisEntityPositionResumeSent.ENTITY.exists(newPair));
+			assertTrue("and leaves the old one", false == VisEntityPositionResumeSent.ENTITY.exists(oldPair));
+
+			// the old title is free again: a position with it, then the renaming back collides with it
+			VisServicePosition.CreatePosition.execute(this.input(DESCRIPTION));
+			CcpJsonRepresentation backToATakenTitle = this.input(DESCRIPTION)
+					.put(VisPositionOfTheRecruiterFields.oldTitle, this.renamedTitle);
+			assertStatus(CcpProcessStatusDefault.CONFLICT, () -> VisServicePosition.EditPosition.execute(backToATakenTitle));
+			assertEquals("nothing changed", 2, this.positionsOnThe("mainEntity").size());
+
+			CcpJsonRepresentation unknownOldTitle = this.input(DESCRIPTION)
+					.put(VisEntityPosition.Fields.title, "a title nobody has " + this.now)
+					.put(VisPositionOfTheRecruiterFields.oldTitle, "an unknown old title " + this.now);
+			assertStatus(CcpProcessStatusDefault.NOT_FOUND, () -> VisServicePosition.EditPosition.execute(unknownOldTitle));
+		} finally {
+			VisEntityPositionResumeSent.ENTITY.delete(oldPair);
+			VisEntityPositionResumeSent.ENTITY.delete(newPair);
+		}
+	}
+
+	/**
+	 * 2026-11-24: candidates who sent their resume through the position ({@code byTheCandidates}) keep only the hash of
+	 * their e-mails and cannot follow it to another title, so a position with candidates keeps its title (423).
+	 */
+	@Test
+	public void aPositionWithCandidatesKeepsItsTitle() {
+		VisServicePosition.CreatePosition.execute(this.input(DESCRIPTION));
+		CcpJsonRepresentation interest = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityPositionInterest.Fields.position, this.positionId(this.title))
+				.put(VisEntityPositionInterest.Fields.email, "candidate" + this.now + "@gmail.com")
+				.put(VisEntityPositionInterest.Fields.resumeId, "resume-of-the-candidate-" + this.now)
+				.put(VisEntityPositionInterest.Fields.sendingHour, "2026112410");
+		VisEntityPositionInterest.ENTITY.save(interest);
+		try {
+			CcpJsonRepresentation renaming = this.input(DESCRIPTION)
+					.put(VisEntityPosition.Fields.title, this.renamedTitle)
+					.put(VisPositionOfTheRecruiterFields.oldTitle, this.title);
+			assertStatus(VisProcessStatusSavePosition.positionWithCandidates, () -> VisServicePosition.EditPosition.execute(renaming));
+			assertEquals("the title stays", this.title, this.theOnlyActivePosition().getAsString(VisEntityPosition.Fields.title));
+			VisServicePosition.EditPosition.execute(this.input(OTHER_DESCRIPTION));
+			assertEquals("the other fields still change", OTHER_DESCRIPTION, this.theOnlyActivePosition().getAsString(VisEntityPosition.Fields.description));
+		} finally {
+			VisEntityPositionInterest.ENTITY.deleteAnyWhere(interest);
+		}
 	}
 
 	private static long minOf(CcpJsonRepresentation position) {
@@ -249,7 +356,7 @@ public class PositionsOfTheRecruiterActionsTest {
 		VisServicePosition.DeletePosition.execute(this.key());
 		// the id of the index: the recruiter as stored, the SHA-1 of the e-mail
 		String recruiterHash = new CcpStringDecorator(this.userEmail).hash().asString(CcpHashAlgorithm.SHA1);
-		CcpJsonRepresentation storedKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityPosition.Fields.recruiter, recruiterHash).put(VisEntityPosition.Fields.title, this.title);
+		CcpJsonRepresentation storedKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityPosition.Fields.recruiter, recruiterHash).put(VisEntityPosition.Fields.title, this.title).put(VisEntityPosition.Fields.yearMonth, VisPositionOfTheRecruiter.getCurrentYearMonth());
 		String id = VisEntityPosition.ENTITY.calculateId(storedKey);
 		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
 		CcpJsonRepresentation deleted = crud.getOneById("vis_inactive_position", id);
