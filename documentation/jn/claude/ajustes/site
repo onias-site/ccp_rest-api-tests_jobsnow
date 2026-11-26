@@ -1,8 +1,12 @@
-Alterações na tela de "meu-recrutamento/vagas":
-1) Adicionar aba de vagas excluídas com um grid que listem as vagas presentes na gemea de vis_position
-2) Adicionar ação de restaurar em cada vaga excluída, cada vaga exluída terá os mesmos botões de ação de uma vaga comum (registro em vis_position)
-3) Adicionar explicação no modal de escolha de tipo de cadastro de vaga, a respeito da diferença entre vaga simplificada e vaga completa
-4) Nos modais de cadastro de vagas fazer o combobox de resumeType obrigatório e sem valor padrão escolhido
-5) Nos modais de cadastro de vagas, alterar data de expiração padrão, deixar 1 semana
-6) Nos modais de cadastro de vagas, quando se vai listar curriculos dos critérios escolhidos para a vaga fazer aparecer um spinning quando estiver carregando currículos, pois este carregamento é lento.
-7) Nos modais de cadastro de vagas, adicionar ordenação por DDD
+a idéia da página "curriculos/buscar" é apenas fazer o filtro que o cadastro de vagas faz, ou seja, terá todos os campos que executam filtro de contagem de currículos que o modal de cadastro completo da vaga da tela "curriculos/vagas-cadastradas" possui, gravará todos estes campos numa entidade chamada vis_resume_filter (expurgável por hora) que terá um campo (pk, json, com todos os fields de VisEntityPosition que se referirem a filtros apenas, eles terão as mesmas validações que VisEntityPosition, mas com exceção do resumeType, nenhum deles será obrigatório, pois a idéia é deixar o usuário escolher com o máximo possível de liberdade). O campo"resumeType" vem em tela com valor preenchido (tecnologia). 
+Sequencia dos eventos: 
+1) Quando o usuário escolhe um filtro qualquer na tela, se faz uma requisição backend, se grava este filtro no campo json da entidade vis_resume_filter e no "pós insert" desta entidade, se executa a mesma pesquisa de currículos que já é executada pelo cadastro de vagas.
+2) Retornam duas coisas ao front end: 1) Os dados de contagem dos curriculos (ids dos curriculos e médias salariais e de experiencia); 2) Id gerado ao gravar esta entidade, pois ele retornará como query parameter pro frontend, pois se essa tela for chamada passando esse query parameter, então se faz um getById em vis_resume_filter e se encontrar a entidade com os campos preenchidos, se alimenta a tela com estes campos, agora se não encontrar, não se faz nada.
+
+Pontos de Atenção: 
+1) A cada novo filtro alterado, adicionado ou removido, é salvo um vis_resume_filter;
+2) Os filtros que a tela for passar no momento de executar os filtros deverão buscar um cache cujo a chave (de 3600 segundos) é um id de vis_resume_filter pois dentro dele já haverá o resultado da contagem de currículos, poupando o backend de uma segunda consulta desnecessária, por isto o mercanismo será vis_resume_filter.calculateId({json:jsonDosFiltros}).
+3) A tela de cadastro de vagas também fará uso deste mecanismo, para otimizarmos esse tipo de query. 
+
+
+ 
