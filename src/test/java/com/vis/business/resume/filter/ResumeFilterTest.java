@@ -17,7 +17,9 @@ import org.junit.Test;
 
 import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
+import com.ccp.especifications.cache.CcpCacheDecorator;
 import com.ccp.dependency.injection.CcpInstanceProvider;
 import com.ccp.especifications.db.crud.CcpCrud;
 import com.ccp.especifications.db.utils.CcpDbRequester;
@@ -27,6 +29,7 @@ import com.ccp.especifications.db.utils.entity.decorators.engine.SilentInstantMe
 import com.ccp.especifications.email.CcpEmailProvider;
 import com.ccp.especifications.instant.messenger.CcpInstantMessenger;
 import com.ccp.flow.CcpErrorFlowDisturb;
+import com.ccp.hash.CcpHashAlgorithm;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.query.elasticsearch.CcpElasticSearchQueryExecutor;
@@ -39,6 +42,7 @@ import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.process.CcpProcessStatusDefault;
 import com.jn.db.bulk.JnExecuteBulkOperation;
+import com.jn.entities.JnEntityDisposableRecord;
 import com.jn.entities.JnEntityGrouper;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.utils.JnDeleteKeysFromCache;
@@ -161,12 +165,22 @@ public class ResumeFilterTest {
 		assertEquals("the count is the size of the ids", idsOf(response).size(), response.getAsIntegerNumber(VisBusinessResumesOfTheFilters.Fields.resumes).intValue());
 
 		String filterId = response.getAsString(JnJsonCommonsFields.id);
-		CcpJsonRepresentation record = CcpOtherConstants.EMPTY_JSON.put(VisEntityResumeFilter.Fields.json, filters);
+		// the id is the SHA-1 of the filters with their keys in alphabetical order, with no day
+		CcpJsonRepresentation parsedFilters = new CcpJsonRepresentation(filters.asUgglyJson());
+		Map<String, Object> inAlphabeticalOrder = new LinkedHashMap<>();
+		inAlphabeticalOrder.put(VisJsonFieldsResumeFilter.ddd.name(), Arrays.asList(11));
+		inAlphabeticalOrder.put(VisJsonFieldsResumeFilter.recruiterDomain.name(), filters.getAsString(VisJsonFieldsResumeFilter.recruiterDomain));
+		inAlphabeticalOrder.put(VisJsonFieldsResumeFilter.resumeType.name(), 1);
+		// through the text, as the transformer does: the numbers of one type
+		String inAlphabeticalOrderText = new CcpJsonRepresentation(inAlphabeticalOrder).asUgglyJson();
+		String sortedFiltersText = new CcpJsonRepresentation(inAlphabeticalOrderText).asUgglyJson();
+		String expectedId = new CcpStringDecorator(sortedFiltersText).hash().asString(CcpHashAlgorithm.SHA1);
+		assertEquals("the id is the SHA-1 of the sorted filters", expectedId, filterId);
+		CcpJsonRepresentation record = CcpOtherConstants.EMPTY_JSON.put(VisEntityResumeFilter.Fields.json, parsedFilters);
 		CcpJsonRepresentation handledRecord = VisEntityResumeFilter.ENTITY.getJsonWithHandledPrimaryKey(record);
-		assertEquals("the id is the one of vis_resume_filter", VisEntityResumeFilter.ENTITY.calculateId(handledRecord), filterId);
-		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
-		CcpEntityMetaData filterDetails = VisEntityResumeFilter.ENTITY.getEntityMetaData();
-		assertTrue("the filters were saved under the id", crud.exists(filterDetails.entityName, filterId));
+		assertEquals("the id is the one of vis_resume_filter", filterId, handledRecord.getAsString(VisEntityResumeFilter.Fields.id));
+		CcpJsonRepresentation idOfTheFilters = CcpOtherConstants.EMPTY_JSON.put(VisEntityResumeFilter.Fields.id, filterId);
+		assertTrue("the filters were saved under the id", VisEntityResumeFilter.ENTITY.exists(idOfTheFilters));
 
 		CcpJsonRepresentation cachedCount = VisBusinessCountTheResumesOfTheFilter.getCache(filterId).getOrDefault(CcpOtherConstants.EMPTY_JSON);
 		assertTrue("the count is cached under the id", idsOf(cachedCount).contains(resumeId));
@@ -231,6 +245,46 @@ public class ResumeFilterTest {
 
 		CcpJsonRepresentation onlyJava = this.filters().put(VisJsonFieldsResumeFilter.skill, Arrays.asList(java));
 		assertNotEquals("other skills, another record", firstId, search(onlyJava).getAsString(JnJsonCommonsFields.id));
+	}
+
+	/**
+	 * The link of a search made at 23:59 opens until 23:59 of the next day: on the next day the document of the day of the
+	 * search is gone (here, deleted by hand), and the read finds the copy in jn_disposable_record, valid for 24 hours.
+	 */
+	@Test
+	public void onTheNextDayTheIdReadsTheFiltersFromTheCopy() {
+		CcpJsonRepresentation filters = this.filters().put(VisJsonFieldsResumeFilter.seniority, List.of("junior"));
+		String filterId = search(filters).getAsString(JnJsonCommonsFields.id);
+
+		CcpJsonRepresentation idOfTheFilters = CcpOtherConstants.EMPTY_JSON.put(VisEntityResumeFilter.Fields.id, filterId);
+		String idOfTheDocumentOfTheDay = VisEntityResumeFilter.ENTITY.calculateId(idOfTheFilters);
+		assertNotEquals("the document of the day has another id, with the day", filterId, idOfTheDocumentOfTheDay);
+		CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
+		CcpEntityMetaData filterDetails = VisEntityResumeFilter.ENTITY.getEntityMetaData();
+		assertTrue("the document of the day was saved", crud.delete(filterDetails.entityName, idOfTheDocumentOfTheDay));
+		// the next day the cache of the record (1 hour) is gone too
+		new CcpCacheDecorator(VisEntityResumeFilter.ENTITY, idOfTheDocumentOfTheDay).delete();
+
+		CcpJsonRepresentation readBack = filtersOfTheId(filterId);
+		assertEquals("the filters, from the copy", List.of("junior"), readBack.getAsStringList(VisJsonFieldsResumeFilter.seniority));
+		assertEquals("the domain, from the copy", filters.getAsString(VisJsonFieldsResumeFilter.recruiterDomain), readBack.getAsString(VisJsonFieldsResumeFilter.recruiterDomain));
+
+		// with the copy gone as well (expired and purged), the link opens nothing
+		String keyOfTheCopy = idOfTheFilters.asUgglyJson();
+		CcpJsonRepresentation copy = CcpOtherConstants.EMPTY_JSON
+				.put(JnJsonCommonsFields.entity, filterDetails.entityName)
+				.put(JnJsonCommonsFields.id, keyOfTheCopy);
+		CcpJsonRepresentation handledCopy = JnEntityDisposableRecord.ENTITY.getJsonWithHandledPrimaryKey(copy);
+		String idOfTheCopy = JnEntityDisposableRecord.ENTITY.calculateId(handledCopy);
+		CcpEntityMetaData copyDetails = JnEntityDisposableRecord.ENTITY.getEntityMetaData();
+		assertTrue("the copy was saved", crud.delete(copyDetails.entityName, idOfTheCopy));
+		new CcpCacheDecorator(VisEntityResumeFilter.ENTITY, idOfTheDocumentOfTheDay).delete();
+		try {
+			filtersOfTheId(filterId);
+			fail("no document of the day and no copy");
+		} catch (CcpErrorFlowDisturb expected) {
+			assertEquals(CcpProcessStatusDefault.NOT_FOUND, expected.status);
+		}
 	}
 
 	@Test
