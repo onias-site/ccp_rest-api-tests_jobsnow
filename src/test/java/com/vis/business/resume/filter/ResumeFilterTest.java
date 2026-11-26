@@ -212,6 +212,28 @@ public class ResumeFilterTest {
 	}
 
 	@Test
+	public void theSameListsInAnotherOrderAreOneRecord() {
+		CcpJsonRepresentation java = new CcpJsonRepresentation("{\"skill\":\"JAVA\",\"word\":\"JAVA\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\"}");
+		// the keys of a skill in another order as well
+		CcpJsonRepresentation sql = new CcpJsonRepresentation("{\"category\":\"skillsFromText\",\"type\":\"skillsFromResume\",\"word\":\"SQL\",\"skill\":\"SQL\"}");
+		CcpJsonRepresentation javaAndSql = this.filters()
+				.put(VisJsonFieldsResumeFilter.skill, Arrays.asList(java, sql))
+				.put(VisJsonFieldsResumeFilter.ddd, Arrays.asList(11, 21))
+				.put(VisJsonFieldsResumeFilter.seniority, List.of("pleno", "senior"));
+		CcpJsonRepresentation sqlAndJava = this.filters()
+				.put(VisJsonFieldsResumeFilter.skill, Arrays.asList(sql, java))
+				.put(VisJsonFieldsResumeFilter.ddd, Arrays.asList(21, 11))
+				.put(VisJsonFieldsResumeFilter.seniority, List.of("senior", "pleno"));
+
+		String firstId = search(javaAndSql).getAsString(JnJsonCommonsFields.id);
+		String secondId = search(sqlAndJava).getAsString(JnJsonCommonsFields.id);
+		assertEquals("[JAVA, SQL] and [SQL, JAVA] are the same filters: one id, one record", firstId, secondId);
+
+		CcpJsonRepresentation onlyJava = this.filters().put(VisJsonFieldsResumeFilter.skill, Arrays.asList(java));
+		assertNotEquals("other skills, another record", firstId, search(onlyJava).getAsString(JnJsonCommonsFields.id));
+	}
+
+	@Test
 	public void theIdReadsTheFiltersBack() {
 		CcpJsonRepresentation filters = this.filters().put(VisJsonFieldsResumeFilter.seniority, List.of("pleno", "senior"));
 		String filterId = search(filters).getAsString(JnJsonCommonsFields.id);
