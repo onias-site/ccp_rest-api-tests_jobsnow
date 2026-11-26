@@ -138,7 +138,7 @@ public class SaveRecruiterThroughSupportBotTest {
 	/** The name in Portuguese runs the same command. */
 	@Test
 	public void theNameInPortugueseSavesTheRecruiter() {
-		String reply = this.operatorTypes("/salvarRecrutador " + this.recruiter);
+		String reply = this.operatorTypes("/salvarRh " + this.recruiter);
 
 		assertEquals("O recrutador " + this.recruiter + " foi cadastrado.", reply);
 		assertTrue(VisEntityRecruiter.ENTITY.exists(this.recruiterKey()));
