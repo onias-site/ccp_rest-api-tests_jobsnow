@@ -1,0 +1,11 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"json": {
+				"type": "object",
+				"enabled": false
+			}
+		}
+	}
+}
