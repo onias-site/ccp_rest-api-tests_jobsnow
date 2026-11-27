@@ -139,6 +139,15 @@ public class SaveJobPostingThroughSupportBotTest {
 				.put(JnJsonInstantMessengerFields.chatId, SUPPORT_CHAT);
 		JbEntityBotCommandStepSession.ENTITY.delete(session);
 		TELEGRAM.sentMessages.clear();
+		// a job posting goes on only when its text is a new description of its filters, and the descriptions never expire:
+		// the ones shared under the e-mail of the job postings by earlier tests and runs would refuse the job postings
+		CcpJsonRepresentation sharingKey = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityResumeFilterDescription.Fields.filterId, "0")
+				.put(VisEntityResumeFilterDescription.Fields.email, SHARING_EMAIL);
+		CcpJsonRepresentation handledSharingKey = VisEntityResumeFilterDescription.ENTITY.getJsonWithHandledPrimaryKey(sharingKey);
+		String sharingEmailHash = handledSharingKey.getAsString(VisEntityResumeFilterDescription.Fields.email);
+		String descriptionsIndex = VisEntityResumeFilterDescription.ENTITY.getEntityMetaData().entityName;
+		ElasticsearchLocal.deleteWhere(descriptionsIndex, VisEntityResumeFilterDescription.Fields.email.name(), sharingEmailHash);
 	}
 
 	@After
@@ -218,7 +227,7 @@ public class SaveJobPostingThroughSupportBotTest {
 		assertTrue(firstReply, firstReply.endsWith("Envie a próxima vaga ou digite /sair para encerrar."));
 		assertTrue("the session stays in the step of the text", JbEntityBotCommandStepSession.ENTITY.exists(this.sessionKey()));
 
-		String secondText = "Segunda " + this.textWithSkills();
+		String secondText = this.textWithOtherSkills();
 		String secondReply = this.operatorTypes(secondText);
 		this.savedJobPostings.add(this.keyOf(secondText));
 		assertEquals(firstReply, secondReply);
@@ -292,19 +301,42 @@ public class SaveJobPostingThroughSupportBotTest {
 		assertTrue("the job posting is not a child of the group of its hour", found);
 	}
 
-	/** A text with no skill known: no search, the count is zero and there is no link. */
+	/**
+	 * A text with no skill known is refused (since 2026-11-27): the exception of the second business is handled, only
+	 * logged, and the job posting is not saved; the e-mails of the text, registered by the first business, stay recruiters.
+	 */
 	@Test
-	public void aTextWithoutSkillsIsSavedWithNoResume() {
+	public void aTextWithoutSkillsIsNotSavedButItsRecruitersAre() {
 		// lorem ipsum: no word of the dictionary of skills (a Portuguese text easily has one, "so" is SO)
-		String text = "Lorem ipsum " + this.run + " dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+		String recruiterEmail = "lorem." + this.run + "@empresa-exemplo.com.br";
+		this.recruiterEmails.add(recruiterEmail);
+		String text = "Lorem ipsum " + this.run + " dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore " + recruiterEmail + " magna aliqua.";
 		this.operatorTypes("/saveJobPosting");
 		this.operatorTypes(text);
 
 		CcpJsonRepresentation key = this.keyOf(text);
 		this.savedJobPostings.add(key);
-		CcpJsonRepresentation saved = VisEntityJobPosting.ENTITY.getOneById(key);
-		assertEquals(0, saved.getAsIntegerNumber(VisEntityJobPosting.Fields.resumesCount).intValue());
-		assertFalse(saved.containsField(VisEntityJobPosting.Fields.linkToShowResumes));
+		assertFalse("a text without skills is not saved", VisEntityJobPosting.ENTITY.exists(key));
+		CcpJsonRepresentation recruiterKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, recruiterEmail);
+		assertTrue("the recruiters are registered before the refusal", VisEntityRecruiter.ENTITY.exists(recruiterKey));
+	}
+
+	/**
+	 * A second job posting whose resumes have the same filters as an earlier one is refused (since 2026-11-27): its text
+	 * does not become a new record of vis_resume_filter_description, the save there only updates it.
+	 */
+	@Test
+	public void aJobPostingWhoseFiltersAlreadyHaveATextIsNotSaved() {
+		String firstText = this.textWithSkills();
+		this.operatorTypes("/salvarVaga");
+		this.operatorTypes(firstText);
+		this.savedJobPostings.add(this.keyOf(firstText));
+		assertTrue(VisEntityJobPosting.ENTITY.exists(this.keyOf(firstText)));
+
+		String secondText = "Outra " + firstText;
+		this.operatorTypes(secondText);
+		this.savedJobPostings.add(this.keyOf(secondText));
+		assertFalse("the same filters, the second job posting is refused", VisEntityJobPosting.ENTITY.exists(this.keyOf(secondText)));
 	}
 
 	/**
@@ -519,7 +551,7 @@ public class SaveJobPostingThroughSupportBotTest {
 		assertTrue("the table of resumes of the usual e-mail", message.contains("Idiomas e habilidades"));
 		assertTrue(VisEntityRecruiterResumes.ENTITY.exists(recruiterKey));
 
-		String secondText = "Segunda vaga " + this.run + " para pessoa desenvolvedora com Java, SQL e Git, contrato PJ, envie o curriculo para "
+		String secondText = "Segunda vaga " + this.run + " para pessoa desenvolvedora com Java e SQL, contrato PJ, envie o curriculo para "
 				+ recruiterEmail + " ainda hoje, por favor.";
 		this.operatorTypes("/salvarVaga");
 		this.operatorTypes(secondText);
@@ -559,7 +591,7 @@ public class SaveJobPostingThroughSupportBotTest {
 		ElasticsearchLocal.update(copiesIndex, copyDocumentId, CcpOtherConstants.EMPTY_JSON.put(JnEntityDisposableRecord.Fields.trueTimestamp, yesterday));
 		ElasticsearchLocal.refresh(copiesIndex);
 
-		String secondText = "Segunda vaga " + this.run + " para pessoa desenvolvedora com Java, SQL e Git, contrato PJ, envie o curriculo para "
+		String secondText = "Segunda vaga " + this.run + " para pessoa desenvolvedora com Java e SQL, contrato PJ, envie o curriculo para "
 				+ recruiterEmail + " ainda hoje, por favor.";
 		this.operatorTypes("/salvarVaga");
 		this.operatorTypes(secondText);
@@ -642,6 +674,15 @@ public class SaveJobPostingThroughSupportBotTest {
 	private String textWithSkills() {
 		return "Vaga " + this.run + " para pessoa desenvolvedora backend com Java, Spring Boot, SQL e Git, "
 				+ "trabalhando com APIs REST, testes automatizados e metodologias ageis como Scrum.";
+	}
+
+	/**
+	 * Another text of this run, with fewer skills than {@link #textWithSkills()} (no Git, no Spring): its resumes have
+	 * other filters, so it is not refused as a repetition of the first one.
+	 */
+	private String textWithOtherSkills() {
+		return "Segunda vaga " + this.run + " para pessoa desenvolvedora backend com Java e SQL, "
+				+ "trabalhando em equipe com foco em qualidade e entregas continuas, contrato PJ.";
 	}
 
 	private CcpJsonRepresentation keyOf(String text) {

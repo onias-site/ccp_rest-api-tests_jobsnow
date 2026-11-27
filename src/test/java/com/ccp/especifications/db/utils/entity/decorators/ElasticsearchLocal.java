@@ -39,6 +39,13 @@ public class ElasticsearchLocal {
 		sendRequest("DELETE", index + "/_doc/" + id + "?refresh=true", "");
 	}
 
+	/** Deletes every document of the index whose field has the value (exact term), without going through any decorator. */
+	public static void deleteWhere(String index, String field, String value) {
+		String escapedValue = value.replace("\\", "\\\\").replace("\"", "\\\"");
+		String body = "{\"query\":{\"term\":{\"" + field + "\":\"" + escapedValue + "\"}}}";
+		sendRequest("POST", index + "/_delete_by_query?refresh=true&conflicts=proceed", body);
+	}
+
 	/** Saves the document with the given id without going through any decorator. */
 	public static void save(String index, String id, CcpJsonRepresentation document) {
 		sendRequest("PUT", index + "/_doc/" + id + "?refresh=true", document.asUgglyJson());
