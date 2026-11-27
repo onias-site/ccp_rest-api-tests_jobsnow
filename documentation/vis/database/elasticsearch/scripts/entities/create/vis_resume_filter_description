@@ -1,0 +1,16 @@
+{
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"filterId": {
+				"type": "keyword"
+			},
+			"email": {
+				"type": "keyword"
+			},
+			"description": {
+				"type": "text"
+			}
+		}
+	}
+}

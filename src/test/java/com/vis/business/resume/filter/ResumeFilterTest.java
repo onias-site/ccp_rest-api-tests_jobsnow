@@ -49,6 +49,7 @@ import com.jn.utils.JnDeleteKeysFromCache;
 import com.vis.business.position.VisBusinessResumesOfTheFilters;
 import com.vis.entities.VisEntityResume;
 import com.vis.entities.VisEntityResumeFilter;
+import com.vis.entities.VisEntityResumeFilterDescription;
 import com.vis.json.fields.validation.VisJsonFieldsResumeFilter;
 import com.vis.services.VisServiceResumeFilter;
 
@@ -285,6 +286,106 @@ public class ResumeFilterTest {
 		} catch (CcpErrorFlowDisturb expected) {
 			assertEquals(CcpProcessStatusDefault.NOT_FOUND, expected.status);
 		}
+	}
+
+	private static CcpJsonRepresentation filtersOfTheIdAndTheEmail(String filterId, String email) {
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
+				.put(VisBusinessGetTheResumeFilter.Fields.id, filterId)
+				.put(VisBusinessGetTheResumeFilter.Fields.email, email);
+		CcpJsonRepresentation filters = VisServiceResumeFilter.GetResumeFilter.execute(json);
+		return filters;
+	}
+
+	private static CcpJsonRepresentation saveTheDescription(String filterId, String email, String description) {
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityResumeFilterDescription.Fields.filterId, filterId)
+				.put(VisEntityResumeFilterDescription.Fields.email, email)
+				.put(VisEntityResumeFilterDescription.Fields.description, description);
+		CcpJsonRepresentation response = VisServiceResumeFilter.SaveResumeFilterDescription.execute(json);
+		assertEquals("the answer is the id of the filters", filterId, response.getAsString(VisEntityResumeFilterDescription.Fields.filterId));
+		return json;
+	}
+
+	/** A text of the position of the size asked. */
+	private static String textOf(int size) {
+		String text = "Desenvolvedor Java com Spring Boot e Elasticsearch. ".repeat(200).substring(0, size);
+		return text;
+	}
+
+	/**
+	 * The link shared with the text of the position (since 2026-11-26): the text is saved under the id of the filters and
+	 * the e-mail of the session, and the read with both brings the filters and the text, in one union all; without the
+	 * e-mail, with an invalid one or with another e-mail, the filters alone; the same filters shared again replace the
+	 * text; on the next day, the filters come from the copy, still with the text.
+	 */
+	@Test
+	public void theTextSharedWithTheLinkComesBackWithTheFiltersOfTheEmail() {
+		CcpJsonRepresentation filters = this.filters().put(VisJsonFieldsResumeFilter.seniority, List.of("especialista"));
+		String filterId = search(filters).getAsString(JnJsonCommonsFields.id);
+		String email = "resumeFilterDescription" + this.now + "@jobsnow.com";
+		String text = textOf(150);
+		CcpJsonRepresentation saved = saveTheDescription(filterId, email, text);
+		try {
+			CcpJsonRepresentation readBack = filtersOfTheIdAndTheEmail(filterId, email);
+			assertEquals("the text", text, readBack.getAsString(VisEntityResumeFilterDescription.Fields.description));
+			assertEquals("the filters", List.of("especialista"), readBack.getAsStringList(VisJsonFieldsResumeFilter.seniority));
+
+			CcpJsonRepresentation withoutTheEmail = filtersOfTheId(filterId);
+			assertFalse("no e-mail, no text", withoutTheEmail.containsAllFields(VisEntityResumeFilterDescription.Fields.description));
+			assertEquals("no e-mail, the filters", List.of("especialista"), withoutTheEmail.getAsStringList(VisJsonFieldsResumeFilter.seniority));
+
+			CcpJsonRepresentation invalidEmail = filtersOfTheIdAndTheEmail(filterId, "resumeFilterDescription" + this.now + "jobsnow.com");
+			assertFalse("an invalid e-mail is ignored", invalidEmail.containsAllFields(VisEntityResumeFilterDescription.Fields.description));
+			assertEquals("an invalid e-mail, the filters", List.of("especialista"), invalidEmail.getAsStringList(VisJsonFieldsResumeFilter.seniority));
+
+			CcpJsonRepresentation anotherEmail = filtersOfTheIdAndTheEmail(filterId, "another" + this.now + "@jobsnow.com");
+			assertFalse("another e-mail shared no text", anotherEmail.containsAllFields(VisEntityResumeFilterDescription.Fields.description));
+
+			try {
+				filtersOfTheIdAndTheEmail("abc123", email);
+				fail("an id of no filters, with the e-mail");
+			} catch (CcpErrorFlowDisturb expected) {
+				assertEquals(CcpProcessStatusDefault.NOT_FOUND, expected.status);
+			}
+
+			String newText = textOf(5000);
+			saveTheDescription(filterId, email, newText);
+			CcpJsonRepresentation replaced = filtersOfTheIdAndTheEmail(filterId, email);
+			assertEquals("shared again, the new text", newText, replaced.getAsString(VisEntityResumeFilterDescription.Fields.description));
+
+			// the next day: the document of the day is gone, the filters come from the copy, still with the text
+			CcpJsonRepresentation idOfTheFilters = CcpOtherConstants.EMPTY_JSON.put(VisEntityResumeFilter.Fields.id, filterId);
+			String idOfTheDocumentOfTheDay = VisEntityResumeFilter.ENTITY.calculateId(idOfTheFilters);
+			CcpCrud crud = CcpDependencyInjection.getDependency(CcpCrud.class);
+			CcpEntityMetaData filterDetails = VisEntityResumeFilter.ENTITY.getEntityMetaData();
+			assertTrue("the document of the day was saved", crud.delete(filterDetails.entityName, idOfTheDocumentOfTheDay));
+			new CcpCacheDecorator(VisEntityResumeFilter.ENTITY, idOfTheDocumentOfTheDay).delete();
+			CcpJsonRepresentation fromTheCopy = filtersOfTheIdAndTheEmail(filterId, email);
+			assertEquals("the filters, from the copy", List.of("especialista"), fromTheCopy.getAsStringList(VisJsonFieldsResumeFilter.seniority));
+			assertEquals("the text, with the filters of the copy", newText, fromTheCopy.getAsString(VisEntityResumeFilterDescription.Fields.description));
+		} finally {
+			VisEntityResumeFilterDescription.ENTITY.delete(saved);
+		}
+	}
+
+	/** The text shared with the link has from 100 to 5,000 characters, as the text of the position. */
+	@Test
+	public void theTextSharedWithTheLinkHasFrom100To5000Characters() {
+		CcpJsonRepresentation filters = this.filters().put(VisJsonFieldsResumeFilter.seniority, List.of("estag"));
+		String filterId = search(filters).getAsString(JnJsonCommonsFields.id);
+		String email = "resumeFilterDescriptionSize" + this.now + "@jobsnow.com";
+		try {
+			saveTheDescription(filterId, email, textOf(99));
+			fail("a text of 99 characters");
+		} catch (CcpJsonValidationError expected) {
+		}
+		try {
+			saveTheDescription(filterId, email, textOf(5001));
+			fail("a text of 5,001 characters");
+		} catch (CcpJsonValidationError expected) {
+		}
+		CcpJsonRepresentation saved = saveTheDescription(filterId, email, textOf(100));
+		VisEntityResumeFilterDescription.ENTITY.delete(saved);
 	}
 
 	@Test
