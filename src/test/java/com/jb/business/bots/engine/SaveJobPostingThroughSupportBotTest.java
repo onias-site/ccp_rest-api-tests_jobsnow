@@ -4,9 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.After;
 import org.junit.Before;
@@ -48,6 +52,7 @@ import com.vis.entities.VisEntityJobPosting;
 import com.vis.entities.VisEntityResume;
 import com.vis.entities.VisEntityResumeFilterDescription;
 import com.vis.entities.VisEntityVirtualJobPostingHour;
+import com.vis.json.transformers.VisJobPostingHourCombinations;
 import com.vis.json.transformers.VisJsonTransformerJobPostingId;
 
 /**
@@ -180,12 +185,15 @@ public class SaveJobPostingThroughSupportBotTest {
 		CcpJsonRepresentation sharedText = VisEntityResumeFilterDescription.ENTITY.getOneById(descriptionKey);
 		assertEquals(text, sharedText.getAsString(VisEntityResumeFilterDescription.Fields.description));
 
-		// the child of the group of the day and of the millisecond modulo 24 of the saving: the text and the id
+		// the child of the group of the day and of an hour still to come of the saving: the text and the id
 		Long timestamp = saved.getAsLongNumber(JnJsonCommonsFields.timestamp);
-		String day = new CcpTimeDecorator(timestamp).getFormattedDateTime("yyyyMMdd");
+		CcpTimeDecorator savingTime = new CcpTimeDecorator(timestamp);
+		String day = savingTime.getFormattedDateTime("yyyyMMdd");
+		int hourOfTheSaving = Integer.parseInt(savingTime.getFormattedDateTime("HH"));
+		int expectedHour = hourOfTheSaving == 23 ? 23 : hourOfTheSaving + 1 + (int) (timestamp % (23 - hourOfTheSaving));
 		CcpJsonRepresentation groupOfTheHour = CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityVirtualJobPostingHour.Fields.day, day)
-				.put(VisEntityVirtualJobPostingHour.Fields.hour, (int) (timestamp % 24));
+				.put(VisEntityVirtualJobPostingHour.Fields.hour, expectedHour);
 		String parentId = VisEntityVirtualJobPostingHour.ENTITY.calculateId(groupOfTheHour);
 		String parentName = VisEntityVirtualJobPostingHour.ENTITY.getEntityMetaData().entityName;
 		String childName = VisEntityJobPosting.ENTITY.getEntityMetaData().entityName;
@@ -252,6 +260,34 @@ public class SaveJobPostingThroughSupportBotTest {
 
 		List<String> possibleSkills = this.possibleSkills(first, second, third);
 		assertEquals(Arrays.asList(second, third), possibleSkills);
+	}
+
+	/**
+	 * The hour of the group is one of the hours still to come in the day of the saving, from the next hour to 23: the
+	 * milliseconds of 19h give 20 to 23, of 16h 17 to 23, all of them reached; at 23h the group is 23. The day is always
+	 * the day of the saving.
+	 */
+	@Test
+	public void theHourOfTheGroupIsAnHourStillToComeInTheDay() {
+		this.assertTheHoursOfTheGroups(19, Arrays.asList(20, 21, 22, 23));
+		this.assertTheHoursOfTheGroups(16, Arrays.asList(17, 18, 19, 20, 21, 22, 23));
+		this.assertTheHoursOfTheGroups(22, Arrays.asList(23));
+		this.assertTheHoursOfTheGroups(23, Arrays.asList(23));
+		this.assertTheHoursOfTheGroups(0, Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23));
+	}
+
+	private void assertTheHoursOfTheGroups(int hourOfTheSaving, List<Integer> expectedHours) {
+		ZonedDateTime saving = ZonedDateTime.of(2026, 11, 26, hourOfTheSaving, 0, 0, 0, ZoneId.of("America/Sao_Paulo"));
+		long start = saving.toInstant().toEpochMilli();
+		Set<Integer> hours = new TreeSet<>();
+		for (long millisecond = start; millisecond < start + 100; millisecond++) {
+			CcpJsonRepresentation jobPosting = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.timestamp, millisecond);
+			List<CcpJsonRepresentation> groups = VisJobPostingHourCombinations.INSTANCE.apply(jobPosting);
+			CcpJsonRepresentation group = groups.get(0);
+			assertEquals("20261126", group.getAsString(VisEntityVirtualJobPostingHour.Fields.day));
+			hours.add(group.getAsIntegerNumber(VisEntityVirtualJobPostingHour.Fields.hour));
+		}
+		assertEquals("saved at " + hourOfTheSaving + "h", expectedHours, new ArrayList<>(hours));
 	}
 
 	private List<String> possibleSkills(String... requestedSkills) {
