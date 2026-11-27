@@ -146,6 +146,11 @@ public class JbBusinessReceiveBotUpdateTest {
 	}
 
 	private CcpJsonRepresentation updateWithMessage(long updateId, String typedText) {
+		CcpJsonRepresentation update = this.updateWithMessage(updateId, typedText, SUPPORT_CHAT, "private");
+		return update;
+	}
+
+	private CcpJsonRepresentation updateWithMessage(long updateId, String typedText, Long chatId, String chatType) {
 		CcpJsonRepresentation update = new CcpJsonRepresentation("{"
 				+ "\"botName\": \"support\","
 				+ "\"update_id\": " + updateId + ","
@@ -153,7 +158,7 @@ public class JbBusinessReceiveBotUpdateTest {
 				+ "\"message_id\": 363,"
 				+ "\"date\": 1790121741,"
 				+ "\"from\": {\"id\": " + SUPPORT_CHAT + ", \"username\": \"OniasJr\"},"
-				+ "\"chat\": {\"id\": " + SUPPORT_CHAT + "},"
+				+ "\"chat\": {\"id\": " + chatId + ", \"type\": \"" + chatType + "\"},"
 				+ "\"text\": \"" + typedText + "\""
 				+ "}}");
 		return update;
@@ -182,7 +187,8 @@ public class JbBusinessReceiveBotUpdateTest {
 	public void theIdsOfTheUpdateAreReadWhateverTheirNumericType() {
 		CcpJsonRepresentation update = this.updateWithMessage(1010L, "/chatId");
 		CcpJsonRepresentation message = update.getInnerJson(JnJsonInstantMessengerFields.message);
-		CcpJsonRepresentation chatWithALong = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.id, SUPPORT_CHAT);
+		CcpJsonRepresentation chat = message.getInnerJson(JbBusinessReceiveBotUpdate.Fields.chat);
+		CcpJsonRepresentation chatWithALong = chat.put(JnJsonCommonsFields.id, SUPPORT_CHAT);
 		CcpJsonRepresentation messageWithALong = message.put(JbBusinessReceiveBotUpdate.Fields.chat, chatWithALong.content);
 		CcpJsonRepresentation updateWithALong = update.put(JnJsonInstantMessengerFields.message, messageWithALong.content);
 
@@ -239,6 +245,45 @@ public class JbBusinessReceiveBotUpdateTest {
 
 		assertTrue(TELEGRAM.sentMessages.isEmpty());
 		assertEquals(4001L, this.savedOffset());
+	}
+
+	/**
+	 * Since 2026-11-27 the bots run no command out of the private chat: a message of a group or of a supergroup, even a
+	 * command, only moves the offset, and nothing goes to the queue of any command.
+	 */
+	@Test
+	public void aMessageOfAGroupRunsNoCommand() {
+		Long groupChat = -1001234567890L;
+		String chatId = JbDefaultBotCommandStep.chatId.name();
+		String showAllCommands = JbDefaultBotCommandStep.showAllCommands.name();
+		long commandBefore = this.publishedToTheQueueOf(chatId);
+		long listBefore = this.publishedToTheQueueOf(showAllCommands);
+
+		JbBusinessReceiveBotUpdate.INSTANCE.execute(this.updateWithMessage(7000L, "/chatId", groupChat, "group"));
+		assertEquals(7001L, this.savedOffset());
+		JbBusinessReceiveBotUpdate.INSTANCE.execute(this.updateWithMessage(7001L, "/chatId", groupChat, "supergroup"));
+		assertEquals(7002L, this.savedOffset());
+		JbBusinessReceiveBotUpdate.INSTANCE.execute(this.updateWithMessage(7002L, "a job posting", groupChat, "supergroup"));
+
+		assertTrue(TELEGRAM.sentMessages.isEmpty());
+		assertEquals(commandBefore, this.publishedToTheQueueOf(chatId));
+		assertEquals(listBefore, this.publishedToTheQueueOf(showAllCommands));
+		assertEquals(7003L, this.savedOffset());
+	}
+
+	/** A post of a channel comes as {@code channel_post}, not as {@code message}: it only moves the offset. */
+	@Test
+	public void aPostOfAChannelRunsNoCommand() {
+		CcpJsonRepresentation post = new CcpJsonRepresentation("{"
+				+ "\"botName\": \"support\","
+				+ "\"update_id\": 7100,"
+				+ "\"channel_post\": {\"message_id\": 9, \"chat\": {\"id\": -1009876543210, \"type\": \"channel\"}, \"text\": \"/chatId\"}"
+				+ "}");
+
+		JbBusinessReceiveBotUpdate.INSTANCE.execute(post);
+
+		assertTrue(TELEGRAM.sentMessages.isEmpty());
+		assertEquals(7101L, this.savedOffset());
 	}
 
 	/** How many messages went to the queue of the command so far. */
