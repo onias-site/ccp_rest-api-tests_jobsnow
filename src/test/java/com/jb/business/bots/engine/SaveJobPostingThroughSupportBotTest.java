@@ -57,6 +57,7 @@ import com.vis.business.job.posting.VisBusinessFindTheSkillsOfTheJobPosting;
 import com.vis.business.skill.VisSkillDictionary;
 import com.vis.business.telegram.VisSkillWordsInMemory;
 import com.vis.json.fields.validation.VisJsonCommonsFields;
+import com.jn.entities.JnEntityDisposableRecord;
 import com.vis.entities.VisEntityJobPosting;
 import com.vis.entities.VisEntityRecruiter;
 import com.vis.entities.VisEntityRecruiterResumes;
@@ -496,6 +497,45 @@ public class SaveJobPostingThroughSupportBotTest {
 		this.savedJobPostings.add(this.keyOf(secondText));
 		assertTrue(VisEntityJobPosting.ENTITY.exists(this.keyOf(secondText)));
 		assertEquals("a second job posting on the same day sends no e-mail", 1, this.emailsTo(recruiterEmail).size());
+	}
+
+	/**
+	 * The e-mail of resumes is one a day of the calendar: a list written yesterday, still valid in the disposable entity
+	 * for 24 hours, does not keep away the e-mail of a job posting of today (2026-11-27).
+	 */
+	@Test
+	public void aListOfYesterdayDoesNotKeepAwayTheEmailOfToday() {
+		String recruiterEmail = "ontem." + this.run + "@empresa-exemplo.com.br";
+		this.recruiterEmails.add(recruiterEmail);
+		String text = "Vaga " + this.run + " para pessoa desenvolvedora com Java, SQL e Git, contrato CLT, inicio imediato, envie o curriculo para "
+				+ recruiterEmail + " ainda hoje.";
+		EMAIL_INBOX.sentEmails.clear();
+		this.operatorTypes("/salvarVaga");
+		this.operatorTypes(text);
+		this.savedJobPostings.add(this.keyOf(text));
+		assertEquals(1, this.emailsTo(recruiterEmail).size());
+
+		// the list goes back to yesterday: its copy in jn_disposable_record was written 24 hours before midnight
+		CcpJsonRepresentation recruiterKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, recruiterEmail);
+		CcpJsonRepresentation handledKey = VisEntityRecruiterResumes.ENTITY.getJsonWithHandledPrimaryKey(recruiterKey);
+		String emailHash = handledKey.getAsString(VisEntityRecruiterResumes.Fields.email);
+		String copyId = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterResumes.Fields.email, emailHash).asUgglyJson();
+		CcpJsonRepresentation copyKey = CcpOtherConstants.EMPTY_JSON
+				.put(JnJsonCommonsFields.id, copyId)
+				.put(JnJsonCommonsFields.entity, VisEntityRecruiterResumes.ENTITY.getEntityMetaData().entityName);
+		String copyDocumentId = JnEntityDisposableRecord.ENTITY.calculateId(copyKey);
+		String copiesIndex = JnEntityDisposableRecord.ENTITY.getEntityMetaData().entityName;
+		assertFalse("the copy of the list", ElasticsearchLocal.document(copiesIndex, copyDocumentId).isEmpty());
+		long yesterday = new CcpTimeDecorator().getMidnight() - 3_600_000L;
+		ElasticsearchLocal.update(copiesIndex, copyDocumentId, CcpOtherConstants.EMPTY_JSON.put(JnEntityDisposableRecord.Fields.trueTimestamp, yesterday));
+		ElasticsearchLocal.refresh(copiesIndex);
+
+		String secondText = "Segunda vaga " + this.run + " para pessoa desenvolvedora com Java, SQL e Git, contrato PJ, envie o curriculo para "
+				+ recruiterEmail + " ainda hoje, por favor.";
+		this.operatorTypes("/salvarVaga");
+		this.operatorTypes(secondText);
+		this.savedJobPostings.add(this.keyOf(secondText));
+		assertEquals("the list of yesterday does not count as the e-mail of today", 2, this.emailsTo(recruiterEmail).size());
 	}
 
 	/** An inactive recruiter (in the twin) is not brought back by a job posting and gets no e-mail. */
