@@ -353,7 +353,68 @@ public class ResumeLifecycleTest {
 		this.assertInNoDddGroup(Arrays.asList(11, 21, 31), resumeId);
 	}
 
-	private static final String EXCLUDED_SKILL_PARENT_NAME = VisEntityVirtualExcludedSkillCounter.ENTITY.getEntityMetaData().entityName;
+	private static final String SKILL_PARENT_NAME = VisEntityVirtualSkillGrouper.ENTITY.getEntityMetaData().entityName;
+
+	/** Whether the id of the resume is in the group of the skill, on one side of the grouper. */
+	private boolean isInTheSkillGroup(boolean twinSide, String skill, String resumeId) {
+		String childName = VisEntityResume.ENTITY.getEntityMetaData().entityName;
+		CcpJsonRepresentation combination = CcpOtherConstants.EMPTY_JSON.put(VisEntityVirtualSkillGrouper.Fields.skill, skill);
+		String parentId = VisEntityVirtualSkillGrouper.ENTITY.calculateId(combination);
+		List<String> children = JnGroupers.getChildren(twinSide, SKILL_PARENT_NAME, childName, parentId);
+		return children.contains(resumeId);
+	}
+
+	private void assertOnlyInTheSkillGroups(boolean twinSide, List<String> skills, String resumeId) {
+		for (String skill : skills) {
+			assertTrue(skill, this.isInTheSkillGroup(twinSide, skill, resumeId));
+			assertFalse(skill, this.isInTheSkillGroup(false == twinSide, skill, resumeId));
+		}
+	}
+
+	private void assertInNoSkillGroup(List<String> skills, String resumeId) {
+		for (String skill : skills) {
+			assertFalse(skill, this.isInTheSkillGroup(MAIN_GROUPER, skill, resumeId));
+			assertFalse(skill, this.isInTheSkillGroup(TWIN_GROUPER, skill, resumeId));
+		}
+	}
+
+	/**
+	 * 2026-11-26: the id of the resume is a child of the group of each skill it has, directly (category skillsFromText) or
+	 * indirectly (the parent list of a direct skill and the items of category parent); the excluded skills are left out.
+	 * The child follows the save, the deactivation, the reactivation and the delete everywhere.
+	 */
+	@Test
+	public void theResumeIsAChildOfTheGroupOfEachOfItsSkills() {
+		String indirectSkill = "INDIRECT" + System.currentTimeMillis();
+		CcpJsonRepresentation indirect = new CcpJsonRepresentation("{\"skill\":\"" + indirectSkill + "\",\"word\":\"" + indirectSkill + "\",\"type\":\"parent\",\"category\":\"parent\"}");
+		CcpJsonRepresentation resume = this.resume(4);
+		List<CcpJsonRepresentation> skills = new java.util.ArrayList<>(resume.getAsJsonList(VisEntityResume.Fields.skill));
+		skills.add(indirect);
+		VisEntityResume.ENTITY.save(resume.put(VisEntityResume.Fields.skill, skills));
+		CcpJsonRepresentation stored = VisEntityResume.ENTITY.getOneById(this.key());
+		String resumeId = VisEntityResume.ENTITY.calculateId(stored);
+		// direct: the unique skill and SPRING; indirect: JVM (parent of the unique skill) and the item of category parent
+		List<String> resumeSkills = Arrays.asList(this.uniqueSkill, "SPRING", "JVM", indirectSkill);
+		this.assertOnlyInTheSkillGroups(MAIN_GROUPER, resumeSkills, resumeId);
+		this.assertInNoSkillGroup(Arrays.asList("PYTHON"), resumeId);
+
+		// saved again without the item of category parent: leaves its group, stays in the others
+		VisEntityResume.ENTITY.save(this.resume(4));
+		this.assertInNoSkillGroup(Arrays.asList(indirectSkill), resumeId);
+		this.assertOnlyInTheSkillGroups(MAIN_GROUPER, Arrays.asList(this.uniqueSkill, "SPRING", "JVM"), resumeId);
+
+		// deactivation and reactivation move the child between the sides
+		VisEntityResume.ENTITY.delete(this.key());
+		this.assertOnlyInTheSkillGroups(TWIN_GROUPER, Arrays.asList(this.uniqueSkill, "SPRING", "JVM"), resumeId);
+		VisEntityResume.ENTITY.getTwinEntity().delete(this.key());
+		this.assertOnlyInTheSkillGroups(MAIN_GROUPER, Arrays.asList(this.uniqueSkill, "SPRING", "JVM"), resumeId);
+
+		// delete everywhere: out of the groups of both sides
+		VisEntityResume.ENTITY.deleteAnyWhere(this.key());
+		this.assertInNoSkillGroup(Arrays.asList(this.uniqueSkill, "SPRING", "JVM", indirectSkill), resumeId);
+	}
+
+	private static final String EXCLUDED_SKILL_PARENT_NAME =VisEntityVirtualExcludedSkillCounter.ENTITY.getEntityMetaData().entityName;
 
 	/** How many active resumes exclude the skill, as its group of counters tells (0 when the group does not exist). */
 	private int resumesExcluding(String skill) {
