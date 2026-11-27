@@ -337,6 +337,16 @@ public class SaveJobPostingThroughSupportBotTest {
 		this.operatorTypes(secondText);
 		this.savedJobPostings.add(this.keyOf(secondText));
 		assertFalse("the same filters, the second job posting is refused", VisEntityJobPosting.ENTITY.exists(this.keyOf(secondText)));
+
+		// the link of the first job posting goes on showing its own text, not the one of the refused job posting
+		CcpJsonRepresentation first = VisEntityJobPosting.ENTITY.getOneById(this.keyOf(firstText));
+		String link = first.getAsString(VisEntityJobPosting.Fields.linkToShowResumes);
+		String filterId = link.substring(link.indexOf("filtro=") + "filtro=".length(), link.indexOf("&email="));
+		CcpJsonRepresentation descriptionKey = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityResumeFilterDescription.Fields.filterId, filterId)
+				.put(VisEntityResumeFilterDescription.Fields.email, SHARING_EMAIL);
+		CcpJsonRepresentation description = VisEntityResumeFilterDescription.ENTITY.getOneById(descriptionKey);
+		assertEquals(firstText, description.getAsString(VisEntityResumeFilterDescription.Fields.description));
 	}
 
 	/**
