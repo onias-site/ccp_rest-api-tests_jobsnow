@@ -54,6 +54,9 @@ import com.vis.business.job.posting.VisBusinessPublishJobPostingsOfTheHour;
 import com.vis.business.job.posting.VisBusinessRegisterTheRecruitersOfTheJobPosting;
 import com.vis.business.job.posting.VisBusinessSaveTheResumeFilterOfTheJobPosting;
 import com.vis.business.job.posting.VisBusinessFindTheSkillsOfTheJobPosting;
+import com.vis.business.skill.VisSkillDictionary;
+import com.vis.business.telegram.VisSkillWordsInMemory;
+import com.vis.json.fields.validation.VisJsonCommonsFields;
 import com.vis.entities.VisEntityJobPosting;
 import com.vis.entities.VisEntityRecruiter;
 import com.vis.entities.VisEntityRecruiterResumes;
@@ -149,6 +152,39 @@ public class SaveJobPostingThroughSupportBotTest {
 			CcpJsonRepresentation recruiterKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, recruiterEmail);
 			VisEntityRecruiter.ENTITY.deleteAnyWhere(recruiterKey);
 			VisEntityRecruiterResumes.ENTITY.delete(recruiterKey);
+		}
+	}
+
+	/**
+	 * The dictionary has as a skill only the skill of an item: a name that appears only as a parent (an old name of a
+	 * renamed skill) is not one, in any case.
+	 */
+	@Test
+	public void aNameOnlyInTheParentsIsNotASkillOfTheDictionary() {
+		CcpJsonRepresentation item = CcpOtherConstants.EMPTY_JSON
+				.put(VisJsonCommonsFields.word, "RESTFUL")
+				.put(VisJsonCommonsFields.skill, "REST")
+				.put(VisJsonCommonsFields.parent, List.of("OLDINTEGRATION"));
+		VisSkillWordsInMemory words = new VisSkillWordsInMemory(List.of(item));
+		assertTrue(words.hasTheSkill("rest"));
+		assertFalse(words.hasTheSkill("OLDINTEGRATION"));
+		assertTrue("still the parent in the hierarchy", words.getSkillAndItsDescendants("OLDINTEGRATION").contains("REST"));
+	}
+
+	/**
+	 * Every skill the first business passes on is a skill of the dictionary (a text of web services gave the old parent
+	 * INTEGRATION, which no search finds, and so no resume at all; 2026-11-27).
+	 */
+	@Test
+	public void theSkillsOfTheTextAreAllSkillsOfTheDictionary() {
+		String text = "Vaga " + this.run + " para pessoa desenvolvedora Java com APIs REST, SOAP, microsservicos, Spring Boot, SQL, Docker e Git, contrato CLT, remoto.";
+		CcpJsonRepresentation json = CcpOtherConstants.EMPTY_JSON.put(VisEntityJobPosting.Fields.description, text);
+		CcpJsonRepresentation withTheSkills = VisBusinessFindTheSkillsOfTheJobPosting.INSTANCE.execute(json);
+		List<String> requestedSkills = withTheSkills.getAsStringList(VisBusinessFindTheSkillsOfTheJobPosting.Fields.requestedSkills);
+		assertTrue(requestedSkills.contains("REST"));
+		VisSkillWordsInMemory words = VisSkillDictionary.getWords();
+		for (String requestedSkill : requestedSkills) {
+			assertTrue(requestedSkill, words.hasTheSkill(requestedSkill));
 		}
 	}
 
