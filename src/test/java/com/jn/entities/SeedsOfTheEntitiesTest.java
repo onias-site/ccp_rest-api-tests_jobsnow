@@ -219,6 +219,19 @@ public class SeedsOfTheEntitiesTest {
 		}
 	}
 
+	/**
+	 * vis seeds the business that the support bot runs for the messages of its groups, the job postings of the groups
+	 * (since 2026-11-27); no other bot has one.
+	 */
+	@Test
+	public void visSeedsTheBusinessOfTheGroupsOfTheSupportBot() {
+		List<CcpJsonRepresentation> handlers = this.seedsInto(com.vis.entities.VisEntityInstantMessagePositionReply.INSTANCE, JnEntityBotGroupMessageHandler.ENTITY);
+		assertEquals(1, handlers.size());
+		CcpJsonRepresentation handler = handlers.get(0);
+		assertEquals("support", handler.getAsString(JnEntityBotGroupMessageHandler.Fields.botName));
+		assertEquals(com.vis.business.job.posting.VisBusinessSaveTheJobPostingOfTheGroup.class.getName(), handler.getAsString(JnEntityBotGroupMessageHandler.Fields.business));
+	}
+
 	/** The records that the seeds of the configurator write into another entity. */
 	private List<CcpJsonRepresentation> seedsInto(CcpEntityConfigurator configurator, CcpEntity entity) {
 		String entityName = entity.getEntityMetaData().entityName;

@@ -30,6 +30,8 @@ import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.json.fields.validation.CcpJsonCommonsFields;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
+import com.jb.business.bots.engine.JbBusinessReceiveBotUpdate;
+import com.jb.entities.JbEntityBotUpdateId;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.vis.entities.VisEntityInstantMessagePositionReply;
@@ -38,7 +40,8 @@ import com.vis.entities.VisEntityResumeFilterDescription;
 /**
  * {@code vis_instant_message_position_reply} (since 2026-11-27): a job posting written in a group of Telegram runs, before
  * its save, the six businesses of {@code vis_job_posting}; once saved, the support bot answers the message of the job
- * posting in the group with the resumes found. A refused job posting is not saved, and nothing is answered.
+ * posting in the group with the resumes found. A refused job posting is not saved, and nothing is answered. Every text
+ * message of the groups of the support bot comes here, through the queue of its groups.
  */
 public class InstantMessagePositionReplyTest {
 
@@ -107,6 +110,56 @@ public class InstantMessagePositionReplyTest {
 		for (CcpJsonRepresentation record : this.savedRecords) {
 			VisEntityInstantMessagePositionReply.ENTITY.delete(record);
 		}
+		JbEntityBotUpdateId.ENTITY.delete(CcpOtherConstants.EMPTY_JSON.put(JnJsonInstantMessengerFields.botName, "support"));
+	}
+
+	/**
+	 * The whole way of a job posting written in a group where the support bot is (since 2026-11-27): the update of
+	 * Telegram goes from the queue of the bot to the queue of its groups ({@code jn_bot_group_message_handler}, seeded
+	 * here), never to the bot engine, and the job posting is saved and answered in the group.
+	 */
+	@Test
+	public void aJobPostingWrittenInAGroupOfTheSupportBotIsAnswered() {
+		String text = this.textWithSkills();
+		JbBusinessReceiveBotUpdate.INSTANCE.execute(this.updateOfTheGroup(8000L, text));
+
+		List<CcpJsonRepresentation> answers = TELEGRAM.sentTo(GROUP_CHAT);
+		assertEquals("only the answer, no list of commands", 1, TELEGRAM.sentMessages.size());
+		assertEquals(1, answers.size());
+		CcpJsonRepresentation answer = answers.get(0);
+		String message = answer.getAsString(JnJsonCommonsFields.message);
+		String link = this.linkOf(message);
+		assertTrue(message, message.startsWith("Foram encontrados "));
+		assertEquals("support", answer.getAsString(JnJsonInstantMessengerFields.botName));
+		assertEquals(MESSAGE_OF_THE_JOB_POSTING, answer.getAsLongNumber(CcpJsonCommonsFields.replyTo));
+		CcpJsonRepresentation saved = VisEntityInstantMessagePositionReply.ENTITY.getOneById(this.keyOf(link));
+		assertEquals(text, saved.getAsString(VisEntityInstantMessagePositionReply.Fields.description));
+	}
+
+	/** A conversation of the group (a text the entity refuses) and a text without skills: nothing answered, no error. */
+	@Test
+	public void aConversationOfTheGroupIsIgnored() {
+		JbBusinessReceiveBotUpdate.INSTANCE.execute(this.updateOfTheGroup(8100L, "bom dia, pessoal"));
+		JbBusinessReceiveBotUpdate.INSTANCE.execute(this.updateOfTheGroup(8101L, "/showAllCommands"));
+		String lorem = "Lorem ipsum " + this.run + " dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+		JbBusinessReceiveBotUpdate.INSTANCE.execute(this.updateOfTheGroup(8102L, lorem));
+
+		assertEquals(0, TELEGRAM.sentMessages.size());
+	}
+
+	/** An update of Telegram with a message of the group, for the support bot. */
+	private CcpJsonRepresentation updateOfTheGroup(long updateId, String text) {
+		CcpJsonRepresentation update = new CcpJsonRepresentation("{"
+				+ "\"botName\": \"support\","
+				+ "\"update_id\": " + updateId + ","
+				+ "\"message\": {"
+				+ "\"message_id\": " + MESSAGE_OF_THE_JOB_POSTING + ","
+				+ "\"date\": 1790121741,"
+				+ "\"from\": {\"id\": 751717896, \"username\": \"recrutadora\"},"
+				+ "\"chat\": {\"id\": " + GROUP_CHAT + ", \"type\": \"supergroup\"},"
+				+ "\"text\": \"" + text + "\""
+				+ "}}");
+		return update;
 	}
 
 	/**

@@ -59,6 +59,7 @@ public class JnEntitiesStructureTest {
 	@Test public void loginTokenRequestUnlockEntityTest() { assertNotNull(JsEntityLoginTokenRequestUnlock.ENTITY); }
 	@Test public void sessionValidatorEntityTest() { assertNotNull(JnEntitySessionValidator.ENTITY); }
 	@Test public void botUpdateHandlerEntityTest() { assertNotNull(JnEntityBotUpdateHandler.ENTITY); }
+	@Test public void botGroupMessageHandlerEntityTest() { assertNotNull(JnEntityBotGroupMessageHandler.ENTITY); }
 	@Test public void recordToReprocessEntityTest() { assertNotNull(JnEntityRecordToReprocess.ENTITY); }
 	@Test public void systemMessageEntityTest() { assertNotNull(JnEntitySystemMessage.ENTITY); }
 	@Test public void systemParameterEntityTest() { assertNotNull(JnEntitySystemParameter.ENTITY); }
@@ -91,6 +92,7 @@ public class JnEntitiesStructureTest {
 	@Test public void loginTokenRequestUnlockFieldsTest() { assertNotNull(JsEntityLoginTokenRequestUnlock.Fields.values()); }
 	@Test public void sessionValidatorFieldsTest() { assertNotNull(JnEntitySessionValidator.Fields.values()); }
 	@Test public void botUpdateHandlerFieldsTest() { assertNotNull(JnEntityBotUpdateHandler.Fields.values()); }
+	@Test public void botGroupMessageHandlerFieldsTest() { assertNotNull(JnEntityBotGroupMessageHandler.Fields.values()); }
 	@Test public void recordToReprocessFieldsTest() { assertNotNull(JnEntityRecordToReprocess.Fields.values()); }
 	@Test public void versionableHistoryFieldsTest() { assertNotNull(JnEntityVirtualVersionableHistory.Fields.values()); }
 

@@ -45,6 +45,8 @@ import com.jb.entities.JbEntityBotCommandStepSession;
 import com.jb.entities.JbEntityBotUpdateId;
 import com.jn.entities.JnEntityBotCommandExplanation;
 import com.jn.entities.JnEntityBotCommandName;
+import com.jn.entities.JnEntityBotGroupMessageHandler;
+import com.vis.entities.VisEntityInstantMessagePositionReply;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 
@@ -109,7 +111,8 @@ public class JbBusinessReceiveBotUpdateTest {
 	/** The answers of the default commands are seeds: they are saved again so that the index follows the java. */
 	@BeforeClass
 	public static void resaveBotConfiguration() {
-		List<CcpEntityConfigurator> configurators = Arrays.asList(JbEntityBot.INSTANCE, JnEntityBotCommandName.INSTANCE, JbEntityBotExplanation.INSTANCE, JnEntityBotCommandExplanation.INSTANCE);
+		// vis seeds the business of the groups of the support bot (since 2026-11-27)
+		List<CcpEntityConfigurator> configurators = Arrays.asList(JbEntityBot.INSTANCE, JnEntityBotCommandName.INSTANCE, JbEntityBotExplanation.INSTANCE, JnEntityBotCommandExplanation.INSTANCE, VisEntityInstantMessagePositionReply.INSTANCE);
 		for (CcpEntityConfigurator configurator : configurators) {
 			List<CcpBulkItem> records = configurator.getFirstRecordsToInsert();
 			for (CcpBulkItem record : records) {
@@ -249,7 +252,8 @@ public class JbBusinessReceiveBotUpdateTest {
 
 	/**
 	 * Since 2026-11-27 the bots run no command out of the private chat: a message of a group or of a supergroup, even a
-	 * command, only moves the offset, and nothing goes to the queue of any command.
+	 * command, goes to no queue of a command; with a text, it goes to the queue of the groups of the bot, whose business
+	 * (the job postings of the groups, for the support bot) ignores what is no job posting.
 	 */
 	@Test
 	public void aMessageOfAGroupRunsNoCommand() {
@@ -258,6 +262,7 @@ public class JbBusinessReceiveBotUpdateTest {
 		String showAllCommands = JbDefaultBotCommandStep.showAllCommands.name();
 		long commandBefore = this.publishedToTheQueueOf(chatId);
 		long listBefore = this.publishedToTheQueueOf(showAllCommands);
+		long groupsBefore = this.publishedToTheGroupsOf(SUPPORT);
 
 		JbBusinessReceiveBotUpdate.INSTANCE.execute(this.updateWithMessage(7000L, "/chatId", groupChat, "group"));
 		assertEquals(7001L, this.savedOffset());
@@ -268,7 +273,71 @@ public class JbBusinessReceiveBotUpdateTest {
 		assertTrue(TELEGRAM.sentMessages.isEmpty());
 		assertEquals(commandBefore, this.publishedToTheQueueOf(chatId));
 		assertEquals(listBefore, this.publishedToTheQueueOf(showAllCommands));
+		assertEquals(groupsBefore + 3, this.publishedToTheGroupsOf(SUPPORT));
 		assertEquals(7003L, this.savedOffset());
+	}
+
+	/** A message of a group without text (a member who joins, a photo) goes to no queue. */
+	@Test
+	public void aMessageOfAGroupWithoutTextGoesToNoQueue() {
+		long groupsBefore = this.publishedToTheGroupsOf(SUPPORT);
+		CcpJsonRepresentation update = new CcpJsonRepresentation("{"
+				+ "\"botName\": \"support\","
+				+ "\"update_id\": 7200,"
+				+ "\"message\": {\"message_id\": 10, \"chat\": {\"id\": -1001234567890, \"type\": \"supergroup\"}, \"new_chat_members\": []}"
+				+ "}");
+
+		JbBusinessReceiveBotUpdate.INSTANCE.execute(update);
+
+		assertEquals(groupsBefore, this.publishedToTheGroupsOf(SUPPORT));
+		assertTrue(TELEGRAM.sentMessages.isEmpty());
+		assertEquals(7201L, this.savedOffset());
+	}
+
+	/** The user bot has no business for its groups: their messages go to no queue. */
+	@Test
+	public void aBotWithoutBusinessForItsGroupsIgnoresTheirMessages() {
+		String user = JbBotType.user.name();
+		CcpJsonRepresentation userOffsetKey = CcpOtherConstants.EMPTY_JSON.put(JnJsonInstantMessengerFields.botName, user);
+		CcpJsonRepresentation userHandlerKey = JnEntityBotGroupMessageHandler.getKey(user);
+		assertFalse(JnEntityBotGroupMessageHandler.ENTITY.exists(userHandlerKey));
+		long groupsBefore = this.publishedToTheGroupsOf(user);
+		CcpJsonRepresentation update = this.updateWithMessage(7300L, "/chatId", -1001234567890L, "supergroup")
+				.put(JnJsonInstantMessengerFields.botName, user);
+		try {
+			JbBusinessReceiveBotUpdate.INSTANCE.execute(update);
+			assertEquals(groupsBefore, this.publishedToTheGroupsOf(user));
+			assertTrue(TELEGRAM.sentMessages.isEmpty());
+		} finally {
+			JbEntityBotUpdateId.ENTITY.delete(userOffsetKey);
+		}
+	}
+
+	/** How many messages went to the queue of the groups of the bot so far. */
+	private long publishedToTheGroupsOf(String botName) {
+		String topic = CcpMensageriaReceiver.getQualifiedTopic(JbBusinessHandleGroupMessage.class, botName);
+		String noOperation = CcpOtherConstants.EMPTY_STRING.getValue();
+		long howMany = CountingMensageriaSender.howMany(topic, noOperation);
+		return howMany;
+	}
+
+	/** Every bot with a business for its groups needs the queue of its groups in production. */
+	@Test
+	public void everyBotWithABusinessForItsGroupsHasItsQueueInTopicos() {
+		CcpStringDecorator topicsPath = new CcpStringDecorator(TOPICS_FILE);
+		CcpFileDecorator topicsFile = topicsPath.file();
+		List<String> lines = topicsFile.getLines();
+		for (JbBotType bot : JbBotType.values()) {
+			String botName = bot.name();
+			CcpJsonRepresentation handlerKey = JnEntityBotGroupMessageHandler.getKey(botName);
+			boolean withoutBusiness = false == JnEntityBotGroupMessageHandler.ENTITY.exists(handlerKey);
+			if (withoutBusiness) {
+				continue;
+			}
+			String topic = CcpMensageriaReceiver.getQualifiedTopic(JbBusinessHandleGroupMessage.class, botName);
+			String expectedLine = topic + "\t1\t" + ACK_DEADLINE_OF_A_COMMAND;
+			assertTrue("missing in topicos.tsv: " + expectedLine, lines.contains(expectedLine));
+		}
 	}
 
 	/** A post of a channel comes as {@code channel_post}, not as {@code message}: it only moves the offset. */
