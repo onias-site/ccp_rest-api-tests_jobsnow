@@ -44,6 +44,21 @@ public class CcpJsonFieldValidatorRequiredTest {
 		FieldValidation.refuses(this.business, json, RulesValidatorRequired.chavePrimaria, CcpJsonFieldError.requiredFieldIsMissing);
 	}
 
+	/** A field of the primary key written before the save (CcpEntityFieldWrittenBeforeTheSave) is not required in the input. */
+	@Test
+	public void primaryKeyWrittenBeforeTheSaveAbsentTest() {
+		CcpJsonRepresentation json = this.completeJson();
+		FieldValidation.accepts(this.business, json);
+	}
+
+	/** Present, it is accepted as any other field of the primary key. */
+	@Test
+	public void primaryKeyWrittenBeforeTheSavePresentTest() {
+		CcpJsonRepresentation completeJson = this.completeJson();
+		CcpJsonRepresentation json = completeJson.put(RulesValidatorRequired.chaveEscritaAntesDoSave, "link");
+		FieldValidation.accepts(this.business, json);
+	}
+
 	@Test
 	public void optionalFieldAbsentTest() {
 		CcpJsonRepresentation json = this.completeJson();

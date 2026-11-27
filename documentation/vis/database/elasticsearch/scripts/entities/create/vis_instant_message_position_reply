@@ -2,9 +2,6 @@
 	"mappings": {
 		"dynamic": "strict",
 		"properties": {
-			"chatId": {
-				"type": "long"
-			},
 			"groupChatId": {
 				"type": "long"
 			},

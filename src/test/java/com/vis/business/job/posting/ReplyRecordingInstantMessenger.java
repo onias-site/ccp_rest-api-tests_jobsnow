@@ -14,7 +14,7 @@ import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 
 /**
  * Keeps the messages that would go out to Telegram, with the message each one answers ({@code replyTo}), instead of
- * delivering them: the token of the user bot in the environment properties is real.
+ * delivering them: the tokens of the bots in the environment properties are real.
  */
 class ReplyRecordingInstantMessenger implements CcpInstantMessenger {
 

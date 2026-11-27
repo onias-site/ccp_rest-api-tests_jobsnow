@@ -37,7 +37,7 @@ import com.vis.entities.VisEntityResumeFilterDescription;
 
 /**
  * {@code vis_instant_message_position_reply} (since 2026-11-27): a job posting written in a group of Telegram runs, before
- * its save, the six businesses of {@code vis_job_posting}; once saved, the user bot answers the message of the job
+ * its save, the six businesses of {@code vis_job_posting}; once saved, the support bot answers the message of the job
  * posting in the group with the resumes found. A refused job posting is not saved, and nothing is answered.
  */
 public class InstantMessagePositionReplyTest {
@@ -111,19 +111,26 @@ public class InstantMessagePositionReplyTest {
 
 	/**
 	 * A job posting with resumes is saved with the count, the averages and the link, without what the businesses passed on
-	 * to one another, and the user bot answers its message in the group with the resumes found.
+	 * to one another, and the support bot answers its message in the group with the resumes found.
 	 */
 	@Test
 	public void aJobPostingWithResumesIsSavedAndAnsweredInTheGroup() {
-		Long chatId = this.run;
 		String text = this.textWithSkills();
-		this.saveThePosting(chatId, text);
+		this.saveThePosting(text);
 
-		CcpJsonRepresentation key = this.keyOf(chatId);
-		assertTrue("the job posting was not saved", VisEntityInstantMessagePositionReply.ENTITY.exists(key));
+		List<CcpJsonRepresentation> answers = TELEGRAM.sentTo(GROUP_CHAT);
+		assertEquals("one answer in the group", 1, answers.size());
+		CcpJsonRepresentation answer = answers.get(0);
+		String message = answer.getAsString(JnJsonCommonsFields.message);
+		System.out.println("ANSWER:\n" + message);
+		// the primary key is the link, written before the save: the test learns it from the answer
+		String link = this.linkOf(message);
+		CcpJsonRepresentation key = this.keyOf(link);
+		assertTrue("the job posting was not saved under its link", VisEntityInstantMessagePositionReply.ENTITY.exists(key));
 		CcpJsonRepresentation saved = VisEntityInstantMessagePositionReply.ENTITY.getOneById(key);
 		System.out.println("POSITION REPLY: " + saved);
-		assertEquals(chatId, saved.getAsLongNumber(VisEntityInstantMessagePositionReply.Fields.chatId));
+		assertTrue(link, link.contains("/curriculos/buscar?filtro="));
+		assertEquals(link, saved.getAsString(VisEntityInstantMessagePositionReply.Fields.linkToShowResumes));
 		assertEquals(GROUP_CHAT, saved.getAsLongNumber(VisEntityInstantMessagePositionReply.Fields.groupChatId));
 		assertEquals(MESSAGE_OF_THE_JOB_POSTING, saved.getAsLongNumber(VisEntityInstantMessagePositionReply.Fields.replyTo));
 		assertEquals(text, saved.getAsString(VisEntityInstantMessagePositionReply.Fields.description));
@@ -132,14 +139,8 @@ public class InstantMessagePositionReplyTest {
 		assertFalse(saved.containsField(VisBusinessFindTheSkillsOfTheJobPosting.Fields.requestedSkills));
 		assertFalse(saved.containsField(VisBusinessSaveTheResumeFilterOfTheJobPosting.Fields.filterId));
 
-		List<CcpJsonRepresentation> answers = TELEGRAM.sentTo(GROUP_CHAT);
-		assertEquals("one answer in the group", 1, answers.size());
-		CcpJsonRepresentation answer = answers.get(0);
-		assertEquals("user", answer.getAsString(JnJsonInstantMessengerFields.botName));
+		assertEquals("support", answer.getAsString(JnJsonInstantMessengerFields.botName));
 		assertEquals("the answer answers the message of the job posting", MESSAGE_OF_THE_JOB_POSTING, answer.getAsLongNumber(CcpJsonCommonsFields.replyTo));
-		String message = answer.getAsString(JnJsonCommonsFields.message);
-		System.out.println("ANSWER:\n" + message);
-		String link = saved.getAsString(VisEntityInstantMessagePositionReply.Fields.linkToShowResumes);
 		assertTrue(message, message.startsWith("Foram encontrados " + resumesCount + " currículos (média CLT "));
 		assertTrue(message, message.contains(", média PJ "));
 		assertTrue(message, message.contains(", média de experiência "));
@@ -149,28 +150,32 @@ public class InstantMessagePositionReplyTest {
 	/** A text without skills is refused before the save: nothing is saved and nothing is answered. */
 	@Test
 	public void aTextWithoutSkillsIsNotSavedNorAnswered() {
-		Long chatId = this.run + 1;
 		// lorem ipsum: no word of the dictionary of skills
 		String text = "Lorem ipsum " + this.run + " dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-		this.saveThePosting(chatId, text);
+		this.saveThePosting(text);
 
-		assertFalse(VisEntityInstantMessagePositionReply.ENTITY.exists(this.keyOf(chatId)));
+		// refused before the search: there is no link, so no record could exist
 		assertEquals(0, TELEGRAM.sentTo(GROUP_CHAT).size());
 	}
 
-	/** A second job posting whose resumes have the filters of an earlier one is refused: no record, no second answer. */
+	/**
+	 * A second job posting whose resumes have the filters of an earlier one has the same link: it is refused, the record
+	 * of the link keeps the first text, and there is no second answer.
+	 */
 	@Test
 	public void aJobPostingWhoseFiltersAlreadyHaveATextIsNotSavedNorAnswered() {
-		Long firstChatId = this.run + 2;
 		String firstText = this.textWithSkills();
-		this.saveThePosting(firstChatId, firstText);
-		assertTrue(VisEntityInstantMessagePositionReply.ENTITY.exists(this.keyOf(firstChatId)));
-		assertEquals(1, TELEGRAM.sentTo(GROUP_CHAT).size());
+		this.saveThePosting(firstText);
+		List<CcpJsonRepresentation> answers = TELEGRAM.sentTo(GROUP_CHAT);
+		assertEquals(1, answers.size());
+		String firstMessage = answers.get(0).getAsString(JnJsonCommonsFields.message);
+		CcpJsonRepresentation key = this.keyOf(this.linkOf(firstMessage));
+		assertTrue(VisEntityInstantMessagePositionReply.ENTITY.exists(key));
 
-		Long secondChatId = this.run + 3;
-		this.saveThePosting(secondChatId, "Outra " + firstText);
-		assertFalse("the same filters, the second job posting is refused", VisEntityInstantMessagePositionReply.ENTITY.exists(this.keyOf(secondChatId)));
+		this.saveThePosting("Outra " + firstText);
 		assertEquals("no answer to the refused job posting", 1, TELEGRAM.sentTo(GROUP_CHAT).size());
+		CcpJsonRepresentation saved = VisEntityInstantMessagePositionReply.ENTITY.getOneById(key);
+		assertEquals("the record of the link keeps the first text", firstText, saved.getAsString(VisEntityInstantMessagePositionReply.Fields.description));
 	}
 
 	/** A search that found no resume answers nothing: no link, or a count of zero. */
@@ -208,18 +213,26 @@ public class InstantMessagePositionReplyTest {
 				answers.get(0).getAsString(JnJsonCommonsFields.message));
 	}
 
-	private void saveThePosting(Long chatId, String text) {
+	private void saveThePosting(String text) {
 		CcpJsonRepresentation posting = CcpOtherConstants.EMPTY_JSON
-				.put(VisEntityInstantMessagePositionReply.Fields.chatId, chatId)
 				.put(VisEntityInstantMessagePositionReply.Fields.groupChatId, GROUP_CHAT)
 				.put(VisEntityInstantMessagePositionReply.Fields.replyTo, MESSAGE_OF_THE_JOB_POSTING)
 				.put(VisEntityInstantMessagePositionReply.Fields.description, text);
-		this.savedRecords.add(this.keyOf(chatId));
 		VisEntityInstantMessagePositionReply.ENTITY.save(posting);
 	}
 
-	private CcpJsonRepresentation keyOf(Long chatId) {
-		return CcpOtherConstants.EMPTY_JSON.put(VisEntityInstantMessagePositionReply.Fields.chatId, chatId);
+	/** The link of the resumes in the answer, kept to delete its record after the test. */
+	private String linkOf(String message) {
+		String start = "<a href=\"";
+		int linkStart = message.indexOf(start) + start.length();
+		int linkEnd = message.indexOf("\"", linkStart);
+		String link = message.substring(linkStart, linkEnd);
+		this.savedRecords.add(this.keyOf(link));
+		return link;
+	}
+
+	private CcpJsonRepresentation keyOf(String link) {
+		return CcpOtherConstants.EMPTY_JSON.put(VisEntityInstantMessagePositionReply.Fields.linkToShowResumes, link);
 	}
 
 	/** A text of this run with skills of the dictionary, from 100 to 5,000 characters. */
