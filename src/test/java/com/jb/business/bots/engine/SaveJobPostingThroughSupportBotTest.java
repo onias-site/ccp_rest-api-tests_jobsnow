@@ -323,11 +323,16 @@ public class SaveJobPostingThroughSupportBotTest {
 		this.assertTheHoursOfTheGroups(19, Arrays.asList(20, 21, 22, 23));
 		this.assertTheHoursOfTheGroups(16, Arrays.asList(17, 18, 19, 20, 21, 22, 23));
 		this.assertTheHoursOfTheGroups(22, Arrays.asList(23));
-		this.assertTheHoursOfTheGroups(23, Arrays.asList(23));
+		// saved at 23h the job of the hour has already run: the hour 0 of the next day (2026-11-27)
+		this.assertTheHoursOfTheGroups(23, "20261127", Arrays.asList(0));
 		this.assertTheHoursOfTheGroups(0, Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23));
 	}
 
 	private void assertTheHoursOfTheGroups(int hourOfTheSaving, List<Integer> expectedHours) {
+		this.assertTheHoursOfTheGroups(hourOfTheSaving, "20261126", expectedHours);
+	}
+
+	private void assertTheHoursOfTheGroups(int hourOfTheSaving, String expectedDay, List<Integer> expectedHours) {
 		ZonedDateTime saving = ZonedDateTime.of(2026, 11, 26, hourOfTheSaving, 0, 0, 0, ZoneId.of("America/Sao_Paulo"));
 		long start = saving.toInstant().toEpochMilli();
 		Set<Integer> hours = new TreeSet<>();
@@ -335,7 +340,7 @@ public class SaveJobPostingThroughSupportBotTest {
 			CcpJsonRepresentation jobPosting = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.timestamp, millisecond);
 			List<CcpJsonRepresentation> groups = VisJobPostingHourCombinations.INSTANCE.apply(jobPosting);
 			CcpJsonRepresentation group = groups.get(0);
-			assertEquals("20261126", group.getAsString(VisEntityVirtualJobPostingHour.Fields.day));
+			assertEquals(expectedDay, group.getAsString(VisEntityVirtualJobPostingHour.Fields.day));
 			hours.add(group.getAsIntegerNumber(VisEntityVirtualJobPostingHour.Fields.hour));
 		}
 		assertEquals("saved at " + hourOfTheSaving + "h", expectedHours, new ArrayList<>(hours));
