@@ -25,6 +25,7 @@ import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
 import com.ccp.especifications.db.bulk.CcpBulkEntityOperationType;
 import com.ccp.especifications.db.bulk.CcpBulkItem;
+import com.ccp.especifications.db.utils.entity.CcpEntity;
 import com.ccp.especifications.db.utils.entity.decorators.ElasticsearchLocal;
 import com.ccp.especifications.db.utils.entity.decorators.interfaces.CcpEntityConfigurator;
 import com.ccp.especifications.email.CcpEmailProvider;
@@ -50,8 +51,12 @@ import com.jn.utils.JnGroupers;
 import com.vis.business.job.posting.VisBusinessFindTheMostCoveredSkills;
 import com.vis.business.job.posting.VisBusinessJobPostingPublishingMessage;
 import com.vis.business.job.posting.VisBusinessPublishJobPostingsOfTheHour;
+import com.vis.business.job.posting.VisBusinessRegisterTheRecruitersOfTheJobPosting;
+import com.vis.business.job.posting.VisBusinessSaveTheResumeFilterOfTheJobPosting;
 import com.vis.business.job.posting.VisBusinessFindTheSkillsOfTheJobPosting;
 import com.vis.entities.VisEntityJobPosting;
+import com.vis.entities.VisEntityRecruiter;
+import com.vis.entities.VisEntityRecruiterResumes;
 import com.vis.entities.VisEntityResume;
 import com.vis.entities.VisEntityResumeFilterDescription;
 import com.vis.entities.VisEntityVirtualJobPostingHour;
@@ -103,6 +108,8 @@ public class SaveJobPostingThroughSupportBotTest {
 
 	private final List<CcpJsonRepresentation> savedJobPostings = new ArrayList<>();
 
+	private final List<String> recruiterEmails = new ArrayList<>();
+
 	@BeforeClass
 	public static void resaveBotConfiguration() {
 		List<CcpEntityConfigurator> configurators = Arrays.asList(JbEntityBot.INSTANCE, JnEntityBotCommand.INSTANCE, JnEntityBotCommandStep.INSTANCE, JnEntityBotCommandStepEndMessage.INSTANCE, JnEntityBotCommandName.INSTANCE, VisEntityJobPosting.INSTANCE);
@@ -137,6 +144,11 @@ public class SaveJobPostingThroughSupportBotTest {
 		}
 		for (CcpJsonRepresentation jobPosting : this.savedJobPostings) {
 			VisEntityJobPosting.ENTITY.delete(jobPosting);
+		}
+		for (String recruiterEmail : this.recruiterEmails) {
+			CcpJsonRepresentation recruiterKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, recruiterEmail);
+			VisEntityRecruiter.ENTITY.deleteAnyWhere(recruiterKey);
+			VisEntityRecruiterResumes.ENTITY.delete(recruiterKey);
 		}
 	}
 
@@ -403,6 +415,83 @@ public class SaveJobPostingThroughSupportBotTest {
 			assertTrue("a group got the job posting twice", firstTime);
 		}
 		assertEquals("every group of technology gets the job posting once", groups, chatsOfThisJobPosting.size());
+	}
+
+	/**
+	 * The e-mails of the text become recruiters with the source support (one written twice, in another case, once) and
+	 * get the usual e-mail of resumes with the resumes found by the job posting; a second job posting on the same day sends
+	 * them nothing (one e-mail of resumes a day). The record keeps only the fields of the entity.
+	 */
+	@Test
+	public void theEmailsOfTheTextBecomeRecruitersAndGetTheResumesOnceADay() {
+		String recruiterEmail = "rh." + this.run + "@empresa-exemplo.com.br";
+		this.recruiterEmails.add(recruiterEmail);
+		String text = "Vaga " + this.run + " para pessoa desenvolvedora com Java, SQL e Git, contrato CLT, inicio imediato, envie o curriculo para "
+				+ recruiterEmail + " ou RH." + this.run + "@Empresa-Exemplo.com.br hoje.";
+		EMAIL_INBOX.sentEmails.clear();
+		this.operatorTypes("/salvarVaga");
+		this.operatorTypes(text);
+		this.savedJobPostings.add(this.keyOf(text));
+
+		CcpJsonRepresentation saved = VisEntityJobPosting.ENTITY.getOneById(this.keyOf(text));
+		int resumesCount = saved.getAsIntegerNumber(VisEntityJobPosting.Fields.resumesCount);
+		assertTrue("the text finds no resume in the local database", resumesCount > 0);
+		assertFalse(saved.containsField(VisBusinessSaveTheResumeFilterOfTheJobPosting.Fields.resumeIds));
+		assertFalse(saved.containsField(VisBusinessRegisterTheRecruitersOfTheJobPosting.Fields.recruiterEmails));
+
+		CcpJsonRepresentation recruiterKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, recruiterEmail);
+		CcpJsonRepresentation recruiter = VisEntityRecruiter.ENTITY.getOneById(recruiterKey);
+		assertEquals("support", recruiter.getAsString(VisEntityRecruiter.Fields.source));
+		List<CcpJsonRepresentation> emailsToTheRecruiter = this.emailsTo(recruiterEmail);
+		assertEquals("one e-mail to the recruiter, the two ways the text writes the address being the same", 1, emailsToTheRecruiter.size());
+		String message = emailsToTheRecruiter.get(0).getAsString(JnJsonCommonsFields.message);
+		assertTrue("the table of resumes of the usual e-mail", message.contains("Idiomas e habilidades"));
+		assertTrue(VisEntityRecruiterResumes.ENTITY.exists(recruiterKey));
+
+		String secondText = "Segunda vaga " + this.run + " para pessoa desenvolvedora com Java, SQL e Git, contrato PJ, envie o curriculo para "
+				+ recruiterEmail + " ainda hoje, por favor.";
+		this.operatorTypes("/salvarVaga");
+		this.operatorTypes(secondText);
+		this.savedJobPostings.add(this.keyOf(secondText));
+		assertTrue(VisEntityJobPosting.ENTITY.exists(this.keyOf(secondText)));
+		assertEquals("a second job posting on the same day sends no e-mail", 1, this.emailsTo(recruiterEmail).size());
+	}
+
+	/** An inactive recruiter (in the twin) is not brought back by a job posting and gets no e-mail. */
+	@Test
+	public void anInactiveRecruiterIsNotRegisteredAgainNorGetsTheResumes() {
+		String recruiterEmail = "inativo." + this.run + "@empresa-exemplo.com.br";
+		this.recruiterEmails.add(recruiterEmail);
+		CcpJsonRepresentation recruiterKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, recruiterEmail);
+		CcpJsonRepresentation recruiterInput = recruiterKey.put(VisEntityRecruiter.Fields.source, "support");
+		CcpJsonRepresentation recruiter = com.vis.business.recruiter.VisBusinessPrepareRecruiter.INSTANCE.execute(recruiterInput);
+		VisEntityRecruiter.ENTITY.save(recruiter);
+		// deleting from the recruiters moves the record to the twin, the inactive recruiters
+		VisEntityRecruiter.ENTITY.delete(recruiterKey);
+		CcpEntity twinEntity = VisEntityRecruiter.ENTITY.getTwinEntity();
+		assertTrue(twinEntity.exists(recruiterKey));
+
+		String text = "Vaga " + this.run + " de pessoa desenvolvedora com Java, SQL e Git, envie o curriculo para " + recruiterEmail + " o quanto antes, obrigado.";
+		EMAIL_INBOX.sentEmails.clear();
+		this.operatorTypes("/salvarVaga");
+		this.operatorTypes(text);
+		this.savedJobPostings.add(this.keyOf(text));
+		assertTrue(VisEntityJobPosting.ENTITY.exists(this.keyOf(text)));
+		assertFalse("not brought back to the recruiters", VisEntityRecruiter.ENTITY.exists(recruiterKey));
+		assertTrue(twinEntity.exists(recruiterKey));
+		assertEquals(0, this.emailsTo(recruiterEmail).size());
+	}
+
+	private List<CcpJsonRepresentation> emailsTo(String recipient) {
+		List<CcpJsonRepresentation> emails = new ArrayList<>();
+		for (CcpJsonRepresentation email : EMAIL_INBOX.sentEmails) {
+			List<String> recipients = email.getAsStringList(JnJsonCommonsFields.email);
+			boolean toTheRecipient = recipients.contains(recipient);
+			if (toTheRecipient) {
+				emails.add(email);
+			}
+		}
+		return emails;
 	}
 
 	private List<String> piecesOf(CcpJsonRepresentation jobPosting) {
