@@ -71,6 +71,9 @@ public class DailyDatabaseMaintenanceTest {
 
 	private static final String TEST_BUCKET = "jobsnow-backup-test";
 
+	/** A bucket without any backup, for the routine that keeps only the latest one. */
+	private static final String EMPTY_TEST_BUCKET = "jobsnow-backup-test-empty";
+
 	private static final String INDEX_SCRIPT = "{\"mappings\":{\"dynamic\":\"strict\",\"properties\":{\"key\":{\"type\":\"keyword\"},\"value\":{\"type\":\"keyword\"}}}}";
 
 	private static final List<CcpEntity> TEST_ENTITIES = List.of(JnEntityTestPurgedDisposable.ENTITY, JnEntityTestPurgedEverySecond.ENTITY, JnEntityTestKeptDisposable.ENTITY);
@@ -93,6 +96,71 @@ public class DailyDatabaseMaintenanceTest {
 		}
 		deleteQuietly("/_snapshot/" + TEST_BUCKET + "/_all");
 		deleteQuietly("/_snapshot/" + TEST_BUCKET);
+		deleteQuietly("/_snapshot/" + EMPTY_TEST_BUCKET);
+	}
+
+	/**
+	 * The daily routine of the backups (since 2026-11-27) deletes every backup of the bucket but the most recent one: after
+	 * three backups, only the last one is left.
+	 */
+	@Test
+	public void theRoutineOfTheBackupsKeepsOnlyTheLatestOne() {
+		String entityName = JnEntityTestPurgedDisposable.ENTITY.getEntityMetaData().entityName;
+		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON
+				.put(JnBusinessBackupTheDatabase.Fields.bucketName, TEST_BUCKET)
+				.put(JnBusinessBackupTheDatabase.Fields.entityNamePatterns, List.of(entityName));
+		String latestBackup = "";
+		for (int backupNumber = 0; backupNumber < 3; backupNumber++) {
+			CcpJsonRepresentation result = JnBusinessBackupTheDatabase.INSTANCE.execute(input);
+			CcpJsonRepresentation backup = result.getInnerJson(JnBusinessBackupTheDatabase.Fields.backup);
+			latestBackup = backup.getAsString(new CcpFieldName("snapshot"));
+			// the name of a backup has its start to the millisecond
+			new CcpTimeDecorator().sleep(5);
+		}
+		assertTrue(snapshotsOf(TEST_BUCKET).size() >= 3);
+
+		CcpJsonRepresentation bucket = CcpOtherConstants.EMPTY_JSON.put(JnBusinessKeepOnlyTheLatestBackup.Fields.bucketName, TEST_BUCKET);
+		CcpJsonRepresentation result = JnBusinessKeepOnlyTheLatestBackup.INSTANCE.execute(bucket);
+
+		CcpJsonRepresentation backups = result.getInnerJson(JnBusinessKeepOnlyTheLatestBackup.Fields.backups);
+		assertEquals(latestBackup, backups.getAsString(CcpDbRequester.BackupFields.latestBackup));
+		List<String> deletedBackups = backups.getAsStringList(CcpDbRequester.BackupFields.deletedBackups);
+		assertTrue(deletedBackups.size() >= 2);
+		assertFalse(deletedBackups.contains(latestBackup));
+		assertEquals(List.of(latestBackup), snapshotsOf(TEST_BUCKET));
+
+		// once more: nothing else to delete
+		CcpJsonRepresentation again = JnBusinessKeepOnlyTheLatestBackup.INSTANCE.execute(bucket);
+		CcpJsonRepresentation backupsAgain = again.getInnerJson(JnBusinessKeepOnlyTheLatestBackup.Fields.backups);
+		assertTrue(backupsAgain.getAsStringList(CcpDbRequester.BackupFields.deletedBackups).isEmpty());
+		assertEquals(List.of(latestBackup), snapshotsOf(TEST_BUCKET));
+	}
+
+	/** A bucket without any backup: nothing is deleted and no backup is kept. */
+	@Test
+	public void theRoutineOfTheBackupsDeletesNothingWithoutABackup() {
+		CcpJsonRepresentation bucket = CcpOtherConstants.EMPTY_JSON.put(JnBusinessKeepOnlyTheLatestBackup.Fields.bucketName, EMPTY_TEST_BUCKET);
+
+		CcpJsonRepresentation result = JnBusinessKeepOnlyTheLatestBackup.INSTANCE.execute(bucket);
+
+		CcpJsonRepresentation backups = result.getInnerJson(JnBusinessKeepOnlyTheLatestBackup.Fields.backups);
+		assertFalse(backups.containsField(CcpDbRequester.BackupFields.latestBackup));
+		assertTrue(backups.getAsStringList(CcpDbRequester.BackupFields.deletedBackups).isEmpty());
+	}
+
+	@Test
+	public void theRoutineOfTheBackupsGoesToTheDefaultBucket() {
+		CcpJsonRepresentation withDefaults = new JnBusinessValidatedInput(JnBusinessKeepOnlyTheLatestBackup.Fields.class).execute(CcpOtherConstants.EMPTY_JSON);
+
+		assertEquals("jobsnow-backup", withDefaults.getAsString(JnBusinessKeepOnlyTheLatestBackup.Fields.bucketName));
+	}
+
+	/** The names of the snapshots of the repository of the bucket. */
+	private static List<String> snapshotsOf(String bucketName) {
+		CcpJsonRepresentation response = database().executeHttpRequest("snapshotsOfTheTest", "/_snapshot/" + bucketName + "/_all", CcpHttpMethods.GET, 200, "", CcpOtherConstants.EMPTY_JSON, CcpHttpResponseType.singleRecord);
+		List<CcpJsonRepresentation> snapshots = response.getAsJsonList(new CcpFieldName("snapshots"));
+		List<String> names = snapshots.stream().map(snapshot -> snapshot.getAsString(new CcpFieldName("snapshot"))).sorted().collect(java.util.stream.Collectors.toList());
+		return names;
 	}
 
 	@Test

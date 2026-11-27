@@ -88,6 +88,10 @@ public class SaveVersionConflictTest {
 		public CcpJsonRepresentation backup(String bucketName, List<String> entityNamePatterns) {
 			throw new UnsupportedOperationException();
 		}
+
+		public CcpJsonRepresentation deleteTheBackupsBeforeTheLatest(String bucketName) {
+			throw new UnsupportedOperationException();
+		}
 	}
 
 	private ConflictingRequester elasticsearchAnswering409(int conflicts) {

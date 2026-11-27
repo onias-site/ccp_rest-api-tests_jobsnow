@@ -136,6 +136,32 @@ public class InstantMessagePositionReplyTest {
 		assertEquals(text, saved.getAsString(VisEntityInstantMessagePositionReply.Fields.description));
 	}
 
+	/** A job posting in a photo is read by its caption (since 2026-11-27) and answered. */
+	@Test
+	public void aJobPostingInTheCaptionOfAPhotoIsAnswered() {
+		String text = this.textWithSkills();
+		CcpJsonRepresentation update = new CcpJsonRepresentation("{"
+				+ "\"botName\": \"support\","
+				+ "\"update_id\": 8200,"
+				+ "\"message\": {"
+				+ "\"message_id\": " + MESSAGE_OF_THE_JOB_POSTING + ","
+				+ "\"date\": 1790121741,"
+				+ "\"from\": {\"id\": 751717896, \"is_bot\": false, \"username\": \"recrutadora\"},"
+				+ "\"chat\": {\"id\": " + GROUP_CHAT + ", \"type\": \"supergroup\"},"
+				+ "\"photo\": [{\"file_id\": \"abc\", \"width\": 90, \"height\": 90}],"
+				+ "\"caption\": \"" + text + "\""
+				+ "}}");
+
+		JbBusinessReceiveBotUpdate.INSTANCE.execute(update);
+
+		List<CcpJsonRepresentation> answers = TELEGRAM.sentTo(GROUP_CHAT);
+		assertEquals(1, answers.size());
+		String message = answers.get(0).getAsString(JnJsonCommonsFields.message);
+		String link = this.linkOf(message);
+		CcpJsonRepresentation saved = VisEntityInstantMessagePositionReply.ENTITY.getOneById(this.keyOf(link));
+		assertEquals("the caption is the text of the job posting", text, saved.getAsString(VisEntityInstantMessagePositionReply.Fields.description));
+	}
+
 	/** A conversation of the group (a text the entity refuses) and a text without skills: nothing answered, no error. */
 	@Test
 	public void aConversationOfTheGroupIsIgnored() {
@@ -212,11 +238,12 @@ public class InstantMessagePositionReplyTest {
 	}
 
 	/**
-	 * A second job posting whose resumes have the filters of an earlier one has the same link: it is refused, the record
-	 * of the link keeps the first text, and there is no second answer.
+	 * A second job posting whose resumes have the filters of an earlier one has the same link: it is refused and the
+	 * record of the link keeps the first text, but (since 2026-11-27) it is answered too, with the same link, count and
+	 * averages: the same job posting in another group, or one already saved by {@code /salvarVaga}.
 	 */
 	@Test
-	public void aJobPostingWhoseFiltersAlreadyHaveATextIsNotSavedNorAnswered() {
+	public void aJobPostingWhoseFiltersAlreadyHaveATextIsNotSavedButIsAnswered() {
 		String firstText = this.textWithSkills();
 		this.saveThePosting(firstText);
 		List<CcpJsonRepresentation> answers = TELEGRAM.sentTo(GROUP_CHAT);
@@ -226,7 +253,12 @@ public class InstantMessagePositionReplyTest {
 		assertTrue(VisEntityInstantMessagePositionReply.ENTITY.exists(key));
 
 		this.saveThePosting("Outra " + firstText);
-		assertEquals("no answer to the refused job posting", 1, TELEGRAM.sentTo(GROUP_CHAT).size());
+		List<CcpJsonRepresentation> answersAfterTheRefusal = TELEGRAM.sentTo(GROUP_CHAT);
+		assertEquals("the refused job posting is answered too", 2, answersAfterTheRefusal.size());
+		CcpJsonRepresentation secondAnswer = answersAfterTheRefusal.get(1);
+		assertEquals("the same answer, with the same link", firstMessage, secondAnswer.getAsString(JnJsonCommonsFields.message));
+		assertEquals(MESSAGE_OF_THE_JOB_POSTING, secondAnswer.getAsLongNumber(CcpJsonCommonsFields.replyTo));
+		assertEquals("support", secondAnswer.getAsString(JnJsonInstantMessengerFields.botName));
 		CcpJsonRepresentation saved = VisEntityInstantMessagePositionReply.ENTITY.getOneById(key);
 		assertEquals("the record of the link keeps the first text", firstText, saved.getAsString(VisEntityInstantMessagePositionReply.Fields.description));
 	}
