@@ -206,6 +206,35 @@ public class SaveJobPostingThroughSupportBotTest {
 	}
 
 	/**
+	 * The command is a loop (since 2026-11-27): after each saving the session stays in the step of the text and the next
+	 * text is another job posting, until /sair removes the session.
+	 */
+	@Test
+	public void theBotKeepsReceivingJobPostingsUntilTheOperatorExits() {
+		this.operatorTypes("/salvarVaga");
+		String firstText = this.textWithSkills();
+		String firstReply = this.operatorTypes(firstText);
+		this.savedJobPostings.add(this.keyOf(firstText));
+		assertTrue(firstReply, firstReply.endsWith("Envie a próxima vaga ou digite /sair para encerrar."));
+		assertTrue("the session stays in the step of the text", JbEntityBotCommandStepSession.ENTITY.exists(this.sessionKey()));
+
+		String secondText = "Segunda " + this.textWithSkills();
+		String secondReply = this.operatorTypes(secondText);
+		this.savedJobPostings.add(this.keyOf(secondText));
+		assertEquals(firstReply, secondReply);
+		assertTrue("the second text was saved too", VisEntityJobPosting.ENTITY.exists(this.keyOf(secondText)));
+
+		this.operatorTypes("/sair");
+		assertFalse("/sair ends the loop", JbEntityBotCommandStepSession.ENTITY.exists(this.sessionKey()));
+	}
+
+	private CcpJsonRepresentation sessionKey() {
+		return CcpOtherConstants.EMPTY_JSON
+				.put(JnJsonInstantMessengerFields.botName, JbBotType.support)
+				.put(JnJsonInstantMessengerFields.chatId, SUPPORT_CHAT);
+	}
+
+	/**
 	 * A valid text is saved with the count and the averages of the search of its resumes, the link of the screen with the
 	 * filters and the text shared under curriculos@onias.site, and is the child of the group of its day and hour.
 	 */
@@ -214,7 +243,7 @@ public class SaveJobPostingThroughSupportBotTest {
 		String text = this.textWithSkills();
 		this.operatorTypes("/saveJobPosting");
 		String reply = this.operatorTypes("  " + text + "  ");
-		assertEquals("A vaga foi recebida. Em instantes ela será gravada, junto com os currículos que atendem ao maior número possível das habilidades dela.", reply);
+		assertEquals("A vaga foi recebida. Em instantes ela será gravada, junto com os currículos que atendem ao maior número possível das habilidades dela. Envie a próxima vaga ou digite /sair para encerrar.", reply);
 
 		CcpJsonRepresentation key = this.keyOf(text);
 		this.savedJobPostings.add(key);
