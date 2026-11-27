@@ -155,7 +155,7 @@ public class InstantMessagePositionReplyTest {
 				+ "\"message\": {"
 				+ "\"message_id\": " + MESSAGE_OF_THE_JOB_POSTING + ","
 				+ "\"date\": 1790121741,"
-				+ "\"from\": {\"id\": 751717896, \"username\": \"recrutadora\"},"
+				+ "\"from\": {\"id\": 751717896, \"is_bot\": false, \"username\": \"recrutadora\"},"
 				+ "\"chat\": {\"id\": " + GROUP_CHAT + ", \"type\": \"supergroup\"},"
 				+ "\"text\": \"" + text + "\""
 				+ "}}");

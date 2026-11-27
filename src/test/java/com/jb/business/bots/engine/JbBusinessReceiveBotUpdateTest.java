@@ -277,6 +277,29 @@ public class JbBusinessReceiveBotUpdateTest {
 		assertEquals(7003L, this.savedOffset());
 	}
 
+	/**
+	 * A message of a group sent by a bot (the user bot publishes and forwards job postings in the groups of the support
+	 * bot) goes to no queue: no bot answers another one (since 2026-11-27).
+	 */
+	@Test
+	public void aMessageOfABotInAGroupGoesToNoQueue() {
+		long groupsBefore = this.publishedToTheGroupsOf(SUPPORT);
+		CcpJsonRepresentation update = new CcpJsonRepresentation("{"
+				+ "\"botName\": \"support\","
+				+ "\"update_id\": 7400,"
+				+ "\"message\": {\"message_id\": 11, \"date\": 1790121741,"
+				+ "\"from\": {\"id\": 8123456789, \"is_bot\": true, \"username\": \"user_bot\"},"
+				+ "\"chat\": {\"id\": -1001234567890, \"type\": \"supergroup\"},"
+				+ "\"text\": \"Vaga para pessoa desenvolvedora Java com Spring Boot, SQL e Git, trabalhando com APIs REST e testes automatizados.\"}"
+				+ "}");
+
+		JbBusinessReceiveBotUpdate.INSTANCE.execute(update);
+
+		assertEquals(groupsBefore, this.publishedToTheGroupsOf(SUPPORT));
+		assertTrue(TELEGRAM.sentMessages.isEmpty());
+		assertEquals(7401L, this.savedOffset());
+	}
+
 	/** A message of a group without text (a member who joins, a photo) goes to no queue. */
 	@Test
 	public void aMessageOfAGroupWithoutTextGoesToNoQueue() {
