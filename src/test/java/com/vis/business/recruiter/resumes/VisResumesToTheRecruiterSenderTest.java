@@ -38,7 +38,7 @@ public class VisResumesToTheRecruiterSenderTest {
 	private static final long VIEWS_SINCE = 1_000L;
 
 	/** A limit of the day other than the one seeded, so that the sender is proved to obey the one it is given. */
-	private static final int RECRUITERS_PER_DAY = 7;
+	private static final int RECRUITERS_PER_RUN = 7;
 
 	private final int[] emailsSent = {0};
 
@@ -53,7 +53,7 @@ public class VisResumesToTheRecruiterSenderTest {
 	private final String[] lastLegacyActiveQueuePosition = {""};
 
 	private VisResumesToTheRecruiterSender sender(List<String> restrictedTo, List<CcpJsonRepresentation> resumes) {
-		return new VisResumesToTheRecruiterSender(restrictedTo, resumes, new HashMap<>(), new HashMap<>(), Set.of(), "http://localhost", "http://localhost:8081", RECRUITERS_PER_DAY, this.emailsSent, this.lastQueuePosition, this.lastLegacyQueuePosition, this.lastNonProfessionalQueuePosition, this.lastLegacyActiveQueuePosition, new HashSet<>());
+		return new VisResumesToTheRecruiterSender(restrictedTo, resumes, new HashMap<>(), new HashMap<>(), Set.of(), "http://localhost", "http://localhost:8081", RECRUITERS_PER_RUN, this.emailsSent, this.lastQueuePosition, this.lastLegacyQueuePosition, this.lastNonProfessionalQueuePosition, this.lastLegacyActiveQueuePosition, new HashSet<>());
 	}
 
 	private static List<String> emailsOf(List<CcpJsonRepresentation> recruiters) {
@@ -477,7 +477,7 @@ public class VisResumesToTheRecruiterSenderTest {
 		this.sender(List.of(RECRUITER), List.of()).accept(this.recruiter);
 		assertEquals("a recent viewer has no position", "1abc", this.lastQueuePosition[0]);
 
-		this.emailsSent[0] = RECRUITERS_PER_DAY;
+		this.emailsSent[0] = RECRUITERS_PER_RUN;
 		CcpJsonRepresentation afterTheLimit = this.recruiter.put(VisRecruiterResumesFields.queuePosition, "1def");
 		this.sender(List.of(), List.of()).accept(afterTheLimit);
 		assertEquals("1abc", this.lastQueuePosition[0]);
@@ -512,12 +512,12 @@ public class VisResumesToTheRecruiterSenderTest {
 	/** With a place left, this recruiter with a resume would go on to the sending, which this test does not set up. */
 	@Test
 	public void noOneReceivesAfterTheLimitOfTheDay() {
-		this.emailsSent[0] = RECRUITERS_PER_DAY;
+		this.emailsSent[0] = RECRUITERS_PER_RUN;
 		List<CcpJsonRepresentation> resumes = List.of(CcpOtherConstants.EMPTY_JSON);
 
 		this.sender(List.of(), resumes).accept(this.recruiter);
 
-		assertEquals(RECRUITERS_PER_DAY, this.emailsSent[0]);
+		assertEquals(RECRUITERS_PER_RUN, this.emailsSent[0]);
 	}
 
 	/** Without this check the hash of the entity refuses the address and the run of every other recruiter stops here. */

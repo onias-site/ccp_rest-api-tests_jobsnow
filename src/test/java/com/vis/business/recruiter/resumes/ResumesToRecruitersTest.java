@@ -927,6 +927,37 @@ public class ResumesToRecruitersTest {
 		assertTrue("sent again on the same day", RecordingResumesEmailSender.LAST_MESSAGE_BY_RECIPIENT.containsKey(recruiter));
 	}
 
+	/**
+	 * Since 2026-11-27 the process runs every hour: who received the e-mail today is left out of the next runs of the day
+	 * (the copy of their list in jn_disposable_record), except in a run restricted to some recruiters (support).
+	 */
+	@Test
+	public void whoReceivedTheEmailTodayIsLeftOutOfTheNextRunsOfTheDay() {
+		String recruiter = this.recruiter("hoje", "gmail.com");
+		this.saveRecruiter(recruiter);
+		this.saveResume(this.resume("hoje", "Analista de hoje " + this.run));
+		String emailHash = VisBusinessSendResumesToRecruiters.getEmailHash(recruiter);
+		CcpTimeDecorator now = new CcpTimeDecorator();
+		ElasticsearchLocal.refresh("jn_disposable_record");
+		Set<String> recipientsBeforeTheSending = VisBusinessSendResumesToRecruiters.getRecipientsOfToday(List.of(), now);
+		assertFalse("not yet a recipient", recipientsBeforeTheSending.contains(emailHash));
+
+		sendTo(recruiter);
+		ElasticsearchLocal.refresh("jn_disposable_record");
+
+		Set<String> recipientsOfToday = VisBusinessSendResumesToRecruiters.getRecipientsOfToday(List.of(), now);
+		assertTrue("a recipient of today", recipientsOfToday.contains(emailHash));
+		Set<String> recipientsOfARestrictedRun = VisBusinessSendResumesToRecruiters.getRecipientsOfToday(List.of(recruiter), now);
+		assertTrue("the support sends anyway", recipientsOfARestrictedRun.isEmpty());
+	}
+
+	/** Each of the 20 runs of the day (every hour from 04:00 to 23:00) sends the 20th part of the recruiters of the day. */
+	@Test
+	public void eachRunSendsTheTwentiethPartOfTheRecruitersOfTheDay() {
+		int recruitersPerRun = VisRecruiterResumesSystemParameters.DEFAULT_RECRUITERS_PER_DAY / VisBusinessSendResumesToRecruiters.RUNS_PER_DAY;
+		assertEquals(100, recruitersPerRun);
+	}
+
 	@Test
 	public void theRecipientWhoNeverViewedIsInactivatedAndComesBackOnViewing() {
 		String recruiter = this.recruiter("semvisita", "gmail.com");
