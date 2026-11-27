@@ -67,6 +67,7 @@ public class BotConfigurationSeedsIntegrityTest {
 		seeds.addAll(JnEntityCommandNotAllowedToUser.INSTANCE.getFirstRecordsToInsert());
 		seeds.addAll(com.vis.entities.VisEntityResumeMessage.INSTANCE.getFirstRecordsToInsert());
 		seeds.addAll(com.vis.entities.VisEntityRecruiterSignUpReturn.INSTANCE.getFirstRecordsToInsert());
+		seeds.addAll(com.vis.entities.VisEntityJobPosting.INSTANCE.getFirstRecordsToInsert());
 		return seeds;
 	}
 

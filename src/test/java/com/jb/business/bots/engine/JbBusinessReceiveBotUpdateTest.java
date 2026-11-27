@@ -92,6 +92,13 @@ public class JbBusinessReceiveBotUpdateTest {
 	/** The provider of the sender of the consumers of the bots, in the column {@code senderClass} of {@code topicos.tsv}. */
 	private static final String PUB_SUB_SENDER = "com.ccp.implementations.mensageria.sender.gcp.pubsub.CcpGcpPubSubMensageriaSender";
 
+	/**
+	 * The commands whose queue names the Pub/Sub sender (asked by the user on 2026-11-26): {@code /saveJobPosting} saves an
+	 * asynchronous entity whose save runs a search of resumes, which must go to the queue of the entity instead of running
+	 * in the thread of the command.
+	 */
+	private static final List<String> COMMANDS_WITH_THE_PUB_SUB_SENDER = Arrays.asList("saveJobPosting");
+
 	/** The threads of the consumer of each command, by bot. */
 	private static final CcpJsonRepresentation THREADS_OF_THE_COMMANDS = CcpOtherConstants.EMPTY_JSON
 			.put(JbBotType.support, 1)
@@ -292,8 +299,11 @@ public class JbBusinessReceiveBotUpdateTest {
 			int threads = THREADS_OF_THE_COMMANDS.getAsIntegerNumber(bot);
 			for (String commandName : commandNames) {
 				String topic = CcpMensageriaReceiver.getQualifiedTopic(JbBusinessRunBotCommand.class, botName, commandName);
-				// no senderClass: the command keeps the synchronous sender, and what it publishes runs in its own thread
-				String expectedLine = topic + "\t" + threads + "\t" + ACK_DEADLINE_OF_A_COMMAND;
+				// no senderClass: the command keeps the synchronous sender, and what it publishes runs in its own thread;
+				// but the commands that publish heavy work to another queue (/saveJobPosting, since 2026-11-26)
+				boolean publishesToAnotherQueue = COMMANDS_WITH_THE_PUB_SUB_SENDER.contains(commandName);
+				String senderColumn = publishesToAnotherQueue ? "\t" + PUB_SUB_SENDER : "";
+				String expectedLine = topic + "\t" + threads + "\t" + ACK_DEADLINE_OF_A_COMMAND + senderColumn;
 				boolean missing = false == lines.contains(expectedLine);
 				if (missing) {
 					missingLines.add(expectedLine);
