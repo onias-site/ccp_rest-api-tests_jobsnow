@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Test;
+import com.ccp.especifications.http.CcpErrorHttpClient;
+import com.ccp.especifications.http.CcpErrorHttpClientPermanent;
 
 import com.ccp.business.CcpBusiness;
 import com.ccp.constants.CcpOtherConstants;
@@ -124,6 +126,29 @@ public class PullReceiverTest {
 		assertEquals(1, reply.nacks.get());
 		assertEquals(1, this.notifyError.received.size());
 		assertTrue(this.notifyError.received.get(0).toString(), this.notifyError.received.get(0).toString().contains(TOPIC));
+	}
+
+	/** A task that fails with a permanent client error of an external API, already recorded. */
+	static class PermanentFailureTask implements CcpBusiness {
+		public CcpJsonRepresentation apply(CcpJsonRepresentation json) {
+			CcpJsonRepresentation error = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("status"), 400);
+			throw new CcpErrorHttpClientPermanent(new CcpErrorHttpClient(error));
+		}
+	}
+
+	/**
+	 * Since 2026-11-27 a permanent client error of an external API (a bot without the right to write in a group) is
+	 * notified and acknowledged: a new delivery would fail the same way, and the message stayed three days in the queue.
+	 */
+	@Test
+	public void aPermanentClientErrorIsNotifiedAndAcknowledged() {
+		Reply reply = new Reply();
+
+		new CcpMessageReceiver(this.notifyError, TOPIC, new PermanentFailureTask()).receiveMessage(pubsubMessage("{\"name\":\"jobsnow\"}"), reply);
+
+		assertEquals(1, reply.acks.get());
+		assertEquals(0, reply.nacks.get());
+		assertEquals(1, this.notifyError.received.size());
 	}
 
 	@Test

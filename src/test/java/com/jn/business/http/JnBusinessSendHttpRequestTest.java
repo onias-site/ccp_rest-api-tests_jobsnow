@@ -18,16 +18,16 @@ public class JnBusinessSendHttpRequestTest {
 
 	@Test
 	public void constructorTest() {
-		assertNotNull(new JnBusinessSendHttpRequest(NoopExecutor.INSTANCE, JnMessageSenderExceptionHandler.THROWS));
+		assertNotNull(new JnBusinessSendHttpRequest(JnHttpApiErrors.ExternalApi.telegram, NoopExecutor.INSTANCE, JnMessageSenderExceptionHandler.THROWS));
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void constructorProcessNullTest() {
-		new JnBusinessSendHttpRequest(null, null);
+		new JnBusinessSendHttpRequest(null, null, null);
 	}
 
 	@Test(expected = CcpNullParameterException.class)
 	public void applyNullTest() {
-		new JnBusinessSendHttpRequest(NoopExecutor.INSTANCE, JnMessageSenderExceptionHandler.THROWS).execute(null);
+		new JnBusinessSendHttpRequest(JnHttpApiErrors.ExternalApi.telegram, NoopExecutor.INSTANCE, JnMessageSenderExceptionHandler.THROWS).execute(null);
 	}
 }

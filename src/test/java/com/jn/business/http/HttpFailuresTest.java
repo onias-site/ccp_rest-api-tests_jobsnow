@@ -17,6 +17,7 @@ import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.especifications.db.utils.entity.decorators.enums.CcpEntityExpurgableOptions;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.especifications.http.CcpErrorHttpClient;
+import com.ccp.especifications.http.CcpErrorHttpClientPermanent;
 import com.ccp.especifications.http.CcpErrorHttpServer;
 import com.ccp.especifications.http.CcpHttpApiExecutor;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
@@ -27,15 +28,14 @@ import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.jn.entities.JnEntityHttpApiErrorClient;
-import com.jn.entities.JnEntityHttpApiErrorServer;
 import com.jn.entities.JnEntityHttpApiRetrySendRequest;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 
 /**
  * Proves how {@link JnBusinessSendHttpRequest} handles the failures of the call, with an executor that fails without any
- * network: a server error (5xx) is retried, one attempt registered per try, until the maximum; a client error (4xx) is
- * rethrown at once; any other failure goes to the exception handler.
+ * network: a server error (5xx) is retried, one attempt registered per try, until the maximum; a client error (4xx), which
+ * since 2026-11-27 arrives already recorded as permanent ({@link JnHttpApiErrors}), is rethrown at once; any other failure
+ * goes to the exception handler.
  */
 public class HttpFailuresTest {
 
@@ -53,7 +53,7 @@ public class HttpFailuresTest {
 
 	private final String url = "http://localhost/test/" + System.nanoTime();
 
-	private final CcpJsonRepresentation request = CcpOtherConstants.EMPTY_JSON.put(JnJsonCommonsFields.apiName, "testApi");
+	private final CcpJsonRepresentation request = CcpOtherConstants.EMPTY_JSON;
 
 	/** The error the HTTP requester raises, with the same fields. */
 	private CcpJsonRepresentation errorEntity(int status) {
@@ -65,16 +65,6 @@ public class HttpFailuresTest {
 				.put(new CcpFieldName("status"), status)
 				.put(new CcpFieldName("response"), "failed")
 				.put(new CcpFieldName("expectedStatusList"), Arrays.asList(200));
-	}
-
-	/** The primary key of the record of the failure: the call, the api and the whole error as details. */
-	private CcpJsonRepresentation errorKey(CcpJsonRepresentation errorEntity) {
-		return CcpOtherConstants.EMPTY_JSON
-				.put(JnJsonCommonsFields.url, this.url)
-				.put(JnJsonCommonsFields.method, "POST")
-				.put(JnJsonCommonsFields.headers, CcpOtherConstants.EMPTY_JSON.content)
-				.put(JnJsonCommonsFields.apiName, "testApi")
-				.put(JnJsonCommonsFields.details, errorEntity.asUgglyJson());
 	}
 
 	/** An executor that always fails with the given error and counts its attempts. */
@@ -105,7 +95,7 @@ public class HttpFailuresTest {
 	public void aServerErrorIsRetriedUntilTheMaximumAndThenRethrown() {
 		CcpErrorHttpServer error = new CcpErrorHttpServer(this.errorEntity(503));
 		FailingExecutor executor = new FailingExecutor(error);
-		JnBusinessSendHttpRequest business = new JnBusinessSendHttpRequest(executor, e -> CcpOtherConstants.EMPTY_JSON);
+		JnBusinessSendHttpRequest business = new JnBusinessSendHttpRequest(JnHttpApiErrors.ExternalApi.telegram, executor, e -> CcpOtherConstants.EMPTY_JSON);
 
 		try {
 			business.execute(this.request);
@@ -115,31 +105,29 @@ public class HttpFailuresTest {
 		}
 
 		assertEquals("the first call plus one per registered attempt", 3, executor.attempts.get());
-		assertTrue("the error was recorded after the last attempt", JnEntityHttpApiErrorServer.ENTITY.exists(this.errorKey(error.entity)));
 	}
 
 	@Test
 	public void aClientErrorIsRethrownAtOnce() {
-		CcpErrorHttpClient error = new CcpErrorHttpClient(this.errorEntity(404));
+		CcpErrorHttpClientPermanent error = new CcpErrorHttpClientPermanent(new CcpErrorHttpClient(this.errorEntity(404)));
 		FailingExecutor executor = new FailingExecutor(error);
-		JnBusinessSendHttpRequest business = new JnBusinessSendHttpRequest(executor, e -> CcpOtherConstants.EMPTY_JSON);
+		JnBusinessSendHttpRequest business = new JnBusinessSendHttpRequest(JnHttpApiErrors.ExternalApi.telegram, executor, e -> CcpOtherConstants.EMPTY_JSON);
 
 		try {
 			business.execute(this.request);
 			fail("a client error is not retried");
-		} catch (CcpErrorHttpClient e) {
+		} catch (CcpErrorHttpClientPermanent e) {
 			assertSame(error, e);
 		}
 
 		assertEquals(1, executor.attempts.get());
-		assertTrue("the error was recorded", JnEntityHttpApiErrorClient.ENTITY.exists(this.errorKey(error.entity)));
 	}
 
 	@Test
 	public void anyOtherFailureGoesToTheExceptionHandler() {
 		IllegalStateException error = new IllegalStateException("no connection");
 		CcpJsonRepresentation handled = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName("handled"), true);
-		JnBusinessSendHttpRequest business = new JnBusinessSendHttpRequest(new FailingExecutor(error), new ExpectedErrorHandler(error, handled));
+		JnBusinessSendHttpRequest business = new JnBusinessSendHttpRequest(JnHttpApiErrors.ExternalApi.telegram, new FailingExecutor(error), new ExpectedErrorHandler(error, handled));
 
 		assertEquals(handled, business.execute(this.request));
 	}
