@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -47,6 +48,8 @@ import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.jn.utils.JnGroupers;
 import com.vis.business.job.posting.VisBusinessFindTheMostCoveredSkills;
+import com.vis.business.job.posting.VisBusinessJobPostingPublishingMessage;
+import com.vis.business.job.posting.VisBusinessPublishJobPostingsOfTheHour;
 import com.vis.business.job.posting.VisBusinessFindTheSkillsOfTheJobPosting;
 import com.vis.entities.VisEntityJobPosting;
 import com.vis.entities.VisEntityResume;
@@ -288,6 +291,123 @@ public class SaveJobPostingThroughSupportBotTest {
 			hours.add(group.getAsIntegerNumber(VisEntityVirtualJobPostingHour.Fields.hour));
 		}
 		assertEquals("saved at " + hourOfTheSaving + "h", expectedHours, new ArrayList<>(hours));
+	}
+
+	/**
+	 * The message of a job posting that found resumes: the header, the text escaped, the paragraph to the candidates and
+	 * the one to the recruiters with the count, the averages in Brazilian format (an average no resume informed as "não
+	 * informada") and the link of the resumes.
+	 */
+	@Test
+	public void theMessageOfAJobPostingWithResumesHasTheCountTheAveragesAndTheLink() {
+		String text = "Vaga <Java> & Spring " + "x".repeat(100);
+		CcpJsonRepresentation jobPosting = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityJobPosting.Fields.description, text)
+				.put(VisEntityJobPosting.Fields.resumesCount, 12)
+				.put(VisEntityJobPosting.Fields.avgClt, 9500.0)
+				.put(VisEntityJobPosting.Fields.avgExperience, 4.46)
+				.put(VisEntityJobPosting.Fields.linkToShowResumes, "https://onias.site/curriculos/buscar?filtro=abc&email=" + SHARING_EMAIL);
+		List<String> pieces = this.piecesOf(jobPosting);
+		assertEquals(1, pieces.size());
+		String message = pieces.get(0);
+		System.out.println("MESSAGE WITH RESUMES:\n" + message);
+		assertTrue(message, message.startsWith("<b>[AJUDE AS PESSOAS ENCAMINHANDO ESTA VAGA AO MÁXIMO DE GRUPOS E PESSOAS QUE VOCÊ PUDER 🙏🙏🙏]</b>\nVaga &lt;Java&gt; &amp; Spring "));
+		assertTrue(message, message.contains("<b>Envie seu curriculo a 2.000 recrutadores, receba vagas aderentes ao teu perfil, basta <a href=\""));
+		assertTrue(message, message.contains("/meus-dados/sobre-mim\">clicar aqui</a></b>"));
+		assertTrue(message, message.endsWith("<b>Recrutador, cadastre vagas e receba currículos exatamente aderentes à sua vaga.\n"
+				+ "Esta vaga por exemplo encontrou 12 currículos (média CLT R$ 9.500,00, média PJ não informada, média de experiência 4,5 anos) "
+				+ "<a href=\"https://onias.site/curriculos/buscar?filtro=abc&email=" + SHARING_EMAIL + "\">Ver quais são estes currículos</a></b>"));
+	}
+
+	/** A job posting with no resume (no link) gets the paragraph to the recruiters without the example. */
+	@Test
+	public void theMessageOfAJobPostingWithoutResumesHasNoExample() {
+		CcpJsonRepresentation jobPosting = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityJobPosting.Fields.description, "y".repeat(120))
+				.put(VisEntityJobPosting.Fields.resumesCount, 0);
+		String message = this.piecesOf(jobPosting).get(0);
+		assertTrue(message, message.endsWith("<b>Recrutador, cadastre vagas e receba currículos exatamente aderentes à sua vaga.</b>"));
+		assertFalse(message, message.contains("Esta vaga por exemplo"));
+	}
+
+	/**
+	 * A text of 5,000 characters goes in pieces of up to 4,096 characters, cut at a blank, the paragraphs in the last one;
+	 * the pieces together keep the whole text, escaped.
+	 */
+	@Test
+	public void aLongMessageGoesInPiecesWithinTheLimitOfTelegram() {
+		StringBuilder text = new StringBuilder();
+		for (int word = 0; text.length() < 5000; word++) {
+			text.append("palavra&").append(word).append(' ');
+		}
+		String description = text.substring(0, 5000).trim();
+		CcpJsonRepresentation jobPosting = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityJobPosting.Fields.description, description)
+				.put(VisEntityJobPosting.Fields.resumesCount, 0);
+		List<String> pieces = this.piecesOf(jobPosting);
+		assertTrue(pieces.toString(), pieces.size() >= 3);
+		for (String piece : pieces) {
+			assertTrue("piece of " + piece.length(), piece.length() <= VisBusinessJobPostingPublishingMessage.TELEGRAM_LIMIT);
+		}
+		String lastPiece = pieces.get(pieces.size() - 1);
+		assertTrue(lastPiece, lastPiece.startsWith("<b>Envie seu curriculo"));
+		String textPieces = String.join(" ", pieces.subList(0, pieces.size() - 1));
+		String expected = description.replace("&", "&amp;").replaceAll("\\s+", " ");
+		assertTrue("the text is kept whole", textPieces.replaceAll("\\s+", " ").contains(expected));
+	}
+
+	/**
+	 * The hourly process publishes the job postings of the group of the current hour in every group of technology (the
+	 * chats of resumeType 1, each once) with the user bot. The job posting is saved in the previous hour with a
+	 * millisecond whose group is the current hour; at midnight there is no previous hour of the day and the test is
+	 * skipped.
+	 */
+	@Test
+	public void theJobPostingsOfTheHourArePublishedInTheGroupsOfTechnology() {
+		ZoneId saoPaulo = ZoneId.of("America/Sao_Paulo");
+		ZonedDateTime now = ZonedDateTime.now(saoPaulo);
+		int hour = now.getHour();
+		Assume.assumeTrue("no previous hour at midnight", hour > 0);
+		long startOfThePreviousHour = now.withHour(hour - 1).withMinute(0).withSecond(0).withNano(0).toInstant().toEpochMilli();
+		// saved at hour - 1, the group is hour - 1 + 1 + millisecond % (24 - hour): the current hour when the remainder is 0
+		long hoursStillToCome = 24 - hour;
+		long timestamp = startOfThePreviousHour + (hoursStillToCome - startOfThePreviousHour % hoursStillToCome) % hoursStillToCome;
+		String text = this.textWithSkills();
+		CcpJsonRepresentation jobPosting = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityJobPosting.Fields.description, text)
+				.put(VisEntityJobPosting.Fields.timestamp, timestamp);
+		CcpJsonRepresentation withTheId = VisEntityJobPosting.ENTITY.getJsonWithHandledPrimaryKey(jobPosting);
+		VisEntityJobPosting.ENTITY.save(withTheId);
+		this.savedJobPostings.add(this.keyOf(text));
+		ElasticsearchLocal.refresh("jn_grouper");
+
+		TELEGRAM.sentMessages.clear();
+		CcpJsonRepresentation result = VisBusinessPublishJobPostingsOfTheHour.INSTANCE.execute(CcpOtherConstants.EMPTY_JSON);
+		System.out.println("PUBLISHING: " + result);
+		assertEquals(hour, result.getAsIntegerNumber(VisBusinessPublishJobPostingsOfTheHour.Fields.hour).intValue());
+		int groups = result.getAsIntegerNumber(VisBusinessPublishJobPostingsOfTheHour.Fields.groups);
+		assertTrue("no group of technology in the local database", groups > 0);
+		assertEquals(0, result.getAsIntegerNumber(VisBusinessPublishJobPostingsOfTheHour.Fields.failures).intValue());
+
+		Set<Long> chatsOfThisJobPosting = new TreeSet<>();
+		List<CcpJsonRepresentation> sent = new ArrayList<>(TELEGRAM.sentMessages);
+		for (CcpJsonRepresentation message : sent) {
+			String messageText = message.getAsString(JnJsonCommonsFields.message);
+			boolean ofThisJobPosting = messageText.contains(text);
+			if (false == ofThisJobPosting) {
+				continue;
+			}
+			assertEquals("user", message.getAsString(JnJsonInstantMessengerFields.botName));
+			assertTrue(messageText, messageText.startsWith("<b>[AJUDE AS PESSOAS"));
+			boolean firstTime = chatsOfThisJobPosting.add(message.getAsLongNumber(JnJsonInstantMessengerFields.chatId));
+			assertTrue("a group got the job posting twice", firstTime);
+		}
+		assertEquals("every group of technology gets the job posting once", groups, chatsOfThisJobPosting.size());
+	}
+
+	private List<String> piecesOf(CcpJsonRepresentation jobPosting) {
+		CcpJsonRepresentation message = VisBusinessJobPostingPublishingMessage.INSTANCE.execute(jobPosting);
+		return message.getAsStringList(VisBusinessJobPostingPublishingMessage.Fields.pieces);
 	}
 
 	private List<String> possibleSkills(String... requestedSkills) {

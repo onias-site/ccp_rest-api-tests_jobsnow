@@ -1,6 +1,7 @@
 package com.jb.business.bots.engine;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.ccp.constants.CcpOtherConstants;
@@ -21,7 +22,8 @@ class FakeInstantMessenger implements CcpInstantMessenger {
 		fileContent,
 	}
 
-	final List<CcpJsonRepresentation> sentMessages = new ArrayList<>();
+	// synchronized: the hourly publishing of the job postings sends to each group in a thread of its own
+	final List<CcpJsonRepresentation> sentMessages = Collections.synchronizedList(new ArrayList<>());
 
 	public CcpJsonRepresentation sendTextMessage(CcpJsonFieldName botType, String botToken, Long chatId, Long replyTo, String message) {
 		this.store(botType, chatId, message);
