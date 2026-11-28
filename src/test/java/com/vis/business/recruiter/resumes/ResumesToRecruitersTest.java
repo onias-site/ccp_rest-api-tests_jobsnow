@@ -241,6 +241,62 @@ public class ResumesToRecruitersTest {
 		assertTrue(endings.stream().anyMatch(message -> message.endsWith("<p>If you have any trouble opening the candidate's LinkedIn, please let us know.</p>" + com.jn.business.messages.JnEmailFooter.english.getValue() + "</body></html>")));
 	}
 
+	/**
+	 * The e-mails of the positions and of a job posting (since 2026-11-27) leave out the resumes that forbid the company of
+	 * the recruiter and the ones the recruiter marked as unwanted (the view in the twin {@code vis_inactive_viewed_resume}).
+	 */
+	@Test
+	public void theResumesARecruiterMayReceiveLeaveOutTheForbiddenCompanyAndTheUnwantedOnes() {
+		String recruiter = this.recruiter("permitidos", "empresaxyz" + this.run + ".com.br");
+		CcpJsonRepresentation forbidding = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityResume.Fields.linkedinAddress, this.linkedin("proibe"))
+				.put(VisEntityResume.Fields.notAllowedCompany, List.of("empresaxyz" + this.run + ".com.br"));
+		CcpJsonRepresentation unwanted = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.linkedinAddress, this.linkedin("indesejado"));
+		CcpJsonRepresentation allowed = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityResume.Fields.linkedinAddress, this.linkedin("permitido"))
+				.put(VisEntityResume.Fields.notAllowedCompany, List.of("outra-empresa.com.br"));
+		CcpJsonRepresentation viewKey = CcpOtherConstants.EMPTY_JSON
+				.put(VisEntityViewedResume.Fields.linkedin, this.linkedin("indesejado"))
+				.put(VisEntityViewedResume.Fields.email, recruiter);
+		CcpEntity twin = VisEntityViewedResume.ENTITY.getTwinEntity();
+		try {
+			// deleting the view moves it to the twin, as the recruiter does when marking the resume as unwanted
+			VisEntityViewedResume.ENTITY.save(viewKey.put(VisEntityViewedResume.Fields.alias, "Indesejado"));
+			VisEntityViewedResume.ENTITY.delete(viewKey);
+			assertTrue("the view is in the twin", twin.exists(viewKey));
+			List<CcpJsonRepresentation> received = VisBusinessSendResumesToRecruiters.getResumesTheRecruiterMayReceive(recruiter, List.of(forbidding, unwanted, allowed));
+			assertEquals(List.of(allowed), received);
+			assertEquals("another recruiter receives all but the forbidding one", List.of(unwanted, allowed),
+					VisBusinessSendResumesToRecruiters.getResumesTheRecruiterMayReceive(this.recruiter("outro", "empresaxyz" + this.run + ".com.br"), List.of(forbidding, unwanted, allowed)));
+		} finally {
+			VisEntityViewedResume.ENTITY.deleteAnyWhere(viewKey);
+		}
+	}
+
+	/**
+	 * Who unsubscribed receives no e-mail of resumes, even when active again without the unsubscription removed (since
+	 * 2026-11-27).
+	 */
+	@Test
+	public void anUnsubscribedRecruiterStillActiveGetsNoDailyEmail() {
+		String unsubscribedRecruiter = this.recruiter("descadastrado-ativo", "gmail.com");
+		String otherRecruiter = this.recruiter("cadastrado-ativo", "gmail.com");
+		this.saveRecruiter(unsubscribedRecruiter);
+		this.saveRecruiter(otherRecruiter);
+		CcpJsonRepresentation unsubscription = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterUnsubscribed.Fields.email, unsubscribedRecruiter);
+		VisEntityRecruiterUnsubscribed.ENTITY.save(unsubscription);
+		ElasticsearchLocal.refresh("vis_recruiter_unsubscribed");
+		this.saveResume(this.resume("para-descadastrado", "Analista do descadastrado " + this.run));
+		assertTrue(VisBusinessSendResumesToRecruiters.isUnsubscribed(unsubscribedRecruiter));
+		assertFalse(VisBusinessSendResumesToRecruiters.isUnsubscribed(otherRecruiter));
+
+		sendTo(unsubscribedRecruiter, otherRecruiter);
+		CcpJsonRepresentation unsubscribedKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterResumes.Fields.email, unsubscribedRecruiter);
+		CcpJsonRepresentation otherKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterResumes.Fields.email, otherRecruiter);
+		assertFalse("no e-mail to who unsubscribed", VisEntityRecruiterResumes.ENTITY.exists(unsubscribedKey));
+		assertTrue("the other recruiter receives it", VisEntityRecruiterResumes.ENTITY.exists(otherKey));
+	}
+
 	@Test
 	public void theSubjectOfTheEmailOfAJobPostingCountsTheResumesAndNamesTheFirstLineOfTheText() {
 		String text = "\n  Vaga de Desenvolvedor Java Pleno  \nRequisitos: Java, SQL\nEnvie para rh@empresa.com.br";

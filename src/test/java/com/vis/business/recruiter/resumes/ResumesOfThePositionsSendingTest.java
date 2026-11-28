@@ -32,6 +32,7 @@ import com.vis.business.position.VisBusinessPublishPositionsInTheGroups;
 import com.vis.entities.RecordingEmailSender;
 import com.vis.entities.VisEntityPosition;
 import com.vis.entities.VisEntityPositionResumes;
+import com.vis.entities.VisEntityRecruiterUnsubscribed;
 import com.vis.entities.VisEntityResume;
 
 /**
@@ -123,7 +124,14 @@ public class ResumesOfThePositionsSendingTest {
 	}
 
 	private CcpJsonRepresentation resume(String name) {
-		CcpJsonRepresentation resume = CcpOtherConstants.EMPTY_JSON
+		CcpJsonRepresentation resume = this.resumeNotSaved(name);
+		VisEntityResume.ENTITY.save(resume);
+		this.savedResumes.add(resume);
+		return resume;
+	}
+
+	private CcpJsonRepresentation resumeNotSaved(String name) {
+		return CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityResume.Fields.email, name + this.now + "@jobsnow.com")
 				.put(VisEntityResume.Fields.ddd, Arrays.asList(69))
 				.put(VisEntityResume.Fields.desiredJob, "developer")
@@ -139,9 +147,6 @@ public class ResumesOfThePositionsSendingTest {
 				.put(VisEntityResume.Fields.spokenLanguage, List.of())
 				.put(VisEntityResume.Fields.notAllowedCompany, List.of())
 				.put(VisEntityResume.Fields.skill, List.of(new CcpJsonRepresentation("{\"skill\":\"PHP\",\"word\":\"PHP\",\"type\":\"skillsFromResume\",\"category\":\"skillsFromText\"}")));
-		VisEntityResume.ENTITY.save(resume);
-		this.savedResumes.add(resume);
-		return resume;
 	}
 
 	private long sentWithSubject(String subject) {
@@ -165,6 +170,34 @@ public class ResumesOfThePositionsSendingTest {
 		assertEquals(RecordingEmailSender.SENT.toString(), 1, this.sentWithSubject("Cv recebido para a vaga " + title));
 		VisEntityResume.ENTITY.save(resume);
 		assertEquals("the next save of the same resume sends nothing", 1, this.sentWithSubject("Cv recebido para a vaga " + title));
+	}
+
+	/** A resume that forbids the company of the recruiter of the position does not go to it (since 2026-11-27). */
+	@Test
+	public void aResumeThatForbidsTheCompanyOfThePositionDoesNotGoToIt() {
+		String title = "Vaga instantanea proibida " + this.now;
+		this.position(title, "instantly", false, anEmailContact());
+		refresh("vis_position");
+		CcpJsonRepresentation forbidding = this.resumeNotSaved("proibe").put(VisEntityResume.Fields.notAllowedCompany, List.of("empresa-teste.com.br"));
+		VisEntityResume.ENTITY.save(forbidding);
+		this.savedResumes.add(forbidding);
+		assertEquals(RecordingEmailSender.SENT.toString(), 0, this.sentWithSubject("Cv recebido para a vaga " + title));
+	}
+
+	/** Who unsubscribed receives no e-mail of the resumes of their positions (since 2026-11-27). */
+	@Test
+	public void anUnsubscribedRecruiterGetsNoEmailOfThePosition() {
+		CcpJsonRepresentation unsubscription = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterUnsubscribed.Fields.email, this.resumesEmail);
+		VisEntityRecruiterUnsubscribed.ENTITY.save(unsubscription);
+		try {
+			String title = "Vaga instantanea descadastrada " + this.now;
+			this.position(title, "instantly", false, anEmailContact());
+			refresh("vis_position");
+			this.resume("descadastrado");
+			assertEquals(RecordingEmailSender.SENT.toString(), 0, this.sentWithSubject("Cv recebido para a vaga " + title));
+		} finally {
+			VisEntityRecruiterUnsubscribed.ENTITY.delete(unsubscription);
+		}
 	}
 
 	@Test

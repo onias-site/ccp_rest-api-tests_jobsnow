@@ -61,6 +61,7 @@ import com.jn.entities.JnEntityDisposableRecord;
 import com.vis.entities.VisEntityJobPosting;
 import com.vis.entities.VisEntityRecruiter;
 import com.vis.entities.VisEntityRecruiterResumes;
+import com.vis.entities.VisEntityRecruiterUnsubscribed;
 import com.vis.entities.VisEntityResume;
 import com.vis.entities.VisEntityResumeFilterDescription;
 import com.vis.entities.VisEntityVirtualJobPostingHour;
@@ -619,6 +620,29 @@ public class SaveJobPostingThroughSupportBotTest {
 		this.operatorTypes(secondText);
 		this.savedJobPostings.add(this.keyOf(secondText));
 		assertEquals("the list of yesterday does not count as the e-mail of today", 2, this.emailsTo(recruiterEmail).size());
+	}
+
+	/** A recruiter who unsubscribed gets no e-mail of a job posting, even when registered by its text (since 2026-11-27). */
+	@Test
+	public void anUnsubscribedRecruiterGetsNoEmailOfTheJobPosting() {
+		String recruiterEmail = "descadastrado." + this.run + "@empresa-exemplo.com.br";
+		this.recruiterEmails.add(recruiterEmail);
+		CcpJsonRepresentation unsubscription = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterUnsubscribed.Fields.email, recruiterEmail);
+		VisEntityRecruiterUnsubscribed.ENTITY.save(unsubscription);
+		try {
+			String text = "Vaga " + this.run + " de pessoa desenvolvedora com Java, SQL e Git, contrato CLT, envie o curriculo para " + recruiterEmail + " ainda hoje.";
+			EMAIL_INBOX.sentEmails.clear();
+			this.operatorTypes("/salvarVaga");
+			this.operatorTypes(text);
+			this.savedJobPostings.add(this.keyOf(text));
+			assertTrue("the job posting is saved", VisEntityJobPosting.ENTITY.exists(this.keyOf(text)));
+			CcpJsonRepresentation recruiterKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, recruiterEmail);
+			assertTrue("the text registers the recruiter", VisEntityRecruiter.ENTITY.exists(recruiterKey));
+			assertEquals("no e-mail to who unsubscribed", 0, this.emailsTo(recruiterEmail).size());
+			assertFalse(VisEntityRecruiterResumes.ENTITY.exists(recruiterKey));
+		} finally {
+			VisEntityRecruiterUnsubscribed.ENTITY.delete(unsubscription);
+		}
 	}
 
 	/** An inactive recruiter (in the twin) is not brought back by a job posting and gets no e-mail. */
