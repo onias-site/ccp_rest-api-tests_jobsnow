@@ -187,12 +187,13 @@ public class ResumesOfThePositionsSendingTest {
 	/** Who unsubscribed receives no e-mail of the resumes of their positions (since 2026-11-27). */
 	@Test
 	public void anUnsubscribedRecruiterGetsNoEmailOfThePosition() {
+		// the unsubscription comes after the position: saving a position takes the recruiter out of the unsubscribed ones
+		String title = "Vaga instantanea descadastrada " + this.now;
+		this.position(title, "instantly", false, anEmailContact());
+		refresh("vis_position");
 		CcpJsonRepresentation unsubscription = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterUnsubscribed.Fields.email, this.resumesEmail);
 		VisEntityRecruiterUnsubscribed.ENTITY.save(unsubscription);
 		try {
-			String title = "Vaga instantanea descadastrada " + this.now;
-			this.position(title, "instantly", false, anEmailContact());
-			refresh("vis_position");
 			this.resume("descadastrado");
 			assertEquals(RecordingEmailSender.SENT.toString(), 0, this.sentWithSubject("Cv recebido para a vaga " + title));
 		} finally {

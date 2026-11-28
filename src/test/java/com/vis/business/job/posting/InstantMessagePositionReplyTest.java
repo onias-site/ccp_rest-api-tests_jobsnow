@@ -35,6 +35,9 @@ import com.jb.entities.JbEntityBotUpdateId;
 import com.jn.json.fields.validation.JnJsonCommonsFields;
 import com.jn.json.fields.validation.JnJsonInstantMessengerFields;
 import com.vis.entities.VisEntityInstantMessagePositionReply;
+import com.vis.entities.VisEntityRecruiter;
+import com.vis.entities.VisEntityRecruiterResumes;
+import com.vis.entities.VisEntityRecruiterUnsubscribed;
 import com.vis.entities.VisEntityResumeFilterDescription;
 
 /**
@@ -224,6 +227,37 @@ public class InstantMessagePositionReplyTest {
 		assertTrue(message, message.contains(", média PJ "));
 		assertTrue(message, message.contains(", média de experiência "));
 		assertTrue(message, message.endsWith(" anos)\n<a href=\"" + link + "\">Ver quais são estes currículos</a>"));
+	}
+
+	/**
+	 * The e-mails found in a job posting of a group go through the same rules between recruiter and resume of every other
+	 * e-mail of resumes (since 2026-11-28): who unsubscribed receives nothing, the other address of the text receives
+	 * the list.
+	 */
+	@Test
+	public void theRecruitersOfAJobPostingOfAGroupFollowTheRulesOfEveryEmailOfResumes() {
+		String unsubscribedRecruiter = "descadastrado.grupo." + this.run + "@empresa-exemplo.com.br";
+		String otherRecruiter = "cadastrado.grupo." + this.run + "@empresa-exemplo.com.br";
+		CcpJsonRepresentation unsubscription = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterUnsubscribed.Fields.email, unsubscribedRecruiter);
+		CcpJsonRepresentation unsubscribedKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, unsubscribedRecruiter);
+		CcpJsonRepresentation otherKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiter.Fields.email, otherRecruiter);
+		VisEntityRecruiterUnsubscribed.ENTITY.save(unsubscription);
+		try {
+			String text = this.textWithSkills() + " Curriculos para " + unsubscribedRecruiter + " ou " + otherRecruiter + ".";
+			this.saveThePosting(text);
+			List<CcpJsonRepresentation> answers = TELEGRAM.sentTo(GROUP_CHAT);
+			String message = answers.get(0).getAsString(JnJsonCommonsFields.message);
+			this.linkOf(message);
+			assertTrue("the text registers the recruiter", VisEntityRecruiter.ENTITY.exists(unsubscribedKey));
+			assertFalse("no list of resumes to who unsubscribed", VisEntityRecruiterResumes.ENTITY.exists(unsubscribedKey));
+			assertTrue("the other address of the text receives the list", VisEntityRecruiterResumes.ENTITY.exists(otherKey));
+		} finally {
+			VisEntityRecruiterUnsubscribed.ENTITY.delete(unsubscription);
+			VisEntityRecruiterResumes.ENTITY.delete(unsubscribedKey);
+			VisEntityRecruiterResumes.ENTITY.delete(otherKey);
+			VisEntityRecruiter.ENTITY.deleteAnyWhere(unsubscribedKey);
+			VisEntityRecruiter.ENTITY.deleteAnyWhere(otherKey);
+		}
 	}
 
 	/** A text without skills is refused before the save: nothing is saved and nothing is answered. */

@@ -289,6 +289,19 @@ public class PositionInterestTest {
 	}
 
 	@Test
+	public void aRecruiterWhoSavesAPositionLeavesTheUnsubscribedOnes() {
+		CcpJsonRepresentation unsubscription = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterUnsubscribed.Fields.email, this.recruiter);
+		VisEntityRecruiterUnsubscribed.ENTITY.save(unsubscription);
+		try {
+			assertTrue(VisEntityRecruiterUnsubscribed.ENTITY.exists(unsubscription));
+			this.position("Vaga de quem tinha se descadastrado " + this.now);
+			assertFalse("saving a position is a will to receive resumes again", VisEntityRecruiterUnsubscribed.ENTITY.exists(unsubscription));
+		} finally {
+			VisEntityRecruiterUnsubscribed.ENTITY.delete(unsubscription);
+		}
+	}
+
+	@Test
 	public void aPositionWhoseRecipientUnsubscribedIsNotOpenToTheResume() {
 		String recipient = "descadastrado" + this.now + "@empresa-teste.com.br";
 		CcpJsonRepresentation position = this.position("Vaga de recrutador descadastrado " + this.now, "byTheCandidates", recipient);
