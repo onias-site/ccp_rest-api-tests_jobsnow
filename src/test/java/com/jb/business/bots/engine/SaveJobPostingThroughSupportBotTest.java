@@ -140,7 +140,7 @@ public class SaveJobPostingThroughSupportBotTest {
 				.put(JnJsonInstantMessengerFields.chatId, SUPPORT_CHAT);
 		JbEntityBotCommandStepSession.ENTITY.delete(session);
 		TELEGRAM.sentMessages.clear();
-		// a job posting goes on only when its text is a new description of its filters, and the descriptions never expire:
+		// a job posting goes on only when its text is a new description of its filters, and a description lasts a day:
 		// the ones shared under the e-mail of the job postings by earlier tests and runs would refuse the job postings
 		CcpJsonRepresentation sharingKey = CcpOtherConstants.EMPTY_JSON
 				.put(VisEntityResumeFilterDescription.Fields.filterId, "0")
@@ -149,6 +149,10 @@ public class SaveJobPostingThroughSupportBotTest {
 		String sharingEmailHash = handledSharingKey.getAsString(VisEntityResumeFilterDescription.Fields.email);
 		String descriptionsIndex = VisEntityResumeFilterDescription.ENTITY.getEntityMetaData().entityName;
 		ElasticsearchLocal.deleteWhere(descriptionsIndex, VisEntityResumeFilterDescription.Fields.email.name(), sharingEmailHash);
+		// disposable by day since 2026-11-28: the copy of a text in jn_disposable_record keeps it for 24 hours
+		String copiesIndex = JnEntityDisposableRecord.ENTITY.getEntityMetaData().entityName;
+		ElasticsearchLocal.refresh(copiesIndex);
+		ElasticsearchLocal.deleteWhere(copiesIndex, JnJsonCommonsFields.entity.name(), descriptionsIndex);
 	}
 
 	@After

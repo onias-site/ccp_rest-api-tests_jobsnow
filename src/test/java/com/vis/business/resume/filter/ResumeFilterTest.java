@@ -316,7 +316,7 @@ public class ResumeFilterTest {
 	 * The link shared with the text of the position (since 2026-11-26): the text is saved under the id of the filters and
 	 * the e-mail of the session, and the read with both brings the filters and the text, in one union all; without the
 	 * e-mail, with an invalid one or with another e-mail, the filters alone; the same filters shared again replace the
-	 * text; on the next day, the filters come from the copy, still with the text.
+	 * text; on the next day, the filters and the text (disposable by day since 2026-11-28) come from their copies.
 	 */
 	@Test
 	public void theTextSharedWithTheLinkComesBackWithTheFiltersOfTheEmail() {
@@ -360,6 +360,12 @@ public class ResumeFilterTest {
 			CcpEntityMetaData filterDetails = VisEntityResumeFilter.ENTITY.getEntityMetaData();
 			assertTrue("the document of the day was saved", crud.delete(filterDetails.entityName, idOfTheDocumentOfTheDay));
 			new CcpCacheDecorator(VisEntityResumeFilter.ENTITY, idOfTheDocumentOfTheDay).delete();
+			// the text is disposable by day as well (since 2026-11-28): its document of the day is gone too
+			CcpJsonRepresentation storedKeyOfTheText = VisEntityResumeFilterDescription.ENTITY.getJsonWithHandledPrimaryKey(saved);
+			String idOfTheTextOfTheDay = VisEntityResumeFilterDescription.ENTITY.calculateId(storedKeyOfTheText);
+			CcpEntityMetaData descriptionDetails = VisEntityResumeFilterDescription.ENTITY.getEntityMetaData();
+			assertTrue("the text of the day was saved", crud.delete(descriptionDetails.entityName, idOfTheTextOfTheDay));
+			new CcpCacheDecorator(VisEntityResumeFilterDescription.ENTITY, idOfTheTextOfTheDay).delete();
 			CcpJsonRepresentation fromTheCopy = filtersOfTheIdAndTheEmail(filterId, email);
 			assertEquals("the filters, from the copy", List.of("especialista"), fromTheCopy.getAsStringList(VisJsonFieldsResumeFilter.seniority));
 			assertEquals("the text, with the filters of the copy", newText, fromTheCopy.getAsString(VisEntityResumeFilterDescription.Fields.description));
