@@ -18,6 +18,7 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
+import com.vis.business.compatibility.VisResumeRecruiterFactsInMemory;
 import com.vis.entities.VisEntityRecruiter;
 
 /**
@@ -53,7 +54,7 @@ public class VisResumesToTheRecruiterSenderTest {
 	private final String[] lastLegacyActiveQueuePosition = {""};
 
 	private VisResumesToTheRecruiterSender sender(List<String> restrictedTo, List<CcpJsonRepresentation> resumes) {
-		return new VisResumesToTheRecruiterSender(restrictedTo, resumes, new HashMap<>(), new HashMap<>(), Set.of(), "http://localhost", "http://localhost:8081", RECRUITERS_PER_RUN, this.emailsSent, this.lastQueuePosition, this.lastLegacyQueuePosition, this.lastNonProfessionalQueuePosition, this.lastLegacyActiveQueuePosition, new HashSet<>());
+		return new VisResumesToTheRecruiterSender(restrictedTo, resumes, new HashMap<>(), new HashMap<>(), new VisResumeRecruiterFactsInMemory(Set.of(), Set.of(), Set.of(), "|"), "http://localhost", "http://localhost:8081", RECRUITERS_PER_RUN, this.emailsSent, this.lastQueuePosition, this.lastLegacyQueuePosition, this.lastNonProfessionalQueuePosition, this.lastLegacyActiveQueuePosition, new HashSet<>());
 	}
 
 	private static List<String> emailsOf(List<CcpJsonRepresentation> recruiters) {

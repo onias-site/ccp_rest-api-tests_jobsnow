@@ -24,6 +24,7 @@ import com.ccp.constants.CcpOtherConstants;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
+import com.vis.business.compatibility.VisResumeRecruiterCompatibility;
 import com.ccp.decorators.CcpTimeDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.dependency.injection.CcpInstanceProvider;
@@ -264,10 +265,10 @@ public class ResumesToRecruitersTest {
 			VisEntityViewedResume.ENTITY.save(viewKey.put(VisEntityViewedResume.Fields.alias, "Indesejado"));
 			VisEntityViewedResume.ENTITY.delete(viewKey);
 			assertTrue("the view is in the twin", twin.exists(viewKey));
-			List<CcpJsonRepresentation> received = VisBusinessSendResumesToRecruiters.getResumesTheRecruiterMayReceive(recruiter, List.of(forbidding, unwanted, allowed));
+			List<CcpJsonRepresentation> received = VisResumeRecruiterCompatibility.getResumesTheRecruiterMayReceive(recruiter, List.of(forbidding, unwanted, allowed));
 			assertEquals(List.of(allowed), received);
 			assertEquals("another recruiter receives all but the forbidding one", List.of(unwanted, allowed),
-					VisBusinessSendResumesToRecruiters.getResumesTheRecruiterMayReceive(this.recruiter("outro", "empresaxyz" + this.run + ".com.br"), List.of(forbidding, unwanted, allowed)));
+					VisResumeRecruiterCompatibility.getResumesTheRecruiterMayReceive(this.recruiter("outro", "empresaxyz" + this.run + ".com.br"), List.of(forbidding, unwanted, allowed)));
 		} finally {
 			VisEntityViewedResume.ENTITY.deleteAnyWhere(viewKey);
 		}
@@ -287,8 +288,6 @@ public class ResumesToRecruitersTest {
 		VisEntityRecruiterUnsubscribed.ENTITY.save(unsubscription);
 		ElasticsearchLocal.refresh("vis_recruiter_unsubscribed");
 		this.saveResume(this.resume("para-descadastrado", "Analista do descadastrado " + this.run));
-		assertTrue(VisBusinessSendResumesToRecruiters.isUnsubscribed(unsubscribedRecruiter));
-		assertFalse(VisBusinessSendResumesToRecruiters.isUnsubscribed(otherRecruiter));
 
 		sendTo(unsubscribedRecruiter, otherRecruiter);
 		CcpJsonRepresentation unsubscribedKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterResumes.Fields.email, unsubscribedRecruiter);
@@ -359,18 +358,18 @@ public class ResumesToRecruitersTest {
 
 	@Test
 	public void aCompanyIsForbiddenByAPartOfTheDomainOrByAName() {
-		assertTrue(VisBusinessSendResumesToRecruiters.isForbiddenCompany("itau.com.br", List.of("Itaú")));
-		assertTrue(VisBusinessSendResumesToRecruiters.isForbiddenCompany("itau-unibanco.com.br", List.of("Itaú Unibanco")));
-		assertTrue(VisBusinessSendResumesToRecruiters.isForbiddenCompany("rh.ibm.com", List.of("IBM")));
-		assertFalse("a short name is compared only with whole parts of the domain", VisBusinessSendResumesToRecruiters.isForbiddenCompany("bimbo.com", List.of("IBM")));
-		assertFalse(VisBusinessSendResumesToRecruiters.isForbiddenCompany("empresa.com.br", List.of("Outra Empresa S/A")));
-		assertFalse(VisBusinessSendResumesToRecruiters.isForbiddenCompany("empresa.com.br", List.of()));
+		assertTrue(VisResumeRecruiterCompatibility.isForbiddenCompany("itau.com.br", List.of("Itaú")));
+		assertTrue(VisResumeRecruiterCompatibility.isForbiddenCompany("itau-unibanco.com.br", List.of("Itaú Unibanco")));
+		assertTrue(VisResumeRecruiterCompatibility.isForbiddenCompany("rh.ibm.com", List.of("IBM")));
+		assertFalse("a short name is compared only with whole parts of the domain", VisResumeRecruiterCompatibility.isForbiddenCompany("bimbo.com", List.of("IBM")));
+		assertFalse(VisResumeRecruiterCompatibility.isForbiddenCompany("empresa.com.br", List.of("Outra Empresa S/A")));
+		assertFalse(VisResumeRecruiterCompatibility.isForbiddenCompany("empresa.com.br", List.of()));
 	}
 
 	@Test
 	public void aCompanyNameMadeOnlyOfSymbolsForbidsNothingButTheNextNamesStillCount() {
-		assertFalse(VisBusinessSendResumesToRecruiters.isForbiddenCompany("empresa.com.br", List.of("***")));
-		assertTrue(VisBusinessSendResumesToRecruiters.isForbiddenCompany("itau.com.br", List.of("***", "Itaú")));
+		assertFalse(VisResumeRecruiterCompatibility.isForbiddenCompany("empresa.com.br", List.of("***")));
+		assertTrue(VisResumeRecruiterCompatibility.isForbiddenCompany("itau.com.br", List.of("***", "Itaú")));
 	}
 
 	private static CcpJsonRepresentation withSortKeys(Object... keys) {
@@ -871,11 +870,11 @@ public class ResumesToRecruitersTest {
 	@Test
 	public void theCompanyOfTheRecruiterIsTakenFromTheirEmail() {
 		List<String> forbidding = List.of("Consultoria Exemplo");
-		assertTrue(VisBusinessSendResumesToRecruiters.isTheCompanyOfTheRecruiterForbidden("ana@consultoriaexemplo.com.br", forbidding));
-		assertTrue(VisBusinessSendResumesToRecruiters.isTheCompanyOfTheRecruiterForbidden("ana@rh.consultoria-exemplo.com.br", forbidding));
-		assertFalse(VisBusinessSendResumesToRecruiters.isTheCompanyOfTheRecruiterForbidden("ana@outraempresa.com.br", forbidding));
-		assertFalse("a personal e-mail has no company", VisBusinessSendResumesToRecruiters.isTheCompanyOfTheRecruiterForbidden("consultoriaexemplo@gmail.com", List.of("Gmail")));
-		assertFalse(VisBusinessSendResumesToRecruiters.isTheCompanyOfTheRecruiterForbidden("ana@consultoriaexemplo.com.br", List.of()));
+		assertTrue(VisResumeRecruiterCompatibility.isTheCompanyOfTheRecruiterForbidden("ana@consultoriaexemplo.com.br", forbidding));
+		assertTrue(VisResumeRecruiterCompatibility.isTheCompanyOfTheRecruiterForbidden("ana@rh.consultoria-exemplo.com.br", forbidding));
+		assertFalse(VisResumeRecruiterCompatibility.isTheCompanyOfTheRecruiterForbidden("ana@outraempresa.com.br", forbidding));
+		assertFalse("a personal e-mail has no company", VisResumeRecruiterCompatibility.isTheCompanyOfTheRecruiterForbidden("consultoriaexemplo@gmail.com", List.of("Gmail")));
+		assertFalse(VisResumeRecruiterCompatibility.isTheCompanyOfTheRecruiterForbidden("ana@consultoriaexemplo.com.br", List.of()));
 	}
 
 	private void assertTheLinkIsClosed(CcpJsonRepresentation link) {

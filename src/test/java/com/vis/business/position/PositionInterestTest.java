@@ -38,6 +38,7 @@ import com.vis.entities.RecordingEmailSender;
 import com.vis.entities.VisEntityPosition;
 import com.vis.entities.VisEntityPositionInterest;
 import com.vis.entities.VisEntityPositionResumeSent;
+import com.vis.entities.VisEntityRecruiterUnsubscribed;
 import com.vis.entities.VisEntityResume;
 import com.vis.entities.VisEntityResumeRestriction;
 import com.vis.entities.VisEntityViewedResume;
@@ -288,6 +289,32 @@ public class PositionInterestTest {
 	}
 
 	@Test
+	public void aPositionWhoseRecipientUnsubscribedIsNotOpenToTheResume() {
+		String recipient = "descadastrado" + this.now + "@empresa-teste.com.br";
+		CcpJsonRepresentation position = this.position("Vaga de recrutador descadastrado " + this.now, "byTheCandidates", recipient);
+		String email = this.resume("pararecrutadordescadastrado");
+		CcpJsonRepresentation resumeKey = CcpOtherConstants.EMPTY_JSON.put(VisEntityResume.Fields.email, email);
+		CcpJsonRepresentation resume = VisEntityResume.ENTITY.getOneById(resumeKey);
+		String positionId = positionIdOf(position);
+		CcpJsonRepresentation storedPosition = VisEntityPosition.ENTITY.getOneById(position);
+		CcpJsonRepresentation positionsById = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName(positionId), storedPosition);
+		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON
+				.put(VisBusinessPositionsOpenToTheResume.Fields.resume, resume)
+				.put(VisBusinessPositionsOpenToTheResume.Fields.positions, positionsById);
+		CcpJsonRepresentation beforeTheUnsubscription = VisBusinessPositionsOpenToTheResume.INSTANCE.execute(input);
+		CcpJsonRepresentation unsubscription = CcpOtherConstants.EMPTY_JSON.put(VisEntityRecruiterUnsubscribed.Fields.email, recipient);
+		VisEntityRecruiterUnsubscribed.ENTITY.save(unsubscription);
+		try {
+			CcpJsonRepresentation afterTheUnsubscription = VisBusinessPositionsOpenToTheResume.INSTANCE.execute(input);
+			assertTrue(beforeTheUnsubscription.getInnerJson(VisBusinessPositionsOpenToTheResume.Fields.positions).containsAllFields(new CcpFieldName(positionId)));
+			assertTrue("the candidate does not see the position of who unsubscribed", afterTheUnsubscription.getInnerJson(VisBusinessPositionsOpenToTheResume.Fields.positions).isEmpty());
+			assertFalse("the resume itself is not blocked", afterTheUnsubscription.getAsBoolean(VisBusinessPositionsOpenToTheResume.Fields.blocked));
+		} finally {
+			VisEntityRecruiterUnsubscribed.ENTITY.delete(unsubscription);
+		}
+	}
+
+	@Test
 	public void aResumeWithTheLinkedinConfirmedInvalidHasNoPositionOpen() {
 		CcpJsonRepresentation position = this.position("Vaga para linkedin invalido " + this.now);
 		String email = this.resume("linkedininvalido");
@@ -298,7 +325,6 @@ public class PositionInterestTest {
 		CcpJsonRepresentation positionsById = CcpOtherConstants.EMPTY_JSON.put(new CcpFieldName(positionId), storedPosition);
 		CcpJsonRepresentation input = CcpOtherConstants.EMPTY_JSON
 				.put(VisBusinessPositionsOpenToTheResume.Fields.resume, resume)
-				.put(VisBusinessPositionsOpenToTheResume.Fields.restricted, false)
 				.put(VisBusinessPositionsOpenToTheResume.Fields.positions, positionsById);
 
 		CcpJsonRepresentation withTheValidLinkedin = VisBusinessPositionsOpenToTheResume.INSTANCE.execute(input.put(VisBusinessPositionsOpenToTheResume.Fields.resume, resume.put(VisEntityResume.Fields.invalidLinkedinAddress, false)));
