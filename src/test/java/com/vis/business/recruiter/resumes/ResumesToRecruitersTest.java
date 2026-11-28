@@ -242,6 +242,66 @@ public class ResumesToRecruitersTest {
 	}
 
 	@Test
+	public void theSubjectOfTheEmailOfAJobPostingCountsTheResumesAndNamesTheFirstLineOfTheText() {
+		String text = "\n  Vaga de Desenvolvedor Java Pleno  \nRequisitos: Java, SQL\nEnvie para rh@empresa.com.br";
+		assertEquals("12 currículos encontrados para o anuncio de vaga Vaga de Desenvolvedor Java Pleno",
+				VisBusinessSendTheResumesToTheRecruiterOfTheJobPosting.getSubject(text, 12));
+		assertEquals("currículo encontrado para o anuncio de vaga Vaga de Desenvolvedor Java Pleno",
+				VisBusinessSendTheResumesToTheRecruiterOfTheJobPosting.getSubject(text, 1));
+	}
+
+	@Test
+	public void aLongFirstLineIsCutAndItsBracesDoNotBecomeKeysOfTheTemplate() {
+		String longLine = "Vaga {urgente} " + "x".repeat(300);
+		String firstLine = VisBusinessSendTheResumesToTheRecruiterOfTheJobPosting.getFirstLine(longLine);
+		assertEquals(VisBusinessSendTheResumesToTheRecruiterOfTheJobPosting.LONGEST_FIRST_LINE + "...".length(), firstLine.length());
+		assertTrue(firstLine, firstLine.startsWith("Vaga (urgente) xxx"));
+		assertTrue(firstLine.endsWith("..."));
+		assertEquals("Vaga curta", VisBusinessSendTheResumesToTheRecruiterOfTheJobPosting.getFirstLine("Vaga curta\r\nsegunda linha"));
+	}
+
+	@Test
+	public void theEmailOfAJobPostingHasTheTextInPlaceOfTheLastDaysAndNoSeeAll() {
+		List<String> messages = new java.util.ArrayList<>();
+		for (CcpBulkItem seed : VisEntityRecruiterResumes.INSTANCE.getJobPostingSeeds()) {
+			boolean templateSeed = seed.json.containsAllFields(JnJsonCommonsFields.templateId, JnJsonCommonsFields.message);
+			if(false == templateSeed) {
+				continue;
+			}
+			assertEquals("{jobPostingSubject}", seed.json.getAsString(JnJsonCommonsFields.subject));
+			messages.add(seed.json.getAsString(JnJsonCommonsFields.message));
+		}
+		assertEquals(2, messages.size());
+		for (String message : messages) {
+			assertTrue(message.contains("{recruiterEmail}") && message.contains("<br/><br/>{jobPosting}</p>"));
+			assertFalse(message.contains("{seeAll}") || message.contains("{seeAllUrl}") || message.contains("7 dias") || message.contains("7 days"));
+			assertTrue(message.contains("{frontendUrl}/curriculos/vagas-cadastradas"));
+			assertTrue(message.contains("{unsubscribeLink}") && message.contains("{resumesTable}"));
+		}
+		assertTrue(messages.stream().anyMatch(message -> message.contains("<p>Associado ao seu e-mail {recruiterEmail} foi postada uma vaga<br/><br/>{jobPosting}</p>")));
+	}
+
+	@Test
+	public void theDailyEmailHasTheBannerOfTheRegisteredPositions() {
+		int withTheBanner = 0;
+		for (CcpBulkItem seed : VisEntityRecruiterResumes.INSTANCE.getFirstRecordsToInsert()) {
+			boolean templateSeed = seed.json.containsAllFields(JnJsonCommonsFields.templateId, JnJsonCommonsFields.message);
+			if(false == templateSeed) {
+				continue;
+			}
+			boolean daily = seed.json.getAsString(JnJsonCommonsFields.templateId).endsWith("VisNotifyRecruiterAboutResumes");
+			if(false == daily) {
+				continue;
+			}
+			String message = seed.json.getAsString(JnJsonCommonsFields.message);
+			assertFalse(message.contains("Ainda este ano") || message.contains("Later this year"));
+			assertTrue(message.contains("{frontendUrl}/curriculos/vagas-cadastradas"));
+			withTheBanner++;
+		}
+		assertEquals(2, withTheBanner);
+	}
+
+	@Test
 	public void aCompanyIsForbiddenByAPartOfTheDomainOrByAName() {
 		assertTrue(VisBusinessSendResumesToRecruiters.isForbiddenCompany("itau.com.br", List.of("Itaú")));
 		assertTrue(VisBusinessSendResumesToRecruiters.isForbiddenCompany("itau-unibanco.com.br", List.of("Itaú Unibanco")));

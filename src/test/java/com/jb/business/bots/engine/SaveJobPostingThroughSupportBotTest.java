@@ -562,6 +562,15 @@ public class SaveJobPostingThroughSupportBotTest {
 		assertEquals("one e-mail to the recruiter, the two ways the text writes the address being the same", 1, emailsToTheRecruiter.size());
 		String message = emailsToTheRecruiter.get(0).getAsString(JnJsonCommonsFields.message);
 		assertTrue("the table of resumes of the usual e-mail", message.contains("Idiomas e habilidades"));
+		assertTrue("the text of the job posting opens the e-mail", message.contains("Associado ao seu e-mail " + recruiterEmail + " foi postada uma vaga<br/><br/>" + text + "</p>"));
+		assertFalse("not the opening of the daily e-mail", message.contains("dos últimos 7 dias"));
+		assertFalse("no link \"see all\"", message.contains("ver todos") || message.contains("Ver todos"));
+		assertTrue("the banner of the registered positions", message.contains("/curriculos/vagas-cadastradas\""));
+		String subject = emailsToTheRecruiter.get(0).getAsString(JnJsonCommonsFields.subject);
+		int shown = Math.min(resumesCount, 30);
+		String firstLine = text.length() > 150 ? text.substring(0, 150).trim() + "..." : text;
+		String expectedSubject = shown > 1 ? shown + " currículos encontrados para o anuncio de vaga " + firstLine : "currículo encontrado para o anuncio de vaga " + firstLine;
+		assertEquals("the subject counts the resumes and names the first line of the text", expectedSubject, subject);
 		assertTrue(VisEntityRecruiterResumes.ENTITY.exists(recruiterKey));
 
 		String secondText = "Segunda vaga " + this.run + " para pessoa desenvolvedora com Java e SQL, contrato PJ, envie o curriculo para "
