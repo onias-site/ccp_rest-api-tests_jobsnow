@@ -438,7 +438,7 @@ public class SaveJobPostingThroughSupportBotTest {
 		String message = pieces.get(0);
 		System.out.println("MESSAGE WITH RESUMES:\n" + message);
 		// since 2026-11-27 the paragraph to the candidates is the header and the request to forward is the footer
-		assertTrue(message, message.startsWith("<b>Envie seu curriculo a 2.000 recrutadores, receba vagas aderentes ao teu perfil, basta <a href=\""));
+		assertTrue(message, message.startsWith("<b>Enviamos gratuitamente e todos os dias o seu currículo a 2 mil e-mails de recrutadores e entregamos vagas aderentes ao teu perfil, basta <a href=\""));
 		assertTrue(message, message.contains("/meus-dados/sobre-mim\">clicar aqui</a></b>\nVaga &lt;Java&gt; &amp; Spring "));
 		assertTrue(message, message.contains("<b>Recrutador, cadastre vagas e receba currículos exatamente aderentes à sua vaga.\n"
 				+ "Esta vaga por exemplo encontrou 12 currículos (média CLT R$ 9.500,00, média PJ não informada, média de experiência 4,5 anos) "
@@ -479,7 +479,7 @@ public class SaveJobPostingThroughSupportBotTest {
 		String lastPiece = pieces.get(pieces.size() - 1);
 		assertTrue(lastPiece, lastPiece.startsWith("<b>Recrutador, cadastre vagas"));
 		assertTrue(lastPiece, lastPiece.endsWith("VOCÊ PUDER 🙏🙏🙏]</b>"));
-		assertTrue(pieces.get(0), pieces.get(0).startsWith("<b>Envie seu curriculo"));
+		assertTrue(pieces.get(0), pieces.get(0).startsWith("<b>Enviamos gratuitamente"));
 		String textPieces = String.join(" ", pieces.subList(0, pieces.size() - 1));
 		String expected = description.replace("&", "&amp;").replaceAll("\\s+", " ");
 		assertTrue("the text is kept whole", textPieces.replaceAll("\\s+", " ").contains(expected));
@@ -527,7 +527,7 @@ public class SaveJobPostingThroughSupportBotTest {
 				continue;
 			}
 			assertEquals("user", message.getAsString(JnJsonInstantMessengerFields.botName));
-			assertTrue(messageText, messageText.startsWith("<b>Envie seu curriculo"));
+			assertTrue(messageText, messageText.startsWith("<b>Enviamos gratuitamente"));
 			boolean firstTime = chatsOfThisJobPosting.add(message.getAsLongNumber(JnJsonInstantMessengerFields.chatId));
 			assertTrue("a group got the job posting twice", firstTime);
 		}
